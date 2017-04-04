@@ -17,21 +17,23 @@ void RestApiManager::init()
 
 void RestApiManager::writeSettings()
 {
-    Core::i()->settings()->beginGroup("RemoteServer");
-    Core::i()->settings()->setValue("scheme", mScheme);
-    Core::i()->settings()->setValue("host", mHost);
-    Core::i()->settings()->setValue("prefix", mPrefix);
-    Core::i()->settings()->setValue("port", mPort);
-    Core::i()->settings()->endGroup();
+    QSettings settings;
+    settings.beginGroup("RemoteServer");
+    settings.setValue("scheme", mScheme);
+    settings.setValue("host", mHost);
+    settings.setValue("prefix", mPrefix);
+    settings.setValue("port", mPort);
+    settings.endGroup();
 }
 
 void RestApiManager::readSettings()
 {
     // TODO : No hardcoded value => Load default from local config file ?
-    Core::i()->settings()->beginGroup("RemoteServer");
-    mScheme = Core::i()->settings()->value("scheme", "https").toString();
-    mHost = Core::i()->settings()->value("host", "annso.absolumentg.fr").toString();
-    mPrefix = Core::i()->settings()->value("prefix", "").toString();
-    mPort = Core::i()->settings()->value("port", 443).toInt();
-    Core::i()->settings()->endGroup();
+    QSettings settings;
+    settings.beginGroup("RemoteServer");
+    mScheme = settings.value("scheme", "https").toString();
+    mHost = settings.value("host", "annso.absolumentg.fr").toString();
+    mPrefix = settings.value("prefix", "").toString();
+    mPort = settings.value("port", 443).toInt();
+    settings.endGroup();
 }

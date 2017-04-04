@@ -39,18 +39,20 @@ MainWindow::~MainWindow()
 
 void MainWindow::writeSettings()
 {
-    mRegovar->settings()->beginGroup("MainWindow");
-    mRegovar->settings()->setValue("size", size());
-    mRegovar->settings()->setValue("pos", pos());
-    mRegovar->settings()->endGroup();
+    QSettings settings;
+    settings.beginGroup("MainWindow");
+    settings.setValue("size", size());
+    settings.setValue("pos", pos());
+    settings.endGroup();
 }
 
 void MainWindow::restoreSettings()
 {
-    mRegovar->settings()->beginGroup("MainWindow");
-    resize(mRegovar->settings()->value("size", QSize(400, 400)).toSize());
-    move(mRegovar->settings()->value("pos", QPoint(200, 200)).toPoint());
-    mRegovar->settings()->endGroup();
+    QSettings settings;
+    settings.beginGroup("MainWindow");
+    resize(settings.value("size", QSize(400, 400)).toSize());
+    move(settings.value("pos", QPoint(200, 200)).toPoint());
+    settings.endGroup();
 }
 
 

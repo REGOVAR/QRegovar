@@ -21,8 +21,6 @@ public:
     static Core* i();
     void init();
 
-    inline QSettings* settings() { return mSettings; }
-
 
 
     // Manager
@@ -43,9 +41,6 @@ public:
 private:
     Core();
     static Core* mInstance;
-
-    // Settings of the application
-    QSettings* mSettings;
 
 
     // Managers

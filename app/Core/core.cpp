@@ -14,9 +14,6 @@ Core* Core::i()
 
 Core::Core()
 {
-    // Load local config first
-    mSettings = new QSettings("Regovar.org", "QRegovar");
-
     // Get managers.
     mApiManager = new RestApiManager();
 
