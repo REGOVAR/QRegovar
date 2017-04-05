@@ -6,6 +6,9 @@
 #include <QAuthenticator>
 #include "model/user.h"
 
+#ifndef regovar
+#define regovar (Regovar::i())
+#endif
 
 class RestApiManager;
 
@@ -37,7 +40,8 @@ public:
 
 
     // Model
-    inline User* currentUser() { return mUser; }
+     const User& currentUser() const { return Regovar::mUser; }
+
 
 
 public Q_SLOTS:
@@ -54,6 +58,7 @@ Q_SIGNALS:
 
 private:
     Regovar();
+    ~Regovar();
     static Regovar* mInstance;
 
 
@@ -65,7 +70,7 @@ private:
     //! The root url to the server api
     QUrl mApiRootUrl;
     //! The current user of the application
-    User* mUser;
+    User mUser;
 
 };
 

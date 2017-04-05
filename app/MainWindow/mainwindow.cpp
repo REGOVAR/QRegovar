@@ -5,29 +5,32 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     // Get Regovar's core instance
-    Regovar::i()->init();
-
+    regovar->init();
     // Init HMI
     buildMenu();
 
-    QWidget* homeTab;
-    if (Regovar::i()->currentUser()->isValid())
-    {
-        homeTab = buildHomeTab();
-    }
+    // construct widget
+    mHomeTabWidget = buildHomeTab();
+    mLoginWidget   = new LoginWidget(this);
+    mStackWidget   = new QStackedWidget(this);
+
+    // add widget to the stack
+    mStackWidget->addWidget(mLoginWidget);
+    mStackWidget->addWidget(mHomeTabWidget);
+
+    //create connection
+    connect(mHomeTabWidget, SIGNAL(login(QString&, QString&)),this, SLOT(checkAuthent(QString&, QString&)));
+
+    // set stack to the central widget
+    setCentralWidget(mStackWidget);
+
+    // set current stack widget
+    if (!regovar->currentUser().isValid())
+        mStackWidget->setCurrentWidget(mLoginWidget);
     else
-    {
-        homeTab = new LoginWidget(parent);
-        connect( homeTab,
-                 SIGNAL(login(QString&, QString&)),
-                 this,
-                 SLOT(checkAuthent(QString&, QString&)));
-    }
+        mStackWidget->setCurrentWidget(mHomeTabWidget);
 
 
-    mTabWidget = new QTabWidget(parent);
-    mTabWidget->addTab(homeTab, tr("Home"));
-    setCentralWidget(mTabWidget);
     restoreSettings();
 }
 
@@ -107,14 +110,14 @@ void MainWindow::buildMenu()
 
 
     // TODO : loading "module menu" dynamicaly from library
-//    menuBar->addMenu(tr("&Project"));
-//    menuBar->addMenu(tr("&Subject"));
-//    menuBar->addMenu(tr("&Pipeline"));
+    //    menuBar->addMenu(tr("&Project"));
+    //    menuBar->addMenu(tr("&Subject"));
+    //    menuBar->addMenu(tr("&Pipeline"));
 
     // TODO : these generics menus may be complete by dynamic module
-//    menuBar->addMenu(tr("&Statistics"));
-//    menuBar->addMenu(tr("&Tools"));
-//    menuBar->addMenu(tr("&Administration"));
+    //    menuBar->addMenu(tr("&Statistics"));
+    //    menuBar->addMenu(tr("&Tools"));
+    //    menuBar->addMenu(tr("&Administration"));
 
     // Help menu
     QAction *beginnerGuideAct = new QAction(tr("&Beginner's guide"), this);
@@ -147,14 +150,14 @@ void MainWindow::buildMenu()
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About Regovar"),
-        tr("<b>Regovar</b> application is the best. "
-           "As you can see with this perfect dialog box."));
+                       tr("<b>Regovar</b> application is the best. "
+                          "As you can see with this perfect dialog box."));
 }
 
 void MainWindow::checkAuthent(QString& login, QString& password)
 {
     qDebug() << tr("checkAuthent login:%1 pwd:%2").arg(login, password);
-    Regovar::i()->login(login, password);
+    regovar->login(login, password);
 }
 
 

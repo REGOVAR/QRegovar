@@ -43,6 +43,11 @@ protected:
     QMenuBar* mMenuBar;
     QTabWidget* mTabWidget;
 
+    // Widget containers
+    QStackedWidget * mStackWidget;
+    LoginWidget  * mLoginWidget;
+    QWidget * mHomeTabWidget;
+
 };
 
 #endif // MAINWINDOW_H
