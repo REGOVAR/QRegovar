@@ -13,19 +13,25 @@ MainWindow::MainWindow(QWidget *parent)
     // Init HMI
     buildMenu();
 
+    QWidget* homeTab;
+    if (mRegovar->currentUser()->isValid())
+    {
+        homeTab = buildHomeTab();
+    }
+    else
+    {
+        homeTab = new LoginWidget(parent);
+        connect( homeTab,
+                 SIGNAL(acceptLogin(QString&,QString&,int&)),
+                 this,
+                 SLOT(checkAuthent(QString&,QString&)));
+    }
+
+
     mTabWidget = new QTabWidget(parent);
-    mTabWidget->addTab(new QWidget(), tr("Home"));
-
-    LoginWidget *authent = new LoginWidget(parent);
-    connect( authent,
-             SIGNAL(acceptLogin(QString&,QString&,int&)),
-             this,
-             SLOT(checkAuthent(QString&,QString&)));
-    setCentralWidget(authent);
-
-
+    mTabWidget->addTab(homeTab, tr("Home"));
+    setCentralWidget(mTabWidget);
     restoreSettings();
-
 }
 
 MainWindow::~MainWindow()
@@ -55,6 +61,19 @@ void MainWindow::restoreSettings()
     settings.endGroup();
 }
 
+
+QWidget* MainWindow::buildHomeTab()
+{
+    QQuickView* view = new QQuickView();
+    QWidget* container = QWidget::createWindowContainer(view, this);
+    container->setMinimumSize(200, 200);
+    container->setFocusPolicy(Qt::TabFocus);
+    view->setSource(QUrl("qrc:/qml/home.qml"));
+    view->setResizeMode(QQuickView::SizeRootObjectToView);
+    view->rootContext()->setContextProperty("main", this);
+
+    return container;
+}
 
 void MainWindow::buildMenu()
 {

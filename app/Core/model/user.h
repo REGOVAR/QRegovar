@@ -1,31 +1,31 @@
 #ifndef USER_H
 #define USER_H
+#include <QtCore>
 
-#include <QObject>
-#include <QStandardItemModel>
-
-class User : public QStandardItemModel
+class User
 {
-    Q_OBJECT
-
 public:
     User();
+    User(quint32 id, const QString& firstname, const QString& lastname);
 
     // Read
-    inline uint id() { return mId; }
-    inline QString lastname() { return mLastname; }
-    inline QString firstname() { return mFirstname; }
+    quint32 id() const;
+    const QString& lastname() const;
+    const QString& firstname() const;
+
 
     // Write
-    inline void id(uint newId) { mId=newId; }
-    inline void lastname(QString newLastname) { mLastname=newLastname; }
-    inline void firstname(QString newFirstname) { mFirstname=newFirstname; }
+    void setId(quint32 id);
+    void setLastname(const QString &lastname);
+    void setFirstname(const QString &firstname);
+
+    bool isValid() const;
 
 
 protected:
-    uint mId;
-    QString mLastname;
+    quint32 mId = -1;
     QString mFirstname;
+    QString mLastname;
 
 };
 

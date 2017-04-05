@@ -6,13 +6,14 @@
 #include <QJsonDocument>
 
 
-enum RequestVerb { GET, POST, PUT, DEL, PATCH, HEAD };
 
 class Request : public QObject
 {
     Q_OBJECT
 public:
-    Request(const RequestVerb verb, const QString query, const QByteArray& data=QByteArray(), QObject* parent=0);
+    enum Verb { Get, Post, Put, Del, Patch, Head};
+    Q_ENUM(Verb)
+    Request(Verb verb, const QString& query, const QByteArray& data=QByteArray(), QObject* parent=0);
 
     // Factories
     static Request* get(const QString query);

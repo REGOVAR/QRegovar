@@ -3,22 +3,22 @@
 #include <QDebug>
 
 
-Request::Request(const RequestVerb verb, const QString query, const QByteArray& data, QObject* parent) : QObject(parent)
+Request::Request(Verb verb, const QString& query, const QByteArray& data, QObject* parent) : QObject(parent)
 {
     QNetworkRequest request = Request::makeRequest(query);
     mReply = Q_NULLPTR;
     switch (verb)
     {
-        case GET:
+        case Request::Get:
             mReply = Core::i()->api()->netManager()->get(request);
             break;
-        case POST:
+        case Request::Post:
             mReply = Core::i()->api()->netManager()->post(request,data);
             break;
-        case PUT:
+        case Request::Put:
             mReply = Core::i()->api()->netManager()->put(request, data);
             break;
-        case DEL:
+        case Request::Del:
             mReply = Core::i()->api()->netManager()->deleteResource(request);
             break;
 
@@ -40,22 +40,22 @@ Request::Request(const RequestVerb verb, const QString query, const QByteArray& 
 
 Request* Request::get(const QString query)
 {
-    return new Request(GET, query);
+    return new Request(Get, query);
 }
 
 Request* Request::put(const QString query, const QByteArray &data)
 {
-    return new Request(PUT, query, data);
+    return new Request(Put, query, data);
 }
 
 Request* Request::post(const QString query, const QByteArray &data)
 {
-    return new Request(POST, query, data);
+    return new Request(Post, query, data);
 }
 
 Request* Request::del(const QString query)
 {
-    return new Request(DEL, query);
+    return new Request(Del, query);
 }
 
 QNetworkRequest Request::makeRequest(const QString &resource)
