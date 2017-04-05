@@ -36,7 +36,7 @@ void Regovar::init()
 
 
     // Init model
-    mUser = User(-1, "Anonymous", "");
+    mUser = new User(-1, "Anonymous", "");
 }
 
 
@@ -59,15 +59,15 @@ void Regovar::readSettings()
 void Regovar::login(QString& login, QString& password)
 {
     // Do nothing if user already connected
-    if (mUser.isValid())
+    if (mUser->isValid())
     {
-        qDebug() << tr("User %1 %2 already loged in. Thanks to logout first.").arg(mUser.firstname(), mUser.lastname());
+        qDebug() << tr("User %1 %2 already loged in. Thanks to logout first.").arg(mUser->firstname(), mUser->lastname());
     }
     else
     {
         // store login and password as it may be ask later if network authentication problem
-        mUser.setLogin(login);
-        mUser.setPassword(password);
+        mUser->setLogin(login);
+        mUser->setPassword(password);
         Request* test = Request::get("/ref");
         connect(test, &Request::jsonReceived, [](const QJsonDocument& json)
         {
@@ -79,7 +79,7 @@ void Regovar::login(QString& login, QString& password)
 void Regovar::logout()
 {
     // Do nothing if user already disconnected
-    if (!mUser.isValid())
+    if (!mUser->isValid())
     {
         qDebug() << tr("you are already not authenticated...");
     }
@@ -88,7 +88,10 @@ void Regovar::logout()
         Request* test = Request::get("/user/logout");
         connect(test, &Request::jsonReceived, [this](const QJsonDocument& json)
         {
-            mUser = User(-1, "Anonymous", "");
+            // Create a new user ?? no!!! => mUser = new User(-1, "Anonymous", "");
+            mUser->setId(-1);
+            mUser->setFirstname("Anon");
+            mUser->setLastname("dsfsf");
             qDebug() << "You are disconnected !";
         });
     }
@@ -99,8 +102,8 @@ void Regovar::authenticationRequired(QNetworkReply* request, QAuthenticator* aut
     // Basic authentication requested by the server.
     // Try authentication using current user credentials
     qDebug() << Q_FUNC_INFO;
-    authenticator->setUser(Regovar::i()->currentUser().login());
-    authenticator->setPassword(Regovar::i()->currentUser().password());
+    authenticator->setUser(regovar->currentUser()->login());
+    authenticator->setPassword(regovar->currentUser()->password());
 }
 
 

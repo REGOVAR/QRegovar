@@ -1,11 +1,12 @@
 #include "user.h"
 
-User::User()
+User::User(QObject * parent)
+    :QObject(parent)
 {
 }
 
-User::User(quint32 id, const QString& firstname, const QString& lastname)
-    :mId(id), mFirstname(firstname), mLastname(lastname)
+User::User(quint32 id, const QString& firstname, const QString& lastname, QObject * parent)
+    :QObject(parent),mId(id), mFirstname(firstname), mLastname(lastname)
 {
 
 }
@@ -34,6 +35,8 @@ bool User::isValid() const
 
 
 // Property : Id
+
+
 quint32 User::id() const
 {
     return mId;
@@ -41,6 +44,7 @@ quint32 User::id() const
 void User::setId(quint32 id)
 {
     mId = id;
+    emit userChanged();
 }
 
 
@@ -52,6 +56,8 @@ const QString& User::lastname() const
 void User::setLastname(const QString& lastname)
 {
     mLastname = lastname;
+    emit userChanged();
+
 }
 
 
@@ -59,10 +65,13 @@ void User::setLastname(const QString& lastname)
 const QString& User::firstname() const
 {
     return mFirstname;
+
 }
 void User::setFirstname(const QString& firstname)
 {
     mFirstname = firstname;
+    emit userChanged();
+
 }
 
 
@@ -74,6 +83,8 @@ const QString& User::email() const
 void User::setEmail(const QString& email)
 {
     mEmail = email;
+    emit userChanged();
+
 }
 
 
@@ -85,6 +96,8 @@ const QString& User::login() const
 void User::setLogin(const QString& login)
 {
     mLogin = login;
+    emit userChanged();
+
 }
 
 
@@ -96,6 +109,8 @@ const QString& User::password() const
 void User::setPassword(const QString& password)
 {
     mPassword = password;
+    emit userChanged();
+
 }
 
 
@@ -107,6 +122,8 @@ const QPixmap& User::avatar() const
 void User::setAvatar(const QPixmap& avatar)
 {
     mAvatar = avatar;
+    emit userChanged();
+
 }
 
 
@@ -118,6 +135,8 @@ const QString& User::function() const
 void User::setFunction(const QString& function)
 {
     mFunction = function;
+    emit userChanged();
+
 }
 
 
@@ -129,6 +148,8 @@ const QString& User::location() const
 void User::setLocation(const QString& location)
 {
     mLocation = location;
+    emit userChanged();
+
 }
 
 
@@ -140,4 +161,6 @@ const QDate& User::lastActivity() const
 void User::setLastActivity(const QDate& lastActivity)
 {
     mLastActivity = lastActivity;
+    emit userChanged();
+
 }

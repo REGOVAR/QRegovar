@@ -33,7 +33,7 @@ public:
 
 public Q_SLOTS:
     void about();
-    void checkAuthent(QString& login, QString& password);
+    void checkAuthent();
 
 protected:
     void buildMenu();

@@ -21,6 +21,8 @@ class RestApiManager;
 class Regovar : public QObject
 {
     Q_OBJECT
+    // seul les type de QVariant et les QObject peuvent etre des property.. enfin pour toi !
+    Q_PROPERTY(User* currentUser READ currentUser NOTIFY loginSuccess)
 
 public:
     static Regovar* i();
@@ -37,10 +39,8 @@ public:
     // task... get list of tasks on the server, emit when task progress is ok
 
 
-
-
     // Model
-     const User& currentUser() const { return Regovar::mUser; }
+     User * currentUser() const { return mUser; }
 
 
 
@@ -70,7 +70,7 @@ private:
     //! The root url to the server api
     QUrl mApiRootUrl;
     //! The current user of the application
-    User mUser;
+    User * mUser;
 
 };
 

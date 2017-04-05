@@ -17,10 +17,10 @@ LoginWidget::LoginWidget(QWidget* parent) : QWidget(parent)
     QDialogButtonBox* buttonBox;
     buttonBox = new QDialogButtonBox;
     buttonBox->setMaximumWidth(300);
-    buttonBox->addButton(tr("Login"), QDialogButtonBox::AcceptRole);
+    QPushButton * loginButton = buttonBox->addButton(tr("Login"), QDialogButtonBox::AcceptRole);
 
-    // Connects slots
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &LoginWidget::accept);
+    // Connects Signals to other Signals
+    connect(loginButton, &QPushButton::clicked, this, &LoginWidget::accepted);
 
     // place components into the dialog
     formLayout->addRow(tr("&Username"), mComboUsername);
@@ -30,17 +30,20 @@ LoginWidget::LoginWidget(QWidget* parent) : QWidget(parent)
     setLayout(formLayout);
 }
 
-
-
-
-
-
-void LoginWidget::accept()
+const QString &LoginWidget::username() const
 {
-    QString username = mComboUsername->currentText();
-    QString password = mEditPassword->text();
-    emit login(username, password);
+    return mComboUsername->currentText();
 }
+
+const QString &LoginWidget::password() const
+{
+    return mEditPassword->text();
+}
+
+
+
+
+
 
 
 

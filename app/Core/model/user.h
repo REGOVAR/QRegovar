@@ -7,12 +7,16 @@
 /*!
  * \brief Define a user of the application.
  */
-class User
+class User : public QObject
 {
+    Q_OBJECT
 public:
+    Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY userChanged)
+    Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY userChanged)
+
     // Constructors
-    User();
-    User(quint32 id, const QString& firstname, const QString& lastname);
+    User(QObject * parent = 0);
+    User(quint32 id, const QString& firstname, const QString& lastname, QObject * parent = 0);
 
     // Properties
     // Read
@@ -43,7 +47,8 @@ public:
     // Check if the user model is valid or not
     bool isValid() const;
 
-
+Q_SIGNALS:
+    void userChanged();
 
 protected:
     quint32 mId = -1;

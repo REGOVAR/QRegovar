@@ -22,13 +22,15 @@ Item
 
     Text
     {
-       text: "Welcom " + main.core().currentUser().lastName()
-       color: "#55000000"
+       text: "Welcome " + regovar.currentUser.firstname
+       color: "red"
        font.family: "Sans"
        font.weight: Font.Black
        font.pointSize: 24
-       anchors.right: logo.right
-       anchors.bottom: logo.bottom
+       anchors.centerIn: parent
+       anchors.verticalCenterOffset: -100 // on decalle depuis le centre
+
+
     }
 
     RowLayout

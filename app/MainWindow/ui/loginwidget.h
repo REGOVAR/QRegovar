@@ -14,21 +14,23 @@
 class LoginWidget : public QWidget
 {
     Q_OBJECT
+public:
+    explicit LoginWidget(QWidget* parent = 0);
+
+    const QString& username() const;
+    const QString& password() const;
+
+Q_SIGNALS:
+    void accepted();
+
+
 private:
     QComboBox* mComboUsername;
     QLineEdit* mEditPassword;
 
 
-public:
-    explicit LoginWidget(QWidget* parent = 0);
 
 
-Q_SIGNALS:
-    void login(QString& username, QString& password);
-
-
-public Q_SLOTS:
-    void accept();
 };
 
 #endif // LOGINWIDGET_H

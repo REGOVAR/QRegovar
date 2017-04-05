@@ -4,7 +4,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    // Get Regovar's core instance
+    // init Regovar's core instance
     regovar->init();
     // Init HMI
     buildMenu();
@@ -19,13 +19,13 @@ MainWindow::MainWindow(QWidget *parent)
     mStackWidget->addWidget(mHomeTabWidget);
 
     //create connection
-    connect(mHomeTabWidget, SIGNAL(login(QString&, QString&)),this, SLOT(checkAuthent(QString&, QString&)));
+    connect(mLoginWidget,SIGNAL(accepted()), this,SLOT(checkAuthent()));
 
     // set stack to the central widget
     setCentralWidget(mStackWidget);
 
     // set current stack widget
-    if (!regovar->currentUser().isValid())
+    if (regovar->currentUser()->isValid())
         mStackWidget->setCurrentWidget(mLoginWidget);
     else
         mStackWidget->setCurrentWidget(mHomeTabWidget);
@@ -38,9 +38,6 @@ MainWindow::~MainWindow()
 {
 
 }
-
-
-
 
 
 void MainWindow::writeSettings()
@@ -68,9 +65,10 @@ QWidget* MainWindow::buildHomeTab()
     QWidget* container = QWidget::createWindowContainer(view, this);
     container->setMinimumSize(200, 200);
     container->setFocusPolicy(Qt::TabFocus);
+    // on met le context avant de charger le code
+    view->rootContext()->setContextProperty("regovar", Regovar::i());
     view->setSource(QUrl("qrc:/qml/home.qml"));
     view->setResizeMode(QQuickView::SizeRootObjectToView);
-    view->rootContext()->setContextProperty("main", this);
 
     return container;
 }
@@ -154,10 +152,13 @@ void MainWindow::about()
                           "As you can see with this perfect dialog box."));
 }
 
-void MainWindow::checkAuthent(QString& login, QString& password)
+void MainWindow::checkAuthent()
 {
-    qDebug() << tr("checkAuthent login:%1 pwd:%2").arg(login, password);
-    regovar->login(login, password);
+    QString login  = mLoginWidget->username();
+    QString passw  = mLoginWidget->password();
+
+    qDebug() << tr("checkAuthent login:%1 pwd:%2").arg(login, passw);
+    regovar->login(login, passw);
 }
 
 
