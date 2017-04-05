@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(mStackWidget);
 
     // set current stack widget
-    if (regovar->currentUser()->isValid())
+    if (!regovar->currentUser()->isValid())
         mStackWidget->setCurrentWidget(mLoginWidget);
     else
         mStackWidget->setCurrentWidget(mHomeTabWidget);
