@@ -1,97 +1,47 @@
 #include "loginwidget.h"
 
-LoginWidget::LoginWidget(QWidget *parent) : QWidget(parent)
+LoginWidget::LoginWidget(QWidget* parent) : QWidget(parent)
 {
     // Set up the layout
-    QGridLayout *formGridLayout = new QGridLayout( this );
+    QFormLayout* formLayout = new QFormLayout(this);
 
-    // Initialize the username combo box so that it is editable
+    // Initialize form controls
     mComboUsername = new QComboBox(this);
     mComboUsername->setEditable(true);
-    // initialize the password field so that it does not echo characters
+    mComboUsername->setMaximumWidth(300);
     mEditPassword = new QLineEdit(this);
     mEditPassword->setEchoMode(QLineEdit::Password);
+    mEditPassword->setMaximumWidth(300);
 
-    // initialize the labels
-    mLabelUsername = new QLabel(this);
-    mLabelPassword = new QLabel(this);
-    mLabelUsername->setText(tr("Username"));
-    mLabelUsername->setBuddy(mComboUsername);
-    mLabelPassword->setText(tr("Password"));
-    mLabelPassword->setBuddy(mEditPassword);
+    // Initialize buttons
+    QDialogButtonBox* buttonBox;
+    buttonBox = new QDialogButtonBox;
+    buttonBox->setMaximumWidth(300);
+    buttonBox->addButton(tr("Login"), QDialogButtonBox::AcceptRole);
 
-    // initialize buttons
-    mButtons = new QDialogButtonBox(this);
-    mButtons->addButton(QDialogButtonBox::Ok);
-    mButtons->addButton(QDialogButtonBox::Cancel);
-    mButtons->button(QDialogButtonBox::Ok)->setText(tr("Login"));
-
-    // connects slots
-    connect(mButtons->button(QDialogButtonBox::Ok), SIGNAL(clicked()), this, SLOT(slotAcceptLogin()));
+    // Connects slots
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &LoginWidget::accept);
 
     // place components into the dialog
-    formGridLayout->setAlignment(Qt::AlignCenter);
-    formGridLayout->addWidget(mLabelUsername, 0, 0);
-    formGridLayout->addWidget(mComboUsername, 0, 1);
-    formGridLayout->addWidget(mLabelPassword, 1, 0);
-    formGridLayout->addWidget(mEditPassword, 1, 1);
-    formGridLayout->addWidget(mButtons, 2, 0, 1, 2);
-
-    setLayout(formGridLayout);
-
-    resize(200,300);
+    formLayout->addRow(tr("&Username"), mComboUsername);
+    formLayout->addRow(tr("&Password"), mEditPassword);
+    formLayout->addWidget(buttonBox);
+    formLayout->setFormAlignment(Qt::AlignCenter);
+    setLayout(formLayout);
 }
 
 
 
 
 
-void LoginWidget::setUsername(QString &username)
-{
-    bool found = false;
-    for( int i = 0; i < mComboUsername->count() && ! found ; i++ )
-    if( mComboUsername->itemText( i ) == username )
-    {
-        mComboUsername->setCurrentIndex( i );
-        found = true;
-    }
 
-    if( ! found )
-    {
-        int index = mComboUsername->count();
-        qDebug() << "Select username " << index;
-        mComboUsername->addItem( username );
-        mComboUsername->setCurrentIndex( index );
-    }
-
-    // place the focus on the password field
-    mEditPassword->setFocus();
-}
-
-void LoginWidget::setPassword(QString &password)
-{
-    mEditPassword->setText( password );
-}
-
-void LoginWidget::slotAcceptLogin()
+void LoginWidget::accept()
 {
     QString username = mComboUsername->currentText();
     QString password = mEditPassword->text();
-    int index = mComboUsername->currentIndex();
-
-    emit acceptLogin( username, // current username
-    password, // current password
-    index // index in the username list
-    );
-
-    // close this dialog
-    close();
+    emit login(username, password);
 }
 
-void LoginWidget::setUsernamesList(const QStringList &usernames)
-{
-    mComboUsername->addItems( usernames );
-}
 
 
 

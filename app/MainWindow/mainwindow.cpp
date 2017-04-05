@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 
 
-#include "tools/request.h"
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -22,9 +20,9 @@ MainWindow::MainWindow(QWidget *parent)
     {
         homeTab = new LoginWidget(parent);
         connect( homeTab,
-                 SIGNAL(acceptLogin(QString&,QString&,int&)),
+                 SIGNAL(login(QString&, QString&)),
                  this,
-                 SLOT(checkAuthent(QString&,QString&)));
+                 SLOT(checkAuthent(QString&, QString&)));
     }
 
 
@@ -149,21 +147,15 @@ void MainWindow::buildMenu()
 
 void MainWindow::about()
 {
-    // TEST connect & lamda expression
-//    Request* test = Request::get("/ref");
-//    connect(test, Request::jsonReceived, [](const QJsonDocument& json)
-//    {
-//        qDebug() << "salut !";
-//    });
     QMessageBox::about(this, tr("About Regovar"),
         tr("<b>Regovar</b> application is the best. "
            "As you can see with this perfect dialog box."));
 }
 
-void MainWindow::checkAuthent(QString login, QString password)
+void MainWindow::checkAuthent(QString& login, QString& password)
 {
-    QMessageBox::about(this, tr("Authent Success"),
-        tr("Hello <b>%1</b>. You password is \"%2\" ! ... oups it's supposed to be a secret :P\n===\n").arg(login, password) );
+    qDebug() << tr("checkAuthent login:%1 pwd:%2").arg(login, password);
+    mRegovar->login(login, password);
 }
 
 

@@ -18,8 +18,6 @@ public:
     RestApiManager();
     void init();
 
-    void readSettings();
-    void writeSettings();
 
     // Read accessors
     inline QNetworkAccessManager* netManager() const { return mNetManager; }

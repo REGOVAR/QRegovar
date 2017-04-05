@@ -2,6 +2,8 @@
 #define CORE_H
 
 #include <QSettings>
+#include <QNetworkReply>
+#include <QAuthenticator>
 #include "model/user.h"
 
 
@@ -20,12 +22,14 @@ class Core : public QObject
 public:
     static Core* i();
     void init();
+    void readSettings();
+    void writeSettings();
 
 
 
     // Manager
     //! Manage all call to the Regovar rest api. Enqueue request, and return a pointer to the answer, answer emit a signal when it gets response/error
-    inline RestApiManager* api() { return mApiManager; }
+    inline QUrl& apiRootUrl() { return mApiRootUrl; }
 
     // task... get list of tasks on the server, emit when task progress is ok
 
@@ -36,6 +40,16 @@ public:
     inline User* currentUser() { return mUser; }
 
 
+public Q_SLOTS:
+    void login(QString& login, QString& password);
+    void logout();
+    static void authenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
+
+
+Q_SIGNALS:
+    void loginSuccess();
+    void loginFailed();
+    void logoutSuccess();
 
 
 private:
@@ -43,16 +57,15 @@ private:
     static Core* mInstance;
 
 
+
     // Managers
     RestApiManager* mApiManager;
 
     // Model
+    //! The root url to the server api
+    QUrl mApiRootUrl;
     //! The current user of the application
     User* mUser;
-    // mOnlineUsers : List of users that are currently online (connected to the server)
-    // mUsers : list of all users populate this collection only when user need to display the userList panel
-
-    // status : all status usefull for the client
 
 };
 

@@ -35,9 +35,9 @@ public:
     inline Core* core() { return mRegovar; }
 
 
-public slots:
+public Q_SLOTS:
     void about();
-    void checkAuthent(QString login, QString password);
+    void checkAuthent(QString& login, QString& password);
 
 protected:
     void buildMenu();

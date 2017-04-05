@@ -2,24 +2,40 @@
 #include "core.h"
 #include <QDebug>
 
+QNetworkAccessManager* Request::mNetManager = Q_NULLPTR;
+QNetworkAccessManager* Request::netManager()
+{
+    if (mNetManager == Q_NULLPTR)
+    {
+        mNetManager = new QNetworkAccessManager();
+        connect ( mNetManager,
+                  SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
+                  Core::i(),
+                  SLOT(authenticationRequired(QNetworkReply*, QAuthenticator*)));
+    }
+
+    return mNetManager;
+}
+
+
 
 Request::Request(Verb verb, const QString& query, const QByteArray& data, QObject* parent) : QObject(parent)
-{
+{    
     QNetworkRequest request = Request::makeRequest(query);
     mReply = Q_NULLPTR;
     switch (verb)
     {
         case Request::Get:
-            mReply = Core::i()->api()->netManager()->get(request);
+            mReply = Request::netManager()->get(request);
             break;
         case Request::Post:
-            mReply = Core::i()->api()->netManager()->post(request,data);
+            mReply = Request::netManager()->post(request,data);
             break;
         case Request::Put:
-            mReply = Core::i()->api()->netManager()->put(request, data);
+            mReply = Request::netManager()->put(request, data);
             break;
         case Request::Del:
-            mReply = Core::i()->api()->netManager()->deleteResource(request);
+            mReply = Request::netManager()->deleteResource(request);
             break;
 
         default:
@@ -60,12 +76,8 @@ Request* Request::del(const QString query)
 
 QNetworkRequest Request::makeRequest(const QString &resource)
 {
-    QUrl url;
-    url.setScheme(Core::i()->api()->scheme());
-    url.setHost(Core::i()->api()->host());
-    url.setPath(Core::i()->api()->prefix() + resource);
-    url.setPort(Core::i()->api()->port());
-
+    QUrl url(Core::i()->apiRootUrl());
+    url.setPath(resource);
     qDebug() << url;
 
     QNetworkRequest request(url);
@@ -85,9 +97,20 @@ void Request::received()
     mLoading = false;
     QNetworkReply * reply = qobject_cast<QNetworkReply*>(sender());
 
-    if (reply)
+    if (reply && reply->isFinished())
     {
-       mJson = QJsonDocument::fromJson(reply->readAll());
-       emit jsonReceived(mJson);
+        if (reply->error() == QNetworkReply::NoError)
+        {
+            mJson = QJsonDocument::fromJson(reply->readAll());
+            emit jsonReceived(mJson);
+        }
+        else
+        {
+            qDebug() << Q_FUNC_INFO << "QNetworkReply error : " << reply->error();
+        }
+    }
+    else
+    {
+        qDebug() << "no answer ?";
     }
 }

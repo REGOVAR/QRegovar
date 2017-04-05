@@ -21,6 +21,7 @@ public:
     const QString& firstname() const;
     const QString& email() const;
     const QString& login() const;
+    const QString& password() const;
     const QPixmap& avatar() const;
     const QString& function() const;
     const QString& location() const;
@@ -31,6 +32,7 @@ public:
     void setFirstname(const QString& firstname);
     void setEmail(const QString& email);
     void setLogin(const QString& login);
+    void setPassword(const QString& password);
     void setAvatar(const QPixmap& avatar);
     void setFunction(const QString& function);
     void setLocation(const QString& location);
@@ -49,6 +51,7 @@ protected:
     QString mLastname;
     QString mEmail;
     QString mLogin;
+    QString mPassword;
     QPixmap mAvatar;
     QString mFunction;
     QString mLocation;

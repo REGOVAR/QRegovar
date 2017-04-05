@@ -14,7 +14,7 @@ public:
     enum Verb { Get, Post, Put, Del, Patch, Head};
     Q_ENUM(Verb)
     Request(Verb verb, const QString& query, const QByteArray& data=QByteArray(), QObject* parent=0);
-
+    static QNetworkAccessManager* netManager();
     // Factories
     static Request* get(const QString query);
     static Request* post(const QString query,const QByteArray& data=QByteArray());
@@ -28,7 +28,7 @@ public:
     const QJsonDocument& json() const;
     inline bool loading() { return mLoading; }
 
-signals :
+Q_SIGNALS :
     void jsonReceived(const QJsonDocument& json);
 
 
@@ -36,11 +36,13 @@ protected Q_SLOTS:
     void received();
 
 private:
+    static QNetworkAccessManager* mNetManager;
+
     bool mLoading = false;
     QNetworkReply* mReply;
     QJsonDocument mJson;
 
-    static QList<QNetworkReply> mRequestQueue;
+
 };
 
 #endif // REQUEST_H

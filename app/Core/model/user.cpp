@@ -88,6 +88,17 @@ void User::setLogin(const QString& login)
 }
 
 
+// Property : Password
+const QString& User::password() const
+{
+    return mPassword;
+}
+void User::setPassword(const QString& password)
+{
+    mPassword = password;
+}
+
+
 // Property : Avatar
 const QPixmap& User::avatar() const
 {
