@@ -25,12 +25,40 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += core.cpp \
     model/user.cpp \
     tools/request.cpp \
-    managers/restapimanager.cpp
+    managers/restapimanager.cpp \
+    model/project.cpp \
+    model/subject.cpp \
+    model/analysis.cpp \
+    model/job.cpp \
+    model/file.cpp \
+    model/task.cpp \
+    model/pipeline.cpp \
+    model/analysistemplate.cpp \
+    model/reference.cpp \
+    model/annotationdatabase.cpp \
+    model/annotationfield.cpp \
+    model/sample.cpp \
+    model/variant.cpp \
+    model/event.cpp
 
 HEADERS += core.h \
     model/user.h \
     tools/request.h \
-    managers/restapimanager.h
+    managers/restapimanager.h \
+    model/project.h \
+    model/subject.h \
+    model/analysis.h \
+    model/job.h \
+    model/file.h \
+    model/task.h \
+    model/pipeline.h \
+    model/analysistemplate.h \
+    model/reference.h \
+    model/annotationdatabase.h \
+    model/annotationfield.h \
+    model/sample.h \
+    model/variant.h \
+    model/event.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
