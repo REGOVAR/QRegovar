@@ -11,7 +11,7 @@
 #include <QQmlContext>
 
 
-#include "core.h"
+#include "regovar.h"
 #include "ui/loginwidget.h"
 
 class MainWindow : public QMainWindow
@@ -31,10 +31,6 @@ public:
     void writeSettings();
 
 
-
-    inline Core* core() { return mRegovar; }
-
-
 public Q_SLOTS:
     void about();
     void checkAuthent(QString& login, QString& password);
@@ -47,7 +43,6 @@ protected:
     QMenuBar* mMenuBar;
     QTabWidget* mTabWidget;
 
-    Core* mRegovar;
 };
 
 #endif // MAINWINDOW_H

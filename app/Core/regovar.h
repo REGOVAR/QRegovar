@@ -15,12 +15,12 @@ class RestApiManager;
  * Main Regovar's client core. Wrap the model and manage all interaction with the server
  * (websocket, rest api, tus resumable upload, and so on.
  */
-class Core : public QObject
+class Regovar : public QObject
 {
     Q_OBJECT
 
 public:
-    static Core* i();
+    static Regovar* i();
     void init();
     void readSettings();
     void writeSettings();
@@ -53,8 +53,8 @@ Q_SIGNALS:
 
 
 private:
-    Core();
-    static Core* mInstance;
+    Regovar();
+    static Regovar* mInstance;
 
 
 

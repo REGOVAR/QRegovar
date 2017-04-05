@@ -5,14 +5,13 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     // Get Regovar's core instance
-    mRegovar = Core::i();
-    mRegovar->init();
+    Regovar::i()->init();
 
     // Init HMI
     buildMenu();
 
     QWidget* homeTab;
-    if (mRegovar->currentUser()->isValid())
+    if (Regovar::i()->currentUser()->isValid())
     {
         homeTab = buildHomeTab();
     }
@@ -155,7 +154,7 @@ void MainWindow::about()
 void MainWindow::checkAuthent(QString& login, QString& password)
 {
     qDebug() << tr("checkAuthent login:%1 pwd:%2").arg(login, password);
-    mRegovar->login(login, password);
+    Regovar::i()->login(login, password);
 }
 
 

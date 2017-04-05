@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QtCore>
 #include <QNetworkAccessManager>
-#include "core.h"
+#include "regovar.h"
 
 
 

@@ -1,19 +1,19 @@
-#include "core.h"
+#include "regovar.h"
 #include "tools/request.h"
 
 
 
-Core* Core::mInstance = Q_NULLPTR;
-Core* Core::i()
+Regovar* Regovar::mInstance = Q_NULLPTR;
+Regovar* Regovar::i()
 {
     if (mInstance == Q_NULLPTR)
     {
-        mInstance = new Core();
+        mInstance = new Regovar();
     }
     return mInstance;
 }
 
-Core::Core()
+Regovar::Regovar()
 {
     // Get managers.
 
@@ -23,7 +23,7 @@ Core::Core()
 }
 
 
-void Core::init()
+void Regovar::init()
 {
     readSettings();
 
@@ -36,7 +36,7 @@ void Core::init()
 
 
 
-void Core::readSettings()
+void Regovar::readSettings()
 {
     // TODO : No hardcoded value => Load default from local config file ?
     QSettings settings;
@@ -51,7 +51,7 @@ void Core::readSettings()
 
 
 
-void Core::login(QString& login, QString& password)
+void Regovar::login(QString& login, QString& password)
 {
     // Do nothing if user already connected
     if (mUser->isValid())
@@ -71,7 +71,7 @@ void Core::login(QString& login, QString& password)
     }
 }
 
-void Core::logout()
+void Regovar::logout()
 {
     // Do nothing if user already disconnected
     if (!mUser->isValid())
@@ -89,13 +89,13 @@ void Core::logout()
     }
 }
 
-void Core::authenticationRequired(QNetworkReply* request, QAuthenticator* authenticator)
+void Regovar::authenticationRequired(QNetworkReply* request, QAuthenticator* authenticator)
 {
     // Basic authentication requested by the server.
     // Try authentication using current user credentials
     qDebug() << Q_FUNC_INFO;
-    authenticator->setUser(Core::i()->currentUser()->login());
-    authenticator->setPassword(Core::i()->currentUser()->password());
+    authenticator->setUser(Regovar::i()->currentUser()->login());
+    authenticator->setPassword(Regovar::i()->currentUser()->password());
 }
 
 

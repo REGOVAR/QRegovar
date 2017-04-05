@@ -22,7 +22,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-SOURCES += core.cpp \
+SOURCES += \
     model/user.cpp \
     tools/request.cpp \
     managers/restapimanager.cpp \
@@ -39,9 +39,10 @@ SOURCES += core.cpp \
     model/annotationfield.cpp \
     model/sample.cpp \
     model/variant.cpp \
-    model/event.cpp
+    model/event.cpp \
+    regovar.cpp
 
-HEADERS += core.h \
+HEADERS += \
     model/user.h \
     tools/request.h \
     managers/restapimanager.h \
@@ -58,7 +59,8 @@ HEADERS += core.h \
     model/annotationfield.h \
     model/sample.h \
     model/variant.h \
-    model/event.h
+    model/event.h \
+    regovar.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
