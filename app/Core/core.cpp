@@ -67,7 +67,6 @@ void Core::login(QString& login, QString& password)
         connect(test, &Request::jsonReceived, [](const QJsonDocument& json)
         {
             QString st(json.toJson(QJsonDocument::Compact));
-            if ()
         });
     }
 }
@@ -81,7 +80,6 @@ void Core::logout()
     }
     else
     {
-        // store login and password as it may be ask later if network authentication problem
         Request* test = Request::get("/user/logout");
         connect(test, &Request::jsonReceived, [this](const QJsonDocument& json)
         {
