@@ -1,29 +1,29 @@
 #include "app.h"
 #include "projectviewwidget.h"
-#include <QLabel>
+#include <QGridLayout>
 #include <QPushButton>
+#include <QListWidgetItem>
+#include <QIcon>
 
 ProjectViewWidget::ProjectViewWidget(QWidget *parent) : QWidget(parent)
 {
-    QHBoxLayout* mainLayout = new QHBoxLayout(this);
-    QVBoxLayout* contentLayout = new QVBoxLayout(this);
 
-    mSectionBar = new QToolBar(this);
-    mToolBar = new QToolBar(this);
+
+    projectTitle = new QLabel(tr("Project Name"), this);
+    projectStatus = new QLabel(tr("[status]"), this);
     mStackWidget = new QStackedWidget(this);
     mResumeTab = new QWidget(this);
 
-    contentLayout->addWidget(mToolBar);
-    contentLayout->addWidget(mStackWidget);
-    mainLayout->addWidget(mSectionBar);
-    mainLayout->addLayout(contentLayout);
-    setLayout(mainLayout);
+    QIcon* ico = new QIcon();
+    ico->addPixmap(app->awesome()->icon(fa::folderopeno).pixmap(32, 32), QIcon::Normal, QIcon::On);
+    ico->addPixmap(app->awesome()->icon(fa::foldero).pixmap(32, 32), QIcon::Normal, QIcon::Off);
+    toggleBrowserButton = new QPushButton(*ico, tr("Browse projects"), this);
+    toggleBrowserButton->setCheckable(true);
 
     QWidget* stretcher = new QWidget(this);
     stretcher->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
-    projectTitle = new QLabel(tr("Project Name"), this);
-    projectStatus = new QLabel(tr("[status]"), this);
 
+    mToolBar = new QToolBar(this);
     mToolBar->addWidget(projectTitle);
     mToolBar->addWidget(projectStatus);
     mToolBar->addWidget(stretcher);
@@ -33,26 +33,31 @@ ProjectViewWidget::ProjectViewWidget(QWidget *parent) : QWidget(parent)
     mToolBar->addAction(app->awesome()->icon(fa::calendar),tr("Add a custom event to the history of the project"), this, SLOT(showSettings()));
     mToolBar->addAction(app->awesome()->icon(fa::paperclip),tr("Add attachment to the project"), this, SLOT(showSettings()));
 
-    QPushButton* toggleBrowserButton = new QPushButton(tr("Browse projects"),this);
-    mSectionBar->setOrientation(Qt::Vertical);
-    mSectionBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    mSectionBar->setIconSize(QSize(64,64));
 
+    mSectionBar = new QListWidget(this);
+    mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::barchart), tr("Resume")));
+    mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::user), tr("Subjects")));
+    mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::cog), tr("Tasks")));
+    mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::file), tr("Files")));
+
+
+    QAction test();
 
     // TODO : use theme color
-    mainLayout->setContentsMargins(0,0,0,0);
-    contentLayout->setContentsMargins(0,0,0,0);
+    toggleBrowserButton->setFlat(true);
     mStackWidget->setStyleSheet("border-top: 1px solid #aaa");
     mSectionBar->setStyleSheet("border-right: 1px solid #aaa");
     projectTitle->setFont(QFont( "Arial", 18, QFont::Bold));
 
 
-    mSectionBar->addWidget(toggleBrowserButton);
-    mSectionBar->addAction(app->awesome()->icon(fa::barchart),tr("Resume"), this, SLOT(showSettings()));
-    mSectionBar->addAction(app->awesome()->icon(fa::user),tr("Subjects"), this, SLOT(showSettings()));
-    mSectionBar->addAction(app->awesome()->icon(fa::cog),tr("Tasks"), this, SLOT(showSettings()));
-    mSectionBar->addAction(app->awesome()->icon(fa::file),tr("Files"), this, SLOT(showSettings()));
 
+    QGridLayout* mainLayout = new QGridLayout(this);
+    mainLayout->addWidget(toggleBrowserButton, 0, 0);
+    mainLayout->addWidget(mSectionBar, 1, 0);
+    mainLayout->addWidget(mToolBar, 0, 1);
+    mainLayout->addWidget(mStackWidget, 1, 1);
+    mSectionBar->setMaximumWidth(150);
+    setLayout(mainLayout);
 }
 
 

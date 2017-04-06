@@ -2,10 +2,11 @@
 #define PROJECTVIEWWIDGET_H
 
 #include <QWidget>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
+
 #include <QToolBar>
+#include <QListWidget>
 #include <QStackedWidget>
+#include <QPushButton>
 #include <QLabel>
 
 class ProjectViewWidget : public QWidget
@@ -13,12 +14,13 @@ class ProjectViewWidget : public QWidget
     Q_OBJECT
 
 private:
-    QToolBar* mSectionBar;
+    QListWidget* mSectionBar;
     QToolBar* mToolBar;
     QStackedWidget* mStackWidget;
     QWidget* mResumeTab;
     QLabel* projectTitle;
     QLabel* projectStatus;
+    QPushButton* toggleBrowserButton;
 
 public:
     explicit ProjectViewWidget(QWidget *parent = 0);
