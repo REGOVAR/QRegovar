@@ -15,10 +15,11 @@ ProjectViewWidget::ProjectViewWidget(QWidget *parent) : QWidget(parent)
     mResumeTab = new QWidget(this);
 
     QIcon* ico = new QIcon();
-    ico->addPixmap(app->awesome()->icon(fa::folderopeno).pixmap(32, 32), QIcon::Normal, QIcon::On);
-    ico->addPixmap(app->awesome()->icon(fa::foldero).pixmap(32, 32), QIcon::Normal, QIcon::Off);
+    ico->addPixmap(app->awesome()->icon(fa::folderopeno).pixmap(64, 64), QIcon::Normal, QIcon::On);
+    ico->addPixmap(app->awesome()->icon(fa::foldero).pixmap(64, 64), QIcon::Normal, QIcon::Off);
     toggleBrowserButton = new QPushButton(*ico, tr("Browse projects"), this);
     toggleBrowserButton->setCheckable(true);
+    // toggleBrowserButton->setStyleSheet("{text-align:left}"); // Not working
 
     QWidget* stretcher = new QWidget(this);
     stretcher->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
@@ -34,14 +35,16 @@ ProjectViewWidget::ProjectViewWidget(QWidget *parent) : QWidget(parent)
     mToolBar->addAction(app->awesome()->icon(fa::paperclip),tr("Add attachment to the project"), this, SLOT(showSettings()));
 
 
+
     mSectionBar = new QListWidget(this);
     mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::barchart), tr("Resume")));
     mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::user), tr("Subjects")));
     mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::cog), tr("Tasks")));
     mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::file), tr("Files")));
+    mSectionBar->setIconSize(QSize(64,64));
+    mSectionBar->setViewMode(QListView::IconMode);
+    //mSectionBar->setIconMode(Qt::)
 
-
-    QAction test();
 
     // TODO : use theme color
     toggleBrowserButton->setFlat(true);
