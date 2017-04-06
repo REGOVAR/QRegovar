@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include "app.h"
+#include "ui/projectviewwidget.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -19,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     mStackWidget->addWidget(mLoginWidget);
     mStackWidget->addWidget(mTabWidget);
     mTabWidget->addTab(mHomeTabWidget, tr("Home"));
+    mTabWidget->addTab(new ProjectViewWidget(this), tr("Project"));
 
     //create connection
     connect(mLoginWidget, SIGNAL(accepted()), this, SLOT(checkAuthent()));
@@ -81,7 +84,8 @@ QWidget* MainWindow::buildHomeTab()
     container->setMinimumSize(200, 200);
     container->setFocusPolicy(Qt::TabFocus);
     // on met le context avant de charger le code
-    view->rootContext()->setContextProperty("regovar", Regovar::i());
+    view->rootContext()->setContextProperty("regovar", regovar);
+    view->rootContext()->setContextProperty("main", this);
     view->setSource(QUrl("qrc:/qml/home.qml"));
     view->setResizeMode(QQuickView::SizeRootObjectToView);
 

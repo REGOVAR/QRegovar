@@ -10,7 +10,6 @@
 #include <QQuickView>
 #include <QQmlContext>
 
-
 #include "regovar.h"
 #include "ui/loginwidget.h"
 

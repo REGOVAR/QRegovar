@@ -26,10 +26,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    ui/loginwidget.cpp
+    ui/loginwidget.cpp \
+    ui/projectviewwidget.cpp \
+    app.cpp
 
 HEADERS  += mainwindow.h \
-    ui/loginwidget.h
+    ui/loginwidget.h \
+    ui/projectviewwidget.h \
+    app.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Core/release/ -lCore
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Core/debug/ -lCore
@@ -46,3 +50,5 @@ else:unix: PRE_TARGETDEPS += $$OUT_PWD/../Core/libCore.a
 
 RESOURCES += \
     resources.qrc
+
+include("../libs/QtAwesome/QtAwesome.pri")

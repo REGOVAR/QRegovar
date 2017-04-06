@@ -36,7 +36,7 @@ void Regovar::init()
 
 
     // Init model
-    mUser = new User(-1, "Anonymous", "");
+    mUser = new User(1, "Anonymous", "");
 }
 
 
