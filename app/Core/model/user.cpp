@@ -22,6 +22,31 @@ bool User::isValid() const
     return mId != -1;
 }
 
+bool User::loginUser(QJsonDocument json)
+{
+    // TODO set current user with json data
+    // QString st(json.toJson(QJsonDocument::Compact));
+    mId = 1;
+    mFirstname = "Olivier";
+    mLastname = "Gueudelot";
+    emit userChanged();
+    return true;
+}
+
+void User::logoutUser()
+{
+    mId = -1;
+    mFirstname = tr("Anonymous");
+    mLastname = tr("Anonymous");
+    mEmail = "";
+    mLogin = "";
+    mPassword = "";
+    // TODO : mAvatar; empty qpixmap ?
+    mFunction = "";
+    mLocation = "";
+    emit userChanged();
+}
+
 
 
 

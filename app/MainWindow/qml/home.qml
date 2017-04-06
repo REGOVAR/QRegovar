@@ -23,7 +23,7 @@ Item
     Text
     {
        text: "Welcome " + regovar.currentUser.firstname
-       color: "red"
+       color: "#55999999"
        font.family: "Sans"
        font.weight: Font.Black
        font.pointSize: 24

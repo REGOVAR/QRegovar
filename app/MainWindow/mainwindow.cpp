@@ -13,22 +13,23 @@ MainWindow::MainWindow(QWidget *parent)
     mHomeTabWidget = buildHomeTab();
     mLoginWidget   = new LoginWidget(this);
     mStackWidget   = new QStackedWidget(this);
+    mTabWidget     = new QTabWidget(this);
 
     // add widget to the stack
     mStackWidget->addWidget(mLoginWidget);
-    mStackWidget->addWidget(mHomeTabWidget);
+    mStackWidget->addWidget(mTabWidget);
+    mTabWidget->addTab(mHomeTabWidget, tr("Home"));
 
     //create connection
-    connect(mLoginWidget,SIGNAL(accepted()), this,SLOT(checkAuthent()));
+    connect(mLoginWidget, SIGNAL(accepted()), this, SLOT(checkAuthent()));
+    connect(regovar, SIGNAL(loginSuccess()), this, SLOT(updateCentralWidget()));
+    connect(regovar, SIGNAL(logoutSuccess()), this, SLOT(updateCentralWidget()));
 
     // set stack to the central widget
     setCentralWidget(mStackWidget);
 
     // set current stack widget
-    if (!regovar->currentUser()->isValid())
-        mStackWidget->setCurrentWidget(mLoginWidget);
-    else
-        mStackWidget->setCurrentWidget(mHomeTabWidget);
+    updateCentralWidget();
 
 
     restoreSettings();
@@ -38,6 +39,20 @@ MainWindow::~MainWindow()
 {
 
 }
+
+
+void MainWindow::updateCentralWidget()
+{
+    if (!regovar->currentUser()->isValid())
+    {
+        mStackWidget->setCurrentWidget(mLoginWidget);
+    }
+    else
+    {
+        mStackWidget->setCurrentWidget(mTabWidget);
+    }
+}
+
 
 
 void MainWindow::writeSettings()

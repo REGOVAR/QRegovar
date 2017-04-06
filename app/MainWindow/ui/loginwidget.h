@@ -17,8 +17,8 @@ class LoginWidget : public QWidget
 public:
     explicit LoginWidget(QWidget* parent = 0);
 
-    const QString& username() const;
-    const QString& password() const;
+    const QString username() const;
+    const QString password() const;
 
 Q_SIGNALS:
     void accepted();

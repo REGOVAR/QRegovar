@@ -30,12 +30,12 @@ LoginWidget::LoginWidget(QWidget* parent) : QWidget(parent)
     setLayout(formLayout);
 }
 
-const QString &LoginWidget::username() const
+const QString LoginWidget::username() const
 {
     return mComboUsername->currentText();
 }
 
-const QString &LoginWidget::password() const
+const QString LoginWidget::password() const
 {
     return mEditPassword->text();
 }

@@ -34,6 +34,7 @@ public:
 public Q_SLOTS:
     void about();
     void checkAuthent();
+    void updateCentralWidget();
 
 protected:
     void buildMenu();
@@ -41,12 +42,12 @@ protected:
 
 
     QMenuBar* mMenuBar;
-    QTabWidget* mTabWidget;
 
     // Widget containers
-    QStackedWidget * mStackWidget;
-    LoginWidget  * mLoginWidget;
-    QWidget * mHomeTabWidget;
+    QStackedWidget* mStackWidget;
+    QTabWidget* mTabWidget;
+    LoginWidget* mLoginWidget;
+    QWidget* mHomeTabWidget;
 
 };
 

@@ -46,6 +46,10 @@ public:
     // Methods
     // Check if the user model is valid or not
     bool isValid() const;
+    // Init user data according to provided json return by api rest for authentication
+    bool loginUser(QJsonDocument json);
+    // Logout the user (reset value to anonymous)
+    void logoutUser();
 
 Q_SIGNALS:
     void userChanged();

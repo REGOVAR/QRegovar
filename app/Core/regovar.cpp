@@ -68,10 +68,18 @@ void Regovar::login(QString& login, QString& password)
         // store login and password as it may be ask later if network authentication problem
         mUser->setLogin(login);
         mUser->setPassword(password);
+        // TODO use Regovar api /user/login
         Request* test = Request::get("/ref");
-        connect(test, &Request::jsonReceived, [](const QJsonDocument& json)
+        connect(test, &Request::jsonReceived, [this](const QJsonDocument& json)
         {
-            QString st(json.toJson(QJsonDocument::Compact));
+            if (mUser->loginUser(json))
+            {
+                emit loginSuccess();
+            }
+            else
+            {
+                emit loginFailed();
+            }
         });
     }
 }
@@ -89,10 +97,9 @@ void Regovar::logout()
         connect(test, &Request::jsonReceived, [this](const QJsonDocument& json)
         {
             // Create a new user ?? no!!! => mUser = new User(-1, "Anonymous", "");
-            mUser->setId(-1);
-            mUser->setFirstname("Anon");
-            mUser->setLastname("dsfsf");
+            mUser->logoutUser();
             qDebug() << "You are disconnected !";
+            emit logoutSuccess();
         });
     }
 }
@@ -102,8 +109,15 @@ void Regovar::authenticationRequired(QNetworkReply* request, QAuthenticator* aut
     // Basic authentication requested by the server.
     // Try authentication using current user credentials
     qDebug() << Q_FUNC_INFO;
-    authenticator->setUser(regovar->currentUser()->login());
-    authenticator->setPassword(regovar->currentUser()->password());
+    if (authenticator->password() != currentUser()->password() || authenticator->user() != currentUser()->login())
+    {
+        authenticator->setUser(currentUser()->login());
+        authenticator->setPassword(currentUser()->password());
+    }
+    else
+    {
+        request->error();
+    }
 }
 
 
