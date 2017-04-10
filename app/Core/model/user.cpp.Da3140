@@ -1,11 +1,11 @@
-#include "user.h"
+#include "usermodel.h"
 
-User::User(QObject * parent)
+UserModel::UserModel(QObject * parent)
     :QObject(parent)
 {
 }
 
-User::User(quint32 id, const QString& firstname, const QString& lastname, QObject * parent)
+UserModel::UserModel(quint32 id, const QString& firstname, const QString& lastname, QObject * parent)
     :QObject(parent),mId(id), mFirstname(firstname), mLastname(lastname)
 {
 
@@ -17,12 +17,12 @@ User::User(quint32 id, const QString& firstname, const QString& lastname, QObjec
 
 
 
-bool User::isValid() const
+bool UserModel::isValid() const
 {
     return mId != -1;
 }
 
-bool User::loginUser(QJsonDocument json)
+bool UserModel::fromJson(QJsonDocument json)
 {
     // TODO set current user with json data
     // QString st(json.toJson(QJsonDocument::Compact));
@@ -33,7 +33,7 @@ bool User::loginUser(QJsonDocument json)
     return true;
 }
 
-void User::logoutUser()
+void UserModel::clear()
 {
     mId = -1;
     mFirstname = tr("Anonymous");
@@ -62,11 +62,11 @@ void User::logoutUser()
 // Property : Id
 
 
-quint32 User::id() const
+quint32 UserModel::id() const
 {
     return mId;
 }
-void User::setId(quint32 id)
+void UserModel::setId(quint32 id)
 {
     mId = id;
     emit userChanged();
@@ -74,11 +74,11 @@ void User::setId(quint32 id)
 
 
 // Property : Lastname
-const QString& User::lastname() const
+const QString& UserModel::lastname() const
 {
     return mLastname;
 }
-void User::setLastname(const QString& lastname)
+void UserModel::setLastname(const QString& lastname)
 {
     mLastname = lastname;
     emit userChanged();
@@ -87,12 +87,12 @@ void User::setLastname(const QString& lastname)
 
 
 // Property : Firstname
-const QString& User::firstname() const
+const QString& UserModel::firstname() const
 {
     return mFirstname;
 
 }
-void User::setFirstname(const QString& firstname)
+void UserModel::setFirstname(const QString& firstname)
 {
     mFirstname = firstname;
     emit userChanged();
@@ -101,11 +101,11 @@ void User::setFirstname(const QString& firstname)
 
 
 // Property : Email
-const QString& User::email() const
+const QString& UserModel::email() const
 {
     return mEmail;
 }
-void User::setEmail(const QString& email)
+void UserModel::setEmail(const QString& email)
 {
     mEmail = email;
     emit userChanged();
@@ -114,11 +114,11 @@ void User::setEmail(const QString& email)
 
 
 // Property : Login
-const QString& User::login() const
+const QString& UserModel::login() const
 {
     return mLogin;
 }
-void User::setLogin(const QString& login)
+void UserModel::setLogin(const QString& login)
 {
     mLogin = login;
     emit userChanged();
@@ -127,11 +127,11 @@ void User::setLogin(const QString& login)
 
 
 // Property : Password
-const QString& User::password() const
+const QString& UserModel::password() const
 {
     return mPassword;
 }
-void User::setPassword(const QString& password)
+void UserModel::setPassword(const QString& password)
 {
     mPassword = password;
     emit userChanged();
@@ -140,11 +140,11 @@ void User::setPassword(const QString& password)
 
 
 // Property : Avatar
-const QPixmap& User::avatar() const
+const QPixmap& UserModel::avatar() const
 {
     return mAvatar;
 }
-void User::setAvatar(const QPixmap& avatar)
+void UserModel::setAvatar(const QPixmap& avatar)
 {
     mAvatar = avatar;
     emit userChanged();
@@ -153,11 +153,11 @@ void User::setAvatar(const QPixmap& avatar)
 
 
 // Property : Function
-const QString& User::function() const
+const QString& UserModel::function() const
 {
     return mFunction;
 }
-void User::setFunction(const QString& function)
+void UserModel::setFunction(const QString& function)
 {
     mFunction = function;
     emit userChanged();
@@ -166,11 +166,11 @@ void User::setFunction(const QString& function)
 
 
 // Property : Location
-const QString& User::location() const
+const QString& UserModel::location() const
 {
     return mLocation;
 }
-void User::setLocation(const QString& location)
+void UserModel::setLocation(const QString& location)
 {
     mLocation = location;
     emit userChanged();
@@ -179,11 +179,11 @@ void User::setLocation(const QString& location)
 
 
 // Property : LastActivity
-const QDate& User::lastActivity() const
+const QDate& UserModel::lastActivity() const
 {
     return mLastActivity;
 }
-void User::setLastActivity(const QDate& lastActivity)
+void UserModel::setLastActivity(const QDate& lastActivity)
 {
     mLastActivity = lastActivity;
     emit userChanged();

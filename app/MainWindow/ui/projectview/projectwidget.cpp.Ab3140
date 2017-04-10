@@ -1,4 +1,3 @@
-#include "app.h"
 #include "projectwidget.h"
 #include <QGridLayout>
 #include <QPushButton>

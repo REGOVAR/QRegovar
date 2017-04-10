@@ -14,30 +14,30 @@ namespace projectview
 ResumeWidget::ResumeWidget(QWidget *parent) : QWidget(parent)
 {
     QFont titleFont( "Arial", 14, QFont::Bold);
-    commentLabel = new QLabel(this);
-    sharedUserLabel = new QLabel(this);
-    eventsTable = new QTableWidget(this);
-    subjectsTable = new QTableWidget(this);
-    tasksTable = new QTableWidget(this);
-    filesTable = new QTableWidget(this);
+    mCommentLabel = new QLabel(this);
+    mSharedUserLabel = new QLabel(this);
+    mEventsTable = new QTableWidget(this);
+    mSubjectsTable = new QTableWidget(this);
+    mTasksTable = new QTableWidget(this);
+    mFilesTable = new QTableWidget(this);
 
     QVBoxLayout* subjectsLayout = new QVBoxLayout(this);
     QLabel* subjectsLabel = new QLabel(tr("Subjects :"));
     subjectsLabel->setFont(titleFont);
     subjectsLayout->addWidget(subjectsLabel);
-    subjectsLayout->addWidget(subjectsTable);
+    subjectsLayout->addWidget(mSubjectsTable);
 
     QVBoxLayout* tasksLayout = new QVBoxLayout(this);
-    QLabel* tasksLabel = new QLabel(tr("Tasks :"));
+    QLabel* tasksLabel = new QLabel(tr("Analyses :"));
     tasksLabel->setFont(titleFont);
     tasksLayout->addWidget(tasksLabel);
-    tasksLayout->addWidget(tasksTable);
+    tasksLayout->addWidget(mTasksTable);
 
     QVBoxLayout* filesLayout = new QVBoxLayout(this);
-    QLabel* filesLabel = new QLabel(tr("Files :"));
+    QLabel* filesLabel = new QLabel(tr("Reports :"));
     filesLabel->setFont(titleFont);
     filesLayout->addWidget(filesLabel);
-    filesLayout->addWidget(filesTable);
+    filesLayout->addWidget(mFilesTable);
 
     QSplitter* splitter = new QSplitter(this);
     QWidget* panel1 = new QWidget(this);
@@ -52,14 +52,15 @@ ResumeWidget::ResumeWidget(QWidget *parent) : QWidget(parent)
 
     QLabel* eventsLabel = new QLabel(tr("Events :"));
     eventsLabel->setFont(titleFont);
+    eventsLabel->setStyleSheet("QLabel { color : rgba(0,0,0, 0.5); }");
 
     QGridLayout* mainLayout = new QGridLayout(this);
     mainLayout->addWidget(new QLabel(tr("Comment :")),0,0);
-    mainLayout->addWidget(commentLabel,0,1);
+    mainLayout->addWidget(mCommentLabel,0,1);
     mainLayout->addWidget(new QLabel(tr("Shared :")),1,0);
-    mainLayout->addWidget(sharedUserLabel,1,1);
+    mainLayout->addWidget(mSharedUserLabel,1,1);
     mainLayout->addWidget(eventsLabel,2,0,1,2);
-    mainLayout->addWidget(eventsTable,3,0,1,2);
+    mainLayout->addWidget(mEventsTable,3,0,1,2);
     mainLayout->addWidget(splitter,4,0,1,2);
 
     setLayout(mainLayout);

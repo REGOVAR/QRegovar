@@ -14,12 +14,12 @@ class ResumeWidget : public QWidget
 {
     Q_OBJECT
 private:
-    QLabel* commentLabel;
-    QLabel* sharedUserLabel;
-    QTableWidget* eventsTable;
-    QTableWidget* subjectsTable;
-    QTableWidget* tasksTable;
-    QTableWidget* filesTable;
+    QLabel* mCommentLabel;
+    QLabel* mSharedUserLabel;
+    QTableWidget* mEventsTable;
+    QTableWidget* mSubjectsTable;
+    QTableWidget* mTasksTable;
+    QTableWidget* mFilesTable;
 
 
 

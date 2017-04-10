@@ -1,10 +1,10 @@
-#ifndef CORE_H
-#define CORE_H
+#ifndef REGOVAR_H
+#define REGOVAR_H
 
 #include <QSettings>
 #include <QNetworkReply>
 #include <QAuthenticator>
-#include "model/user.h"
+#include "model/usermodel.h"
 
 #ifndef regovar
 #define regovar (Regovar::i())
@@ -22,7 +22,7 @@ class Regovar : public QObject
 {
     Q_OBJECT
     // seul les type de QVariant et les QObject peuvent etre des property.. enfin pour toi !
-    Q_PROPERTY(User* currentUser READ currentUser NOTIFY loginSuccess)
+    Q_PROPERTY(UserModel* currentUser READ currentUser NOTIFY loginSuccess)
 
 public:
     static Regovar* i();
@@ -40,7 +40,7 @@ public:
 
 
     // Model
-     User * currentUser() const { return mUser; }
+     UserModel* currentUser() const { return mUser; }
 
 
 
@@ -70,11 +70,11 @@ private:
     //! The root url to the server api
     QUrl mApiRootUrl;
     //! The current user of the application
-    User * mUser;
+    UserModel * mUser;
 
 };
 
 
 #include "managers/restapimanager.h"
 
-#endif // CORE_H
+#endif // REGOVAR_H

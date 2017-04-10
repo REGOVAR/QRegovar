@@ -1,5 +1,5 @@
-#ifndef USER_H
-#define USER_H
+#ifndef USERMODEL_H
+#define USERMODEL_H
 #include <QtCore>
 #include <QPixmap>
 
@@ -7,7 +7,7 @@
 /*!
  * \brief Define a user of the application.
  */
-class User : public QObject
+class UserModel : public QObject
 {
     Q_OBJECT
 public:
@@ -15,8 +15,8 @@ public:
     Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY userChanged)
 
     // Constructors
-    User(QObject * parent = 0);
-    User(quint32 id, const QString& firstname, const QString& lastname, QObject * parent = 0);
+    UserModel(QObject* parent = 0);
+    UserModel(quint32 id, const QString& firstname, const QString& lastname, QObject* parent = 0);
 
     // Properties
     // Read
@@ -47,9 +47,9 @@ public:
     // Check if the user model is valid or not
     bool isValid() const;
     // Init user data according to provided json return by api rest for authentication
-    bool loginUser(QJsonDocument json);
-    // Logout the user (reset value to anonymous)
-    void logoutUser();
+    bool fromJson(QJsonDocument json);
+    // Reset value to anonymous. Should be used to logout the current user
+    void clear();
 
 Q_SIGNALS:
     void userChanged();
@@ -68,4 +68,4 @@ protected:
     QMap<QString, bool> mAuth;
 };
 
-#endif // USER_H
+#endif // USERMODEL_H

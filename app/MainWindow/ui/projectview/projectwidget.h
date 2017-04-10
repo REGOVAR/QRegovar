@@ -1,5 +1,5 @@
-#ifndef PROJECTVIEWWIDGET_H
-#define PROJECTVIEWWIDGET_H
+#ifndef PROJECTWIDGET_H
+#define PROJECTWIDGET_H
 
 #include <QWidget>
 #include <QToolBar>
@@ -11,6 +11,8 @@
 #include <QTreeView>
 #include <QListWidgetItem>
 #include "resumewidget.h"
+//#include "../Core/model/projectmodel.h"
+
 
 namespace projectview
 {
@@ -25,15 +27,17 @@ private:
     QToolBar* mToolBar;
     QStackedWidget* mStackWidget;
     QWidget* mResumeTab;
-    QLabel* titleLabel;
-    QLabel* statusLabel;
+    QLabel* mTitleLabel;
+    QLabel* mStatusLabel;
 
-    QPushButton* toggleBrowserButton;
+    QPushButton* mToggleBrowserButton;
 
-    ResumeWidget* resumePage;
-    QTableWidget* subjectPage;
-    QTableWidget* taskPage;
-    QTreeView* filePage;
+    ResumeWidget* mResumePage;
+    QTableWidget* mSubjectPage;
+    QTableWidget* mTaskPage;
+    QTreeView* mFilePage;
+
+    // ProjectModel* mProject;
 
 
 public:
@@ -47,4 +51,7 @@ public Q_SLOTS:
 
 };
 } // END namespace projectview
-#endif // PROJECTVIEWWIDGET_H
+
+
+
+#endif // PROJECTWIDGET_H

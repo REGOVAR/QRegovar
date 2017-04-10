@@ -36,7 +36,7 @@ void Regovar::init()
 
 
     // Init model
-    mUser = new User(1, "Anonymous", "");
+    mUser = new UserModel(1, "Anonymous", "");
 }
 
 
@@ -72,7 +72,7 @@ void Regovar::login(QString& login, QString& password)
         Request* test = Request::get("/ref");
         connect(test, &Request::jsonReceived, [this](const QJsonDocument& json)
         {
-            if (mUser->loginUser(json))
+            if (mUser->fromJson(json))
             {
                 emit loginSuccess();
             }
@@ -97,7 +97,7 @@ void Regovar::logout()
         connect(test, &Request::jsonReceived, [this](const QJsonDocument& json)
         {
             // Create a new user ?? no!!! => mUser = new User(-1, "Anonymous", "");
-            mUser->logoutUser();
+            mUser->clear();
             qDebug() << "You are disconnected !";
             emit logoutSuccess();
         });

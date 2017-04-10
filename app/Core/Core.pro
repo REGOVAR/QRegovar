@@ -23,10 +23,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    model/user.cpp \
     tools/request.cpp \
     managers/restapimanager.cpp \
-    model/project.cpp \
     model/subject.cpp \
     model/analysis.cpp \
     model/job.cpp \
@@ -40,13 +38,13 @@ SOURCES += \
     model/sample.cpp \
     model/variant.cpp \
     model/event.cpp \
-    regovar.cpp
+    regovar.cpp \
+    model/projectmodel.cpp \
+    model/usermodel.cpp
 
 HEADERS += \
-    model/user.h \
     tools/request.h \
     managers/restapimanager.h \
-    model/project.h \
     model/subject.h \
     model/analysis.h \
     model/job.h \
@@ -60,7 +58,9 @@ HEADERS += \
     model/sample.h \
     model/variant.h \
     model/event.h \
-    regovar.h
+    regovar.h \
+    model/projectmodel.h \
+    model/usermodel.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
