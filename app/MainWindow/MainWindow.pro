@@ -27,13 +27,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     ui/loginwidget.cpp \
-    ui/projectviewwidget.cpp \
-    app.cpp
+    app.cpp \
+    ui/projectview/resumewidget.cpp \
+    ui/projectview/projectsbrowserwidget.cpp \
+    ui/projectview/projectwidget.cpp
 
 HEADERS  += mainwindow.h \
     ui/loginwidget.h \
-    ui/projectviewwidget.h \
-    app.h
+    app.h \
+    ui/projectview/resumewidget.h \
+    ui/projectview/projectsbrowserwidget.h \
+    ui/projectview/projectwidget.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Core/release/ -lCore
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Core/debug/ -lCore

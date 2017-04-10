@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "app.h"
-#include "ui/projectviewwidget.h"
+#include "ui/projectview/projectwidget.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     mStackWidget->addWidget(mLoginWidget);
     mStackWidget->addWidget(mTabWidget);
     mTabWidget->addTab(mHomeTabWidget, tr("Home"));
-    mTabWidget->addTab(new ProjectViewWidget(this), tr("Project"));
+    mTabWidget->addTab(new projectview::ProjectWidget(this), tr("Project"));
 
     //create connection
     connect(mLoginWidget, SIGNAL(accepted()), this, SLOT(checkAuthent()));

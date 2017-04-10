@@ -1,40 +1,40 @@
 #include "app.h"
-#include "projectviewwidget.h"
+#include "projectwidget.h"
 #include <QGridLayout>
 #include <QPushButton>
 #include <QListWidgetItem>
 #include <QIcon>
 
-ProjectViewWidget::ProjectViewWidget(QWidget *parent) : QWidget(parent)
+namespace projectview
 {
 
+ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
+{
 
-    projectTitle = new QLabel(tr("Project Name"), this);
-    projectStatus = new QLabel(tr("[status]"), this);
+    // create widget and Layout of the view
+    titleLabel = new QLabel(tr("Project Name"), this);
+    statusLabel = new QLabel(tr("[status]"), this);
     mStackWidget = new QStackedWidget(this);
     mResumeTab = new QWidget(this);
 
     QIcon* ico = new QIcon();
     ico->addPixmap(app->awesome()->icon(fa::folderopeno).pixmap(64, 64), QIcon::Normal, QIcon::On);
     ico->addPixmap(app->awesome()->icon(fa::foldero).pixmap(64, 64), QIcon::Normal, QIcon::Off);
-    toggleBrowserButton = new QPushButton(*ico, tr("Browse projects"), this);
+    toggleBrowserButton = new QPushButton(*ico, tr("Projects"), this);
     toggleBrowserButton->setCheckable(true);
-    // toggleBrowserButton->setStyleSheet("{text-align:left}"); // Not working
 
     QWidget* stretcher = new QWidget(this);
     stretcher->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
 
     mToolBar = new QToolBar(this);
-    mToolBar->addWidget(projectTitle);
-    mToolBar->addWidget(projectStatus);
+    mToolBar->addWidget(titleLabel);
+    mToolBar->addWidget(statusLabel);
     mToolBar->addWidget(stretcher);
     mToolBar->addAction(app->awesome()->icon(fa::pencil),tr("Edit project information"), this, SLOT(showSettings()));
     mToolBar->addAction(app->awesome()->icon(fa::userplus),tr("Add subject/sample to the project"), this, SLOT(showSettings()));
     mToolBar->addAction(app->awesome()->icon(fa::cog),tr("Create a new analysis"), this, SLOT(showSettings()));
     mToolBar->addAction(app->awesome()->icon(fa::calendar),tr("Add a custom event to the history of the project"), this, SLOT(showSettings()));
     mToolBar->addAction(app->awesome()->icon(fa::paperclip),tr("Add attachment to the project"), this, SLOT(showSettings()));
-
-
 
     mSectionBar = new QListWidget(this);
     mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::barchart), tr("Resume")));
@@ -43,28 +43,51 @@ ProjectViewWidget::ProjectViewWidget(QWidget *parent) : QWidget(parent)
     mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::file), tr("Files")));
     mSectionBar->setIconSize(QSize(64,64));
     mSectionBar->setViewMode(QListView::IconMode);
-    //mSectionBar->setIconMode(Qt::)
+    mSectionBar->setSelectionMode(QAbstractItemView::SingleSelection);
+    mSectionBar->setSelectionBehavior(QAbstractItemView::SelectRows);
 
 
-    // TODO : use theme color
+    // Some Theme customization
     toggleBrowserButton->setFlat(true);
-    mStackWidget->setStyleSheet("border-top: 1px solid #aaa");
-    mSectionBar->setStyleSheet("border-right: 1px solid #aaa");
-    projectTitle->setFont(QFont( "Arial", 18, QFont::Bold));
+    titleLabel->setFont(QFont( "Arial", 18, QFont::Bold));
 
 
+    // Create pages
+    resumePage = new ResumeWidget(this);
+    subjectPage = new QTableWidget(this);
+    taskPage = new QTableWidget(this);
+    filePage = new QTreeView(this);
 
+    mStackWidget->addWidget(resumePage);
+    mStackWidget->addWidget(subjectPage);
+    mStackWidget->addWidget(taskPage);
+    mStackWidget->addWidget(filePage);
+    mStackWidget->setCurrentWidget(resumePage);
+    // TODO : currentWidget not set properly the selection in the widget
+
+
+    // Set main layout
     QGridLayout* mainLayout = new QGridLayout(this);
     mainLayout->addWidget(toggleBrowserButton, 0, 0);
     mainLayout->addWidget(mSectionBar, 1, 0);
     mainLayout->addWidget(mToolBar, 0, 1);
     mainLayout->addWidget(mStackWidget, 1, 1);
-    mSectionBar->setMaximumWidth(150);
+    mSectionBar->setMaximumWidth(75);
     setLayout(mainLayout);
+
+
+    // Create Signals/Slots connections
+    connect(mSectionBar, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(onSectionChanged(QListWidgetItem *, QListWidgetItem *)));
 }
 
 
-void ProjectViewWidget::showSettings()
+void ProjectWidget::onSectionChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
+    // TODO : switch stacked widget according to selected index T_T
+    // idx = mSectionBar->indexOf(current);
+    // mStackWidget->setCurrentIndex(idx);
 
 }
+
+
+} // END namespace projectview

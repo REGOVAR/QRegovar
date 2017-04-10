@@ -1,9 +1,14 @@
 #ifndef PROJECT_H
 #define PROJECT_H
 
+#include <QtCore>
 
-class Project
+/*!
+ * \brief Define a Regovar project.
+ */
+class Project : public QObject
 {
+    Q_OBJECT
 public:
     Project();
 };
