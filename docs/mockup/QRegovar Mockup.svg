@@ -1174,9 +1174,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.5"
-     inkscape:cx="946.43069"
-     inkscape:cy="628.28003"
+     inkscape:zoom="0.46289063"
+     inkscape:cx="796.75708"
+     inkscape:cy="422.52133"
      inkscape:document-units="px"
      inkscape:current-layer="svg2"
      showgrid="false"
@@ -9619,14 +9619,9 @@
      style="display:inline">
     <g
        inkscape:groupmode="layer"
-       id="layer31"
-       inkscape:label="Browser"
-       style="display:inline" />
-    <g
-       inkscape:groupmode="layer"
        id="layer32"
        inkscape:label="ProjectView"
-       style="display:inline">
+       style="display:none">
       <rect
          style="fill:#5c3566;fill-opacity:0.19607843;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:12, 12;stroke-dashoffset:0;stroke-opacity:1"
          id="rect7120"
@@ -9744,7 +9739,8 @@
       <g
          inkscape:groupmode="layer"
          id="layer33"
-         inkscape:label="Resume">
+         inkscape:label="Resume"
+         style="display:none">
         <rect
            style="fill:#fcaf3e;fill-opacity:0.19607843;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:12, 12;stroke-dashoffset:0;stroke-opacity:1"
            id="rect7190"
@@ -10015,7 +10011,7 @@
              sodipodi:role="line"
              id="tspan7304"
              x="845.62494"
-             y="699.37494">Tasks (Analysis/job)</tspan></text>
+             y="699.37494">Analyses (Analysis/job)</tspan></text>
         <text
            xml:space="preserve"
            style="font-style:normal;font-weight:normal;font-size:21.09374809px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#8f5902;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -10115,7 +10111,7 @@
       </g>
     </g>
     <g
-       style="display:none"
+       style="display:inline"
        inkscape:label="Project Browser"
        id="g7523"
        inkscape:groupmode="layer">
@@ -10237,7 +10233,7 @@
          inkscape:label="Resume"
          id="g7563"
          inkscape:groupmode="layer"
-         style="display:inline">
+         style="display:none">
         <rect
            y="91.874992"
            x="735.93744"
@@ -10462,7 +10458,7 @@
              y="699.37494"
              x="1183.1249"
              id="tspan7660"
-             sodipodi:role="line">Tasks</tspan></text>
+             sodipodi:role="line">Analysis</tspan></text>
         <text
            sodipodi:linespacing="125%"
            id="text7662"
@@ -10607,6 +10603,45 @@
            x="-892.49994"
            y="557.10931"
            id="tspan7755">Double click : select a project, display it in the right panel, and close the browser</tspan></text>
+    </g>
+    <g
+       inkscape:groupmode="layer"
+       id="layer34"
+       inkscape:label="Dev"
+       style="display:none">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:21.09374809px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="99.240501"
+         y="727.59491"
+         id="text6812"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan6814"
+           x="99.240501"
+           y="727.59491">ProjectListWidget : QTreeView</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:21.09374809px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="137.72151"
+         y="770.12653"
+         id="text6816"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan6818"
+           x="137.72151"
+           y="770.12653">ProjectListModel : QStandardItemModel</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:21.09374809px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="619.74683"
+         y="1161.0126"
+         id="text6820"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan6822"
+           x="619.74683"
+           y="1161.0126">ProjectWidget : QWidget</tspan></text>
     </g>
   </g>
   <g
