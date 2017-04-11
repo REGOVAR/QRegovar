@@ -5,59 +5,63 @@
 
 #include "resourcemodel.h"
 
-/*!
- * \brief Define a Regovar project.
- */
+
 
 enum ProjectStatus
 {
-    opened,
-    closed,
-    idle
+    Opened,
+    Closed,
+    Idle
 };
 
+/*!
+ * \brief Define a Regovar project.
+ */
 class ProjectModel : public ResourceModel
 {
     Q_OBJECT
 public:
-//    Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY userChanged)
-//    Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY userChanged)
 
     // Constructors
-    ProjectModel(QObject* parent=0);
+    ProjectModel();
 
     // Properties
     // Read
     const QString& name() const;
     const QString& comment() const;
     const QString& sharing() const;
-    const QList<QString[3]>* events() const;
-    const QList<QString[3]>* subjects() const;
-    const QList<QString[3]>* analyses() const;
-    const QList<QString[3]>* attachments() const;
+    const QList<QString>* events() const;
+    const QList<QString>* subjects() const;
+    const QList<QString>* analyses() const;
+    const QList<QString>* attachments() const;
     const ProjectStatus& status() const;
-    const QDate& lastActivity() const;
+    const QDateTime& lastActivity() const;
     // Write
     void setName(const QString& name);
     void setComment(const QString& comment);
     void setSharing(const QString& sharing);
-    void setEvents(QList<QString[3]>* events);
-    void setSubjects(QList<QString[3]>* subjects);
-    void setAnalyses(QList<QString[3]>* analyses);
-    void setAttachments(QList<QString[3]>* attachments);
+    void setEvents(QList<QString>* events);
+    void setSubjects(QList<QString>* subjects);
+    void setAnalyses(QList<QString>* analyses);
+    void setAttachments(QList<QString>* attachments);
     void setStatus(const ProjectStatus& status);
-    void setLastActivity(const QDate& lastActivity);
+    void setLastActivity(const QDateTime& lastActivity);
+
+    // Methods to override
+    bool fromJson(QJsonDocument json);
+    void clear();
+
 
 protected:
     QString mName;
     QString mComment;
     QString mSharing;
-    QList<QString[3]>* mEvents;
-    QList<QString[3]>* mSubjects;
-    QList<QString[3]>* mAnalyses;
-    QList<QString[3]>* mAttachments;
+    QList<QString>* mEvents;
+    QList<QString>* mSubjects;
+    QList<QString>* mAnalyses;
+    QList<QString>* mAttachments;
     ProjectStatus mStatus;
-    QDate mLastActivity;
+    QDateTime mLastActivity;
 
 
 

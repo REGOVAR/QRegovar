@@ -16,8 +16,8 @@ public:
 //    Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY resourceChanged)
 
     // Constructors
-    UserModel(QObject* parent = 0);
-    UserModel(quint32 id, const QString& firstname, const QString& lastname, QObject* parent = 0);
+    UserModel();
+    UserModel(quint32 id, const QString& firstname, const QString& lastname);
 
     // Properties
     // Read

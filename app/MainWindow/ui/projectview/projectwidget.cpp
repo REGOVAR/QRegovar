@@ -75,6 +75,7 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
 
     // Set main layout
     QGridLayout* panelLayout = new QGridLayout(this);
+    panelLayout->setContentsMargins(0,0,0,0);
     panelLayout->addWidget(mToggleBrowserButton, 0, 0);
     panelLayout->addWidget(mSectionBar, 1, 0);
     panelLayout->addWidget(mToolBar, 0, 1);

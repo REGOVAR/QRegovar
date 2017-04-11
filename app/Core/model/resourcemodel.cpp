@@ -3,9 +3,12 @@
 
 
 
-ResourceModel::ResourceModel(QObject *parent) : QObject(parent)
+ResourceModel::ResourceModel() : QObject(0)
 {
-
+}
+ResourceModel::ResourceModel(quint32 id) : QObject(0)
+{
+     mId = id;
 }
 
 

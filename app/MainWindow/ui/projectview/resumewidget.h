@@ -2,7 +2,7 @@
 #define RESUMEWIDGET_H
 
 #include <QWidget>
-#include <QTableWidget>
+#include <QTableView>
 #include <QLabel>
 
 namespace projectview
@@ -16,10 +16,10 @@ class ResumeWidget : public QWidget
 private:
     QLabel* mCommentLabel;
     QLabel* mSharedUserLabel;
-    QTableWidget* mEventsTable;
-    QTableWidget* mSubjectsTable;
-    QTableWidget* mTasksTable;
-    QTableWidget* mFilesTable;
+    QTableView* mEventsTable;
+    QTableView* mSubjectsTable;
+    QTableView* mTasksTable;
+    QTableView* mFilesTable;
 
 
 

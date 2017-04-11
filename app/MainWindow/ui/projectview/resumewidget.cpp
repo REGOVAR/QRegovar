@@ -16,10 +16,10 @@ ResumeWidget::ResumeWidget(QWidget *parent) : QWidget(parent)
     QFont titleFont( "Arial", 14, QFont::Bold);
     mCommentLabel = new QLabel(this);
     mSharedUserLabel = new QLabel(this);
-    mEventsTable = new QTableWidget(this);
-    mSubjectsTable = new QTableWidget(this);
-    mTasksTable = new QTableWidget(this);
-    mFilesTable = new QTableWidget(this);
+    mEventsTable = new QTableView(this);
+    mSubjectsTable = new QTableView(this);
+    mTasksTable = new QTableView(this);
+    mFilesTable = new QTableView(this);
 
     QVBoxLayout* subjectsLayout = new QVBoxLayout(this);
     QLabel* subjectsLabel = new QLabel(tr("Subjects :"));

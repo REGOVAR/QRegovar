@@ -37,11 +37,12 @@ SOURCES += \
     model/annotationfield.cpp \
     model/sample.cpp \
     model/variant.cpp \
-    model/event.cpp \
     regovar.cpp \
     model/projectmodel.cpp \
     model/usermodel.cpp \
-    model/resourcemodel.cpp
+    model/resourcemodel.cpp \
+    model/eventlistmodel.cpp \
+    model/eventmodel.cpp
 
 HEADERS += \
     tools/request.h \
@@ -58,11 +59,12 @@ HEADERS += \
     model/annotationfield.h \
     model/sample.h \
     model/variant.h \
-    model/event.h \
     regovar.h \
     model/projectmodel.h \
     model/usermodel.h \
-    model/resourcemodel.h
+    model/resourcemodel.h \
+    model/eventlistmodel.h \
+    model/eventmodel.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

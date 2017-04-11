@@ -7,7 +7,8 @@ class ResourceModel : public QObject
 {
     Q_OBJECT
 public:
-    ResourceModel(QObject* parent=0);
+    ResourceModel();
+    ResourceModel(quint32 id);
 
     // Properties
     // Read

@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     mTabWidget->addTab(mHomeTabWidget, tr("Home"));
     projectview::ProjectWidget* tab = new projectview::ProjectWidget(this);
     tab->setContentsMargins(0,0,0,0);
+    tab->setProject(new ProjectModel());
     //tab->setStyleSheet("background-color: #ccc;");
     mTabWidget->addTab(tab, tr("Project"));
 
