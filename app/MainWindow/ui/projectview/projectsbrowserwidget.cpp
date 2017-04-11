@@ -2,9 +2,8 @@
 
 #include <QVBoxLayout>
 #include <QSizePolicy>
+
 #include "app.h"
-
-
 
 namespace projectview
 {
@@ -24,13 +23,13 @@ ProjectsBrowserWidget::ProjectsBrowserWidget(QWidget *parent) : QWidget(parent)
     mFilter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
 
 
-    QVBoxLayout* mainlayout = new QVBoxLayout();
-    mainlayout->addWidget(mToolBar);
-    mainlayout->addWidget(mBrowser);
-    setLayout(mainlayout);
+    QVBoxLayout* mainLayout = new QVBoxLayout();
+    mainLayout->addWidget(mToolBar);
+    mainLayout->addWidget(mBrowser);
+    setLayout(mainLayout);
 
     setMinimumWidth(200);
-    setStyleSheet("background-color: #aaa;");
+
 
 }
 

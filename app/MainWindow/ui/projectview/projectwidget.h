@@ -12,7 +12,7 @@
 #include <QListWidgetItem>
 #include "resumewidget.h"
 #include "projectsbrowserwidget.h"
-//#include "model/usermodel.h"
+#include "model/projectmodel.h"
 
 
 namespace projectview
@@ -39,12 +39,21 @@ private:
     QTreeView* mFilePage;
     ProjectsBrowserWidget* mBrowser;
 
-    //ProjectModel* mProject;
+    ProjectModel* mProject;
 
 
 public:
     explicit ProjectWidget(QWidget *parent = 0);
     void setProject();
+
+    const ProjectModel* project() const;
+    void setProject(ProjectModel* project);
+
+    void initView();
+
+
+
+
 
 Q_SIGNALS:
 

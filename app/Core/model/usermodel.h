@@ -2,17 +2,18 @@
 #define USERMODEL_H
 #include <QtCore>
 #include <QPixmap>
+#include "resourcemodel.h"
 
 
 /*!
  * \brief Define a user of the application.
  */
-class UserModel : public QObject
+class UserModel : public ResourceModel
 {
     Q_OBJECT
 public:
-    Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY userChanged)
-    Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY userChanged)
+//    Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY resourceChanged)
+//    Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY resourceChanged)
 
     // Constructors
     UserModel(QObject* parent = 0);
@@ -20,7 +21,6 @@ public:
 
     // Properties
     // Read
-    quint32 id() const;
     const QString& lastname() const;
     const QString& firstname() const;
     const QString& email() const;
@@ -31,7 +31,6 @@ public:
     const QString& location() const;
     const QDate& lastActivity() const;
     // Write
-    void setId(quint32 id);
     void setLastname(const QString& lastname);
     void setFirstname(const QString& firstname);
     void setEmail(const QString& email);
@@ -44,18 +43,13 @@ public:
 
 
     // Methods
-    // Check if the user model is valid or not
-    bool isValid() const;
     // Init user data according to provided json return by api rest for authentication
     bool fromJson(QJsonDocument json);
     // Reset value to anonymous. Should be used to logout the current user
     void clear();
 
-Q_SIGNALS:
-    void userChanged();
 
 protected:
-    quint32 mId = -1;
     QString mFirstname;
     QString mLastname;
     QString mEmail;

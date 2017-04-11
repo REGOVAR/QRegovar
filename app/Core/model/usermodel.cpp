@@ -1,14 +1,16 @@
 #include "usermodel.h"
 
 UserModel::UserModel(QObject* parent)
-    :QObject(parent)
+    : ResourceModel(parent)
 {
 }
 
 UserModel::UserModel(quint32 id, const QString& firstname, const QString& lastname, QObject* parent)
-    :QObject(parent),mId(id), mFirstname(firstname), mLastname(lastname)
+    : ResourceModel(parent)
 {
-
+    mId = id;
+    mFirstname = firstname;
+    mLastname = lastname;
 }
 
 
@@ -17,10 +19,6 @@ UserModel::UserModel(quint32 id, const QString& firstname, const QString& lastna
 
 
 
-bool UserModel::isValid() const
-{
-    return mId != -1;
-}
 
 bool UserModel::fromJson(QJsonDocument json)
 {
@@ -29,7 +27,7 @@ bool UserModel::fromJson(QJsonDocument json)
     mId = 1;
     mFirstname = "Olivier";
     mLastname = "Gueudelot";
-    emit userChanged();
+    emit resourceChanged();
     return true;
 }
 
@@ -44,7 +42,7 @@ void UserModel::clear()
     // TODO : mAvatar; empty qpixmap ?
     mFunction = "";
     mLocation = "";
-    emit userChanged();
+    emit resourceChanged();
 }
 
 
@@ -58,21 +56,6 @@ void UserModel::clear()
 // Properties ========================================
 
 
-
-// Property : Id
-
-
-quint32 UserModel::id() const
-{
-    return mId;
-}
-void UserModel::setId(quint32 id)
-{
-    mId = id;
-    emit userChanged();
-}
-
-
 // Property : Lastname
 const QString& UserModel::lastname() const
 {
@@ -81,8 +64,7 @@ const QString& UserModel::lastname() const
 void UserModel::setLastname(const QString& lastname)
 {
     mLastname = lastname;
-    emit userChanged();
-
+    emit resourceChanged();
 }
 
 
@@ -90,13 +72,11 @@ void UserModel::setLastname(const QString& lastname)
 const QString& UserModel::firstname() const
 {
     return mFirstname;
-
 }
 void UserModel::setFirstname(const QString& firstname)
 {
     mFirstname = firstname;
-    emit userChanged();
-
+    emit resourceChanged();
 }
 
 
@@ -108,8 +88,7 @@ const QString& UserModel::email() const
 void UserModel::setEmail(const QString& email)
 {
     mEmail = email;
-    emit userChanged();
-
+    emit resourceChanged();
 }
 
 
@@ -121,8 +100,7 @@ const QString& UserModel::login() const
 void UserModel::setLogin(const QString& login)
 {
     mLogin = login;
-    emit userChanged();
-
+    emit resourceChanged();
 }
 
 
@@ -134,8 +112,7 @@ const QString& UserModel::password() const
 void UserModel::setPassword(const QString& password)
 {
     mPassword = password;
-    emit userChanged();
-
+    emit resourceChanged();
 }
 
 
@@ -147,8 +124,7 @@ const QPixmap& UserModel::avatar() const
 void UserModel::setAvatar(const QPixmap& avatar)
 {
     mAvatar = avatar;
-    emit userChanged();
-
+    emit resourceChanged();
 }
 
 
@@ -160,7 +136,7 @@ const QString& UserModel::function() const
 void UserModel::setFunction(const QString& function)
 {
     mFunction = function;
-    emit userChanged();
+    emit resourceChanged();
 
 }
 
@@ -173,8 +149,7 @@ const QString& UserModel::location() const
 void UserModel::setLocation(const QString& location)
 {
     mLocation = location;
-    emit userChanged();
-
+    emit resourceChanged();
 }
 
 
@@ -186,6 +161,5 @@ const QDate& UserModel::lastActivity() const
 void UserModel::setLastActivity(const QDate& lastActivity)
 {
     mLastActivity = lastActivity;
-    emit userChanged();
-
+    emit resourceChanged();
 }

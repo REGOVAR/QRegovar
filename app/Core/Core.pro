@@ -40,7 +40,8 @@ SOURCES += \
     model/event.cpp \
     regovar.cpp \
     model/projectmodel.cpp \
-    model/usermodel.cpp
+    model/usermodel.cpp \
+    model/resourcemodel.cpp
 
 HEADERS += \
     tools/request.h \
@@ -60,7 +61,8 @@ HEADERS += \
     model/event.h \
     regovar.h \
     model/projectmodel.h \
-    model/usermodel.h
+    model/usermodel.h \
+    model/resourcemodel.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

@@ -1,6 +1,6 @@
 #include "mainwindow.h"
-#include "app.h"
 #include "ui/projectview/projectwidget.h"
+#include "app.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -21,7 +21,10 @@ MainWindow::MainWindow(QWidget *parent)
     mStackWidget->addWidget(mLoginWidget);
     mStackWidget->addWidget(mTabWidget);
     mTabWidget->addTab(mHomeTabWidget, tr("Home"));
-    mTabWidget->addTab(new projectview::ProjectWidget(this), tr("Project"));
+    projectview::ProjectWidget* tab = new projectview::ProjectWidget(this);
+    tab->setContentsMargins(0,0,0,0);
+    //tab->setStyleSheet("background-color: #ccc;");
+    mTabWidget->addTab(tab, tr("Project"));
 
     //create connection
     connect(mLoginWidget, SIGNAL(accepted()), this, SLOT(checkAuthent()));

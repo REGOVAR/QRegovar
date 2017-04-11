@@ -1,14 +1,16 @@
 
+
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QListWidgetItem>
 #include <QIcon>
 #include <QSplitter>
-#include "app.h"
-#include "projectwidget.h"
 
 #include <QDebug>
+#include "projectwidget.h"
+#include "app.h"
+
 
 
 namespace projectview
@@ -93,6 +95,7 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
 
     // Some Theme customization
     mToggleBrowserButton->setFlat(true);
+    // mToggleBrowserButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mTitleLabel->setFont(QFont( "Arial", 18, QFont::Bold));
     mSectionBar->setFrameStyle( QFrame::NoFrame );
 
@@ -100,6 +103,21 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
     // Create Signals/Slots connections
     connect(mToggleBrowserButton, SIGNAL(released()), this, SLOT(toggleBrowser()));
     connect(mSectionBar, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(displaySection(QListWidgetItem *, QListWidgetItem *)));
+
+    mProject = nullptr;
+}
+
+
+void ProjectWidget::initView()
+{
+    if (mProject == nullptr)
+    {
+
+    }
+    else
+    {
+        mTitleLabel->setText(mProject->name());
+    }
 }
 
 
@@ -109,6 +127,15 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
 
 
 
+const ProjectModel* ProjectWidget::project() const
+{
+    return mProject;
+}
+void ProjectWidget::setProject(ProjectModel* project)
+{
+    mProject = project;
+    initView();
+}
 
 
 
@@ -127,11 +154,7 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
 
 void ProjectWidget::displaySection(QListWidgetItem* current, QListWidgetItem* previous)
 {
-    qDebug() << Q_FUNC_INFO;
-    // TODO : switch stacked widget according to selected index T_T
-    // idx = mSectionBar->indexOf(current);
-    // mStackWidget->setCurrentIndex(idx);
-
+    mStackWidget->setCurrentIndex(mSectionBar->currentRow());
 }
 void ProjectWidget::showProjectSettings()
 {
