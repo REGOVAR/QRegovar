@@ -55,9 +55,6 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
 
     mBrowser = new ProjectsBrowserWidget(this);
 
-    // Some Theme customization
-    mToggleBrowserButton->setFlat(true);
-    mTitleLabel->setFont(QFont( "Arial", 18, QFont::Bold));
 
 
     // Create pages
@@ -94,10 +91,38 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
     mBrowser->hide();
 
 
+    // Some Theme customization
+    mToggleBrowserButton->setFlat(true);
+    mTitleLabel->setFont(QFont( "Arial", 18, QFont::Bold));
+    mSectionBar->setFrameStyle( QFrame::NoFrame );
+
+
     // Create Signals/Slots connections
     connect(mToggleBrowserButton, SIGNAL(released()), this, SLOT(toggleBrowser()));
     connect(mSectionBar, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(displaySection(QListWidgetItem *, QListWidgetItem *)));
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// SLOTS
+
 
 
 void ProjectWidget::displaySection(QListWidgetItem* current, QListWidgetItem* previous)
