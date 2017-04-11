@@ -11,7 +11,8 @@
 #include <QTreeView>
 #include <QListWidgetItem>
 #include "resumewidget.h"
-//#include "../Core/model/projectmodel.h"
+#include "projectsbrowserwidget.h"
+//#include "model/usermodel.h"
 
 
 namespace projectview
@@ -36,8 +37,9 @@ private:
     QTableWidget* mSubjectPage;
     QTableWidget* mTaskPage;
     QTreeView* mFilePage;
+    ProjectsBrowserWidget* mBrowser;
 
-    // ProjectModel* mProject;
+    //ProjectModel* mProject;
 
 
 public:
@@ -47,11 +49,14 @@ public:
 Q_SIGNALS:
 
 public Q_SLOTS:
-    void onSectionChanged(QListWidgetItem*, QListWidgetItem*);
+    void displaySection(QListWidgetItem*, QListWidgetItem*);
+    void showProjectSettings();
+    void showAddSubjectsData();
+    void showNewTask();
+    void showAddEvent();
+    void showAddAttachment();
+    void toggleBrowser();
 
 };
 } // END namespace projectview
-
-
-
 #endif // PROJECTWIDGET_H

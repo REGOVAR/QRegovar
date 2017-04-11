@@ -47,7 +47,7 @@ void Regovar::readSettings()
     QSettings settings;
     settings.beginGroup("RemoteServer");
     mApiRootUrl.setScheme(settings.value("scheme", "https").toString());
-    mApiRootUrl.setHost("pirus.absolumentg.fr"); //settings.value("host", "annso.absolumentg.fr").toString());
+    mApiRootUrl.setHost(settings.value("host", "annso.absolumentg.fr").toString());
     mApiRootUrl.setPort(settings.value("port", 443).toInt());
     settings.endGroup();
 }
@@ -65,7 +65,7 @@ void Regovar::login(QString& login, QString& password)
     }
     else
     {
-        // store login and password as it may be ask later if network authentication problem
+        // Store login and password as it may be ask later if network authentication problem
         mUser->setLogin(login);
         mUser->setPassword(password);
         // TODO use Regovar api /user/login

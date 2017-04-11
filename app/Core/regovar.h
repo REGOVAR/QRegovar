@@ -5,6 +5,8 @@
 #include <QNetworkReply>
 #include <QAuthenticator>
 #include "model/usermodel.h"
+#include "model/projectmodel.h"
+
 
 #ifndef regovar
 #define regovar (Regovar::i())
@@ -21,7 +23,6 @@ class RestApiManager;
 class Regovar : public QObject
 {
     Q_OBJECT
-    // seul les type de QVariant et les QObject peuvent etre des property.. enfin pour toi !
     Q_PROPERTY(UserModel* currentUser READ currentUser NOTIFY loginSuccess)
 
 public:
@@ -40,8 +41,7 @@ public:
 
 
     // Model
-     UserModel* currentUser() const { return mUser; }
-
+    UserModel* currentUser() const { return mUser; }
 
 
 public Q_SLOTS:

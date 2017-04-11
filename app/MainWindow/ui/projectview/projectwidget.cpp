@@ -1,9 +1,15 @@
-#include "app.h"
-#include "projectwidget.h"
+
 #include <QGridLayout>
+#include <QVBoxLayout>
 #include <QPushButton>
 #include <QListWidgetItem>
 #include <QIcon>
+#include <QSplitter>
+#include "app.h"
+#include "projectwidget.h"
+
+#include <QDebug>
+
 
 namespace projectview
 {
@@ -30,11 +36,11 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
     mToolBar->addWidget(mTitleLabel);
     mToolBar->addWidget(mStatusLabel);
     mToolBar->addWidget(stretcher);
-    mToolBar->addAction(app->awesome()->icon(fa::pencil),tr("Edit project information"), this, SLOT(showSettings()));
-    mToolBar->addAction(app->awesome()->icon(fa::userplus),tr("Add subject/sample to the project"), this, SLOT(showSettings()));
-    mToolBar->addAction(app->awesome()->icon(fa::cog),tr("Create a new analysis"), this, SLOT(showSettings()));
-    mToolBar->addAction(app->awesome()->icon(fa::calendar),tr("Add a custom event to the history of the project"), this, SLOT(showSettings()));
-    mToolBar->addAction(app->awesome()->icon(fa::paperclip),tr("Add attachment to the project"), this, SLOT(showSettings()));
+    mToolBar->addAction(app->awesome()->icon(fa::pencil),tr("Edit project information"), this, SLOT(showProjectSettings()));
+    mToolBar->addAction(app->awesome()->icon(fa::userplus),tr("Add subject/sample to the project"), this, SLOT(showAddSubjectsData()));
+    mToolBar->addAction(app->awesome()->icon(fa::cog),tr("Create a new analysis"), this, SLOT(showNewTask()));
+    mToolBar->addAction(app->awesome()->icon(fa::calendar),tr("Add a custom event to the history of the project"), this, SLOT(showAddEvent()));
+    mToolBar->addAction(app->awesome()->icon(fa::paperclip),tr("Add attachment to the project"), this, SLOT(showAddAttachment()));
 
     mSectionBar = new QListWidget(this);
     mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::barchart), tr("Resume")));
@@ -47,6 +53,7 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
     mSectionBar->setSelectionBehavior(QAbstractItemView::SelectRows);
     mSectionBar->setDragDropMode(QAbstractItemView::NoDragDrop);
 
+    mBrowser = new ProjectsBrowserWidget(this);
 
     // Some Theme customization
     mToggleBrowserButton->setFlat(true);
@@ -68,26 +75,69 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
 
 
     // Set main layout
-    QGridLayout* mainLayout = new QGridLayout(this);
-    mainLayout->addWidget(mToggleBrowserButton, 0, 0);
-    mainLayout->addWidget(mSectionBar, 1, 0);
-    mainLayout->addWidget(mToolBar, 0, 1);
-    mainLayout->addWidget(mStackWidget, 1, 1);
+    QGridLayout* panelLayout = new QGridLayout(this);
+    panelLayout->addWidget(mToggleBrowserButton, 0, 0);
+    panelLayout->addWidget(mSectionBar, 1, 0);
+    panelLayout->addWidget(mToolBar, 0, 1);
+    panelLayout->addWidget(mStackWidget, 1, 1);
     mSectionBar->setMaximumWidth(75);
+
+    QSplitter* mainWidget = new QSplitter(this);
+    QWidget* panel = new QWidget(this);
+    panel->setLayout(panelLayout);
+    mainWidget->addWidget(mBrowser);
+    mainWidget->addWidget(panel);
+
+    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    mainLayout->addWidget(mainWidget);
     setLayout(mainLayout);
+    mBrowser->hide();
 
 
     // Create Signals/Slots connections
-    connect(mSectionBar, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(onSectionChanged(QListWidgetItem *, QListWidgetItem *)));
+    connect(mToggleBrowserButton, SIGNAL(released()), this, SLOT(toggleBrowser()));
+    connect(mSectionBar, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(displaySection(QListWidgetItem *, QListWidgetItem *)));
 }
 
 
-void ProjectWidget::onSectionChanged(QListWidgetItem* current, QListWidgetItem* previous)
+void ProjectWidget::displaySection(QListWidgetItem* current, QListWidgetItem* previous)
 {
+    qDebug() << Q_FUNC_INFO;
     // TODO : switch stacked widget according to selected index T_T
     // idx = mSectionBar->indexOf(current);
     // mStackWidget->setCurrentIndex(idx);
 
+}
+void ProjectWidget::showProjectSettings()
+{
+    qDebug() << Q_FUNC_INFO;
+}
+void ProjectWidget::showAddSubjectsData()
+{
+    qDebug() << Q_FUNC_INFO;
+}
+void ProjectWidget::showNewTask()
+{
+    qDebug() << Q_FUNC_INFO;
+}
+void ProjectWidget::showAddEvent()
+{
+    qDebug() << Q_FUNC_INFO;
+}
+void ProjectWidget::showAddAttachment()
+{
+    qDebug() << Q_FUNC_INFO;
+}
+void ProjectWidget::toggleBrowser()
+{
+    if (mToggleBrowserButton->isChecked())
+    {
+        mBrowser->show();
+    }
+    else
+    {
+        mBrowser->hide();
+    }
 }
 
 
