@@ -3,18 +3,17 @@
 
 
 
-ResourceModel::ResourceModel() : QObject(0)
+ResourceModel::ResourceModel(QObject* parent) : QObject(parent)
 {
 }
-ResourceModel::ResourceModel(quint32 id) : QObject(0)
+ResourceModel::ResourceModel(quint32 id, QObject* parent) : QObject(parent), mId(id)
 {
-     mId = id;
 }
 
 
 bool ResourceModel::isValid() const
 {
-    return mId != -1;
+    return mId != 0;
 }
 
 

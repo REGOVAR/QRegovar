@@ -19,7 +19,7 @@ public:
     };
 
 
-    EventListModel(QObject* parent=0);
+    EventListModel(QObject* parent=nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
@@ -28,7 +28,7 @@ public:
 
 
 private:
-    QList<EventModel>* mEvents;
+    QList<EventModel*> mEvents;
 };
 
 #endif // EVENTLISTMODEL_H

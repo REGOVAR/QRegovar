@@ -25,18 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     tools/request.cpp \
     managers/restapimanager.cpp \
-    model/subject.cpp \
-    model/analysis.cpp \
-    model/job.cpp \
-    model/file.cpp \
-    model/task.cpp \
-    model/pipeline.cpp \
-    model/analysistemplate.cpp \
-    model/reference.cpp \
-    model/annotationdatabase.cpp \
-    model/annotationfield.cpp \
-    model/sample.cpp \
-    model/variant.cpp \
     regovar.cpp \
     model/projectmodel.cpp \
     model/usermodel.cpp \
@@ -47,18 +35,6 @@ SOURCES += \
 HEADERS += \
     tools/request.h \
     managers/restapimanager.h \
-    model/subject.h \
-    model/analysis.h \
-    model/job.h \
-    model/file.h \
-    model/task.h \
-    model/pipeline.h \
-    model/analysistemplate.h \
-    model/reference.h \
-    model/annotationdatabase.h \
-    model/annotationfield.h \
-    model/sample.h \
-    model/variant.h \
     regovar.h \
     model/projectmodel.h \
     model/usermodel.h \

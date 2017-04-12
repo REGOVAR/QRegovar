@@ -22,8 +22,8 @@ class EventModel : public ResourceModel
 {
 public:
     // Constructor
-    EventModel();
-    EventModel(quint32 id, QDateTime date, EventType type, QString message, UserModel* user);
+    EventModel(QObject* parent=nullptr);
+    EventModel(quint32 id, QDateTime date, EventType type, QString message, UserModel* user, QObject* parent=nullptr);
 
     // Properties
     // Read
@@ -44,7 +44,7 @@ public:
 private:
     QDateTime mDate;
     QString mMessage;
-    UserModel* mUser = nullptr;
+    UserModel* mUser;
     EventType mType;
 };
 

@@ -4,11 +4,14 @@
 
 EventListModel::EventListModel(QObject* parent) : QAbstractListModel(parent)
 {
-    // FIXME : fake data to debug
-    mEvents.append(new EventModel(1, QDateTime::currentDateTime(), Info, "Coucou", nullptr));
-    mEvents.append(new EventModel(2, QDateTime::currentDateTime(), Info, "Test", nullptr));
-    mEvents.append(new EventModel(3, QDateTime::currentDateTime(), Warning, "Attention !", nullptr));
-    mEvents.append(new EventModel(4, QDateTime::currentDateTime(), Success, "Yes :)", nullptr));
+    mEvents = new QList<EventModel>();
+
+    EventModel t(1, QDateTime::currentDateTime(), Info, "Coucou", nullptr);
+
+//    mEvents->append(EventModel(1, QDateTime::currentDateTime(), Info, "Coucou", nullptr));
+//    mEvents->append(EventModel(2, QDateTime::currentDateTime(), Info, "Test", nullptr));
+//    mEvents->append(EventModel(3, QDateTime::currentDateTime(), Warning, "Attention !", nullptr));
+//    mEvents->append(EventModel(4, QDateTime::currentDateTime(), Success, "Yes :)", nullptr));
 }
 
 
@@ -17,7 +20,7 @@ EventListModel::EventListModel(QObject* parent) : QAbstractListModel(parent)
 int EventListModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return mEvents.size();
+    return mEvents->size();
 }
 
 int EventListModel::columnCount(const QModelIndex &parent) const
@@ -38,10 +41,10 @@ QVariant EventListModel::data(const QModelIndex &index, int role) const
     {
         switch(index.column())
         {
-            case DateColumn:    return mEvents.at(index.row())->date();
-            case MessageColumn: return mEvents.at(index.row())->message();
+            case DateColumn:    return mEvents->at(index.row()).date();
+            case MessageColumn: return mEvents->at(index.row()).message();
             case UserColumn:
-                UserModel* user = mEvents.at(index.row())->user();
+                UserModel* user = mEvents->at(index.row()).user();
                 if (user != nullptr)
                 {
                     return QString("%1 %2").arg(user->firstname().toUpper(), user->lastname());

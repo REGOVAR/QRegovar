@@ -1,14 +1,15 @@
 #ifndef RESOURCEMODEL_H
 #define RESOURCEMODEL_H
 
+
 #include <QObject>
 
 class ResourceModel : public QObject
 {
     Q_OBJECT
 public:
-    ResourceModel();
-    ResourceModel(quint32 id);
+    ResourceModel(QObject* parent=nullptr);
+    ResourceModel(quint32 id, QObject* parent=nullptr);
 
     // Properties
     // Read
@@ -32,7 +33,7 @@ public Q_SLOTS:
 
 
 protected:
-    quint32 mId = -1;
+    quint32 mId = 0;
 };
 
 #endif // RESOURCEMODEL_H

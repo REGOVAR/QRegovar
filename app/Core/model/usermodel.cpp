@@ -1,15 +1,12 @@
 #include "usermodel.h"
 
-UserModel::UserModel() : ResourceModel()
+UserModel::UserModel(QObject* parent) : ResourceModel(parent)
 {
 }
 
-UserModel::UserModel(quint32 id, const QString& firstname, const QString& lastname)
-    : ResourceModel()
+UserModel::UserModel(quint32 id, const QString& firstname, const QString& lastname, QObject* parent)
+    : ResourceModel(id, parent), mFirstname(firstname), mLastname(lastname)
 {
-    mId = id;
-    mFirstname = firstname;
-    mLastname = lastname;
 }
 
 

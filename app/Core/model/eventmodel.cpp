@@ -1,11 +1,15 @@
 #include "eventmodel.h"
 
-EventModel::EventModel() : ResourceModel()
+EventModel::EventModel(QObject* parent) : ResourceModel(parent)
 {
 }
-EventModel::EventModel(quint32 id, QDateTime date, EventType type, QString message, UserModel* user)
-    : ResourceModel(id), mDate(date), mType(type), mMessage(message), mUser(user)
+EventModel::EventModel(quint32 id, QDateTime date, EventType type, QString message, UserModel* user, QObject* parent)
+    : ResourceModel(id, parent)
 {
+    mDate = date;
+    mType = type;
+    mMessage = message;
+    mUser = user;
 }
 
 
