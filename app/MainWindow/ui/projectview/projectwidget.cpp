@@ -118,6 +118,7 @@ void ProjectWidget::initView()
     else
     {
         mTitleLabel->setText(mProject->name());
+        mResumePage->setProject(mProject);
     }
 }
 

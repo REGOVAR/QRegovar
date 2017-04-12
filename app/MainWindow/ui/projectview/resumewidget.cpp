@@ -67,4 +67,12 @@ ResumeWidget::ResumeWidget(QWidget *parent) : QWidget(parent)
 }
 
 
+void ResumeWidget::setProject(ProjectModel* project)
+{
+    if (project != nullptr)
+    {
+        mEventsTable->setModel(project->events());
+    }
+}
+
 } // END namespace projectview

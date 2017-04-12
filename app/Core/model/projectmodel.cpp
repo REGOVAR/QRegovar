@@ -5,7 +5,7 @@ ProjectModel::ProjectModel() : ResourceModel()
     mName = "Toto prj";
     mComment = "Il s'agit du project de la famille Toto";
     mSharing = "GUEUDELOT Olivier, SCHUTZ Sacha";
-    mEvents = new QList<QString>();
+    mEvents = new EventListModel();
     mSubjects = new QList<QString>();
     mAnalyses = new QList<QString>();
     mAttachments = new QList<QString>();
@@ -88,11 +88,11 @@ void ProjectModel::setSharing(const QString& sharing)
 
 
 // Property : Events
-const QList<QString>* ProjectModel::events() const
+EventListModel* ProjectModel::events() const
 {
     return mEvents;
 }
-void ProjectModel::setEvents(QList<QString>* events)
+void ProjectModel::setEvents(EventListModel* events)
 {
     mEvents = events;
     emit resourceChanged();
@@ -100,7 +100,7 @@ void ProjectModel::setEvents(QList<QString>* events)
 
 
 // Property : Subjects
-const QList<QString>* ProjectModel::subjects() const
+QList<QString>* ProjectModel::subjects() const
 {
     return mSubjects;
 }
@@ -112,7 +112,7 @@ void ProjectModel::setSubjects(QList<QString>* subjects)
 
 
 // Property : Analyses
-const QList<QString>* ProjectModel::analyses() const
+QList<QString>* ProjectModel::analyses() const
 {
     return mAnalyses;
 }
@@ -124,7 +124,7 @@ void ProjectModel::setAnalyses(QList<QString>* analyses)
 
 
 // Property : Attachments
-const QList<QString>* ProjectModel::attachments() const
+QList<QString>* ProjectModel::attachments() const
 {
     return mAttachments;
 }

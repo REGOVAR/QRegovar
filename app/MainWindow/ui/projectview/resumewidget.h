@@ -5,6 +5,8 @@
 #include <QTableView>
 #include <QLabel>
 
+#include "model/projectmodel.h"
+
 namespace projectview
 {
 
@@ -26,6 +28,7 @@ private:
 public:
     explicit ResumeWidget(QWidget *parent = 0);
 
+    void setProject(ProjectModel* project);
 
 Q_SIGNALS:
 
