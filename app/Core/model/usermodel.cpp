@@ -24,6 +24,7 @@ bool UserModel::fromJson(QJsonDocument json)
     mFirstname = "Olivier";
     mLastname = "Gueudelot";
     emit resourceChanged();
+    emit userChanged();
     return true;
 }
 
@@ -39,6 +40,7 @@ void UserModel::clear()
     mFunction = "";
     mLocation = "";
     emit resourceChanged();
+    emit userChanged();
 }
 
 
@@ -61,6 +63,7 @@ void UserModel::setLastname(const QString& lastname)
 {
     mLastname = lastname;
     emit resourceChanged();
+    emit userChanged();
 }
 
 
@@ -73,6 +76,7 @@ void UserModel::setFirstname(const QString& firstname)
 {
     mFirstname = firstname;
     emit resourceChanged();
+    emit userChanged();
 }
 
 
@@ -85,6 +89,7 @@ void UserModel::setEmail(const QString& email)
 {
     mEmail = email;
     emit resourceChanged();
+    emit userChanged();
 }
 
 
@@ -97,6 +102,7 @@ void UserModel::setLogin(const QString& login)
 {
     mLogin = login;
     emit resourceChanged();
+    emit userChanged();
 }
 
 
@@ -109,6 +115,7 @@ void UserModel::setPassword(const QString& password)
 {
     mPassword = password;
     emit resourceChanged();
+    emit userChanged();
 }
 
 
@@ -121,6 +128,7 @@ void UserModel::setAvatar(const QPixmap& avatar)
 {
     mAvatar = avatar;
     emit resourceChanged();
+    emit userChanged();
 }
 
 
@@ -133,6 +141,7 @@ void UserModel::setFunction(const QString& function)
 {
     mFunction = function;
     emit resourceChanged();
+    emit userChanged();
 
 }
 
@@ -146,6 +155,7 @@ void UserModel::setLocation(const QString& location)
 {
     mLocation = location;
     emit resourceChanged();
+    emit userChanged();
 }
 
 
@@ -158,4 +168,5 @@ void UserModel::setLastActivity(const QDate& lastActivity)
 {
     mLastActivity = lastActivity;
     emit resourceChanged();
+    emit userChanged();
 }

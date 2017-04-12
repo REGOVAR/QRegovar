@@ -4,6 +4,7 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 #include <QGridLayout>
+#include <QHeaderView>
 
 
 namespace projectview
@@ -20,6 +21,9 @@ ResumeWidget::ResumeWidget(QWidget *parent) : QWidget(parent)
     mSubjectsTable = new QTableView(this);
     mTasksTable = new QTableView(this);
     mFilesTable = new QTableView(this);
+
+    mEventsTable->horizontalHeader()->setStretchLastSection(true);
+    mEventsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     QVBoxLayout* subjectsLayout = new QVBoxLayout(this);
     QLabel* subjectsLabel = new QLabel(tr("Subjects :"));

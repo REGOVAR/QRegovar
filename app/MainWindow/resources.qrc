@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/home.qml</file>
+        <file>img/regovar-logo.svg</file>
+        <file>img/regovar-logo-32.png</file>
+        <file>img/regovar-logo-64.png</file>
     </qresource>
 </RCC>

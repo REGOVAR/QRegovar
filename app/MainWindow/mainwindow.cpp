@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     restoreSettings();
+    setWindowIcon(QIcon(":/img/regovar-logo-32.png"));
 }
 
 MainWindow::~MainWindow()

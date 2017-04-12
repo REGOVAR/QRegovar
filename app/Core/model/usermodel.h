@@ -12,8 +12,8 @@ class UserModel : public ResourceModel
 {
     Q_OBJECT
 public:
-//    Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY resourceChanged)
-//    Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY resourceChanged)
+    Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY userChanged)
+    Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY userChanged)
 
     // Constructors
     UserModel(QObject* parent=nullptr);
@@ -48,6 +48,8 @@ public:
     // Reset value to anonymous. Should be used to logout the current user
     void clear();
 
+Q_SIGNALS:
+    void userChanged();
 
 protected:
     QString mFirstname;

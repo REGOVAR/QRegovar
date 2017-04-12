@@ -71,12 +71,12 @@ Item
     Item
     {
         id: logo
-        width: 178
+        width: 165
         height: 50
 
         Image
         {
-            source: "https://avatars1.githubusercontent.com/u/18222880?v=3&s=200"
+            source: "qrc:///img/regovar-logo-64.png"
             height: 50
             width: 50
             anchors.left: logo.left
