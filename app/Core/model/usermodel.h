@@ -5,6 +5,21 @@
 #include "resourcemodel.h"
 
 
+enum UserRight
+{
+    None  = 0,
+    Read  = 1,
+    Write = 2
+};
+
+enum UserRole
+{
+    Administration,
+    Project,
+    Pipeline
+};
+
+
 /*!
  * \brief Define a user of the application.
  */
@@ -12,6 +27,12 @@ class UserModel : public ResourceModel
 {
     Q_OBJECT
 public:
+    enum
+    {
+
+    };
+
+
     Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY userChanged)
     Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY userChanged)
 
@@ -48,6 +69,11 @@ public:
     // Reset value to anonymous. Should be used to logout the current user
     void clear();
 
+    // User's right tools
+    bool isAdmin();
+    UserRight role(const UserRole& role);
+    void setRole(const UserRole& role, const UserRight& right);
+
 Q_SIGNALS:
     void userChanged();
 
@@ -61,7 +87,10 @@ protected:
     QString mFunction;
     QString mLocation;
     QDate mLastActivity;
-    QMap<QString, bool> mAuth;
+    QHash<UserRole, UserRight> mRoles;
+
+    // Internal method used to build user role model from json dictionary
+    void setRole(const QString& role, const QString& right);
 };
 
 #endif // USERMODEL_H

@@ -6,6 +6,8 @@ LoginWidget::LoginWidget(QWidget* parent) : QWidget(parent)
     QFormLayout* formLayout = new QFormLayout(this);
 
     // Initialize form controls
+    mErrorMessage = new QLabel(this);
+    mErrorMessage->setMaximumWidth(300);
     mComboUsername = new QComboBox(this);
     mComboUsername->setEditable(true);
     mComboUsername->setMaximumWidth(300);
@@ -23,6 +25,7 @@ LoginWidget::LoginWidget(QWidget* parent) : QWidget(parent)
     connect(loginButton, &QPushButton::clicked, this, &LoginWidget::accepted);
 
     // place components into the dialog
+    formLayout->addWidget(mErrorMessage);
     formLayout->addRow(tr("&Username"), mComboUsername);
     formLayout->addRow(tr("&Password"), mEditPassword);
     formLayout->addWidget(buttonBox);
@@ -40,8 +43,15 @@ const QString LoginWidget::password() const
     return mEditPassword->text();
 }
 
+void LoginWidget::loginFailed()
+{
+    mErrorMessage->setText(tr("Unable to authenticate you with provided credentials"));
+}
 
-
+void LoginWidget::clear()
+{
+    mErrorMessage->setText("");
+}
 
 
 

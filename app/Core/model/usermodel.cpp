@@ -23,6 +23,12 @@ bool UserModel::fromJson(QJsonDocument json)
     mId = 1;
     mFirstname = "Olivier";
     mLastname = "Gueudelot";
+
+    mRoles.clear();
+    mRoles[Administration] = Write;
+    mRoles[Project] = Write;
+    mRoles[Pipeline] = Write;
+
     emit resourceChanged();
     emit userChanged();
     return true;
@@ -30,7 +36,7 @@ bool UserModel::fromJson(QJsonDocument json)
 
 void UserModel::clear()
 {
-    mId = -1;
+    mId = 0;
     mFirstname = tr("Anonymous");
     mLastname = tr("Anonymous");
     mEmail = "";
@@ -39,13 +45,34 @@ void UserModel::clear()
     // TODO : mAvatar; empty qpixmap ?
     mFunction = "";
     mLocation = "";
+    mRoles.clear();
+
     emit resourceChanged();
     emit userChanged();
 }
 
 
 
+bool UserModel::isAdmin()
+{
+    return mRoles.contains(Administration) && mRoles[Administration] == Write;
+}
 
+
+UserRight UserModel::role(const UserRole& role)
+{
+    return mRoles.contains(role) ? mRoles[role] : None;
+}
+void UserModel::setRole(const UserRole& role, const UserRight& right)
+{
+    mRoles[role] = right;
+    emit resourceChanged();
+    emit userChanged();
+}
+void UserModel::setRole(const QString& role, const QString& right)
+{
+    // TODO
+}
 
 
 
@@ -170,3 +197,5 @@ void UserModel::setLastActivity(const QDate& lastActivity)
     emit resourceChanged();
     emit userChanged();
 }
+
+

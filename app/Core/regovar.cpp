@@ -36,7 +36,7 @@ void Regovar::init()
 
 
     // Init model
-    mUser = new UserModel(1, "Anonymous", "");
+    mUser = new UserModel(0, "Anonymous", "");
 }
 
 
@@ -46,9 +46,9 @@ void Regovar::readSettings()
     // TODO : No hardcoded value => Load default from local config file ?
     QSettings settings;
     settings.beginGroup("RemoteServer");
-    mApiRootUrl.setScheme(settings.value("scheme", "https").toString());
-    mApiRootUrl.setHost(settings.value("host", "annso.absolumentg.fr").toString());
-    mApiRootUrl.setPort(settings.value("port", 443).toInt());
+    mApiRootUrl.setScheme(settings.value("scheme", "http").toString());
+    mApiRootUrl.setHost(settings.value("host", "dev.regovar.org").toString());
+    mApiRootUrl.setPort(settings.value("port", 80).toInt());
     settings.endGroup();
 }
 
@@ -69,7 +69,7 @@ void Regovar::login(QString& login, QString& password)
         mUser->setLogin(login);
         mUser->setPassword(password);
         // TODO use Regovar api /user/login
-        Request* test = Request::get("/ref");
+        Request* test = Request::get("/users/login");
         connect(test, &Request::jsonReceived, [this](const QJsonDocument& json)
         {
             if (mUser->fromJson(json))
@@ -93,7 +93,7 @@ void Regovar::logout()
     }
     else
     {
-        Request* test = Request::get("/user/logout");
+        Request* test = Request::get("/users/logout");
         connect(test, &Request::jsonReceived, [this](const QJsonDocument& json)
         {
             // Create a new user ?? no!!! => mUser = new User(-1, "Anonymous", "");

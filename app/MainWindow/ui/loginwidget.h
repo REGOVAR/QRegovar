@@ -20,14 +20,18 @@ public:
     const QString username() const;
     const QString password() const;
 
+
+    void loginFailed();
+    void clear();
+
 Q_SIGNALS:
     void accepted();
 
 
 private:
+    QLabel* mErrorMessage;
     QComboBox* mComboUsername;
     QLineEdit* mEditPassword;
-
 
 
 

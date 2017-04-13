@@ -32,15 +32,18 @@ public:
 
 public Q_SLOTS:
     void about();
-    void checkAuthent();
-    void updateCentralWidget();
+    void settings();
+    void logoutUser();
+    void loginUser();
+    void displayLoginFailedError();
+    void updateMainWindow();
 
 protected:
     void buildMenu();
     QWidget* buildHomeTab();
 
 
-    QMenuBar* mMenuBar;
+    QMenuBar* mMenuBar = nullptr;
 
     // Widget containers
     QStackedWidget* mStackWidget;
