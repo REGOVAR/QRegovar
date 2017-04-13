@@ -69,8 +69,19 @@ void Regovar::login(QString& login, QString& password)
         mUser->setLogin(login);
         mUser->setPassword(password);
         // TODO use Regovar api /user/login
-        Request* test = Request::get("/users/login");
-        connect(test, &Request::jsonReceived, [this](const QJsonDocument& json)
+        QHttpMultiPart* multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+        QHttpPart p1;
+        p1.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"login\""));
+        p1.setBody(login.toUtf8());
+        QHttpPart p2;
+        p2.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"password\""));
+        p2.setBody(password.toUtf8());
+
+        multiPart->append(p1);
+        multiPart->append(p2);
+
+        Request* req = Request::post("/users/login", multiPart);
+        connect(req, &Request::jsonReceived, [this, multiPart, req](const QJsonDocument& json)
         {
             if (mUser->fromJson(json))
             {
@@ -80,6 +91,8 @@ void Regovar::login(QString& login, QString& password)
             {
                 emit loginFailed();
             }
+            delete multiPart;
+            delete req;
         });
     }
 }

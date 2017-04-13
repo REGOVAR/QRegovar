@@ -19,7 +19,7 @@ QNetworkAccessManager* Request::netManager()
 
 
 
-Request::Request(Verb verb, const QString& query, const QByteArray& data, QObject* parent) : QObject(parent)
+Request::Request(Verb verb, const QString& query, QHttpMultiPart* data, QObject* parent) : QObject(parent)
 {    
     QNetworkRequest request = Request::makeRequest(query);
     mReply = Q_NULLPTR;
@@ -29,7 +29,7 @@ Request::Request(Verb verb, const QString& query, const QByteArray& data, QObjec
             mReply = Request::netManager()->get(request);
             break;
         case Request::Post:
-            mReply = Request::netManager()->post(request,data);
+            mReply = Request::netManager()->post(request, data);
             break;
         case Request::Put:
             mReply = Request::netManager()->put(request, data);
@@ -59,12 +59,12 @@ Request* Request::get(const QString query)
     return new Request(Get, query);
 }
 
-Request* Request::put(const QString query, const QByteArray &data)
+Request* Request::put(const QString query, QHttpMultiPart* data)
 {
     return new Request(Put, query, data);
 }
 
-Request* Request::post(const QString query, const QByteArray &data)
+Request* Request::post(const QString query, QHttpMultiPart* data)
 {
     return new Request(Post, query, data);
 }
@@ -74,7 +74,7 @@ Request* Request::del(const QString query)
     return new Request(Del, query);
 }
 
-QNetworkRequest Request::makeRequest(const QString &resource)
+QNetworkRequest Request::makeRequest(const QString& resource)
 {
     QUrl url(Regovar::i()->apiRootUrl());
     url.setPath(resource);

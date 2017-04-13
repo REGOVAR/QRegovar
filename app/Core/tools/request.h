@@ -13,12 +13,12 @@ class Request : public QObject
 public:
     enum Verb { Get, Post, Put, Del, Patch, Head};
     Q_ENUM(Verb)
-    Request(Verb verb, const QString& query, const QByteArray& data=QByteArray(), QObject* parent=0);
+    Request(Verb verb, const QString& query, QHttpMultiPart* data=nullptr, QObject* parent=0);
     static QNetworkAccessManager* netManager();
     // Factories
     static Request* get(const QString query);
-    static Request* post(const QString query,const QByteArray& data=QByteArray());
-    static Request* put(const QString query, const QByteArray& data=QByteArray());
+    static Request* post(const QString query, QHttpMultiPart* data=nullptr);
+    static Request* put(const QString query,  QHttpMultiPart* data=nullptr);
     static Request* del(const QString query);
     // static Request* patch(const QString query,const QByteArray& data = QByteArray());
     // static Request* head(const QString query);
