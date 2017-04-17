@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui/projectview/projectwidget.h"
 #include "app.h"
+#include "ui/settingview/settingswidget.h"
 
 
 // Constructor
@@ -301,7 +302,8 @@ void MainWindow::about()
 
 void MainWindow::settings()
 {
-    QMessageBox::about(this, tr("About Regovar"), tr("<b>Regovar</b> settings "));
+    SettingsWidget settings;
+    settings.exec();
 }
 
 

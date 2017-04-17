@@ -68,6 +68,7 @@ public:
     bool fromJson(QJsonDocument json);
     // Reset value to anonymous. Should be used to logout the current user
     void clear();
+    void save();
 
     // User's right tools
     bool isAdmin();

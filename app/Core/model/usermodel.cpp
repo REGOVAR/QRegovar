@@ -1,4 +1,5 @@
 #include "usermodel.h"
+#include "tools/request.h"
 
 UserModel::UserModel(QObject* parent) : ResourceModel(parent)
 {
@@ -74,6 +75,45 @@ void UserModel::setRole(const QString& role, const QString& right)
     // TODO
 }
 
+void UserModel::save()
+{
+    if (isValid())
+    {
+        QHttpMultiPart* multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+        QHttpPart p1;
+        p1.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"firstname\""));
+        p1.setBody(mFirstname.toUtf8());
+        QHttpPart p2;
+        p2.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"lastname\""));
+        p2.setBody(mLastname.toUtf8());
+        QHttpPart p3;
+        p3.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"email\""));
+        p3.setBody(mEmail.toUtf8());
+        QHttpPart p4;
+        p4.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"function\""));
+        p4.setBody(mFunction.toUtf8());
+        QHttpPart p5;
+        p5.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"location\""));
+        p5.setBody(mLocation.toUtf8());
+
+        multiPart->append(p1);
+        multiPart->append(p2);
+        multiPart->append(p3);
+        multiPart->append(p4);
+        multiPart->append(p5);
+
+
+        Request* saveRequest = Request::post(QString("/users/%1").arg(mId));
+        connect(saveRequest, &Request::jsonReceived, [this](const QJsonDocument& json)
+        {
+            qDebug() << "User saved";
+        });
+    }
+    else
+    {
+        qDebug() << "User not valid. Not able to save it on the server";
+    }
+}
 
 
 
