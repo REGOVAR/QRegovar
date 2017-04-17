@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui/projectview/projectwidget.h"
 #include "app.h"
-#include "ui/settingview/settingswidget.h"
+#include "ui/settingview/settingsdialog.h"
 
 
 // Constructor
@@ -302,7 +302,7 @@ void MainWindow::about()
 
 void MainWindow::settings()
 {
-    SettingsWidget settings;
+    SettingsDialog settings;
     settings.exec();
 }
 

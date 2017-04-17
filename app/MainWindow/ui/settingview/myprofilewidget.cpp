@@ -4,10 +4,11 @@
 #include <QFormLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+
 #include "myprofilewidget.h"
 #include "regovar.h"
 
-MyProfileWidget::MyProfileWidget(QWidget *parent) : QWidget(parent)
+MyProfileWidget::MyProfileWidget(QWidget *parent) : AbstractSettingsWidget(parent)
 {
     mLogin = new QLabel(regovar->currentUser()->login(), this);
     mFirstname = new QLineEdit(this);
@@ -43,12 +44,7 @@ MyProfileWidget::MyProfileWidget(QWidget *parent) : QWidget(parent)
 }
 
 
-void MyProfileWidget::onChanged()
-{
-    mHaveChanged = true;
-}
-
-void MyProfileWidget::save()
+bool MyProfileWidget::save()
 {
     regovar->currentUser()->setFirstname(mFirstname->text());
     regovar->currentUser()->setLastname(mLastname->text());
@@ -57,16 +53,25 @@ void MyProfileWidget::save()
     regovar->currentUser()->setLocation(mLocation->text());
 
     regovar->currentUser()->save();
+    return true;
 }
 
-void MyProfileWidget::reset()
+bool MyProfileWidget::load()
 {
     mFirstname->setText(regovar->currentUser()->firstname());
     mLastname->setText(regovar->currentUser()->lastname());
     mFunction->setText(regovar->currentUser()->function());
     mEmail->setText(regovar->currentUser()->email());
     mLocation->setText(regovar->currentUser()->location());
+
+    return true;
 }
+
+void MyProfileWidget::onChanged()
+{
+    mHaveChanged = true;
+}
+
 
 
 const bool MyProfileWidget::haveChanged() const

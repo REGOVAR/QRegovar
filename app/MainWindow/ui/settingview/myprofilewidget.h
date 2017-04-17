@@ -5,8 +5,9 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPixmap>
+#include "abstractsettingswidget.h"
 
-class MyProfileWidget : public QWidget
+class MyProfileWidget : public AbstractSettingsWidget
 {
     Q_OBJECT
 public:
@@ -18,9 +19,9 @@ public:
 
 
 public Q_SLOTS:
+    bool save();
+    bool load();
     void onChanged();
-    void save();
-    void reset();
 
 private:
     QLabel* mLogin;
