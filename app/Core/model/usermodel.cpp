@@ -103,7 +103,7 @@ void UserModel::save()
         multiPart->append(p5);
 
 
-        Request* saveRequest = Request::post(QString("/users/%1").arg(mId));
+        Request* saveRequest = Request::put(QString("/users/%1").arg(mId), multiPart);
         connect(saveRequest, &Request::jsonReceived, [this](const QJsonDocument& json)
         {
             qDebug() << "User saved";

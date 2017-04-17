@@ -10,13 +10,13 @@
 
 MyProfileWidget::MyProfileWidget(QWidget *parent) : AbstractSettingsWidget(parent)
 {
-    mLogin = new QLabel(regovar->currentUser()->login(), this);
-    mFirstname = new QLineEdit(this);
-    mLastname = new QLineEdit(this);
-    mFunction = new QLineEdit(this);
-    mEmail = new QLineEdit(this);
-    mLocation = new QLineEdit(this);
-    mAvatar = new QLabel("avatar", this);
+    mLogin = new QLabel(regovar->currentUser()->login());
+    mFirstname = new QLineEdit();
+    mLastname = new QLineEdit();
+    mFunction = new QLineEdit();
+    mEmail = new QLineEdit();
+    mLocation = new QLineEdit();
+    mAvatar = new QLabel("avatar");
 
     connect(mFirstname, &QLineEdit::textChanged, this, &MyProfileWidget::onChanged);
     connect(mLastname, &QLineEdit::textChanged, this, &MyProfileWidget::onChanged);
@@ -24,7 +24,7 @@ MyProfileWidget::MyProfileWidget(QWidget *parent) : AbstractSettingsWidget(paren
     connect(mEmail, &QLineEdit::textChanged, this, &MyProfileWidget::onChanged);
     connect(mLocation, &QLineEdit::textChanged, this, &MyProfileWidget::onChanged);
 
-    QFormLayout* formLayout = new QFormLayout(this);
+    QFormLayout* formLayout = new QFormLayout();
     formLayout->addRow(tr("Firstname"), mFirstname);
     formLayout->addRow(tr("Lastname"), mLastname);
     formLayout->addRow(tr("Email"), mEmail);
@@ -32,11 +32,14 @@ MyProfileWidget::MyProfileWidget(QWidget *parent) : AbstractSettingsWidget(paren
     formLayout->addRow(tr("Function"), mFunction);
 
 
-    QVBoxLayout* leftPanel = new QVBoxLayout(this);
-    leftPanel->addWidget(new QLabel("My Photo"));
+    QWidget* stretcher = new QWidget(this);
+    stretcher->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Expanding);
+    QVBoxLayout* leftPanel = new QVBoxLayout();
+    leftPanel->addWidget(mAvatar);
     leftPanel->addWidget(new QLabel("My titles"));
+    leftPanel->addWidget(stretcher);
 
-    QHBoxLayout* mainLayout = new QHBoxLayout(this);
+    QHBoxLayout* mainLayout = new QHBoxLayout();
     mainLayout->addLayout(leftPanel);
     mainLayout->addLayout(formLayout);
 

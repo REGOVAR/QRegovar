@@ -36,7 +36,7 @@ void Regovar::init()
 
 
     // Init model
-    mUser = new UserModel(1, "Olivier", "Gueudelot");
+    mUser = new UserModel(); //1, "Olivier", "Gueudelot");
 }
 
 
