@@ -2,6 +2,7 @@
 #include "ui/projectview/projectwidget.h"
 #include "app.h"
 #include "ui/settingview/settingsdialog.h"
+#include "ui/settingview/admindialog.h"
 
 
 // Constructor
@@ -13,10 +14,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     // construct widget
     mHomeTabWidget = buildHomeTab();
-    mLoginWidget   = new LoginWidget(this);
-    mStackWidget   = new QStackedWidget(this);
-    mTabWidget     = new QTabWidget(this);
-    mMenuBar       = new QMenuBar(this);
+    mLoginWidget = new LoginWidget(this);
+    mStackWidget = new QStackedWidget(this);
+    mTabWidget = new QTabWidget(this);
+    mMenuBar = new QMenuBar(this);
 
     // add widget to the stack
     mStackWidget->addWidget(mLoginWidget);
@@ -126,6 +127,7 @@ void MainWindow::buildMenu()
         QAction* settingsAct = new QAction(tr("&Settings"), this);
         settingsAct->setStatusTip(tr("Edit Regovar application's settings"));
         connect(settingsAct, &QAction::triggered, this, &MainWindow::settings);
+
 
         QAction* fullscreenAct = new QAction(tr("&Fullscreen"), this);
         fullscreenAct->setShortcuts(QKeySequence::FullScreen);
@@ -237,9 +239,10 @@ void MainWindow::buildMenu()
         // Administration Menu
         if (regovar->currentUser()->isAdmin())
         {
-            mMenuBar->addMenu(tr("&Administration"));
+            QMenu* adminMenu = new QMenu(tr("&Administration"));
+            mMenuBar->addMenu(adminMenu);
+            connect(adminMenu, &QMenu::aboutToShow, this, &MainWindow::admin);
         }
-
 
         // Help menu
         QAction* beginnerGuideAct = new QAction(tr("&Beginner's guide"), this);
@@ -304,6 +307,14 @@ void MainWindow::settings()
 {
     SettingsDialog settings;
     settings.exec();
+}
+void MainWindow::admin()
+{
+    if(regovar->currentUser()->isAdmin())
+    {
+        AdminDialog adminDialog;
+        adminDialog.exec();
+    }
 }
 
 

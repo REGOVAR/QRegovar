@@ -33,6 +33,7 @@ public:
 public Q_SLOTS:
     void about();
     void settings();
+    void admin();
     void logoutUser();
     void loginUser();
     void displayLoginFailedError();

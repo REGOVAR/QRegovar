@@ -1,13 +1,14 @@
-#include "settingsdialog.h"
+#include "admindialog.h"
 #include <QDebug>
 #include <QLabel.h>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
-#include "settingpanels/myprofilewidget.h"
+#include "adminpanels/usersmanagementwidget.h"
+#include "app.h"
 
-SettingsDialog::SettingsDialog(QWidget *parent) :
+AdminDialog::AdminDialog(QWidget *parent) :
     QDialog(parent)
 {
     mListWidget = new QListWidget;
@@ -30,7 +31,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     setLayout(mainLayout);
 
 
-    addWidget(new MyProfileWidget(),"My profile");
+    addWidget(new UsersManagementWidget(), tr("Users"), app->awesome()->icon(fa::users));
 
     resize(800,400);
 
@@ -38,13 +39,13 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     connect(mButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
     connect(mButtonBox,SIGNAL(accepted()),this,SLOT(save()));
 
-    setWindowTitle(tr("Settings"));
+    setWindowTitle(tr("Administration"));
 
     load();
 }
 
 
-void SettingsDialog::addWidget(AbstractSettingsWidget *widget,
+void AdminDialog::addWidget(AbstractSettingsWidget *widget,
                                const QString& categorie,
                                const QIcon& icon)
 {
@@ -60,7 +61,7 @@ void SettingsDialog::addWidget(AbstractSettingsWidget *widget,
 
 }
 
-void SettingsDialog::save()
+void AdminDialog::save()
 {
 
     foreach (QString key, mWidgets.keys())
@@ -80,7 +81,7 @@ void SettingsDialog::save()
 
 }
 
-void SettingsDialog::load()
+void AdminDialog::load()
 {
 
     foreach (QString key, mWidgets.keys())
@@ -96,7 +97,7 @@ void SettingsDialog::load()
     }
 }
 
-void SettingsDialog::updateTab(int row)
+void AdminDialog::updateTab(int row)
 {
     Q_UNUSED(row);
 

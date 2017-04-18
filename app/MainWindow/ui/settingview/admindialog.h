@@ -1,5 +1,6 @@
-#ifndef SETTINGSWIDGET_H
-#define SETTINGSWIDGET_H
+#ifndef ADMINDIALOG_H
+#define ADMINDIALOG_H
+
 
 #include <QWidget>
 #include <QDialog>
@@ -11,11 +12,11 @@
 #include "abstractsettingswidget.h"
 
 
-class SettingsDialog : public QDialog
+class AdminDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit SettingsDialog(QWidget *parent = 0);
+    explicit AdminDialog(QWidget *parent = 0);
     void addWidget(AbstractSettingsWidget * widget,
                    const QString& categorie = QString("extra"),
                    const QIcon& icon = QIcon());
@@ -38,5 +39,4 @@ private:
 
 };
 
-
-#endif // SETTINGSWIDGET_H
+#endif // ADMINDIALOG_H

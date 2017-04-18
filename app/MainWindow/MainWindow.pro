@@ -31,9 +31,11 @@ SOURCES += main.cpp\
     ui/projectview/resumewidget.cpp \
     ui/projectview/projectsbrowserwidget.cpp \
     ui/projectview/projectwidget.cpp \
-    ui/settingview/myprofilewidget.cpp \
     ui/settingview/abstractsettingswidget.cpp \
-    ui/settingview/settingsdialog.cpp
+    ui/settingview/settingsdialog.cpp \
+    ui/settingview/settingpanels/myprofilewidget.cpp \
+    ui/settingview/admindialog.cpp \
+    ui/settingview/adminpanels/usersmanagementwidget.cpp
 
 HEADERS  += mainwindow.h \
     ui/loginwidget.h \
@@ -41,9 +43,11 @@ HEADERS  += mainwindow.h \
     ui/projectview/resumewidget.h \
     ui/projectview/projectsbrowserwidget.h \
     ui/projectview/projectwidget.h \
-    ui/settingview/myprofilewidget.h \
     ui/settingview/settingsdialog.h \
-    ui/settingview/abstractsettingswidget.h
+    ui/settingview/abstractsettingswidget.h \
+    ui/settingview/settingpanels/myprofilewidget.h \
+    ui/settingview/admindialog.h \
+    ui/settingview/adminpanels/usersmanagementwidget.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Core/release/ -lCore
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Core/debug/ -lCore

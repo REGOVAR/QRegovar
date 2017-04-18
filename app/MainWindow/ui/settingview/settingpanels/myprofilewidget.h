@@ -5,7 +5,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPixmap>
-#include "abstractsettingswidget.h"
+#include "../abstractsettingswidget.h"
 
 class MyProfileWidget : public AbstractSettingsWidget
 {
