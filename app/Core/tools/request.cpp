@@ -87,7 +87,7 @@ QNetworkRequest Request::makeRequest(const QString& resource)
 
 
 
-const QJsonDocument &Request::json() const
+const QJsonObject &Request::json() const
 {
     return mJson;
 }
@@ -101,7 +101,8 @@ void Request::received()
     {
         if (reply->error() == QNetworkReply::NoError)
         {
-            mJson = QJsonDocument::fromJson(reply->readAll());
+            QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
+            mJson = doc.object();
             emit jsonReceived(mJson);
         }
         else

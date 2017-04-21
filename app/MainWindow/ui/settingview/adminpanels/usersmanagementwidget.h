@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QTableView>
+#include <QLineEdit>
 #include "../settingpanels/myprofilewidget.h"
 
 
@@ -21,6 +22,7 @@ public Q_SLOTS:
 private:
     QTableView* mUsersList;
     MyProfileWidget* mUserDetails;
+    QLineEdit* mFilter;
 
 
 

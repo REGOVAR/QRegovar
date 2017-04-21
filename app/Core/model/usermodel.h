@@ -27,10 +27,6 @@ class UserModel : public ResourceModel
 {
     Q_OBJECT
 public:
-    enum
-    {
-
-    };
 
 
     Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY userChanged)
@@ -66,6 +62,7 @@ public:
     // Methods
     // Init user data according to provided json return by api rest for authentication
     bool fromJson(QJsonDocument json);
+    bool fromJson(QJsonObject json);
     // Reset value to anonymous. Should be used to logout the current user
     void clear();
     void save();

@@ -25,11 +25,11 @@ public:
     static QNetworkRequest makeRequest(const QString& resource) ;
 
 
-    const QJsonDocument& json() const;
+    const QJsonObject& json() const;
     inline bool loading() { return mLoading; }
 
 Q_SIGNALS :
-    void jsonReceived(const QJsonDocument& json);
+    void jsonReceived(const QJsonObject& json);
 
 
 protected Q_SLOTS:
@@ -40,7 +40,7 @@ private:
 
     bool mLoading = false;
     QNetworkReply* mReply;
-    QJsonDocument mJson;
+    QJsonObject mJson;
 
 
 };

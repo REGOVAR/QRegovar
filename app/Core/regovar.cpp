@@ -81,16 +81,16 @@ void Regovar::login(QString& login, QString& password)
         multiPart->append(p2);
 
         Request* req = Request::post("/users/login", multiPart);
-        connect(req, &Request::jsonReceived, [this, multiPart, req](const QJsonDocument& json)
+        connect(req, &Request::jsonReceived, [this, multiPart, req](const QJsonObject& json)
         {
-            if (mUser->fromJson(json))
+            if (json["success"].toBool())
             {
-                emit loginSuccess();
+                if (mUser->fromJson(json["data"].toObject()))
+                {
+                    emit loginSuccess();
+                }
             }
-            else
-            {
-                emit loginFailed();
-            }
+            emit loginFailed();
             delete multiPart;
             delete req;
         });
@@ -107,7 +107,7 @@ void Regovar::logout()
     else
     {
         Request* test = Request::get("/users/logout");
-        connect(test, &Request::jsonReceived, [this](const QJsonDocument& json)
+        connect(test, &Request::jsonReceived, [this](const QJsonObject& json)
         {
             mUser->clear();
             qDebug() << "You are disconnected !";

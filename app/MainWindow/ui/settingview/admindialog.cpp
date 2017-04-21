@@ -17,7 +17,11 @@ AdminDialog::AdminDialog(QWidget *parent) :
 
     mListWidget->setMaximumWidth(200);
     mListWidget->setIconSize(QSize(48,48));
+    mListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    mListWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mListWidget->setDragDropMode(QAbstractItemView::NoDragDrop);
 
+    //mStackedWidget->setContentsMargins(0,0,0,0);
 
     QHBoxLayout * cLayout = new QHBoxLayout;
     cLayout->addWidget(mListWidget);
@@ -26,7 +30,6 @@ AdminDialog::AdminDialog(QWidget *parent) :
     QVBoxLayout * mainLayout = new QVBoxLayout;
     mainLayout->addLayout(cLayout);
     mainLayout->addWidget(mButtonBox);
-
 
     setLayout(mainLayout);
 
@@ -93,8 +96,8 @@ void AdminDialog::load()
                 qDebug()<<"Cannot load settings "<<widget->windowTitle();
             }
         }
-
     }
+    mListWidget->setCurrentRow(0);
 }
 
 void AdminDialog::updateTab(int row)

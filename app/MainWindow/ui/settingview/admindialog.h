@@ -4,7 +4,6 @@
 
 #include <QWidget>
 #include <QDialog>
-#include <QHBoxLayout>
 #include <QList>
 #include <QStackedWidget>
 #include <QListWidget>
@@ -31,11 +30,11 @@ protected Q_SLOTS:
 private:
 
 private:
-    QHash<QString, QList<AbstractSettingsWidget*> > mWidgets;
+    QHash<QString, QList<AbstractSettingsWidget*>> mWidgets;
 
-    QStackedWidget * mStackedWidget;
-    QListWidget * mListWidget;
-    QDialogButtonBox * mButtonBox;
+    QStackedWidget* mStackedWidget;
+    QListWidget* mListWidget;
+    QDialogButtonBox* mButtonBox;
 
 };
 

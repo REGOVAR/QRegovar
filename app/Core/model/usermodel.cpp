@@ -15,15 +15,21 @@ UserModel::UserModel(quint32 id, const QString& firstname, const QString& lastna
 // Tools ========================================
 
 
-
-
 bool UserModel::fromJson(QJsonDocument json)
+{
+    QJsonObject data = json.object();
+    return UserModel::fromJson(data);
+}
+
+bool UserModel::fromJson(QJsonObject json)
 {
     // TODO set current user with json data
     // QString st(json.toJson(QJsonDocument::Compact));
-    mId = 1;
-    mFirstname = "Olivier";
-    mLastname = "Gueudelot";
+    mId = json["id"].toInt();
+    mFirstname = json["firstname"].toString();
+    mLastname = json["lastname"].toString();
+    mEmail = json["email"].toString();
+    qDebug() << "new User" << mId << mFirstname << mLastname;
 
     mRoles.clear();
     mRoles[Administration] = Write;
@@ -104,9 +110,16 @@ void UserModel::save()
 
 
         Request* saveRequest = Request::put(QString("/users/%1").arg(mId), multiPart);
-        connect(saveRequest, &Request::jsonReceived, [this](const QJsonDocument& json)
+        connect(saveRequest, &Request::jsonReceived, [this](const QJsonObject& json)
         {
-            qDebug() << "User saved";
+            if (json["success"].toBool())
+            {
+                qDebug() << "User saved";
+            }
+            else
+            {
+                qDebug() << "Request error occured";
+            }
         });
     }
     else
