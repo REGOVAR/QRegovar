@@ -28,9 +28,7 @@ SOURCES += \
     model/projectmodel.cpp \
     model/usermodel.cpp \
     model/resourcemodel.cpp \
-    model/eventlistmodel.cpp \
-    model/eventmodel.cpp \
-    model/userlistmodel.cpp
+    model/eventmodel.cpp
 
 HEADERS += \
     tools/request.h \
@@ -38,9 +36,7 @@ HEADERS += \
     model/projectmodel.h \
     model/usermodel.h \
     model/resourcemodel.h \
-    model/eventlistmodel.h \
-    model/eventmodel.h \
-    model/userlistmodel.h
+    model/eventmodel.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

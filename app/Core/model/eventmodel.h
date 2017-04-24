@@ -25,6 +25,15 @@ public:
     EventModel(QObject* parent=nullptr);
     EventModel(quint32 id, QDateTime date, EventType type, QString message, UserModel* user, QObject* parent=nullptr);
 
+
+    // api methods
+    // static getFromId() : get
+    // save : put/post
+    //
+
+
+
+
     // Properties
     // Read
     const QDateTime& date() const;

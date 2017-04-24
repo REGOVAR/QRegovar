@@ -6,6 +6,8 @@
 #include <QGridLayout>
 #include <QHeaderView>
 
+#include "eventlistviewmodel.h"
+
 
 namespace projectview
 {
@@ -75,7 +77,7 @@ void ResumeWidget::setProject(ProjectModel* project)
 {
     if (project != nullptr)
     {
-        mEventsTable->setModel(project->events());
+        mEventsTable->setModel(new EventListViewModel);
     }
 }
 

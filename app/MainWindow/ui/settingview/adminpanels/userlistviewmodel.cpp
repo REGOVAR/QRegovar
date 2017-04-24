@@ -1,9 +1,9 @@
-#include "userlistmodel.h"
+#include "userlistviewmodel.h"
 #include "tools/request.h"
 
 
 
-UserListModel::UserListModel(QObject* parent) : QAbstractListModel(parent)
+UserListViewModel::UserListViewModel(QObject* parent) : QAbstractListModel(parent)
 {
     Request* req = Request::get("/users");
     connect(req, &Request::jsonReceived, [this, req](const QJsonObject& json)
@@ -24,6 +24,7 @@ UserListModel::UserListModel(QObject* parent) : QAbstractListModel(parent)
         {
             qDebug() << "Unable to build user list model (request error)";
         }
+        req->deleteLater();
     });
 }
 
@@ -33,19 +34,19 @@ UserListModel::UserListModel(QObject* parent) : QAbstractListModel(parent)
 
 
 
-int UserListModel::rowCount(const QModelIndex &parent) const
+int UserListViewModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
     return mUsers.size();
 }
 
-int UserListModel::columnCount(const QModelIndex &parent) const
+int UserListViewModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
     return 7;
 }
 
-QVariant UserListModel::data(const QModelIndex &index, int role) const
+QVariant UserListViewModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
     {
@@ -101,7 +102,7 @@ QVariant UserListModel::data(const QModelIndex &index, int role) const
 
 }
 
-QVariant UserListModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant UserListViewModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
     {

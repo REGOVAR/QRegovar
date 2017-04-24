@@ -5,10 +5,6 @@ ProjectModel::ProjectModel() : ResourceModel()
     mName = "Toto prj";
     mComment = "Il s'agit du project de la famille Toto";
     mSharing = "GUEUDELOT Olivier, SCHUTZ Sacha";
-    mEvents = new EventListModel();
-    mSubjects = new QList<QString>();
-    mAnalyses = new QList<QString>();
-    mAttachments = new QList<QString>();
     mStatus = Opened;
     mLastActivity = QDateTime::currentDateTime();
 }
@@ -34,12 +30,25 @@ bool ProjectModel::fromJson(QJsonDocument json)
 
 void ProjectModel::clear()
 {
-    delete mEvents;
-    delete mSubjects;
-    delete mAnalyses;
-    delete mAttachments;
 }
 
+
+
+
+
+QList<EventModel*>* ProjectModel::getEventsList()
+{
+    QList<EventModel*>* eventsList = new QList<EventModel*>;
+
+    // TODO : retrieve event from rest api
+    // FIXME : fake data to debug
+    eventsList->append(new EventModel(1, QDateTime::currentDateTime(), Info, "Coucou", nullptr));
+    eventsList->append(new EventModel(2, QDateTime::currentDateTime(), Info, "Test", nullptr));
+    eventsList->append(new EventModel(3, QDateTime::currentDateTime(), Warning, "Attention !", nullptr));
+    eventsList->append(new EventModel(4, QDateTime::currentDateTime(), Success, "Yes :)", nullptr));
+
+    return eventsList;
+}
 
 
 
@@ -87,53 +96,6 @@ void ProjectModel::setSharing(const QString& sharing)
     emit resourceChanged();
 }
 
-
-// Property : Events
-EventListModel* ProjectModel::events() const
-{
-    return mEvents;
-}
-void ProjectModel::setEvents(EventListModel* events)
-{
-    mEvents = events;
-    emit resourceChanged();
-}
-
-
-// Property : Subjects
-QList<QString>* ProjectModel::subjects() const
-{
-    return mSubjects;
-}
-void ProjectModel::setSubjects(QList<QString>* subjects)
-{
-    mSubjects = subjects;
-    emit resourceChanged();
-}
-
-
-// Property : Analyses
-QList<QString>* ProjectModel::analyses() const
-{
-    return mAnalyses;
-}
-void ProjectModel::setAnalyses(QList<QString>* analyses)
-{
-    mAnalyses = analyses;
-    emit resourceChanged();
-}
-
-
-// Property : Attachments
-QList<QString>* ProjectModel::attachments() const
-{
-    return mAttachments;
-}
-void ProjectModel::setAttachments(QList<QString>* attachments)
-{
-    mAttachments = attachments;
-    emit resourceChanged();
-}
 
 
 // Property : Status

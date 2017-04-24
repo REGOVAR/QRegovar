@@ -1,35 +1,28 @@
-#include "eventlistmodel.h"
+#include "eventlistviewmodel.h"
 
 
 
-EventListModel::EventListModel(QObject* parent) : QAbstractListModel(parent)
+EventListViewModel::EventListViewModel(QObject* parent) : QAbstractListModel(parent)
 {
-    mEvents = new QList<EventModel>();
 
-    EventModel t(1, QDateTime::currentDateTime(), Info, "Coucou", nullptr);
-
-//    mEvents->append(EventModel(1, QDateTime::currentDateTime(), Info, "Coucou", nullptr));
-//    mEvents->append(EventModel(2, QDateTime::currentDateTime(), Info, "Test", nullptr));
-//    mEvents->append(EventModel(3, QDateTime::currentDateTime(), Warning, "Attention !", nullptr));
-//    mEvents->append(EventModel(4, QDateTime::currentDateTime(), Success, "Yes :)", nullptr));
 }
 
 
 
 
-int EventListModel::rowCount(const QModelIndex &parent) const
+int EventListViewModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return mEvents->size();
+    return mEvents.size();
 }
 
-int EventListModel::columnCount(const QModelIndex &parent) const
+int EventListViewModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
     return 3;
 }
 
-QVariant EventListModel::data(const QModelIndex &index, int role) const
+QVariant EventListViewModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
     {
@@ -41,10 +34,10 @@ QVariant EventListModel::data(const QModelIndex &index, int role) const
     {
         switch(index.column())
         {
-            case DateColumn:    return mEvents->at(index.row()).date();
-            case MessageColumn: return mEvents->at(index.row()).message();
+            case DateColumn:    return mEvents.at(index.row())->date();
+            case MessageColumn: return mEvents.at(index.row())->message();
             case UserColumn:
-                UserModel* user = mEvents->at(index.row()).user();
+                UserModel* user = mEvents.at(index.row())->user();
                 if (user != nullptr)
                 {
                     return QString("%1 %2").arg(user->firstname().toUpper(), user->lastname());
@@ -87,7 +80,7 @@ QVariant EventListModel::data(const QModelIndex &index, int role) const
 
 }
 
-QVariant EventListModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant EventListViewModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
     {

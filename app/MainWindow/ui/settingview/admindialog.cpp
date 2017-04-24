@@ -4,7 +4,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
-#include "adminpanels/usersmanagementwidget.h"
+#include "adminpanels/userslistwidget.h"
 #include "app.h"
 
 AdminDialog::AdminDialog(QWidget *parent) :
@@ -33,7 +33,7 @@ AdminDialog::AdminDialog(QWidget *parent) :
     setLayout(mainLayout);
 
 
-    addWidget(new UsersManagementWidget(), tr("Users"), app->awesome()->icon(fa::users));
+    addWidget(new UsersListWidget(), tr("Users"), app->awesome()->icon(fa::users));
 
     resize(800,400);
 

@@ -1,10 +1,10 @@
-#ifndef USERLISTMODEL_H
-#define USERLISTMODEL_H
+#ifndef USERLISTVIEWMODEL_H
+#define USERLISTVIEWMODEL_H
 
 #include <QAbstractListModel>
-#include "usermodel.h"
+#include "model/usermodel.h"
 
-class UserListModel :  public QAbstractListModel
+class UserListViewModel :  public QAbstractListModel
 {
 public:
     enum
@@ -18,7 +18,7 @@ public:
         LastUpdateColumn
     };
 
-    UserListModel(QObject* parent=nullptr);
+    UserListViewModel(QObject* parent=nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
@@ -30,4 +30,4 @@ private:
     QList<UserModel*> mUsers;
 };
 
-#endif // USERLISTMODEL_H
+#endif // USERLISTVIEWMODEL_H

@@ -1,13 +1,13 @@
-#ifndef EVENTLISTMODEL_H
-#define EVENTLISTMODEL_H
+#ifndef EVENTLISTVIEWMODEL_H
+#define EVENTLISTVIEWMODEL_H
 
 
 #include <QAbstractListModel>
-#include "eventmodel.h"
+#include "model/eventmodel.h"
 
 
 
-class EventListModel : public QAbstractListModel
+class EventListViewModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
@@ -19,7 +19,7 @@ public:
     };
 
 
-    EventListModel(QObject* parent=nullptr);
+    EventListViewModel(QObject* parent=nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
@@ -31,4 +31,4 @@ private:
     QList<EventModel*> mEvents;
 };
 
-#endif // EVENTLISTMODEL_H
+#endif // EVENTLISTVIEWMODEL_H
