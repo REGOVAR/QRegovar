@@ -24,7 +24,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     tools/request.cpp \
-    managers/restapimanager.cpp \
     regovar.cpp \
     model/projectmodel.cpp \
     model/usermodel.cpp \
@@ -35,7 +34,6 @@ SOURCES += \
 
 HEADERS += \
     tools/request.h \
-    managers/restapimanager.h \
     regovar.h \
     model/projectmodel.h \
     model/usermodel.h \

@@ -15,16 +15,11 @@ Regovar* Regovar::i()
 
 Regovar::Regovar()
 {
-    // Get managers.
-
-
-
 
 }
 
 Regovar::~Regovar()
 {
-   delete mApiManager;
 }
 
 

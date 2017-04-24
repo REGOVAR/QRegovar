@@ -10,12 +10,15 @@ UserListModel::UserListModel(QObject* parent) : QAbstractListModel(parent)
     {
         if (json["success"].toBool())
         {
+            beginResetModel();
             for(QJsonValue  u: json["data"].toArray())
             {
                 UserModel* newUser = new UserModel;
                 newUser->fromJson(u.toObject());
                 mUsers.append(newUser);
             }
+            endResetModel();
+            qDebug() << "UserListmodel with " << mUsers.size() << "users";
         }
         else
         {

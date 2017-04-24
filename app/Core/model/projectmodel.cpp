@@ -28,7 +28,8 @@ ProjectModel::ProjectModel() : ResourceModel()
 
 bool ProjectModel::fromJson(QJsonDocument json)
 {
-
+    // TODO
+    return false;
 }
 
 void ProjectModel::clear()

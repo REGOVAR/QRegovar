@@ -12,7 +12,6 @@
 #define regovar (Regovar::i())
 #endif
 
-class RestApiManager;
 
 
 /*!
@@ -63,9 +62,6 @@ private:
 
 
 
-    // Managers
-    RestApiManager* mApiManager;
-
     // Model
     //! The root url to the server api
     QUrl mApiRootUrl;
@@ -74,7 +70,5 @@ private:
 
 };
 
-
-#include "managers/restapimanager.h"
 
 #endif // REGOVAR_H

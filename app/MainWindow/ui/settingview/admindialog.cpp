@@ -1,6 +1,5 @@
 #include "admindialog.h"
 #include <QDebug>
-#include <QLabel.h>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
