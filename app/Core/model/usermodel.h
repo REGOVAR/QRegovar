@@ -27,14 +27,13 @@ class UserModel : public ResourceModel
 {
     Q_OBJECT
 public:
-
-
     Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY userChanged)
     Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY userChanged)
 
     // Constructors
     UserModel(QObject* parent=nullptr);
     UserModel(quint32 id, const QString& firstname, const QString& lastname, QObject* parent=nullptr);
+
 
     // Properties
     // Read

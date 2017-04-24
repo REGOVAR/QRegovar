@@ -1,31 +1,11 @@
 #include "userlistviewmodel.h"
-#include "tools/request.h"
+
 
 
 
 UserListViewModel::UserListViewModel(QObject* parent) : QAbstractListModel(parent)
 {
-    Request* req = Request::get("/users");
-    connect(req, &Request::jsonReceived, [this, req](const QJsonObject& json)
-    {
-        if (json["success"].toBool())
-        {
-            beginResetModel();
-            for(QJsonValue  u: json["data"].toArray())
-            {
-                UserModel* newUser = new UserModel;
-                newUser->fromJson(u.toObject());
-                mUsers.append(newUser);
-            }
-            endResetModel();
-            qDebug() << "UserListmodel with " << mUsers.size() << "users";
-        }
-        else
-        {
-            qDebug() << "Unable to build user list model (request error)";
-        }
-        req->deleteLater();
-    });
+    refresh();
 }
 
 
@@ -33,6 +13,7 @@ UserListViewModel::UserListViewModel(QObject* parent) : QAbstractListModel(paren
 
 
 
+// Overriden methods ===========================================================
 
 int UserListViewModel::rowCount(const QModelIndex &parent) const
 {
@@ -67,7 +48,7 @@ QVariant UserListViewModel::data(const QModelIndex &index, int role) const
             case LastUpdateColumn: return mUsers.at(index.row())->lastActivity();
         }
     }
-// wtf qt... it's not the job of the model to give ui reprensation of data....
+
 //    if (role == Qt::DecorationRole && index.column() == MessageColumn)
 //    {
 //        switch (mEvents.at(index.row())->type())
@@ -120,3 +101,114 @@ QVariant UserListViewModel::headerData(int section, Qt::Orientation orientation,
     return QVariant();
 }
 
+
+
+
+
+
+
+// Methods ===========================================================
+
+
+void UserListViewModel::deleteUser(UserModel* user)
+{
+
+}
+
+void UserListViewModel::deleteUser(quint32 userId)
+{
+    //    mDeleteRequest->args() = Request::get("/users");
+    //    connect(mListRequest, &Request::jsonReceived, [this](const QJsonObject& json)
+    //    {
+    //        if (json["success"].toBool())
+    //        {
+    //            beginResetModel();
+    //            for(QJsonValue  u: json["data"].toArray())
+    //            {
+    //                UserModel* newUser = new UserModel;
+    //                newUser->fromJson(u.toObject());
+    //                mUsers.append(newUser);
+    //            }
+    //            endResetModel();
+    //            qDebug() << "UserListmodel with " << mUsers.size() << "users";
+    //        }
+    //        else
+    //        {
+    //            qDebug() << "Unable to build user list model (request error)";
+    //        }
+    //        req->deleteLater();
+    //    });
+}
+
+void UserListViewModel::saveUser(UserModel* user)
+{
+
+}
+
+UserModel* UserListViewModel::createUser()
+{
+    UserModel* newUser = new UserModel;
+    beginInsertRows(index(1),mUsers.size(),mUsers.size()+1);
+    mUsers.append(newUser);
+    endInsertRows();
+    return newUser;
+}
+
+
+void UserListViewModel::refresh()
+{
+    mListRequest = Request::get("/users");
+    connect(mListRequest, &Request::jsonReceived, [this](const QJsonObject& json)
+    {
+        if (json["success"].toBool())
+        {
+            beginResetModel();
+            for(QJsonValue  u: json["data"].toArray())
+            {
+                UserModel* newUser = new UserModel;
+                newUser->fromJson(u.toObject());
+                mUsers.append(newUser);
+            }
+            endResetModel();
+            qDebug() << "UserListmodel with " << mUsers.size() << "users";
+        }
+        else
+        {
+            qDebug() << "Unable to build user list model (request error)";
+        }
+    });
+}
+
+
+
+
+
+
+// Accessor ===========================================================
+
+UserModel* UserListViewModel::at(int index)
+{
+    if (index >= 0 && index < mUsers.size() )
+    {
+        return mUsers.at(index);
+    }
+    return nullptr;
+}
+
+
+Request* UserListViewModel::addRequest()
+{
+    return mAddRequest;
+}
+Request* UserListViewModel::editRequest()
+{
+    return mEditRequest;
+}
+Request* UserListViewModel::deleteRequest()
+{
+    return mDeleteRequest;
+}
+Request* UserListViewModel::listRequest()
+{
+    return mListRequest;
+}

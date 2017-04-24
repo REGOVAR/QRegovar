@@ -110,7 +110,7 @@ void UserModel::save()
 
 
         Request* saveRequest = Request::put(QString("/users/%1").arg(mId), multiPart);
-        connect(saveRequest, &Request::jsonReceived, [this](const QJsonObject& json)
+        connect(saveRequest, &Request::jsonReceived, [this, saveRequest](const QJsonObject& json)
         {
             if (json["success"].toBool())
             {
@@ -120,6 +120,7 @@ void UserModel::save()
             {
                 qDebug() << "Request error occured";
             }
+            saveRequest->deleteLater();
         });
     }
     else
@@ -127,6 +128,11 @@ void UserModel::save()
         qDebug() << "User not valid. Not able to save it on the server";
     }
 }
+
+
+
+
+
 
 
 
