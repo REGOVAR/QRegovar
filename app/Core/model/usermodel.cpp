@@ -144,7 +144,7 @@ void UserModel::save()
     {
         if (success)
         {
-            QJsonObject data = json["data"];
+            QJsonObject data = json["data"].toObject();
             mId = data["id"].toInt();
             qDebug() << Q_FUNC_INFO << "User saved";
         }
