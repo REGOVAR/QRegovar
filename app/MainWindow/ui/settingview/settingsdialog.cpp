@@ -33,9 +33,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     resize(800,400);
 
-    connect(mListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(updateTab(int)));
-    connect(mButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
-    connect(mButtonBox,SIGNAL(accepted()),this,SLOT(save()));
+    connect(mListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(updateTab(int)));
+    connect(mButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(mButtonBox, SIGNAL(accepted()), this, SLOT(save()));
 
     setWindowTitle(tr("Settings"));
 

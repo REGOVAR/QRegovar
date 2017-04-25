@@ -87,51 +87,74 @@ void UserModel::setRole(const QString& role, const QString& right)
 
 void UserModel::save()
 {
-    if (isValid())
+    if (mLogin.isEmpty())
     {
-        QHttpMultiPart* multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
-        QHttpPart p1;
-        p1.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"firstname\""));
-        p1.setBody(mFirstname.toUtf8());
-        QHttpPart p2;
-        p2.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"lastname\""));
-        p2.setBody(mLastname.toUtf8());
-        QHttpPart p3;
-        p3.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"email\""));
-        p3.setBody(mEmail.toUtf8());
-        QHttpPart p4;
-        p4.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"function\""));
-        p4.setBody(mFunction.toUtf8());
-        QHttpPart p5;
-        p5.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"location\""));
-        p5.setBody(mLocation.toUtf8());
+        qWarning() <<  Q_FUNC_INFO << "User's login is empty, not able to save it.";
+    }
 
-        multiPart->append(p1);
-        multiPart->append(p2);
-        multiPart->append(p3);
-        multiPart->append(p4);
-        multiPart->append(p5);
+    QHttpMultiPart* multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+    QHttpPart p1;
+    p1.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"firstname\""));
+    p1.setBody(mFirstname.toUtf8());
+    multiPart->append(p1);
+    QHttpPart p2;
+    p2.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"lastname\""));
+    p2.setBody(mLastname.toUtf8());
+    multiPart->append(p2);
+    QHttpPart p3;
+    p3.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"email\""));
+    p3.setBody(mEmail.toUtf8());
+    multiPart->append(p3);
+    QHttpPart p4;
+    p4.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"function\""));
+    p4.setBody(mFunction.toUtf8());
+    multiPart->append(p4);
+    QHttpPart p5;
+    p5.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"location\""));
+    p5.setBody(mLocation.toUtf8());
+    multiPart->append(p5);
 
+    if (!mPassword.isEmpty())
+    {
+        QHttpPart p6;
+        p6.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"password\""));
+        p6.setBody(mPassword.toUtf8());
+        multiPart->append(p6);
+    }
+    QHttpPart p7;
+    p7.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"login\""));
+    p7.setBody(mLogin.toUtf8());
+    multiPart->append(p7);
+    if (!mAvatar.isNull())
+    {
+        // TODO
+    }
 
-        Request* saveRequest = Request::put(QString("/users/%1").arg(mId), multiPart);
-        connect(saveRequest, &Request::responseReceived, [this, multiPart, saveRequest](bool success, const QJsonObject& json)
-        {
-            if (success)
-            {
-                qDebug() << Q_FUNC_INFO << "User saved";
-            }
-            else
-            {
-                qCritical() << Q_FUNC_INFO << "Request error occured";
-            }
-            multiPart->deleteLater();
-            saveRequest->deleteLater();
-        });
+    Request* request;
+    if (mId == 0)
+    {
+        request = Request::post("/users", multiPart);
     }
     else
     {
-        qDebug() << Q_FUNC_INFO << "User not valid. Not able to save it on the server";
+        request = Request::put(QString("/users/%1").arg(mId), multiPart);
     }
+
+    connect(request, &Request::responseReceived, [this, multiPart, request](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            QJsonObject data = json["data"];
+            mId = data["id"].toInt();
+            qDebug() << Q_FUNC_INFO << "User saved";
+        }
+        else
+        {
+            qCritical() << Q_FUNC_INFO << "Request error occured";
+        }
+        multiPart->deleteLater();
+        request->deleteLater();
+    });
 }
 
 

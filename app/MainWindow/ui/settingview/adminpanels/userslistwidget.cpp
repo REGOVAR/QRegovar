@@ -5,6 +5,7 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QHeaderView>
+#include "usereditingdialog.h"
 #include "regovar.h"
 #include "app.h"
 
@@ -66,23 +67,37 @@ UserModel* UsersListWidget::selectedUser()
 
 void UsersListWidget::displayAddUser()
 {
-
+    UserEditingDialog userdialog(new UserModel);
+    userdialog.exec();
 }
+
 void UsersListWidget::displayEditUser()
 {
+    UserModel* user = selectedUser();
+    if (user != nullptr)
+    {
+        UserEditingDialog userdialog(user);
+        userdialog.exec();
+
+    }
+    else
+    {
+        QMessageBox::information(this, tr("Edit user"), tr("You need to select a user first."), QMessageBox::Ok);
+    }
 
 }
+
 void UsersListWidget::displayDeleteUser()
 {
     UserModel* user = selectedUser();
     if (user != nullptr)
     {
+        // Confirm user deletion before doing it
         if(QMessageBox::question(this,
                                  tr("Delete user confirmation"),
                                  tr("Are you sure to delete the user : <b>%1 %2 (%3)</b> ?").arg(user->firstname(), user->lastname(), user->login()),
                                  QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
         {
-            // TODO : delete the user
             mUserListViewModel->deleteUser(user->id());
         }
     }
@@ -91,9 +106,10 @@ void UsersListWidget::displayDeleteUser()
         QMessageBox::information(this, tr("Delete user"), tr("You need to select a user first."), QMessageBox::Ok);
     }
 }
+
 void UsersListWidget::FilterUsersList()
 {
-
+    // TODO using sortfilterproxy ?
 }
 
 

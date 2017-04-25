@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     ui/settingview/admindialog.cpp \
     ui/settingview/adminpanels/userslistwidget.cpp \
     ui/settingview/adminpanels/userlistviewmodel.cpp \
-    ui/projectview/eventlistviewmodel.cpp
+    ui/projectview/eventlistviewmodel.cpp \
+    ui/settingview/adminpanels/usereditingdialog.cpp
 
 HEADERS  += mainwindow.h \
     ui/loginwidget.h \
@@ -51,7 +52,8 @@ HEADERS  += mainwindow.h \
     ui/settingview/admindialog.h \
     ui/settingview/adminpanels/userslistwidget.h \
     ui/settingview/adminpanels/userlistviewmodel.h \
-    ui/projectview/eventlistviewmodel.h
+    ui/projectview/eventlistviewmodel.h \
+    ui/settingview/adminpanels/usereditingdialog.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Core/release/ -lCore
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Core/debug/ -lCore
