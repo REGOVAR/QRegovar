@@ -117,27 +117,32 @@ void UserListViewModel::deleteUser(UserModel* user)
 
 void UserListViewModel::deleteUser(quint32 userId)
 {
-    //    mDeleteRequest->args() = Request::get("/users");
-    //    connect(mListRequest, &Request::jsonReceived, [this](const QJsonObject& json)
-    //    {
-    //        if (json["success"].toBool())
-    //        {
-    //            beginResetModel();
-    //            for(QJsonValue  u: json["data"].toArray())
-    //            {
-    //                UserModel* newUser = new UserModel;
-    //                newUser->fromJson(u.toObject());
-    //                mUsers.append(newUser);
-    //            }
-    //            endResetModel();
-    //            qDebug() << "UserListmodel with " << mUsers.size() << "users";
-    //        }
-    //        else
-    //        {
-    //            qDebug() << "Unable to build user list model (request error)";
-    //        }
-    //        req->deleteLater();
-    //    });
+    Request* request = Request::del(QString("/users/%1").arg(userId));
+    connect(request, &Request::responseReceived, [this, request, userId](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            for (int idx=0; idx < mUsers.size(); idx++)
+            {
+                UserModel* user = mUsers.at(idx);
+                if (user->id() == userId)
+                {
+                    beginRemoveRows(index(1), idx, idx+1);
+                    mUsers.removeAt(idx);
+                    endRemoveRows();
+                    qDebug() << Q_FUNC_INFO << "User deleted on server, client updated";
+                    emit deleteRequestSuccess();
+                    break;
+                }
+            }
+        }
+        else
+        {
+            emit deleteRequestFailed();
+            qCritical() << Q_FUNC_INFO << "Unable to delete user server side";
+        }
+        request->deleteLater();
+    });
 }
 
 void UserListViewModel::saveUser(UserModel* user)
@@ -157,10 +162,10 @@ UserModel* UserListViewModel::createUser()
 
 void UserListViewModel::refresh()
 {
-    mListRequest = Request::get("/users");
-    connect(mListRequest, &Request::jsonReceived, [this](const QJsonObject& json)
+    Request* request = Request::get("/users");
+    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
-        if (json["success"].toBool())
+        if (success)
         {
             beginResetModel();
             for(QJsonValue  u: json["data"].toArray())
@@ -170,15 +175,15 @@ void UserListViewModel::refresh()
                 mUsers.append(newUser);
             }
             endResetModel();
-            qDebug() << "UserListmodel with " << mUsers.size() << "users";
+            qDebug() << Q_FUNC_INFO << "UserListmodel with " << mUsers.size() << "users";
         }
         else
         {
-            qDebug() << "Unable to build user list model (request error)";
+            qCritical() << Q_FUNC_INFO << "Unable to build user list model (due to request error)";
         }
+        request->deleteLater();
     });
 }
-
 
 
 
@@ -193,22 +198,4 @@ UserModel* UserListViewModel::at(int index)
         return mUsers.at(index);
     }
     return nullptr;
-}
-
-
-Request* UserListViewModel::addRequest()
-{
-    return mAddRequest;
-}
-Request* UserListViewModel::editRequest()
-{
-    return mEditRequest;
-}
-Request* UserListViewModel::deleteRequest()
-{
-    return mDeleteRequest;
-}
-Request* UserListViewModel::listRequest()
-{
-    return mListRequest;
 }

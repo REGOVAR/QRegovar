@@ -7,6 +7,7 @@
 
 class UserListViewModel :  public QAbstractListModel
 {
+    Q_OBJECT
 public:
     enum
     {
@@ -39,19 +40,21 @@ public:
 
     // Accessor
     UserModel* at(int index);
-    Request* addRequest();
-    Request* editRequest();
-    Request* deleteRequest();
-    Request* listRequest();
+
+
+
+Q_SIGNALS:
+    void addRequestSuccess();
+    void addRequestFailed();
+    void editRequestSuccess();
+    void editRequestFailed();
+    void deleteRequestSuccess();
+    void deleteRequestFailed();
 
 
 
 private:
     QList<UserModel*> mUsers;
-    Request* mAddRequest;
-    Request* mEditRequest;
-    Request* mDeleteRequest;
-    Request* mListRequest;
 
 
 };

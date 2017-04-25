@@ -273,7 +273,7 @@ void MainWindow::loginUser()
     QString login  = mLoginWidget->username();
     QString passw  = mLoginWidget->password();
 
-    qDebug() << tr("checkAuthent login:%1 pwd:%2").arg(login, passw);
+    qDebug() << "DEBUG" << Q_FUNC_INFO << QString("CheckAuthent login:%1 pwd:%2").arg(login, passw);
     regovar->login(login, passw);
 }
 
@@ -299,7 +299,7 @@ void MainWindow::logoutUser()
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, tr("About Regovar"), tr("<b>Regovar</b> application is the best. "));
+    QMessageBox::about(this, tr("About Regovar"), tr("<b>Regovar</b> application is the best."));
 }
 
 

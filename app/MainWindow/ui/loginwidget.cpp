@@ -22,6 +22,8 @@ LoginWidget::LoginWidget(QWidget* parent) : QWidget(parent)
     QPushButton * loginButton = buttonBox->addButton(tr("Login"), QDialogButtonBox::AcceptRole);
 
     // Connects Signals to other Signals
+    connect(mComboUsername->lineEdit(), &QLineEdit::returnPressed, this, &LoginWidget::accepted);
+    connect(mEditPassword, &QLineEdit::returnPressed, this, &LoginWidget::accepted);
     connect(loginButton, &QPushButton::clicked, this, &LoginWidget::accepted);
 
     // place components into the dialog

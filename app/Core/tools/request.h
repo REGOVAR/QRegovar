@@ -25,11 +25,15 @@ public:
     static QNetworkRequest makeRequest(const QString& resource) ;
 
 
+    // Accessors
     const QJsonObject& json() const;
+    inline bool success() { return mSuccess; }
     inline bool loading() { return mLoading; }
+    inline QNetworkReply::NetworkError replyError() { return mReplyError; }
+
 
 Q_SIGNALS :
-    void jsonReceived(const QJsonObject& json);
+    void responseReceived(bool success, const QJsonObject& json);
 
 
 protected Q_SLOTS:
@@ -39,8 +43,11 @@ private:
     static QNetworkAccessManager* mNetManager;
 
     bool mLoading = false;
+    bool mSuccess = false;
+    QNetworkReply::NetworkError mReplyError;
     QNetworkReply* mReply;
     QJsonObject mJson;
+
 
 
 };

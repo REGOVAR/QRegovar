@@ -19,6 +19,7 @@ UsersListWidget::UsersListWidget(QWidget *parent) : AbstractSettingsWidget(paren
     mUsersList = new QTableView;
     mUsersList->horizontalHeader()->setStretchLastSection(true);
     mUsersList->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mUsersList->setSelectionMode(QAbstractItemView::SingleSelection);
     QWidget* stretcher = new QWidget;
     stretcher->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 

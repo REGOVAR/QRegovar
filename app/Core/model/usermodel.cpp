@@ -26,10 +26,14 @@ bool UserModel::fromJson(QJsonObject json)
     // TODO set current user with json data
     // QString st(json.toJson(QJsonDocument::Compact));
     mId = json["id"].toInt();
+    mLogin = json["login"].toString();
     mFirstname = json["firstname"].toString();
     mLastname = json["lastname"].toString();
     mEmail = json["email"].toString();
-    qDebug() << "new User" << mId << mFirstname << mLastname;
+    mFunction = json["function"].toString();
+    mLocation = json["location"].toString();
+    mLastActivity = QDate::fromString(json["last_activity"].toString());
+    qDebug() << Q_FUNC_INFO << "New User" << mId << mFirstname << mLastname;
 
     mRoles.clear();
     mRoles[Administration] = Write;
@@ -110,22 +114,23 @@ void UserModel::save()
 
 
         Request* saveRequest = Request::put(QString("/users/%1").arg(mId), multiPart);
-        connect(saveRequest, &Request::jsonReceived, [this, saveRequest](const QJsonObject& json)
+        connect(saveRequest, &Request::responseReceived, [this, multiPart, saveRequest](bool success, const QJsonObject& json)
         {
-            if (json["success"].toBool())
+            if (success)
             {
-                qDebug() << "User saved";
+                qDebug() << Q_FUNC_INFO << "User saved";
             }
             else
             {
-                qDebug() << "Request error occured";
+                qCritical() << Q_FUNC_INFO << "Request error occured";
             }
+            multiPart->deleteLater();
             saveRequest->deleteLater();
         });
     }
     else
     {
-        qDebug() << "User not valid. Not able to save it on the server";
+        qDebug() << Q_FUNC_INFO << "User not valid. Not able to save it on the server";
     }
 }
 

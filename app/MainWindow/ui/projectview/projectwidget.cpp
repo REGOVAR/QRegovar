@@ -160,23 +160,23 @@ void ProjectWidget::displaySection(QListWidgetItem* current, QListWidgetItem* pr
 }
 void ProjectWidget::showProjectSettings()
 {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << "TODO" << Q_FUNC_INFO;
 }
 void ProjectWidget::showAddSubjectsData()
 {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << "TODO" << Q_FUNC_INFO;
 }
 void ProjectWidget::showNewTask()
 {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << "TODO" << Q_FUNC_INFO;
 }
 void ProjectWidget::showAddEvent()
 {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << "TODO" << Q_FUNC_INFO;
 }
 void ProjectWidget::showAddAttachment()
 {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << "TODO" << Q_FUNC_INFO;
 }
 void ProjectWidget::toggleBrowser()
 {

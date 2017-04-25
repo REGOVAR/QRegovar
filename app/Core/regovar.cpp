@@ -56,7 +56,7 @@ void Regovar::login(QString& login, QString& password)
     // Do nothing if user already connected
     if (mUser->isValid())
     {
-        qDebug() << tr("User %1 %2 already loged in. Thanks to logout first.").arg(mUser->firstname(), mUser->lastname());
+        qDebug() << Q_FUNC_INFO << QString("User %1 %2 already loged in. Thanks to logout first.").arg(mUser->firstname(), mUser->lastname());
     }
     else
     {
@@ -76,9 +76,9 @@ void Regovar::login(QString& login, QString& password)
         multiPart->append(p2);
 
         Request* req = Request::post("/users/login", multiPart);
-        connect(req, &Request::jsonReceived, [this, multiPart, req](const QJsonObject& json)
+        connect(req, &Request::responseReceived, [this, multiPart, req](bool success, const QJsonObject& json)
         {
-            if (json["success"].toBool())
+            if (success)
             {
                 if (mUser->fromJson(json["data"].toObject()))
                 {
@@ -86,8 +86,8 @@ void Regovar::login(QString& login, QString& password)
                 }
             }
             emit loginFailed();
-            delete multiPart;
-            delete req;
+            multiPart->deleteLater();
+            req->deleteLater();
         });
     }
 }
@@ -97,15 +97,15 @@ void Regovar::logout()
     // Do nothing if user already disconnected
     if (!mUser->isValid())
     {
-        qDebug() << tr("you are already not authenticated...");
+        qDebug() << Q_FUNC_INFO << "You are already not authenticated...";
     }
     else
     {
         Request* test = Request::get("/users/logout");
-        connect(test, &Request::jsonReceived, [this](const QJsonObject& json)
+        connect(test, &Request::responseReceived, [this](bool success, const QJsonObject& json)
         {
             mUser->clear();
-            qDebug() << "You are disconnected !";
+            qDebug() << Q_FUNC_INFO << "You are disconnected !";
             emit logoutSuccess();
         });
     }
@@ -115,7 +115,6 @@ void Regovar::authenticationRequired(QNetworkReply* request, QAuthenticator* aut
 {
     // Basic authentication requested by the server.
     // Try authentication using current user credentials
-    qDebug() << Q_FUNC_INFO;
     if (authenticator->password() != currentUser()->password() || authenticator->user() != currentUser()->login())
     {
         authenticator->setUser(currentUser()->login());

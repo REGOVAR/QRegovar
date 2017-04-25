@@ -39,7 +39,7 @@ Request::Request(Verb verb, const QString& query, QHttpMultiPart* data, QObject*
             break;
 
         default:
-            qDebug() << "ERROR : unknow query verb ... \"" << verb << "\" : \"" << query << "\"";
+            qCritical() << Q_FUNC_INFO << "Unknow query verb ... \"" << verb << "\" : \"" << query << "\"";
             break;
     }
     if (mReply != Q_NULLPTR)
@@ -78,7 +78,7 @@ QNetworkRequest Request::makeRequest(const QString& resource)
 {
     QUrl url(Regovar::i()->apiRootUrl());
     url.setPath(resource);
-    qDebug() << url;
+    qDebug() << Q_FUNC_INFO << url;
 
     QNetworkRequest request(url);
     return request;
@@ -99,19 +99,24 @@ void Request::received()
 
     if (reply && reply->isFinished())
     {
-        if (reply->error() == QNetworkReply::NoError)
+        mReplyError = reply->error();
+        if (mReplyError == QNetworkReply::NoError)
         {
             QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
             mJson = doc.object();
-            emit jsonReceived(mJson);
+            mSuccess = mJson["success"].toBool();
+            emit responseReceived(mSuccess, mJson);
         }
         else
         {
-            qDebug() << Q_FUNC_INFO << "QNetworkReply error : " << reply->error();
+            qDebug() << "ERROR" << Q_FUNC_INFO << mReplyError;
+            mSuccess = false;
+            mJson = QJsonObject();
+            emit responseReceived(mSuccess, mJson);
         }
     }
     else
     {
-        qDebug() << "no answer ?";
+        qWarning() << Q_FUNC_INFO << "Request ends with no answer ? ";
     }
 }

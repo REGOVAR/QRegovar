@@ -68,7 +68,7 @@ void SettingsDialog::save()
         {
             if (!w->save())
             {
-                qDebug()<<"Cannot load settings "<<w->windowTitle();
+                qDebug() << Q_FUNC_INFO << "Cannot save settings" << w->windowTitle();
             }
         }
 
@@ -88,7 +88,7 @@ void SettingsDialog::load()
         {
             if (!widget->load())
             {
-                qDebug()<<"Cannot load settings "<<widget->windowTitle();
+                qDebug() << Q_FUNC_INFO << "Cannot load settings" << widget->windowTitle();
             }
         }
 
