@@ -125,6 +125,7 @@ void UserModel::save()
     p7.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"login\""));
     p7.setBody(mLogin.toUtf8());
     multiPart->append(p7);
+
     if (!mAvatar.isNull())
     {
         // TODO
