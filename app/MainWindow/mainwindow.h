@@ -34,6 +34,8 @@ public Q_SLOTS:
     void about();
     void settings();
     void admin();
+    void newProject();
+
     void logoutUser();
     void loginUser();
     void displayLoginFailedError();

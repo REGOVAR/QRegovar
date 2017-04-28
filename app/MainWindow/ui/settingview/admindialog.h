@@ -28,8 +28,6 @@ protected Q_SLOTS:
     void updateTab(int row);
 
 private:
-
-private:
     QHash<QString, QList<AbstractSettingsWidget*>> mWidgets;
 
     QStackedWidget* mStackedWidget;

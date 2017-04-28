@@ -1,8 +1,9 @@
 #include "mainwindow.h"
 #include "ui/projectview/projectwidget.h"
-#include "app.h"
+#include "ui/projectview/projecteditiondialog.h"
 #include "ui/settingview/settingsdialog.h"
 #include "ui/settingview/admindialog.h"
+#include "app.h"
 
 
 // Constructor
@@ -23,11 +24,11 @@ MainWindow::MainWindow(QWidget *parent)
     mStackWidget->addWidget(mLoginWidget);
     mStackWidget->addWidget(mTabWidget);
     mTabWidget->addTab(mHomeTabWidget, tr("Home"));
-    projectview::ProjectWidget* tab = new projectview::ProjectWidget(this);
-    tab->setContentsMargins(0,0,0,0);
-    tab->setProject(new ProjectModel());
-    //tab->setStyleSheet("background-color: #ccc;");
-    mTabWidget->addTab(tab, tr("Project"));
+//    projectview::ProjectWidget* tab = new projectview::ProjectWidget(this);
+//    tab->setContentsMargins(0,0,0,0);
+//    tab->setProject(new ProjectModel());
+//    //tab->setStyleSheet("background-color: #ccc;");
+//    mTabWidget->addTab(tab, tr("Project"));
 
     //create connection
     connect(mLoginWidget, SIGNAL(accepted()), this, SLOT(loginUser()));
@@ -211,6 +212,7 @@ void MainWindow::buildMenu()
                 QAction* newProjAct = new QAction(tr("&New project"), this);
                 newProjAct->setStatusTip(tr("Create a new project"));
                 projectMenu->addAction(newProjAct);
+                connect(newProjAct, &QAction::triggered, this, &MainWindow::newProject);
             }
             QAction* browseProjAct = new QAction(tr("&Open project"), this);
             browseProjAct->setStatusTip(tr("Browse and open existing projects"));
@@ -316,7 +318,14 @@ void MainWindow::admin()
         adminDialog.exec();
     }
 }
-
+void MainWindow::newProject()
+{
+    if (regovar->currentUser()->role(Project) == Write)
+    {
+        ProjectEditionDialog projectDialog;
+        projectDialog.exec();
+    }
+}
 
 
 
