@@ -75,7 +75,7 @@ void Regovar::login(QString& login, QString& password)
         multiPart->append(p1);
         multiPart->append(p2);
 
-        Request* req = Request::post("/users/login", multiPart);
+        Request* req = Request::post("/user/login", multiPart);
         connect(req, &Request::responseReceived, [this, multiPart, req](bool success, const QJsonObject& json)
         {
             if (success)
@@ -101,7 +101,7 @@ void Regovar::logout()
     }
     else
     {
-        Request* test = Request::get("/users/logout");
+        Request* test = Request::get("/user/logout");
         connect(test, &Request::responseReceived, [this](bool success, const QJsonObject& json)
         {
             mUser->clear();

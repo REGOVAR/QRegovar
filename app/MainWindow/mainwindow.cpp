@@ -24,11 +24,11 @@ MainWindow::MainWindow(QWidget *parent)
     mStackWidget->addWidget(mLoginWidget);
     mStackWidget->addWidget(mTabWidget);
     mTabWidget->addTab(mHomeTabWidget, tr("Home"));
-//    projectview::ProjectWidget* tab = new projectview::ProjectWidget(this);
-//    tab->setContentsMargins(0,0,0,0);
-//    tab->setProject(new ProjectModel());
-//    //tab->setStyleSheet("background-color: #ccc;");
-//    mTabWidget->addTab(tab, tr("Project"));
+    projectview::ProjectWidget* tab = new projectview::ProjectWidget(this);
+    tab->setContentsMargins(0,0,0,0);
+    tab->setProject(new ProjectModel());
+    //tab->setStyleSheet("background-color: #ccc;");
+    mTabWidget->addTab(tab, tr("Project"));
 
     //create connection
     connect(mLoginWidget, SIGNAL(accepted()), this, SLOT(loginUser()));

@@ -134,11 +134,11 @@ void UserModel::save()
     Request* request;
     if (mId == 0)
     {
-        request = Request::post("/users", multiPart);
+        request = Request::post("/user", multiPart);
     }
     else
     {
-        request = Request::put(QString("/users/%1").arg(mId), multiPart);
+        request = Request::put(QString("/user/%1").arg(mId), multiPart);
     }
 
     connect(request, &Request::responseReceived, [this, multiPart, request](bool success, const QJsonObject& json)
