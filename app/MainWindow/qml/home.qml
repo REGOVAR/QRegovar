@@ -27,10 +27,21 @@ Item
        font.family: "Sans"
        font.weight: Font.Black
        font.pointSize: 24
-       anchors.centerIn: parent
-       anchors.verticalCenterOffset: -100 // on decalle depuis le centre
-
-
+       anchors.left: parent.left
+       anchors.top: parent.top
+       anchors.leftMargin: 30
+    }
+    Text
+    {
+       text: "Your sandbox"
+       color: "#55999999"
+       font.family: "Sans"
+       font.weight: Font.Black
+       font.pointSize: 24
+       anchors.left: parent.left
+       anchors.top: parent.top
+       anchors.leftMargin: 30
+       anchors.topMargin: 30
     }
 
     RowLayout
@@ -71,27 +82,17 @@ Item
     Item
     {
         id: logo
-        width: 165
-        height: 50
+        width: 300
+        height: 100
 
         Image
         {
-            source: "qrc:///img/regovar-logo-64.png"
-            height: 50
-            width: 50
+            source: "qrc:///img/sandbox.png"
+            height: 100
+            width: 300
             anchors.left: logo.left
             anchors.bottom: logo.bottom
             anchors.bottomMargin: 7
-        }
-        Text
-        {
-           text: "egovar"
-           color: "#55000000"
-           font.family: "Sans"
-           font.weight: Font.Black
-           font.pointSize: 24
-           anchors.right: logo.right
-           anchors.bottom: logo.bottom
         }
         anchors.right: root.right
         anchors.rightMargin: 10

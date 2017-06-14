@@ -45,7 +45,7 @@ QVariant EventListViewModel::data(const QModelIndex &index, int role) const
                 break;
         }
     }
-// wtf qt... it's not the job of the model to give ui reprensation of data....
+//
 //    if (role == Qt::DecorationRole && index.column() == MessageColumn)
 //    {
 //        switch (mEvents.at(index.row())->type())

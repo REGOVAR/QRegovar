@@ -12,6 +12,7 @@
 
 #include "regovar.h"
 #include "ui/loginwidget.h"
+#include "ui/jobview/jobwidget.h"
 
 class MainWindow : public QMainWindow
 {
@@ -53,6 +54,7 @@ protected:
     QTabWidget* mTabWidget;
     LoginWidget* mLoginWidget;
     QWidget* mHomeTabWidget;
+    JobWidget* mJobWidget;
 
 };
 

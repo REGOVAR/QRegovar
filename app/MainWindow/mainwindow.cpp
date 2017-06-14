@@ -3,6 +3,7 @@
 #include "ui/projectview/projecteditiondialog.h"
 #include "ui/settingview/settingsdialog.h"
 #include "ui/settingview/admindialog.h"
+#include "ui/jobview/jobwidget.h"
 #include "app.h"
 
 
@@ -19,9 +20,10 @@ MainWindow::MainWindow(QWidget *parent)
     mStackWidget = new QStackedWidget(this);
     mTabWidget = new QTabWidget(this);
     mMenuBar = new QMenuBar(this);
+    mJobWidget = new JobWidget(this);
 
     // add widget to the stack
-    mStackWidget->addWidget(mLoginWidget);
+    // mStackWidget->addWidget(mLoginWidget);
     mStackWidget->addWidget(mTabWidget);
     mTabWidget->addTab(mHomeTabWidget, tr("Home"));
     projectview::ProjectWidget* tab = new projectview::ProjectWidget(this);
@@ -29,6 +31,11 @@ MainWindow::MainWindow(QWidget *parent)
     tab->setProject(new ProjectModel());
     //tab->setStyleSheet("background-color: #ccc;");
     mTabWidget->addTab(tab, tr("Project"));
+
+
+    // DEBUG
+    mTabWidget->addTab(mJobWidget, tr("Jobs"));
+    mTabWidget->setCurrentIndex(2);
 
     //create connection
     connect(mLoginWidget, SIGNAL(accepted()), this, SLOT(loginUser()));

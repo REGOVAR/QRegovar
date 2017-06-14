@@ -35,7 +35,6 @@ public:
 Q_SIGNALS :
     void responseReceived(bool success, const QJsonObject& json);
 
-
 protected Q_SLOTS:
     void received();
 

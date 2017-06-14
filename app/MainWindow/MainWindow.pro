@@ -39,7 +39,13 @@ SOURCES += main.cpp\
     ui/settingview/adminpanels/userlistviewmodel.cpp \
     ui/projectview/eventlistviewmodel.cpp \
     ui/settingview/adminpanels/usereditingdialog.cpp \
-    ui/projectview/projecteditiondialog.cpp
+    ui/projectview/projecteditiondialog.cpp \
+    ui/jobview/jobwidget.cpp \
+    ui/jobview/joblistmodel.cpp \
+    ui/jobview/joblistview.cpp \
+    ui/jobview/jobview.cpp \
+    ui/jobview/abstractjobviewer.cpp \
+    ui/jobview/infojobviewer.cpp
 
 HEADERS  += mainwindow.h \
     ui/loginwidget.h \
@@ -55,7 +61,13 @@ HEADERS  += mainwindow.h \
     ui/settingview/adminpanels/userlistviewmodel.h \
     ui/projectview/eventlistviewmodel.h \
     ui/settingview/adminpanels/usereditingdialog.h \
-    ui/projectview/projecteditiondialog.h
+    ui/projectview/projecteditiondialog.h \
+    ui/jobview/jobwidget.h \
+    ui/jobview/joblistmodel.h \
+    ui/jobview/joblistview.h \
+    ui/jobview/jobview.h \
+    ui/jobview/abstractjobviewer.h \
+    ui/jobview/infojobviewer.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Core/release/ -lCore
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Core/debug/ -lCore
