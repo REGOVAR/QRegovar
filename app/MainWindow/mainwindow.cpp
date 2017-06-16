@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     mJobWidget = new JobWidget(this);
 
     // add widget to the stack
-    // mStackWidget->addWidget(mLoginWidget);
+    mStackWidget->addWidget(mLoginWidget);
     mStackWidget->addWidget(mTabWidget);
     mTabWidget->addTab(mHomeTabWidget, tr("Home"));
     projectview::ProjectWidget* tab = new projectview::ProjectWidget(this);
