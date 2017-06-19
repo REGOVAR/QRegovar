@@ -1174,9 +1174,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.46289063"
-     inkscape:cx="796.75708"
-     inkscape:cy="422.52133"
+     inkscape:zoom="0.60604067"
+     inkscape:cx="1257.4962"
+     inkscape:cy="456.04927"
      inkscape:document-units="px"
      inkscape:current-layer="svg2"
      showgrid="false"
@@ -3188,13 +3188,13 @@
      inkscape:groupmode="layer"
      id="layer8"
      inkscape:label="Project"
-     style="display:none"
+     style="display:inline"
      sodipodi:insensitive="true">
     <g
        inkscape:groupmode="layer"
        id="layer6"
        inkscape:label="Browser"
-       style="display:inline">
+       style="display:none">
       <g
          inkscape:groupmode="layer"
          id="layer9"
@@ -7290,7 +7290,7 @@
       </g>
     </g>
     <g
-       style="display:none"
+       style="display:inline"
        inkscape:label="New Job"
        id="g18692"
        inkscape:groupmode="layer"
@@ -9616,7 +9616,7 @@
      inkscape:groupmode="layer"
      id="layer30"
      inkscape:label="Project v2"
-     style="display:inline">
+     style="display:none">
     <g
        inkscape:groupmode="layer"
        id="layer32"
@@ -10932,7 +10932,7 @@
        inkscape:groupmode="layer"
        id="g39665"
        inkscape:label="Advanced user"
-       style="display:none">
+       style="display:inline">
       <rect
          style="fill:#ad7fa8;fill-opacity:0.19607843;stroke:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="rect39667"
@@ -11485,7 +11485,7 @@
        inkscape:groupmode="layer"
        id="layer16"
        inkscape:label="Legend"
-       style="display:none">
+       style="display:inline">
       <text
          xml:space="preserve"
          style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#555753;fill-opacity:1;stroke:none;stroke-width:0.9375"
