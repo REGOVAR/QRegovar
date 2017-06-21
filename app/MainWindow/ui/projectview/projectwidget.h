@@ -14,7 +14,6 @@
 
 #include "ui/projectview/resume/resumewidget.h"
 #include "ui/projectview/events/eventswidget.h"
-#include "ui/projectview/analysis/analysiswidget.h""
 #include "ui/projectview/settings/settingswidget.h"
 
 namespace projectview
@@ -42,18 +41,11 @@ private:
 
 public:
     explicit ProjectWidget(QWidget *parent = 0);
-    void setProject();
-
     const ProjectModel* project() const;
     void setProject(ProjectModel* project);
 
     void initView();
 
-
-
-
-
-Q_SIGNALS:
 
 public Q_SLOTS:
     void displaySection(QListWidgetItem*, QListWidgetItem*);
