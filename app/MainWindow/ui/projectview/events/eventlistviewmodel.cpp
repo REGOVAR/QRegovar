@@ -1,6 +1,9 @@
 #include "eventlistviewmodel.h"
 
 
+namespace projectview
+{
+
 
 EventListViewModel::EventListViewModel(QObject* parent) : QAbstractListModel(parent)
 {
@@ -94,4 +97,4 @@ QVariant EventListViewModel::headerData(int section, Qt::Orientation orientation
     return QVariant();
 }
 
-
+} // END namespace projectview

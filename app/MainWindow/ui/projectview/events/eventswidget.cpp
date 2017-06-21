@@ -18,7 +18,7 @@ namespace projectview
 EventsWidget::EventsWidget(QWidget *parent) : QFrame(parent)
 {
     QFont titleFont( "Arial", 14, QFont::Bold);
-    mEventsTable = new QTableView(this);
+    mEventsTable = new QTableView();
 
     mEventsTable->horizontalHeader()->setStretchLastSection(true);
     mEventsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -31,13 +31,13 @@ EventsWidget::EventsWidget(QWidget *parent) : QFrame(parent)
     stretcher->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
 
-    QVBoxLayout* controlsLayout = new QVBoxLayout(this);
+    QVBoxLayout* controlsLayout = new QVBoxLayout();
     controlsLayout->addWidget(mAddButton);
     controlsLayout->addWidget(mEditButton);
     controlsLayout->addWidget(mRemoveButton);
     controlsLayout->addWidget(stretcher);
 
-    QHBoxLayout* mainLayout = new QHBoxLayout(this);
+    QHBoxLayout* mainLayout = new QHBoxLayout();
     mainLayout->addWidget(mEventsTable);
     mainLayout->addLayout(controlsLayout);
 

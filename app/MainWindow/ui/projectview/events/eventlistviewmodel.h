@@ -7,6 +7,10 @@
 
 
 
+namespace projectview
+{
+
+
 class EventListViewModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -31,5 +35,5 @@ public:
 private:
     QList<EventModel*> mEvents;
 };
-
+} // END namespace projectview
 #endif // EVENTLISTVIEWMODEL_H
