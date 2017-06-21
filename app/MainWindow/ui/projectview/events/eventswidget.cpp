@@ -38,14 +38,15 @@ EventsWidget::EventsWidget(QWidget *parent) : QFrame(parent)
     controlsLayout->addWidget(stretcher);
 
     QHBoxLayout* mainLayout = new QHBoxLayout();
+    mainLayout->setContentsMargins(0,0,0,0);
     mainLayout->addWidget(mEventsTable);
     mainLayout->addLayout(controlsLayout);
 
     setLayout(mainLayout);
 
-    setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
-    setAutoFillBackground(true);
-    setBackgroundRole(QPalette::Base);
+//    setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+//    setAutoFillBackground(true);
+//    setBackgroundRole(QPalette::Base);
 }
 
 

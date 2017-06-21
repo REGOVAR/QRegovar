@@ -14,7 +14,7 @@
 
 #include "ui/projectview/resume/resumewidget.h"
 #include "ui/projectview/events/eventswidget.h"
-//#include "ui/projectview/analyses/analyseswidget.h""
+#include "ui/projectview/analysis/analysiswidget.h""
 #include "ui/projectview/settings/settingswidget.h"
 
 namespace projectview

@@ -33,8 +33,6 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
     mToolBar->addWidget(stretcher);
     mToolBar->addAction(app->awesome()->icon(fa::circle),tr("Urgent"), this, SLOT(showProjectIndicator()));
 
-    QPalette pal = palette();
-
 
     mSectionBar = new QListWidget(this);
     mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::infocircle), tr("Resume")));
@@ -73,7 +71,7 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
 
     // Set main layout
     QGridLayout* mainLayout = new QGridLayout(this);
-    mainLayout->setContentsMargins(0,0,0,0);
+    mainLayout->setContentsMargins(0,0,5,5);
     mainLayout->addWidget(mSectionBar, 1, 0);
     mainLayout->addWidget(mToolBar, 0, 0, 1, 2);
     mainLayout->addWidget(mStackWidget, 1, 1);
