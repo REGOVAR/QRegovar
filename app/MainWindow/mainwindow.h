@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include <QtWidgets>
 #include <QQuickView>
+#include <QFileSystemModel>
 #include <QQmlContext>
 
 #include "regovar.h"
@@ -47,7 +48,7 @@ protected:
     QWidget* buildHomeWidget();
     void createDockWindows();
 
-    QListWidget *customerList;
+    QTreeView *customerList;
     QListWidget *paragraphsList;
 
 

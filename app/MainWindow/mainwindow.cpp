@@ -344,14 +344,11 @@ void MainWindow::createDockWindows()
     QMenu *viewMenu = new QMenu();
     QDockWidget *dock = new QDockWidget(tr("Browse Project"), this);
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    customerList = new QListWidget(dock);
-    customerList->addItems(QStringList()
-            << "John Doe, Harmony Enterprises, 12 Lakeside, Ambleton"
-            << "Jane Doe, Memorabilia, 23 Watersedge, Beaton"
-            << "Tammy Shea, Tiblanka, 38 Sea Views, Carlton"
-            << "Tim Sheen, Caraba Gifts, 48 Ocean Way, Deal"
-            << "Sol Harvey, Chicos Coffee, 53 New Springs, Eccleston"
-            << "Sally Hobart, Tiroli Tea, 67 Long River, Fedula");
+    customerList = new QTreeView();
+    QFileSystemModel * fmodel = new QFileSystemModel;
+    customerList->setModel(fmodel);
+    fmodel->setRootPath(QStandardPaths::displayName(QStandardPaths::DesktopLocation));
+
 
     dock->setWidget(customerList);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
