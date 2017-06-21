@@ -8,7 +8,7 @@
 #include <QSplitter>
 
 #include <QDebug>
-#include "projectwidget.h"
+#include "ui/projectview/projectwidget.h"
 #include "app.h"
 
 

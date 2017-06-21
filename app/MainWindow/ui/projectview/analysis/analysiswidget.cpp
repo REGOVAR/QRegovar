@@ -12,6 +12,11 @@
 namespace projectview
 {
 
+AnalysisWidget::AnalysisWidget()
+{
+
+}
+
 
 
 //AnalysisWidget::AnalysisWidget(QWidget *parent) : QFrame(parent)

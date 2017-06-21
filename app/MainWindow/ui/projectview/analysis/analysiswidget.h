@@ -13,6 +13,7 @@ namespace projectview
 
 class AnalysisWidget // : public QFrame
 {
+    AnalysisWidget();
 //    Q_OBJECT
 //private:
 //    QTableView* mEventsTable;

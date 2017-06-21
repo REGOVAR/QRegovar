@@ -14,7 +14,6 @@
 
 #include "ui/projectview/resume/resumewidget.h"
 #include "ui/projectview/events/eventswidget.h"
-#include "ui/projectview/analysis/analysiswidget.h""
 #include "ui/projectview/settings/settingswidget.h"
 
 namespace projectview
@@ -49,11 +48,6 @@ public:
 
     void initView();
 
-
-
-
-
-Q_SIGNALS:
 
 public Q_SLOTS:
     void displaySection(QListWidgetItem*, QListWidgetItem*);
