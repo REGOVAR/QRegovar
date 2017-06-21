@@ -11,9 +11,10 @@
 #include <QTreeView>
 #include <QListWidgetItem>
 #include "resumewidget.h"
-#include "projectsbrowserwidget.h"
 #include "model/projectmodel.h"
 
+#include "ui/projectview/settings/settingswidget.h"
+#include "ui/projectview/events/eventswidget.h"
 
 namespace projectview
 {
@@ -24,21 +25,17 @@ class ProjectWidget : public QWidget
     Q_OBJECT
 
 private:
-    QListWidget* mSectionBar;
-    QToolBar* mToolBar;
+    // Views
     QStackedWidget* mStackWidget;
-    QWidget* mResumeTab;
-    QLabel* mTitleLabel;
-    QLabel* mStatusLabel;
+    QListWidget* mSectionBar;
+    ResumeWidget* mResumeWidget;
+    EventsWidget* mEventsWidget;
+    QWidget* mSubjectsWidget;
+    QWidget* mAnalysesWidget;
+    QWidget* mFilesWidget;
+    SettingsWidget* mSettingsWidget;
 
-    QPushButton* mToggleBrowserButton;
-
-    ResumeWidget* mResumePage;
-    QTableWidget* mSubjectPage;
-    QTableWidget* mTaskPage;
-    QTreeView* mFilePage;
-    ProjectsBrowserWidget* mBrowser;
-
+    // Model
     ProjectModel* mProject;
 
 

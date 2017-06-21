@@ -6,7 +6,7 @@
 #include <QGridLayout>
 #include <QHeaderView>
 
-#include "events/eventlistviewmodel.h"
+#include "eventlistviewmodel.h"
 
 
 namespace projectview

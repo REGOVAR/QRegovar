@@ -44,16 +44,19 @@ public Q_SLOTS:
 
 protected:
     void buildMenu();
-    QWidget* buildHomeTab();
+    QWidget* buildHomeWidget();
+    void createDockWindows();
+
+    QListWidget *customerList;
+    QListWidget *paragraphsList;
 
 
     QMenuBar* mMenuBar = nullptr;
 
     // Widget containers
     QStackedWidget* mStackWidget;
-    QTabWidget* mTabWidget;
     LoginWidget* mLoginWidget;
-    QWidget* mHomeTabWidget;
+    QWidget* mHomeWidget;
     JobWidget* mJobWidget;
 
 };

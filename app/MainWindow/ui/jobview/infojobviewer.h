@@ -15,4 +15,4 @@ private:
     QTextEdit* mName;
 };
 
-#endif // INFOJOBVIEWER_H
+#endif // INFOJOBVIEWER_H 

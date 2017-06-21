@@ -29,7 +29,6 @@ SOURCES += main.cpp\
     ui/loginwidget.cpp \
     app.cpp \
     ui/projectview/resumewidget.cpp \
-    ui/projectview/projectsbrowserwidget.cpp \
     ui/projectview/projectwidget.cpp \
     ui/settingview/abstractsettingswidget.cpp \
     ui/settingview/settingsdialog.cpp \
@@ -37,7 +36,6 @@ SOURCES += main.cpp\
     ui/settingview/admindialog.cpp \
     ui/settingview/adminpanels/userslistwidget.cpp \
     ui/settingview/adminpanels/userlistviewmodel.cpp \
-    ui/projectview/eventlistviewmodel.cpp \
     ui/settingview/adminpanels/usereditingdialog.cpp \
     ui/projectview/projecteditiondialog.cpp \
     ui/jobview/jobwidget.cpp \
@@ -45,13 +43,15 @@ SOURCES += main.cpp\
     ui/jobview/joblistview.cpp \
     ui/jobview/jobview.cpp \
     ui/jobview/abstractjobviewer.cpp \
-    ui/jobview/infojobviewer.cpp
+    ui/jobview/infojobviewer.cpp \
+    ui/projectview/settings/settingswidget.cpp \
+    ui/projectview/events/eventswidget.cpp \
+    ui/projectview/events/eventlistviewmodel.cpp
 
 HEADERS  += mainwindow.h \
     ui/loginwidget.h \
     app.h \
     ui/projectview/resumewidget.h \
-    ui/projectview/projectsbrowserwidget.h \
     ui/projectview/projectwidget.h \
     ui/settingview/settingsdialog.h \
     ui/settingview/abstractsettingswidget.h \
@@ -59,7 +59,6 @@ HEADERS  += mainwindow.h \
     ui/settingview/admindialog.h \
     ui/settingview/adminpanels/userslistwidget.h \
     ui/settingview/adminpanels/userlistviewmodel.h \
-    ui/projectview/eventlistviewmodel.h \
     ui/settingview/adminpanels/usereditingdialog.h \
     ui/projectview/projecteditiondialog.h \
     ui/jobview/jobwidget.h \
@@ -67,7 +66,10 @@ HEADERS  += mainwindow.h \
     ui/jobview/joblistview.h \
     ui/jobview/jobview.h \
     ui/jobview/abstractjobviewer.h \
-    ui/jobview/infojobviewer.h
+    ui/jobview/infojobviewer.h \
+    ui/projectview/settings/settingswidget.h \
+    ui/projectview/events/eventswidget.h \
+    ui/projectview/events/eventlistviewmodel.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Core/release/ -lCore
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Core/debug/ -lCore

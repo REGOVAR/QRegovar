@@ -20,89 +20,65 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
 {
 
     // create widget and Layout of the view
-    mTitleLabel = new QLabel(tr("Project Name"), this);
-    mStatusLabel = new QLabel(tr("[status]"), this);
+    QToolBar* mToolBar;
     mStackWidget = new QStackedWidget(this);
-    mResumeTab = new QWidget(this);
 
-    QIcon* ico = new QIcon();
-    ico->addPixmap(app->awesome()->icon(fa::folderopeno).pixmap(64, 64), QIcon::Normal, QIcon::On);
-    ico->addPixmap(app->awesome()->icon(fa::foldero).pixmap(64, 64), QIcon::Normal, QIcon::Off);
-    mToggleBrowserButton = new QPushButton(*ico, tr("Projects"), this);
-    mToggleBrowserButton->setCheckable(true);
 
     QWidget* stretcher = new QWidget(this);
     stretcher->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
 
     mToolBar = new QToolBar(this);
-    mToolBar->addWidget(mTitleLabel);
-    mToolBar->addWidget(mStatusLabel);
+    mToolBar->setToolButtonStyle( Qt::ToolButtonTextBesideIcon );
+    mToolBar->addAction(app->awesome()->icon(fa::foldero),tr("My project"), this, SLOT(toggleBrowser()));
     mToolBar->addWidget(stretcher);
-    mToolBar->addAction(app->awesome()->icon(fa::pencil),tr("Edit project information"), this, SLOT(showProjectSettings()));
-    mToolBar->addAction(app->awesome()->icon(fa::userplus),tr("Add subject/sample to the project"), this, SLOT(showAddSubjectsData()));
-    mToolBar->addAction(app->awesome()->icon(fa::cog),tr("Create a new analysis"), this, SLOT(showNewTask()));
-    mToolBar->addAction(app->awesome()->icon(fa::calendar),tr("Add a custom event to the history of the project"), this, SLOT(showAddEvent()));
-    mToolBar->addAction(app->awesome()->icon(fa::paperclip),tr("Add attachment to the project"), this, SLOT(showAddAttachment()));
+    mToolBar->addAction(app->awesome()->icon(fa::circle),tr("Urgent"), this, SLOT(showProjectIndicator()));
 
     mSectionBar = new QListWidget(this);
-    mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::barchart), tr("Resume")));
+    mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::infocircle), tr("Resume")));
+    mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::calendar), tr("Events")));
     mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::user), tr("Subjects")));
-    mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::cog), tr("Tasks")));
+    mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::cog), tr("Analyses")));
     mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::file), tr("Files")));
-    mSectionBar->setIconSize(QSize(64,64));
-    mSectionBar->setViewMode(QListView::IconMode);
+    mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::wrench), tr("Settings")));
+    mSectionBar->setIconSize(QSize(22,22));
     mSectionBar->setSelectionMode(QAbstractItemView::SingleSelection);
     mSectionBar->setSelectionBehavior(QAbstractItemView::SelectRows);
     mSectionBar->setDragDropMode(QAbstractItemView::NoDragDrop);
 
-    mBrowser = new ProjectsBrowserWidget(this);
 
 
 
     // Create pages
-    mResumePage = new ResumeWidget(this);
-    mSubjectPage = new QTableWidget(this);
-    mTaskPage = new QTableWidget(this);
-    mFilePage = new QTreeView(this);
+    mResumeWidget = new ResumeWidget(this);
+    mEventsWidget = new EventsWidget(this);
+    mSubjectsWidget = new QWidget(this);
+    mAnalysesWidget = new QWidget(this);
+    mFilesWidget = new QWidget(this);
+    mSettingsWidget = new SettingsWidget(this);
 
-    mStackWidget->addWidget(mResumePage);
-    mStackWidget->addWidget(mSubjectPage);
-    mStackWidget->addWidget(mTaskPage);
-    mStackWidget->addWidget(mFilePage);
-    mStackWidget->setCurrentWidget(mResumePage);
+    mStackWidget->addWidget(mResumeWidget);
+    mStackWidget->addWidget(mEventsWidget);
+    mStackWidget->addWidget(mSubjectsWidget);
+    mStackWidget->addWidget(mAnalysesWidget);
+    mStackWidget->addWidget(mFilesWidget);
+    mStackWidget->addWidget(mSettingsWidget);
+    mStackWidget->setCurrentWidget(mResumeWidget);
     // TODO : currentWidget not set properly the selection in the widget
 
 
     // Set main layout
-    QGridLayout* panelLayout = new QGridLayout(this);
-    panelLayout->setContentsMargins(0,0,0,0);
-    panelLayout->addWidget(mToggleBrowserButton, 0, 0);
-    panelLayout->addWidget(mSectionBar, 1, 0);
-    panelLayout->addWidget(mToolBar, 0, 1);
-    panelLayout->addWidget(mStackWidget, 1, 1);
-    mSectionBar->setMaximumWidth(75);
+    QGridLayout* mainLayout = new QGridLayout(this);
+    mainLayout->setContentsMargins(0,0,0,0);
+    mainLayout->addWidget(mSectionBar, 1, 0);
+    mainLayout->addWidget(mToolBar, 0, 0, 1, 2);
+    mainLayout->addWidget(mStackWidget, 1, 1);
+    mSectionBar->setMaximumWidth(150);
 
-    QSplitter* mainWidget = new QSplitter(this);
-    QWidget* panel = new QWidget(this);
-    panel->setLayout(panelLayout);
-    mainWidget->addWidget(mBrowser);
-    mainWidget->addWidget(panel);
 
-    QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(mainWidget);
     setLayout(mainLayout);
-    mBrowser->hide();
-
-
-    // Some Theme customization
-    mToggleBrowserButton->setFlat(true);
-    // mToggleBrowserButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    mTitleLabel->setFont(QFont( "Arial", 18, QFont::Bold));
-    mSectionBar->setFrameStyle( QFrame::NoFrame );
 
 
     // Create Signals/Slots connections
-    connect(mToggleBrowserButton, SIGNAL(released()), this, SLOT(toggleBrowser()));
     connect(mSectionBar, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(displaySection(QListWidgetItem *, QListWidgetItem *)));
 
     mProject = nullptr;
@@ -117,8 +93,7 @@ void ProjectWidget::initView()
     }
     else
     {
-        mTitleLabel->setText(mProject->name());
-        mResumePage->setProject(mProject);
+        mResumeWidget->setProject(mProject);
     }
 }
 
@@ -180,14 +155,7 @@ void ProjectWidget::showAddAttachment()
 }
 void ProjectWidget::toggleBrowser()
 {
-    if (mToggleBrowserButton->isChecked())
-    {
-        mBrowser->show();
-    }
-    else
-    {
-        mBrowser->hide();
-    }
+    qDebug() << "TODO" << Q_FUNC_INFO;
 }
 
 
