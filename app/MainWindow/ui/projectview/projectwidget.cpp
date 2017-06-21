@@ -33,6 +33,9 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
     mToolBar->addWidget(stretcher);
     mToolBar->addAction(app->awesome()->icon(fa::circle),tr("Urgent"), this, SLOT(showProjectIndicator()));
 
+    QPalette pal = palette();
+
+
     mSectionBar = new QListWidget(this);
     mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::infocircle), tr("Resume")));
     mSectionBar->addItem(new QListWidgetItem(app->awesome()->icon(fa::calendar), tr("Events")));
@@ -46,6 +49,8 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
     mSectionBar->setDragDropMode(QAbstractItemView::NoDragDrop);
 
 
+    mSectionBar->viewport()->setAutoFillBackground(false);
+    mSectionBar->setFrameStyle(QFrame::NoFrame);
 
 
     // Create pages

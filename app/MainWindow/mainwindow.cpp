@@ -349,9 +349,12 @@ void MainWindow::createDockWindows()
     customerList->setModel(fmodel);
     fmodel->setRootPath(QStandardPaths::displayName(QStandardPaths::DesktopLocation));
 
+    // remove marge
+    customerList->setFrameStyle(QFrame::NoFrame);
 
     dock->setWidget(customerList);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
+
     viewMenu->addAction(dock->toggleViewAction());
 
 //    dock = new QDockWidget(tr("Paragraphs"), this);
