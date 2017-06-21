@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     mStackWidget->addWidget(mHomeWidget);
     projectview::ProjectWidget* jobView = new projectview::ProjectWidget(this);
     jobView->setContentsMargins(0,0,0,0);
-    jobView->setProject(new ProjectModel());
+//    jobView->setProject(new ProjectModel());
     mStackWidget->addWidget(jobView);
 
 

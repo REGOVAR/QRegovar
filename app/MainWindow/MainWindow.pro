@@ -41,12 +41,13 @@ SOURCES += main.cpp\
     ui/jobview/jobview.cpp \
     ui/jobview/abstractjobviewer.cpp \
     ui/jobview/infojobviewer.cpp \
-    ui/projectview/projectwidget.cpp \
     ui/projectview/projecteditiondialog.cpp \
+    ui/projectview/projectwidget.cpp \
     ui/projectview/resume/resumewidget.cpp \
     ui/projectview/settings/settingswidget.cpp \
     ui/projectview/events/eventswidget.cpp \
     ui/projectview/events/eventlistviewmodel.cpp \
+
 
 HEADERS  += mainwindow.h \
     ui/loginwidget.h \
@@ -64,12 +65,13 @@ HEADERS  += mainwindow.h \
     ui/jobview/jobview.h \
     ui/jobview/abstractjobviewer.h \
     ui/jobview/infojobviewer.h \
-    ui/projectview/projectwidget.h \
     ui/projectview/projecteditiondialog.h \
+    ui/projectview/projectwidget.h \
     ui/projectview/resume/resumewidget.h \
     ui/projectview/settings/settingswidget.h \
     ui/projectview/events/eventswidget.h \
     ui/projectview/events/eventlistviewmodel.h \
+
 
 
 
