@@ -28,8 +28,6 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     ui/loginwidget.cpp \
     app.cpp \
-    ui/projectview/resumewidget.cpp \
-    ui/projectview/projectwidget.cpp \
     ui/settingview/abstractsettingswidget.cpp \
     ui/settingview/settingsdialog.cpp \
     ui/settingview/settingpanels/myprofilewidget.cpp \
@@ -37,22 +35,23 @@ SOURCES += main.cpp\
     ui/settingview/adminpanels/userslistwidget.cpp \
     ui/settingview/adminpanels/userlistviewmodel.cpp \
     ui/settingview/adminpanels/usereditingdialog.cpp \
-    ui/projectview/projecteditiondialog.cpp \
     ui/jobview/jobwidget.cpp \
     ui/jobview/joblistmodel.cpp \
     ui/jobview/joblistview.cpp \
     ui/jobview/jobview.cpp \
     ui/jobview/abstractjobviewer.cpp \
     ui/jobview/infojobviewer.cpp \
+    ui/projectview/projectwidget.cpp \
+    ui/projectview/projecteditiondialog.cpp \
+    ui/projectview/resume/resumewidget.cpp \
     ui/projectview/settings/settingswidget.cpp \
     ui/projectview/events/eventswidget.cpp \
-    ui/projectview/events/eventlistviewmodel.cpp
+    ui/projectview/events/eventlistviewmodel.cpp \
+    ui/projectview/analyses/analyseswidget.cpp
 
 HEADERS  += mainwindow.h \
     ui/loginwidget.h \
     app.h \
-    ui/projectview/resumewidget.h \
-    ui/projectview/projectwidget.h \
     ui/settingview/settingsdialog.h \
     ui/settingview/abstractsettingswidget.h \
     ui/settingview/settingpanels/myprofilewidget.h \
@@ -60,16 +59,28 @@ HEADERS  += mainwindow.h \
     ui/settingview/adminpanels/userslistwidget.h \
     ui/settingview/adminpanels/userlistviewmodel.h \
     ui/settingview/adminpanels/usereditingdialog.h \
-    ui/projectview/projecteditiondialog.h \
     ui/jobview/jobwidget.h \
     ui/jobview/joblistmodel.h \
     ui/jobview/joblistview.h \
     ui/jobview/jobview.h \
     ui/jobview/abstractjobviewer.h \
     ui/jobview/infojobviewer.h \
+    ui/projectview/projectwidget.h \
+    ui/projectview/projecteditiondialog.h \
+    ui/projectview/resume/resumewidget.h \
     ui/projectview/settings/settingswidget.h \
     ui/projectview/events/eventswidget.h \
-    ui/projectview/events/eventlistviewmodel.h
+    ui/projectview/events/eventlistviewmodel.h \
+    ui/projectview/analyses/analyseswidget.h
+
+
+
+RESOURCES += \
+    resources.qrc
+
+include("../libs/QtAwesome/QtAwesome.pri")
+
+
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Core/release/ -lCore
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Core/debug/ -lCore
@@ -83,8 +94,3 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../Core
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../Core/release/Core.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../Core/debug/Core.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../Core/libCore.a
-
-RESOURCES += \
-    resources.qrc
-
-include("../libs/QtAwesome/QtAwesome.pri")
