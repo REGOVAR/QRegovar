@@ -15,6 +15,7 @@
 #include "ui/projectview/resume/resumewidget.h"
 #include "ui/projectview/events/eventswidget.h"
 #include "ui/projectview/settings/settingswidget.h"
+#include "ui/projectview/analysis/analysiswidget.h"
 
 namespace projectview
 {
@@ -31,7 +32,7 @@ private:
     ResumeWidget* mResumeWidget;
     EventsWidget* mEventsWidget;
     QWidget* mSubjectsWidget;
-    QWidget* mAnalysesWidget;
+    AnalysisWidget* mAnalysesWidget;
     QWidget* mFilesWidget;
     SettingsWidget* mSettingsWidget;
 

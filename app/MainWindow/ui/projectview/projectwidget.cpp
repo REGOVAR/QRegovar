@@ -55,7 +55,7 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
     mResumeWidget = new ResumeWidget(this);
     mEventsWidget = new EventsWidget(this);
     mSubjectsWidget = new QWidget(this);
-    mAnalysesWidget = new QWidget(this);
+    mAnalysesWidget = new AnalysisWidget(this);
     mFilesWidget = new QWidget(this);
     mSettingsWidget = new SettingsWidget(this);
 

@@ -47,6 +47,7 @@ SOURCES += main.cpp\
     ui/projectview/settings/settingswidget.cpp \
     ui/projectview/events/eventswidget.cpp \
     ui/projectview/events/eventlistviewmodel.cpp \
+    ui/projectview/analysis/analysiswidget.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -71,6 +72,7 @@ HEADERS  += mainwindow.h \
     ui/projectview/settings/settingswidget.h \
     ui/projectview/events/eventswidget.h \
     ui/projectview/events/eventlistviewmodel.h \
+    ui/projectview/analysis/analysiswidget.h
 
 
 

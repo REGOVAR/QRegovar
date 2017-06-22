@@ -1,9 +1,10 @@
 #ifndef ANALYSESWIDGET_H
 #define ANALYSESWIDGET_H
 
-//#include <QWidget>
-//#include <QTableView>
-//#include <QPushButton>
+
+#include <QFrame>
+#include <QTableView>
+#include <QPushButton>
 
 
 namespace projectview
@@ -11,25 +12,25 @@ namespace projectview
 
 
 
-class AnalysisWidget // : public QFrame
+class AnalysisWidget  : public QFrame
 {
-    AnalysisWidget();
-//    Q_OBJECT
-//private:
-//    QTableView* mEventsTable;
-//    QPushButton* mAddButton;
-//    QPushButton* mEditButton;
-//    QPushButton* mRemoveButton;
+     Q_OBJECT
+
+private:
+    QTableView* mEventsTable;
+    QPushButton* mAddButton;
+    QPushButton* mEditButton;
+    QPushButton* mRemoveButton;
 
 
-//public:
-//    explicit AnalysisWidget(QWidget *parent = 0);
+public:
+    explicit AnalysisWidget(QWidget *parent = 0);
 
 
-//Q_SIGNALS:
+Q_SIGNALS:
 
 
-//public Q_SLOTS:
+public Q_SLOTS:
 
 
 
