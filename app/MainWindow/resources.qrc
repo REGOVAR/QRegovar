@@ -6,7 +6,6 @@
         <file>qml/RegovarTheme.js</file>
         <file>qml/components/mainmenu/MenuEntryL1.qml</file>
         <file>qml/components/mainmenu/MenuEntryL2.qml</file>
-        <file>qml/components/mainmenu/MenuModel.js</file>
         <file>qml/components/mainmenu/MainMenu.qml</file>
         <file>qml/icons.ttf</file>
         <file>qml/regovar.qml</file>
@@ -19,5 +18,9 @@
         <file>qml/pages/ProjectPage.qml</file>
         <file>qml/pages/SubjectPage.qml</file>
         <file>qml/regovar.js</file>
+        <file>qml/components/controls/Button.qml</file>
+        <file>qml/components/controls/CheckBox.qml</file>
+        <file>qml/components/controls/RadioButton.qml</file>
+        <file>qml/components/controls/TextField.qml</file>
     </qresource>
 </RCC>
