@@ -11,5 +11,13 @@
         <file>qml/icons.ttf</file>
         <file>qml/regovar.qml</file>
         <file>qml/pages/WelcomPage.qml</file>
+        <file>qml/pages/SettingsPage.qml</file>
+        <file>qml/pages/AboutPage.qml</file>
+        <file>qml/pages/HelpPage.qml</file>
+        <file>qml/pages/ClosePage.qml</file>
+        <file>qml/pages/DisconnectPage.qml</file>
+        <file>qml/pages/ProjectPage.qml</file>
+        <file>qml/pages/SubjectPage.qml</file>
+        <file>qml/regovar.js</file>
     </qresource>
 </RCC>
