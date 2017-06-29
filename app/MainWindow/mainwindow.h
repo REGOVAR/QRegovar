@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QMenuBar>
 #include <QVBoxLayout>
 #include <QTabWidget>
 #include <QMessageBox>
@@ -51,8 +50,6 @@ protected:
     QTreeView *customerList;
     QListWidget *paragraphsList;
 
-
-    QMenuBar* mMenuBar = nullptr;
 
     // Widget containers
     QStackedWidget* mStackWidget;
