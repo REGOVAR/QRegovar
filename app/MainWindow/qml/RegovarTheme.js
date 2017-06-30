@@ -16,5 +16,9 @@ var secondaryDarkFrontColor = "#ffffff"
 
 var backgroundColor = "#efeff1"
 var background2Color = "#e4e4e8"
-var background3Color = "#d9d9df"
 var backrgroundFrontColor = "#000000"
+
+var boxBackColor = "#ffffff"
+var boxFrontColor = "#000000"
+var boxPlaceholderColor = "#babdb6"
+var boxBorderColor = "#d9d9df"

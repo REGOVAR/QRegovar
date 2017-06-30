@@ -1,16 +1,20 @@
-import QtQuick 2.6
-import QtQuick.Controls 2.0
+import QtQuick 2.9
+import QtQuick.Controls 2.2
 import RegovarControls 1.0
 
-TextField {
+TextField
+{
     id: control
     placeholderText: qsTr("Enter description")
+    font.pixelSize: Style.fontSizeControl
+    font.family: Style.fontFamilly
 
-    background: Rectangle {
+    background: Rectangle
+    {
         implicitWidth: 200
-        implicitHeight: 40
-        border.width: 2
-        border.color: control.focus ? Style.primary : "lightgray"
-        radius: 6
+        implicitHeight: 35
+        border.width: 1
+        border.color: control.focus ? Style.secondaryBackColor : Style.boxBorderColor
+        color: Style.boxBackColor
     }
 }
