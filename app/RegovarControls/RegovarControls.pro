@@ -39,7 +39,9 @@ DISTFILES += \
     RegovarControls/ProgressBar.qml \
     RegovarControls/Style.qml \
     RegovarControls/Switch.qml \
-    RegovarControls/TextField.qml
+    RegovarControls/TextField.qml \
+    RegovarControls/ListView.qml \
+    RegovarControls/ListViewItem.qml
 
 HEADERS += \
     regovarcontrolsplugin.h \

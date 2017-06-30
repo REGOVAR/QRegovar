@@ -1,14 +1,14 @@
 pragma Singleton
-import QtQuick 2.9
+import QtQuick 2.7
 
 QtObject
 {
     //  TEMPORARY.. WILL BE REPLACE BY ATTACHED PROPERTY
 
-    property string fontFamilly : "Roboto"
+    property string fontFamilly : "Sans"
     property int fontSizeHeader : 16
-    property int fontSizeControl : 14
-    property int fontSizeContent : 12
+    property int fontSizeControl : 12
+    property int fontSizeContent : 10
 
     property color primaryBackColor: "#546e7a"
     property color primaryFrontColor: "#ffffff"
@@ -26,7 +26,7 @@ QtObject
 
     property color backgroundColor: "#efeff1"
     property color background2Color: "#e4e4e8"
-    property color backrgroundFrontColor: "#000000"
+    property color mainFontColor: "#000000"
 
     property color boxBackColor: "#ffffff"
     property color boxFrontColor: "#000000"
