@@ -1,8 +1,8 @@
-QT += qml quick
+QT += qml
 
-TARGET = RegovarControls
+TARGET = RegovarControlsPlugins
 TEMPLATE = lib
-CONFIG += c++11 staticlib
+CONFIG += c++11 plugin
 
 SOURCES += \
     regovarcontrolsplugin.cpp \
