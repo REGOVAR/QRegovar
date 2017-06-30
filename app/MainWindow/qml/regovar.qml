@@ -21,29 +21,15 @@ Item
     ClosePage { id: closePage }
 
     property variant menuPageMapping: {
-        "Welcom": 0,
-        "Project": 1,
-        "Subject": 2,
-        "Settings": 3,
-        "Help": 4,
-        "About": 5,
-        "Disconnect" : 6,
-        "Close": 7
+        "Welcom": welcomPage,
+        "Project": projectPage,
+        "Subject": subjectPage,
+        "Settings": settingsPage,
+        "Help": helpPage,
+        "About": aboutPage,
+        "Disconnect" : disconnectPage,
+        "Close": closePage
     }
-
-    Component.onCompleted: {
-        stack.addItem(welcomPage)
-        stack.addItem(projectPage)
-        stack.addItem(subjectPage)
-        stack.addItem(settingsPage)
-        stack.addItem(helpPage)
-        stack.addItem(aboutPage)
-        stack.addItem(disconnectPage)
-        stack.addItem(closePage)
-        stack.setCurrentIndex(0)
-        console.log(stack.count)
-    }
-
 
     MainMenu
     {
@@ -54,17 +40,16 @@ Item
         anchors.left: root.left
         width: 300
 
-        onSelectedEntryChanged: stack.currentIndex = menuPageMapping[mainMenu.selectedEntry]
+        onSelectedEntryChanged: stack.push( menuPageMapping[mainMenu.selectedEntry])
     }
 
-    SwipeView  {
+    StackView {
         id: stack
         z:0
         anchors.top: root.top
         anchors.bottom: root.bottom
         anchors.left: mainMenu.right
         anchors.right: root.right
-        interactive: false
     }
 
 

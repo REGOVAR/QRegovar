@@ -8,27 +8,6 @@ Rectangle
 
     color: ColorTheme.backgroundColor
 
-    Column
-    {
-        Rectangle
-        {
-            id: header
-            height: 50
-            width: root.width
-            color: ColorTheme.background2Color
-
-
-            TextInput
-            {
-                anchors.fill: header
-                anchors.margins: 16
-            }
-        }
-
-
-    }
-
-
     Text
     {
        text: "Welcome " + regovar.currentUser.firstname

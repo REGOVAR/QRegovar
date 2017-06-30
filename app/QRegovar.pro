@@ -3,5 +3,5 @@ CONFIG += ordered
 
 SUBDIRS += \
     Core \
+    RegovarControls \
     MainWindow
-
