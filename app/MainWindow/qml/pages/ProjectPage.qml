@@ -17,7 +17,7 @@ Rectangle
            anchors.centerIn: parent
         }
 
-        ShowCase
+        Button
         {
 
         }
