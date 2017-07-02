@@ -2,6 +2,7 @@ QT += qml
 
 TARGET = RegovarControlsPlugins
 TEMPLATE = lib
+DESTDIR    = $$OUT_PWD/../RegovarControls/
 CONFIG += c++11 plugin
 
 SOURCES += \
@@ -47,13 +48,26 @@ HEADERS += \
     regovarcontrolsplugin.h \
     showcase.h
 
-DESTDIR = $$OUT_PWD/../RegovarControls
-copydata.commands = $(COPY_DIR) $$PWD/RegovarControls/ $$OUT_PWD/..
+#DESTDIR = $$OUT_PWD/../RegovarControls
+#copydata.commands = $(COPY_DIR) $$PWD/RegovarControls/ $$OUT_PWD/..
+#first.depends = $(first) copydata
+#export(first.depends)
+#export(copydata.commands)
+#QMAKE_EXTRA_TARGETS += first copydata
+
+win32 {
+    COPY_FROM_PATH=$$shell_path($$PWD/RegovarControls)
+    COPY_TO_PATH=$$shell_path($$OUT_PWD/../RegovarControls)
+}
+else {
+    COPY_FROM_PATH=$$PWD/RegovarControls/
+    COPY_TO_PATH=$$OUT_PWD/..
+}
+
+copydata.commands = $(COPY_DIR) $$COPY_FROM_PATH $$COPY_TO_PATH
 first.depends = $(first) copydata
 export(first.depends)
 export(copydata.commands)
 QMAKE_EXTRA_TARGETS += first copydata
-
-
 
 

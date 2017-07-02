@@ -9,7 +9,7 @@ QT       += core gui network qml quick
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET     = Regovar
-DESTDIR    = $$OUT_PWD/../
+DESTDIR    = $$OUT_PWD/..
 TEMPLATE   = app
 
 # The following define makes your compiler emit warnings if you use
