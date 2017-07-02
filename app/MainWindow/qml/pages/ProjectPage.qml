@@ -1,5 +1,4 @@
 import QtQuick 2.7
-import QtQuick.Controls 1.4
 import RegovarControls 1.0
 import "../RegovarTheme.js" as ColorTheme // @dridk : to fix, nice and dynamic loading of theme color schema
 
@@ -53,32 +52,12 @@ Rectangle
 
     property Item listHeaderItem: null
 
-
-    TreeView
-    {
-        id: content
-        anchors.left: root.left
-        anchors.top: header.bottom
-        anchors.right: newProject.left
-        anchors.bottom: root.bottom
-
-        anchors.margins: 10
-        model:1000
-
-        TableViewColumn {
-                title: "Name"
-                role: "fileName"
-                width: 300
-            }
-            TableViewColumn {
-                title: "Permissions"
-                role: "filePermissions"
-                width: 100
-            }
+    RegovarModel {
+        id: myModel
     }
 
 
-//    ListView
+//    TreeView
 //    {
 //        id: content
 //        anchors.left: root.left
@@ -87,10 +66,43 @@ Rectangle
 //        anchors.bottom: root.bottom
 
 //        anchors.margins: 10
+//        model:myModel
 
-//        model:1000
-//        interactive: true
+//        TableViewColumn {
+//                title: "Name"
+//                role: "fileName"
+//                width: 300
+//            }
+//            TableViewColumn {
+//                title: "Permissions"
+//                role: "filePermissions"
+//                width: 100
+//            }
 //    }
+
+
+    ListView
+    {
+        id: content
+        anchors.left: root.left
+        anchors.top: header.bottom
+        anchors.right: newProject.left
+        anchors.bottom: root.bottom
+
+        anchors.margins: 10
+
+        model:myModel
+        interactive: true
+
+        delegate: Rectangle{
+            width: content.width
+            height: 30
+            Text {
+                anchors.centerIn: parent
+                text: title
+            }
+        }
+    }
 
 
 

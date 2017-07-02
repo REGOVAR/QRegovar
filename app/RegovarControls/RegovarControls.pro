@@ -7,7 +7,8 @@ CONFIG += c++11 plugin
 
 SOURCES += \
     regovarcontrolsplugin.cpp \
-    showcase.cpp
+    showcase.cpp \
+    RegovarModel.cpp
 
 RESOURCES +=
 
@@ -46,7 +47,8 @@ DISTFILES += \
 
 HEADERS += \
     regovarcontrolsplugin.h \
-    showcase.h
+    showcase.h \
+    RegovarModel.h
 
 #DESTDIR = $$OUT_PWD/../RegovarControls
 #copydata.commands = $(COPY_DIR) $$PWD/RegovarControls/ $$OUT_PWD/..
