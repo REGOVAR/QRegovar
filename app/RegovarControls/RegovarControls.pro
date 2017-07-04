@@ -42,8 +42,8 @@ DISTFILES += \
     RegovarControls/Style.qml \
     RegovarControls/Switch.qml \
     RegovarControls/TextField.qml \
-    RegovarControls/ListView.qml \
-    RegovarControls/ListViewItem.qml
+    RegovarControls/ListViewItem.qml \
+    RegovarControls/MyListView.qml
 
 HEADERS += \
     regovarcontrolsplugin.h \

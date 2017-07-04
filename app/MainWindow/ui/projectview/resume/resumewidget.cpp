@@ -69,7 +69,7 @@ ResumeWidget::ResumeWidget(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(mEventsTable,3,0,1,2);
     mainLayout->addWidget(splitter,4,0,1,2);
 
-    setLayout(mainLayout);
+    //setLayout(mainLayout);
 }
 
 

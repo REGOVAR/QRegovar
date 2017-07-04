@@ -31,7 +31,7 @@ ProjectWidget::ProjectWidget(QWidget *parent) : QWidget(parent)
     mToolBar->setToolButtonStyle( Qt::ToolButtonTextBesideIcon );
     mToolBar->addAction(app->awesome()->icon(fa::foldero),tr("My project"), this, SLOT(toggleBrowser()));
     mToolBar->addWidget(stretcher);
-    mToolBar->addAction(app->awesome()->icon(fa::circle),tr("Urgent"), this, SLOT(showProjectIndicator()));
+    //mToolBar->addAction(app->awesome()->icon(fa::circle),tr("Urgent"), this, SLOT(showProjectIndicator()));
 
 
     mSectionBar = new QListWidget(this);

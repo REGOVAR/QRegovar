@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     mHomeWidget = buildHomeWidget();
     mLoginWidget = new LoginWidget(this);
     mStackWidget = new QStackedWidget(this);
-    mJobWidget = new JobWidget(this);
+    //mJobWidget = new JobWidget(this);
 
     // add widget to the stack
     mStackWidget->addWidget(mLoginWidget);
@@ -26,25 +26,25 @@ MainWindow::MainWindow(QWidget *parent)
     projectview::ProjectWidget* jobView = new projectview::ProjectWidget(this);
     jobView->setContentsMargins(0,0,0,0);
 //    jobView->setProject(new ProjectModel());
-    mStackWidget->addWidget(jobView);
+//    mStackWidget->addWidget(jobView);
 
 
     // DEBUG
-    mStackWidget->addWidget(mJobWidget);
+//    mStackWidget->addWidget(mJobWidget);
 
-    //create connection
-    connect(mLoginWidget, SIGNAL(accepted()), this, SLOT(loginUser()));
-    connect(regovar, SIGNAL(loginSuccess()), this, SLOT(updateMainWindow()));
-    connect(regovar, SIGNAL(loginFailed()), this, SLOT(displayLoginFailedError()));
-    connect(regovar, SIGNAL(logoutSuccess()), this, SLOT(updateMainWindow()));
+//    //create connection
+//    connect(mLoginWidget, SIGNAL(accepted()), this, SLOT(loginUser()));
+//    connect(regovar, SIGNAL(loginSuccess()), this, SLOT(updateMainWindow()));
+//    connect(regovar, SIGNAL(loginFailed()), this, SLOT(displayLoginFailedError()));
+//    connect(regovar, SIGNAL(logoutSuccess()), this, SLOT(updateMainWindow()));
 
-    // set stack to the central widget
+//    // set stack to the central widget
     setCentralWidget(mStackWidget);
 
-    // set current stack widget
-    setWindowIcon(QIcon(":/img/regovar-logo-32.png"));
+//    // set current stack widget
+//    setWindowIcon(QIcon(":/img/regovar-logo-32.png"));
     restoreSettings();
-    //updateMainWindow();
+//    //updateMainWindow();
 
     mStackWidget->setCurrentWidget(mHomeWidget);
 }

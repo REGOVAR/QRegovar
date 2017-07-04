@@ -5,6 +5,6 @@ ProgressBar 1.0 ProgressBar.qml
 Switch 1.0 Switch.qml
 CheckBox 1.0 CheckBox.qml
 TextField 1.0 TextField.qml
-ListView 1.0 ListView.qml
+MyListView 1.0 MyListView.qml
 
 plugin RegovarControlsPlugins

@@ -15,8 +15,7 @@ Rectangle
     border.color: Style.boxBorderColor
 
     property alias interactive: content.interactive
-    property alias model: content.model
-    property Item delegate: null
+    property VisualDataModel vm
 
 
 
@@ -29,14 +28,14 @@ Rectangle
         headerPositioning: ListView.OverlayHeader
         clip:true
 
+        model: root.vm.model
+        delegate: ListViewItem
+        {
+            contentItem: root.vm.delegate
+        }
 
 
         ScrollBar.vertical: ScrollBar { }
-        delegate: ListViewItem
-        {
-            delegate: root.delegate
-            index: model.index
-        }
 
         header: Text
         {

@@ -11,14 +11,38 @@ Item
 
 
     // Load root's pages of regovar
-    WelcomPage { id: welcomPage }
-    ProjectPage { id: projectPage }
-    SubjectPage { id: subjectPage }
-    SettingsPage { id: settingsPage }
-    HelpPage { id: helpPage }
-    AboutPage { id: aboutPage }
-    DisconnectPage { id: disconnectPage }
-    ClosePage { id: closePage }
+    Component {
+        id: welcomPage
+        WelcomPage {}
+    }
+    Component {
+        id: projectPage
+        ProjectPage {}
+    }
+    Component {
+        id: subjectPage
+        SubjectPage {}
+    }
+    Component {
+        id: settingsPage
+        SettingsPage {}
+    }
+    Component {
+        id: helpPage
+        HelpPage {}
+    }
+    Component {
+        id: aboutPage
+        AboutPage {}
+    }
+    Component {
+        id: disconnectPage
+        DisconnectPage {}
+    }
+    Component {
+        id: closePage
+        ClosePage {}
+    }
 
     property variant menuPageMapping: {
         "Welcom": welcomPage,
@@ -40,19 +64,40 @@ Item
         anchors.left: root.left
         width: 300
 
-        onSelectedEntryChanged: stack.push( menuPageMapping[mainMenu.selectedEntry])
+        onSelectedEntryChanged:
+        {
+            stack.sourceComponent = menuPageMapping[mainMenu.selectedEntry]
+        }
     }
 
-    StackView {
+    Loader {
         id: stack
         z:0
         anchors.top: root.top
         anchors.bottom: root.bottom
         anchors.left: mainMenu.right
         anchors.right: root.right
+
+        sourceComponent: welcomPage
+        onSourceComponentChanged:
+        {
+            anim.start()
+        }
+
+        NumberAnimation
+        {
+            id: anim
+            target: stack
+            property: "opacity"
+            easing.type: Easing.OutQuad
+            from: 0
+            to: 1
+            duration: 500
+        }
+
     }
 
-        Component.onCompleted: stack.push(welcomPage)
+       // Component.onCompleted: stack.push(welcomPage)
 
 
 }

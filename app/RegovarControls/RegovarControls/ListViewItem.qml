@@ -9,8 +9,7 @@ Rectangle
     width: content.width -2
     color: index % 2 == 0 ? Style.backgroundColor : Style.boxBackColor
 
-    property int index: 0
-    property Item delegate: null
+    property alias contentItem: itemDelegate.contentItem
 
     Binding {
         target: itemDelegate
@@ -28,7 +27,7 @@ Rectangle
         contentItem: Text
         {
             verticalAlignment: Text.AlignVCenter
-            text: root.index
+            text: root.model.index
             font.pixelSize: Style.fontSizeContent
             font.family: Style.fontFamilly
             color: Style.mainFontColor
