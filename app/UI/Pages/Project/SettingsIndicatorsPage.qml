@@ -1,5 +1,5 @@
 import QtQuick 2.7
-import "../Regovar"
+import "../../Regovar"
 
 Rectangle
 {
@@ -9,7 +9,7 @@ Rectangle
 
     Text
     {
-       text: "DISCONNECT"
+       text: "SETTINGS / INDICATORS"
        font.pointSize: 24
        anchors.centerIn: parent
     }

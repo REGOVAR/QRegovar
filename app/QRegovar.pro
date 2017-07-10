@@ -57,7 +57,15 @@ DISTFILES += \
     UI/Regovar/qmldir \
     UI/Regovar/Regovar.qml \
     UI/Regovar/Style.qml \
-    UI/MainWindow.qml
+    UI/MainWindow.qml \
+    UI/Pages/Project/AnalysesPage.qml \
+    UI/Pages/Project/EventsPage.qml \
+    UI/Pages/Project/FilesPage.qml \
+    UI/Pages/Project/ResumePage.qml \
+    UI/Pages/Project/SettingsIndicatorsPage.qml \
+    UI/Pages/Project/SettingsInformationsPage.qml \
+    UI/Pages/Project/SettingsSharingPage.qml \
+    UI/Pages/Project/SubjectsPage.qml
 
 
 

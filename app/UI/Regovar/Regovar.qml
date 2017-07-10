@@ -1,6 +1,8 @@
 pragma Singleton
 import QtQuick 2.0
 
+import "../Pages"
+
 QtObject 
 {
     // TODO onCompleted : reload some value from Settings (like theme used, login/autoconnection, ...)
@@ -14,24 +16,33 @@ QtObject
         property int selectedMainIndex: 0
         property int selectedSubIndex
         property int selectedSubSubIndex
+
+        property bool collapseMenu: false
+
+        property bool displaySubLevel: false
+        property bool displaySubLevelCurrent: false // to store current state when need to quickly/temporarly switch the level2 display on mousehover
         
         
         property var model:  [
-            { "icon": "a", "label": "Welcom",     "sublevel": []},
-            { "icon": "c", "label": "Project",    "sublevel": [
-                { "icon": "j", "label": "Resume",   "sublevel": []},
-                { "icon": "H", "label": "Events",   "sublevel": []},
-                { "icon": "b", "label": "Subjects", "sublevel": []},
-                { "icon": "I", "label": "Analyses", "sublevel": []},
-                { "icon": "O", "label": "Files",    "sublevel": []},
-                { "icon": "d", "label": "Settings", "sublevel": ["Informations", "Indicators", "Sharing"]}
+            { "icon": "a", "label": "Welcom",       "page": "WelcomPage.qml", "sublevel": []},
+            { "icon": "c", "label": "Project",      "page": "ProjectPage.qml", "sublevel": [
+                { "icon": "j", "label": "Resume",   "page": "Project/ResumePage.qml", "sublevel": []},
+                { "icon": "H", "label": "Events",   "page": "Project/EventsPage.qml", "sublevel": []},
+                { "icon": "b", "label": "Subjects", "page": "Project/SubjectsPage.qml", "sublevel": []},
+                { "icon": "I", "label": "Analyses", "page": "Project/AnalysesPage.qml", "sublevel": []},
+                { "icon": "O", "label": "Files",    "page": "Project/FilesPage.qml", "sublevel": []},
+                { "icon": "d", "label": "Settings", "page": "Project/SettingsIndicatorsPage.qml", "sublevel": [
+                    { "label": "Informations",      "page": "Project/SettingsInformationsPage.qml", "sublevel": []},
+                    { "label": "Indicators",        "page": "Project/SettingsIndicatorsPage.qml", "sublevel": []},
+                    { "label": "Sharing",           "page": "Project/SettingsSharingPage.qml", "sublevel": []},
+                    ]}
                 ]},
-            { "icon": "b", "label": "Subject",    "sublevel": []},
-            { "icon": "d", "label": "Settings",   "sublevel": []},
-            { "icon": "e", "label": "Help",       "sublevel": []},
-            { "icon": "f", "label": "About",      "sublevel": []},
-            { "icon": "g", "label": "Disconnect", "sublevel": []},
-            { "icon": "h", "label": "Close",      "sublevel": []}
+            { "icon": "b", "label": "Subject",      "page": "SubjectPage.qml",    "sublevel": []},
+            { "icon": "d", "label": "Settings",     "page": "SettingsPage.qml",   "sublevel": []},
+            { "icon": "e", "label": "Help",         "page": "HelpPage.qml",       "sublevel": []},
+            { "icon": "f", "label": "About",        "page": "AboutPage.qml",      "sublevel": []},
+            { "icon": "g", "label": "Disconnect",   "page": "DisconnectPage.qml", "sublevel": []},
+            { "icon": "h", "label": "Close",        "page": "ClosePage.qml",      "sublevel": []}
         ]
         
         property string mainTitle: model[selectedMainIndex]["label"]

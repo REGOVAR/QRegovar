@@ -9,7 +9,7 @@ Rectangle
 
     Text
     {
-       text: "RESUME"
+       text: "SETTINGS / SHARING"
        font.pointSize: 24
        anchors.centerIn: parent
     }

@@ -7,7 +7,8 @@ import "MainMenu"
 import "Pages"
 import "Regovar"
 
-ApplicationWindow {
+ApplicationWindow
+{
     id: root
     visible: true
     title: "Regovar - " + Regovar.mainMenu.mainTitle
@@ -23,52 +24,39 @@ ApplicationWindow {
     }
 
     // Load root's pages of regovar
-    Component {
-        id: welcomPage
-        WelcomPage {}
-    }
-    Component {
-        id: projectPage
-        ProjectPage {}
-    }
-    Component {
-        id: subjectPage
-        SubjectPage {}
-    }
-    Component {
-        id: settingsPage
-        SettingsPage {}
-    }
-    Component {
-        id: helpPage
-        HelpPage {}
-    }
-    Component {
-        id: aboutPage
-        AboutPage {}
-    }
-    Component {
-        id: disconnectPage
-        DisconnectPage {}
-    }
-    Component {
-        id: closePage
-        ClosePage {}
-    }
-
-    property variant menuPageMapping:
+    property variant menuPageMapping: []
+    function buildPages(model, baseIndex)
     {
-        0: welcomPage,
-        1: projectPage,
-        2: subjectPage,
-        3: settingsPage,
-        4: helpPage,
-        5: aboutPage,
-        6: disconnectPage,
-        7: closePage
+        for (var idx in model)
+        {
+            var comp = Qt.createComponent("Pages/" + model[idx]["page"]);
+            if (model[idx]["sublevel"].length > 0)
+            {
+                buildPages(model[idx]["sublevel"], idx + "-")
+            }
+            root.menuPageMapping[idx] = comp;
+        }
     }
 
 
+    Component.onCompleted:
+    {
+        buildPages(Regovar.mainMenu.model, "")
+        stack.sourceComponent = menuPageMapping[0]
+    }
+
+
+
+    Connections
+    {
+        target: Regovar.mainMenu
+        onSelectedMainIndexChanged:stack.sourceComponent = menuPageMapping[mainMenu.selectedIndex]
+    }
+    Connections
+    {
+        target: Regovar.mainMenu
+        onSelectedSubIndexChanged: stack.sourceComponent = menuPageMapping[mainMenu.selectedIndex + "-" + mainMenu.selectedSubIndex]
+    }
 
 
 
@@ -84,7 +72,8 @@ ApplicationWindow {
 
     }
 
-    Loader {
+    Loader
+    {
         id: stack
         z:0
         anchors.top: parent.top
@@ -92,7 +81,6 @@ ApplicationWindow {
         anchors.left: mainMenu.right
         anchors.right: parent.right
 
-        sourceComponent: welcomPage
         onSourceComponentChanged:
         {
             anim.start()
@@ -108,11 +96,5 @@ ApplicationWindow {
             to: 1
             duration: 250
         }
-    }
-
-    Regovar.mainMenu.onSelectedMainIndexChanged:
-    {
-        console.log("salut sacha")
-        //stack.sourceComponent = menuPageMapping[mainMenu.selectedIndex]
     }
 }

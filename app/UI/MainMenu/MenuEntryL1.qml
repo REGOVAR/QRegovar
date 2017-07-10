@@ -62,8 +62,17 @@ Rectangle
         id: mouseArea
         anchors.fill: root
         hoverEnabled: true
-        onEntered: root.state = "hover"
-        onExited: root.state = parent.currentState
+        onEntered:
+        {
+            root.state = "hover"
+            Regovar.mainMenu.displaySubLevel = false
+        }
+        onExited:
+        {
+            root.state = parent.currentState
+            Regovar.mainMenu.displaySubLevel = Regovar.mainMenu.displaySubLevelCurrent
+
+        }
         onClicked: root.selectedIndex = index
     }
 

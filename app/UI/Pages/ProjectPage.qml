@@ -47,7 +47,8 @@ Rectangle
             text: qsTr("Open")
             onClicked:
             {
-
+                Regovar.mainMenu.displaySubLevel = !Regovar.mainMenu.displaySubLevel
+                Regovar.mainMenu.displaySubLevelCurrent = Regovar.mainMenu.displaySubLevel
             }
         }
 
@@ -301,7 +302,6 @@ Rectangle
                 var data = JSON.parse(req.responseText);
                 browserList.model = data["data"];
                 browserList.currentIndex = -1
-                console.log("model loader : " + data.length)
             }
         };
 
