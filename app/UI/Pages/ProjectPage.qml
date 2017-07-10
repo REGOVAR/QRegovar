@@ -4,14 +4,12 @@ import QtGraphicalEffects 1.0
 import "../Regovar"
 import "../Framework"
 import "../GridView"
-import "../RegovarTheme.js" as ColorTheme // @dridk : to fix, nice and dynamic loading of theme color schema
 
 Rectangle
 {
     id: root
 
-    color: ColorTheme.backgroundColor
-
+    color: Regovar.theme.backgroundColor.main
 
 
     Rectangle
@@ -23,7 +21,7 @@ Rectangle
         height: 50
 
 
-        color: ColorTheme.background2Color
+        color: Regovar.theme.backgroundColor.alt
 
         TextField
         {

@@ -30,8 +30,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     UI/Regovar.qml \
     UI/MainMenu/MenuModel.js \
-    UI/Regovar.js \
-    UI/RegovarTheme.js \
     UI/Regovar.qmlc \
     UI/Icons.ttf \
     UI/Framework/Button.qml \
