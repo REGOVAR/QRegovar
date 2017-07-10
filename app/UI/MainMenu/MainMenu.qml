@@ -1,10 +1,5 @@
 import QtQuick 2.7
-
-
-import "../RegovarTheme.js" as ColorTheme // @dridk : to fix, nice and dynamic loading of theme color schema
-import "../Regovar.js" as JS
-
-import "../Framework"
+import "../Regovar"
 
 Item
 {
@@ -16,7 +11,7 @@ Item
     ListModel
     {
         id: menuModel
-        Component.onCompleted: { menuModel.append(JS.menuModel)}
+        Component.onCompleted: { menuModel.append(Regovar.mainMenu.model["menu"])}
     }
 
     ListModel
@@ -27,7 +22,7 @@ Item
     Rectangle
     {
         id: back
-        color: ColorTheme.primaryDarkBackColor
+        color: Regovar.theme.primaryColor.back.dark
         anchors.fill: mainMenu
     }
 

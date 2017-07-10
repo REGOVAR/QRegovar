@@ -1,5 +1,5 @@
 import QtQuick 2.7
-import "../RegovarTheme.js" as ColorTheme // @dridk : to fix, nice and dynamic loading of theme color schema
+import "../Regovar"
 
 Rectangle
 {
@@ -54,7 +54,7 @@ Rectangle
         width: 6
         height: root.height
         anchors.left: root.left
-        color: ColorTheme.secondaryBackColor
+        color: Regovar.theme.secondaryColor.back.normal
     }
 
 
@@ -77,24 +77,24 @@ Rectangle
         State
         {
             name: "normal"
-            PropertyChanges { target: root; color: ColorTheme.primaryDarkBackColor}
-            PropertyChanges { target: icon; color: ColorTheme.primaryBackColor}
-            PropertyChanges { target: label; color: ColorTheme.primaryBackColor}
+            PropertyChanges { target: root; color: Regovar.theme.primaryColor.back.dark}
+            PropertyChanges { target: icon; color: Regovar.theme.primaryColor.back.normal}
+            PropertyChanges { target: label; color: Regovar.theme.primaryColor.back.normal}
             PropertyChanges { target: selectHighlight; visible: false}
         },
         State
         {
             name: "hover"
-            PropertyChanges { target: root; color: ColorTheme.secondaryBackColor}
-            PropertyChanges { target: icon; color: ColorTheme.secondaryFrontColor}
-            PropertyChanges { target: label; color: ColorTheme.secondaryFrontColor}
+            PropertyChanges { target: root; color: Regovar.theme.secondaryColor.back.normal}
+            PropertyChanges { target: icon; color: Regovar.theme.secondaryColor.front.normal}
+            PropertyChanges { target: label; color: Regovar.theme.secondaryColor.front.normal}
         },
         State
         {
             name: "selected"
-            PropertyChanges { target: root; color: ColorTheme.primaryBackColor}
-            PropertyChanges { target: icon; color: ColorTheme.primaryFrontColor}
-            PropertyChanges { target: label; color: ColorTheme.primaryFrontColor}
+            PropertyChanges { target: root; color: Regovar.theme.primaryColor.back.normal}
+            PropertyChanges { target: icon; color: Regovar.theme.primaryColor.front.normal}
+            PropertyChanges { target: label; color: Regovar.theme.primaryColor.front.normal}
             PropertyChanges { target: selectHighlight; visible: true}
 
         }

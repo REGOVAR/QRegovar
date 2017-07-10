@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     app.setApplicationVersion("0.0.b");
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QLatin1String("UI/Regovar.qml")));
+    engine.load(QUrl(QLatin1String("UI/MainWindow.qml")));
 
     return app.exec();
 

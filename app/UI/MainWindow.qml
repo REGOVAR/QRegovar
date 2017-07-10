@@ -5,7 +5,7 @@ import Qt.labs.settings 1.0
 import "Framework"
 import "MainMenu"
 import "Pages"
-import "Regovar.js" as JS
+import "Regovar"
 
 ApplicationWindow {
     visible: true

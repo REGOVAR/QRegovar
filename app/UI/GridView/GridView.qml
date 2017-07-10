@@ -1,7 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtGraphicalEffects 1.0
-import "../Style"
+import "../Regovar"
 
 
 
@@ -9,9 +9,9 @@ import "../Style"
 Rectangle
 {
     id: root
-    color: Style.boxColor.back
+    color: Regovar.theme.boxColor.back
     border.width: 1
-    border.color: Style.boxColor.border
+    border.color: Regovar.theme.boxColor.border
 
     property alias interactive: content.interactive
     property var model
@@ -45,7 +45,7 @@ Rectangle
                 Rectangle
                 {
                     border.width: 1
-                    border.color: Style.boxColor.border
+                    border.color: Regovar.theme.boxColor.border
                     height: 24
 
                     LinearGradient
@@ -64,10 +64,10 @@ Rectangle
                         anchors.fill: parent
                         anchors.leftMargin: 15
                         text: title
-                        font.pixelSize: Style.font.size.control
-                        font.family: Style.font.familly
+                        font.pixelSize: Regovar.theme.font.size.control
+                        font.family: Regovar.theme.font.familly
                         font.bold: false
-                        color: Style.frontColor.normal
+                        color: Regovar.theme.frontColor.normal
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
                         elide: Text.ElideRight

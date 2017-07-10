@@ -1,6 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
-import "../Style"
+import "../Regovar"
 
 Button
 {
@@ -11,10 +11,10 @@ Button
     contentItem: Text
     {
         text: control.text
-        font.pixelSize: Style.font.size.control
-        font.family: Style.font.familly
+        font.pixelSize: Regovar.theme.font.size.control
+        font.family: Regovar.theme.font.familly
         font.bold: false
-        color: Style.secondaryColor.front.normal
+        color: Regovar.theme.secondaryColor.front.normal
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
@@ -25,7 +25,7 @@ Button
     {
         implicitWidth: 100
         implicitHeight: 32
-        color : !control.enabled ? Style.boxColor.disabled : ( control.down ? Style.secondaryColor.back.dark: Style.secondaryColor.back.normal)
+        color : !control.enabled ? Regovar.theme.boxColor.disabled : ( control.down ? Regovar.theme.secondaryColor.back.dark: Regovar.theme.secondaryColor.back.normal)
 
         Behavior on color
         {

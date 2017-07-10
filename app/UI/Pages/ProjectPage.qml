@@ -1,8 +1,8 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtGraphicalEffects 1.0
+import "../Regovar"
 import "../Framework"
-import "../Style"
 import "../GridView"
 import "../RegovarTheme.js" as ColorTheme // @dridk : to fix, nice and dynamic loading of theme color schema
 
@@ -42,6 +42,22 @@ Rectangle
         anchors.margins : 10
         spacing: 10
 
+
+        Button
+        {
+            id: openProject
+            text: qsTr("Open")
+            onClicked:
+            {
+
+            }
+        }
+
+        Item
+        {
+            height:20
+        }
+
         Button
         {
             id: newProject
@@ -74,9 +90,9 @@ Rectangle
         anchors.bottom: root.bottom
         anchors.margins: 10
 
-        color: Style.boxColor.back
+        color: Regovar.theme.boxColor.back
         border.width: 1
-        border.color: Style.boxColor.border
+        border.color: Regovar.theme.boxColor.border
 
         Rectangle
         {
@@ -87,7 +103,7 @@ Rectangle
             height: 24
 
             border.width: 1
-            border.color: Style.boxColor.border
+            border.color: Regovar.theme.boxColor.border
 
             LinearGradient
             {
@@ -110,10 +126,10 @@ Rectangle
                 {
                     anchors.leftMargin: 15
                     text: "Name"
-                    font.pixelSize: Style.font.size.control
-                    font.family: Style.font.familly
+                    font.pixelSize: Regovar.theme.font.size.control
+                    font.family: Regovar.theme.font.familly
                     font.bold: false
-                    color: Style.frontColor.normal
+                    color: Regovar.theme.frontColor.normal
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
@@ -122,10 +138,10 @@ Rectangle
                 {
                     anchors.leftMargin: 15
                     text: "Date"
-                    font.pixelSize: Style.font.size.control
-                    font.family: Style.font.familly
+                    font.pixelSize: Regovar.theme.font.size.control
+                    font.family: Regovar.theme.font.familly
                     font.bold: false
-                    color: Style.frontColor.normal
+                    color: Regovar.theme.frontColor.normal
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
@@ -135,10 +151,10 @@ Rectangle
                 {
                     anchors.leftMargin: 15
                     text: "Comment"
-                    font.pixelSize: Style.font.size.control
-                    font.family: Style.font.familly
+                    font.pixelSize: Regovar.theme.font.size.control
+                    font.family: Regovar.theme.font.familly
                     font.bold: false
-                    color: Style.frontColor.normal
+                    color: Regovar.theme.frontColor.normal
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
@@ -157,8 +173,8 @@ Rectangle
             anchors.margins: 1
             ScrollBar.vertical: ScrollBar { }
 
-            interactive: true
             clip:true
+
 
 
             // Manage selected item of the list using exing property currentIndex
@@ -177,19 +193,18 @@ Rectangle
                     anchors.fill: parent
                     verticalAlignment: Text.AlignVCenter
                     text: "salut : " + index + " " + browserList.model[index]["name"]
-                    font.pixelSize: Style.font.size.content
-                    font.family: Style.font.familly
-                    color: Style.frontColor.normal
+                    font.pixelSize: Regovar.theme.font.size.content
+                    font.family: Regovar.theme.font.familly
+                    color: Regovar.theme.frontColor.normal
                     anchors.margins: 4
                 }
-
                 Text
                 {
                     anchors.right: parent.right
                     text: "idx : " + index + ", selectedIdx : " + browserListItemRoot.selectedIndex + ", currentState : " + browserListItemRoot.currentState
-                    font.pixelSize: Style.font.size.content
-                    font.family: Style.font.familly
-                    color: Style.frontColor.normal
+                    font.pixelSize: Regovar.theme.font.size.content
+                    font.family: Regovar.theme.font.familly
+                    color: Regovar.theme.frontColor.normal
                     anchors.margins: 4
                 }
                 MouseArea
@@ -235,26 +250,26 @@ Rectangle
                     State
                     {
                         name: "alt1"
-                        PropertyChanges { target: browserListItemRoot; color: Style.backgroundColor.main}
-                        PropertyChanges { target: browserListItemText; color: Style.frontColor.normal}
+                        PropertyChanges { target: browserListItemRoot; color: Regovar.theme.backgroundColor.main}
+                        PropertyChanges { target: browserListItemText; color: Regovar.theme.frontColor.normal}
                     },
                     State
                     {
                         name: "alt2"
-                        PropertyChanges { target: browserListItemRoot; color: Style.boxColor.back}
-                        PropertyChanges { target: browserListItemText; color: Style.frontColor.normal}
+                        PropertyChanges { target: browserListItemRoot; color: Regovar.theme.boxColor.back}
+                        PropertyChanges { target: browserListItemText; color: Regovar.theme.frontColor.normal}
                     },
                     State
                     {
                         name: "selected"
-                        PropertyChanges { target: browserListItemRoot; color: Style.secondaryColor.back.light}
-                        PropertyChanges { target: browserListItemText; color: Style.secondaryColor.front.light}
+                        PropertyChanges { target: browserListItemRoot; color: Regovar.theme.secondaryColor.back.light}
+                        PropertyChanges { target: browserListItemText; color: Regovar.theme.secondaryColor.front.light}
                     },
                     State
                     {
                         name: "hover"
-                        PropertyChanges { target: browserListItemRoot; color: Style.secondaryColor.back.normal}
-                        PropertyChanges { target: browserListItemText; color: Style.secondaryColor.front.normal}
+                        PropertyChanges { target: browserListItemRoot; color: Regovar.theme.secondaryColor.back.normal}
+                        PropertyChanges { target: browserListItemText; color: Regovar.theme.secondaryColor.front.normal}
 
                     }
                 ]

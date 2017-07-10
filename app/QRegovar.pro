@@ -53,13 +53,13 @@ DISTFILES += \
     UI/Pages/SettingsPage.qml \
     UI/Pages/SubjectPage.qml \
     UI/Pages/WelcomPage.qml \
-    UI/Style.qml \
     UI/Framework/qmldir \
-    UI/Style/qmldir \
-    UI/Style/Style.qml \
     UI/GridView/GridHeader.qml \
     UI/GridView/GridView.qml \
-    UI/GridView/GridViewItem.qml
+    UI/GridView/GridViewItem.qml \
+    UI/Regovar/qmldir \
+    UI/Regovar/Regovar.qml \
+    UI/Regovar/Style.qml
 
 
 
