@@ -155,9 +155,14 @@ Rectangle
             anchors.right: browserRoot.right
             anchors.bottom: browserRoot.bottom
             anchors.margins: 1
+            ScrollBar.vertical: ScrollBar { }
 
             interactive: true
             clip:true
+
+
+            // Manage selected item of the list using exing property currentIndex
+
 
             delegate: Rectangle
             {
@@ -165,10 +170,10 @@ Rectangle
                 height: 22
                 anchors.left: parent.left
                 anchors.right: parent.right
-                color: index % 2 == 0 ? Style.backgroundColor.main : Style.boxColor.back
 
                 Text
                 {
+                    id: browserListItemText
                     anchors.fill: parent
                     verticalAlignment: Text.AlignVCenter
                     text: "salut : " + index + " " + browserList.model[index]["name"]
@@ -177,8 +182,83 @@ Rectangle
                     color: Style.frontColor.normal
                     anchors.margins: 4
                 }
+
+                Text
+                {
+                    anchors.right: parent.right
+                    text: "idx : " + index + ", selectedIdx : " + browserListItemRoot.selectedIndex + ", currentState : " + browserListItemRoot.currentState
+                    font.pixelSize: Style.font.size.content
+                    font.family: Style.font.familly
+                    color: Style.frontColor.normal
+                    anchors.margins: 4
+                }
+                MouseArea
+                {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: browserListItemRoot.selectedIndex = index
+                    onEntered: browserListItemRoot.state = "hover"
+                    onExited: browserListItemRoot.state = browserListItemRoot.currentState
+                }
+
+
+
+                // Manage selected item of the list using exing property currentIndex
+                property int selectedIndex
+                // Bidirectional binding between selectedEntry properties of the listview and its items
+                Binding {
+                    target: browserListItemRoot
+                    property: "selectedIndex"
+                    value: browserList.currentIndex
+                }
+                Binding {
+                    target: browserList
+                    property: "currentIndex"
+                    value: browserListItemRoot.selectedIndex
+                }
+
+
+
+                // Manage style and states of the listview item
+                property string mainState
+                property string currentState
+                onCurrentStateChanged: browserListItemRoot.state = browserListItemRoot.currentState
+                onSelectedIndexChanged: browserListItemRoot.currentState = (browserListItemRoot.selectedIndex == index) ? "selected" : browserListItemRoot.mainState
+                Component.onCompleted:
+                {
+                    browserListItemRoot.mainState = index % 2 == 0 ? "alt1" : "alt2"
+                    browserListItemRoot.currentState = browserListItemRoot.mainState
+                }
+
+                states:
+                [
+                    State
+                    {
+                        name: "alt1"
+                        PropertyChanges { target: browserListItemRoot; color: Style.backgroundColor.main}
+                        PropertyChanges { target: browserListItemText; color: Style.frontColor.normal}
+                    },
+                    State
+                    {
+                        name: "alt2"
+                        PropertyChanges { target: browserListItemRoot; color: Style.boxColor.back}
+                        PropertyChanges { target: browserListItemText; color: Style.frontColor.normal}
+                    },
+                    State
+                    {
+                        name: "selected"
+                        PropertyChanges { target: browserListItemRoot; color: Style.secondaryColor.back.light}
+                        PropertyChanges { target: browserListItemText; color: Style.secondaryColor.front.light}
+                    },
+                    State
+                    {
+                        name: "hover"
+                        PropertyChanges { target: browserListItemRoot; color: Style.secondaryColor.back.normal}
+                        PropertyChanges { target: browserListItemText; color: Style.secondaryColor.front.normal}
+
+                    }
+                ]
             }
-            ScrollBar.vertical: ScrollBar { }
         }
     }
 
@@ -207,6 +287,7 @@ Rectangle
                 //turn the text in a javascript object while setting the ListView's model to it
                 var data = JSON.parse(req.responseText);
                 browserList.model = data["data"];
+                browserList.currentIndex = -1
                 console.log("model loader : " + data.length)
             }
         };

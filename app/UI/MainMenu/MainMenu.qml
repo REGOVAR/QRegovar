@@ -19,6 +19,11 @@ Item
         Component.onCompleted: { menuModel.append(JS.menuModel)}
     }
 
+    ListModel
+    {
+        id: subMenuModel
+    }
+
     Rectangle
     {
         id: back
