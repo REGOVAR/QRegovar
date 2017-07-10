@@ -64,9 +64,14 @@ ApplicationWindow {
         3: settingsPage,
         4: helpPage,
         5: aboutPage,
-        6 : disconnectPage,
+        6: disconnectPage,
         7: closePage
     }
+
+
+
+
+
 
     MainMenu
     {
@@ -77,10 +82,6 @@ ApplicationWindow {
         anchors.left: parent.left
         width: 300
 
-        onSelectedIndexChanged:
-        {
-            stack.sourceComponent = menuPageMapping[mainMenu.selectedIndex]
-        }
     }
 
     Loader {
@@ -107,6 +108,11 @@ ApplicationWindow {
             to: 1
             duration: 250
         }
+    }
 
+    Regovar.mainMenu.onSelectedMainIndexChanged:
+    {
+        console.log("salut sacha")
+        //stack.sourceComponent = menuPageMapping[mainMenu.selectedIndex]
     }
 }

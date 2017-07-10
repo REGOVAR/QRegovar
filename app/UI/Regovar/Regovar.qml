@@ -37,5 +37,14 @@ QtObject
         property string mainTitle: model[selectedMainIndex]["label"]
         onSelectedMainIndexChanged: model[selectedMainIndex]["label"]
         
+        function test2()
+        {
+            console.log("salut olivier2")
+        }
+    }
+
+    function test()
+    {
+        console.log("salut olivier")
     }
 } 
