@@ -29,7 +29,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     UI/Regovar.qml \
-    UI/MainMenu/MenuModel.js \
     UI/Regovar.qmlc \
     UI/Icons.ttf \
     UI/Framework/Button.qml \
@@ -57,7 +56,8 @@ DISTFILES += \
     UI/GridView/GridViewItem.qml \
     UI/Regovar/qmldir \
     UI/Regovar/Regovar.qml \
-    UI/Regovar/Style.qml
+    UI/Regovar/Style.qml \
+    UI/MainWindow.qml
 
 
 

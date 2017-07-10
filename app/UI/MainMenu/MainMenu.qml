@@ -5,13 +5,26 @@ Item
 {
     id: mainMenu
 
-    property string selectedEntry: ""
+    // bidirectional binding of selectedEntry between view and main model
+    property int selectedIndex: 0
+    Binding {
+        target: Regovar.mainMenu
+        property: "selectedMainIndex"
+        value: mainMenu.selectedIndex
+    }
+    Binding {
+        target: mainMenu
+        property: "selectedIndex"
+        value: Regovar.mainMenu.selectedMainIndex
+    }
 
-
+    // --------------------------------------------------
+    // View internals models
+    // --------------------------------------------------
     ListModel
     {
         id: menuModel
-        Component.onCompleted: { menuModel.append(Regovar.mainMenu.model["menu"])}
+        Component.onCompleted: { menuModel.append(Regovar.mainMenu.model)}
     }
 
     ListModel
@@ -19,14 +32,17 @@ Item
         id: subMenuModel
     }
 
+
+
+    // --------------------------------------------------
+    // The view
+    // --------------------------------------------------
     Rectangle
     {
         id: back
         color: Regovar.theme.primaryColor.back.dark
         anchors.fill: mainMenu
     }
-
-
     Column
     {
         Repeater
@@ -39,16 +55,16 @@ Item
                 icon: menuModel.get(index).icon
                 label: menuModel.get(index).label
 
-                // Bidirectional binding between selectedEntry properties of the MainMenu and its items
+                // Bidirectional binding between selectedIndex properties of the MainMenu and its items
                 Binding {
                     target: menuItem
-                    property: "selectedEntry"
-                    value: mainMenu.selectedEntry
+                    property: "selectedIndex"
+                    value: mainMenu.selectedIndex
                 }
                 Binding {
                     target: mainMenu
-                    property: "selectedEntry"
-                    value: menuItem.selectedEntry
+                    property: "selectedIndex"
+                    value: menuItem.selectedIndex
                 }
             }
         }

@@ -9,9 +9,9 @@ Rectangle
     property alias icon: icon.text
     property alias label: label.text
     property string currentState: "normal"
-    property string selectedEntry: ""
+    property int selectedIndex: 0
 
-    onSelectedEntryChanged: root.currentState = (root.selectedEntry !== label.text) ? "normal" : "selected"
+    onSelectedIndexChanged: root.currentState = (root.selectedIndex !== index) ? "normal" : "selected"
     onCurrentStateChanged: root.state = root.currentState
 
 
@@ -64,7 +64,7 @@ Rectangle
         hoverEnabled: true
         onEntered: root.state = "hover"
         onExited: root.state = parent.currentState
-        onClicked: root.selectedEntry = label.text
+        onClicked: root.selectedIndex = index
     }
 
 

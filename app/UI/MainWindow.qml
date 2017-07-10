@@ -8,9 +8,9 @@ import "Pages"
 import "Regovar"
 
 ApplicationWindow {
-    visible: true
-    title: qsTr("Regovar")
     id: root
+    visible: true
+    title: "Regovar - " + Regovar.mainMenu.mainTitle
     width: 800
     height: 600
 
@@ -58,14 +58,14 @@ ApplicationWindow {
 
     property variant menuPageMapping:
     {
-        "Welcom": welcomPage,
-        "Project": projectPage,
-        "Subject": subjectPage,
-        "Settings": settingsPage,
-        "Help": helpPage,
-        "About": aboutPage,
-        "Disconnect" : disconnectPage,
-        "Close": closePage
+        0: welcomPage,
+        1: projectPage,
+        2: subjectPage,
+        3: settingsPage,
+        4: helpPage,
+        5: aboutPage,
+        6 : disconnectPage,
+        7: closePage
     }
 
     MainMenu
@@ -77,9 +77,9 @@ ApplicationWindow {
         anchors.left: parent.left
         width: 300
 
-        onSelectedEntryChanged:
+        onSelectedIndexChanged:
         {
-            stack.sourceComponent = menuPageMapping[mainMenu.selectedEntry]
+            stack.sourceComponent = menuPageMapping[mainMenu.selectedIndex]
         }
     }
 
