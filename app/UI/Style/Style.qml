@@ -52,6 +52,7 @@ QtObject
         property color front: "#000000"
         property color placeholder: "#babdb6"
         property color border: "#d9d9df"
+        property color disabled : "#999999"
     }
 
     property QtObject backgroundColor: QtObject

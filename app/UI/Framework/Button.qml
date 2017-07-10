@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
+import QtGraphicalEffects 1.0
 import "../Style"
 
 Button
@@ -20,11 +21,12 @@ Button
         elide: Text.ElideRight
     }
 
+
     background: Rectangle
     {
         implicitWidth: 100
         implicitHeight: 32
-        color : control.down ? Style.secondaryColor.back.dark: Style.secondaryColor.back.normal
+        color : !control.enabled ? Style.boxColor.disabled : ( control.down ? Style.secondaryColor.back.dark: Style.secondaryColor.back.normal)
 
         Behavior on color
         {
@@ -34,5 +36,8 @@ Button
             }
         }
     }
+
+
+
 }
 
