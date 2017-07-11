@@ -24,20 +24,40 @@ Item
     }
 
 
-    // bidirectional binding of selectedEntry between view and main model
-    property int selectedIndex: 0
-    Binding
+
+
+
+    // Open/Close level 2 according to the selection changed in the mainMenu at the 1st level
+    Connections
     {
         target: Regovar.mainMenu
-        property: "selectedMainIndex"
-        value: mainMenu.selectedIndex
+        onSelectedSubIndexChanged:
+        {
+            if (Regovar.mainMenu.selectedSubIndex < 0)
+            {
+                closeLevel2();
+            }
+        }
     }
-    Binding
+    // Display and update submenu for project when project selected
+    Connections
     {
-        target: mainMenu
-        property: "selectedIndex"
-        value: Regovar.mainMenu.selectedMainIndex
+        target: Regovar
+        onCurrentProjectChanged:
+        {
+            Regovar.mainMenu.selectedMainIndex = 1 // force selection of the Project section
+            openLevel2();
+
+        }
     }
+
+
+
+
+
+
+
+
 
     // --------------------------------------------------
     // View internals models
@@ -52,6 +72,35 @@ Item
     {
         id: subMenuModel
     }
+
+
+
+    // --------------------------------------------------
+    // Methods
+    // --------------------------------------------------
+    function openLevel2()
+    {
+        if (Regovar.mainMenu.selectedMainIndex >= 0 && Regovar.mainMenu.selectedMainIndex < Regovar.mainMenu.model.length)
+        {
+            Regovar.mainMenu.displaySubLevel = true;
+            Regovar.mainMenu.displaySubLevelCurrent = true;
+            subMenuModel.clear();
+            subMenuModel.append(Regovar.mainMenu.model[Regovar.mainMenu.selectedMainIndex]["sublevel"]);
+            return true;
+        }
+        return false;
+    }
+    function closeLevel2()
+    {
+        Regovar.mainMenu.displaySubLevel = false
+        Regovar.mainMenu.displaySubLevelCurrent = false
+        subMenuModel.clear()
+        return true;
+    }
+
+
+
+
 
 
 
@@ -76,18 +125,6 @@ Item
                 id: menuItem
                 icon: menuModel.get(index).icon
                 label: menuModel.get(index).label
-
-                // Bidirectional binding between selectedIndex properties of the MainMenu and its items
-                Binding {
-                    target: menuItem
-                    property: "selectedIndex"
-                    value: mainMenu.selectedIndex
-                }
-                Binding {
-                    target: mainMenu
-                    property: "selectedIndex"
-                    value: menuItem.selectedIndex
-                }
             }
         }
     }
@@ -129,7 +166,7 @@ Item
                     verticalAlignment: Text.AlignVCenter
                     font.family: iconsFont.name
                     font.pixelSize: 22
-                    text: "t"
+                    text: "]"
                     color: Regovar.theme.primaryColor.back.dark
                 }
                 Text
@@ -151,29 +188,17 @@ Item
                 color: Regovar.theme.primaryColor.back.dark
             }
 
-    //        Repeater
-    //        {
-    //            model: subMenuModel
+            Repeater
+            {
+                model: subMenuModel
 
-    //            MenuEntryL2
-    //            {
-    //                id: menuItem
-    //                icon: menuModel.get(index).icon
-    //                label: menuModel.get(index).label
-
-    //                // Bidirectional binding between selectedIndex properties of the MainMenu and its items
-    //                Binding {
-    //                    target: menuItem
-    //                    property: "selectedIndex"
-    //                    value: mainMenu.selectedIndex
-    //                }
-    //                Binding {
-    //                    target: mainMenu
-    //                    property: "selectedIndex"
-    //                    value: menuItem.selectedIndex
-    //                }
-    //            }
-    //        }
+                MenuEntryL2
+                {
+                    id: menu2Item
+                    icon: subMenuModel.get(index).icon
+                    label: subMenuModel.get(index).label
+                }
+            }
         }
     }
 
@@ -183,21 +208,21 @@ Item
         State
         {
             name: "level0"
-            PropertyChanges { target: mainMenu; width: 300}
+            PropertyChanges { target: mainMenu; width: 250}
             PropertyChanges { target: subLevel; width: 0}
             PropertyChanges { target: mainMenu; displaySubLevel: false}
         },
         State
         {
             name: "level1"
-            PropertyChanges { target: mainMenu; width: 300}
-            PropertyChanges { target: subLevel; width: 250}
+            PropertyChanges { target: mainMenu; width: 250}
+            PropertyChanges { target: subLevel; width: 200}
             PropertyChanges { target: mainMenu; displaySubLevel: true}
         },
         State
         {
             name: "minified"
-            PropertyChanges { target: mainMenu; width: 0}
+            PropertyChanges { target: mainMenu; width: 50}
             PropertyChanges { target: subLevel; width: 0}
         }
     ]

@@ -24,17 +24,18 @@ ApplicationWindow
     }
 
     // Load root's pages of regovar
-    property variant menuPageMapping: []
+    property var menuPageMapping: ({})
     function buildPages(model, baseIndex)
     {
         for (var idx in model)
         {
             var comp = Qt.createComponent("Pages/" + model[idx]["page"]);
+            console.log ("load " + baseIndex+idx + " : Pages/" + model[idx]["page"])
             if (model[idx]["sublevel"].length > 0)
             {
-                buildPages(model[idx]["sublevel"], idx + "-")
+                buildPages(model[idx]["sublevel"], baseIndex+idx + "-")
             }
-            root.menuPageMapping[idx] = comp;
+            root.menuPageMapping[baseIndex+idx] = comp;
         }
     }
 
@@ -50,12 +51,16 @@ ApplicationWindow
     Connections
     {
         target: Regovar.mainMenu
-        onSelectedMainIndexChanged:stack.sourceComponent = menuPageMapping[mainMenu.selectedIndex]
+        onSelectedMainIndexChanged:stack.sourceComponent = menuPageMapping[Regovar.mainMenu.selectedMainIndex]
     }
     Connections
     {
         target: Regovar.mainMenu
-        onSelectedSubIndexChanged: stack.sourceComponent = menuPageMapping[mainMenu.selectedIndex + "-" + mainMenu.selectedSubIndex]
+        onSelectedSubIndexChanged:
+        {
+            console.log ("open " + Regovar.mainMenu.selectedMainIndex + "-" +Regovar.mainMenu.selectedSubIndex)
+            stack.sourceComponent = menuPageMapping[Regovar.mainMenu.selectedMainIndex + "-" +Regovar.mainMenu.selectedSubIndex]
+        }
     }
 
 
@@ -69,7 +74,6 @@ ApplicationWindow
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         width: 300
-
     }
 
     Loader

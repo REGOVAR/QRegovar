@@ -65,7 +65,8 @@ DISTFILES += \
     UI/Pages/Project/SettingsIndicatorsPage.qml \
     UI/Pages/Project/SettingsInformationsPage.qml \
     UI/Pages/Project/SettingsSharingPage.qml \
-    UI/Pages/Project/SubjectsPage.qml
+    UI/Pages/Project/SubjectsPage.qml \
+    UI/MainMenu/MenuEntryL3.qml
 
 
 

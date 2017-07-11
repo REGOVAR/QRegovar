@@ -8,8 +8,17 @@ import "../GridView"
 Rectangle
 {
     id: root
-
     color: Regovar.theme.backgroundColor.main
+
+
+
+
+    Component.onCompleted:
+    {
+        // For this page: force the collapse of the sublevel of the main menu
+        Regovar.mainMenu.selectedSubIndex = -1;
+        getProjectsList();
+    }
 
 
     Rectangle
@@ -45,11 +54,7 @@ Rectangle
         {
             id: openProject
             text: qsTr("Open")
-            onClicked:
-            {
-                Regovar.mainMenu.displaySubLevel = !Regovar.mainMenu.displaySubLevel
-                Regovar.mainMenu.displaySubLevelCurrent = Regovar.mainMenu.displaySubLevel
-            }
+            onClicked:  openSelectedProject()
         }
 
         Item
@@ -284,30 +289,57 @@ Rectangle
 
 
 
-    Component.onCompleted:
+    /// Retrive model of the selected project in the browser and set the Regovar.currentProject with it.
+    /// @return bool : true if the request to retrieve the model is sent; false otherwise.
+    ///                The request is async so even if the function return true, an error may occured next
+    function openSelectedProject()
     {
-        //create a request and tell it where the json that I want is
+        if (browserList.currentIndex >= 0 && browserList.currentIndex < browserList.model.length)
+        {
+            var projectModel = browserList.model[browserList.currentIndex];
+
+            var req = new XMLHttpRequest();
+            var url = Regovar.settings.server.host + "/project/" + projectModel["id"];
+
+            // Do the job when the answer is ready
+            req.onreadystatechange = function()
+            {
+                if (req.readyState == 4)
+                {
+                    // turn the text in a javascript object while setting the ListView's model to it
+                    var data = JSON.parse(req.responseText);
+                    Regovar.currentProject = data["data"];
+                    Regovar.mainMenu.selectedSubIndex = 0;
+                }
+            };
+            console.log(url)
+            req.open("GET", url, true);
+            req.send(null);
+            return true;
+        }
+        return false;
+    }
+
+
+    function getProjectsList()
+    {
+        // create a request and tell it where the json that I want is
         var req = new XMLHttpRequest();
-        var location = "http://dev.regovar.org/project";
+        var url = Regovar.settings.server.host + "/project";
 
-        //tell the request to go ahead and get the json
-        req.open("GET", "http://dev.regovar.org/project", true);
-
-        //wait until the readyState is 4, which means the json is ready
+        // Do the job when the answer is ready
         req.onreadystatechange = function()
         {
             if (req.readyState == 4)
             {
-                //turn the text in a javascript object while setting the ListView's model to it
+                // turn the text in a javascript object while setting the ListView's model to it
                 var data = JSON.parse(req.responseText);
                 browserList.model = data["data"];
                 browserList.currentIndex = -1
             }
         };
-
-
+        console.log(url)
+        req.open("GET", url, true);
         req.send(null);
     }
-
-
 }

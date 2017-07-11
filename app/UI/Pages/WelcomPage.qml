@@ -9,7 +9,7 @@ Rectangle
 
     Text
     {
-       text: "Welcome " //+ regovar.currentUser.firstname
+       text: "Welcome" //+ regovar.currentUser.firstname
        color: "#55999999"
        font.family: "Sans"
        font.weight: Font.Black
@@ -19,26 +19,4 @@ Rectangle
        anchors.topMargin: 30
        anchors.leftMargin: 30
     }
-
-    Item
-    {
-        id: logo
-        width: 300
-        height: 100
-
-//        Image
-//        {
-//            source: "qrc:///img/sandbox.png"
-//            height: 100
-//            width: 300
-//            anchors.left: logo.left
-//            anchors.bottom: logo.bottom
-//            anchors.bottomMargin: 7
-//        }
-        anchors.right: root.right
-        anchors.rightMargin: 10
-        anchors.bottom: root.bottom
-        anchors.bottomMargin: 10
-    }
-
 }
