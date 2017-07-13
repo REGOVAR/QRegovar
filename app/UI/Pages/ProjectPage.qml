@@ -128,7 +128,9 @@ Rectangle
 
                 Text
                 {
-                    anchors.leftMargin: 15
+                    leftPadding: 4
+                    height: parent.height
+                    width: 200
                     text: "Name"
                     font.pixelSize: Regovar.theme.font.size.control
                     font.family: Regovar.theme.font.familly
@@ -138,9 +140,28 @@ Rectangle
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
                 }
+                Rectangle
+                {
+                    width: 1
+                    height: parent.height
+                    color: Regovar.theme.boxColor.border
+
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        anchors.leftMargin: -2
+                        anchors.rightMargin: -2
+                        hoverEnabled: true
+                        onEntered: cursorShape = Qt.SplitHCursor
+                        onExited: cursorShape = Qt.ArrowCursor
+                    }
+                }
+
                 Text
                 {
-                    anchors.leftMargin: 15
+                    leftPadding: 4
+                    height: parent.height
+                    width: 200
                     text: "Date"
                     font.pixelSize: Regovar.theme.font.size.control
                     font.family: Regovar.theme.font.familly
@@ -150,10 +171,27 @@ Rectangle
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
                 }
+                Rectangle
+                {
+                    width: 1
+                    height: parent.height
+                    color: Regovar.theme.boxColor.border
+
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        anchors.leftMargin: -2
+                        anchors.rightMargin: -2
+                        hoverEnabled: true
+                        onEntered: cursorShape = Qt.SplitHCursor
+                        onExited: cursorShape = Qt.ArrowCursor
+                    }
+                }
 
                 Text
                 {
-                    anchors.leftMargin: 15
+                    leftPadding: 4
+                    height: parent.height
                     text: "Comment"
                     font.pixelSize: Regovar.theme.font.size.control
                     font.family: Regovar.theme.font.familly

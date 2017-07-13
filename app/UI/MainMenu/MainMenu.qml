@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import QtQuick.Controls 2.2
 import "../Regovar"
 
 Item
@@ -155,6 +156,7 @@ Item
             anchors.fill: subLevel
             Row
             {
+                id: menuL2Header
                 FontLoader { id: iconsFont; source: "../Icons.ttf" }
 
                 Text
@@ -168,6 +170,7 @@ Item
                     font.pixelSize: 22
                     text: "]"
                     color: Regovar.theme.primaryColor.back.dark
+
                 }
                 Text
                 {
@@ -179,6 +182,7 @@ Item
                     text : Regovar.mainMenu.mainTitle
                     color: Regovar.theme.primaryColor.back.dark
                 }
+
             }
 
             Rectangle

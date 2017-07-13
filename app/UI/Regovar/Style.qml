@@ -9,7 +9,7 @@ QtObject
         {
             property int header : 16
             property int control : 12
-            property int content : 10
+            property int content : 11
          }
     }
 

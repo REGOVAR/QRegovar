@@ -1,8 +1,15 @@
-QT += qml quick
+QT += qml quick widgets
 
 CONFIG += c++11
 
-SOURCES += main.cpp
+
+HEADERS += \
+    Model/treeitem.h \
+    Model/treemodel.h
+
+SOURCES += main.cpp \
+    Model/treeitem.cpp \
+    Model/treemodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -84,3 +91,4 @@ first.depends = $(first) copydata
 export(first.depends)
 export(copydata.commands)
 QMAKE_EXTRA_TARGETS += first copydata
+
