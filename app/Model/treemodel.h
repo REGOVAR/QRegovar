@@ -66,7 +66,7 @@ public:
 
 
     TreeModel(QObject *parent = 0);
-    TreeModel(const QStringList &headers, const QString &data, QObject *parent = 0);
+    explicit  TreeModel(const QStringList &headers, const QString &data, QObject *parent = 0);
     ~TreeModel();
 
     /* QAbstractItemModel interface */

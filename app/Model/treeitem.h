@@ -53,7 +53,6 @@
 
 #include <QList>
 #include <QVariant>
-#include <QVector>
 
 class TreeItem
 {

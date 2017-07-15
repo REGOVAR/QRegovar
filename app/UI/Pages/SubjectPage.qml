@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 
 import org.regovar 1.0
 
@@ -17,14 +18,27 @@ Rectangle
     TreeView
     {
         anchors.fill: parent
+        anchors.margins: 10
         model: theModel
 
+        style: TreeViewStyle {
+                branchDelegate: Rectangle {
+                    width: 15; height: 15
+                    color: styleData.isExpanded ? "red" : "green"
+                }
+            }
+
+
+
         // Default delegate for all column
-        itemDelegate: Text
+        itemDelegate: Item
         {
-            anchors.fill: parent
-            color: "green"
-            text: styleData.row + ": " + styleData.column + " = " + styleData.value
+            Text
+            {
+                anchors.fill: parent
+                color: "green"
+                text: styleData.row + ": " + styleData.column + " = " + styleData.value
+            }
         }
 
         TableViewColumn {
@@ -32,11 +46,14 @@ Rectangle
             title: "Name"
 
             // Deletegate for this column only
-            delegate: Text
+            delegate: Item
             {
-                anchors.fill: parent
-                color: "red"
-                text: styleData.row + ": " + styleData.column + " = " + styleData.value
+                Text
+                {
+                    anchors.fill: parent
+                    color: "red"
+                    text: styleData.row + ": " + styleData.column + " = " + styleData.value
+                }
             }
         }
 
@@ -44,11 +61,14 @@ Rectangle
             role: "date"
             title: "Date"
 
-            delegate: Text
+            delegate: Item
             {
-                anchors.fill: parent
-                color: Regovar.theme.frontColor.normal
-                text: styleData.row + ": " + styleData.column + " = " + styleData.value
+                Text
+                {
+                    anchors.fill: parent
+                    color: Regovar.theme.frontColor.normal
+                    text: styleData.row + ": " + styleData.column + " = " + styleData.value
+                }
             }
         }
 
