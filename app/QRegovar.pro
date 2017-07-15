@@ -5,11 +5,17 @@ CONFIG += c++11
 
 HEADERS += \
     Model/treeitem.h \
-    Model/treemodel.h
+    Model/treemodel.h \
+    Model/project/projectsbrowsermodel.h \
+    Model/jsonmodel.h \
+    Model/project/projectsbrowseritem.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
-    Model/treemodel.cpp
+    Model/treemodel.cpp \
+    Model/project/projectsbrowsermodel.cpp \
+    Model/jsonmodel.cpp \
+    Model/project/projectsbrowseritem.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

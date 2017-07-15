@@ -58,7 +58,7 @@
 
 #include <QStringList>
 
-TreeItem::TreeItem(const QVector<QVariant> &data, TreeItem *parent)
+TreeItem::TreeItem(const QList<QVariant> &data, TreeItem *parent)
 {
     parentItem = parent;
     itemData = data;
@@ -79,7 +79,12 @@ int TreeItem::childCount() const
     return childItems.count();
 }
 
-int TreeItem::childNumber() const
+void TreeItem::appendChild(TreeItem *item)
+{
+    childItems.append(item);
+}
+
+int TreeItem::row() const
 {
     if (parentItem)
         return parentItem->childItems.indexOf(const_cast<TreeItem*>(this));
@@ -97,6 +102,28 @@ QVariant TreeItem::data(int column) const
     return itemData.value(column);
 }
 
+
+
+TreeItem *TreeItem::parent()
+{
+    return parentItem;
+}
+
+
+
+
+
+
+
+
+/*
+int TreeItem::childNumber() const
+{
+    if (parentItem)
+        return parentItem->childItems.indexOf(const_cast<TreeItem*>(this));
+
+    return 0;
+}
 bool TreeItem::insertChildren(int position, int count, int columns)
 {
     if (position < 0 || position > childItems.size())
@@ -125,10 +152,6 @@ bool TreeItem::insertColumns(int position, int columns)
     return true;
 }
 
-TreeItem *TreeItem::parent()
-{
-    return parentItem;
-}
 
 bool TreeItem::removeChildren(int position, int count)
 {
@@ -163,3 +186,4 @@ bool TreeItem::setData(int column, const QVariant &value)
     itemData[column] = value;
     return true;
 } 
+*/

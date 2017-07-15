@@ -1,0 +1,39 @@
+import QtQuick 2.7
+import QtQuick.Controls 2.0
+import "../Regovar"
+
+Button
+{
+    id: control
+    text: "Button"
+
+
+    contentItem: Text
+    {
+        text: control.text
+        font.pixelSize: Regovar.theme.font.size.control
+        font.family: Regovar.theme.font.familly
+        font.bold: false
+        color: Regovar.theme.secondaryColor.front.normal
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        elide: Text.ElideRight
+    }
+
+
+    background: Rectangle
+    {
+        implicitWidth: 100
+        implicitHeight: 32
+        color : !control.enabled ? Regovar.theme.boxColor.disabled : ( control.down ? Regovar.theme.secondaryColor.back.dark: Regovar.theme.secondaryColor.back.normal)
+
+        Behavior on color
+        {
+            ColorAnimation
+            {
+               duration : 200
+            }
+        }
+    }
+}
+
