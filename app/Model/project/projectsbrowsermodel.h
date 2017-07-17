@@ -22,9 +22,6 @@ public:
     void refresh();
     QVariant newProjectsBrowserItem(int id, const QString &text);
     void setupModelData(QJsonArray data, TreeItem *parent);
-
-    //Q_INVOKABLE ProjectModel* getProject(const QModelIndex &index);
-
 };
 
 #endif // PROJECTSBROWSERMODEL_H

@@ -32,6 +32,4 @@ private:
     int mId;
 };
 
-Q_DECLARE_METATYPE(ProjectsBrowserItem)
-
 #endif // PROJECTSBROWSERITEM_H

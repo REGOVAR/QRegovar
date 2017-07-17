@@ -2,7 +2,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 1.4
-import org.regovar 1.0
+//import org.regovar 1.0
 
 import "../Regovar"
 import "../Framework"
