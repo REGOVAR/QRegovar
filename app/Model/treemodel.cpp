@@ -97,6 +97,7 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
     // For QML
     if (role > Qt::UserRole)
         return item->data(role - Qt::UserRole - 1);
+    return QVariant();
 }
 
 Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const

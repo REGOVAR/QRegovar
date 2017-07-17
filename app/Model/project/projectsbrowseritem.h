@@ -6,27 +6,30 @@
 class ProjectsBrowserItem : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged)
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
-    Q_PROPERTY(int indentation READ indentation WRITE setIndentation NOTIFY indentationChanged)
 
 public:
+
+
     explicit ProjectsBrowserItem(QObject *parent = 0);
+    explicit ProjectsBrowserItem(int id, QString text, QObject *parent = 0);
     ProjectsBrowserItem(const ProjectsBrowserItem &other);
     ~ProjectsBrowserItem();
 
-    QString text();
-    void setText(QString text);
+    inline QString text() { return mText; }
+    inline int id() { return mId; }
 
-    int indentation();
-    void setIndentation(int indentation);
+    inline void setText(QString text) { mText = text; emit textChanged(); }
+    inline void setId(int id) { mId = id; emit idChanged(); }
 
 signals:
     void textChanged();
-    void indentationChanged();
+    void idChanged();
 
 private:
-    QString myText;
-    int myIndentation;
+    QString mText;
+    int mId;
 };
 
 Q_DECLARE_METATYPE(ProjectsBrowserItem)

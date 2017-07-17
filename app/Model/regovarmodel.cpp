@@ -1,42 +1,38 @@
-#include "regovar.h"
-#include "tools/request.h"
+#include "regovarmodel.h"
+#include "request.h"
 
 
 
-Regovar* Regovar::mInstance = Q_NULLPTR;
-Regovar* Regovar::i()
+RegovarModel* RegovarModel::mInstance = Q_NULLPTR;
+RegovarModel* RegovarModel::i()
 {
     if (mInstance == Q_NULLPTR)
     {
-        mInstance = new Regovar();
+        mInstance = new RegovarModel();
     }
     return mInstance;
 }
 
-Regovar::Regovar()
-{
-
-}
-
-Regovar::~Regovar()
-{
-}
+RegovarModel::RegovarModel() {}
+RegovarModel::~RegovarModel() {}
 
 
-void Regovar::init()
+
+void RegovarModel::init()
 {
     readSettings();
 
     // Init managers
 
 
-    // Init model
-    mUser = new UserModel(); //1, "Olivier", "Gueudelot");
+    // Init models
+    // mUser = new UserModel(); //1, "Olivier", "Gueudelot");
+    mProjectsBrowser = new ProjectsBrowserModel();
 }
 
 
 
-void Regovar::readSettings()
+void RegovarModel::readSettings()
 {
     // TODO : No hardcoded value => Load default from local config file ?
     QSettings settings;
@@ -50,8 +46,8 @@ void Regovar::readSettings()
 
 
 
-
-void Regovar::login(QString& login, QString& password)
+/*
+void RegovarModel::login(QString& login, QString& password)
 {
     // Do nothing if user already connected
     if (mUser->isValid())
@@ -125,5 +121,4 @@ void Regovar::authenticationRequired(QNetworkReply* request, QAuthenticator* aut
         request->error();
     }
 }
-
-
+*/

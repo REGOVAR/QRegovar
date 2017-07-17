@@ -8,14 +8,18 @@ HEADERS += \
     Model/treemodel.h \
     Model/project/projectsbrowsermodel.h \
     Model/jsonmodel.h \
-    Model/project/projectsbrowseritem.h
+    Model/project/projectsbrowseritem.h \
+    Model/request.h \
+    Model/regovarmodel.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
     Model/treemodel.cpp \
     Model/project/projectsbrowsermodel.cpp \
     Model/jsonmodel.cpp \
-    Model/project/projectsbrowseritem.cpp
+    Model/project/projectsbrowseritem.cpp \
+    Model/request.cpp \
+    Model/regovarmodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -41,8 +45,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    UI/Regovar.qml \
-    UI/Regovar.qmlc \
     UI/Icons.ttf \
     UI/Framework/Button.qml \
     UI/Framework/CheckBox.qml \
@@ -79,7 +81,8 @@ DISTFILES += \
     UI/Pages/Project/SettingsInformationsPage.qml \
     UI/Pages/Project/SettingsSharingPage.qml \
     UI/Pages/Project/SubjectsPage.qml \
-    UI/MainMenu/MenuEntryL3.qml
+    UI/MainMenu/MenuEntryL3.qml \
+    UI/Framework/TreeView.qml
 
 
 

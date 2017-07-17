@@ -3,8 +3,9 @@
 #include <QSettings>
 #include <QtQml>
 
+#include "Model/regovarmodel.h" // include regovar singleton which wrap all models and is the interface with the server
 #include "Model/treemodel.h"
-#include "Model/project/projectsbrowsermodel.h"
+#include "Model/treeitem.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,18 +17,14 @@ int main(int argc, char *argv[])
     app.setApplicationVersion("0.0.b");
 
     // Register custom classes to use it with QML
-    //qmlRegisterType<TreeModel>("org.regovar", 1, 0, "ProjectsBrowserModel");
-    qmlRegisterType<TreeModel>("org.regovar", 1, 0, "ProjectsBrowserItem");
+    qmlRegisterType<TreeModel>("org.regovar", 1, 0, "TreeModel");
 
-
-    ProjectsBrowserModel model;
-
-
+    // Init model
+    regovar->init();
 
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("theModel", &model);
+    engine.rootContext()->setContextProperty("regovar", regovar);
     engine.load(QUrl(QLatin1String("UI/MainWindow.qml")));
 
     return app.exec();
-
 }

@@ -11,22 +11,20 @@ public:
     enum JsonModelRoles
     {
         NameRole = Qt::UserRole + 1,
-        DateRole,
         CommentRole,
+        DateRole,
     };
 
 
     explicit ProjectsBrowserModel();
     QHash<int, QByteArray> roleNames() const override;
 
-    QVariant newProjectsBrowserItem(const QString &text, int position);
-//    void setupModelData(const QStringList &lines, TreeItem *parent);
+    void refresh();
+    QVariant newProjectsBrowserItem(int id, const QString &text);
+    void setupModelData(QJsonArray data, TreeItem *parent);
 
+    //Q_INVOKABLE ProjectModel* getProject(const QModelIndex &index);
 
-private:
-    QList<TreeItem*> childItems;
-    QVector<QVariant> itemData;
-    TreeItem *parentItem;
 };
 
 #endif // PROJECTSBROWSERMODEL_H

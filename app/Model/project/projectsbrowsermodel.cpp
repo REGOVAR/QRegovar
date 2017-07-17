@@ -1,6 +1,9 @@
 #include <QDebug>
 #include "projectsbrowsermodel.h"
 #include "projectsbrowseritem.h"
+#include "Model/request.h"
+
+
 
 ProjectsBrowserModel::ProjectsBrowserModel() : TreeModel(0)
 {
@@ -8,14 +11,35 @@ ProjectsBrowserModel::ProjectsBrowserModel() : TreeModel(0)
     rootData << "Name" << "Date" << "Comment";
     rootItem = new TreeItem(rootData);
 
-    // TODO : retrieve data from Rest request
-    QFile file("E:/Git/QRegovar/test.txt");
-    file.open(QIODevice::ReadOnly);
-    QString data =  file.readAll();
-    file.close();
-
-    setupModelData(data.split(QString("\n")), rootItem);
+    refresh();
 }
+
+
+
+
+void ProjectsBrowserModel::refresh()
+{
+    Request* request = Request::get("/project/browserTree");
+    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            beginResetModel();
+            setupModelData(json["data"].toArray(), rootItem);
+            endResetModel();
+            qDebug() << Q_FUNC_INFO << "done";
+        }
+        else
+        {
+            qCritical() << Q_FUNC_INFO << "Unable to build user list model (due to request error)";
+        }
+        request->deleteLater();
+    });
+}
+
+
+
+
 
 
 QHash<int, QByteArray> ProjectsBrowserModel::roleNames() const
@@ -29,64 +53,45 @@ QHash<int, QByteArray> ProjectsBrowserModel::roleNames() const
 
 
 
-QVariant ProjectsBrowserModel::newProjectsBrowserItem(const QString &text, int position)
+QVariant ProjectsBrowserModel::newProjectsBrowserItem(int id, const QString &text)
 {
     ProjectsBrowserItem *t = new ProjectsBrowserItem(this);
     t->setText(text);
-    t->setIndentation(position);
+    t->setId(id);
     QVariant v;
     v.setValue(t);
     return v;
 }
 
-//void ProjectsBrowserModel::setupModelData(const QStringList &lines, TreeItem *parent)
-//{
-//    QList<TreeItem*> parents;
-//    QList<int> indentations;
-//    parents << parent;
-//    indentations << 0;
+void ProjectsBrowserModel::setupModelData(QJsonArray data, TreeItem *parent)
+{
 
-//    int number = 0;
 
-//    while (number < lines.count()) {
-//        int position = 0;
-//        while (position < lines[number].length()) {
-//            if (lines[number].at(position) != ' ')
-//                break;
-//            ++position;
-//        }
+    foreach(const QJsonValue json, data)
+    {
+        QJsonObject p = json.toObject();
+        int id = p["id"].toInt();
 
-//        QString lineData = lines[number].mid(position).trimmed();
+        // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
+        QList<QVariant> columnData;
+        columnData << newProjectsBrowserItem(id, p["name"].toString());
+        columnData << newProjectsBrowserItem(id, p["comment"].toString());
+        columnData << newProjectsBrowserItem(id, QDate::fromString(p["create_date"].toString()).toString(Qt::LocalDate));
+        columnData << newProjectsBrowserItem(id, QDate::fromString(p["update_date"].toString()).toString(Qt::LocalDate));
 
-//        if (!lineData.isEmpty()) {
-//            // Read the column data from the rest of the line.
-//            QStringList columnStrings = lineData.split("\t", QString::SkipEmptyParts);
-//            QVector<QVariant> columnData;
-//            for (int column = 0; column < columnStrings.count(); ++column)
-//                columnData << columnStrings[column]; //newProjectsBrowserItem(columnStrings[column], position);
+        // Create treeview item with column's data and parent item
+        TreeItem* item = new TreeItem(columnData, parent);
+        parent->appendChild(item);
 
-//            if (position > indentations.last()) {
-//                // The last child of the current parent is now the new parent
-//                // unless the current parent has no children.
-
-//                if (parents.last()->childCount() > 0) {
-//                    parents << parents.last()->child(parents.last()->childCount()-1);
-//                    indentations << position;
-//                }
-//            } else {
-//                while (position < indentations.last() && parents.count() > 0) {
-//                    parents.pop_back();
-//                    indentations.pop_back();
-//                }
-//            }
-
-//            // Append a new item to the current parent's list of children.
-//            TreeItem *parent = parents.last();
-//            parent->insertChildren(parent->childCount(), 1, rootItem->columnCount());
-//            for (int column = 0; column < columnData.size(); ++column)
-//                parent->child(parent->childCount() - 1)->setData(column, columnData[column]);
-//        }
-//        qDebug() << "Model2 [" << number << "] : " << position;
-//        ++number;
-//    }
-//}
+        // If folder, need to retrieve subitems recursively
+        if (p["is_folder"].toBool())
+        {
+            setupModelData(p["children"].toArray(), item);
+        }
+        // If project, need to build subtree for analyses and subjects
+        else
+        {
+            // TODO
+        }
+    }
+}

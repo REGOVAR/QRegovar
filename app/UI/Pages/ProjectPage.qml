@@ -1,7 +1,9 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Dialogs 1.2
-import QtGraphicalEffects 1.0
+import QtQuick.Controls 1.4
+import org.regovar 1.0
+
 import "../Regovar"
 import "../Framework"
 import "../GridView"
@@ -10,16 +12,6 @@ Rectangle
 {
     id: root
     color: Regovar.theme.backgroundColor.main
-
-
-
-
-    Component.onCompleted:
-    {
-        // For this page: force the collapse of the sublevel of the main menu
-        Regovar.mainMenu.selectedSubIndex = -1;
-        getProjectsList();
-    }
 
 
     Dialog
@@ -101,287 +93,69 @@ Rectangle
     }
 
 
-
-
-    Rectangle
+    TreeView
     {
-        id: browserRoot
+        id: browser
         anchors.left: root.left
         anchors.top: header.bottom
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
+        model: regovar.projectsBrowser
 
-        color: Regovar.theme.boxColor.back
-        border.width: 1
-        border.color: Regovar.theme.boxColor.border
-
-        Rectangle
+        // Default delegate for all column
+        itemDelegate: Item
         {
-            id: browserHeader
-            anchors.left: browserRoot.left
-            anchors.right: browserRoot.right
-            anchors.top: browserRoot.top
-            height: 24
-
-            border.width: 1
-            border.color: Regovar.theme.boxColor.border
-
-            LinearGradient
+            Text
             {
+                anchors.leftMargin: 5
                 anchors.fill: parent
-                anchors.margins: 1
-                start: Qt.point(0, 0)
-                end: Qt.point(0, 24)
-                gradient: Gradient
-                {
-                    GradientStop { position: 0.0; color: "#fcfcfd" }
-                    GradientStop { position: 1.0; color: "#e7e7e7" }
-                }
-            }
-
-            Row
-            {
-                anchors.fill: parent
-
-                Text
-                {
-                    leftPadding: 4
-                    height: parent.height
-                    width: 200
-                    text: "Name"
-                    font.pixelSize: Regovar.theme.font.size.control
-                    font.family: Regovar.theme.font.familly
-                    font.bold: false
-                    color: Regovar.theme.frontColor.normal
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                    elide: Text.ElideRight
-                }
-                Rectangle
-                {
-                    width: 1
-                    height: parent.height
-                    color: Regovar.theme.boxColor.border
-
-                    MouseArea
-                    {
-                        anchors.fill: parent
-                        anchors.leftMargin: -2
-                        anchors.rightMargin: -2
-                        hoverEnabled: true
-                        onEntered: cursorShape = Qt.SplitHCursor
-                        onExited: cursorShape = Qt.ArrowCursor
-                    }
-                }
-
-                Text
-                {
-                    leftPadding: 4
-                    height: parent.height
-                    width: 200
-                    text: "Date"
-                    font.pixelSize: Regovar.theme.font.size.control
-                    font.family: Regovar.theme.font.familly
-                    font.bold: false
-                    color: Regovar.theme.frontColor.normal
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                    elide: Text.ElideRight
-                }
-                Rectangle
-                {
-                    width: 1
-                    height: parent.height
-                    color: Regovar.theme.boxColor.border
-
-                    MouseArea
-                    {
-                        anchors.fill: parent
-                        anchors.leftMargin: -2
-                        anchors.rightMargin: -2
-                        hoverEnabled: true
-                        onEntered: cursorShape = Qt.SplitHCursor
-                        onExited: cursorShape = Qt.ArrowCursor
-                    }
-                }
-
-                Text
-                {
-                    leftPadding: 4
-                    height: parent.height
-                    text: "Comment"
-                    font.pixelSize: Regovar.theme.font.size.control
-                    font.family: Regovar.theme.font.familly
-                    font.bold: false
-                    color: Regovar.theme.frontColor.normal
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                    elide: Text.ElideRight
-                }
+                verticalAlignment: Text.AlignVCenter
+                font.pixelSize: Regovar.theme.font.size.control
+                text: styleData.value.text
+                elide: Text.ElideRight
             }
         }
 
-        ListView
-        {
-            id: browserList
+        TableViewColumn {
+            role: "name"
+            title: "Name"
 
-            anchors.left: browserRoot.left
-            anchors.top: browserHeader.bottom
-            anchors.right: browserRoot.right
-            anchors.bottom: browserRoot.bottom
-            anchors.margins: 1
-            ScrollBar.vertical: ScrollBar { }
+            // Deletegate for this column only
+//            delegate: Item
+//            {
+//                Text
+//                {
+//                    anchors.fill: parent
+//                    color: "red"
+//                    text: styleData.row + ": " + styleData.column + " = " + styleData.value
+//                }
+//            }
+        }
 
-            clip:true
+        TableViewColumn {
+            role: "date"
+            title: "Date"
+        }
 
-
-
-            // Manage selected item of the list using exing property currentIndex
-
-
-            delegate: Rectangle
-            {
-                id: browserListItemRoot
-                height: 22
-                anchors.left: parent.left
-                anchors.right: parent.right
-
-                Text
-                {
-                    id: browserListItemText
-                    anchors.fill: parent
-                    verticalAlignment: Text.AlignVCenter
-                    text: "salut : " + index + " " + browserList.model[index]["name"]
-                    font.pixelSize: Regovar.theme.font.size.content
-                    font.family: Regovar.theme.font.familly
-                    color: Regovar.theme.frontColor.normal
-                    anchors.margins: 4
-                }
-                Text
-                {
-                    anchors.right: parent.right
-                    text: "idx : " + index + ", selectedIdx : " + browserListItemRoot.selectedIndex + ", currentState : " + browserListItemRoot.currentState
-                    font.pixelSize: Regovar.theme.font.size.content
-                    font.family: Regovar.theme.font.familly
-                    color: Regovar.theme.frontColor.normal
-                    anchors.margins: 4
-                }
-                MouseArea
-                {
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: browserListItemRoot.selectedIndex = index
-                    onEntered: browserListItemRoot.state = "hover"
-                    onExited: browserListItemRoot.state = browserListItemRoot.currentState
-                }
-
-
-
-                // Manage selected item of the list using exing property currentIndex
-                property int selectedIndex
-                // Bidirectional binding between selectedEntry properties of the listview and its items
-                Binding {
-                    target: browserListItemRoot
-                    property: "selectedIndex"
-                    value: browserList.currentIndex
-                }
-                Binding {
-                    target: browserList
-                    property: "currentIndex"
-                    value: browserListItemRoot.selectedIndex
-                }
-
-
-
-                // Manage style and states of the listview item
-                property string mainState
-                property string currentState
-                onCurrentStateChanged: browserListItemRoot.state = browserListItemRoot.currentState
-                onSelectedIndexChanged: browserListItemRoot.currentState = (browserListItemRoot.selectedIndex == index) ? "selected" : browserListItemRoot.mainState
-                Component.onCompleted:
-                {
-                    browserListItemRoot.mainState = index % 2 == 0 ? "alt1" : "alt2"
-                    browserListItemRoot.currentState = browserListItemRoot.mainState
-                }
-
-                states:
-                [
-                    State
-                    {
-                        name: "alt1"
-                        PropertyChanges { target: browserListItemRoot; color: Regovar.theme.backgroundColor.main}
-                        PropertyChanges { target: browserListItemText; color: Regovar.theme.frontColor.normal}
-                    },
-                    State
-                    {
-                        name: "alt2"
-                        PropertyChanges { target: browserListItemRoot; color: Regovar.theme.boxColor.back}
-                        PropertyChanges { target: browserListItemText; color: Regovar.theme.frontColor.normal}
-                    },
-                    State
-                    {
-                        name: "selected"
-                        PropertyChanges { target: browserListItemRoot; color: Regovar.theme.secondaryColor.back.light}
-                        PropertyChanges { target: browserListItemText; color: Regovar.theme.secondaryColor.front.light}
-                    },
-                    State
-                    {
-                        name: "hover"
-                        PropertyChanges { target: browserListItemRoot; color: Regovar.theme.secondaryColor.back.normal}
-                        PropertyChanges { target: browserListItemText; color: Regovar.theme.secondaryColor.front.normal}
-
-                    }
-                ]
-            }
+        TableViewColumn {
+            role: "comment"
+            title: "Comment"
         }
     }
-
-
-
-
-
 
 
 
 
     /// Retrive model of the selected project in the browser and set the Regovar.currentProject with it.
-    /// @return bool : true if the request to retrieve the model is sent; false otherwise.
-    ///                The request is async so even if the function return true, an error may occured next
     function openSelectedProject()
     {
-        if (browserList.currentIndex >= 0 && browserList.currentIndex < browserList.model.length)
-        {
-            var projectModel = browserList.model[browserList.currentIndex];
-
-            var req = new XMLHttpRequest();
-            var url = Regovar.settings.server.host + "/project/" + projectModel["id"];
-
-            // Do the job when the answer is ready
-            req.onreadystatechange = function()
-            {
-                if (req.readyState == 4)
-                {
-                    // turn the text in a javascript object while setting the ListView's model to it
-                    var data = JSON.parse(req.responseText);
-                    Regovar.currentProject = data["data"];
-                    Regovar.mainMenu.selectedSubIndex = 0;
-                }
-            };
-            console.log(url)
-            req.open("GET", url, true);
-            req.send(null);
-            return true;
-        }
-        return false;
-    }
+        var id = regovar.projectsBrowser.data(browser.currentIndex, 0).id
+        console.log("current index: " + browser.currentIndex + " => id: " + id)
 
 
-    function getProjectsList()
-    {
-        // create a request and tell it where the json that I want is
         var req = new XMLHttpRequest();
-        var url = Regovar.settings.server.host + "/project";
+        var url = Regovar.settings.server.host + "/project/" + id;
 
         // Do the job when the answer is ready
         req.onreadystatechange = function()
@@ -390,12 +164,13 @@ Rectangle
             {
                 // turn the text in a javascript object while setting the ListView's model to it
                 var data = JSON.parse(req.responseText);
-                browserList.model = data["data"];
-                browserList.currentIndex = -1
+                Regovar.currentProject = data["data"];
+                Regovar.mainMenu.selectedSubIndex = 0;
             }
         };
         console.log(url)
         req.open("GET", url, true);
         req.send(null);
     }
+
 }

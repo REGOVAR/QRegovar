@@ -1,38 +1,22 @@
 #include "projectsbrowseritem.h"
 
 
-ProjectsBrowserItem::ProjectsBrowserItem(QObject *parent) : QObject(parent), myIndentation(0)
-{
-}
+ProjectsBrowserItem::ProjectsBrowserItem(QObject *parent) : QObject(parent)
+{}
 
 ProjectsBrowserItem::ProjectsBrowserItem(const ProjectsBrowserItem &other)
 {
-    myText = other.myText;
-    myIndentation = other.myIndentation;
+    mText = other.mText;
+    mId= other.mId;
 }
 
 ProjectsBrowserItem::~ProjectsBrowserItem()
-{
-}
+{}
 
-QString ProjectsBrowserItem::text()
-{
-    return myText;
-}
 
-void ProjectsBrowserItem::setText(QString text)
-{
-    myText = text;
-    emit textChanged();
-}
 
-int ProjectsBrowserItem::indentation()
+ProjectsBrowserItem::ProjectsBrowserItem(int id, QString text, QObject *parent) : QObject(parent)
 {
-    return myIndentation;
-}
-
-void ProjectsBrowserItem::setIndentation(int indentation)
-{
-    myIndentation = indentation;
-    emit indentationChanged();
+    mText = text;
+    mId= id;
 }
