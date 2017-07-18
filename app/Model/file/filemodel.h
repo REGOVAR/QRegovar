@@ -10,18 +10,18 @@ class FileModel : public QObject
 {
 
     Q_OBJECT
-//    Q_PROPERTY(int id READ id)
-//    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameUpdated)
-//    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentUpdated)
-//    Q_PROPERTY(QUrl url READ url)
-//    Q_PROPERTY(QDateTime creationDate READ creationDate)
-//    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY updateDateUpdated)
-//    Q_PROPERTY(qint64 size READ size WRITE setSize NOTIFY sizeUpdated)
-//    Q_PROPERTY(qint64 uploadOffset READ uploadOffset WRITE setUploadOffset NOTIFY uploadOffsetUpdated)
-//    Q_PROPERTY(QString md5Sum READ md5Sum WRITE setMd5Sum NOTIFY md5SumUpdated)
-//    Q_PROPERTY(QString type READ type WRITE setType NOTIFY typeUpdated)
-//    Q_PROPERTY(FileStatus status READ status WRITE setStatus NOTIFY statusUpdated)
-//    Q_PROPERTY(QList<QString> tags READ tags NOTIFY tagsUpdated)
+    Q_PROPERTY(int id READ id)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameUpdated)
+    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentUpdated)
+    Q_PROPERTY(QUrl url READ url)
+    Q_PROPERTY(QDateTime creationDate READ creationDate)
+    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY updateDateUpdated)
+    Q_PROPERTY(qint64 size READ size WRITE setSize NOTIFY sizeUpdated)
+    Q_PROPERTY(qint64 uploadOffset READ uploadOffset WRITE setUploadOffset NOTIFY uploadOffsetUpdated)
+    Q_PROPERTY(QString md5Sum READ md5Sum WRITE setMd5Sum NOTIFY md5SumUpdated)
+    Q_PROPERTY(QString type READ type WRITE setType NOTIFY typeUpdated)
+    Q_PROPERTY(FileStatus status READ status WRITE setStatus NOTIFY statusUpdated)
+    Q_PROPERTY(QList<QString> tags READ tags NOTIFY tagsUpdated)
 
 public:
     enum FileStatus

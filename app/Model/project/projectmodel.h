@@ -2,9 +2,8 @@
 #define PROJECTMODEL_H
 
 #include <QtCore>
-#include <QDateTime>
-#include <QJsonDocument>
-#include <QJsonObject>
+
+#include "Model/file/filestreeviewmodel.h"
 
 class ProjectModel : public QObject
 {
@@ -17,7 +16,7 @@ class ProjectModel : public QObject
     Q_PROPERTY(bool isFolder READ isFolder)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentUpdated)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameUpdated)
-
+    Q_PROPERTY(FilesTreeViewModel* files READ files NOTIFY filesUpdated)
 
 
 public:
@@ -36,6 +35,7 @@ public:
     inline bool isFolder() { return mIsFolder; }
     inline QString name() { return mName; }
     inline QString comment() { return mComment; }
+    inline FilesTreeViewModel* files() { return mFiles; }
 
     // Setters
     void setParent(ProjectModel* parent);
@@ -53,6 +53,7 @@ Q_SIGNALS:
     void updateDateUpdated();
     void commentUpdated();
     void nameUpdated();
+    void filesUpdated();
 
 
 
@@ -68,7 +69,8 @@ private:
     bool mIsFolder;
     QString mComment;
     QString mName;
-    // mFiles
+
+    FilesTreeViewModel* mFiles;
     // mUserRights
     // mindicators
     // mJobs

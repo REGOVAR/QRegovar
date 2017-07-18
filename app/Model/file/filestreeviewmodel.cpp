@@ -11,7 +11,6 @@ FilesTreeViewModel::FilesTreeViewModel() : TreeModel(0)
     rootData << "Name" << "Status" << "Size" << "Date" << "Comment";
     rootItem = new TreeItem(rootData);
 
-    refresh();
 }
 
 
@@ -19,22 +18,22 @@ FilesTreeViewModel::FilesTreeViewModel() : TreeModel(0)
 
 void FilesTreeViewModel::refresh()
 {
-    Request* request = Request::get("/project/browserTree");
-    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            beginResetModel();
-            setupModelData(json["data"].toArray(), rootItem);
-            endResetModel();
-            qDebug() << Q_FUNC_INFO << "done";
-        }
-        else
-        {
-            qCritical() << Q_FUNC_INFO << "Unable to build user list model (due to request error)";
-        }
-        request->deleteLater();
-    });
+//    Request* request = Request::get("/project/browserTree");
+//    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+//    {
+//        if (success)
+//        {
+//            beginResetModel();
+//            setupModelData(json["data"].toArray(), rootItem);
+//            endResetModel();
+//            qDebug() << Q_FUNC_INFO << "done";
+//        }
+//        else
+//        {
+//            qCritical() << Q_FUNC_INFO << "Unable to build user list model (due to request error)";
+//        }
+//        request->deleteLater();
+//    });
 }
 
 
@@ -55,19 +54,41 @@ QHash<int, QByteArray> FilesTreeViewModel::roleNames() const
 
 
 
-QVariant FilesTreeViewModel::newFilesBrowserItem(int id, const QString &text, qint64 size, qint64 uploadOffset)
+QVariant FilesTreeViewModel::newFilesTreeViewItem(int id, const QString &text)
 {
     FilesTreeViewItem *t = new FilesTreeViewItem(this);
     t->setText(text);
     t->setId(id);
-    t->setSize(size);
-    t->setUploadOffset(uploadOffset);
     QVariant v;
     v.setValue(t);
     return v;
 }
 
-void FilesTreeViewModel::setupModelData(QJsonArray data, TreeItem *parent)
+QVariant FilesTreeViewModel::newFilesTreeViewItemSize(int id, quint64 size, quint64 offset)
+{
+    if (size == offset)
+    {
+         return newFilesTreeViewItem(id, humanSize(size));
+    }
+
+    QString sOffset = humanSize(offset);
+    QString sSize = humanSize(size);
+    return newFilesTreeViewItem(id, sOffset + " / " + sSize);
+}
+
+QVariant FilesTreeViewModel::newFilesTreeViewItemStatus(int id, QString status, quint64 size, quint64 offset)
+{
+    if (status == "uploading")
+    {
+        float progress = (size > 0) ? offset / size * 100 : 0;
+        return newFilesTreeViewItem(id, tr("Uploading : ") + QLocale::system().toString(progress, 'f', 1) + " %");
+    }
+
+    return newFilesTreeViewItem(id, status);
+}
+
+
+void FilesTreeViewModel::setupModelData(QJsonArray data, TreeItem* parent)
 {
 
 
@@ -78,26 +99,48 @@ void FilesTreeViewModel::setupModelData(QJsonArray data, TreeItem *parent)
 
         // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
         QList<QVariant> columnData;
-        columnData << newFilesBrowserItem(id, p["name"].toString());
-        columnData << newFilesBrowserItem(id, p["status"].toString(), p["size"].toInt(), p["upload_offset"].toInt());
-        columnData << newFilesBrowserItem(id, "", p["size"].toInt(), p["upload_offset"].toInt());
-        columnData << newFilesBrowserItem(id, p["comment"].toString());
-        columnData << newFilesBrowserItem(id, QDate::fromString(p["create_date"].toString()).toString(Qt::LocalDate));
-        columnData << newFilesBrowserItem(id, QDate::fromString(p["update_date"].toString()).toString(Qt::LocalDate));
+        columnData << newFilesTreeViewItem(id, p["name"].toString());
+        columnData << newFilesTreeViewItemStatus(id, p["status"].toString(), p["size"].toInt(), p["upload_offset"].toInt());
+        columnData << newFilesTreeViewItemSize(id, p["size"].toInt(), p["upload_offset"].toInt());
+        columnData << newFilesTreeViewItem(id, p["comment"].toString());
+        columnData << newFilesTreeViewItem(id, QDate::fromString(p["create_date"].toString()).toString(Qt::LocalDate));
+        columnData << newFilesTreeViewItem(id, QDate::fromString(p["update_date"].toString()).toString(Qt::LocalDate));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);
         parent->appendChild(item);
 
-        // If folder, need to retrieve subitems recursively
-        if (p["is_folder"].toBool())
-        {
-            setupModelData(p["children"].toArray(), item);
-        }
-        // If project, need to build subtree for analyses and subjects
-        else
-        {
-            // TODO
-        }
     }
+}
+
+
+
+void FilesTreeViewModel::fromJson(QJsonArray json)
+{
+    setupModelData(json, rootItem);
+}
+
+
+
+
+
+QString FilesTreeViewModel::humanSize(qint64 nbytes)
+{
+    QList<QString> suffixes = {"o", "Ko", "Mo", "Go", "To", "Po"};
+
+
+    if (nbytes <= 0)
+    {
+        return "O  o";
+    }
+
+    auto i=0;
+    double bytes = nbytes;
+    while( bytes >= 1024 and i < suffixes.count() -1 )
+    {
+        bytes /= 1024. ;
+        i += 1;
+    }
+    QString f = QLocale::system().toString(bytes, 'f', 2);
+    return QString("%1 %2").arg(f).arg(suffixes[i]);
 }

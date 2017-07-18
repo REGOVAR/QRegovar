@@ -2,12 +2,14 @@
 
 ProjectModel::ProjectModel(QObject* parent) : QObject(parent), mIsFolder(false), mIsSandbox(false)
 {
+    mFiles = new FilesTreeViewModel();
 }
 
 ProjectModel::ProjectModel(bool isFolder, bool isSandbox, QObject* parent) : QObject(parent)
 {
     mIsFolder = isFolder;
     mIsSandbox = isSandbox;
+    mFiles = new FilesTreeViewModel();
 }
 
 
@@ -30,6 +32,16 @@ bool ProjectModel::fromJson(QJsonObject json)
     mIsFolder = json["is_folder"].toBool();
     mComment = json["comment"].toString();
     mName = json["name"].toString();
+
+    mFiles->fromJson(json["files"].toArray());
+
+
+    emit parentUpdated();
+    emit updateDateUpdated();
+    emit commentUpdated();
+    emit nameUpdated();
+    emit filesUpdated();
+
     return true;
 }
 

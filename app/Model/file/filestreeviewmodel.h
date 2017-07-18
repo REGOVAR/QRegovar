@@ -1,5 +1,5 @@
-#ifndef FILESBROWSERMODEL_H
-#define FILESBROWSERMODEL_H
+#ifndef FILESTREEVIEWMODEL_H
+#define FILESTREEVIEWMODEL_H
 
 #include "Model/treemodel.h"
 
@@ -18,12 +18,19 @@ public:
     };
 
 
+
     explicit FilesTreeViewModel();
     QHash<int, QByteArray> roleNames() const override;
 
     void refresh();
-    QVariant newFilesBrowserItem(int id, const QString &text, qint64 size=-1, qint64 uploadOffset=-1);
+    QVariant newFilesTreeViewItem(int id, const QString &text);
+    QVariant newFilesTreeViewItemSize(int id, quint64 size, quint64 offset);
+    QVariant newFilesTreeViewItemStatus(int id, QString status, quint64 size, quint64 offset);
+
     void setupModelData(QJsonArray data, TreeItem *parent);
+
+    void fromJson(QJsonArray json);
+    QString humanSize(qint64 nbytes);
 };
 
-#endif // FILESBROWSERMODEL_H
+#endif // FILESTREEVIEWMODEL_H

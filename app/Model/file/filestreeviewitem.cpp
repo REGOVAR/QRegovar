@@ -20,3 +20,5 @@ FilesTreeViewItem::FilesTreeViewItem(int id, QString text, QObject *parent) : QO
     mText = text;
     mId= id;
 }
+
+
