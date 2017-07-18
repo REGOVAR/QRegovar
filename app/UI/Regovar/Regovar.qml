@@ -24,11 +24,7 @@ QtObject
 
 
     //! The theme applied to the UI
-    property string themeUsed: "" //settings.themeUsed
-    property Style theme: Style
-    {
-        load: uiModel.themeUsed
-    }
+    property Style theme: Style {}
 
 
 

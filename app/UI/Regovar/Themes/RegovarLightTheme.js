@@ -15,13 +15,13 @@
     {
         "back":
         {
-            "light":  "#484848",
-            "normal": "#212121",
-            "dark":   "#000000"
+            "light":  "#819ca9",
+            "normal": "#546e7a",
+            "dark":   "#29434e"
          },
         "front": 
         {
-            "light":  "#ffffff",
+            "light":  "#000000",
             "normal": "#ffffff",
             "dark":   "#ffffff"
          }
@@ -30,20 +30,20 @@
     {
         "back":
         {
-            "light":  "#ff8a50",
-            "normal": "#ff5722",
-            "dark":   "#c41c00"
+            "light":  "#80d6ff",
+            "normal": "#42a5f5",
+            "dark":   "#0077c2"
          },
         "front": 
         {
-            "normal": "#000000",
+            "normal": "#ffffff",
             "light":  "#000000",
             "dark":   "#ffffff"
          }
     },
     "boxColor": 
     {
-        "back":        "#616161",
+        "back":        "#ffffff",
         "front":       "#000000",
         "placeholder": "#babdb6",
         "border":      "#d9d9df",

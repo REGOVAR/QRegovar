@@ -85,7 +85,10 @@ DISTFILES += \
     UI/MainMenu/MenuEntryL3.qml \
     UI/Framework/TreeView.qml \
     UI/Framework/ListView.qml \
-    UI/Regovar/Themes/HalloweenTheme.js
+    UI/Regovar/Themes/HalloweenTheme.js \
+    UI/Regovar/Themes/HalloweenTheme.js \
+    UI/Regovar/Themes/RegovarDarkTheme.js \
+    UI/Regovar/Themes/RegovarLightTheme.js
 
 
 
