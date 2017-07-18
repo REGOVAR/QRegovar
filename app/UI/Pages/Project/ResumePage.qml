@@ -26,7 +26,7 @@ Rectangle
             font.family: Regovar.theme.font.familly
             color: Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: Regovar.currentProject.name
+            text: regovar.currentProject.name
         }
     }
 

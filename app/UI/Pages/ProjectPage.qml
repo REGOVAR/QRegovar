@@ -153,24 +153,27 @@ Rectangle
         var id = regovar.projectsBrowser.data(browser.currentIndex, 0).id
         console.log("current index: " + browser.currentIndex + " => id: " + id)
 
+        regovar.loadProject(id);
 
-        var req = new XMLHttpRequest();
-        var url = Regovar.settings.server.host + "/project/" + id;
 
-        // Do the job when the answer is ready
-        req.onreadystatechange = function()
-        {
-            if (req.readyState == 4)
-            {
-                // turn the text in a javascript object while setting the ListView's model to it
-                var data = JSON.parse(req.responseText);
-                Regovar.currentProject = data["data"];
-                Regovar.mainMenu.selectedSubIndex = 0;
-            }
-        };
-        console.log(url)
-        req.open("GET", url, true);
-        req.send(null);
+
+//        var req = new XMLHttpRequest();
+//        var url = regovar.serverUrl + "/project/" + id;
+
+//        // Do the job when the answer is ready
+//        req.onreadystatechange = function()
+//        {
+//            if (req.readyState == 4)
+//            {
+//                // turn the text in a javascript object while setting the ListView's model to it
+//                var data = JSON.parse(req.responseText);
+//                regovar.currentProject = data["data"];
+//                Regovar.mainMenu.selectedSubIndex = 0;
+//            }
+//        };
+//        console.log(url)
+//        req.open("GET", url, true);
+//        req.send(null);
     }
 
 }

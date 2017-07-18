@@ -5,6 +5,7 @@
 #include <QNetworkReply>
 #include <QAuthenticator>
 #include "project/projectsbrowsermodel.h"
+#include "project/projectmodel.h"
 
 
 #ifndef regovar
@@ -21,7 +22,10 @@
 class RegovarModel : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlUpdated)
     Q_PROPERTY(ProjectsBrowserModel* projectsBrowser READ projectsBrowser NOTIFY projectsBrowserUpdated)
+    Q_PROPERTY(ProjectModel* currentProject READ currentProject  NOTIFY currentProjectUpdated)
 
 public:
     static RegovarModel* i();
@@ -32,24 +36,35 @@ public:
 
 
     // Accessors
-    inline QUrl& apiRootUrl() { return mApiRootUrl; }
+    inline QUrl& serverUrl() { return mApiRootUrl; }
     inline ProjectsBrowserModel* projectsBrowser() const { return mProjectsBrowser; }
+    inline ProjectModel* currentProject() const { return mCurrentProject; }
     //inline UserModel* currentUser() const { return mUser; }
 
+    // Setters
+    inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlUpdated(); }
 
 
-/*
+
 public Q_SLOTS:
-    void login(QString& login, QString& password);
-    void logout();
-    void authenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
-*/
+//    void login(QString& login, QString& password);
+//    void logout();
+//    void authenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
+
+    void refreshProjectsBrowser();
+    void loadProject(int id);
+
 
 Q_SIGNALS:
     void loginSuccess();
     void loginFailed();
     void logoutSuccess();
+    void serverUrlUpdated();
     void projectsBrowserUpdated();
+    void currentProjectUpdated();
+
+    void error(QString errCode, QString message);
+
 
 
 private:
@@ -66,6 +81,9 @@ private:
     // UserModel * mUser;
     //! The model of the projects browser treeview
     ProjectsBrowserModel* mProjectsBrowser;
+    //! The model of the current project loaded
+    ProjectModel* mCurrentProject;
+
 
 };
 

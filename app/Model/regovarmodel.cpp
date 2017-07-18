@@ -28,6 +28,8 @@ void RegovarModel::init()
     // Init models
     // mUser = new UserModel(); //1, "Olivier", "Gueudelot");
     mProjectsBrowser = new ProjectsBrowserModel();
+    mCurrentProject = new ProjectModel();
+    emit currentProjectUpdated();
 }
 
 
@@ -44,6 +46,38 @@ void RegovarModel::readSettings()
 }
 
 
+
+
+
+void RegovarModel::refreshProjectsBrowser()
+{
+
+}
+
+void RegovarModel::loadProject(int id)
+{
+    Request* req = Request::get(QString("/project/%1").arg(id));
+    connect(req, &Request::responseReceived, [this, req, id](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            if (mCurrentProject->fromJson(json["data"].toObject()))
+            {
+                qDebug() << Q_FUNC_INFO << "CurrentProject loaded";
+                emit currentProjectUpdated();
+            }
+            else
+            {
+                qDebug() << Q_FUNC_INFO << "Failed to load project from id " << id << ". Wrong json data";
+            }
+        }
+        else
+        {
+            qDebug() << Q_FUNC_INFO << "Request error ! " << json["msg"].toString();
+        }
+        req->deleteLater();
+    });
+}
 
 
 /*

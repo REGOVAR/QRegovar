@@ -1,16 +1,39 @@
 pragma Singleton
 import QtQuick 2.0
+import Qt.labs.settings 1.0
 import "../Pages"
 
 QtObject 
 {
-    // TODO onCompleted : reload some value from Settings (like theme used, login/autoconnection, ...)
+    id: uiModel
+    /*! This QML model is the global "view model" of the application
+     *  It manage only data use for  the UI (like the selected entry in the main menu and so on
+     *  The "True" model of the application is done in C++, see /Model/RegovarModel singleton
+     *  accessible in the QML by the id "regovar"
+     */
+
+//    // Reload some value from Settings
+//    Settings
+//    {
+//        property string themeUsed: "RegovarLight" // initial default value
+//    }
+//    Component.onDestruction:
+//    {
+//        settings.themeUsed = uiModel.themeUsed // store value choose by the user to restore it next time
+//    }
+
+
+    //! The theme applied to the UI
+    property string themeUsed: "" //settings.themeUsed
+    property Style theme: Style
+    {
+        load: uiModel.themeUsed
+    }
 
 
 
-    property Style theme: Style {}
     
-
+    //! Main menu model
     property QtObject mainMenu: QtObject
     {
         property int selectedMainIndex: 0
@@ -24,25 +47,25 @@ QtObject
         
         
         property var model:  [
-            { "icon": "a", "label": "Welcome",      "page": "WelcomPage.qml", "sublevel": [], "subindex": -1},
-            { "icon": "c", "label": "Project",      "page": "ProjectPage.qml", "sublevel": [
-                { "icon": "j", "label": "Resume",   "page": "Project/ResumePage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "H", "label": "Events",   "page": "Project/EventsPage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "b", "label": "Subjects", "page": "Project/SubjectsPage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "I", "label": "Analyses", "page": "Project/AnalysesPage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "O", "label": "Files",    "page": "Project/FilesPage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "d", "label": "Settings", "page": "Project/SettingsInformationsPage.qml", "sublevel": [
-                    { "label": "Informations",      "page": "Project/SettingsInformationsPage.qml", "sublevel": []},
-                    { "label": "Indicators",        "page": "Project/SettingsIndicatorsPage.qml", "sublevel": []},
-                    { "label": "Sharing",           "page": "Project/SettingsSharingPage.qml", "sublevel": []},
+            { "icon": "a", "label": qsTr("Welcome"),      "page": "WelcomPage.qml", "sublevel": [], "subindex": -1},
+            { "icon": "c", "label": qsTr("Project"),      "page": "ProjectPage.qml", "sublevel": [
+                { "icon": "j", "label": qsTr("Resume"),   "page": "Project/ResumePage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "H", "label": qsTr("Events"),   "page": "Project/EventsPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "b", "label": qsTr("Subjects"), "page": "Project/SubjectsPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "I", "label": qsTr("Analyses"), "page": "Project/AnalysesPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "O", "label": qsTr("Files"),    "page": "Project/FilesPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "d", "label": qsTr("Settings"), "page": "Project/SettingsInformationsPage.qml", "sublevel": [
+                    { "label": qsTr("Informations"),      "page": "Project/SettingsInformationsPage.qml", "sublevel": []},
+                    { "label": qsTr("Indicators"),        "page": "Project/SettingsIndicatorsPage.qml", "sublevel": []},
+                    { "label": qsTr("Sharing"),           "page": "Project/SettingsSharingPage.qml", "sublevel": []},
                     ], "subindex": 0}
                 ], "subindex": -1},
-            { "icon": "b", "label": "Subject",      "page": "SubjectPage.qml",    "sublevel": [], "subindex": -1},
-            { "icon": "d", "label": "Settings",     "page": "SettingsPage.qml",   "sublevel": [], "subindex": -1},
-            { "icon": "e", "label": "Help",         "page": "HelpPage.qml",       "sublevel": [], "subindex": -1},
-            { "icon": "f", "label": "About",        "page": "AboutPage.qml",      "sublevel": [], "subindex": -1},
-            { "icon": "g", "label": "Disconnect",   "page": "DisconnectPage.qml", "sublevel": [], "subindex": -1},
-            { "icon": "h", "label": "Close",        "page": "ClosePage.qml",      "sublevel": [], "subindex": -1}
+            { "icon": "b", "label": qsTr("Subject"),      "page": "SubjectPage.qml",    "sublevel": [], "subindex": -1},
+            { "icon": "d", "label": qsTr("Settings"),     "page": "SettingsPage.qml",   "sublevel": [], "subindex": -1},
+            { "icon": "e", "label": qsTr("Help"),         "page": "HelpPage.qml",       "sublevel": [], "subindex": -1},
+            { "icon": "f", "label": qsTr("About"),        "page": "AboutPage.qml",      "sublevel": [], "subindex": -1},
+            { "icon": "g", "label": qsTr("Disconnect"),   "page": "DisconnectPage.qml", "sublevel": [], "subindex": -1},
+            { "icon": "h", "label": qsTr("Close"),        "page": "ClosePage.qml",      "sublevel": [], "subindex": -1}
         ]
         
         property string mainTitle: model[selectedMainIndex]["label"]
@@ -57,26 +80,6 @@ QtObject
         {
             // Store selected subindex to be able to restore it next
             model[selectedMainIndex]["subindex"] = selectedSubIndex
-        }
-
-    }
-
-
-    property var currentProject
-    property var currentSubject
-
-
-    onCurrentProjectChanged:
-    {
-
-    }
-
-    property QtObject settings: QtObject
-    {
-        property QtObject server: QtObject
-        {
-
-            property string host: "http://dev.regovar.org"
         }
     }
 } 

@@ -62,7 +62,15 @@ ApplicationWindow
             stack.sourceComponent = menuPageMapping[Regovar.mainMenu.selectedMainIndex + "-" +Regovar.mainMenu.selectedSubIndex]
         }
     }
-
+    Connections
+    {
+        target: regovar
+        onCurrentProjectUpdated:
+        {
+            Regovar.mainMenu.selectedSubIndex = 0;
+            stack.sourceComponent = menuPageMapping[Regovar.mainMenu.selectedMainIndex + "-" +Regovar.mainMenu.selectedSubIndex]
+        }
+    }
 
 
 

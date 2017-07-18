@@ -43,12 +43,11 @@ Item
     // Display and update submenu for project when project selected
     Connections
     {
-        target: Regovar
+        target: regovar
         onCurrentProjectChanged:
         {
             Regovar.mainMenu.selectedMainIndex = 1 // force selection of the Project section
             openLevel2();
-
         }
     }
 

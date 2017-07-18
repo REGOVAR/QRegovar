@@ -10,6 +10,7 @@ TreeView
 {
     id: control
 
+
     property var currentItem
 
     FontLoader { id: iconsFont; source: "../Icons.ttf" }

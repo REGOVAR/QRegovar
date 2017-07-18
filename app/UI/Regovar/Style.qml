@@ -2,6 +2,17 @@ import QtQuick 2.7
 
 QtObject
 {
+    id: styleRoot
+
+    property string load: "RegovarLight"
+    onLoadChanged: loadStyle()
+
+
+
+
+    property string name: "Regovar Light Theme"
+    property string description: "The official light theme of the Regovar client"
+
     property QtObject font: QtObject
     {
         property string familly : "Sans"
@@ -70,12 +81,22 @@ QtObject
     }
 
 
-    function lighter(color) {
+
+
+
+    function lighter(color)
+    {
         return Qt.lighter(color, 1.3)
     }
 
-    function darker(color){
+    function darker(color)
+    {
         return Qt.darker(color, 1.3)
+    }
+
+    function loadStyle()
+    {
+        console.log(__filename);
     }
 }
 

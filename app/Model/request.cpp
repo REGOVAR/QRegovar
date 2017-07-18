@@ -76,7 +76,7 @@ Request* Request::del(const QString query)
 
 QNetworkRequest Request::makeRequest(const QString& resource)
 {
-    QUrl url(RegovarModel::i()->apiRootUrl());
+    QUrl url(RegovarModel::i()->serverUrl());
     url.setPath(resource);
     qDebug() << Q_FUNC_INFO << url;
 

@@ -10,7 +10,8 @@ HEADERS += \
     Model/jsonmodel.h \
     Model/project/projectsbrowseritem.h \
     Model/request.h \
-    Model/regovarmodel.h
+    Model/regovarmodel.h \
+    Model/project/projectmodel.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -19,7 +20,8 @@ SOURCES += main.cpp \
     Model/jsonmodel.cpp \
     Model/project/projectsbrowseritem.cpp \
     Model/request.cpp \
-    Model/regovarmodel.cpp
+    Model/regovarmodel.cpp \
+    Model/project/projectmodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -82,7 +84,8 @@ DISTFILES += \
     UI/Pages/Project/SubjectsPage.qml \
     UI/MainMenu/MenuEntryL3.qml \
     UI/Framework/TreeView.qml \
-    UI/Framework/ListView.qml
+    UI/Framework/ListView.qml \
+    UI/Regovar/Themes/HalloweenTheme.js
 
 
 
