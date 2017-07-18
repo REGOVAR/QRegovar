@@ -21,11 +21,9 @@ bool ProjectModel::fromJson(QJsonDocument json)
 
 bool ProjectModel::fromJson(QJsonObject json)
 {
-    // TODO set current user with json data
-    // QString st(json.toJson(QJsonDocument::Compact));
     mId = json["id"].toInt();
     mFullPath = "";
-    mParent = nullptr;
+    //mParent->fromJson(json["parent"].toObject());
     mCreationDate = QDateTime::fromString(json["creation_date"].toString());
     mUpdateDate = QDateTime::fromString(json["update_date"].toString());
     mIsSandbox = json["is_sandbox"].toBool();
@@ -40,10 +38,7 @@ bool ProjectModel::fromJson(QJsonObject json)
 
 void ProjectModel::setParent(ProjectModel* parent)
 {
-    if (mParent != nullptr)
-    {
-        mParent->deleteLater();
-    }
+    // TODO : to be complient with QML binding : need to copy parent into mParent instead of erasing mParent
     mParent = parent;
     emit parentUpdated();
 }

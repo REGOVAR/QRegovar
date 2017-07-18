@@ -27,7 +27,7 @@ void RegovarModel::init()
 
     // Init models
     // mUser = new UserModel(); //1, "Olivier", "Gueudelot");
-    mProjectsBrowser = new ProjectsBrowserModel();
+    mProjectsTreeView = new ProjectsTreeViewModel();
     mCurrentProject = new ProjectModel();
     emit currentProjectUpdated();
 }
@@ -49,7 +49,7 @@ void RegovarModel::readSettings()
 
 
 
-void RegovarModel::refreshProjectsBrowser()
+void RegovarModel::refreshProjectsTreeView()
 {
 
 }

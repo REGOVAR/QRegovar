@@ -1,9 +1,9 @@
-#ifndef PROJECTSBROWSERMODEL_H
-#define PROJECTSBROWSERMODEL_H
+#ifndef PROJECTSTREEVIEWMODEL_H
+#define PROJECTSTREEVIEWMODEL_H
 
 #include "Model/treemodel.h"
 
-class ProjectsBrowserModel : public TreeModel
+class ProjectsTreeViewModel : public TreeModel
 {
     Q_OBJECT
 public:
@@ -16,12 +16,12 @@ public:
     };
 
 
-    explicit ProjectsBrowserModel();
+    explicit ProjectsTreeViewModel();
     QHash<int, QByteArray> roleNames() const override;
 
     void refresh();
-    QVariant newProjectsBrowserItem(int id, const QString &text);
+    QVariant newProjectsTreeViewItem(int id, const QString &text);
     void setupModelData(QJsonArray data, TreeItem *parent);
 };
 
-#endif // PROJECTSBROWSERMODEL_H
+#endif // PROJECTSTREEVIEWMODEL_H

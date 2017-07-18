@@ -1,14 +1,14 @@
 #include <QDebug>
-#include "projectsbrowsermodel.h"
-#include "projectsbrowseritem.h"
+#include "filestreeviewmodel.h"
+#include "filestreeviewitem.h"
 #include "Model/request.h"
 
 
 
-ProjectsBrowserModel::ProjectsBrowserModel() : TreeModel(0)
+FilesTreeViewModel::FilesTreeViewModel() : TreeModel(0)
 {
     QList<QVariant> rootData;
-    rootData << "Name" << "Date" << "Comment";
+    rootData << "Name" << "Status" << "Size" << "Date" << "Comment";
     rootItem = new TreeItem(rootData);
 
     refresh();
@@ -17,7 +17,7 @@ ProjectsBrowserModel::ProjectsBrowserModel() : TreeModel(0)
 
 
 
-void ProjectsBrowserModel::refresh()
+void FilesTreeViewModel::refresh()
 {
     Request* request = Request::get("/project/browserTree");
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
@@ -42,10 +42,12 @@ void ProjectsBrowserModel::refresh()
 
 
 
-QHash<int, QByteArray> ProjectsBrowserModel::roleNames() const
+QHash<int, QByteArray> FilesTreeViewModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
+    roles[StatusRole] = "status";
+    roles[SizeRole] = "size";
     roles[DateRole] = "date";
     roles[CommentRole] = "comment";
     return roles;
@@ -53,17 +55,19 @@ QHash<int, QByteArray> ProjectsBrowserModel::roleNames() const
 
 
 
-QVariant ProjectsBrowserModel::newProjectsBrowserItem(int id, const QString &text)
+QVariant FilesTreeViewModel::newFilesBrowserItem(int id, const QString &text, qint64 size, qint64 uploadOffset)
 {
-    ProjectsBrowserItem *t = new ProjectsBrowserItem(this);
+    FilesTreeViewItem *t = new FilesTreeViewItem(this);
     t->setText(text);
     t->setId(id);
+    t->setSize(size);
+    t->setUploadOffset(uploadOffset);
     QVariant v;
     v.setValue(t);
     return v;
 }
 
-void ProjectsBrowserModel::setupModelData(QJsonArray data, TreeItem *parent)
+void FilesTreeViewModel::setupModelData(QJsonArray data, TreeItem *parent)
 {
 
 
@@ -74,10 +78,12 @@ void ProjectsBrowserModel::setupModelData(QJsonArray data, TreeItem *parent)
 
         // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
         QList<QVariant> columnData;
-        columnData << newProjectsBrowserItem(id, p["name"].toString());
-        columnData << newProjectsBrowserItem(id, p["comment"].toString());
-        columnData << newProjectsBrowserItem(id, QDate::fromString(p["create_date"].toString()).toString(Qt::LocalDate));
-        columnData << newProjectsBrowserItem(id, QDate::fromString(p["update_date"].toString()).toString(Qt::LocalDate));
+        columnData << newFilesBrowserItem(id, p["name"].toString());
+        columnData << newFilesBrowserItem(id, p["status"].toString(), p["size"].toInt(), p["upload_offset"].toInt());
+        columnData << newFilesBrowserItem(id, "", p["size"].toInt(), p["upload_offset"].toInt());
+        columnData << newFilesBrowserItem(id, p["comment"].toString());
+        columnData << newFilesBrowserItem(id, QDate::fromString(p["create_date"].toString()).toString(Qt::LocalDate));
+        columnData << newFilesBrowserItem(id, QDate::fromString(p["update_date"].toString()).toString(Qt::LocalDate));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);

@@ -101,7 +101,7 @@ Rectangle
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
-        model: regovar.projectsBrowser
+        model: regovar.projectsTreeView
 
         // Default delegate for all column
         itemDelegate: Item
@@ -147,10 +147,10 @@ Rectangle
 
 
 
-    /// Retrive model of the selected project in the browser and set the Regovar.currentProject with it.
+    /// Retrive model of the selected project in the treeview and set the Regovar.currentProject with it.
     function openSelectedProject()
     {
-        var id = regovar.projectsBrowser.data(browser.currentIndex, 0).id
+        var id = regovar.projectsTreeView.data(browser.currentIndex, 0).id
         console.log("current index: " + browser.currentIndex + " => id: " + id)
 
         regovar.loadProject(id);

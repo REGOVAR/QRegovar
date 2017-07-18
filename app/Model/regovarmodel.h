@@ -4,7 +4,7 @@
 #include <QSettings>
 #include <QNetworkReply>
 #include <QAuthenticator>
-#include "project/projectsbrowsermodel.h"
+#include "project/projectstreeviewmodel.h"
 #include "project/projectmodel.h"
 
 
@@ -24,7 +24,7 @@ class RegovarModel : public QObject
     Q_OBJECT
 
     Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlUpdated)
-    Q_PROPERTY(ProjectsBrowserModel* projectsBrowser READ projectsBrowser NOTIFY projectsBrowserUpdated)
+    Q_PROPERTY(ProjectsTreeViewModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewUpdated)
     Q_PROPERTY(ProjectModel* currentProject READ currentProject  NOTIFY currentProjectUpdated)
 
 public:
@@ -37,7 +37,7 @@ public:
 
     // Accessors
     inline QUrl& serverUrl() { return mApiRootUrl; }
-    inline ProjectsBrowserModel* projectsBrowser() const { return mProjectsBrowser; }
+    inline ProjectsTreeViewModel* projectsTreeView() const { return mProjectsTreeView; }
     inline ProjectModel* currentProject() const { return mCurrentProject; }
     //inline UserModel* currentUser() const { return mUser; }
 
@@ -51,7 +51,7 @@ public Q_SLOTS:
 //    void logout();
 //    void authenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
 
-    void refreshProjectsBrowser();
+    void refreshProjectsTreeView();
     void loadProject(int id);
 
 
@@ -60,7 +60,7 @@ Q_SIGNALS:
     void loginFailed();
     void logoutSuccess();
     void serverUrlUpdated();
-    void projectsBrowserUpdated();
+    void projectsTreeViewUpdated();
     void currentProjectUpdated();
 
     void error(QString errCode, QString message);
@@ -80,7 +80,7 @@ private:
     //! The current user of the application
     // UserModel * mUser;
     //! The model of the projects browser treeview
-    ProjectsBrowserModel* mProjectsBrowser;
+    ProjectsTreeViewModel* mProjectsTreeView;
     //! The model of the current project loaded
     ProjectModel* mCurrentProject;
 

@@ -94,7 +94,7 @@ TreeView
                 font.family: Regovar.theme.font.familly
                 font.bold: false
                 color: Regovar.theme.frontColor.normal
-                horizontalAlignment: styleData.textAlignment
+                //horizontalAlignment: styleData.textAlignment
                 verticalAlignment: Text.AlignVCenter
                 elide: Text.ElideRight
                 text: styleData.value
