@@ -49,7 +49,6 @@ DISTFILES += \
     UI/Framework/Button.qml \
     UI/Framework/CheckBox.qml \
     UI/Framework/ListViewItem.qml \
-    UI/Framework/MyListView.qml \
     UI/Framework/ProgressBar.qml \
     UI/Framework/Switch.qml \
     UI/Framework/TextField.qml \
@@ -82,7 +81,8 @@ DISTFILES += \
     UI/Pages/Project/SettingsSharingPage.qml \
     UI/Pages/Project/SubjectsPage.qml \
     UI/MainMenu/MenuEntryL3.qml \
-    UI/Framework/TreeView.qml
+    UI/Framework/TreeView.qml \
+    UI/Framework/ListView.qml
 
 
 
