@@ -14,7 +14,12 @@ HEADERS += \
     Model/project/projectstreeviewitem.h \
     Model/file/filemodel.h \
     Model/file/filestreeviewitem.h \
-    Model/file/filestreeviewmodel.h
+    Model/file/filestreeviewmodel.h \
+    libs/tusprotocol/uploadinterface.h \
+    libs/tusprotocol/uploadplugin.h \
+    libs/tusprotocol/downloadplugin.h \
+    libs/tusprotocol/downloadinterface.h \
+    Model/file/filesystemmodel.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -27,7 +32,10 @@ SOURCES += main.cpp \
     Model/project/projectstreeviewitem.cpp \
     Model/file/filemodel.cpp \
     Model/file/filestreeviewitem.cpp \
-    Model/file/filestreeviewmodel.cpp
+    Model/file/filestreeviewmodel.cpp \
+    libs/tusprotocol/uploadplugin.cpp \
+    libs/tusprotocol/downloadplugin.cpp \
+    Model/file/filesystemmodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -73,9 +81,6 @@ DISTFILES += \
     UI/Pages/SubjectPage.qml \
     UI/Pages/WelcomPage.qml \
     UI/Framework/qmldir \
-    UI/GridView/GridHeader.qml \
-    UI/GridView/GridView.qml \
-    UI/GridView/GridViewItem.qml \
     UI/Regovar/qmldir \
     UI/Regovar/Regovar.qml \
     UI/Regovar/Style.qml \
@@ -94,7 +99,8 @@ DISTFILES += \
     UI/Regovar/Themes/HalloweenTheme.js \
     UI/Regovar/Themes/HalloweenTheme.js \
     UI/Regovar/Themes/RegovarDarkTheme.js \
-    UI/Regovar/Themes/RegovarLightTheme.js
+    UI/Regovar/Themes/RegovarLightTheme.js \
+    UI/Dialogs/SelectFilesDialog.qml
 
 
 

@@ -6,7 +6,6 @@ import QtQuick.Controls 1.4
 
 import "../Regovar"
 import "../Framework"
-import "../GridView"
 
 Rectangle
 {

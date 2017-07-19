@@ -20,15 +20,21 @@ RegovarModel::~RegovarModel() {}
 
 void RegovarModel::init()
 {
-    readSettings();
 
     // Init managers
+    readSettings();
 
 
     // Init models
     // mUser = new UserModel(); //1, "Olivier", "Gueudelot");
     mProjectsTreeView = new ProjectsTreeViewModel();
+    mRemoteFilesTreeView = new FilesTreeViewModel();
     mCurrentProject = new ProjectModel();
+    mUploader = new UploadPlugin();
+    mUploader->setUploadUrl(QUrl(mApiRootUrl.toString() + "/file/upload"));
+
+
+
     emit currentProjectUpdated();
 }
 
@@ -69,6 +75,31 @@ void RegovarModel::loadProject(int id)
             else
             {
                 qDebug() << Q_FUNC_INFO << "Failed to load project from id " << id << ". Wrong json data";
+            }
+        }
+        else
+        {
+            qDebug() << Q_FUNC_INFO << "Request error ! " << json["msg"].toString();
+        }
+        req->deleteLater();
+    });
+}
+
+void RegovarModel::loadFilesBrowser()
+{
+    Request* req = Request::get(QString("/file"));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            if (mRemoteFilesTreeView->fromJson(json["data"].toArray()))
+            {
+                qDebug() << Q_FUNC_INFO << "File browser ready";
+                emit remoteFilesTreeViewUpdated();
+            }
+            else
+            {
+                qDebug() << Q_FUNC_INFO << "Failed to load remote file browser. Wrong json data";
             }
         }
         else

@@ -115,9 +115,10 @@ void FilesTreeViewModel::setupModelData(QJsonArray data, TreeItem* parent)
 
 
 
-void FilesTreeViewModel::fromJson(QJsonArray json)
+bool FilesTreeViewModel::fromJson(QJsonArray json)
 {
     setupModelData(json, rootItem);
+    return true;
 }
 
 

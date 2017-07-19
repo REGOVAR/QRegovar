@@ -29,7 +29,7 @@ public:
 
     void setupModelData(QJsonArray data, TreeItem *parent);
 
-    void fromJson(QJsonArray json);
+    bool fromJson(QJsonArray json);
     QString humanSize(qint64 nbytes);
 };
 

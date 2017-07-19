@@ -1,6 +1,6 @@
 {
-    "name": "Regovar Halloween Theme",
-    "description": "This is Halloween !",
+    "name": "Regovar Dark Theme",
+    "description": "I can still see you.",
     "font": 
     {
         "familly": "Sans",
@@ -15,9 +15,9 @@
     {
         "back":
         {
-            "light":  "#484848",
-            "normal": "#212121",
-            "dark":   "#000000"
+            "light":  "#6d6d6d",
+            "normal": "#424242",
+            "dark":   "#1b1b1b"
          },
         "front": 
         {
@@ -30,9 +30,9 @@
     {
         "back":
         {
-            "light":  "#ff8a50",
-            "normal": "#ff5722",
-            "dark":   "#c41c00"
+            "light":  "#8eacbb",
+            "normal": "#607d8b",
+            "dark":   "#34515e"
          },
         "front": 
         {
@@ -43,16 +43,16 @@
     },
     "boxColor": 
     {
-        "back":        "#616161",
+        "back":        "#757575",
         "front":       "#000000",
-        "placeholder": "#babdb6",
-        "border":      "#d9d9df",
-        "disabled" :   "#999999"
+        "placeholder": "#494949",
+        "border":      "#616161",
+        "disabled" :   "#a4a4a4"
     },
     "backgroundColor":
     {
-        "main": "#efeff1",
-        "alt":  "#e4e4e8"
+        "main": "#9e9e9e",
+        "alt":  "#707070"
     },
     "frontColor":
     {

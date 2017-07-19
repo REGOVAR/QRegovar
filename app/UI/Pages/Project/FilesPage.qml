@@ -2,6 +2,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.3
 import "../../Regovar"
 import "../../Framework"
 
@@ -10,6 +11,15 @@ Rectangle
 {
     id: root
     color: Regovar.theme.backgroundColor.main
+
+
+
+
+
+
+
+
+
 
     Rectangle
     {
@@ -48,14 +58,14 @@ Rectangle
         {
             id: addFile
             text: qsTr("Add file")
-            onClicked:  popupAddFile.open()
+            onClicked:  fileDialog.open()
         }
 
         Button
         {
             id: editFile
             text: qsTr("Edit file")
-            onClicked: editSelectedFile()
+            onClicked: customPopup.open()
         }
 
         Button
@@ -126,4 +136,83 @@ Rectangle
         }
     }
 
+
+
+
+    Popup
+    {
+        id: customPopup
+        implicitWidth: window.width / 3 * 2
+        implicitHeight: window.height / 3 * 2
+        x: (window.width - width) / 2
+        y: 20
+        modal: true
+        focus: true
+
+        property alias title: popupLabel.text
+
+        contentItem: ColumnLayout
+        {
+            id: settingsColumn
+            spacing: 20
+
+            // Popup title.
+            Label
+            {
+                id: popupLabel
+                font.bold: true
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            // File path.
+            TextField
+            {
+                id: field
+                placeholderText: "File path..."
+                implicitWidth: parent.width
+            }
+
+            // Buttons.
+            RowLayout
+            {
+                spacing: 10
+
+                Button
+                {
+                    id: okButton
+                    text: "Ok"
+                    onClicked: { onOkClicked(); close();}
+
+                    Layout.preferredWidth: 0
+                    Layout.fillWidth: true
+                }
+
+                Button
+                {
+                    id: cancelButton
+                    text: "Cancel"
+                    onClicked: { state = false; }
+
+                    Layout.preferredWidth: 0
+                    Layout.fillWidth: true
+                }
+            }
+        }
+    }
+
+
+
+    FileDialog
+    {
+        id: fileDialog
+        title: qsTr("Please choose a file")
+        folder: shortcuts.home
+        onAccepted: {
+            console.log("You chose: " + fileDialog.fileUrls)
+        }
+        onRejected: {
+            console.log("Canceled")
+        }
+        visible: false;
+    }
 }

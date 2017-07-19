@@ -90,6 +90,7 @@ TreeView
             {
                 anchors.fill: parent
                 anchors.leftMargin: 5
+                anchors.rightMargin: 5
                 font.pixelSize: Regovar.theme.font.size.control
                 font.family: Regovar.theme.font.familly
                 font.bold: false
@@ -117,8 +118,10 @@ TreeView
         Text
         {
             anchors.leftMargin: 5
+            anchors.rightMargin: 5
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: styleData.textAlignment
             font.pixelSize: Regovar.theme.font.size.control
             text: styleData.value // + " (" + styleData.row + "," + styleData.column + ")"
             elide: Text.ElideRight

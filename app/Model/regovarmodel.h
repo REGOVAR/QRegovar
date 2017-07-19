@@ -6,6 +6,7 @@
 #include <QAuthenticator>
 #include "project/projectstreeviewmodel.h"
 #include "project/projectmodel.h"
+#include "libs/tusprotocol/uploadplugin.h"
 
 
 #ifndef regovar
@@ -25,6 +26,7 @@ class RegovarModel : public QObject
 
     Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlUpdated)
     Q_PROPERTY(ProjectsTreeViewModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewUpdated)
+    Q_PROPERTY(FilesTreeViewModel* remoteFilesTreeView READ remoteFilesTreeView NOTIFY remoteFilesTreeViewUpdated)
     Q_PROPERTY(ProjectModel* currentProject READ currentProject  NOTIFY currentProjectUpdated)
 
 public:
@@ -38,6 +40,7 @@ public:
     // Accessors
     inline QUrl& serverUrl() { return mApiRootUrl; }
     inline ProjectsTreeViewModel* projectsTreeView() const { return mProjectsTreeView; }
+    inline FilesTreeViewModel* remoteFilesTreeView() const { return mRemoteFilesTreeView; }
     inline ProjectModel* currentProject() const { return mCurrentProject; }
     //inline UserModel* currentUser() const { return mUser; }
 
@@ -53,7 +56,7 @@ public Q_SLOTS:
 
     void refreshProjectsTreeView();
     void loadProject(int id);
-
+    void loadFilesBrowser();
 
 Q_SIGNALS:
     void loginSuccess();
@@ -61,6 +64,7 @@ Q_SIGNALS:
     void logoutSuccess();
     void serverUrlUpdated();
     void projectsTreeViewUpdated();
+    void remoteFilesTreeViewUpdated();
     void currentProjectUpdated();
 
     void error(QString errCode, QString message);
@@ -83,7 +87,10 @@ private:
     ProjectsTreeViewModel* mProjectsTreeView;
     //! The model of the current project loaded
     ProjectModel* mCurrentProject;
-
+    //! The model used to browse all files available on the server
+    FilesTreeViewModel* mRemoteFilesTreeView;
+    //! The uploader that manage TUS protocol (resumable upload)
+    UploadInterface * mUploader;
 
 };
 
