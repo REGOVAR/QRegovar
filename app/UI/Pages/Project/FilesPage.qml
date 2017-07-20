@@ -157,7 +157,7 @@ Rectangle
             id: settingsColumn
             spacing: 20
 
-            // Popup title.
+            // Popup title
             Label
             {
                 id: popupLabel
@@ -165,7 +165,7 @@ Rectangle
                 anchors.horizontalCenter: parent.horizontalCenter
             }
 
-            // File path.
+            // File path
             TextField
             {
                 id: field

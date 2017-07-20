@@ -41,18 +41,18 @@ public:
     // Methods
     void loadSettings();
     void writteSettings();
-    QString prepare(QString path);      //! Force register file to the server and enqueue file
-    void enqueue(QString path);         //! Enqueue and start upload as soon as possible
+    void enqueue(QList<QString> paths); //! Register file to the server, enqueue them and start upload as soon as possible
     void pause(QString path);           //! Suspend upload for the file
     void cancel(QString path);          //! Cancel upload for the file
     void start(QString path);           //! Start/Resume upload for the file
-
+    void emitFileEnqueued(QHash<QString, QString>* serverMapping);
 
 
 
 signals:
     void uploadStarted(TusUploadItem* file);
     void uploadEnded(TusUploadItem* file);
+    void filesEnqueued(QHash<QString, QString> serverMapping);
 
 public slots:
     //! Try to start or resume uploads in the queue

@@ -59,6 +59,7 @@ public Q_SLOTS:
     void refreshProjectsTreeView();
     void loadProject(int id);
     void loadFilesBrowser();
+    void filesEnqueued(QHash<QString,QString> mapping);
 
 Q_SIGNALS:
     void loginSuccess();

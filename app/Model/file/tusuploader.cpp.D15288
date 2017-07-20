@@ -50,8 +50,7 @@ void TusUploader::enqueue(QList<QString> paths)
     // First we populate it with all file's paths
     foreach (QString path, paths)
     {
-        QFileInfo fi(path);
-        if (fi.isFile()) serverMapping->insert(path, "");
+        serverMapping->insert(path, "");
     }
 
     // Then for each file we sent a request to the server to prepare uploadUrl for it
@@ -71,85 +70,31 @@ void TusUploader::enqueue(QList<QString> paths)
             item->file->open(QIODevice::ReadOnly);
             item->size = item->file->size();
 
+            // This flag prevents the upload from automatically starting after the registration (newUplpad call)
+            // in order to allow us to enqueue them first after they have been all registrated first.
+            item->prepareFlag = true;
 
-            // Create query to register the file on the server for the upload
-            // (server will return us the url to use for the resume upload for this file)
-            QByteArray size;
-            size.setNum(item->size);
-            QString filename("filename " + base64Encode(item->file->fileName()));
+            newUpload(item);
 
-            QNetworkRequest request(mTusUploadUrl);
-            request.setRawHeader("User-Agent", mUserAgent);
-            request.setRawHeader("Tus-Resumable", mTusVersion);
-            request.setRawHeader("Content-Length", 0);
-            request.setRawHeader("Upload-Length", size);
-            request.setRawHeader("Upload-Metadata", filename.toUtf8());
 
-            QNetworkReply * reply = mNetManager.post(request, QByteArray());
-            connect(reply, &QNetworkReply::finished, [this, reply, item, path, serverMapping]()
+            // Then enqueue file
+            mQueue.enqueue(item);
+            if (mQueue.count() == 1)
             {
-                if(reply->error() == QNetworkReply::NoError)
-                {
-                    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-                    if (statusCode == 201)
-                    {
-                        // store url in file data
-                        item->uploadUrl = mTusRootUrl + "/" + QString(reply->rawHeader("Location"));
-                        item->offset = 0;
-                        serverMapping->insert(path, item->uploadUrl);
-
-
-                        // Then enqueue file
-                        mQueue.enqueue(item);
-                        if (mQueue.count() == 1)
-                        {
-                            // Start upload if possible
-                            startNext();
-                        }
-
-                        // If all file have been registered, return the mapping to the view
-                        int valid = 0;
-                        foreach (QString remoteUrl, serverMapping->values())
-                        {
-                            if (remoteUrl.isEmpty()) break;
-                            valid ++;
-                        }
-                        if (valid == serverMapping->count())
-                        {
-                            emitFileEnqueued(serverMapping);
-                        }
-                    }
-                    else
-                    {
-                        qDebug() << "newUploadFinished returned wrong status code : " << statusCode << ". Failed to create new upload resource";
-                    }
-                }
-                reply->deleteLater();
-            });
-
-
-
-            mRequestHash.insert(reply, item);
-            connectErrorSignals(reply);
-            connect(reply, SIGNAL(finished()), this, SLOT(newUploadFinished()));
-
-            qDebug() << "NEW Upload" << item->file->fileName() << " : POST " << mTusUploadUrl;
-
-
+                startNext();
+            }
         }
     }
+
+
+
+
+
+
+
+    // When the hash is complete, we return to the view via thefilesEnqueued signal
+    void filesEnqueued(QHash<QString, QString> serverMapping);
 }
-
-
-
-void TusUploader::emitFileEnqueued(QHash<QString, QString>* serverMapping)
-{
-    emit filesEnqueued(*serverMapping);
-    serverMapping->clear();
-}
-
-
 
 void TusUploader::pause(QString path)
 {

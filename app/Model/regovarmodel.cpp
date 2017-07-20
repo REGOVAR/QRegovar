@@ -36,6 +36,7 @@ void RegovarModel::init()
     mUploader->setChunkSize(50 * 1024);
     mUploader->setBandWidthLimit(0);
 
+    connect(mUploader, SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
 
     emit currentProjectUpdated();
 }
@@ -59,7 +60,7 @@ void RegovarModel::readSettings()
 
 void RegovarModel::refreshProjectsTreeView()
 {
-
+    qDebug() << Q_FUNC_INFO << "TODO";
 }
 
 void RegovarModel::loadProject(int id)
@@ -113,13 +114,19 @@ void RegovarModel::loadFilesBrowser()
 }
 
 
+void RegovarModel::filesEnqueued(QHash<QString,QString> mapping)
+{
+    qDebug() << "Upload mapping Done !";
+    foreach (QString key, mapping.keys())
+    {
+        qDebug() << key << " => " << mapping[key];
+    }
+}
+
+
 void RegovarModel::enqueueUploadFile(QList<QString> filesPaths)
 {
-    // First we have to
-    foreach (QString filepath, filesPaths)
-    {
-        mUploader->prepare(filepath);
-    }
+    mUploader->enqueue(filesPaths);
 }
 
 
