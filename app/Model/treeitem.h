@@ -68,6 +68,7 @@ public:
     QVariant data(int column) const;
     int row() const;
     TreeItem *parent();
+    void recursiveDelete();
 
 
 //    int childNumber() const;
@@ -78,9 +79,9 @@ public:
 //    bool setData(int column, const QVariant &value);
 
 private:
-    QList<TreeItem*> childItems;
-    QList<QVariant> itemData;
-    TreeItem *parentItem;
+    QList<TreeItem*> mChildItems;
+    QList<QVariant> mItemData;
+    TreeItem *mParentItem;
 };
 
 #endif // TREEITEM_H 

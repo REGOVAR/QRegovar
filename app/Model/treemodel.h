@@ -77,7 +77,7 @@ public:
     QModelIndex parent(const QModelIndex &index) const Q_DECL_OVERRIDE;
     int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
-
+    void clear();
 
 
     TreeItem *getItem(const QModelIndex &index) const;
@@ -96,7 +96,7 @@ public:
 protected:
     void setupModelData(const QStringList &lines, TreeItem *parent);
 
-    TreeItem* rootItem;
+    TreeItem* mRootItem;
 };
 
 #endif // TREEMODEL_H 

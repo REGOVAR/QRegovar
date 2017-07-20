@@ -19,18 +19,6 @@ Rectangle
 
 
 
-    SelectFilesDialog
-    {
-        id: fileDialog
-        visible: false
-
-        onAccepted:
-        {
-            var list = fileSystemModel.getFilesPath(localSelection)
-            regovar.enqueueUploadFile(list)
-        }
-    }
-
 
 
 
@@ -155,9 +143,9 @@ Rectangle
     Popup
     {
         id: customPopup
-        implicitWidth: window.width / 3 * 2
-        implicitHeight: window.height / 3 * 2
-        x: (window.width - width) / 2
+        implicitWidth: root.width / 3 * 2
+        implicitHeight: root.height / 3 * 2
+        x: (root.width - width) / 2
         y: 20
         modal: true
         focus: true
@@ -215,17 +203,19 @@ Rectangle
 
 
 
-    FileDialog
+    SelectFilesDialog
     {
         id: fileDialog
+        visible: false
         title: qsTr("Please choose a file")
-        folder: shortcuts.home
-        onAccepted: {
-            console.log("You chose: " + fileDialog.fileUrls)
+//        folder: shortcuts.home
+
+        onAccepted:
+        {
+            var list = fileSystemModel.getFilesPath(localSelection)
+            regovar.enqueueUploadFile(list)
         }
-        onRejected: {
-            console.log("Canceled")
-        }
-        visible: false;
     }
+
+
 }

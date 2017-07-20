@@ -9,7 +9,7 @@ FilesTreeViewModel::FilesTreeViewModel() : TreeModel(0)
 {
     QList<QVariant> rootData;
     rootData << "Name" << "Status" << "Size" << "Date" << "Comment";
-    rootItem = new TreeItem(rootData);
+    mRootItem = new TreeItem(rootData);
 
 }
 
@@ -117,7 +117,8 @@ void FilesTreeViewModel::setupModelData(QJsonArray data, TreeItem* parent)
 
 bool FilesTreeViewModel::fromJson(QJsonArray json)
 {
-    setupModelData(json, rootItem);
+    clear();
+    setupModelData(json, mRootItem);
     return true;
 }
 

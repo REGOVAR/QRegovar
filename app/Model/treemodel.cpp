@@ -65,13 +65,13 @@ TreeModel::TreeModel(const QStringList &headers, const QString &data, QObject *p
     foreach (QString header, headers)
         rootData << header;
 
-    rootItem = new TreeItem(rootData);
-    setupModelData(data.split(QString("\n")), rootItem);
+    mRootItem = new TreeItem(rootData);
+    setupModelData(data.split(QString("\n")), mRootItem);
 }
 
 TreeModel::~TreeModel()
 {
-    delete rootItem;
+    delete mRootItem;
 }
 
 int TreeModel::columnCount(const QModelIndex &parent) const
@@ -79,7 +79,7 @@ int TreeModel::columnCount(const QModelIndex &parent) const
     if (parent.isValid())
         return static_cast<TreeItem*>(parent.internalPointer())->columnCount();
     else
-        return rootItem->columnCount();
+        return mRootItem->columnCount();
 }
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const
@@ -115,13 +115,13 @@ TreeItem* TreeModel::getItem(const QModelIndex &index) const
         if (item)
             return item;
     }
-    return rootItem;
+    return mRootItem;
 }
 
 QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-        return rootItem->data(section);
+        return mRootItem->data(section);
 
     return QVariant();
 }
@@ -152,7 +152,7 @@ QModelIndex TreeModel::parent(const QModelIndex &index) const
     TreeItem* childItem = getItem(index);
     TreeItem* parentItem = childItem->parent();
 
-    if (parentItem == rootItem)
+    if (parentItem == mRootItem)
         return QModelIndex();
 
     //return createIndex(parentItem->childNumber(), 0, parentItem);
@@ -227,6 +227,11 @@ void TreeModel::setupModelData(const QStringList &lines, TreeItem *parent)
 } 
 
 
+
+void TreeModel::clear()
+{
+    mRootItem->recursiveDelete();
+}
 
 
 

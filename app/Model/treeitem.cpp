@@ -60,56 +60,67 @@
 
 TreeItem::TreeItem(const QList<QVariant> &data, TreeItem *parent)
 {
-    parentItem = parent;
-    itemData = data;
+    mParentItem = parent;
+    mItemData = data;
 }
 
 TreeItem::~TreeItem()
 {
-    qDeleteAll(childItems);
+    qDeleteAll(mChildItems);
 }
 
 TreeItem *TreeItem::child(int number)
 {
-    return childItems.value(number);
+    return mChildItems.value(number);
 }
 
 int TreeItem::childCount() const
 {
-    return childItems.count();
+    return mChildItems.count();
 }
 
 void TreeItem::appendChild(TreeItem *item)
 {
-    childItems.append(item);
+    mChildItems.append(item);
 }
 
 int TreeItem::row() const
 {
-    if (parentItem)
-        return parentItem->childItems.indexOf(const_cast<TreeItem*>(this));
+    if (mParentItem)
+        return mParentItem->mChildItems.indexOf(const_cast<TreeItem*>(this));
 
     return 0;
 }
 
 int TreeItem::columnCount() const
 {
-    return itemData.count();
+    return mItemData.count();
 }
 
 QVariant TreeItem::data(int column) const
 {
-    return itemData.value(column);
+    return mItemData.value(column);
 }
 
 
 
-TreeItem *TreeItem::parent()
+TreeItem* TreeItem::parent()
 {
-    return parentItem;
+    return mParentItem;
 }
 
 
+
+void TreeItem::recursiveDelete()
+{
+    foreach (TreeItem* child, mChildItems)
+    {
+        child->recursiveDelete();
+    }
+
+    mParentItem = nullptr;
+    mChildItems.clear();
+}
 
 
 

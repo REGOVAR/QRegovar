@@ -9,7 +9,7 @@ ProjectsTreeViewModel::ProjectsTreeViewModel() : TreeModel(0)
 {
     QList<QVariant> rootData;
     rootData << "Name" << "Date" << "Comment";
-    rootItem = new TreeItem(rootData);
+    mRootItem = new TreeItem(rootData);
 
     refresh();
 }
@@ -25,7 +25,7 @@ void ProjectsTreeViewModel::refresh()
         if (success)
         {
             beginResetModel();
-            setupModelData(json["data"].toArray(), rootItem);
+            setupModelData(json["data"].toArray(), mRootItem);
             endResetModel();
             qDebug() << Q_FUNC_INFO << "done";
         }
