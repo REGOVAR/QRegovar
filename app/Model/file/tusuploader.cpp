@@ -9,14 +9,21 @@
 
 TusUploader::TusUploader(QObject *parent) : QObject(parent)
 {
+    mChunkSize = 50 * 1024;
+    mBandWidthLimit = 0; // Not implemented
+    mMaxUpload = 2;
     mTusVersion = "1.0.0";
     mUserAgent = "RegovarClient/1.0";
+
     loadSettings();
 }
+
 TusUploader::~TusUploader()
 {
     writteSettings();
 }
+
+
 
 void TusUploader::loadSettings()
 {
@@ -33,6 +40,34 @@ void TusUploader::writteSettings()
 
 
 
+QString TusUploader::prepare(QString path)
+{
+    QFileInfo fi(path);
+    if (fi.isFile())
+    {
+        qDebug() << "upload append" << path;
+
+        TusUploadItem* item = new TusUploadItem();
+        item->path = path;
+        item->offset = 0;
+        item->file = nullptr;
+        item->uploadUrl = "";
+        item->file = new QFile(item->path);
+        item->file->open(QIODevice::ReadOnly);
+        item->size = item->file->size();
+        item->prepareFlag = true; // register the file (don't start upload after this call)
+
+        newUpload(item);
+
+
+        // Then enqueue file
+        mQueue.enqueue(item);
+        if (mQueue.count() == 1)
+        {
+            startNext();
+        }
+    }
+}
 
 
 void TusUploader::enqueue(QString path)
@@ -42,11 +77,12 @@ void TusUploader::enqueue(QString path)
     {
         qDebug() << "upload append" << path;
 
-        TusUploadItem item;
-        item.path = path;
-        item.offset = 0;
-        item.file = nullptr;
-        item.uploadUrl = "";
+        TusUploadItem* item = new TusUploadItem();
+        item->path = path;
+        item->offset = 0;
+        item->file = nullptr;
+        item->uploadUrl = "";
+        item->prepareFlag = false;
         mQueue.enqueue(item);
 
         if (mQueue.count() == 1)
@@ -86,31 +122,30 @@ void TusUploader::startNext()
     // start new upload if limit not reached
     if (mInProgress.count() < mMaxUpload)
     {
-        TusUploadItem item = mQueue.dequeue();
+        TusUploadItem* item = mQueue.dequeue();
         mInProgress.append(item);
 
         // If we don't already have the upload url, new to ask server to create new one for this file
-        if (item.uploadUrl.isEmpty())
+        if (item->uploadUrl.isEmpty())
         {
             // Retrieve file data
-            item.file = new QFile(item.path);
-            item.file->open(QIODevice::ReadOnly);
-            item.size = item.file->size();
+            item->file = new QFile(item->path);
+            item->file->open(QIODevice::ReadOnly);
+            item->size = item->file->size();
 
 
-            newUpload(&item);
+            newUpload(item);
         }
         // If we already have the upload url, ask server to provide resume offset
         else
         {
-            resumeUpload(&item);
+            resumeUpload(item);
         }
 
         // Continue to depile queue as long as possible
         startNext();
     }
 }
-
 
 
 
@@ -205,9 +240,8 @@ void TusUploader::patchUpload(TusUploadItem* item)
         item->file->deleteLater();
 
 
-        // FIXME : How to remove the item in the list :'(
-        //mInProgress.removeOne(*item);
-
+        mInProgress.removeOne(item);
+        emit uploadEnded(item);
         startNext();
     }
 }
@@ -229,11 +263,15 @@ void TusUploader::newUploadFinished()
 
         if (statusCode == 201)
         {
-            QString location = QString(reply->rawHeader("Location"));
-            item->uploadUrl  = QUrl(location);
+            item->uploadUrl = mTusRootUrl + "/" + QString(reply->rawHeader("Location"));
             item->offset = 0;
             mRequestHash.remove(reply);
-            patchUpload(item);
+
+            if (!item->prepareFlag)
+            {
+                emit uploadStarted(item);
+                patchUpload(item);
+            }
         }
         else
         {
@@ -254,6 +292,7 @@ void TusUploader::resumeUploadFinished()
         item->offset = offset.toInt();
 
         mRequestHash.remove(reply);
+        emit uploadStarted(item);
         patchUpload(item);
     }
     reply->deleteLater();

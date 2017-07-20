@@ -15,10 +15,6 @@ HEADERS += \
     Model/file/filemodel.h \
     Model/file/filestreeviewitem.h \
     Model/file/filestreeviewmodel.h \
-    libs/tusprotocol/uploadinterface.h \
-    libs/tusprotocol/uploadplugin.h \
-    libs/tusprotocol/downloadplugin.h \
-    libs/tusprotocol/downloadinterface.h \
     Model/file/filesystemmodel.h \
     Model/file/tusuploader.h
 
@@ -34,8 +30,6 @@ SOURCES += main.cpp \
     Model/file/filemodel.cpp \
     Model/file/filestreeviewitem.cpp \
     Model/file/filestreeviewmodel.cpp \
-    libs/tusprotocol/uploadplugin.cpp \
-    libs/tusprotocol/downloadplugin.cpp \
     Model/file/filesystemmodel.cpp \
     Model/file/tusuploader.cpp
 

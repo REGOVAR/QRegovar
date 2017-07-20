@@ -32,6 +32,9 @@ void RegovarModel::init()
     mCurrentProject = new ProjectModel();
     mUploader = new TusUploader();
     mUploader->setUploadUrl(mApiRootUrl.toString() + "/file/upload");
+    mUploader->setRootUrl(mApiRootUrl.toString());
+    mUploader->setChunkSize(50 * 1024);
+    mUploader->setBandWidthLimit(0);
 
 
     emit currentProjectUpdated();
@@ -112,9 +115,10 @@ void RegovarModel::loadFilesBrowser()
 
 void RegovarModel::enqueueUploadFile(QList<QString> filesPaths)
 {
+    // First we have to
     foreach (QString filepath, filesPaths)
     {
-        mUploader->enqueue(filepath);
+        mUploader->prepare(filepath);
     }
 }
 

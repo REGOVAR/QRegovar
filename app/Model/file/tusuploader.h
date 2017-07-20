@@ -11,12 +11,12 @@
 
 struct TusUploadItem
 {
-    QString uid;
-    QUrl uploadUrl;
+    QString uploadUrl;
     QString path;
     QFile* file;
     quint64 size;
     quint64 offset;
+    bool prepareFlag;
 };
 
 class TusUploader : public QObject
@@ -28,22 +28,31 @@ public:
 
     // Accessors
     inline QString uploadUrl() { return mTusUploadUrl; }
+    inline QString rootUrl() { return mTusRootUrl; }
+    inline int chunkSize() { return mChunkSize; }
+    inline int bandWidthLimit() { return mBandWidthLimit; }
 
     // Setters
     inline void setUploadUrl(QString url) { mTusUploadUrl = url; }
+    inline void setRootUrl(QString url) { mTusRootUrl = url; }
+    inline void setChunkSize(int value) { mChunkSize = value; }
+    inline void setBandWidthLimit(int value) { mBandWidthLimit = value; }
 
     // Methods
     void loadSettings();
     void writteSettings();
-    void enqueue(QString path);
-    void pause(QString path);
-    void cancel(QString path);
-    void start(QString path);
+    QString prepare(QString path);      //! Force register file to the server and enqueue file
+    void enqueue(QString path);         //! Enqueue and start upload as soon as possible
+    void pause(QString path);           //! Suspend upload for the file
+    void cancel(QString path);          //! Cancel upload for the file
+    void start(QString path);           //! Start/Resume upload for the file
 
 
 
 
 signals:
+    void uploadStarted(TusUploadItem* file);
+    void uploadEnded(TusUploadItem* file);
 
 public slots:
     //! Try to start or resume uploads in the queue
@@ -66,14 +75,15 @@ protected:
 private:
     QByteArray mUserAgent;
     QByteArray mTusVersion;
+    QString mTusRootUrl;
     QString mTusUploadUrl;
     int mChunkSize;
     int mBandWidthLimit;
     int mMaxUpload;
 
     QNetworkAccessManager mNetManager;
-    QQueue<TusUploadItem> mQueue;
-    QList<TusUploadItem> mInProgress;
+    QQueue<TusUploadItem*> mQueue;
+    QList<TusUploadItem*> mInProgress;
     QHash<QNetworkReply*, TusUploadItem*> mRequestHash;
 
 };

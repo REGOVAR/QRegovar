@@ -5,6 +5,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import "../../Regovar"
 import "../../Framework"
+import "../../Dialogs"
 
 
 Rectangle
@@ -17,6 +18,18 @@ Rectangle
 
 
 
+
+    SelectFilesDialog
+    {
+        id: fileDialog
+        visible: false
+
+        onAccepted:
+        {
+            var list = fileSystemModel.getFilesPath(localSelection)
+            regovar.enqueueUploadFile(list)
+        }
+    }
 
 
 
