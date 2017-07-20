@@ -33,7 +33,6 @@ Dialog
     {
 
         id: root
-        anchors.fill: fileDialog
         color: Regovar.theme.backgroundColor.main
 
         Rectangle
@@ -69,9 +68,8 @@ Dialog
                 anchors.top : remoteFilterField.bottom
                 anchors.left: rootRemoteView.left
                 anchors.right: rootRemoteView.right
-                anchors.bottom: rootRemoteView.bottom
+                anchors.bottom: remoteSwitchButton.top
                 anchors.margins: 10
-                anchors.bottomMargin: 20 + okButton.height
 
                 model: regovar.remoteFilesTreeView
             }
@@ -138,10 +136,8 @@ Dialog
                 anchors.top : localFilterField.bottom
                 anchors.left: rootLocalView.left
                 anchors.right: rootLocalView.right
-                anchors.bottom: rootLocalView.bottom
+                anchors.bottom: localSwitchButton.top
                 anchors.margins: 10
-                anchors.bottomMargin: 20 + okButton.height
-
                 model: fileSystemModel
                 rootIndex: rootPathIndex
                 selection: sel
@@ -193,7 +189,7 @@ Dialog
                 anchors.left: rootLocalView.left
                 anchors.margins: 10
 
-                text: qsTr("Back to remote files")
+                text: qsTr("< Back to remote files")
                 onClicked:
                 {
                     rootLocalView.visible = false;

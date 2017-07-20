@@ -6,7 +6,7 @@
 #include <QAuthenticator>
 #include "project/projectstreeviewmodel.h"
 #include "project/projectmodel.h"
-#include "libs/tusprotocol/uploadplugin.h"
+#include "file/tusuploader.h"
 
 
 #ifndef regovar
@@ -48,6 +48,8 @@ public:
     inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlUpdated(); }
 
 
+    // Methods
+    Q_INVOKABLE void enqueueUploadFile(QList<QString> filesPaths);
 
 public Q_SLOTS:
 //    void login(QString& login, QString& password);
@@ -90,7 +92,7 @@ private:
     //! The model used to browse all files available on the server
     FilesTreeViewModel* mRemoteFilesTreeView;
     //! The uploader that manage TUS protocol (resumable upload)
-    UploadInterface * mUploader;
+    TusUploader * mUploader;
 
 };
 

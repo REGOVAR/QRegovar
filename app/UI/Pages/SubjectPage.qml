@@ -23,6 +23,9 @@ Rectangle
         onAccepted:
         {
             console.log(filePopup.localSelection)
+            var list = fileSystemModel.getFilesPath(localSelection)
+            console.log(list)
+            regovar.enqueueUploadFile(list)
         }
     }
 

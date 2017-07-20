@@ -103,7 +103,7 @@ static inline QString sizeString(const QFileInfo &fi)
 }
 
 
-class DisplayFileSystemModel : public QFileSystemModel
+class FileSystemModel : public QFileSystemModel
 {
     Q_OBJECT
 public:
@@ -117,10 +117,12 @@ public:
     Q_ENUM(Roles)
 
 
-    explicit DisplayFileSystemModel(QObject *parent = Q_NULLPTR);
+    explicit FileSystemModel(QObject *parent = Q_NULLPTR);
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
     QHash<int,QByteArray> roleNames() const Q_DECL_OVERRIDE;
+
+    Q_INVOKABLE QList<QString> getFilesPath(QItemSelectionModel* selection);
 };
 
 

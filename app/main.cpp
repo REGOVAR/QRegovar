@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     app.setApplicationVersion("0.0.b");
 
     // Register custom classes to use it with QML
-    qmlRegisterUncreatableType<DisplayFileSystemModel>("org.regovar", 1, 0, "FileSystemModel", "Cannot create a FileSystemModel instance.");
+    qmlRegisterUncreatableType<FileSystemModel>("org.regovar", 1, 0, "FileSystemModel", "Cannot create a FileSystemModel instance.");
     qmlRegisterType<TreeModel>("org.regovar", 1, 0, "TreeModel");
 
 
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     regovar->init();
 
     // Init filesystem model
-    QFileSystemModel* fsm = new DisplayFileSystemModel(&engine);
+    FileSystemModel* fsm = new FileSystemModel(&engine);
     fsm->setRootPath(QDir::homePath());
     fsm->setResolveSymlinks(true);
     engine.rootContext()->setContextProperty("fileSystemModel", fsm);

@@ -51,11 +51,11 @@
 #include "filesystemmodel.h"
 #include <QUrl>
 
-DisplayFileSystemModel::DisplayFileSystemModel(QObject *parent) : QFileSystemModel(parent)
+FileSystemModel::FileSystemModel(QObject *parent) : QFileSystemModel(parent)
 {}
 
 
-QVariant DisplayFileSystemModel::data(const QModelIndex &index, int role) const
+QVariant FileSystemModel::data(const QModelIndex &index, int role) const
 {
     if (index.isValid() && role >= SizeRole) {
         switch (role) {
@@ -74,11 +74,24 @@ QVariant DisplayFileSystemModel::data(const QModelIndex &index, int role) const
     return QFileSystemModel::data(index, role);
 }
 
-QHash<int,QByteArray> DisplayFileSystemModel::roleNames() const
+QHash<int,QByteArray> FileSystemModel::roleNames() const
 {
      QHash<int, QByteArray> result = QFileSystemModel::roleNames();
      result.insert(SizeRole, QByteArrayLiteral("size"));
      result.insert(DisplayableFilePermissionsRole, QByteArrayLiteral("displayableFilePermissions"));
      result.insert(LastModifiedRole, QByteArrayLiteral("lastModified"));
      return result;
+}
+
+
+QList<QString> FileSystemModel::getFilesPath(QItemSelectionModel* selection)
+{
+    QModelIndexList indexes = selection->selectedIndexes();
+    QList<QString> paths;
+    foreach (QModelIndex idx, indexes)
+    {
+        if (idx.isValid())
+            paths.append(filePath(idx));
+    }
+    return paths;
 }

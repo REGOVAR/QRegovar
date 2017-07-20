@@ -19,7 +19,8 @@ HEADERS += \
     libs/tusprotocol/uploadplugin.h \
     libs/tusprotocol/downloadplugin.h \
     libs/tusprotocol/downloadinterface.h \
-    Model/file/filesystemmodel.h
+    Model/file/filesystemmodel.h \
+    Model/file/tusuploader.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -35,7 +36,8 @@ SOURCES += main.cpp \
     Model/file/filestreeviewmodel.cpp \
     libs/tusprotocol/uploadplugin.cpp \
     libs/tusprotocol/downloadplugin.cpp \
-    Model/file/filesystemmodel.cpp
+    Model/file/filesystemmodel.cpp \
+    Model/file/tusuploader.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

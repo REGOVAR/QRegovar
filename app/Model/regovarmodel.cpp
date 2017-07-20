@@ -30,9 +30,8 @@ void RegovarModel::init()
     mProjectsTreeView = new ProjectsTreeViewModel();
     mRemoteFilesTreeView = new FilesTreeViewModel();
     mCurrentProject = new ProjectModel();
-    mUploader = new UploadPlugin();
-    mUploader->setUploadUrl(QUrl(mApiRootUrl.toString() + "/file/upload"));
-
+    mUploader = new TusUploader();
+    mUploader->setUploadUrl(mApiRootUrl.toString() + "/file/upload");
 
 
     emit currentProjectUpdated();
@@ -108,6 +107,15 @@ void RegovarModel::loadFilesBrowser()
         }
         req->deleteLater();
     });
+}
+
+
+void RegovarModel::enqueueUploadFile(QList<QString> filesPaths)
+{
+    foreach (QString filepath, filesPaths)
+    {
+        mUploader->enqueue(filepath);
+    }
 }
 
 

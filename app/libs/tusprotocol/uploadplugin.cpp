@@ -32,7 +32,7 @@ QString UploadPlugin::version() const
 void UploadPlugin::setDefaultParameters()
 {
     m_uploadProtocol = UploadInterface::ProtocolTus;
-    m_userAgent = "UploadPlugin/0.0.2";
+    m_userAgent = "UploadPlugin/1.0";
     m_chunkSize = 50*1024;
     m_bandwidthLimit = 30*1024;
     m_queueSize = 2;
@@ -202,7 +202,8 @@ void UploadPlugin::uploadChunk(QNetworkReply *reply)
         QNetworkRequest request(QUrl(item.submitUrl));
         request.setRawHeader("User-Agent", m_userAgent);
         request.setRawHeader("Connection", "keep-alive");
-        request.setRawHeader("Offset", offset);
+        request.setRawHeader("Tus-Resumable", "1.0.0");
+        request.setRawHeader("Upload-Offset", offset);
         request.setRawHeader("Content-Length", length);
         request.setRawHeader("Content-Type", "application/offset+octet-stream");
 
@@ -266,15 +267,17 @@ void UploadPlugin::startNextUpload()
                 item.sent = 0;
                 item.start = 0;
 
-                qDebug() << item.submitUrl;
+                qDebug() << "item submit url : " << item.submitUrl;
 
                 QNetworkRequest request(QUrl(item.submitUrl));
                 request.setRawHeader("User-Agent", m_userAgent);
+                request.setRawHeader("Tus-Resumable", "1.0.0");
 
                 QNetworkReply * reply = manager.head(request);
                 connectSignals(reply);
 
-                //qDebug() << "START" << reply;
+                qDebug() << "START" << reply;
+                qDebug() << "START" << item.path << m_uploadUrl.toString();
 
                 emit status(item.path, "Resume", "Start resume upload file", m_uploadUrl.toString());
 
@@ -291,18 +294,20 @@ void UploadPlugin::startNextUpload()
                 item.start = 0;
 
                 QNetworkRequest request(m_uploadUrl);
-                request.setRawHeader("User-Agent", m_userAgent);
                 QByteArray fileLength;
                 fileLength.setNum(item.size);
-                request.setRawHeader("Final-Length", fileLength);
                 QByteArray contentLength;
                 contentLength.setNum(0);
-                request.setRawHeader("Content-Length", contentLength);
+                request.setRawHeader("User-Agent", m_userAgent);
+                request.setRawHeader("Upload-Length", fileLength);
+                request.setRawHeader("Content-Length", 0);
+                request.setRawHeader("Tus-Resumable", "1.0.0");
+                request.setRawHeader("Upload-Metadata", "filename ");
                 request.setRawHeader("Content-Type", "application/octet-stream");
 
                 if (m_additionalHeaders.length() > 0)
                 {
-                    //qDebug() << "Has additional headers";
+                    qDebug() << "Has additional headers";
                     for (int i = 0; i < m_additionalHeaders.size(); i++)
                     {
                         RawHeaderPair header = m_additionalHeaders[i];

@@ -108,7 +108,7 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
     // return Qt::ItemIsEditable | QAbstractItemModel::flags(index);
 }
 
-TreeItem *TreeModel::getItem(const QModelIndex &index) const
+TreeItem* TreeModel::getItem(const QModelIndex &index) const
 {
     if (index.isValid()) {
         TreeItem* item = static_cast<TreeItem*>(index.internalPointer());
