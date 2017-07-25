@@ -2,6 +2,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 //import org.regovar 1.0
 
 import "../Regovar"
@@ -116,7 +117,8 @@ Rectangle
             }
         }
 
-        TableViewColumn {
+        TableViewColumn
+        {
             role: "name"
             title: "Name"
 
@@ -140,6 +142,27 @@ Rectangle
         TableViewColumn {
             role: "comment"
             title: "Comment"
+        }
+    }
+
+
+    BusyIndicator
+    {
+        anchors.fill: browser
+        style: BusyIndicatorStyle
+        {
+            indicator: Image
+            {
+                visible: regovar.projectsTreeView.isLoading
+                source: "qrc:/loading.gif"
+                RotationAnimator on rotation
+                {
+                    running: regovar.projectsTreeView.isLoading
+                    loops: Animation.Infinite
+                    duration: 2000
+                    from: 0 ; to: 360
+                }
+            }
         }
     }
 

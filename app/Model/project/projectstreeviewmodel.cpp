@@ -19,6 +19,7 @@ ProjectsTreeViewModel::ProjectsTreeViewModel() : TreeModel(0)
 
 void ProjectsTreeViewModel::refresh()
 {
+    setIsLoading(true);
     Request* request = Request::get("/project/browserTree");
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
@@ -33,6 +34,7 @@ void ProjectsTreeViewModel::refresh()
         {
             qCritical() << Q_FUNC_INFO << "Unable to build user list model (due to request error)";
         }
+        setIsLoading(false);
         request->deleteLater();
     });
 }

@@ -82,7 +82,13 @@ QtObject
 
 
 
-
+    function addTransparency(color, opacity)
+    {
+        // remove
+        color = color.replace(/^#/, '');
+        opacity = Math.floor(opacity == 1.0 ? 255 : opacity * 256.0);
+        return "#" + opacity.toString(16) + color;
+    }
 
 
 //    function lighter(color)

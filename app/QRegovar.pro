@@ -96,7 +96,8 @@ DISTFILES += \
     UI/Regovar/Themes/HalloweenTheme.js \
     UI/Regovar/Themes/RegovarDarkTheme.js \
     UI/Regovar/Themes/RegovarLightTheme.js \
-    UI/Dialogs/SelectFilesDialog.qml
+    UI/Dialogs/SelectFilesDialog.qml \
+    UI/Framework/BusyIndicator.qml
 
 
 
@@ -114,4 +115,7 @@ first.depends = $(first) copydata
 export(first.depends)
 export(copydata.commands)
 QMAKE_EXTRA_TARGETS += first copydata
+
+RESOURCES += \
+    Assets/qrc.qrc
 
