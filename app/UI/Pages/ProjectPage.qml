@@ -149,21 +149,6 @@ Rectangle
     BusyIndicator
     {
         anchors.fill: browser
-        style: BusyIndicatorStyle
-        {
-            indicator: Image
-            {
-                visible: regovar.projectsTreeView.isLoading
-                source: "qrc:/loading.gif"
-                RotationAnimator on rotation
-                {
-                    running: regovar.projectsTreeView.isLoading
-                    loops: Animation.Infinite
-                    duration: 2000
-                    from: 0 ; to: 360
-                }
-            }
-        }
     }
 
 
