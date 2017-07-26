@@ -28,11 +28,11 @@ void ProjectsTreeViewModel::refresh()
             beginResetModel();
             setupModelData(json["data"].toArray(), mRootItem);
             endResetModel();
-            qDebug() << Q_FUNC_INFO << "done";
+            qDebug() << Q_FUNC_INFO << "Projects TreeViewModel refreshed";
         }
         else
         {
-            qCritical() << Q_FUNC_INFO << "Unable to build user list model (due to request error)";
+            qCritical() << Q_FUNC_INFO << "Unable to build projects tree model (due to request error)";
         }
         setIsLoading(false);
         request->deleteLater();

@@ -48,7 +48,37 @@ Request::Request(Verb verb, const QString& query, QHttpMultiPart* data, QObject*
         connect(mReply, SIGNAL(finished()), this,SLOT(received()));
     }
 }
+Request::Request(Verb verb, const QString& query, QByteArray data, QObject* parent) : QObject(parent)
+{
+    QNetworkRequest request = Request::makeRequest(query);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
+    mReply = Q_NULLPTR;
+    switch (verb)
+    {
+        case Request::Get:
+            mReply = Request::netManager()->get(request);
+            break;
+        case Request::Post:
+            mReply = Request::netManager()->post(request, data);
+            break;
+        case Request::Put:
+            mReply = Request::netManager()->put(request, data);
+            break;
+        case Request::Del:
+            mReply = Request::netManager()->deleteResource(request);
+            break;
+
+        default:
+            qCritical() << Q_FUNC_INFO << "Unknow query verb ... \"" << verb << "\" : \"" << query << "\"";
+            break;
+    }
+    if (mReply != Q_NULLPTR)
+    {
+        mLoading = true;
+        connect(mReply, SIGNAL(finished()), this,SLOT(received()));
+    }
+}
 
 
 
@@ -63,8 +93,16 @@ Request* Request::put(const QString query, QHttpMultiPart* data)
 {
     return new Request(Put, query, data);
 }
+Request* Request::put(const QString query, QByteArray data)
+{
+    return new Request(Put, query, data);
+}
 
 Request* Request::post(const QString query, QHttpMultiPart* data)
+{
+    return new Request(Post, query, data);
+}
+Request* Request::post(const QString query, QByteArray data)
 {
     return new Request(Post, query, data);
 }

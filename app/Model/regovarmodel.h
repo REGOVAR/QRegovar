@@ -7,6 +7,7 @@
 #include "project/projectstreeviewmodel.h"
 #include "project/projectmodel.h"
 #include "file/tusuploader.h"
+#include "analysis/filtering/resultstreeviewmodel.h"
 
 
 #ifndef regovar
@@ -94,6 +95,10 @@ private:
     FilesTreeViewModel* mRemoteFilesTreeView;
     //! The uploader that manage TUS protocol (resumable upload)
     TusUploader * mUploader;
+
+
+    //! DEBUG : filtering analysis
+    ResultsTreeViewModel* mCurrentFilteringAnalysis;
 
 };
 

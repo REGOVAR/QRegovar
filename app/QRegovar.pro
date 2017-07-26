@@ -16,7 +16,10 @@ HEADERS += \
     Model/file/filestreeviewitem.h \
     Model/file/filestreeviewmodel.h \
     Model/file/filesystemmodel.h \
-    Model/file/tusuploader.h
+    Model/file/tusuploader.h \
+    Model/analysis/filtering/resultstreeviewitem.h \
+    Model/analysis/filtering/resultstreeviewmodel.h \
+    Model/analysis/filtering/annotationmodel.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -31,7 +34,10 @@ SOURCES += main.cpp \
     Model/file/filestreeviewitem.cpp \
     Model/file/filestreeviewmodel.cpp \
     Model/file/filesystemmodel.cpp \
-    Model/file/tusuploader.cpp
+    Model/file/tusuploader.cpp \
+    Model/analysis/filtering/resultstreeviewitem.cpp \
+    Model/analysis/filtering/resultstreeviewmodel.cpp \
+    Model/analysis/filtering/annotationmodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

@@ -43,8 +43,10 @@ BusyIndicator
                     property real factor: style.indicatorSize / 200
                     color: style.color
                     opacity: 0.7
-                    Behavior on color {
-                        ColorAnimation {
+                    Behavior on color
+                    {
+                        ColorAnimation
+                        {
                             from: style.highlightColor
                             duration: style.speed * style.lines * style.trail
                         }
