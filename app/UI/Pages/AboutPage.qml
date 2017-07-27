@@ -125,6 +125,12 @@ Rectangle
                 color: Regovar.theme.backgroundColor.alt
             }
 
+            Component
+            {
+                id: columnComponent
+                TableViewColumn { width: 100 }
+            }
+
             TreeView
             {
                 id: resultsTree
@@ -136,8 +142,6 @@ Rectangle
                 signal checked(string uid, bool isChecked)
                 onChecked: console.log(uid, isChecked);
 
-                property var annot
-                property var col
 
 
                 Connections
@@ -145,40 +149,25 @@ Rectangle
                     target: annotationsSelector
                     onChecked:
                     {
-                        resultsTree.annot = regovar.currentAnnotations.getAnnotation(uid);
+                        var annot = regovar.currentAnnotations.getAnnotation(uid);
                         if (isChecked)
                         {
-
-                            resultsTree.col = Qt.createComponent("TableViewColumn");
-                            if (resultsTree.col.status === Component.Ready)
-                                resultsTree.finishColCreation();
-                            else
-                                resultsTree.col.statusChanged.connect(resultsTree.finishColCreation);
-
+                            var col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+                            console.log("Add new resultsTree columns")
+                            resultsTree.addColumn(col);
                         }
                         else
                         {
                             for (var idx=0; idx< resultsTree.columnCount; idx++ )
                             {
-                                resultsTree.col = resultsTree.getColumn(idx);
-                                if (resultsTree.col.role === resultsTree.annot.uid)
+                                var col = resultsTree.getColumn(idx);
+                                if (col.role === annot.uid)
                                 {
                                     resultsTree.removeColumn(idx);
                                     break;
                                 }
                             }
                         }
-                    }
-                }
-
-
-                function finishColCreation()
-                {
-                    if (resultsTree.col.status === Component.Ready)
-                    {
-                        console.log("Add new resultsTree columns")
-                        var col = resultsTree.col.createObject(resultsTree, {"role": resultsTree.annot.uid, "title": resultsTree.annot.name});
-                        resultsTree.addColumn(col);
                     }
                 }
 
