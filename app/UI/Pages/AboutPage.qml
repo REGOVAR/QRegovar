@@ -7,6 +7,8 @@ import org.regovar 1.0
 
 import "../Regovar"
 import "../Framework"
+import "../MainMenu"
+
 
 Rectangle
 {
@@ -16,8 +18,12 @@ Rectangle
     {
         // regovar.currentAnnotationsTreeView.refresh();
         regovar.currentFilteringAnalysis.refresh();
+    }
 
-
+    FontLoader
+    {
+        id : iconFont
+        source: "../Icons.ttf"
     }
 
     SplitView
@@ -32,6 +38,14 @@ Rectangle
             Layout.maximumWidth: 500
             width: 300
 
+            property string selectedTab: "quickFilters"
+            onSelectedTabChanged:
+            {
+                quickFiltersTab.isSelected = selectedTab === "quickFilters";
+                advancedFiltersTab.isSelected = selectedTab === "advancedFilters";
+                annotationsTab.isSelected = selectedTab === "annotations";
+            }
+
 
             Rectangle
             {
@@ -41,70 +55,150 @@ Rectangle
                 anchors.right: leftPanel.right
                 height: 50
                 color: Regovar.theme.backgroundColor.alt
+
+
+                HeaderTabEntry
+                {
+                    id: quickFiltersTab
+                    anchors.top:leftHeader.top
+                    anchors.left: leftHeader.left
+                    iconText: "F"
+                    onIsSelectedChanged: if (isSelected) leftPanel.selectedTab = "quickFilters"
+                }
+                HeaderTabEntry
+                {
+                    id: advancedFiltersTab
+                    anchors.top:leftHeader.top
+                    anchors.left: quickFiltersTab.right
+                    iconText: "3"
+                    onIsSelectedChanged: if (isSelected) leftPanel.selectedTab = "advancedFilters"
+                }
+                HeaderTabEntry
+                {
+                    id: annotationsTab
+                    anchors.top:leftHeader.top
+                    anchors.left: advancedFiltersTab.right
+                    iconText: "o"
+                    onIsSelectedChanged: if (isSelected) leftPanel.selectedTab = "annotations"
+                    isSelected: true
+                }
             }
 
 
-            TreeView
+
+
+
+            ColumnLayout
             {
-                id: annotationsSelector
+                id: quickFiltersPanel
                 anchors.fill: leftPanel
                 anchors.margins: 10
                 anchors.topMargin: 60
-                model: regovar.currentAnnotations
+                spacing: 10
+                visible: quickFiltersTab.isSelected
 
-
-                signal checked(string uid, bool isChecked)
-                onChecked: console.log(uid, isChecked);
-
-                // Default delegate for all column
-                itemDelegate: Item
+                Text
                 {
-                    Text
-                    {
-                        anchors.leftMargin: 5
-                        anchors.fill: parent
-                        verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: Regovar.theme.font.size.control
-                        text: styleData.value.value
-                        elide: Text.ElideRight
-                    }
+                    text: qsTr("Quick filters")
+                }
+            }
+
+            ColumnLayout
+            {
+                id: advancedFiltersPanel
+                anchors.fill: leftPanel
+                anchors.margins: 10
+                anchors.topMargin: 60
+                spacing: 10
+                visible: advancedFiltersTab.isSelected
+
+                Text
+                {
+                    text: qsTr("Advanced filters")
+                }
+            }
+
+            ColumnLayout
+            {
+                id: annotationPanel
+                anchors.fill: leftPanel
+                anchors.margins: 10
+                anchors.topMargin: 60
+                spacing: 10
+                visible: annotationsTab.isSelected
+
+                Text
+                {
+                    text: qsTr("Displayed columns")
+                    font.pixelSize: Regovar.theme.font.size.header
+                    color: Regovar.theme.primaryColor.back.dark
                 }
 
-                TableViewColumn
+                TreeView
                 {
-                    role: "name"
-                    title: "Name"
+                    id: annotationsSelector
+                    model: regovar.currentAnnotations
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-                    delegate: Item
+
+                    signal checked(string uid, bool isChecked)
+                    onChecked: console.log(uid, isChecked);
+
+                    // Default delegate for all column
+                    itemDelegate: Item
                     {
-                        CheckBox
+                        Text
                         {
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            checked: styleData.value
+                            anchors.leftMargin: 5
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            font.pixelSize: Regovar.theme.font.size.control
                             text: styleData.value.value
-                            onClicked:
+                            elide: Text.ElideRight
+                        }
+                    }
+
+                    TableViewColumn
+                    {
+                        role: "name"
+                        title: "Name"
+
+                        delegate: Item
+                        {
+                            CheckBox
                             {
-                                annotationsSelector.checked(styleData.value.uid, checked);
+                                anchors.left: parent.left
+                                anchors.verticalCenter: parent.verticalCenter
+                                checked: styleData.value
+                                text: styleData.value.value
+                                onClicked:
+                                {
+                                    annotationsSelector.checked(styleData.value.uid, checked);
+                                }
                             }
                         }
                     }
+
+                    TableViewColumn
+                    {
+                        role: "version"
+                        title: "Version"
+                        width: 80
+                    }
+
+                    TableViewColumn {
+                        role: "description"
+                        title: "Description"
+                        width: 250
+                    }
                 }
 
-                TableViewColumn
+                TextField
                 {
-                    role: "version"
-                    title: "Version"
-                    width: 80
+                    Layout.fillWidth: true
+                    placeholderText: qsTr("Search annotation...")
                 }
-
-                TableViewColumn {
-                    role: "description"
-                    title: "Description"
-                    width: 250
-                }
-
-
             }
         }
 

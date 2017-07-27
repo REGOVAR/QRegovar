@@ -107,7 +107,8 @@ DISTFILES += \
     UI/Regovar/Themes/RegovarDarkTheme.js \
     UI/Regovar/Themes/RegovarLightTheme.js \
     UI/Dialogs/SelectFilesDialog.qml \
-    UI/Framework/BusyIndicator.qml
+    UI/Framework/BusyIndicator.qml \
+    UI/MainMenu/HeaderTabEntry.qml
 
 
 
