@@ -11,13 +11,13 @@ class ResultsTreeViewModel : public TreeModel
 
 public:
 
-    explicit ResultsTreeViewModel();
+    explicit ResultsTreeViewModel(int analysisId);
     QHash<int, QByteArray> roleNames() const override;
 
-    void refresh();
-    QVariant newResultsTreeViewItem(QString uid, const QString &text);
+    Q_INVOKABLE void refresh();
+    QVariant newResultsTreeViewItem(QString uid, const QVariant &value);
     void setupModelData(QJsonArray data, TreeItem *parent);
-    void loadColumnsRolesFromAnnotations();
+    void loadAnalysisData();
 
 
     // Accessors
@@ -34,8 +34,9 @@ Q_SIGNALS:
 private:
     bool mIsLoading;
 
-    QHash<QString, AnnotationModel*> mAnnotations;
-    QList<QString> mDisplayedAnnotations;
+    QStringList mDisplayedAnnotations;
+    int mAnalysisId;
+
 };
 
 #endif // RESULTSTREEVIEWMODEL_H

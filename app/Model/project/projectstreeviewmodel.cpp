@@ -67,8 +67,6 @@ QVariant ProjectsTreeViewModel::newProjectsTreeViewItem(int id, const QString &t
 
 void ProjectsTreeViewModel::setupModelData(QJsonArray data, TreeItem *parent)
 {
-
-
     foreach(const QJsonValue json, data)
     {
         QJsonObject p = json.toObject();

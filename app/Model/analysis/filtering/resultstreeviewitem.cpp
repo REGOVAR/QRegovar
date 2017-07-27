@@ -6,7 +6,7 @@ ResultsTreeViewItem::ResultsTreeViewItem(QObject *parent) : QObject(parent)
 
 ResultsTreeViewItem::ResultsTreeViewItem(const ResultsTreeViewItem &other)
 {
-    mText = other.mText;
+    mValue = other.mValue;
     mUid= other.mUid;
 }
 
@@ -15,8 +15,8 @@ ResultsTreeViewItem::~ResultsTreeViewItem()
 
 
 
-ResultsTreeViewItem::ResultsTreeViewItem(QString uid, QString text, QObject *parent) : QObject(parent)
+ResultsTreeViewItem::ResultsTreeViewItem(QString uid, QVariant value, QObject *parent) : QObject(parent)
 {
-    mText = text;
+    mValue = value;
     mUid= uid;
 }

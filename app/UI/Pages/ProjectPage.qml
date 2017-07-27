@@ -37,8 +37,6 @@ Rectangle
         anchors.top: root.top
         anchors.right: root.right
         height: 50
-
-
         color: Regovar.theme.backgroundColor.alt
 
         TextField

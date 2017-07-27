@@ -1,27 +1,32 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 
+import "../Regovar"
+
 CheckBox {
     id: control
     text: qsTr("CheckBox")
     checked: true
 
-    FontLoader {
+    FontLoader
+    {
         id : iconFont
-        source: "fonts/flat-ui-icons-regular.ttf"
+        source: "../Icons.ttf"
     }
 
-    indicator: Rectangle {
+    indicator: Rectangle
+    {
         implicitWidth:20
         implicitHeight: 20
         x: control.leftPadding
         y: parent.height / 2 - height / 2
         radius: 5
-        color : control.enabled && control.checked  ? Style.primary : "lightgray"
+        color : control.enabled && control.checked  ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.light
 
-        Label {
+        Label
+        {
 
-            text:"\ue60a"
+            text:"n"
             anchors.centerIn: parent
             color: "white"
             font.pixelSize: 12
@@ -29,20 +34,20 @@ CheckBox {
             visible: control.checked ? true : false
         }
 
-        Behavior on color {
-
-            ColorAnimation {
-
-                duration: 200
+        Behavior on color
+        {
+            ColorAnimation
+            {
+                duration: 150
             }
         }
     }
 
-    contentItem: Text {
+    contentItem: Text
+    {
         text: control.text
         font: control.font
         opacity: enabled ? 1.0 : 0.3
-        color: Style.dark
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         leftPadding: control.indicator.width + control.spacing

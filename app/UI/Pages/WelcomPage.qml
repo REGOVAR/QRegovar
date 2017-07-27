@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import "../Framework"
+import "../Regovar"
 
 Rectangle
 {
