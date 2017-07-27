@@ -3,6 +3,7 @@ import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
+import org.regovar 1.0
 
 import "../Regovar"
 import "../Framework"
@@ -15,6 +16,8 @@ Rectangle
     {
         // regovar.currentAnnotationsTreeView.refresh();
         regovar.currentFilteringAnalysis.refresh();
+
+
     }
 
     SplitView
@@ -43,11 +46,15 @@ Rectangle
 
             TreeView
             {
-                id: columnsSelector
+                id: annotationsSelector
                 anchors.fill: leftPanel
                 anchors.margins: 10
                 anchors.topMargin: 60
                 model: regovar.currentAnnotations
+
+
+                signal checked(string uid, bool isChecked)
+                onChecked: console.log(uid, isChecked);
 
                 // Default delegate for all column
                 itemDelegate: Item
@@ -67,17 +74,34 @@ Rectangle
                 {
                     role: "name"
                     title: "Name"
+
+                    delegate: Item
+                    {
+                        CheckBox
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            checked: styleData.value
+                            text: styleData.value.value
+                            onClicked:
+                            {
+                                annotationsSelector.checked(styleData.value.uid, checked);
+                            }
+                        }
+                    }
                 }
 
                 TableViewColumn
                 {
                     role: "version"
                     title: "Version"
+                    width: 80
                 }
 
                 TableViewColumn {
                     role: "description"
                     title: "Description"
+                    width: 250
                 }
 
 
@@ -103,14 +127,61 @@ Rectangle
 
             TreeView
             {
-                id: browser
+                id: resultsTree
                 anchors.fill: rightPanel
                 anchors.margins: 10
                 anchors.topMargin: 60
                 model: regovar.currentFilteringAnalysis
 
-                signal checked(int row, bool isChecked)
-                onChecked: console.log(row, isChecked);
+                signal checked(string uid, bool isChecked)
+                onChecked: console.log(uid, isChecked);
+
+                property var annot
+                property var col
+
+
+                Connections
+                {
+                    target: annotationsSelector
+                    onChecked:
+                    {
+                        resultsTree.annot = regovar.currentAnnotations.getAnnotation(uid);
+                        if (isChecked)
+                        {
+
+                            resultsTree.col = Qt.createComponent("TableViewColumn");
+                            if (resultsTree.col.status === Component.Ready)
+                                resultsTree.finishColCreation();
+                            else
+                                resultsTree.col.statusChanged.connect(resultsTree.finishColCreation);
+
+                        }
+                        else
+                        {
+                            for (var idx=0; idx< resultsTree.columnCount; idx++ )
+                            {
+                                resultsTree.col = resultsTree.getColumn(idx);
+                                if (resultsTree.col.role === resultsTree.annot.uid)
+                                {
+                                    resultsTree.removeColumn(idx);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                function finishColCreation()
+                {
+                    if (resultsTree.col.status === Component.Ready)
+                    {
+                        console.log("Add new resultsTree columns")
+                        var col = resultsTree.col.createObject(resultsTree, {"role": resultsTree.annot.uid, "title": resultsTree.annot.name});
+                        resultsTree.addColumn(col);
+                    }
+                }
+
 
                 // Default delegate for all column
                 itemDelegate: Item
@@ -129,7 +200,7 @@ Rectangle
                 TableViewColumn
                 {
                     role: "id"
-                    title: "CheckboxSelection"
+                    title: ""
 
 
 
@@ -137,12 +208,13 @@ Rectangle
                     {
                         CheckBox
                         {
-                            anchors.centerIn: parent
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
                             checked: styleData.value
-                            onClicked: {
-                                browser.selection.select(styleData.row);
-                                browser.currentRow = styleData.row;
-                                browser.checked(styleData.row, checked);
+                            text: styleData.value.value
+                            onClicked:
+                            {
+                                resultsTree.checked(styleData.value.uid, checked);
                             }
                         }
                     }

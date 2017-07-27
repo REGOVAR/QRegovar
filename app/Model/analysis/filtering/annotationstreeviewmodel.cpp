@@ -28,6 +28,7 @@ void AnnotationsTreeViewModel::refresh()
     {
         if (success)
         {
+            clear();
             QJsonObject data = json["data"].toObject();
             mRefName = data["ref_name"].toString();
 
@@ -44,7 +45,10 @@ void AnnotationsTreeViewModel::refresh()
 }
 
 
-
+AnnotationModel* AnnotationsTreeViewModel::getAnnotation(QString uid)
+{
+    return mAnnotations[uid];
+}
 
 
 
@@ -63,7 +67,7 @@ QVariant AnnotationsTreeViewModel::newAnnotationsTreeViewItem(QString id, const 
 {
     AnnotationsTreeViewItem *t = new AnnotationsTreeViewItem(this);
     t->setValue(value);
-    t->setId(id);
+    t->setUid(id);
     QVariant v;
     v.setValue(t);
     return v;

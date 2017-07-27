@@ -29,7 +29,7 @@ public:
 
     // Accessors
     inline bool isLoading() { return mIsLoading; }
-    inline AnnotationModel* getAnnotation(QString uid) { return mAnnotations[uid]; }
+    Q_INVOKABLE AnnotationModel* getAnnotation(QString uid) ;
 
     // Setters
     inline bool setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingUpdated(); }
