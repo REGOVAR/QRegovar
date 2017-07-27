@@ -4,7 +4,7 @@
 AnnotationsTreeViewItem::AnnotationsTreeViewItem(QObject *parent) : QObject(parent)
 {}
 
-AnnotationsTreeViewItem::AnnotationsTreeViewItem(const AnnotationsTreeViewItem &other)
+AnnotationsTreeViewItem::AnnotationsTreeViewItem(const AnnotationsTreeViewItem &other) : QObject(other.parent())
 {
     mValue = other.mValue;
     mUid= other.mUid;

@@ -32,7 +32,7 @@ public:
     Q_INVOKABLE AnnotationModel* getAnnotation(QString uid) ;
 
     // Setters
-    inline bool setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingUpdated(); }
+    inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingUpdated(); }
     inline void addAnnotation(QString uid, AnnotationModel* annotation) {mAnnotations.insert(uid, annotation); }
 
 

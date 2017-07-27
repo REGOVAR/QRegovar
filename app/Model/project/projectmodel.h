@@ -61,12 +61,12 @@ Q_SIGNALS:
 private:
     // Attributes
     int mId;
+    bool mIsSandbox;
+    bool mIsFolder;
     QString mFullPath;
     ProjectModel* mParent;
     QDateTime mCreationDate;
     QDateTime mUpdateDate;
-    bool mIsSandbox;
-    bool mIsFolder;
     QString mComment;
     QString mName;
 

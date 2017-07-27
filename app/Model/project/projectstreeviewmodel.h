@@ -31,7 +31,7 @@ public:
     inline bool isLoading() { return mIsLoading; }
 
     // Setters
-    inline bool setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingUpdated(); }
+    inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingUpdated(); }
 
 
 Q_SIGNALS:

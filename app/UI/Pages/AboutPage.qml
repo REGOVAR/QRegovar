@@ -112,9 +112,52 @@ Rectangle
                 spacing: 10
                 visible: advancedFiltersTab.isSelected
 
+
                 Text
                 {
-                    text: qsTr("Advanced filters")
+                    text: qsTr("Saved filters")
+                    font.pixelSize: Regovar.theme.font.size.header
+                    color: Regovar.theme.primaryColor.back.dark
+                }
+                Text
+                {
+                    text: qsTr("Current filter")
+                    font.pixelSize: Regovar.theme.font.size.header
+                    color: Regovar.theme.primaryColor.back.dark
+                }
+                TextArea
+                {
+                    id: advancedFilterJsonEditor
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    text: regovar.currentFilteringAnalysis.filter
+                }
+                RowLayout
+                {
+                    Layout.fillWidth: true
+
+                    Button
+                    {
+                        text: qsTr("Clear")
+                        onClicked:
+                        {
+                            regovar.currentFilteringAnalysis.filter = "[\"AND\", []]";
+                            regovar.currentFilteringAnalysis.refresh();
+                        }
+                    }
+                    Button
+                    {
+                        text: qsTr("Apply")
+                        onClicked:
+                        {
+                            regovar.currentFilteringAnalysis.filter = advancedFilterJsonEditor.text;
+                            regovar.currentFilteringAnalysis.refresh();
+                        }
+                    }
+                    Button
+                    {
+                        text: qsTr("Save")
+                    }
                 }
             }
 

@@ -4,7 +4,7 @@
 ProjectsTreeViewItem::ProjectsTreeViewItem(QObject *parent) : QObject(parent)
 {}
 
-ProjectsTreeViewItem::ProjectsTreeViewItem(const ProjectsTreeViewItem &other)
+ProjectsTreeViewItem::ProjectsTreeViewItem(const ProjectsTreeViewItem &other) : QObject(other.parent())
 {
     mText = other.mText;
     mId= other.mId;

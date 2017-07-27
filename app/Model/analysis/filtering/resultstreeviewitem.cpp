@@ -4,7 +4,7 @@
 ResultsTreeViewItem::ResultsTreeViewItem(QObject *parent) : QObject(parent)
 {}
 
-ResultsTreeViewItem::ResultsTreeViewItem(const ResultsTreeViewItem &other)
+ResultsTreeViewItem::ResultsTreeViewItem(const ResultsTreeViewItem &other) : QObject(other.parent())
 {
     mValue = other.mValue;
     mUid= other.mUid;

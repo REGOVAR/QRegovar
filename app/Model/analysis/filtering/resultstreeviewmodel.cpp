@@ -28,13 +28,16 @@ void ResultsTreeViewModel::loadAnalysisData()
         {
             qDebug() << "Display field :";
             QJsonObject data = json["data"].toObject();
-
             foreach (const QJsonValue field, data["fields"].toArray())
             {
                 QString uid = field.toString();
-                mDisplayedAnnotations << uid;
+                mFields << uid;
                 qDebug() << " - " << uid;
             }
+            qDebug() << "Current filter";
+            QJsonDocument doc;
+            doc.setArray(data["filter"].toArray());
+            mFilter = QString(doc.toJson(QJsonDocument::Indented));
         }
         else
         {
@@ -50,13 +53,10 @@ void ResultsTreeViewModel::loadAnalysisData()
 void ResultsTreeViewModel::refresh()
 {
     setIsLoading(true);
-
     QJsonObject body;
 
-
-    body.insert("filter", "[\"AND\",[]]");
-    body.insert("fields", QJsonArray::fromStringList(mDisplayedAnnotations));
-
+    body.insert("filter", mFilter);
+    body.insert("fields", QJsonArray::fromStringList(mFields));
 
     Request* request = Request::post(QString("/analysis/%1/filtering").arg(mAnalysisId), QJsonDocument(body).toJson());
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
@@ -89,7 +89,7 @@ QHash<int, QByteArray> ResultsTreeViewModel::roleNames() const
     int roleId = Qt::UserRole + 1;
     roles[roleId] = "id";
     ++roleId;
-    foreach (QString uid, mDisplayedAnnotations)
+    foreach (QString uid, mFields)
     {
         roles[roleId] = uid.toUtf8();
         qDebug() << "role " << roles[roleId] << "=" << roleId;
@@ -121,7 +121,7 @@ void ResultsTreeViewModel::setupModelData(QJsonArray data, TreeItem *parent)
         // Get Json data and store its into item's columns (/!\ columns order must respect role order)
         QList<QVariant> columnData;
         columnData << newResultsTreeViewItem(id, QVariant(id));
-        foreach (QString uid, mDisplayedAnnotations)
+        foreach (QString uid, mFields)
         {
             columnData << newResultsTreeViewItem(id, r[uid].toVariant());
         }

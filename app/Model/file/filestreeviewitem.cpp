@@ -4,7 +4,7 @@
 FilesTreeViewItem::FilesTreeViewItem(QObject *parent) : QObject(parent)
 {}
 
-FilesTreeViewItem::FilesTreeViewItem(const FilesTreeViewItem &other)
+FilesTreeViewItem::FilesTreeViewItem(const FilesTreeViewItem &other) : QObject(other.parent())
 {
     mText = other.mText;
     mId= other.mId;
