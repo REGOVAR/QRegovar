@@ -9,6 +9,7 @@
 #include "file/tusuploader.h"
 #include "analysis/filtering/resultstreeviewmodel.h"
 #include "analysis/filtering/annotationstreeviewmodel.h"
+#include "analysis/filtering/quickfilters/quickfiltermodel.h"
 
 
 #ifndef regovar
@@ -32,6 +33,7 @@ class RegovarModel : public QObject
     Q_PROPERTY(ProjectModel* currentProject READ currentProject  NOTIFY currentProjectUpdated)
     Q_PROPERTY(ResultsTreeViewModel* currentFilteringAnalysis READ currentFilteringAnalysis  NOTIFY currentFilteringAnalysisUpdated)
     Q_PROPERTY(AnnotationsTreeViewModel* currentAnnotations READ currentAnnotations  NOTIFY currentAnnotationsUpdated)
+    Q_PROPERTY(QuickFilterModel* currentQuickFilters READ currentQuickFilters  NOTIFY currentQuickFiltersUpdated)
 
 public:
     static RegovarModel* i();
@@ -48,6 +50,7 @@ public:
     inline ProjectModel* currentProject() const { return mCurrentProject; }
     inline ResultsTreeViewModel* currentFilteringAnalysis() const { return mCurrentFilteringAnalysis; }
     inline AnnotationsTreeViewModel* currentAnnotations() const { return mCurrentAnnotations; }
+    inline QuickFilterModel* currentQuickFilters() const { return mCurrentQuickFilters; }
     //inline UserModel* currentUser() const { return mUser; }
 
     // Setters
@@ -77,6 +80,7 @@ Q_SIGNALS:
     void currentProjectUpdated();
     void currentFilteringAnalysisUpdated();
     void currentAnnotationsUpdated();
+    void currentQuickFiltersUpdated();
 
     void error(QString errCode, QString message);
 
@@ -107,6 +111,7 @@ private:
     //! DEBUG : filtering analysis
     ResultsTreeViewModel* mCurrentFilteringAnalysis;
     AnnotationsTreeViewModel* mCurrentAnnotations;
+    QuickFilterModel* mCurrentQuickFilters;
 
 };
 

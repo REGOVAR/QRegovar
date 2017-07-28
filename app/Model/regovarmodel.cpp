@@ -38,6 +38,7 @@ void RegovarModel::init()
 
     mCurrentFilteringAnalysis = new ResultsTreeViewModel(4);
     mCurrentAnnotations = new AnnotationsTreeViewModel(2);
+    mCurrentQuickFilters = new QuickFilterModel(4);
 
     connect(mUploader, SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
 

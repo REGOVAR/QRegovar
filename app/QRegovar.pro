@@ -21,7 +21,10 @@ HEADERS += \
     Model/analysis/filtering/resultstreeviewmodel.h \
     Model/analysis/filtering/annotationmodel.h \
     Model/analysis/filtering/annotationstreeviewitem.h \
-    Model/analysis/filtering/annotationstreeviewmodel.h
+    Model/analysis/filtering/annotationstreeviewmodel.h \
+    Model/analysis/filtering/quickfilters/quickfiltermodel.h \
+    Model/analysis/filtering/quickfilters/transmissionquickfilter.h \
+    Model/analysis/filtering/quickfilters/quickfilterblockinterface.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -41,7 +44,10 @@ SOURCES += main.cpp \
     Model/analysis/filtering/resultstreeviewmodel.cpp \
     Model/analysis/filtering/annotationmodel.cpp \
     Model/analysis/filtering/annotationstreeviewitem.cpp \
-    Model/analysis/filtering/annotationstreeviewmodel.cpp
+    Model/analysis/filtering/annotationstreeviewmodel.cpp \
+    Model/analysis/filtering/quickfilters/quickfiltermodel.cpp \
+    Model/analysis/filtering/quickfilters/transmissionquickfilter.cpp \
+    Model/analysis/filtering/quickfilters/quickfilterblockinterface.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -108,7 +114,10 @@ DISTFILES += \
     UI/Regovar/Themes/RegovarLightTheme.js \
     UI/Dialogs/SelectFilesDialog.qml \
     UI/Framework/BusyIndicator.qml \
-    UI/MainMenu/HeaderTabEntry.qml
+    UI/MainMenu/HeaderTabEntry.qml \
+    UI/Pages/Analysis/Filtering/FilteringPage.qml \
+    UI/Pages/Analysis/Filtering/Quickfilter/TransmissionQuickForm.qml \
+    UI/Pages/Analysis/Filtering/QuickFilterPanel.qml
 
 
 

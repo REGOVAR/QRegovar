@@ -61,7 +61,8 @@ QtObject
             { "icon": "e", "label": qsTr("Help"),         "page": "HelpPage.qml",       "sublevel": [], "subindex": -1},
             { "icon": "f", "label": qsTr("About"),        "page": "AboutPage.qml",      "sublevel": [], "subindex": -1},
             { "icon": "g", "label": qsTr("Disconnect"),   "page": "DisconnectPage.qml", "sublevel": [], "subindex": -1},
-            { "icon": "h", "label": qsTr("Close"),        "page": "ClosePage.qml",      "sublevel": [], "subindex": -1}
+            { "icon": "h", "label": qsTr("Close"),        "page": "ClosePage.qml",      "sublevel": [], "subindex": -1},
+            { "icon": "l", "label": qsTr("DEBUG"),        "page": "Analysis/Filtering/FilteringPage.qml",      "sublevel": [], "subindex": -1}
         ]
         
         property string mainTitle: model[selectedMainIndex]["label"]

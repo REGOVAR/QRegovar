@@ -22,7 +22,7 @@ public:
     void loadAnalysisData();
 
 
-    // Accessors
+    // Getters
     inline bool isLoading() { return mIsLoading; }
     inline QString filter() { return mFilter; }
     inline QStringList fields() { return mFields; }
