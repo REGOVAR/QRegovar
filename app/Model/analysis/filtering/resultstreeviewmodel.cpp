@@ -53,9 +53,10 @@ void ResultsTreeViewModel::loadAnalysisData()
 void ResultsTreeViewModel::refresh()
 {
     setIsLoading(true);
-    QJsonObject body;
 
-    body.insert("filter", QJsonValue(mFilter));
+    QJsonDocument filter = QJsonDocument::fromJson(mFilter.toUtf8());
+    QJsonObject body;
+    body.insert("filter", filter.array());
     body.insert("fields", QJsonArray::fromStringList(mFields));
 
     Request* request = Request::post(QString("/analysis/%1/filtering").arg(mAnalysisId), QJsonDocument(body).toJson());

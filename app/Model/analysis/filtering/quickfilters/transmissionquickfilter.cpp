@@ -3,13 +3,13 @@
 TransmissionQuickFilter::TransmissionQuickFilter(int AnalysisId) : QuickFilterBlockInterface()
 {
     // Dominant - ref/alt
-    mFilters[0] = "['==', ['field', 'b33e172643f14920cee93d25daaa3c7b'], ['value', '2']]]";
+    mFilters[0] = "[\"==\", [\"field\", \"b33e172643f14920cee93d25daaa3c7b\"], [\"value\", \"2\"]]";
     mActiveFilters[0] = false;
     // Recessif - alt/alt
-    mFilters[1] = "['==', ['field', 'b33e172643f14920cee93d25daaa3c7b'], ['value', '1']]]";
+    mFilters[1] = "[\"==\", [\"field\", \"b33e172643f14920cee93d25daaa3c7b\"], [\"value\", \"1\"]]";
     mActiveFilters[1] = false;
     // Composite - alt1/alt2
-    mFilters[2] = "['==', ['field', 'b33e172643f14920cee93d25daaa3c7b'], ['value', '3']]]";
+    mFilters[2] = "[\"==\", [\"field\", \"b33e172643f14920cee93d25daaa3c7b\"], [\"value\", \"3\"]]";
     mActiveFilters[2] = false;
 }
 
@@ -31,7 +31,12 @@ QString TransmissionQuickFilter::getFilter()
             filter << mFilters[idx];
         }
     }
-    return QString("['OR', [%1]]").arg(filter.join(","));
+
+    if (filter.count() > 1)
+        return QString("[\"OR\", [%1]]").arg(filter.join(","));
+    else if (filter.count() == 1)
+        return filter[0];
+    return "";
 }
 
 

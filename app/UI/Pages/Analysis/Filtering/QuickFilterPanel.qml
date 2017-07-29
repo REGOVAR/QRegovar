@@ -9,19 +9,34 @@ import "Quickfilter"
 ColumnLayout
 {
     id: root
-    spacing: 10
+
 
     Text
     {
-        text: qsTr("Transmission")
+        text: qsTr("Quick filters")
+        elide: Text.ElideRight
         font.pixelSize: Regovar.theme.font.size.header
         color: Regovar.theme.primaryColor.back.dark
+        Layout.fillWidth: true
     }
 
     TransmissionQuickForm
     {
+        Layout.fillWidth: true
 
     }
+    TransmissionQuickForm
+    {
+        Layout.fillWidth: true
+
+    }
+    TransmissionQuickForm
+    {
+        Layout.fillWidth: true
+
+    }
+
+
 
     RowLayout
     {
