@@ -36,9 +36,9 @@ void RegovarModel::init()
     mUploader->setChunkSize(50 * 1024);
     mUploader->setBandWidthLimit(0);
 
-    mCurrentFilteringAnalysis = new ResultsTreeViewModel(4);
+    mCurrentFilteringAnalysis = new ResultsTreeViewModel(1);
     mCurrentAnnotations = new AnnotationsTreeViewModel(2);
-    mCurrentQuickFilters = new QuickFilterModel(4);
+    mCurrentQuickFilters = new QuickFilterModel(1);
 
     connect(mUploader, SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
 

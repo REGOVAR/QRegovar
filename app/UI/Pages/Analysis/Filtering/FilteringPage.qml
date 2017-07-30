@@ -15,11 +15,6 @@ Rectangle
 {
     id: root
 
-    Component.onCompleted:
-    {
-        // regovar.currentAnnotationsTreeView.refresh();
-        regovar.currentFilteringAnalysis.refresh();
-    }
 
     FontLoader
     {
@@ -193,7 +188,7 @@ Rectangle
                             anchors.fill: parent
                             verticalAlignment: Text.AlignVCenter
                             font.pixelSize: Regovar.theme.font.size.control
-                            text: styleData.value.value
+                            text: (styleData.value == undefined) ? "-"  : styleData.value
                             elide: Text.ElideRight
                         }
                     }
@@ -210,7 +205,7 @@ Rectangle
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
                                 checked: styleData.value
-                                text: styleData.value.value
+                                text: (styleData.value == undefined) ? "-"  : styleData.value.value
                                 onClicked:
                                 {
                                     annotationsSelector.checked(styleData.value.uid, checked);
@@ -275,31 +270,68 @@ Rectangle
                 signal checked(string uid, bool isChecked)
                 onChecked: console.log(uid, isChecked);
 
+                Component.onCompleted:
+                {
+                    // Display selected fields
+                    var test = regovar.currentFilteringAnalysis;
+                    console.debug("Result tree view ready -> display default columns " +  regovar.currentFilteringAnalysis.fieldsCount())
+                    for (var idx=0; idx < regovar.currentFilteringAnalysis.fieldsCount(); idx++)
+                    {
+                        resultsTree.insertField(regovar.currentFilteringAnalysis.fields[idx], idx);
+                    }
 
+                    regovar.currentFilteringAnalysis.refresh();
+                }
+
+
+                function insertField(uid, position)
+                {
+                    console.log("trying to insert field : " + uid + " at " + position);
+                    var annot = regovar.currentAnnotations.getAnnotation(uid);
+                    console.log("  annot = " + annot);
+                    var col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+                    console.log("  col = " + col);
+                    position = regovar.currentFilteringAnalysis.setField(uid, true, position) + 1;
+                    console.log("  display column " + annot.name + " at " + position);
+                    resultsTree.insertColumn(position, col);
+                }
+
+                function removeField(uid)
+                {
+                    console.log("trying to remove field : " + uid);
+                    var annot = regovar.currentAnnotations.getAnnotation(uid);
+                    console.log("  annot = " + annot);
+                    var position, col;
+                    for (var idx=0; idx< resultsTree.columnCount; idx++ )
+                    {
+                        col = resultsTree.getColumn(idx);
+                        if (col.role === annot.uid)
+                        {
+                            console.log("  remove column " + annot.name + " at " + (idx-1));
+                            // remove columb from UI
+                            resultsTree.removeColumn(idx);
+                            // Store fields state and position in the view model
+                            regovar.currentFilteringAnalysis.setField(uid, false, idx -1);
+                            break;
+                        }
+                    }
+                }
 
                 Connections
                 {
                     target: annotationsSelector
                     onChecked:
                     {
-                        var annot = regovar.currentAnnotations.getAnnotation(uid);
+
+
                         if (isChecked)
                         {
-                            var col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
-                            console.log("Add new resultsTree columns")
-                            resultsTree.addColumn(col);
+                            // -1 means "previous position if exists else last position
+                            resultsTree.insertField(uid, -1);
                         }
                         else
                         {
-                            for (var idx=0; idx< resultsTree.columnCount; idx++ )
-                            {
-                                var col = resultsTree.getColumn(idx);
-                                if (col.role === annot.uid)
-                                {
-                                    resultsTree.removeColumn(idx);
-                                    break;
-                                }
-                            }
+                            resultsTree.removeField(uid);
                         }
                     }
                 }
@@ -314,7 +346,7 @@ Rectangle
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
                         font.pixelSize: Regovar.theme.font.size.control
-                        text: styleData.value.value
+                        text: (styleData.value == undefined) ? "-"  : styleData.value.value
                         elide: Text.ElideRight
                     }
                 }
@@ -323,7 +355,7 @@ Rectangle
                 {
                     role: "id"
                     title: ""
-
+                    width: 30
 
 
                     delegate: Item
@@ -331,101 +363,14 @@ Rectangle
                         CheckBox
                         {
                             anchors.left: parent.left
+                            anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
                             checked: styleData.value
-                            text: styleData.value.value
+                            text: "" // styleData.value.value
                             onClicked:
                             {
                                 resultsTree.checked(styleData.value.uid, checked);
                             }
-                        }
-                    }
-                }
-
-                TableViewColumn {
-                    role: "816ce7a58b6918652399342e46143386"
-                    title: "chr"
-                }
-
-                TableViewColumn {
-                    role: "0ec9783c0c626c928005f05956cb3d7b"
-                    title: "pos"
-                }
-
-                TableViewColumn {
-                    role: "de2b02e8a7f3c77cf55efd18e0832f22"
-                    title: "ref"
-                }
-
-                TableViewColumn {
-                    role: "ab1e6b068bd1618d0422a462df93f28b"
-                    title: "alt"
-                }
-
-                TableViewColumn
-                {
-                    role: "66b71b223a449d2369e7d58ec0c7cd5d"
-                    title: "samples"
-
-                    delegate: Item
-                    {
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.rightMargin: 5
-                            anchors.fill: parent
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
-                            text: styleData.value["8"]
-                            elide: Text.ElideRight
-                        }
-                    }
-                }
-
-                TableViewColumn {
-                    role: "6cde5e77baebcc9d98c40a720f6c1b82"
-                    title: "count"
-                }
-
-                TableViewColumn
-                {
-                    role: "b33e172643f14920cee93d25daaa3c7b"
-                    title: "GT"
-
-                    delegate: Item
-                    {
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.rightMargin: 5
-                            anchors.fill: parent
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
-                            text: styleData.value["8"]
-                            elide: Text.ElideRight
-                        }
-                    }
-                }
-
-                TableViewColumn
-                {
-                    role: "3ee42adc14f878158deeb74e16131cf5"
-                    title: "DP"
-
-                    delegate: Item
-                    {
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.rightMargin: 5
-                            anchors.fill: parent
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
-                            text: styleData.value["8"]
-                            elide: Text.ElideRight
                         }
                     }
                 }

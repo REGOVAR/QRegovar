@@ -15,6 +15,8 @@ ApplicationWindow
     width: 800
     height: 600
 
+
+
     Settings
     {
         property alias x: root.x

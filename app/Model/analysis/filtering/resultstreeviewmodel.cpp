@@ -3,6 +3,7 @@
 #include "resultstreeviewmodel.h"
 #include "resultstreeviewitem.h"
 #include "Model/request.h"
+#include "Model/regovarmodel.h"
 
 
 
@@ -45,6 +46,38 @@ void ResultsTreeViewModel::loadAnalysisData()
         }
         req->deleteLater();
     });
+}
+
+//! Add or remove a field to the display result and update or set the order
+//! Return the order of the field in the grid
+int ResultsTreeViewModel::setField(QString uid, bool isDisplayed, int order)
+{
+    AnnotationModel* annot = regovar->currentAnnotations()->getAnnotation(uid);
+
+    if (isDisplayed)
+    {
+        if (order != -1)
+        {
+            order = qMin(order, mFields.count()-1);
+            mFields.removeAll(uid);
+            mFields.insert(order, uid);
+        }
+        else
+        {
+            mFields.removeAll(uid);
+            order = mFields.count()-1;
+            mFields << uid;
+        }
+    }
+    else
+    {
+        order = mFields.indexOf(uid);
+        mFields.removeAll(uid);
+    }
+
+    annot->setOrder(order);
+    emit fieldsUpdated();
+    return order;
 }
 
 
@@ -90,10 +123,15 @@ QHash<int, QByteArray> ResultsTreeViewModel::roleNames() const
     int roleId = Qt::UserRole + 1;
     roles[roleId] = "id";
     ++roleId;
-    foreach (QString uid, mFields)
+    // Build role from annotations all annotations available list
+    foreach (QString uid, regovar->currentAnnotations()->annotations()->keys())
     {
         roles[roleId] = uid.toUtf8();
-        qDebug() << "role " << roles[roleId] << "=" << roleId;
+
+        // DEBUG
+//        AnnotationModel* annot = regovar->currentAnnotations()->getAnnotation(uid);
+//        qDebug() << "role " << roleId << "=" << roles[roleId] << annot->name();
+
         ++roleId;
     }
     return roles;

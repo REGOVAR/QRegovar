@@ -30,6 +30,7 @@ public:
     // Accessors
     inline bool isLoading() { return mIsLoading; }
     Q_INVOKABLE AnnotationModel* getAnnotation(QString uid) ;
+    inline QHash<QString, AnnotationModel*>* annotations() { return &mAnnotations;}
 
     // Setters
     inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingUpdated(); }

@@ -47,7 +47,14 @@ void AnnotationsTreeViewModel::refresh()
 
 AnnotationModel* AnnotationsTreeViewModel::getAnnotation(QString uid)
 {
-    return mAnnotations[uid];
+    if (mAnnotations.contains(uid))
+    {
+        return mAnnotations[uid];
+    }
+    else
+    {
+        return nullptr;
+    }
 }
 
 
