@@ -1,7 +1,7 @@
 #include <QDebug>
 #include <QtNetwork>
 #include "annotationstreeviewmodel.h"
-#include "annotationstreeviewitem.h"
+#include "annotationstreeitem.h"
 #include "Model/request.h"
 
 
@@ -72,7 +72,7 @@ QHash<int, QByteArray> AnnotationsTreeViewModel::roleNames() const
 
 QVariant AnnotationsTreeViewModel::newAnnotationsTreeViewItem(QString id, const QVariant& value)
 {
-    AnnotationsTreeViewItem *t = new AnnotationsTreeViewItem(this);
+    AnnotationsTreeItem *t = new AnnotationsTreeItem(this);
     t->setValue(value);
     t->setUid(id);
     QVariant v;

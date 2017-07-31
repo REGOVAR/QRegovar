@@ -3,7 +3,7 @@
 
 #include "Model/treeitem.h"
 
-class AnnotationsTreeViewItem : public QObject
+class AnnotationsTreeItem : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString uid READ uid WRITE setUid NOTIFY uidChanged)
@@ -12,10 +12,10 @@ class AnnotationsTreeViewItem : public QObject
 public:
 
 
-    explicit AnnotationsTreeViewItem(QObject *parent = 0);
-    explicit AnnotationsTreeViewItem(QString uid, QVariant value, QObject *parent = 0);
-    AnnotationsTreeViewItem(const AnnotationsTreeViewItem &other);
-    ~AnnotationsTreeViewItem();
+    explicit AnnotationsTreeItem(QObject *parent = 0);
+    explicit AnnotationsTreeItem(QString uid, QVariant value, QObject *parent = 0);
+    AnnotationsTreeItem(const AnnotationsTreeItem &other);
+    ~AnnotationsTreeItem();
 
     inline QVariant value() { return mValue; }
     inline QString uid() { return mUid; }

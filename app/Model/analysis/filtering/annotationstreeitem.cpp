@@ -1,21 +1,21 @@
-#include "annotationstreeviewitem.h"
+#include "annotationstreeitem.h"
 
 
-AnnotationsTreeViewItem::AnnotationsTreeViewItem(QObject *parent) : QObject(parent)
+AnnotationsTreeItem::AnnotationsTreeItem(QObject *parent) : QObject(parent)
 {}
 
-AnnotationsTreeViewItem::AnnotationsTreeViewItem(const AnnotationsTreeViewItem &other) : QObject(other.parent())
+AnnotationsTreeItem::AnnotationsTreeItem(const AnnotationsTreeItem &other) : QObject(other.parent())
 {
     mValue = other.mValue;
     mUid= other.mUid;
 }
 
-AnnotationsTreeViewItem::~AnnotationsTreeViewItem()
+AnnotationsTreeItem::~AnnotationsTreeItem()
 {}
 
 
 
-AnnotationsTreeViewItem::AnnotationsTreeViewItem(QString uid, QVariant value, QObject *parent) : QObject(parent)
+AnnotationsTreeItem::AnnotationsTreeItem(QString uid, QVariant value, QObject *parent) : QObject(parent)
 {
     mValue = value;
     mUid= uid;
