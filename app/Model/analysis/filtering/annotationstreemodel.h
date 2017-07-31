@@ -1,10 +1,10 @@
-#ifndef ANNOTATIONSTREEVIEWMODEL_H
-#define ANNOTATIONSTREEVIEWMODEL_H
+#ifndef ANNOTATIONSTREEMODEL_H
+#define ANNOTATIONSTREEMODEL_H
 
 #include "Model/treemodel.h"
 #include "annotation.h"
 
-class AnnotationsTreeViewModel : public TreeModel
+class AnnotationsTreeModel : public TreeModel
 {
     Q_OBJECT
     Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingUpdated)
@@ -19,7 +19,7 @@ public:
     };
 
 
-    explicit AnnotationsTreeViewModel(int refId);
+    explicit AnnotationsTreeModel(int refId);
     QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE void refresh();
@@ -49,4 +49,4 @@ private:
     QHash<QString, Annotation*> mAnnotations;
 };
 
-#endif // ANNOTATIONSTREEVIEWMODEL_H
+#endif // ANNOTATIONSTREEMODEL_H

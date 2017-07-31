@@ -1,9 +1,9 @@
-#ifndef PROJECTSTREEVIEWMODEL_H
-#define PROJECTSTREEVIEWMODEL_H
+#ifndef PROJECTSTREEMODEL_H
+#define PROJECTSTREEMODEL_H
 
 #include "Model/treemodel.h"
 
-class ProjectsTreeViewModel : public TreeModel
+class ProjectsTreeModel : public TreeModel
 {
     Q_OBJECT
 
@@ -19,7 +19,7 @@ public:
     };
 
 
-    explicit ProjectsTreeViewModel();
+    explicit ProjectsTreeModel();
     QHash<int, QByteArray> roleNames() const override;
 
     void refresh();
@@ -42,4 +42,4 @@ private:
     bool mIsLoading;
 };
 
-#endif // PROJECTSTREEVIEWMODEL_H
+#endif // PROJECTSTREEMODEL_H

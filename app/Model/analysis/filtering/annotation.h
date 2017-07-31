@@ -1,5 +1,5 @@
-#ifndef ANNOTATIONMODEL_H
-#define ANNOTATIONMODEL_H
+#ifndef ANNOTATION_H
+#define ANNOTATION_H
 
 #include <QtCore>
 
@@ -56,4 +56,4 @@ private:
     int mOrder;
 };
 
-#endif // ANNOTATIONMODEL_H
+#endif // ANNOTATION_H

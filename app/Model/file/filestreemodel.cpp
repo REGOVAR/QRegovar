@@ -1,11 +1,11 @@
 #include <QDebug>
-#include "filestreeviewmodel.h"
-#include "filestreeviewitem.h"
+#include "filestreemodel.h"
+#include "filestreeitem.h"
 #include "Model/request.h"
 
 
 
-FilesTreeViewModel::FilesTreeViewModel() : TreeModel(0)
+FilesTreeModel::FilesTreeModel() : TreeModel(0)
 {
     QList<QVariant> rootData;
     rootData << "Name" << "Status" << "Size" << "Date" << "Comment";
@@ -16,7 +16,7 @@ FilesTreeViewModel::FilesTreeViewModel() : TreeModel(0)
 
 
 
-void FilesTreeViewModel::refresh()
+void FilesTreeModel::refresh()
 {
 //    Request* request = Request::get("/project/browserTree");
 //    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
@@ -41,7 +41,7 @@ void FilesTreeViewModel::refresh()
 
 
 
-QHash<int, QByteArray> FilesTreeViewModel::roleNames() const
+QHash<int, QByteArray> FilesTreeModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
@@ -54,9 +54,9 @@ QHash<int, QByteArray> FilesTreeViewModel::roleNames() const
 
 
 
-QVariant FilesTreeViewModel::newFilesTreeViewItem(int id, const QString &text)
+QVariant FilesTreeModel::newFilesTreeViewItem(int id, const QString &text)
 {
-    FilesTreeViewItem *t = new FilesTreeViewItem(this);
+    FilesTreeItem *t = new FilesTreeItem(this);
     t->setText(text);
     t->setId(id);
     QVariant v;
@@ -64,7 +64,7 @@ QVariant FilesTreeViewModel::newFilesTreeViewItem(int id, const QString &text)
     return v;
 }
 
-QVariant FilesTreeViewModel::newFilesTreeViewItemSize(int id, quint64 size, quint64 offset)
+QVariant FilesTreeModel::newFilesTreeViewItemSize(int id, quint64 size, quint64 offset)
 {
     if (size == offset)
     {
@@ -76,7 +76,7 @@ QVariant FilesTreeViewModel::newFilesTreeViewItemSize(int id, quint64 size, quin
     return newFilesTreeViewItem(id, sOffset + " / " + sSize);
 }
 
-QVariant FilesTreeViewModel::newFilesTreeViewItemStatus(int id, QString status, quint64 size, quint64 offset)
+QVariant FilesTreeModel::newFilesTreeViewItemStatus(int id, QString status, quint64 size, quint64 offset)
 {
     if (status == "uploading")
     {
@@ -88,7 +88,7 @@ QVariant FilesTreeViewModel::newFilesTreeViewItemStatus(int id, QString status, 
 }
 
 
-void FilesTreeViewModel::setupModelData(QJsonArray data, TreeItem* parent)
+void FilesTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
 {
 
 
@@ -115,7 +115,7 @@ void FilesTreeViewModel::setupModelData(QJsonArray data, TreeItem* parent)
 
 
 
-bool FilesTreeViewModel::fromJson(QJsonArray json)
+bool FilesTreeModel::fromJson(QJsonArray json)
 {
     clear();
     setupModelData(json, mRootItem);
@@ -126,7 +126,7 @@ bool FilesTreeViewModel::fromJson(QJsonArray json)
 
 
 
-QString FilesTreeViewModel::humanSize(qint64 nbytes)
+QString FilesTreeModel::humanSize(qint64 nbytes)
 {
     QList<QString> suffixes = {"o", "Ko", "Mo", "Go", "To", "Po"};
 

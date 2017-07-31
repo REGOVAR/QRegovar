@@ -1,22 +1,22 @@
-#include "filemodel.h"
+#include "file.h"
 
 
 
-FileModel::FileModel(QObject* parent) : QObject(parent)
+File::File(QObject* parent) : QObject(parent)
 {
 }
 
 
 
 
-bool FileModel::fromJson(QJsonDocument json)
+bool File::fromJson(QJsonDocument json)
 {
     QJsonObject data = json.object();
     return fromJson(data);
 }
 
 
-bool FileModel::fromJson(QJsonObject json)
+bool File::fromJson(QJsonObject json)
 {
 
     mId = json["id"].toInt();

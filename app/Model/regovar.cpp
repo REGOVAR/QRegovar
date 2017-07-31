@@ -1,24 +1,24 @@
-#include "regovarmodel.h"
+#include "regovar.h"
 #include "request.h"
 
 
 
-RegovarModel* RegovarModel::mInstance = Q_NULLPTR;
-RegovarModel* RegovarModel::i()
+Regovar* Regovar::mInstance = Q_NULLPTR;
+Regovar* Regovar::i()
 {
     if (mInstance == Q_NULLPTR)
     {
-        mInstance = new RegovarModel();
+        mInstance = new Regovar();
     }
     return mInstance;
 }
 
-RegovarModel::RegovarModel() {}
-RegovarModel::~RegovarModel() {}
+Regovar::Regovar() {}
+Regovar::~Regovar() {}
 
 
 
-void RegovarModel::init()
+void Regovar::init()
 {
 
     // Init managers
@@ -27,17 +27,17 @@ void RegovarModel::init()
 
     // Init models
     // mUser = new UserModel(); //1, "Olivier", "Gueudelot");
-    mProjectsTreeView = new ProjectsTreeViewModel();
-    mRemoteFilesTreeView = new FilesTreeViewModel();
-    mCurrentProject = new ProjectModel();
+    mProjectsTreeView = new ProjectsTreeModel();
+    mRemoteFilesTreeView = new FilesTreeModel();
+    mCurrentProject = new Project();
     mUploader = new TusUploader();
     mUploader->setUploadUrl(mApiRootUrl.toString() + "/file/upload");
     mUploader->setRootUrl(mApiRootUrl.toString());
     mUploader->setChunkSize(50 * 1024);
     mUploader->setBandWidthLimit(0);
 
-    mCurrentFilteringAnalysis = new ResultsTreeViewModel(1);
-    mCurrentAnnotations = new AnnotationsTreeViewModel(2);
+    mCurrentFilteringAnalysis = new ResultsTreeModel(1);
+    mCurrentAnnotations = new AnnotationsTreeModel(2);
     mCurrentQuickFilters = new QuickFilterModel(1);
 
     connect(mUploader, SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
@@ -48,7 +48,7 @@ void RegovarModel::init()
 
 
 
-void RegovarModel::readSettings()
+void Regovar::readSettings()
 {
     // TODO : No hardcoded value => Load default from local config file ?
     QSettings settings;
@@ -63,12 +63,12 @@ void RegovarModel::readSettings()
 
 
 
-void RegovarModel::refreshProjectsTreeView()
+void Regovar::refreshProjectsTreeView()
 {
     qDebug() << Q_FUNC_INFO << "TODO";
 }
 
-void RegovarModel::loadProject(int id)
+void Regovar::loadProject(int id)
 {
     Request* req = Request::get(QString("/project/%1").arg(id));
     connect(req, &Request::responseReceived, [this, req, id](bool success, const QJsonObject& json)
@@ -93,7 +93,7 @@ void RegovarModel::loadProject(int id)
     });
 }
 
-void RegovarModel::loadFilesBrowser()
+void Regovar::loadFilesBrowser()
 {
     Request* req = Request::get(QString("/file"));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
@@ -119,7 +119,7 @@ void RegovarModel::loadFilesBrowser()
 }
 
 
-void RegovarModel::filesEnqueued(QHash<QString,QString> mapping)
+void Regovar::filesEnqueued(QHash<QString,QString> mapping)
 {
     qDebug() << "Upload mapping Done !";
     foreach (QString key, mapping.keys())
@@ -129,7 +129,7 @@ void RegovarModel::filesEnqueued(QHash<QString,QString> mapping)
 }
 
 
-void RegovarModel::enqueueUploadFile(QList<QString> filesPaths)
+void Regovar::enqueueUploadFile(QList<QString> filesPaths)
 {
     mUploader->enqueue(filesPaths);
 }

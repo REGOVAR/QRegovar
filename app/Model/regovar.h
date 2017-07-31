@@ -1,19 +1,19 @@
-#ifndef REGOVARMODEL_H
-#define REGOVARMODEL_H
+#ifndef REGOVAR_H
+#define REGOVAR_H
 
 #include <QSettings>
 #include <QNetworkReply>
 #include <QAuthenticator>
-#include "project/projectstreeviewmodel.h"
-#include "project/projectmodel.h"
+#include "project/projectstreemodel.h"
+#include "project/project.h"
 #include "file/tusuploader.h"
-#include "analysis/filtering/resultstreeviewmodel.h"
-#include "analysis/filtering/annotationstreeviewmodel.h"
+#include "analysis/filtering/resultstreemodel.h"
+#include "analysis/filtering/annotationstreemodel.h"
 #include "analysis/filtering/quickfilters/quickfiltermodel.h"
 
 
 #ifndef regovar
-#define regovar (RegovarModel::i())
+#define regovar (Regovar::i())
 #endif
 
 
@@ -23,20 +23,20 @@
  * Main Regovar's client core. Wrap models and manage all interaction with the server
  * (websocket, rest api, tus resumable upload, and so on.
  */
-class RegovarModel : public QObject
+class Regovar : public QObject
 {
     Q_OBJECT
 
     Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlUpdated)
-    Q_PROPERTY(ProjectsTreeViewModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewUpdated)
-    Q_PROPERTY(FilesTreeViewModel* remoteFilesTreeView READ remoteFilesTreeView NOTIFY remoteFilesTreeViewUpdated)
-    Q_PROPERTY(ProjectModel* currentProject READ currentProject  NOTIFY currentProjectUpdated)
-    Q_PROPERTY(ResultsTreeViewModel* currentFilteringAnalysis READ currentFilteringAnalysis  NOTIFY currentFilteringAnalysisUpdated)
-    Q_PROPERTY(AnnotationsTreeViewModel* currentAnnotations READ currentAnnotations  NOTIFY currentAnnotationsUpdated)
+    Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewUpdated)
+    Q_PROPERTY(FilesTreeModel* remoteFilesTreeView READ remoteFilesTreeView NOTIFY remoteFilesTreeViewUpdated)
+    Q_PROPERTY(Project* currentProject READ currentProject  NOTIFY currentProjectUpdated)
+    Q_PROPERTY(ResultsTreeModel* currentFilteringAnalysis READ currentFilteringAnalysis  NOTIFY currentFilteringAnalysisUpdated)
+    Q_PROPERTY(AnnotationsTreeModel* currentAnnotations READ currentAnnotations  NOTIFY currentAnnotationsUpdated)
     Q_PROPERTY(QuickFilterModel* currentQuickFilters READ currentQuickFilters  NOTIFY currentQuickFiltersUpdated)
 
 public:
-    static RegovarModel* i();
+    static Regovar* i();
     void init();
     void readSettings();
     void writeSettings();
@@ -45,11 +45,11 @@ public:
 
     // Accessors
     inline QUrl& serverUrl() { return mApiRootUrl; }
-    inline ProjectsTreeViewModel* projectsTreeView() const { return mProjectsTreeView; }
-    inline FilesTreeViewModel* remoteFilesTreeView() const { return mRemoteFilesTreeView; }
-    inline ProjectModel* currentProject() const { return mCurrentProject; }
-    inline ResultsTreeViewModel* currentFilteringAnalysis() const { return mCurrentFilteringAnalysis; }
-    inline AnnotationsTreeViewModel* currentAnnotations() const { return mCurrentAnnotations; }
+    inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
+    inline FilesTreeModel* remoteFilesTreeView() const { return mRemoteFilesTreeView; }
+    inline Project* currentProject() const { return mCurrentProject; }
+    inline ResultsTreeModel* currentFilteringAnalysis() const { return mCurrentFilteringAnalysis; }
+    inline AnnotationsTreeModel* currentAnnotations() const { return mCurrentAnnotations; }
     inline QuickFilterModel* currentQuickFilters() const { return mCurrentQuickFilters; }
     //inline UserModel* currentUser() const { return mUser; }
 
@@ -87,9 +87,9 @@ Q_SIGNALS:
 
 
 private:
-    RegovarModel();
-    ~RegovarModel();
-    static RegovarModel* mInstance;
+    Regovar();
+    ~Regovar();
+    static Regovar* mInstance;
 
 
 
@@ -99,21 +99,21 @@ private:
     //! The current user of the application
     // UserModel * mUser;
     //! The model of the projects browser treeview
-    ProjectsTreeViewModel* mProjectsTreeView;
+    ProjectsTreeModel* mProjectsTreeView;
     //! The model of the current project loaded
-    ProjectModel* mCurrentProject;
+    Project* mCurrentProject;
     //! The model used to browse all files available on the server
-    FilesTreeViewModel* mRemoteFilesTreeView;
+    FilesTreeModel* mRemoteFilesTreeView;
     //! The uploader that manage TUS protocol (resumable upload)
     TusUploader * mUploader;
 
 
     //! DEBUG : filtering analysis
-    ResultsTreeViewModel* mCurrentFilteringAnalysis;
-    AnnotationsTreeViewModel* mCurrentAnnotations;
+    ResultsTreeModel* mCurrentFilteringAnalysis;
+    AnnotationsTreeModel* mCurrentAnnotations;
     QuickFilterModel* mCurrentQuickFilters;
 
 };
 
 
-#endif // REGOVARMODEL_H
+#endif // REGOVAR_H

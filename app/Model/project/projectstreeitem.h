@@ -1,9 +1,9 @@
-#ifndef PROJECTSTREEVIEWITEM_H
-#define PROJECTSTREEVIEWITEM_H
+#ifndef PROJECTSTREEITEM_H
+#define PROJECTSTREEITEM_H
 
 #include "Model/treeitem.h"
 
-class ProjectsTreeViewItem : public QObject
+class ProjectsTreeItem : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged)
@@ -12,10 +12,10 @@ class ProjectsTreeViewItem : public QObject
 public:
 
 
-    explicit ProjectsTreeViewItem(QObject *parent = 0);
-    explicit ProjectsTreeViewItem(int id, QString text, QObject *parent = 0);
-    ProjectsTreeViewItem(const ProjectsTreeViewItem &other);
-    ~ProjectsTreeViewItem();
+    explicit ProjectsTreeItem(QObject *parent = 0);
+    explicit ProjectsTreeItem(int id, QString text, QObject *parent = 0);
+    ProjectsTreeItem(const ProjectsTreeItem &other);
+    ~ProjectsTreeItem();
 
     inline QString text() { return mText; }
     inline int id() { return mId; }
@@ -32,4 +32,4 @@ private:
     int mId;
 };
 
-#endif // PROJECTSTREEVIEWITEM_H
+#endif // PROJECTSTREEITEM_H

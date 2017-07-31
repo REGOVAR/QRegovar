@@ -1,12 +1,12 @@
 #include <QDebug>
 #include <QtNetwork>
-#include "annotationstreeviewmodel.h"
+#include "annotationstreemodel.h"
 #include "annotationstreeitem.h"
 #include "Model/request.h"
 
 
 
-AnnotationsTreeViewModel::AnnotationsTreeViewModel(int refId) : TreeModel(0)
+AnnotationsTreeModel::AnnotationsTreeModel(int refId) : TreeModel(0)
 {
     mRefId = refId;
     QList<QVariant> rootData;
@@ -19,7 +19,7 @@ AnnotationsTreeViewModel::AnnotationsTreeViewModel(int refId) : TreeModel(0)
 
 
 
-void AnnotationsTreeViewModel::refresh()
+void AnnotationsTreeModel::refresh()
 {
     setIsLoading(true);
 
@@ -45,7 +45,7 @@ void AnnotationsTreeViewModel::refresh()
 }
 
 
-Annotation* AnnotationsTreeViewModel::getAnnotation(QString uid)
+Annotation* AnnotationsTreeModel::getAnnotation(QString uid)
 {
     if (mAnnotations.contains(uid))
     {
@@ -59,7 +59,7 @@ Annotation* AnnotationsTreeViewModel::getAnnotation(QString uid)
 
 
 
-QHash<int, QByteArray> AnnotationsTreeViewModel::roleNames() const
+QHash<int, QByteArray> AnnotationsTreeModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
@@ -70,7 +70,7 @@ QHash<int, QByteArray> AnnotationsTreeViewModel::roleNames() const
 
 
 
-QVariant AnnotationsTreeViewModel::newAnnotationsTreeViewItem(QString id, const QVariant& value)
+QVariant AnnotationsTreeModel::newAnnotationsTreeViewItem(QString id, const QVariant& value)
 {
     AnnotationsTreeItem *t = new AnnotationsTreeItem(this);
     t->setValue(value);
@@ -80,7 +80,7 @@ QVariant AnnotationsTreeViewModel::newAnnotationsTreeViewItem(QString id, const 
     return v;
 }
 
-void AnnotationsTreeViewModel::setupModelData(QJsonArray data, TreeItem *parent)
+void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 {
     foreach (const QJsonValue dbv, data)
     {

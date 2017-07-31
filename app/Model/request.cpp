@@ -1,5 +1,5 @@
 #include "request.h"
-#include "Model/regovarmodel.h"
+#include "Model/regovar.h"
 #include <QDebug>
 
 QNetworkAccessManager* Request::mNetManager = Q_NULLPTR;
@@ -10,7 +10,7 @@ QNetworkAccessManager* Request::netManager()
         mNetManager = new QNetworkAccessManager();
         connect ( mNetManager,
                   SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
-                  RegovarModel::i(),
+                  Regovar::i(),
                   SLOT(authenticationRequired(QNetworkReply*, QAuthenticator*)));
     }
 
@@ -114,7 +114,7 @@ Request* Request::del(const QString query)
 
 QNetworkRequest Request::makeRequest(const QString& resource)
 {
-    QUrl url(RegovarModel::i()->serverUrl());
+    QUrl url(Regovar::i()->serverUrl());
     url.setPath(resource);
     qDebug() << Q_FUNC_INFO << url;
 

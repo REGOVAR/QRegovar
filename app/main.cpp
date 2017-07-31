@@ -3,7 +3,7 @@
 #include <QSettings>
 #include <QtQml>
 
-#include "Model/regovarmodel.h" // include regovar singleton which wrap all models and is the interface with the server
+#include "Model/regovar.h" // include regovar singleton which wrap all models and is the interface with the server
 #include "Model/treemodel.h"
 #include "Model/treeitem.h"
 #include "Model/file/filesystemmodel.cpp"

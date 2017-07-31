@@ -1,9 +1,9 @@
-#ifndef FILESTREEVIEWITEM_H
-#define FILESTREEVIEWITEM_H
+#ifndef FILESTREEITEM_H
+#define FILESTREEITEM_H
 
 #include "Model/treeitem.h"
 
-class FilesTreeViewItem : public QObject
+class FilesTreeItem : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged)
@@ -12,10 +12,10 @@ class FilesTreeViewItem : public QObject
 public:
 
     // Constructors
-    explicit FilesTreeViewItem(QObject *parent = 0);
-    explicit FilesTreeViewItem(int id, QString text, QObject *parent = 0);
-    FilesTreeViewItem(const FilesTreeViewItem &other);
-    ~FilesTreeViewItem();
+    explicit FilesTreeItem(QObject *parent = 0);
+    explicit FilesTreeItem(int id, QString text, QObject *parent = 0);
+    FilesTreeItem(const FilesTreeItem &other);
+    ~FilesTreeItem();
 
     // Accessors
     inline QString text() { return mText; }
@@ -41,4 +41,4 @@ private:
     qint64 mOffset;
 };
 
-#endif // FILESTREEVIEWITEM_H
+#endif // FILESTREEITEM_H

@@ -1,27 +1,27 @@
-#include "projectmodel.h"
+#include "project.h"
 
-ProjectModel::ProjectModel(QObject* parent) : QObject(parent), mIsFolder(false), mIsSandbox(false)
+Project::Project(QObject* parent) : QObject(parent), mIsFolder(false), mIsSandbox(false)
 {
-    mFiles = new FilesTreeViewModel();
+    mFiles = new FilesTreeModel();
 }
 
-ProjectModel::ProjectModel(bool isFolder, bool isSandbox, QObject* parent) : QObject(parent)
+Project::Project(bool isFolder, bool isSandbox, QObject* parent) : QObject(parent)
 {
     mIsFolder = isFolder;
     mIsSandbox = isSandbox;
-    mFiles = new FilesTreeViewModel();
+    mFiles = new FilesTreeModel();
 }
 
 
 
-bool ProjectModel::fromJson(QJsonDocument json)
+bool Project::fromJson(QJsonDocument json)
 {
     QJsonObject data = json.object();
     return fromJson(data);
 }
 
 
-bool ProjectModel::fromJson(QJsonObject json)
+bool Project::fromJson(QJsonObject json)
 {
     mId = json["id"].toInt();
     mFullPath = "";
@@ -48,7 +48,7 @@ bool ProjectModel::fromJson(QJsonObject json)
 
 
 
-void ProjectModel::setParent(ProjectModel* parent)
+void Project::setParent(Project* parent)
 {
     // TODO : to be complient with QML binding : need to copy parent into mParent instead of erasing mParent
     mParent = parent;

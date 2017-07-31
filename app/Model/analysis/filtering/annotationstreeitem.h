@@ -1,5 +1,5 @@
-#ifndef ANNOTATIONSTREEVIEWITEM_H
-#define ANNOTATIONSTREEVIEWITEM_H
+#ifndef ANNOTATIONSTREEITEM_H
+#define ANNOTATIONSTREEITEM_H
 
 #include "Model/treeitem.h"
 
@@ -32,4 +32,4 @@ private:
     QString mUid;
 };
 
-#endif // ANNOTATIONSTREEVIEWITEM_H
+#endif // ANNOTATIONSTREEITEM_H

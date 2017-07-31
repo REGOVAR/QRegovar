@@ -1,11 +1,11 @@
 #include <QDebug>
-#include "projectstreeviewmodel.h"
-#include "projectstreeviewitem.h"
+#include "projectstreemodel.h"
+#include "projectstreeitem.h"
 #include "Model/request.h"
 
 
 
-ProjectsTreeViewModel::ProjectsTreeViewModel() : TreeModel(0)
+ProjectsTreeModel::ProjectsTreeModel() : TreeModel(0)
 {
     QList<QVariant> rootData;
     rootData << "Name" << "Date" << "Comment";
@@ -17,7 +17,7 @@ ProjectsTreeViewModel::ProjectsTreeViewModel() : TreeModel(0)
 
 
 
-void ProjectsTreeViewModel::refresh()
+void ProjectsTreeModel::refresh()
 {
     setIsLoading(true);
     Request* request = Request::get("/project/browserTree");
@@ -44,7 +44,7 @@ void ProjectsTreeViewModel::refresh()
 
 
 
-QHash<int, QByteArray> ProjectsTreeViewModel::roleNames() const
+QHash<int, QByteArray> ProjectsTreeModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
@@ -55,9 +55,9 @@ QHash<int, QByteArray> ProjectsTreeViewModel::roleNames() const
 
 
 
-QVariant ProjectsTreeViewModel::newProjectsTreeViewItem(int id, const QString &text)
+QVariant ProjectsTreeModel::newProjectsTreeViewItem(int id, const QString &text)
 {
-    ProjectsTreeViewItem *t = new ProjectsTreeViewItem(this);
+    ProjectsTreeItem *t = new ProjectsTreeItem(this);
     t->setText(text);
     t->setId(id);
     QVariant v;
@@ -65,7 +65,7 @@ QVariant ProjectsTreeViewModel::newProjectsTreeViewItem(int id, const QString &t
     return v;
 }
 
-void ProjectsTreeViewModel::setupModelData(QJsonArray data, TreeItem *parent)
+void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 {
     foreach(const QJsonValue json, data)
     {

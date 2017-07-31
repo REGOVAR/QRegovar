@@ -1,13 +1,13 @@
 #include <QDebug>
 #include <QtNetwork>
-#include "resultstreeviewmodel.h"
-#include "resultstreeviewitem.h"
+#include "resultstreemodel.h"
+#include "resultstreeitem.h"
 #include "Model/request.h"
-#include "Model/regovarmodel.h"
+#include "Model/regovar.h"
 
 
 
-ResultsTreeViewModel::ResultsTreeViewModel(int analysisId) : TreeModel(0)
+ResultsTreeModel::ResultsTreeModel(int analysisId) : TreeModel(0)
 {
     mAnalysisId = analysisId;
     QList<QVariant> rootData;
@@ -20,7 +20,7 @@ ResultsTreeViewModel::ResultsTreeViewModel(int analysisId) : TreeModel(0)
 }
 
 
-void ResultsTreeViewModel::loadAnalysisData()
+void ResultsTreeModel::loadAnalysisData()
 {
     Request* req = Request::get(QString("/analysis/%1").arg(mAnalysisId));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
@@ -50,7 +50,7 @@ void ResultsTreeViewModel::loadAnalysisData()
 
 //! Add or remove a field to the display result and update or set the order
 //! Return the order of the field in the grid
-int ResultsTreeViewModel::setField(QString uid, bool isDisplayed, int order)
+int ResultsTreeModel::setField(QString uid, bool isDisplayed, int order)
 {
     Annotation* annot = regovar->currentAnnotations()->getAnnotation(uid);
 
@@ -83,7 +83,7 @@ int ResultsTreeViewModel::setField(QString uid, bool isDisplayed, int order)
 
 
 
-void ResultsTreeViewModel::refresh()
+void ResultsTreeModel::refresh()
 {
     setIsLoading(true);
 
@@ -117,7 +117,7 @@ void ResultsTreeViewModel::refresh()
 
 
 
-QHash<int, QByteArray> ResultsTreeViewModel::roleNames() const
+QHash<int, QByteArray> ResultsTreeModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     int roleId = Qt::UserRole + 1;
@@ -140,9 +140,9 @@ QHash<int, QByteArray> ResultsTreeViewModel::roleNames() const
 
 
 
-QVariant ResultsTreeViewModel::newResultsTreeViewItem(QString uid, const QVariant &value)
+QVariant ResultsTreeModel::newResultsTreeViewItem(QString uid, const QVariant &value)
 {
-    ResultsTreeViewItem *t = new ResultsTreeViewItem(this);
+    ResultsTreeItem *t = new ResultsTreeItem(this);
     t->setValue(value);
     t->setUid(uid);
     QVariant v;
@@ -151,7 +151,7 @@ QVariant ResultsTreeViewModel::newResultsTreeViewItem(QString uid, const QVarian
 }
 
 
-void ResultsTreeViewModel::setupModelData(QJsonArray data, TreeItem *parent)
+void ResultsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 {
     foreach(const QJsonValue json, data)
     {

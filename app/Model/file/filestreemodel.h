@@ -1,9 +1,9 @@
-#ifndef FILESTREEVIEWMODEL_H
-#define FILESTREEVIEWMODEL_H
+#ifndef FILESTREEMODEL_H
+#define FILESTREEMODEL_H
 
 #include "Model/treemodel.h"
 
-class FilesTreeViewModel : public TreeModel
+class FilesTreeModel : public TreeModel
 {
     Q_OBJECT
 public:
@@ -19,7 +19,7 @@ public:
 
 
 
-    explicit FilesTreeViewModel();
+    explicit FilesTreeModel();
     QHash<int, QByteArray> roleNames() const override;
 
     void refresh();
@@ -33,4 +33,4 @@ public:
     QString humanSize(qint64 nbytes);
 };
 
-#endif // FILESTREEVIEWMODEL_H
+#endif // FILESTREEMODEL_H

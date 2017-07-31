@@ -8,46 +8,46 @@ HEADERS += \
     Model/treemodel.h \
     Model/jsonmodel.h \
     Model/request.h \
-    Model/regovarmodel.h \
-    Model/project/projectmodel.h \
-    Model/project/projectstreeviewmodel.h \
-    Model/project/projectstreeviewitem.h \
-    Model/file/filemodel.h \
-    Model/file/filestreeviewitem.h \
-    Model/file/filestreeviewmodel.h \
     Model/file/filesystemmodel.h \
     Model/file/tusuploader.h \
-    Model/analysis/filtering/resultstreeviewitem.h \
-    Model/analysis/filtering/resultstreeviewmodel.h \
-    Model/analysis/filtering/annotationstreeviewmodel.h \
     Model/analysis/filtering/quickfilters/quickfiltermodel.h \
     Model/analysis/filtering/quickfilters/transmissionquickfilter.h \
     Model/analysis/filtering/quickfilters/quickfilterblockinterface.h \
     Model/analysis/filtering/annotation.h \
-    Model/analysis/filtering/annotationstreeitem.h
+    Model/analysis/filtering/annotationstreeitem.h \
+    Model/analysis/filtering/annotationstreemodel.h \
+    Model/analysis/filtering/resultstreeitem.h \
+    Model/analysis/filtering/resultstreemodel.h \
+    Model/file/file.h \
+    Model/file/filestreeitem.h \
+    Model/file/filestreemodel.h \
+    Model/project/project.h \
+    Model/project/projectstreeitem.h \
+    Model/project/projectstreemodel.h \
+    Model/regovar.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
     Model/treemodel.cpp \
     Model/jsonmodel.cpp \
     Model/request.cpp \
-    Model/regovarmodel.cpp \
-    Model/project/projectmodel.cpp \
-    Model/project/projectstreeviewmodel.cpp \
-    Model/project/projectstreeviewitem.cpp \
-    Model/file/filemodel.cpp \
-    Model/file/filestreeviewitem.cpp \
-    Model/file/filestreeviewmodel.cpp \
     Model/file/filesystemmodel.cpp \
     Model/file/tusuploader.cpp \
-    Model/analysis/filtering/resultstreeviewitem.cpp \
-    Model/analysis/filtering/resultstreeviewmodel.cpp \
-    Model/analysis/filtering/annotationstreeviewmodel.cpp \
     Model/analysis/filtering/quickfilters/quickfiltermodel.cpp \
     Model/analysis/filtering/quickfilters/transmissionquickfilter.cpp \
     Model/analysis/filtering/quickfilters/quickfilterblockinterface.cpp \
     Model/analysis/filtering/annotation.cpp \
-    Model/analysis/filtering/annotationstreeitem.cpp
+    Model/analysis/filtering/annotationstreeitem.cpp \
+    Model/analysis/filtering/annotationstreemodel.cpp \
+    Model/analysis/filtering/resultstreeitem.cpp \
+    Model/analysis/filtering/resultstreemodel.cpp \
+    Model/file/file.cpp \
+    Model/file/filestreeitem.cpp \
+    Model/file/filestreemodel.cpp \
+    Model/project/project.cpp \
+    Model/project/projectstreeitem.cpp \
+    Model/project/projectstreemodel.cpp \
+    Model/regovar.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

@@ -1,12 +1,12 @@
-#ifndef FILEMODEL_H
-#define FILEMODEL_H
+#ifndef FILE_H
+#define FILE_H
 
 #include <QtCore>
 #include <QDateTime>
 #include <QJsonDocument>
 #include <QJsonObject>
 
-class FileModel : public QObject
+class File : public QObject
 {
 
     Q_OBJECT
@@ -35,7 +35,7 @@ public:
 
 
 
-    FileModel(QObject* parent=0);
+    File(QObject* parent=0);
 
     bool fromJson(QJsonDocument json);
     bool fromJson(QJsonObject json);
@@ -113,5 +113,5 @@ private:
 
 };
 
-#endif // FILEMODEL_H
+#endif // FILE_H
 

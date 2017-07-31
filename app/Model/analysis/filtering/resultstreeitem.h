@@ -1,9 +1,9 @@
-#ifndef RESULTSTREEVIEWITEM_H
-#define RESULTSTREEVIEWITEM_H
+#ifndef RESULTSTREEITEM_H
+#define RESULTSTREEITEM_H
 
 #include "Model/treeitem.h"
 
-class ResultsTreeViewItem : public QObject
+class ResultsTreeItem : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString uid READ uid WRITE setUid NOTIFY uidChanged)
@@ -12,10 +12,10 @@ class ResultsTreeViewItem : public QObject
 public:
 
 
-    explicit ResultsTreeViewItem(QObject *parent = 0);
-    explicit ResultsTreeViewItem(QString uid, QVariant text, QObject *parent = 0);
-    ResultsTreeViewItem(const ResultsTreeViewItem &other);
-    ~ResultsTreeViewItem();
+    explicit ResultsTreeItem(QObject *parent = 0);
+    explicit ResultsTreeItem(QString uid, QVariant text, QObject *parent = 0);
+    ResultsTreeItem(const ResultsTreeItem &other);
+    ~ResultsTreeItem();
 
     inline QVariant value() { return mValue; }
     inline QString uid() { return mUid; }
@@ -32,4 +32,4 @@ private:
     QString mUid;
 };
 
-#endif // RESULTSTREEVIEWITEM_H
+#endif // RESULTSTREEITEM_H

@@ -1,10 +1,10 @@
-#ifndef RESULTSTREEVIEWMODEL_H
-#define RESULTSTREEVIEWMODEL_H
+#ifndef RESULTSTREEMODEL_H
+#define RESULTSTREEMODEL_H
 
 #include "Model/treemodel.h"
 #include "annotation.h"
 
-class ResultsTreeViewModel : public TreeModel
+class ResultsTreeModel : public TreeModel
 {
     Q_OBJECT
     Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingUpdated)
@@ -13,7 +13,7 @@ class ResultsTreeViewModel : public TreeModel
 
 public:
 
-    explicit ResultsTreeViewModel(int analysisId);
+    explicit ResultsTreeModel(int analysisId);
     QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE void refresh();
@@ -49,4 +49,4 @@ private:
 
 };
 
-#endif // RESULTSTREEVIEWMODEL_H
+#endif // RESULTSTREEMODEL_H
