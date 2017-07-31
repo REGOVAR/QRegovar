@@ -188,7 +188,7 @@ Rectangle
                             anchors.fill: parent
                             verticalAlignment: Text.AlignVCenter
                             font.pixelSize: Regovar.theme.font.size.control
-                            text: (styleData.value == undefined) ? "-"  : styleData.value
+                            text: (styleData.value == undefined) ? "-"  : styleData.value.value
                             elide: Text.ElideRight
                         }
                     }

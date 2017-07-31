@@ -35,7 +35,7 @@ void ResultsTreeViewModel::loadAnalysisData()
                 mFields << uid;
                 qDebug() << " - " << uid;
             }
-            qDebug() << "Current filter";
+            qDebug() << "Current filter" << data["filter"];
             QJsonDocument doc;
             doc.setArray(data["filter"].toArray());
             mFilter = QString(doc.toJson(QJsonDocument::Indented));
@@ -134,6 +134,7 @@ QHash<int, QByteArray> ResultsTreeViewModel::roleNames() const
 
         ++roleId;
     }
+    qDebug() << "Result Tree's roles defined : " << roleId - Qt::UserRole - 1 << "roles";
     return roles;
 }
 
@@ -164,10 +165,11 @@ void ResultsTreeViewModel::setupModelData(QJsonArray data, TreeItem *parent)
         {
             columnData << newResultsTreeViewItem(id, r[uid].toVariant());
         }
-        qDebug() << "Load variant : " << id;
+        // qDebug() << "Load variant : " << id;
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);
         parent->appendChild(item);
     }
+    qDebug() << "Result Model Ready :" << parent->childCount() << "items loaded";
 }

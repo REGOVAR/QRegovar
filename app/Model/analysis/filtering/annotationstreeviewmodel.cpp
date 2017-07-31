@@ -91,7 +91,7 @@ void AnnotationsTreeViewModel::setupModelData(QJsonArray data, TreeItem *parent)
         QString dbDescription = db["description"].toString();
         QJsonObject dbVersion = db["version"].toObject();
 
-        qDebug() << "Annotation database : " << dbName;
+        // qDebug() << "Annotation database : " << dbName;
 
         // dbVersion.keys();
         // TODO : version sublevel
@@ -115,7 +115,7 @@ void AnnotationsTreeViewModel::setupModelData(QJsonArray data, TreeItem *parent)
             QString description = a["description"].toString();
             QString type = a["type"].toString();
             QString meta = a["meta"].toString();
-            AnnotationModel* annot = new AnnotationModel(uid, dbUid, name, description, type, meta, "");
+            AnnotationModel* annot = new AnnotationModel(this, uid, dbUid, name, description, type, meta, "");
 
             mAnnotations.insert(uid, annot);
 
@@ -126,7 +126,8 @@ void AnnotationsTreeViewModel::setupModelData(QJsonArray data, TreeItem *parent)
             TreeItem* annotItem = new TreeItem(annotColData, dbItem);
             dbItem->appendChild(annotItem);
 
-            qDebug() << " - " << name << "(" << type << ", " << uid << ")";
+            // qDebug() << " - " << name << "(" << type << ", " << uid << ")";
         }
     }
+    qDebug() << "Annotations Model Ready";
 }

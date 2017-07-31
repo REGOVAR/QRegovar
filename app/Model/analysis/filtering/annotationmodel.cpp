@@ -4,7 +4,7 @@
 AnnotationModel::AnnotationModel(QObject *parent) : QObject(parent)
 {}
 
-AnnotationModel::AnnotationModel(const AnnotationModel &other)
+AnnotationModel::AnnotationModel(const AnnotationModel &other) : QObject(other.parent())
 {
     mUid = other.mUid;
     mDbUid = other.mDbUid;
@@ -21,9 +21,9 @@ AnnotationModel::~AnnotationModel()
 
 
 
-AnnotationModel::AnnotationModel(QString uid, QString dbUid, QString name, QString description,
+AnnotationModel::AnnotationModel(QObject* parent, QString uid, QString dbUid, QString name, QString description,
                                  QString type, QString meta, QString version, int order)
-: QObject(0)
+: QObject(parent)
 {
     mUid = uid;
     mDbUid = dbUid;
