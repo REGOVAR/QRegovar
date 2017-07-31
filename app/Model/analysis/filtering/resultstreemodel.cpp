@@ -7,78 +7,37 @@
 
 
 
-ResultsTreeModel::ResultsTreeModel(int analysisId) : TreeModel(0)
+ResultsTreeModel::ResultsTreeModel(FilteringAnalysis* parent) : TreeModel(parent)
 {
-    mAnalysisId = analysisId;
-    QList<QVariant> rootData;
-    rootData << "Id";
+    mFilteringAnalysis = parent;
+    QHash<int, QVariant> rootData;
     mRootItem = new TreeItem(rootData);
 
-
-
-    loadAnalysisData();
+    mAnalysisId = -1;
 }
 
 
-void ResultsTreeModel::loadAnalysisData()
+void ResultsTreeModel::initAnalysisData(int analysisId)
 {
-    Request* req = Request::get(QString("/analysis/%1").arg(mAnalysisId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            qDebug() << "Display field :";
-            QJsonObject data = json["data"].toObject();
-            foreach (const QJsonValue field, data["fields"].toArray())
-            {
-                QString uid = field.toString();
-                mFields << uid;
-                qDebug() << " - " << uid;
-            }
-            qDebug() << "Current filter" << data["filter"];
-            QJsonDocument doc;
-            doc.setArray(data["filter"].toArray());
-            mFilter = QString(doc.toJson(QJsonDocument::Indented));
-        }
-        else
-        {
-            qDebug() << Q_FUNC_INFO << "Request error ! " ; //<< json["msg"].toString();
-        }
-        req->deleteLater();
-    });
+    mAnalysisId = analysisId;
+    clear();
 }
 
-//! Add or remove a field to the display result and update or set the order
-//! Return the order of the field in the grid
-int ResultsTreeModel::setField(QString uid, bool isDisplayed, int order)
+bool ResultsTreeModel::fromJson(QJsonObject json)
 {
-    Annotation* annot = regovar->currentAnnotations()->getAnnotation(uid);
+    qDebug() << "Init results tree model of filtering analysis" << mAnalysisId << ":";
 
-    if (isDisplayed)
+    QHash<int, QVariant> rootData;
+    QHash<int, QByteArray> roles = roleNames();
+    foreach (int roleId, roles.keys())
     {
-        if (order != -1)
-        {
-            order = qMin(order, mFields.count()-1);
-            mFields.removeAll(uid);
-            mFields.insert(order, uid);
-        }
-        else
-        {
-            mFields.removeAll(uid);
-            order = mFields.count()-1;
-            mFields << uid;
-        }
+        rootData.insert(roleId, QString(roles[roleId]));
     }
-    else
-    {
-        order = mFields.indexOf(uid);
-        mFields.removeAll(uid);
-    }
+    mRootItem = new TreeItem(rootData);
 
-    annot->setOrder(order);
-    emit fieldsUpdated();
-    return order;
+    return true;
 }
+
 
 
 
@@ -87,10 +46,10 @@ void ResultsTreeModel::refresh()
 {
     setIsLoading(true);
 
-    QJsonDocument filter = QJsonDocument::fromJson(mFilter.toUtf8());
+    QJsonDocument filter = QJsonDocument::fromJson(mFilteringAnalysis->filter().toUtf8());
     QJsonObject body;
     body.insert("filter", filter.array());
-    body.insert("fields", QJsonArray::fromStringList(mFields));
+    body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
 
     Request* request = Request::post(QString("/analysis/%1/filtering").arg(mAnalysisId), QJsonDocument(body).toJson());
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
@@ -124,7 +83,7 @@ QHash<int, QByteArray> ResultsTreeModel::roleNames() const
     roles[roleId] = "id";
     ++roleId;
     // Build role from annotations all annotations available list
-    foreach (QString uid, regovar->currentAnnotations()->annotations()->keys())
+    foreach (QString uid, regovar->currentFilteringAnalysis()->annotations()->annotations()->keys())
     {
         roles[roleId] = uid.toUtf8();
 
@@ -134,7 +93,7 @@ QHash<int, QByteArray> ResultsTreeModel::roleNames() const
 
         ++roleId;
     }
-    qDebug() << "Result Tree's roles defined : " << roleId - Qt::UserRole - 1 << "roles";
+    qDebug() << "Result Tree's roles defined : " << roles.count() << "roles";
     return roles;
 }
 
@@ -153,17 +112,20 @@ QVariant ResultsTreeModel::newResultsTreeViewItem(QString uid, const QVariant &v
 
 void ResultsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 {
+    QHash<int, QByteArray> roles = roleNames();
     foreach(const QJsonValue json, data)
     {
         QJsonObject r = json.toObject();
         QString id = r["id"].toString();
 
         // Get Json data and store its into item's columns (/!\ columns order must respect role order)
-        QList<QVariant> columnData;
-        columnData << newResultsTreeViewItem(id, QVariant(id));
-        foreach (QString uid, mFields)
+
+        QHash<int, QVariant> columnData;
+        columnData.insert(roles.key("id"), newResultsTreeViewItem(id, QVariant(id)));
+
+        foreach (QString uid, mFilteringAnalysis->fields())
         {
-            columnData << newResultsTreeViewItem(id, r[uid].toVariant());
+            columnData.insert(roles.key(uid.toUtf8()), newResultsTreeViewItem(id, r[uid].toVariant()));
         }
         // qDebug() << "Load variant : " << id;
 

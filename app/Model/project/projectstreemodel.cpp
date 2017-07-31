@@ -7,10 +7,13 @@
 
 ProjectsTreeModel::ProjectsTreeModel() : TreeModel(0)
 {
-    QList<QVariant> rootData;
-    rootData << "Name" << "Date" << "Comment";
+    QHash<int, QVariant> rootData;
+    QHash<int, QByteArray> roles = roleNames();
+    foreach (int roleId, roles.keys())
+    {
+        rootData.insert(roleId, QString(roles[roleId]));
+    }
     mRootItem = new TreeItem(rootData);
-
     refresh();
 }
 
@@ -73,11 +76,10 @@ void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
         int id = p["id"].toInt();
 
         // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
-        QList<QVariant> columnData;
-        columnData << newProjectsTreeViewItem(id, p["name"].toString());
-        columnData << newProjectsTreeViewItem(id, p["comment"].toString());
-        columnData << newProjectsTreeViewItem(id, QDate::fromString(p["create_date"].toString()).toString(Qt::LocalDate));
-        columnData << newProjectsTreeViewItem(id, QDate::fromString(p["update_date"].toString()).toString(Qt::LocalDate));
+        QHash<int, QVariant> columnData;
+        columnData.insert(NameRole, newProjectsTreeViewItem(id, p["name"].toString()));
+        columnData.insert(CommentRole, newProjectsTreeViewItem(id, p["comment"].toString()));
+        columnData.insert(DateRole, newProjectsTreeViewItem(id, QDate::fromString(p["update_date"].toString()).toString(Qt::LocalDate)));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);

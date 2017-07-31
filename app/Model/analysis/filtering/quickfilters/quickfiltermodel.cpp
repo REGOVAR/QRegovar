@@ -2,12 +2,16 @@
 
 #include "transmissionquickfilter.h"
 
-QuickFilterModel::QuickFilterModel(int analysisId, QObject *parent) : QObject(parent)
+QuickFilterModel::QuickFilterModel(QObject *parent) : QObject(parent)
 {
-    mQuickFilters[TransmissionFilter] = new TransmissionQuickFilter(analysisId);
 }
 
-
+void QuickFilterModel::init(int refId, int analysisId)
+{
+    mQuickFilters.clear();
+    // Load filter according to the refID, analysisId
+    mQuickFilters[TransmissionFilter] = new TransmissionQuickFilter(refId);
+}
 
 void QuickFilterModel::setFilter(PredefinedFilter filter, int fieldId, QVariant value)
 {

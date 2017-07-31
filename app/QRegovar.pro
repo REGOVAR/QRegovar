@@ -24,7 +24,9 @@ HEADERS += \
     Model/project/project.h \
     Model/project/projectstreeitem.h \
     Model/project/projectstreemodel.h \
-    Model/regovar.h
+    Model/regovar.h \
+    Model/analysis/analysis.h \
+    Model/analysis/filtering/filteringanalysis.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -47,7 +49,9 @@ SOURCES += main.cpp \
     Model/project/project.cpp \
     Model/project/projectstreeitem.cpp \
     Model/project/projectstreemodel.cpp \
-    Model/regovar.cpp
+    Model/regovar.cpp \
+    Model/analysis/analysis.cpp \
+    Model/analysis/filtering/filteringanalysis.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

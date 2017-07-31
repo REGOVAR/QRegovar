@@ -8,7 +8,7 @@ QtObject
     id: uiModel
     /*! This QML model is the global "view model" of the application
      *  It manage only data use for  the UI (like the selected entry in the main menu and so on
-     *  The "True" model of the application is done in C++, see /Model/RegovarModel singleton
+     *  The "True" model of the application is done in C++, see /Model/Regovar singleton
      *  accessible in the QML by the id "regovar"
      */
 

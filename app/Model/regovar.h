@@ -7,9 +7,7 @@
 #include "project/projectstreemodel.h"
 #include "project/project.h"
 #include "file/tusuploader.h"
-#include "analysis/filtering/resultstreemodel.h"
-#include "analysis/filtering/annotationstreemodel.h"
-#include "analysis/filtering/quickfilters/quickfiltermodel.h"
+#include "analysis/filtering/filteringanalysis.h"
 
 
 #ifndef regovar
@@ -31,9 +29,7 @@ class Regovar : public QObject
     Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewUpdated)
     Q_PROPERTY(FilesTreeModel* remoteFilesTreeView READ remoteFilesTreeView NOTIFY remoteFilesTreeViewUpdated)
     Q_PROPERTY(Project* currentProject READ currentProject  NOTIFY currentProjectUpdated)
-    Q_PROPERTY(ResultsTreeModel* currentFilteringAnalysis READ currentFilteringAnalysis  NOTIFY currentFilteringAnalysisUpdated)
-    Q_PROPERTY(AnnotationsTreeModel* currentAnnotations READ currentAnnotations  NOTIFY currentAnnotationsUpdated)
-    Q_PROPERTY(QuickFilterModel* currentQuickFilters READ currentQuickFilters  NOTIFY currentQuickFiltersUpdated)
+    Q_PROPERTY(FilteringAnalysis* currentFilteringAnalysis READ currentFilteringAnalysis NOTIFY currentFilteringAnalysisUpdated)
 
 public:
     static Regovar* i();
@@ -48,9 +44,7 @@ public:
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
     inline FilesTreeModel* remoteFilesTreeView() const { return mRemoteFilesTreeView; }
     inline Project* currentProject() const { return mCurrentProject; }
-    inline ResultsTreeModel* currentFilteringAnalysis() const { return mCurrentFilteringAnalysis; }
-    inline AnnotationsTreeModel* currentAnnotations() const { return mCurrentAnnotations; }
-    inline QuickFilterModel* currentQuickFilters() const { return mCurrentQuickFilters; }
+    inline FilteringAnalysis* currentFilteringAnalysis() const { return mCurrentFilteringAnalysis; }
     //inline UserModel* currentUser() const { return mUser; }
 
     // Setters
@@ -66,9 +60,11 @@ public Q_SLOTS:
 //    void authenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
 
     void refreshProjectsTreeView();
-    void loadProject(int id);
     void loadFilesBrowser();
     void filesEnqueued(QHash<QString,QString> mapping);
+
+    void loadProject(int id);
+    void loadAnalysis(int id);
 
 Q_SIGNALS:
     void loginSuccess();
@@ -79,8 +75,6 @@ Q_SIGNALS:
     void remoteFilesTreeViewUpdated();
     void currentProjectUpdated();
     void currentFilteringAnalysisUpdated();
-    void currentAnnotationsUpdated();
-    void currentQuickFiltersUpdated();
 
     void error(QString errCode, QString message);
 
@@ -106,12 +100,8 @@ private:
     FilesTreeModel* mRemoteFilesTreeView;
     //! The uploader that manage TUS protocol (resumable upload)
     TusUploader * mUploader;
-
-
-    //! DEBUG : filtering analysis
-    ResultsTreeModel* mCurrentFilteringAnalysis;
-    AnnotationsTreeModel* mCurrentAnnotations;
-    QuickFilterModel* mCurrentQuickFilters;
+    //! Filtering analysis
+    FilteringAnalysis* mCurrentFilteringAnalysis;
 
 };
 

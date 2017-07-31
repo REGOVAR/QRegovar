@@ -171,7 +171,7 @@ Rectangle
                 TreeView
                 {
                     id: annotationsSelector
-                    model: regovar.currentAnnotations
+                    model: regovar.currentFilteringAnalysis.annotations
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
@@ -188,7 +188,7 @@ Rectangle
                             anchors.fill: parent
                             verticalAlignment: Text.AlignVCenter
                             font.pixelSize: Regovar.theme.font.size.control
-                            text: (styleData.value == undefined) ? "-"  : styleData.value.value
+                            text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
                             elide: Text.ElideRight
                         }
                     }
@@ -204,10 +204,11 @@ Rectangle
                             {
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
-                                checked: styleData.value
+                                checked: false // styleData.value.isChecked
                                 text: (styleData.value == undefined) ? "-"  : styleData.value.value
                                 onClicked:
                                 {
+                                    var test = styleData.value
                                     annotationsSelector.checked(styleData.value.uid, checked);
                                 }
                             }
@@ -265,7 +266,7 @@ Rectangle
                 anchors.fill: rightPanel
                 anchors.margins: 10
                 anchors.topMargin: 60
-                model: regovar.currentFilteringAnalysis
+                model: regovar.currentFilteringAnalysis.results
 
                 signal checked(string uid, bool isChecked)
                 onChecked: console.log(uid, isChecked);
@@ -280,26 +281,31 @@ Rectangle
                         resultsTree.insertField(regovar.currentFilteringAnalysis.fields[idx], idx);
                     }
 
-                    regovar.currentFilteringAnalysis.refresh();
+                    regovar.currentFilteringAnalysis.results.refresh();
                 }
 
 
-                function insertField(uid, position)
+                function insertField(uid, position, forceRefresh)
                 {
                     console.log("trying to insert field : " + uid + " at " + position);
-                    var annot = regovar.currentAnnotations.getAnnotation(uid);
+                    var annot = regovar.currentFilteringAnalysis.annotations.getAnnotation(uid);
                     console.log("  annot = " + annot);
                     var col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
                     console.log("  col = " + col);
-                    position = regovar.currentFilteringAnalysis.setField(uid, true, position) + 1;
+                    position = regovar.currentFilteringAnalysis.setField(uid, true, position) + 2;
                     console.log("  display column " + annot.name + " at " + position);
                     resultsTree.insertColumn(position, col);
+
+                    if (forceRefresh)
+                    {
+                        regovar.currentFilteringAnalysis.results.refresh();
+                    }
                 }
 
                 function removeField(uid)
                 {
                     console.log("trying to remove field : " + uid);
-                    var annot = regovar.currentAnnotations.getAnnotation(uid);
+                    var annot = regovar.currentFilteringAnalysis.annotations.getAnnotation(uid);
                     console.log("  annot = " + annot);
                     var position, col;
                     for (var idx=0; idx< resultsTree.columnCount; idx++ )
@@ -307,11 +313,11 @@ Rectangle
                         col = resultsTree.getColumn(idx);
                         if (col.role === annot.uid)
                         {
-                            console.log("  remove column " + annot.name + " at " + (idx-1));
+                            console.log("  remove column " + annot.name + " at " + (idx-2));
                             // remove columb from UI
                             resultsTree.removeColumn(idx);
                             // Store fields state and position in the view model
-                            regovar.currentFilteringAnalysis.setField(uid, false, idx -1);
+                            regovar.currentFilteringAnalysis.setField(uid, false, idx -2);
                             break;
                         }
                     }
@@ -327,7 +333,7 @@ Rectangle
                         if (isChecked)
                         {
                             // -1 means "previous position if exists else last position
-                            resultsTree.insertField(uid, -1);
+                            resultsTree.insertField(uid, -1, true);
                         }
                         else
                         {
@@ -365,7 +371,7 @@ Rectangle
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
-                            checked: styleData.value
+                            checked: false // styleData.value
                             text: "" // styleData.value.value
                             onClicked:
                             {

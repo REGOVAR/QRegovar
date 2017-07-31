@@ -36,14 +36,15 @@ void Regovar::init()
     mUploader->setChunkSize(50 * 1024);
     mUploader->setBandWidthLimit(0);
 
-    mCurrentFilteringAnalysis = new ResultsTreeModel(1);
-    mCurrentAnnotations = new AnnotationsTreeModel(2);
-    mCurrentQuickFilters = new QuickFilterModel(1);
+    mCurrentFilteringAnalysis =  new FilteringAnalysis(this);
 
+    // Connections
     connect(mUploader, SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
 
     emit currentProjectUpdated();
-    emit currentFilteringAnalysisUpdated();
+
+    // DEBUG
+    loadAnalysis(1);
 }
 
 
@@ -93,6 +94,49 @@ void Regovar::loadProject(int id)
     });
 }
 
+
+void Regovar::loadAnalysis(int id)
+{
+    // TODO
+//    if (!mCurrentProject->isValid())
+//    {
+//        qDebug() << "ERROR : need to load a project first before load an analysis";
+//    }
+
+
+    Request* req = Request::get(QString("/analysis/%1").arg(id));
+    connect(req, &Request::responseReceived, [this, req, id](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            if (mCurrentFilteringAnalysis->fromJson(json["data"].toObject()))
+            {
+                qDebug() << Q_FUNC_INFO << "CurrentProject loaded";
+                emit currentFilteringAnalysisUpdated();
+            }
+            else
+            {
+                qDebug() << Q_FUNC_INFO << "Failed to load project from id " << id << ". Wrong json data";
+            }
+        }
+        else
+        {
+            qDebug() << Q_FUNC_INFO << "Request error ! " << json["msg"].toString();
+        }
+        req->deleteLater();
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
 void Regovar::loadFilesBrowser()
 {
     Request* req = Request::get(QString("/file"));
@@ -136,7 +180,7 @@ void Regovar::enqueueUploadFile(QList<QString> filesPaths)
 
 
 /*
-void RegovarModel::login(QString& login, QString& password)
+void Regovar::login(QString& login, QString& password)
 {
     // Do nothing if user already connected
     if (mUser->isValid())

@@ -7,8 +7,12 @@
 
 FilesTreeModel::FilesTreeModel() : TreeModel(0)
 {
-    QList<QVariant> rootData;
-    rootData << "Name" << "Status" << "Size" << "Date" << "Comment";
+    QHash<int, QVariant> rootData;
+    QHash<int, QByteArray> roles = roleNames();
+    foreach (int roleId, roles.keys())
+    {
+        rootData.insert(roleId, QString(roles[roleId]));
+    }
     mRootItem = new TreeItem(rootData);
 
 }
@@ -98,13 +102,12 @@ void FilesTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
         int id = p["id"].toInt();
 
         // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
-        QList<QVariant> columnData;
-        columnData << newFilesTreeViewItem(id, p["name"].toString());
-        columnData << newFilesTreeViewItemStatus(id, p["status"].toString(), p["size"].toInt(), p["upload_offset"].toInt());
-        columnData << newFilesTreeViewItemSize(id, p["size"].toInt(), p["upload_offset"].toInt());
-        columnData << newFilesTreeViewItem(id, p["comment"].toString());
-        columnData << newFilesTreeViewItem(id, QDate::fromString(p["create_date"].toString()).toString(Qt::LocalDate));
-        columnData << newFilesTreeViewItem(id, QDate::fromString(p["update_date"].toString()).toString(Qt::LocalDate));
+        QHash<int, QVariant> columnData;
+        columnData.insert(NameRole, newFilesTreeViewItem(id, p["name"].toString()));
+        columnData.insert(StatusRole, newFilesTreeViewItemStatus(id, p["status"].toString(), p["size"].toInt(), p["upload_offset"].toInt()));
+        columnData.insert(SizeRole, newFilesTreeViewItemSize(id, p["size"].toInt(), p["upload_offset"].toInt()));
+        columnData.insert(CommentRole, newFilesTreeViewItem(id, p["comment"].toString()));
+        columnData.insert(DateRole, newFilesTreeViewItem(id, QDate::fromString(p["update_date"].toString()).toString(Qt::LocalDate)));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);

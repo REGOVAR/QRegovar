@@ -19,10 +19,10 @@ public:
     };
 
 
-    explicit AnnotationsTreeModel(int refId);
+    explicit AnnotationsTreeModel(QObject* parent=nullptr);
     QHash<int, QByteArray> roleNames() const override;
 
-    Q_INVOKABLE void refresh();
+    bool fromJson(QJsonObject data);
     QVariant newAnnotationsTreeViewItem(QString id, const QVariant &value);
     void setupModelData(QJsonArray data, TreeItem *parent);
 

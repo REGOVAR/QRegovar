@@ -58,16 +58,19 @@ TreeModel::TreeModel(QObject *parent)  : QAbstractItemModel(parent)
 }
 
 
-TreeModel::TreeModel(const QStringList &headers, const QString &data, QObject *parent)
-    : QAbstractItemModel(parent)
-{
-    QList<QVariant> rootData;
-    foreach (QString header, headers)
-        rootData << header;
-
-    mRootItem = new TreeItem(rootData);
-    setupModelData(data.split(QString("\n")), mRootItem);
-}
+//TreeModel::TreeModel(const QHash<int, QVariant> &headers, const QString &data, QObject *parent)
+//    : QAbstractItemModel(parent)
+//{
+//    QHash<int, QVariant> rootData;
+//    int idx = 0;
+//    foreach (QString header, headers)
+//    {
+//        rootData.insert(idx, header);
+//        ++idx;
+//    }
+//    mRootItem = new TreeItem(rootData);
+//    setupModelData(data.split(QString("\n")), mRootItem);
+//}
 
 TreeModel::~TreeModel()
 {
@@ -96,7 +99,7 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
 
     // For QML
     if (role > Qt::UserRole)
-        return item->data(role - Qt::UserRole - 1);
+        return item->data(role);
     return QVariant();
 }
 
@@ -169,61 +172,61 @@ int TreeModel::rowCount(const QModelIndex &parent) const
 
 void TreeModel::setupModelData(const QStringList &lines, TreeItem *parent)
 {
-    QList<TreeItem*> parents;
-    QList<int> indentations;
-    parents << parent;
-    indentations << 0;
+//    QList<TreeItem*> parents;
+//    QList<int> indentations;
+//    parents << parent;
+//    indentations << 0;
 
-    int number = 0;
+//    int number = 0;
 
-    while (number < lines.count())
-    {
-        int position = 0;
-        while (position < lines[number].length())
-        {
-            if (lines[number].at(position) != '\t')
-                break;
-            ++position;
-        }
+//    while (number < lines.count())
+//    {
+//        int position = 0;
+//        while (position < lines[number].length())
+//        {
+//            if (lines[number].at(position) != '\t')
+//                break;
+//            ++position;
+//        }
 
-        QString lineData = lines[number].mid(position).trimmed();
+//        QString lineData = lines[number].mid(position).trimmed();
 
-        if (!lineData.isEmpty())
-        {
-            // Read the column data from the rest of the line.
-            QStringList columnStrings = lineData.split("\t", QString::SkipEmptyParts);
-            QList<QVariant> columnData;
-            for (int column = 0; column < columnStrings.count(); ++column)
-                columnData << columnStrings[column];
+//        if (!lineData.isEmpty())
+//        {
+//            // Read the column data from the rest of the line.
+//            QStringList columnStrings = lineData.split("\t", QString::SkipEmptyParts);
+//            QList<QVariant> columnData;
+//            for (int column = 0; column < columnStrings.count(); ++column)
+//                columnData << columnStrings[column];
 
-            if (position > indentations.last())
-            {
-                // The last child of the current parent is now the new parent
-                // unless the current parent has no children.
+//            if (position > indentations.last())
+//            {
+//                // The last child of the current parent is now the new parent
+//                // unless the current parent has no children.
 
-                if (parents.last()->childCount() > 0)
-                {
-                    parents << parents.last()->child(parents.last()->childCount()-1);
-                    indentations << position;
-                }
-            } else {
-                while (position < indentations.last() && parents.count() > 0) {
-                    parents.pop_back();
-                    indentations.pop_back();
-                }
-            }
+//                if (parents.last()->childCount() > 0)
+//                {
+//                    parents << parents.last()->child(parents.last()->childCount()-1);
+//                    indentations << position;
+//                }
+//            } else {
+//                while (position < indentations.last() && parents.count() > 0) {
+//                    parents.pop_back();
+//                    indentations.pop_back();
+//                }
+//            }
 
-            // Append a new item to the current parent's list of children.
-            parents.last()->appendChild(new TreeItem(columnData, parents.last()));
-            qDebug() << "Model [" << number << "] : " << columnData[0];
-//            TreeItem *parent = parents.last();
-//            parent->insertChildren(parent->childCount(), 1, rootItem->columnCount());
-//            for (int column = 0; column < columnData.size(); ++column)
-//                parent->child(parent->childCount() - 1)->setData(column, columnData[column]);
-        }
+//            // Append a new item to the current parent's list of children.
+//            parents.last()->appendChild(new TreeItem(columnData, parents.last()));
+//            qDebug() << "Model [" << number << "] : " << columnData[0];
+////            TreeItem *parent = parents.last();
+////            parent->insertChildren(parent->childCount(), 1, rootItem->columnCount());
+////            for (int column = 0; column < columnData.size(); ++column)
+////                parent->child(parent->childCount() - 1)->setData(column, columnData[column]);
+//        }
 
-        ++number;
-    }
+//        ++number;
+//    }
 } 
 
 

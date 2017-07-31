@@ -52,12 +52,13 @@
 #define TREEITEM_H
 
 #include <QList>
+#include <QHash>
 #include <QVariant>
 
 class TreeItem
 {
 public:
-    explicit TreeItem(const QList<QVariant> &data, TreeItem *parent = 0);
+    explicit TreeItem(const QHash<int, QVariant> &data, TreeItem *parent = 0);
     ~TreeItem();
 
     void appendChild(TreeItem *child);
@@ -80,7 +81,7 @@ public:
 
 private:
     QList<TreeItem*> mChildItems;
-    QList<QVariant> mItemData;
+    QHash<int, QVariant> mItemData;
     TreeItem *mParentItem;
 };
 

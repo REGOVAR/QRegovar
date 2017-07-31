@@ -6,42 +6,34 @@
 
 
 
-AnnotationsTreeModel::AnnotationsTreeModel(int refId) : TreeModel(0)
+AnnotationsTreeModel::AnnotationsTreeModel(QObject* parent) : TreeModel(parent)
 {
-    mRefId = refId;
-    QList<QVariant> rootData;
-    rootData << "Name" << "Version" << "Description";
+    QHash<int, QVariant> rootData;
+    QHash<int, QByteArray> roles = roleNames();
+    foreach (int roleId, roles.keys())
+    {
+        rootData.insert(roleId, QString(roles[roleId]));
+    }
     mRootItem = new TreeItem(rootData);
-
-    refresh();
 }
 
 
 
 
-void AnnotationsTreeModel::refresh()
+
+bool AnnotationsTreeModel::fromJson(QJsonObject data)
 {
-    setIsLoading(true);
+    // TODO : manage error
+    clear();
+    mRefId = data["ref_id"].toInt();;
+    mRefName = data["ref_name"].toString();
 
-    Request* req = Request::get(QString("/annotation/%1").arg(mRefId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            clear();
-            QJsonObject data = json["data"].toObject();
-            mRefName = data["ref_name"].toString();
+    beginResetModel();
+    setupModelData(data["db"].toArray(), mRootItem);
+    endResetModel();
 
-            beginResetModel();
-            setupModelData(data["db"].toArray(), mRootItem);
-            endResetModel();
-        }
-        else
-        {
-            qDebug() << Q_FUNC_INFO << "Request error ! " ; //<< json["msg"].toString();
-        }
-        req->deleteLater();
-    });
+    qDebug() << "Annotation loaded for ref" << mRefName << ":" << mAnnotations.count();
+    return true;
 }
 
 
@@ -86,22 +78,19 @@ void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
     {
         QJsonObject db = dbv.toObject();
 
-
         QString dbName = db["name"].toString();
         QString dbDescription = db["description"].toString();
         QJsonObject dbVersion = db["version"].toObject();
-
-        // qDebug() << "Annotation database : " << dbName;
 
         // dbVersion.keys();
         // TODO : version sublevel
         QString dbUid = dbVersion[""].toString();
 
         // Create DB entry
-        QList<QVariant> dbColData;
-        dbColData << newAnnotationsTreeViewItem(dbUid, QVariant(dbName));
-        dbColData << newAnnotationsTreeViewItem(dbUid, QVariant(dbVersion[""]));
-        dbColData << newAnnotationsTreeViewItem(dbUid, QVariant(dbDescription));
+        QHash<int, QVariant> dbColData;
+        dbColData.insert(NameRole, newAnnotationsTreeViewItem(dbUid, QVariant(dbName)));
+        dbColData.insert(VersionRole, newAnnotationsTreeViewItem(dbUid, QVariant(dbVersion[""])));
+        dbColData.insert(DescriptionRole, newAnnotationsTreeViewItem(dbUid, QVariant(dbDescription)));
         TreeItem* dbItem = new TreeItem(dbColData, parent);
         parent->appendChild(dbItem);
 
@@ -119,10 +108,10 @@ void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 
             mAnnotations.insert(uid, annot);
 
-            QList<QVariant> annotColData;
-            annotColData << newAnnotationsTreeViewItem(uid, QVariant(name));
-            annotColData << newAnnotationsTreeViewItem(uid, QVariant(dbVersion[""]));
-            annotColData << newAnnotationsTreeViewItem(uid, QVariant(description));
+            QHash<int, QVariant> annotColData;
+            annotColData.insert(NameRole, newAnnotationsTreeViewItem(uid, QVariant(name)));
+            annotColData.insert(VersionRole, newAnnotationsTreeViewItem(uid, QVariant(dbVersion[""])));
+            annotColData.insert(DescriptionRole, newAnnotationsTreeViewItem(uid, QVariant(description)));
             TreeItem* annotItem = new TreeItem(annotColData, dbItem);
             dbItem->appendChild(annotItem);
 
