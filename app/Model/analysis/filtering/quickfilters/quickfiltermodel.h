@@ -22,6 +22,7 @@ public:
 
     explicit QuickFilterModel(QObject *parent = nullptr);
     void init(int refId, int analysisId);
+    Q_INVOKABLE void clear();
 
     // Getters
     inline QuickFilterBlockInterface* transmissionFilter() { return mQuickFilters[TransmissionFilter]; }

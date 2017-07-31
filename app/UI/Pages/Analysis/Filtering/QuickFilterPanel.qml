@@ -47,9 +47,9 @@ ColumnLayout
             text: qsTr("Clear")
             onClicked:
             {
-                regovar.currentQuickFilters.clear();
-                regovar.currentFilteringAnalysis.setFilter(regovar.currentQuickFilters.getFilter());
-                regovar.currentFilteringAnalysis.refresh();
+                regovar.currentFilteringAnalysis.quickfilters.clear();
+                regovar.currentFilteringAnalysis.setFilter(regovar.currentFilteringAnalysis.quickfilters.getFilter());
+                regovar.currentFilteringAnalysis.results.refresh();
             }
         }
         Button
@@ -57,8 +57,8 @@ ColumnLayout
             text: qsTr("Apply")
             onClicked:
             {
-                regovar.currentFilteringAnalysis.setFilter(regovar.currentQuickFilters.getFilter());
-                regovar.currentFilteringAnalysis.refresh();
+                regovar.currentFilteringAnalysis.setFilter(regovar.currentFilteringAnalysis.quickfilters.getFilter());
+                regovar.currentFilteringAnalysis.results.refresh();
             }
         }
         Button

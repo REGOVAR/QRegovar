@@ -9,7 +9,7 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
     mType = tr("Variants Filtering");
     mResults = new ResultsTreeModel(this);
     mAnnotations = new AnnotationsTreeModel(this);
-    mQuickFilters = new QuickFilterModel();
+    mQuickFilters = new QuickFilterModel(this);
     mUIStatus = empty;
 }
 
@@ -38,6 +38,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
 
 
     mResults->initAnalysisData(mId);
+    mQuickFilters->init(mRefId, mId);
 
     // Loading of an analysis required 2 steps
     // first : need to load alls annotations available accdording to the referencial and
@@ -47,6 +48,8 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
             this, SLOT(asynchLoading(LoadingStatus,LoadingStatus)));
     emit statusChanged(empty, loadingAnnotations);
     mUIStatus = loadingAnnotations;
+
+    return true;
 }
 
 

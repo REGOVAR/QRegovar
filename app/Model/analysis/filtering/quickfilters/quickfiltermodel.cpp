@@ -42,6 +42,14 @@ QString QuickFilterModel::getFilter()
     return QString("[\"AND\",[%1]]").arg(filters.join(","));
 }
 
+void QuickFilterModel::clear()
+{
+    foreach (QuickFilterBlockInterface* filter, mQuickFilters.values())
+    {
+        filter->clear();
+    }
+}
+
 
 
 

@@ -7,6 +7,7 @@
 #include "Model/treemodel.h"
 #include "Model/treeitem.h"
 #include "Model/file/filesystemmodel.cpp"
+#include "Model/analysis/filtering/filteringanalysis.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +22,7 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<FileSystemModel>("org.regovar", 1, 0, "FileSystemModel", "Cannot create a FileSystemModel instance.");
     qmlRegisterType<TreeModel>("org.regovar", 1, 0, "TreeModel");
     qmlRegisterType<Annotation>("org.regovar", 1, 0, "AnnotationModel");
+    qmlRegisterType<FilteringAnalysis>("org.regovar", 1, 0, "FilteringAnalysis");
 
 
     QQmlApplicationEngine engine;

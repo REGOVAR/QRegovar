@@ -121,17 +121,17 @@ Rectangle
         CheckBox
         {
             text: qsTr("Heterozygous")
-            onCheckedChanged: regovar.currentQuickFilters.transmissionFilter.setFilter(0, checked)
+            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(0, checked)
         }
         CheckBox
         {
             text: qsTr("Homozygous")
-            onCheckedChanged: regovar.currentQuickFilters.transmissionFilter.setFilter(1, checked)
+            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(1, checked)
         }
         CheckBox
         {
             text: qsTr("Composite heterozygous")
-            onCheckedChanged: regovar.currentQuickFilters.transmissionFilter.setFilter(2, checked)
+            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(2, checked)
         }
     }
 

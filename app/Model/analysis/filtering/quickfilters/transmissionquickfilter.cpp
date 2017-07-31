@@ -45,3 +45,10 @@ void TransmissionQuickFilter::setFilter(int id, QVariant value)
 {
     mActiveFilters[id] = value.toBool();
 }
+
+void TransmissionQuickFilter::clear()
+{
+    mActiveFilters[0] = false;
+    mActiveFilters[1] = false;
+    mActiveFilters[2] = false;
+}

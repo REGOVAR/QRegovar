@@ -17,6 +17,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterUpdated)
     Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsUpdated)
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsUpdated)
+    Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY quickfiltersUpdated)
 
 public:
     enum LoadingStatus
@@ -37,6 +38,7 @@ public:
     inline QString filter() { return mFilter; }
     inline QStringList fields() { return mFields; }
     inline ResultsTreeModel* results() { return mResults; }
+    inline QuickFilterModel* quickfilters() { return mQuickFilters; }
 
     // Setters
     Q_INVOKABLE inline void setFilter(QString filter) { mFilter = filter; emit filterUpdated(); }
@@ -55,6 +57,7 @@ Q_SIGNALS:
     void filterUpdated();
     void fieldsUpdated();
     void resultsUpdated();
+    void quickfiltersUpdated();
 
 
 public Q_SLOTS:

@@ -294,6 +294,7 @@ Rectangle
                     console.log("  col = " + col);
                     position = regovar.currentFilteringAnalysis.setField(uid, true, position) + 2;
                     console.log("  display column " + annot.name + " at " + position);
+                    position = Math.min(position, resultsTree.columnCount)
                     resultsTree.insertColumn(position, col);
 
                     if (forceRefresh)
@@ -352,7 +353,7 @@ Rectangle
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
                         font.pixelSize: Regovar.theme.font.size.control
-                        text: (styleData.value == undefined) ? "-"  : styleData.value.value
+                        text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
                         elide: Text.ElideRight
                     }
                 }

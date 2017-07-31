@@ -20,6 +20,8 @@ public:
     Q_INVOKABLE virtual QString getFilter() = 0;
     //! Generic method to set value of the filter thanks to the UI.
     Q_INVOKABLE virtual void setFilter(int id, QVariant value) = 0;
+    //! Reset the filter
+    Q_INVOKABLE virtual void clear() = 0;
 
 
 };
