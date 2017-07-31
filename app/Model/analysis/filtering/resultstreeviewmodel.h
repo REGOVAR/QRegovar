@@ -2,7 +2,7 @@
 #define RESULTSTREEVIEWMODEL_H
 
 #include "Model/treemodel.h"
-#include "annotationmodel.h"
+#include "annotation.h"
 
 class ResultsTreeViewModel : public TreeModel
 {

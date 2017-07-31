@@ -52,7 +52,7 @@ void ResultsTreeViewModel::loadAnalysisData()
 //! Return the order of the field in the grid
 int ResultsTreeViewModel::setField(QString uid, bool isDisplayed, int order)
 {
-    AnnotationModel* annot = regovar->currentAnnotations()->getAnnotation(uid);
+    Annotation* annot = regovar->currentAnnotations()->getAnnotation(uid);
 
     if (isDisplayed)
     {

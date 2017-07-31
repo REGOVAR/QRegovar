@@ -45,7 +45,7 @@ void AnnotationsTreeViewModel::refresh()
 }
 
 
-AnnotationModel* AnnotationsTreeViewModel::getAnnotation(QString uid)
+Annotation* AnnotationsTreeViewModel::getAnnotation(QString uid)
 {
     if (mAnnotations.contains(uid))
     {
@@ -115,7 +115,7 @@ void AnnotationsTreeViewModel::setupModelData(QJsonArray data, TreeItem *parent)
             QString description = a["description"].toString();
             QString type = a["type"].toString();
             QString meta = a["meta"].toString();
-            AnnotationModel* annot = new AnnotationModel(this, uid, dbUid, name, description, type, meta, "");
+            Annotation* annot = new Annotation(this, uid, dbUid, name, description, type, meta, "");
 
             mAnnotations.insert(uid, annot);
 

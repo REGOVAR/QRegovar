@@ -1,10 +1,10 @@
-#include "annotationmodel.h"
+#include "annotation.h"
 
 
-AnnotationModel::AnnotationModel(QObject *parent) : QObject(parent)
+Annotation::Annotation(QObject *parent) : QObject(parent)
 {}
 
-AnnotationModel::AnnotationModel(const AnnotationModel &other) : QObject(other.parent())
+Annotation::Annotation(const Annotation &other) : QObject(other.parent())
 {
     mUid = other.mUid;
     mDbUid = other.mDbUid;
@@ -16,12 +16,12 @@ AnnotationModel::AnnotationModel(const AnnotationModel &other) : QObject(other.p
     mOrder = other.mOrder;
 }
 
-AnnotationModel::~AnnotationModel()
+Annotation::~Annotation()
 {}
 
 
 
-AnnotationModel::AnnotationModel(QObject* parent, QString uid, QString dbUid, QString name, QString description,
+Annotation::Annotation(QObject* parent, QString uid, QString dbUid, QString name, QString description,
                                  QString type, QString meta, QString version, int order)
 : QObject(parent)
 {

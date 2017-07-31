@@ -8,7 +8,7 @@
 /*!
  * \brief Wrapper for annotation data.
  */
-class AnnotationModel : public QObject
+class Annotation : public QObject
 {
     Q_OBJECT
 
@@ -25,11 +25,11 @@ class AnnotationModel : public QObject
 public:
 
 
-    explicit AnnotationModel(QObject* parent = 0);
-    explicit AnnotationModel(QObject* parent, QString uid, QString dbUid, QString name, QString description,
+    explicit Annotation(QObject* parent = 0);
+    explicit Annotation(QObject* parent, QString uid, QString dbUid, QString name, QString description,
                              QString type, QString meta, QString version, int order=-1);
-    AnnotationModel(const AnnotationModel &other);
-    ~AnnotationModel();
+    Annotation(const Annotation &other);
+    ~Annotation();
 
     // Getters
     inline QString uid() { return mUid; }

@@ -19,12 +19,12 @@ HEADERS += \
     Model/file/tusuploader.h \
     Model/analysis/filtering/resultstreeviewitem.h \
     Model/analysis/filtering/resultstreeviewmodel.h \
-    Model/analysis/filtering/annotationmodel.h \
-    Model/analysis/filtering/annotationstreeviewitem.h \
     Model/analysis/filtering/annotationstreeviewmodel.h \
     Model/analysis/filtering/quickfilters/quickfiltermodel.h \
     Model/analysis/filtering/quickfilters/transmissionquickfilter.h \
-    Model/analysis/filtering/quickfilters/quickfilterblockinterface.h
+    Model/analysis/filtering/quickfilters/quickfilterblockinterface.h \
+    Model/analysis/filtering/annotation.h \
+    Model/analysis/filtering/annotationstreeitem.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -42,12 +42,12 @@ SOURCES += main.cpp \
     Model/file/tusuploader.cpp \
     Model/analysis/filtering/resultstreeviewitem.cpp \
     Model/analysis/filtering/resultstreeviewmodel.cpp \
-    Model/analysis/filtering/annotationmodel.cpp \
-    Model/analysis/filtering/annotationstreeviewitem.cpp \
     Model/analysis/filtering/annotationstreeviewmodel.cpp \
     Model/analysis/filtering/quickfilters/quickfiltermodel.cpp \
     Model/analysis/filtering/quickfilters/transmissionquickfilter.cpp \
-    Model/analysis/filtering/quickfilters/quickfilterblockinterface.cpp
+    Model/analysis/filtering/quickfilters/quickfilterblockinterface.cpp \
+    Model/analysis/filtering/annotation.cpp \
+    Model/analysis/filtering/annotationstreeitem.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

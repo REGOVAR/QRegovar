@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     // Register custom classes to use it with QML
     qmlRegisterUncreatableType<FileSystemModel>("org.regovar", 1, 0, "FileSystemModel", "Cannot create a FileSystemModel instance.");
     qmlRegisterType<TreeModel>("org.regovar", 1, 0, "TreeModel");
-    qmlRegisterType<AnnotationModel>("org.regovar", 1, 0, "AnnotationModel");
+    qmlRegisterType<Annotation>("org.regovar", 1, 0, "AnnotationModel");
 
 
     QQmlApplicationEngine engine;

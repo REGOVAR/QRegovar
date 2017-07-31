@@ -2,7 +2,7 @@
 #define ANNOTATIONSTREEVIEWMODEL_H
 
 #include "Model/treemodel.h"
-#include "annotationmodel.h"
+#include "annotation.h"
 
 class AnnotationsTreeViewModel : public TreeModel
 {
@@ -29,12 +29,12 @@ public:
 
     // Accessors
     inline bool isLoading() { return mIsLoading; }
-    Q_INVOKABLE AnnotationModel* getAnnotation(QString uid) ;
-    inline QHash<QString, AnnotationModel*>* annotations() { return &mAnnotations;}
+    Q_INVOKABLE Annotation* getAnnotation(QString uid) ;
+    inline QHash<QString, Annotation*>* annotations() { return &mAnnotations;}
 
     // Setters
     inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingUpdated(); }
-    inline void addAnnotation(QString uid, AnnotationModel* annotation) {mAnnotations.insert(uid, annotation); }
+    inline void addAnnotation(QString uid, Annotation* annotation) {mAnnotations.insert(uid, annotation); }
 
 
 Q_SIGNALS:
@@ -46,7 +46,7 @@ private:
     int mRefId;
     QString mRefName;
 
-    QHash<QString, AnnotationModel*> mAnnotations;
+    QHash<QString, Annotation*> mAnnotations;
 };
 
 #endif // ANNOTATIONSTREEVIEWMODEL_H
