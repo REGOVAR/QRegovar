@@ -22,7 +22,7 @@ Annotation::~Annotation()
 
 
 Annotation::Annotation(QObject* parent, QString uid, QString dbUid, QString name, QString description,
-                                 QString type, QString meta, QString version, int order)
+                                 QString type, QJsonObject meta, QString version, int order)
 : QObject(parent)
 {
     mUid = uid;

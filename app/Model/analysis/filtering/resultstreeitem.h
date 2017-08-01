@@ -3,6 +3,7 @@
 
 #include "Model/treeitem.h"
 
+//! Generic TreeItem
 class ResultsTreeItem : public QObject
 {
     Q_OBJECT
@@ -31,5 +32,47 @@ private:
     QVariant mValue;
     QString mUid;
 };
+
+
+// TODO : ResultsTreeItem4 { sequence, list, range }
+
+
+//! TreeItem for sample's dependant column (GT, DP, ic_composite)
+class ResultsTreeItem4SampleArray : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QString uid READ uid)
+    Q_PROPERTY(QStringList* values READ values NOTIFY valuesChanged)
+    Q_PROPERTY(QString type READ type)
+
+public:
+    explicit ResultsTreeItem4SampleArray(QObject *parent = 0);
+    ResultsTreeItem4SampleArray(const ResultsTreeItem4SampleArray &other);
+    ~ResultsTreeItem4SampleArray();
+
+    // Getters
+    inline QString uid() { return mUid; }
+    inline QString type() { return mValueType; }
+    inline QStringList* values() { return mDisplayedValues; }
+    inline QHash<int, QVariant>* samplesValues() { return mSamplesValues; }
+
+    // Setters
+    inline void setUid(QString uid) { mUid = uid; }
+    inline void setType(QString type) { mValueType = type; }
+
+    // Methods
+    void refreshDisplayedValues();
+
+signals:
+    void valuesChanged();
+    void uidChanged();
+
+private:
+    QHash<int, QVariant>* mSamplesValues;
+    QStringList* mDisplayedValues;
+    QString mValueType;
+    QString mUid;
+};
+
 
 #endif // RESULTSTREEITEM_H

@@ -19,7 +19,7 @@ public:
 
 
     Q_INVOKABLE void refresh();
-    QVariant newResultsTreeViewItem(QString uid, const QVariant &value);
+    QVariant newResultsTreeViewItem(Annotation* annot, QString uid, const QVariant &value);
     void setupModelData(QJsonArray data, TreeItem *parent);
     void loadAnalysisData();
     void initAnalysisData(int analysisId);

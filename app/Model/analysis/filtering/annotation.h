@@ -18,7 +18,7 @@ class Annotation : public QObject
     Q_PROPERTY(QString name READ name)
     Q_PROPERTY(QString description READ description)
     Q_PROPERTY(QString type READ type)
-    Q_PROPERTY(QString meta READ meta)
+    Q_PROPERTY(QJsonObject meta READ meta)
     Q_PROPERTY(QString version READ version)
     Q_PROPERTY(int order READ order)
 
@@ -27,7 +27,7 @@ public:
 
     explicit Annotation(QObject* parent = 0);
     explicit Annotation(QObject* parent, QString uid, QString dbUid, QString name, QString description,
-                             QString type, QString meta, QString version, int order=-1);
+                             QString type, QJsonObject meta, QString version, int order=-1);
     Annotation(const Annotation &other);
     ~Annotation();
 
@@ -37,7 +37,7 @@ public:
     inline QString name() { return mName; }
     inline QString description() { return mDescription; }
     inline QString type() { return mType; }
-    inline QString meta() { return mMeta; }
+    inline QJsonObject meta() { return mMeta; }
     inline QString version() { return mVersion; }
     inline int order() { return mOrder; }
 
@@ -51,7 +51,7 @@ private:
     QString mName;
     QString mDescription;
     QString mType;
-    QString mMeta;
+    QJsonObject mMeta;
     QString mVersion;
     int mOrder;
 };

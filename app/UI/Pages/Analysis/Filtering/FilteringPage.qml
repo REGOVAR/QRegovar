@@ -285,7 +285,7 @@ Rectangle
                 anchors.margins: 10
                 anchors.topMargin: 60
                 model: regovar.currentFilteringAnalysis.results
-                rowHeight: regovar.currentFilteringAnalysis.samples.count * 25
+                rowHeight: regovar.currentFilteringAnalysis.samples.count() * 25
 
                 signal checked(string uid, bool isChecked)
                 onChecked: console.log(uid, isChecked);

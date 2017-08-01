@@ -19,7 +19,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsUpdated)
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsUpdated)
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY quickfiltersUpdated)
-    Q_PROPERTY(QStringList samples READ samples() NOTIFY samplesUpdated)
+    Q_PROPERTY(QStringList samples READ displayedSamples() NOTIFY samplesUpdated)
     Q_PROPERTY(bool sampleColumnDisplayed READ sampleColumnDisplayed() NOTIFY sampleColumnDisplayedUpdated)
 
 public:
@@ -42,7 +42,8 @@ public:
     inline QStringList fields() { return mFields; }
     inline ResultsTreeModel* results() { return mResults; }
     inline QuickFilterModel* quickfilters() { return mQuickFilters; }
-    inline QStringList samples() { QStringList result; foreach (Sample* sp, mSamples) { result << sp->name();}  return result; }
+    inline QList<Sample*> samples() { return mSamples; }
+    inline QStringList displayedSamples() { QStringList result; foreach (Sample* sp, mSamples) { result << sp->name();}  return result; }
     inline bool sampleColumnDisplayed() { return mSampleColumnDisplayed; }
 
     // Setters

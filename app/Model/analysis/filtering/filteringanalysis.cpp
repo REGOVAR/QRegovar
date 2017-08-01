@@ -11,6 +11,10 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
     mAnnotations = new AnnotationsTreeModel(this);
     mQuickFilters = new QuickFilterModel(this);
     mUIStatus = empty;
+
+
+    connect(this, SIGNAL(statusChanged(LoadingStatus,LoadingStatus)),
+            this, SLOT(asynchLoading(LoadingStatus,LoadingStatus)));
 }
 
 
@@ -52,10 +56,8 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     // Loading of an analysis required 2 steps
     // first : need to load alls annotations available accdording to the referencial and
     // then : need to load result (annotation must be already loaded)
-    // Chaining of loading step is done thanks to signals
-    connect(this, SIGNAL(statusChanged(LoadingStatus,LoadingStatus)),
-            this, SLOT(asynchLoading(LoadingStatus,LoadingStatus)));
-    emit statusChanged(empty, loadingAnnotations);
+    // Chaining of loading step is done thanks to signals (see asynchLoading slot)
+    emit statusChanged(mUIStatus, loadingAnnotations);
     mUIStatus = loadingAnnotations;
 
     return true;
@@ -181,7 +183,7 @@ int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
     // check if need to display sample's name columns according to annotations displayed
     // sample's annotations are in the "INFO" vcf field or computed by regovar server.
     // sample's fields managed : GT, DP, is_composite,
-    bool mSampleColumnDisplayed = true;
+    mSampleColumnDisplayed = true;
     emit sampleColumnDisplayedUpdated();
 //    foreach (QString uid, mFields)
 //    {

@@ -27,13 +27,14 @@ bool ResultsTreeModel::fromJson(QJsonObject json)
 {
     qDebug() << "Init results tree model of filtering analysis" << mAnalysisId << ":";
 
-    QHash<int, QVariant> rootData;
-    QHash<int, QByteArray> roles = roleNames();
-    foreach (int roleId, roles.keys())
-    {
-        rootData.insert(roleId, QString(roles[roleId]));
-    }
-    mRootItem = new TreeItem(rootData);
+    // TODO
+//    QHash<int, QVariant> rootData;
+//    QHash<int, QByteArray> roles = roleNames();
+//    foreach (int roleId, roles.keys())
+//    {
+//        rootData.insert(roleId, QString(roles[roleId]));
+//    }
+//    mRootItem = new TreeItem(rootData);
 
     return true;
 }
@@ -98,15 +99,36 @@ QHash<int, QByteArray> ResultsTreeModel::roleNames() const
 }
 
 
-
-QVariant ResultsTreeModel::newResultsTreeViewItem(QString uid, const QVariant &value)
+//! Create treeview item with provided data, according to the type of the annotation
+QVariant ResultsTreeModel::newResultsTreeViewItem(Annotation* annot, QString uid, const QVariant &value)
 {
-    ResultsTreeItem *t = new ResultsTreeItem(this);
-    t->setValue(value);
-    t->setUid(uid);
-    QVariant v;
-    v.setValue(t);
-    return v;
+
+    if (annot != nullptr && annot->type() == "sample_array")
+    {
+        QJsonObject meta = annot->meta();
+        ResultsTreeItem4SampleArray *t = new ResultsTreeItem4SampleArray(this);
+        t->setUid(uid);
+        t->setType(meta["type"].toString());
+        QJsonDocument doc = value.toJsonDocument();
+        QJsonObject data = doc.object();
+        foreach (QString sampleId, data.keys())
+        {
+            t->samplesValues()->insert(sampleId.toInt(), data[sampleId].toVariant());
+        }
+        t->refreshDisplayedValues();
+        QVariant v;
+        v.setValue(t);
+        return v;
+    }
+    else
+    {
+        ResultsTreeItem *t = new ResultsTreeItem(this);
+        t->setValue(value);
+        t->setUid(uid);
+        QVariant v;
+        v.setValue(t);
+        return v;
+    }
 }
 
 
@@ -118,11 +140,12 @@ void ResultsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
         QJsonObject r = json.toObject();
         QString id = r["id"].toString();
         QHash<int, QVariant> columnData;
-        columnData.insert(roles.key("id"), newResultsTreeViewItem(id, QVariant(id)));
+        columnData.insert(roles.key("id"), newResultsTreeViewItem(nullptr, id, QVariant(id)));
 
         foreach (QString uid, mFilteringAnalysis->fields())
         {
-            columnData.insert(roles.key(uid.toUtf8()), newResultsTreeViewItem(id, r[uid].toVariant()));
+            Annotation* annot = regovar->currentFilteringAnalysis()->annotations()->getAnnotation(uid);
+            columnData.insert(roles.key(uid.toUtf8()), newResultsTreeViewItem(annot, id, r[uid].toVariant()));
         }
         // qDebug() << "Load variant : " << id;
 
