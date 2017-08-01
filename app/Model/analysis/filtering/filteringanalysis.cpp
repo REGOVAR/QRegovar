@@ -23,6 +23,15 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     mRefId = json["ref_id"].toInt();
     mRefName = json["ref_name"].toString();
 
+    // Retrieve samples
+    mSamples.clear();
+    foreach (const QJsonValue field, json["samples_ids"].toArray())
+    {
+        int id = field.toInt();
+        mSamples.append(new Sample(id, QString("Sample n°%1").arg(id), "", this));
+    }
+    emit samplesUpdated();
+
     // Retrieve fields
     foreach (const QJsonValue field, json["fields"].toArray())
     {
@@ -167,8 +176,20 @@ int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
         order = mFields.indexOf(uid);
         mFields.removeAll(uid);
     }
-
     annot->setOrder(order);
+
+    // check if need to display sample's name columns according to annotations displayed
+    // sample's annotations are in the "INFO" vcf field or computed by regovar server.
+    // sample's fields managed : GT, DP, is_composite,
+    bool mSampleColumnDisplayed = true;
+    emit sampleColumnDisplayedUpdated();
+//    foreach (QString uid, mFields)
+//    {
+//        annot = regovar->currentFilteringAnalysis()->annotations()->getAnnotation(uid);
+//        if (annot->)
+//    }
+
+
     emit fieldsUpdated();
     return order;
 }

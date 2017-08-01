@@ -117,9 +117,6 @@ void ResultsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
     {
         QJsonObject r = json.toObject();
         QString id = r["id"].toString();
-
-        // Get Json data and store its into item's columns (/!\ columns order must respect role order)
-
         QHash<int, QVariant> columnData;
         columnData.insert(roles.key("id"), newResultsTreeViewItem(id, QVariant(id)));
 

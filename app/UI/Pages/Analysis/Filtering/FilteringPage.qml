@@ -260,6 +260,24 @@ Rectangle
                 TableViewColumn { width: 100 }
             }
 
+            Component
+            {
+                id: columnComponent_GT
+                TableViewColumn
+                {
+                    width: 100
+
+                    delegate: Item
+                    {
+                        Text
+                        {
+                            text: styleData.value.uid + "=" + styleData.value.value
+                        }
+                    }
+                }
+            }
+
+
             TreeView
             {
                 id: resultsTree
@@ -267,9 +285,11 @@ Rectangle
                 anchors.margins: 10
                 anchors.topMargin: 60
                 model: regovar.currentFilteringAnalysis.results
+                rowHeight: regovar.currentFilteringAnalysis.samples.count * 25
 
                 signal checked(string uid, bool isChecked)
                 onChecked: console.log(uid, isChecked);
+
 
                 Component.onCompleted:
                 {
@@ -280,8 +300,8 @@ Rectangle
                     {
                         resultsTree.insertField(regovar.currentFilteringAnalysis.fields[idx], idx);
                     }
-
                     regovar.currentFilteringAnalysis.results.refresh();
+
                 }
 
 
@@ -290,7 +310,13 @@ Rectangle
                     console.log("trying to insert field : " + uid + " at " + position);
                     var annot = regovar.currentFilteringAnalysis.annotations.getAnnotation(uid);
                     console.log("  annot = " + annot);
-                    var col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+
+                    // Getting QML column according to the type of the fields
+                    var col;
+                    if (annot.name == "GT")
+                        col = columnComponent_GT.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+                    else
+                        col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
                     console.log("  col = " + col);
                     position = regovar.currentFilteringAnalysis.setField(uid, true, position) + 2;
                     console.log("  display column " + annot.name + " at " + position);
@@ -377,6 +403,30 @@ Rectangle
                             onClicked:
                             {
                                 resultsTree.checked(styleData.value.uid, checked);
+                            }
+                        }
+                    }
+                }
+
+                TableViewColumn
+                {
+                    role: "samplesNames"
+                    title: qsTr("Samples")
+                    width: 70
+                    visible: regovar.currentFilteringAnalysis.sampleColumnDisplayed
+                    delegate: Item
+                    {
+                        Column
+                        {
+                            Repeater
+                            {
+                                model: regovar.currentFilteringAnalysis.samples
+                                Text
+                                {
+                                    text : modelData
+                                    font.pixelSize: 10
+                                    color: "grey"
+                                }
                             }
                         }
                     }

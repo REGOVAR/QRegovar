@@ -12,6 +12,7 @@ TreeView
 
 
     property var currentItem
+    property var rowHeight: 22
 
     FontLoader { id: iconsFont; source: "../Icons.ttf" }
 
@@ -26,7 +27,7 @@ TreeView
 
         rowDelegate: Rectangle
         {
-            height: 22
+            height: control.rowHeight
             color:  styleData.hasActiveFocus ? Regovar.theme.secondaryColor.back.normal :
                     (
                         styleData.selected ? Regovar.theme.secondaryColor.back.light :
