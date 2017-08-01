@@ -9,7 +9,7 @@ TransmissionQuickFilter::TransmissionQuickFilter(int AnalysisId) : QuickFilterBl
     mFilters[1] = "[\"==\", [\"field\", \"b33e172643f14920cee93d25daaa3c7b\"], [\"value\", \"1\"]]";
     mActiveFilters[1] = false;
     // Composite - alt1/alt2
-    mFilters[2] = "[\"==\", [\"field\", \"b33e172643f14920cee93d25daaa3c7b\"], [\"value\", \"3\"]]";
+    mFilters[2] = "[\"==\", [\"field\", \"212a9e5be0a47eea6ed028af9992e1bb\"], [\"value\", true]]";
     mActiveFilters[2] = false;
 }
 
