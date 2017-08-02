@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtGraphicalEffects 1.0
+import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
@@ -254,28 +255,7 @@ Rectangle
                 color: Regovar.theme.backgroundColor.alt
             }
 
-            Component
-            {
-                id: columnComponent
-                TableViewColumn { width: 100 }
-            }
 
-            Component
-            {
-                id: columnComponent_GT
-                TableViewColumn
-                {
-                    width: 100
-
-                    delegate: Item
-                    {
-                        Text
-                        {
-                            text: styleData.value.uid + "=" + styleData.value.value
-                        }
-                    }
-                }
-            }
 
 
             TreeView
@@ -285,11 +265,158 @@ Rectangle
                 anchors.margins: 10
                 anchors.topMargin: 60
                 model: regovar.currentFilteringAnalysis.results
-                rowHeight: regovar.currentFilteringAnalysis.samples.count() * 25
+                rowHeight: 25 // regovar.currentFilteringAnalysis.samples.count * 25
 
                 signal checked(string uid, bool isChecked)
                 onChecked: console.log(uid, isChecked);
 
+
+                Connections
+                {
+                    target: annotationsSelector
+                    onChecked:
+                    {
+
+
+                        if (isChecked)
+                        {
+                            // -1 means "previous position if exists else last position
+                            resultsTree.insertField(uid, -1, true);
+                        }
+                        else
+                        {
+                            resultsTree.removeField(uid);
+                        }
+                    }
+                }
+
+
+                // Default delegate for all column
+                itemDelegate: Item
+                {
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        font.pixelSize: Regovar.theme.font.size.control
+                        text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
+                        elide: Text.ElideRight
+                    }
+                }
+
+                // First column with checkbox to select results
+                TableViewColumn
+                {
+                    role: "id"
+                    title: ""
+                    width: 30
+
+
+                    delegate: Item
+                    {
+                        anchors.margins: 0
+                        CheckBox
+                        {
+                            anchors.left: parent.left
+                            anchors.leftMargin: 5
+                            anchors.verticalCenter: parent.verticalCenter
+                            checked: false // styleData.value
+                            text: "" // styleData.value.value
+                            onClicked:
+                            {
+                                resultsTree.checked(styleData.value.uid, checked);
+                            }
+                        }
+                    }
+                }
+
+                // Special column to display sample's name when annnotation of type "sample_array" are displayed
+                TableViewColumn
+                {
+                    role: "samplesNames"
+                    title: qsTr("Samples")
+                    width: 70
+                    visible: regovar.currentFilteringAnalysis.sampleColumnDisplayed
+                    delegate: Item
+                    {
+                        ColumnLayout
+                        {
+                            anchors.fill: parent
+                            anchors.leftMargin: 5
+                            spacing: 1
+                            Repeater
+                            {
+                                model: regovar.currentFilteringAnalysis.samples
+                                Text
+                                {
+                                    height: 12
+                                    verticalAlignment: Text.AlignVCenter
+                                    text : modelData
+                                    font.pixelSize: 10
+                                    color: "grey"
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Generic Column component use to display new one when user select a new annotation
+                Component
+                {
+                    id: columnComponent
+                    TableViewColumn { width: 100 }
+                }
+
+                // Custom Column component for GT annotations
+                Component
+                {
+                    id: columnComponent_GT
+                    TableViewColumn
+                    {
+                        width: 30
+
+                        delegate: Item
+                        {
+                            ColumnLayout
+                            {
+                                anchors.fill: parent
+                                anchors.leftMargin: 5
+                                spacing: 1
+                                Repeater
+                                {
+
+                                    model: styleData.value.values
+
+
+                                    Rectangle
+                                    {
+                                        width: 12
+                                        height: 12
+                                        border.width: 1
+                                        border.color: Regovar.theme.boxColor.border
+                                        color: Regovar.theme.boxColor.back
+
+                                        Rectangle
+                                        {
+                                            anchors.fill: parent
+                                            anchors.margins: 1
+                                            anchors.rightMargin: 6
+                                            color: (modelData == 1 || modelData == 3) ? Regovar.theme.primaryColor.back.dark : "transparent"
+                                        }
+                                        Rectangle
+                                        {
+                                            anchors.fill: parent
+                                            anchors.margins: 1
+                                            anchors.leftMargin: 6
+                                            color: (modelData == 1) ? Regovar.theme.primaryColor.back.dark : ((modelData == 3) ? Regovar.theme.primaryColor.back.light : "transparent")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
                 Component.onCompleted:
                 {
@@ -346,88 +473,6 @@ Rectangle
                             // Store fields state and position in the view model
                             regovar.currentFilteringAnalysis.setField(uid, false, idx -2);
                             break;
-                        }
-                    }
-                }
-
-                Connections
-                {
-                    target: annotationsSelector
-                    onChecked:
-                    {
-
-
-                        if (isChecked)
-                        {
-                            // -1 means "previous position if exists else last position
-                            resultsTree.insertField(uid, -1, true);
-                        }
-                        else
-                        {
-                            resultsTree.removeField(uid);
-                        }
-                    }
-                }
-
-
-                // Default delegate for all column
-                itemDelegate: Item
-                {
-                    Text
-                    {
-                        anchors.leftMargin: 5
-                        anchors.fill: parent
-                        verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: Regovar.theme.font.size.control
-                        text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
-                        elide: Text.ElideRight
-                    }
-                }
-
-                TableViewColumn
-                {
-                    role: "id"
-                    title: ""
-                    width: 30
-
-
-                    delegate: Item
-                    {
-                        CheckBox
-                        {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            checked: false // styleData.value
-                            text: "" // styleData.value.value
-                            onClicked:
-                            {
-                                resultsTree.checked(styleData.value.uid, checked);
-                            }
-                        }
-                    }
-                }
-
-                TableViewColumn
-                {
-                    role: "samplesNames"
-                    title: qsTr("Samples")
-                    width: 70
-                    visible: regovar.currentFilteringAnalysis.sampleColumnDisplayed
-                    delegate: Item
-                    {
-                        Column
-                        {
-                            Repeater
-                            {
-                                model: regovar.currentFilteringAnalysis.samples
-                                Text
-                                {
-                                    text : modelData
-                                    font.pixelSize: 10
-                                    color: "grey"
-                                }
-                            }
                         }
                     }
                 }

@@ -41,8 +41,8 @@ private:
 class ResultsTreeItem4SampleArray : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString uid READ uid)
-    Q_PROPERTY(QStringList* values READ values NOTIFY valuesChanged)
+    Q_PROPERTY(QString uid READ uid NOTIFY uidChanged)
+    Q_PROPERTY(QStringList values READ values NOTIFY valuesChanged)
     Q_PROPERTY(QString type READ type)
 
 public:
@@ -53,8 +53,8 @@ public:
     // Getters
     inline QString uid() { return mUid; }
     inline QString type() { return mValueType; }
-    inline QStringList* values() { return mDisplayedValues; }
-    inline QHash<int, QVariant>* samplesValues() { return mSamplesValues; }
+    inline QStringList values() { return mDisplayedValues; }
+    inline QHash<int, QVariant>* samplesValues() { return &mSamplesValues; }
 
     // Setters
     inline void setUid(QString uid) { mUid = uid; }
@@ -68,8 +68,8 @@ signals:
     void uidChanged();
 
 private:
-    QHash<int, QVariant>* mSamplesValues;
-    QStringList* mDisplayedValues;
+    QHash<int, QVariant> mSamplesValues;
+    QStringList mDisplayedValues;
     QString mValueType;
     QString mUid;
 };
