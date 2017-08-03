@@ -32,11 +32,38 @@ Item
     Connections
     {
         target: Regovar.mainMenu
+        onSelectedIndexChanged:
+        {
+            if (Regovar.mainMenu.model[selectedIndex]["page"] === "")
+            {
+                openLevel2();
+            }
+            else if (Regovar.mainMenu.model[selectedIndex]["page"] === "@close")
+            {
+                regovar.close();
+            }
+            else
+            {
+                closeLevel2();
+            }
+        }
+    }
+    // Open/Close level 2 according to the selection changed in the mainMenu at the 1st level
+    Connections
+    {
+        target: Regovar.mainMenu
         onSelectedSubIndexChanged:
         {
             if (Regovar.mainMenu.selectedSubIndex < 0)
             {
                 closeLevel2();
+            }
+            else
+            {
+                if (Regovar.mainMenu.model[selectedIndex]["page"] === "")
+                {
+                    openLevel2();
+                }
             }
         }
     }

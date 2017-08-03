@@ -206,7 +206,7 @@ Rectangle
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
                                 checked: false // styleData.value.isChecked
-                                text: (styleData.value == undefined) ? "-"  : styleData.value.value
+                                text: (styleData.value == undefined || styleData.value.value == undefined) ? "-"  : styleData.value.value
                                 onClicked:
                                 {
                                     var test = styleData.value
@@ -265,7 +265,7 @@ Rectangle
                 anchors.margins: 10
                 anchors.topMargin: 60
                 model: regovar.currentFilteringAnalysis.results
-                rowHeight: 25 // regovar.currentFilteringAnalysis.samples.count * 25
+                rowHeight: (regovar.currentFilteringAnalysis.samples.length === 1) ? 25 : regovar.currentFilteringAnalysis.samples.length * 18
 
                 signal checked(string uid, bool isChecked)
                 onChecked: console.log(uid, isChecked);

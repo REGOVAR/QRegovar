@@ -91,15 +91,15 @@ QtObject
     }
 
 
-//    function lighter(color)
-//    {
-//        return Qt.lighter(color, 1.3)
-//    }
+    function lighter(color)
+    {
+        return Qt.lighter(color, 1.5)
+    }
 
-//    function darker(color)
-//    {
-//        return Qt.darker(color, 1.3)
-//    }
+    function darker(color)
+    {
+        return Qt.darker(color, 1.5)
+    }
 
 
     function loadStyle()

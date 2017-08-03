@@ -5,8 +5,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 //import org.regovar 1.0
 
-import "../Regovar"
-import "../Framework"
+import "../../Regovar"
+import "../../Framework"
 
 Rectangle
 {
@@ -16,9 +16,9 @@ Rectangle
 
     Dialog
     {
-        id: popup
+        id: newProjectDialog
         modality:  Qt.WindowModal // Qt.NonModal
-        title:  "Hello"
+        title:  qsTr("Create new project")
 
         standardButtons: StandardButton.Save | StandardButton.Cancel
 
@@ -48,10 +48,26 @@ Rectangle
         }
     }
 
+    // Help information on this page
+    Box
+    {
+        id: helpInfoBox
+        anchors.top : header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.margins: 10
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        mainColor: Regovar.theme.frontColor.success
+        icon: "f"
+        text: qsTr("Browse all available project in regovar thanks to the tree below. You can filter the project's tree thanks to the search field above.")
+    }
+
     Column
     {
         id: actionsPanel
-        anchors.top: header.bottom
+        anchors.top: helpInfoBox.bottom
         anchors.right: root.right
         anchors.margins : 10
         spacing: 10
@@ -73,7 +89,7 @@ Rectangle
         {
             id: newProject
             text: qsTr("New Project")
-            onClicked:popup.open()
+            onClicked: newProjectDialog.open()
         }
 
         Button
@@ -95,7 +111,7 @@ Rectangle
     {
         id: browser
         anchors.left: root.left
-        anchors.top: header.bottom
+        anchors.top: helpInfoBox.bottom
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
@@ -141,12 +157,6 @@ Rectangle
             role: "comment"
             title: "Comment"
         }
-    }
-
-
-    BusyIndicator
-    {
-        anchors.fill: browser
     }
 
 

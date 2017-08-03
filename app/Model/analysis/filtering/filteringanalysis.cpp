@@ -106,7 +106,7 @@ void FilteringAnalysis::loadAnnotations()
         }
         else
         {
-            qDebug() << Q_FUNC_INFO << "Request error ! " << json["msg"].toString();
+            regovar->error(json);
             emit statusChanged(mUIStatus, error);
             mUIStatus = error;
         }
@@ -141,7 +141,7 @@ void FilteringAnalysis::loadResults()
         }
         else
         {
-            qDebug() << Q_FUNC_INFO << "Request error ! " << json["msg"].toString();
+            regovar->error(json);
             emit statusChanged(mUIStatus, error);
             mUIStatus = error;
         }

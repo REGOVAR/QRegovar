@@ -53,6 +53,10 @@ public:
 
     // Methods
     Q_INVOKABLE void enqueueUploadFile(QList<QString> filesPaths);
+    Q_INVOKABLE void error(QJsonObject error);
+    Q_INVOKABLE void close();
+    Q_INVOKABLE void disconnectUser();
+    Q_INVOKABLE void quit();
 
 public Q_SLOTS:
 //    void login(QString& login, QString& password);
@@ -75,8 +79,8 @@ Q_SIGNALS:
     void remoteFilesTreeViewUpdated();
     void currentProjectUpdated();
     void currentFilteringAnalysisUpdated();
-
-    void error(QString errCode, QString message);
+    void onClose();
+    void onError(QString errCode, QString message);
 
 
 

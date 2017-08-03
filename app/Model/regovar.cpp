@@ -44,7 +44,7 @@ void Regovar::init()
     emit currentProjectUpdated();
 
     // DEBUG
-    loadAnalysis(2);
+    loadAnalysis(1);
 }
 
 
@@ -88,7 +88,7 @@ void Regovar::loadProject(int id)
         }
         else
         {
-            qDebug() << Q_FUNC_INFO << "Request error ! " << json["msg"].toString();
+            regovar->error(json);
         }
         req->deleteLater();
     });
@@ -121,7 +121,7 @@ void Regovar::loadAnalysis(int id)
         }
         else
         {
-            qDebug() << Q_FUNC_INFO << "Request error ! " << json["msg"].toString();
+            regovar->error(json);
         }
         req->deleteLater();
     });
@@ -156,7 +156,7 @@ void Regovar::loadFilesBrowser()
         }
         else
         {
-            qDebug() << Q_FUNC_INFO << "Request error ! " << json["msg"].toString();
+            regovar->error(json);
         }
         req->deleteLater();
     });
@@ -178,6 +178,26 @@ void Regovar::enqueueUploadFile(QList<QString> filesPaths)
     mUploader->enqueue(filesPaths);
 }
 
+void Regovar::close()
+{
+    emit onClose();
+}
+
+void Regovar::disconnectUser()
+{
+    qDebug() << "disconnect user !";
+}
+
+void Regovar::quit()
+{
+    qDebug() << "quit regovar app !";
+}
+
+void Regovar::error(QJsonObject error)
+{
+    qDebug() << "ERROR Server side [" << error["code"].toString() << "]" << error["msg"].toString();
+    emit onError(error["code"].toString(), error["msg"].toString());
+}
 
 /*
 void Regovar::login(QString& login, QString& password)

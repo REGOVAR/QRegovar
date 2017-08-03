@@ -12,7 +12,7 @@ TreeView
 
 
     property var currentItem
-    property var rowHeight: 22
+    property int rowHeight: 22
 
     FontLoader { id: iconsFont; source: "../Icons.ttf" }
 

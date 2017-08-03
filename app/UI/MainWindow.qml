@@ -6,6 +6,7 @@ import "Framework"
 import "MainMenu"
 import "Pages"
 import "Regovar"
+import "Dialogs"
 
 ApplicationWindow
 {
@@ -31,13 +32,22 @@ ApplicationWindow
     {
         for (var idx in model)
         {
-            var comp = Qt.createComponent("Pages/" + model[idx]["page"]);
-            console.log ("load " + baseIndex+idx + " : Pages/" + model[idx]["page"])
+            if (model[idx]["page"] != "" && model[idx]["page"][0] != "@")
+            {
+                var comp = Qt.createComponent("Pages/" + model[idx]["page"]);
+                root.menuPageMapping[baseIndex+idx] = comp;
+                console.log ("load " + baseIndex+idx + " : Pages/" + model[idx]["page"])
+            }
+            else
+            {
+                root.menuPageMapping[baseIndex+idx] = false;
+            }
+
             if (model[idx]["sublevel"].length > 0)
             {
                 buildPages(model[idx]["sublevel"], baseIndex+idx + "-")
             }
-            root.menuPageMapping[baseIndex+idx] = comp;
+
         }
     }
 
@@ -53,7 +63,20 @@ ApplicationWindow
     Connections
     {
         target: Regovar.mainMenu
-        onSelectedMainIndexChanged:stack.sourceComponent = menuPageMapping[Regovar.mainMenu.selectedMainIndex]
+        onSelectedMainIndexChanged:
+        {
+            if (menuPageMapping)
+            {
+                // if there is a page for this entry
+                stack.sourceComponent = menuPageMapping[Regovar.mainMenu.selectedMainIndex];
+            }
+            else
+            {
+                // otherwise, need to load first page of second level
+                Regovar.mainMenu.selectedSubIndex = menuPageMapping[Regovar.mainMenu.selectedMainIndex]["subindex"];
+                stack.sourceComponent = menuPageMapping[Regovar.mainMenu.selectedMainIndex + "-" +Regovar.mainMenu.selectedSubIndex]
+            }
+        }
     }
     Connections
     {
@@ -71,6 +94,23 @@ ApplicationWindow
         {
             Regovar.mainMenu.selectedSubIndex = 0;
             stack.sourceComponent = menuPageMapping[Regovar.mainMenu.selectedMainIndex + "-" +Regovar.mainMenu.selectedSubIndex]
+        }
+    }
+
+    Connections
+    {
+        target: regovar
+        onClose:
+        {
+            closePopup.open()
+        }
+    }
+    Connections
+    {
+        target: regovar
+        onError:
+        {
+            errorPopup.open()
         }
     }
 
@@ -111,4 +151,16 @@ ApplicationWindow
             duration: 250
         }
     }
+
+    CloseDialog
+    {
+        id: closePopup
+        visible: false
+    }
+    ErrorDialog
+    {
+        id: errorPopup
+        visible: false
+    }
+
 }

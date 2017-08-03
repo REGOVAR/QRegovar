@@ -86,7 +86,15 @@ Rectangle
             Regovar.mainMenu.displaySubLevel = Regovar.mainMenu.displaySubLevelCurrent
 
         }
-        onClicked: root.selectedIndex = index
+        onClicked:
+        {
+            root.selectedIndex = index
+            if (Regovar.mainMenu.model[index]["page"] == "")
+            {
+                openLevel2();
+            }
+
+        }
     }
 
 

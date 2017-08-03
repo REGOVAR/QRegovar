@@ -96,7 +96,6 @@ DISTFILES += \
     UI/Pages/Login.qml \
     UI/Pages/ProjectPage.qml \
     UI/Pages/SettingsPage.qml \
-    UI/Pages/SubjectPage.qml \
     UI/Pages/WelcomPage.qml \
     UI/Framework/qmldir \
     UI/Regovar/qmldir \
@@ -123,7 +122,30 @@ DISTFILES += \
     UI/MainMenu/HeaderTabEntry.qml \
     UI/Pages/Analysis/Filtering/FilteringPage.qml \
     UI/Pages/Analysis/Filtering/Quickfilter/TransmissionQuickForm.qml \
-    UI/Pages/Analysis/Filtering/QuickFilterPanel.qml
+    UI/Pages/Analysis/Filtering/QuickFilterPanel.qml \
+    UI/Dialogs/CloseDialog.qml \
+    UI/Dialogs/ErrorDialog.qml \
+    UI/Pages/Browse/AnalysesPage.qml \
+    UI/Pages/Browse/EventsPage.qml \
+    UI/Pages/Browse/FilesPage.qml \
+    UI/Pages/Browse/OmnisearchPage.qml \
+    UI/Pages/Browse/ProjectsPage.qml \
+    UI/Pages/Browse/SubjectsPage.qml \
+    UI/Pages/Project/ProjectsPage.qml \
+    UI/Framework/Box.qml \
+    UI/Pages/Help/AboutPage.qml \
+    UI/Pages/Help/TutorialsPage.qml \
+    UI/Pages/Help/UserGuidePage.qml \
+    UI/Pages/Settings/InterfacePage.qml \
+    UI/Pages/Settings/PanelsPage.qml \
+    UI/Pages/Settings/PipesPage.qml \
+    UI/Pages/Settings/ProfilePage.qml \
+    UI/Pages/Settings/ServerPage.qml \
+    UI/Pages/Analysis/Filtering/ResumePage.qml \
+    UI/Pages/Analysis/Filtering/SettingsAnnotationsDBPage.qml \
+    UI/Pages/Analysis/Filtering/SettingsSamplesPage.qml \
+    UI/Pages/Analysis/Filtering/SelectionsPage.qml \
+    UI/Pages/Analysis/Filtering/SettingsInformationsPage.qml
 
 
 
