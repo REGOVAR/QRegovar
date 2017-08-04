@@ -45,10 +45,4 @@ Rectangle
             font.pointSize: 24
         }
     }
-
-
-
-
-
-
 }

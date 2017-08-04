@@ -389,13 +389,16 @@ Rectangle
                                     model: styleData.value.values
 
 
+
                                     Rectangle
                                     {
                                         width: 12
                                         height: 12
                                         border.width: 1
-                                        border.color: Regovar.theme.boxColor.border
-                                        color: Regovar.theme.boxColor.back
+                                        border.color: (modelData == "") ? "transparent" : Regovar.theme.boxColor.border
+                                        color: (modelData == "") ? "transparent" : Regovar.theme.boxColor.back
+
+
 
                                         Rectangle
                                         {
@@ -409,7 +412,14 @@ Rectangle
                                             anchors.fill: parent
                                             anchors.margins: 1
                                             anchors.leftMargin: 6
-                                            color: (modelData == 1) ? Regovar.theme.primaryColor.back.dark : ((modelData == 3) ? Regovar.theme.primaryColor.back.light : "transparent")
+                                            color: (modelData == 0) ? "transparent" : ((modelData == 3) ? Regovar.theme.primaryColor.back.light : Regovar.theme.primaryColor.back.dark)
+                                        }
+                                        Text
+                                        {
+                                            text : "?"
+                                            font.pixelSize: 10
+                                            anchors.centerIn: parent
+                                            visible: modelData == ""
                                         }
                                     }
                                 }

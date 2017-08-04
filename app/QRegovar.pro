@@ -145,7 +145,9 @@ DISTFILES += \
     UI/Pages/Analysis/Filtering/SettingsAnnotationsDBPage.qml \
     UI/Pages/Analysis/Filtering/SettingsSamplesPage.qml \
     UI/Pages/Analysis/Filtering/SelectionsPage.qml \
-    UI/Pages/Analysis/Filtering/SettingsInformationsPage.qml
+    UI/Pages/Analysis/Filtering/SettingsInformationsPage.qml \
+    UI/Framework/SwipeView.qml \
+    UI/Pages/Help/AboutLicense.qml
 
 
 

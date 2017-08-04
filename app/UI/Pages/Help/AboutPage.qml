@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
+import QtWebView 1.1
 import "../../Regovar"
 import "../../Framework"
 
@@ -28,27 +29,32 @@ Rectangle
     }
 
 
-    Rectangle
+    SwipeView
     {
+        id: swipeview
         anchors.top : header.bottom
         anchors.left: root.left
         anchors.right: root.right
         anchors.bottom: root.bottom
         anchors.margins: 10
 
-        color: "transparent"
-
-        Text
+        model: ListModel
         {
-            anchors.centerIn: parent
-            text: "Informations / Credits / License"
-            font.pointSize: 24
+            ListElement
+            {
+                title: "Informations"
+                source: "TutorialsPage.qml"
+            }
+            ListElement
+            {
+                title: "License"
+                source: "TutorialsPage.qml"
+            }
+            ListElement
+            {
+                title: "Credits"
+                source: "TutorialsPage.qml"
+            }
         }
     }
-
-
-
-
-
-
 }

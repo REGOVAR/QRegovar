@@ -71,8 +71,6 @@ QtObject
                 { "icon": "z", "label": qsTr("Search"),   "page": "Browse/OmnisearchPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "c", "label": qsTr("Projects"), "page": "Browse/ProjectsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "b", "label": qsTr("Subjects"), "page": "Browse/SubjectsPage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "O", "label": qsTr("Files"),    "page": "Browse/FilesPage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "I", "label": qsTr("Analyses"), "page": "Browse/AnalysesPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "H", "label": qsTr("Events"),   "page": "Browse/EventsPage.qml", "sublevel": [], "subindex": -1}
                 ], "subindex": 0},
             { "icon": "I", "label": qsTr("Analysis"),     "page": "", "sublevel": [

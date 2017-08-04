@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
+import QtWebView 1.1
 import "../../Regovar"
 import "../../Framework"
 
@@ -28,7 +29,7 @@ Rectangle
     }
 
 
-    Rectangle
+    WebView
     {
         anchors.top : header.bottom
         anchors.left: root.left
@@ -36,14 +37,7 @@ Rectangle
         anchors.bottom: root.bottom
         anchors.margins: 10
 
-        color: "transparent"
-
-        Text
-        {
-            anchors.centerIn: parent
-            text: "User guide (from web)"
-            font.pointSize: 24
-        }
+        url: "http://regovar.readthedocs.io/fr/latest/Guide%20utilisateur/01.%20Bienvenue/"
     }
 
 
