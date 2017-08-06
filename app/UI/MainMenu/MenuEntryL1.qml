@@ -6,30 +6,37 @@ Rectangle
     id: root
     width: 250
     height: 50
-    state: "normal"
+    state: indexToState()
 
     property alias icon: icon.text
     property alias label: label.text
-    property string currentState: "normal"
-    property int selectedIndex: 0
-    onSelectedIndexChanged: root.currentState = (root.selectedIndex !== index) ? "normal" : "selected"
-    onCurrentStateChanged: root.state = root.currentState
+    property string currentState: indexToState()
+    property var selectedIndex: -1
 
 
-    // bidirectional binding of selectedEntry between view and main model
-    Binding
+    function indexToState()
+    {
+        return (root.selectedIndex !== index) ? "normal" : "selected"
+    }
+
+
+    // Update view states only from main model update to avoid binding loop
+    // and inconsistency between views and model
+    Connections
     {
         target: Regovar.mainMenu
-        property: "selectedMainIndex"
-        value: root.selectedIndex
+        onSelectedIndexChanged:
+        {
+            if (root.selectedIndex !== Regovar.mainMenu.selectedIndex[0])
+            {
+                // When main model change, notify views that index have changed
+                root.selectedIndex = Regovar.mainMenu.selectedIndex[0];
+                // Force update of the state
+                root.currentState = indexToState();
+                root.state = root.currentState;
+            }
+        }
     }
-    Binding
-    {
-        target: root
-        property: "selectedIndex"
-        value: Regovar.mainMenu.selectedMainIndex
-    }
-
 
 
     FontLoader { id: iconsFont; source: "../Icons.ttf" }
@@ -78,30 +85,20 @@ Rectangle
         onEntered:
         {
             root.state = "hover"
-            Regovar.mainMenu.displaySubLevel = false
+            Regovar.mainMenu.subLevelPanelDisplayed = false
         }
         onExited:
         {
             root.state = parent.currentState
-            Regovar.mainMenu.displaySubLevel = Regovar.mainMenu.displaySubLevelCurrent
+            Regovar.mainMenu.subLevelPanelDisplayed = Regovar.mainMenu._subLevelPanelDisplayed
 
         }
         onClicked:
         {
-            root.selectedIndex = index
-            if (Regovar.mainMenu.model[index]["page"] == "")
-            {
-                openLevel2();
-            }
-
+            // Notify model that entry {index} of the level 0 is selected
+            Regovar.mainMenu.select(0, index);
         }
     }
-
-
-
-
-
-
 
     states: [
         State

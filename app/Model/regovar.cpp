@@ -44,7 +44,7 @@ void Regovar::init()
     emit currentProjectUpdated();
 
     // DEBUG
-    loadAnalysis(1);
+    loadAnalysis(4);
 }
 
 

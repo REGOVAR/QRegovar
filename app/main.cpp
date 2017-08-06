@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("regovar", regovar);
     engine.load(QUrl(QLatin1String("UI/MainWindow.qml")));
 
-    app.setWindowIcon(QIcon("qrc:/logo.png"));
+    app.setWindowIcon(QIcon(":/logo.png"));
     return app.exec();
 }
 

@@ -7,38 +7,48 @@ Item
     id: mainMenu
     state: "level0"
 
+    property var previousIndex: [0, -1,-1]
 
 
-    property bool displaySubLevel: false
-    onDisplaySubLevelChanged: mainMenu.state = mainMenu.displaySubLevel ? "level1" : "level0"
+    property bool subLevelPanelDisplayed: false
+    onSubLevelPanelDisplayedChanged: mainMenu.state = mainMenu.subLevelPanelDisplayed ? "level1" : "level0"
     Binding
     {
         target: Regovar.mainMenu
-        property: "displaySubLevel"
-        value: mainMenu.displaySubLevel
+        property: "subLevelPanelDisplayed"
+        value: mainMenu.subLevelPanelDisplayed
     }
     Binding
     {
         target: mainMenu
-        property: "displaySubLevel"
-        value: Regovar.mainMenu.displaySubLevel
+        property: "subLevelPanelDisplayed"
+        value: Regovar.mainMenu.subLevelPanelDisplayed
     }
 
 
 
 
-
-    // Open/Close level 2 according to the selection changed in the mainMenu at the 1st level
     Connections
     {
         target: Regovar.mainMenu
         onSelectedIndexChanged:
         {
-            if (Regovar.mainMenu.model[selectedIndex]["page"] === "")
+            var lvl0 = Regovar.mainMenu.selectedIndex[0];
+            var lvl1 = Regovar.mainMenu.selectedIndex[1];
+            // Check if need to open menu sub level
+            if (Regovar.mainMenu.model[lvl0]["page"] === "")
             {
-                openLevel2();
+                // Open sublevel and select subentry
+                if (lvl1 >= 0)
+                {
+                    openLevel2();
+                }
+                else
+                {
+                    closeLevel2();
+                }
             }
-            else if (Regovar.mainMenu.model[selectedIndex]["page"] === "@close")
+            else if (Regovar.mainMenu.model[lvl0]["page"] === "@close")
             {
                 regovar.close();
             }
@@ -46,34 +56,21 @@ Item
             {
                 closeLevel2();
             }
+
+            previousIndex = Regovar.mainMenu.selectedIndex;
         }
     }
-    // Open/Close level 2 according to the selection changed in the mainMenu at the 1st level
-    Connections
-    {
-        target: Regovar.mainMenu
-        onSelectedSubIndexChanged:
-        {
-            if (Regovar.mainMenu.selectedSubIndex < 0)
-            {
-                closeLevel2();
-            }
-            else
-            {
-                if (Regovar.mainMenu.model[selectedIndex]["page"] === "")
-                {
-                    openLevel2();
-                }
-            }
-        }
-    }
+
+
+
+
     // Display and update submenu for project when project selected
     Connections
     {
         target: regovar
         onCurrentProjectChanged:
         {
-            Regovar.mainMenu.selectedMainIndex = 1 // force selection of the Project section
+            Regovar.mainMenu.selectedIndex = 1 // force selection of the Project section
             openLevel2();
         }
     }
@@ -107,20 +104,23 @@ Item
     // --------------------------------------------------
     function openLevel2()
     {
-        if (Regovar.mainMenu.selectedMainIndex >= 0 && Regovar.mainMenu.selectedMainIndex < Regovar.mainMenu.model.length)
+        var lvl0 = Regovar.mainMenu.selectedIndex[0];
+        var lvl1 = Regovar.mainMenu.selectedIndex[1];
+
+        if (lvl1 >= 0 && previousIndex[1] !== lvl1)
         {
-            Regovar.mainMenu.displaySubLevel = true;
-            Regovar.mainMenu.displaySubLevelCurrent = true;
+            Regovar.mainMenu.subLevelPanelDisplayed = true;
+            Regovar.mainMenu._subLevelPanelDisplayed = true;
             subMenuModel.clear();
-            subMenuModel.append(Regovar.mainMenu.model[Regovar.mainMenu.selectedMainIndex]["sublevel"]);
+            subMenuModel.append(Regovar.mainMenu.model[lvl0].sublevel);
             return true;
         }
         return false;
     }
     function closeLevel2()
     {
-        Regovar.mainMenu.displaySubLevel = false
-        Regovar.mainMenu.displaySubLevelCurrent = false
+        Regovar.mainMenu.subLevelPanelDisplayed = false
+        Regovar.mainMenu._subLevelPanelDisplayed = false
         subMenuModel.clear()
         return true;
     }
@@ -240,14 +240,14 @@ Item
             name: "level0"
             PropertyChanges { target: mainMenu; width: 250}
             PropertyChanges { target: subLevel; width: 0}
-            PropertyChanges { target: mainMenu; displaySubLevel: false}
+            PropertyChanges { target: mainMenu; subLevelPanelDisplayed: false}
         },
         State
         {
             name: "level1"
             PropertyChanges { target: mainMenu; width: 250}
             PropertyChanges { target: subLevel; width: 200}
-            PropertyChanges { target: mainMenu; displaySubLevel: true}
+            PropertyChanges { target: mainMenu; subLevelPanelDisplayed: true}
         },
         State
         {

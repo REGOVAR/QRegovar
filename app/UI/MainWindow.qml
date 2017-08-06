@@ -28,6 +28,19 @@ ApplicationWindow
 
     // Load root's pages of regovar
     property var menuPageMapping: ({})
+
+
+
+    //! Convert MainMenu index into one string key for internal map with qml pages
+    function pageIdxKey(idx)
+    {
+        var key = idx[0];
+        if (idx[1] >= 0)  key += "-" + idx[1];
+        if (idx[2] >= 0)  key += "-" + idx[2];
+
+        return key;
+    }
+
     function buildPages(model, baseIndex)
     {
         for (var idx in model)
@@ -52,67 +65,16 @@ ApplicationWindow
     }
 
 
-    Component.onCompleted:
+    //! Open qml page according to the selected indexes
+    function openPage()
     {
-        buildPages(Regovar.mainMenu.model, "")
-        stack.sourceComponent = menuPageMapping[0]
+        var idx = Regovar.mainMenu.selectedIndex;
+        var mIdx = pageIdxKey(idx);
+        console.log ("open " + mIdx);
+        stack.sourceComponent = menuPageMapping[mIdx];
     }
 
 
-
-    Connections
-    {
-        target: Regovar.mainMenu
-        onSelectedMainIndexChanged:
-        {
-            if (menuPageMapping)
-            {
-                // if there is a page for this entry
-                stack.sourceComponent = menuPageMapping[Regovar.mainMenu.selectedMainIndex];
-            }
-            else
-            {
-                // otherwise, need to load first page of second level
-                Regovar.mainMenu.selectedSubIndex = menuPageMapping[Regovar.mainMenu.selectedMainIndex]["subindex"];
-                stack.sourceComponent = menuPageMapping[Regovar.mainMenu.selectedMainIndex + "-" +Regovar.mainMenu.selectedSubIndex]
-            }
-        }
-    }
-    Connections
-    {
-        target: Regovar.mainMenu
-        onSelectedSubIndexChanged:
-        {
-            console.log ("open " + Regovar.mainMenu.selectedMainIndex + "-" +Regovar.mainMenu.selectedSubIndex)
-            stack.sourceComponent = menuPageMapping[Regovar.mainMenu.selectedMainIndex + "-" +Regovar.mainMenu.selectedSubIndex]
-        }
-    }
-    Connections
-    {
-        target: regovar
-        onCurrentProjectUpdated:
-        {
-            Regovar.mainMenu.selectedSubIndex = 0;
-            stack.sourceComponent = menuPageMapping[Regovar.mainMenu.selectedMainIndex + "-" +Regovar.mainMenu.selectedSubIndex]
-        }
-    }
-
-    Connections
-    {
-        target: regovar
-        onClose:
-        {
-            closePopup.open()
-        }
-    }
-    Connections
-    {
-        target: regovar
-        onError:
-        {
-            errorPopup.open()
-        }
-    }
 
 
 
@@ -163,4 +125,47 @@ ApplicationWindow
         visible: false
     }
 
+
+
+    Component.onCompleted:
+    {
+        buildPages(Regovar.mainMenu.model, "");
+
+        stack.sourceComponent = menuPageMapping[pageIdxKey(Regovar.mainMenu.selectedIndex)];
+    }
+
+
+
+    Connections
+    {
+        target: Regovar.mainMenu
+        onSelectedIndexChanged: openPage();
+    }
+
+//    Connections
+//    {
+//        target: regovar
+//        onCurrentProjectUpdated:
+//        {
+//            Regovar.mainMenu.selectedSubIndex = 0;
+//            stack.sourceComponent = menuPageMapping[Regovar.mainMenu.selectedMainIndex + "-" +Regovar.mainMenu.selectedSubIndex]
+//        }
+//    }
+
+//    Connections
+//    {
+//        target: regovar
+//        onClose:
+//        {
+//            closePopup.open()
+//        }
+//    }
+//    Connections
+//    {
+//        target: regovar
+//        onError:
+//        {
+//            errorPopup.open()
+//        }
+//    }
 }

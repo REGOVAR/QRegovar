@@ -32,39 +32,15 @@ QtObject
     //! Main menu model
     property QtObject mainMenu: QtObject
     {
-        property int selectedMainIndex: 0
-        property int selectedSubIndex: -1
-        property int selectedSubSubIndex: -1
+        //! Menu page index contains the three levels of the menu
+        property var selectedIndex: [0, -1, -1]
 
-        property bool collapseMenu: false
+        property bool menuCollapsed: false
 
-        property bool displaySubLevel: false
-        property bool displaySubLevelCurrent: false // to store current state when need to quickly/temporarly switch the level2 display on mousehover
+        property bool subLevelPanelDisplayed: false
+        property bool _subLevelPanelDisplayed: false // to store current state when need to quickly/temporarly switch the level2 display on mousehover
         
         
-//        property var model:  [
-//            { "icon": "a", "label": qsTr("Welcome"),      "page": "WelcomPage.qml", "sublevel": [], "subindex": -1},
-//            { "icon": "c", "label": qsTr("Project"),      "page": "ProjectPage.qml", "sublevel": [
-//                { "icon": "j", "label": qsTr("Resume"),   "page": "Project/ResumePage.qml", "sublevel": [], "subindex": -1},
-//                { "icon": "H", "label": qsTr("Events"),   "page": "Project/EventsPage.qml", "sublevel": [], "subindex": -1},
-//                { "icon": "b", "label": qsTr("Subjects"), "page": "Project/SubjectsPage.qml", "sublevel": [], "subindex": -1},
-//                { "icon": "I", "label": qsTr("Analyses"), "page": "Project/AnalysesPage.qml", "sublevel": [], "subindex": -1},
-//                { "icon": "O", "label": qsTr("Files"),    "page": "Project/FilesPage.qml", "sublevel": [], "subindex": -1},
-//                { "icon": "d", "label": qsTr("Settings"), "page": "Project/SettingsInformationsPage.qml", "sublevel": [
-//                    { "label": qsTr("Informations"),      "page": "Project/SettingsInformationsPage.qml", "sublevel": []},
-//                    { "label": qsTr("Indicators"),        "page": "Project/SettingsIndicatorsPage.qml", "sublevel": []},
-//                    { "label": qsTr("Sharing"),           "page": "Project/SettingsSharingPage.qml", "sublevel": []},
-//                    ], "subindex": 0}
-//                ], "subindex": -1},
-//            { "icon": "b", "label": qsTr("Subject"),      "page": "SubjectPage.qml",    "sublevel": [], "subindex": -1},
-//            { "icon": "d", "label": qsTr("Settings"),     "page": "SettingsPage.qml",   "sublevel": [], "subindex": -1},
-//            { "icon": "e", "label": qsTr("Help"),         "page": "HelpPage.qml",       "sublevel": [], "subindex": -1},
-//            { "icon": "f", "label": qsTr("About"),        "page": "AboutPage.qml",      "sublevel": [], "subindex": -1},
-//            { "icon": "g", "label": qsTr("Disconnect"),   "page": "DisconnectPage.qml", "sublevel": [], "subindex": -1},
-//            { "icon": "h", "label": qsTr("Close"),        "page": "ClosePage.qml",      "sublevel": [], "subindex": -1},
-//            { "icon": "l", "label": qsTr("DEBUG"),        "page": "Analysis/Filtering/FilteringPage.qml",      "sublevel": [], "subindex": -1}
-//        ]
-
         property var model:  [
             { "icon": "a", "label": qsTr("Welcome"),      "page": "WelcomPage.qml", "sublevel": [], "subindex": -1},
             { "icon": "z", "label": qsTr("Search"),       "page": "", "sublevel": [
@@ -100,17 +76,59 @@ QtObject
         ]
         
         property string mainTitle: model[selectedMainIndex]["label"]
-        onSelectedMainIndexChanged:
+        onSelectedIndexChanged:
         {
-            // When selecting a main entry, Restore selected sublevel
-            selectedSubIndex = model[selectedMainIndex]["subindex"]
+            // Store selected subindexes to be able to restore it next
+            var lvl0 = selectedIndex[0];
+            var lvl1 = selectedIndex[1];
+            var lvl2 = selectedIndex[2];
+            model[lvl0]["subindex"] = lvl1;
+            if (lvl1 >= 0)
+            {
+                model[lvl0]["sublevel"][lvl1]["subindex"] = lvl2;
+            }
+
             // Update main title according to the selected section
-            mainTitle = model[selectedMainIndex]["label"]
+            mainTitle = model[lvl0]["label"];
         }
-        onSelectedSubIndexChanged:
+
+        // Update selectedIndex property according to the model
+        function select(level, index)
         {
-            // Store selected subindex to be able to restore it next
-            model[selectedMainIndex]["subindex"] = selectedSubIndex
+            var lvl0 = -1;
+            var lvl1 = -1;
+            var lvl2 = -1;
+
+            if(level === 0)
+            {
+                lvl0 = index;
+                lvl1 = model[lvl0]["subindex"];
+                if (lvl1 >= 0)
+                {
+                    lvl2 = model[lvl0]["sublevel"][lvl1]["subindex"];
+                }
+            }
+            else if (level === 1)
+            {
+                lvl0 = selectedIndex[0];
+                lvl1 = index;
+                if (lvl1 >= 0)
+                {
+                    lvl2 = model[lvl0]["sublevel"][lvl1]["subindex"];
+                }
+            }
+            else if (level === 2)
+            {
+                lvl0 = selectedIndex[0];
+                lvl1 = selectedIndex[1];
+                lvl2 = index;
+            }
+            else
+            {
+                console.log("Menu Unknow level " + level);
+            }
+
+            selectedIndex = [lvl0, lvl1, lvl2];
         }
     }
 } 

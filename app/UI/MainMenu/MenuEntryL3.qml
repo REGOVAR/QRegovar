@@ -15,28 +15,39 @@ Rectangle
     id: root
     height: 30
     width: parent.width
-    state: "normal"
+    state: indexToState()
 
 
     property alias label: label.text
-    property string currentState: "normal"
-    property int selectedIndex: 0
+    property string currentState: indexToState()
+    property int selectedIndex: -1
 
-    onSelectedIndexChanged: root.currentState = (root.selectedIndex !== index) ? "normal" : "selected"
-    onCurrentStateChanged: root.state = root.currentState
 
-    // bidirectional binding of selectedEntry between view and main model
-    Binding
+    function indexToState()
+    {
+        return (root.selectedIndex !== index) ? "normal" : "selected";
+    }
+
+
+    Component.onCompleted:
+    {
+        root.selectedIndex = Regovar.mainMenu.selectedIndex[2];
+    }
+
+
+    // Update view states only from main model update to avoid binding loop
+    // and inconsistency between views and model
+    Connections
     {
         target: Regovar.mainMenu
-        property: "selectedSubSubIndex"
-        value: root.selectedIndex
-    }
-    Binding
-    {
-        target: root
-        property: "selectedIndex"
-        value: Regovar.mainMenu.selectedSubSubIndex
+        onSelectedIndexChanged:
+        {
+            // When main model change, notify views that index have changed
+            root.selectedIndex = Regovar.mainMenu.selectedIndex[2];
+            // Force update of the state
+            root.currentState = indexToState();
+            root.state = root.currentState;
+        }
     }
 
 
@@ -62,7 +73,11 @@ Rectangle
             root.state = parent.currentState
 
         }
-        onClicked: root.selectedIndex = index
+        onClicked:
+        {
+            // Notify model that entry {index} of the level 1 is selected
+            Regovar.mainMenu.select(2, index);
+        }
     }
 
     states:

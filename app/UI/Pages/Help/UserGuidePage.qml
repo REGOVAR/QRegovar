@@ -1,6 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
-import QtWebView 1.1
+import QtWebView 1.0
 import "../../Regovar"
 import "../../Framework"
 

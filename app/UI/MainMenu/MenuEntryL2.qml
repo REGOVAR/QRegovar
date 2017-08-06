@@ -6,39 +6,50 @@ Rectangle
     id: root
     width: 200
     height: header.height + sublevelList.height
-    state: "normal"
+    state: indexToState()
 
     property alias icon: icon.text
     property alias label: label.text
-    property string currentState: "normal"
-    property int selectedIndex: 0
+    property string currentState: indexToState()
+    property int selectedIndex: -1
     property int sublevelListMaxHeight
 
-    onSelectedIndexChanged: root.currentState = (root.selectedIndex !== index) ? "normal" : ((sublevelModel.count > 0) ? "expanded" : "selected")
-    onCurrentStateChanged: root.state = root.currentState
+
+    function indexToState()
+    {
+        return (root.selectedIndex !== index) ? "normal" : ((sublevelModel.count > 0) ? "expanded" : "selected");
+    }
 
 
 
     Component.onCompleted:
     {
         // Get sublevel if exists
-        sublevelModel.append(Regovar.mainMenu.model[Regovar.mainMenu.selectedMainIndex].sublevel[index].sublevel)
+        var lvl0 = Regovar.mainMenu.selectedIndex[0];
+        var lvl1 = Regovar.mainMenu.selectedIndex[1];
+        var lvl2 = Regovar.mainMenu.selectedIndex[2];
+        sublevelModel.append(Regovar.mainMenu.model[lvl0].sublevel[lvl1].sublevel)
         root.sublevelListMaxHeight = sublevelModel.count * 30 // see MenuEntryL3.height
         sublevelList.height = 0
+        root.selectedIndex = lvl1;
     }
 
-    // bidirectional binding of selectedEntry between view and main model
-    Binding
+    // Update view states only from main model update to avoid binding loop
+    // and inconsistency between views and model
+    Connections
     {
         target: Regovar.mainMenu
-        property: "selectedSubIndex"
-        value: root.selectedIndex
-    }
-    Binding
-    {
-        target: root
-        property: "selectedIndex"
-        value: Regovar.mainMenu.selectedSubIndex
+        onSelectedIndexChanged:
+        {
+            if (root.selectedIndex !== Regovar.mainMenu.selectedIndex[1])
+            {
+                // When main model change, notify views that index have changed
+                root.selectedIndex = Regovar.mainMenu.selectedIndex[1];
+                // Force update of the state
+                root.currentState = indexToState();
+                root.state = root.currentState;
+            }
+        }
     }
 
 
@@ -104,8 +115,8 @@ Rectangle
         }
         onClicked:
         {
-            root.selectedIndex = index
-            Regovar.mainMenu.selectedSubSubIndex= 0
+            // Notify model that entry {index} of the level 1 is selected
+            Regovar.mainMenu.select(1, index);
         }
     }
 
