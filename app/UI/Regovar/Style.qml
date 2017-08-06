@@ -74,6 +74,8 @@ QtObject
     property QtObject frontColor: QtObject
     {
         property color normal: "#000000"
+        property color disable: "#999999"
+
         property color info: "#6887ff"
         property color success : "#6cc788"
         property color warning : "#f77a99"

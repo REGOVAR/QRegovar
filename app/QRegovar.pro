@@ -147,7 +147,8 @@ DISTFILES += \
     UI/Pages/Analysis/Filtering/SelectionsPage.qml \
     UI/Pages/Analysis/Filtering/SettingsInformationsPage.qml \
     UI/Framework/SwipeView.qml \
-    UI/Pages/Help/AboutLicense.qml
+    UI/Pages/Help/AboutLicense.qml \
+    UI/Framework/TextArea.qml
 
 
 

@@ -21,14 +21,15 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Analysis settings")
-            font.pixelSize: 20
-            font.weight: Font.Black
+            text: regovar.currentFilteringAnalysis.name
+            font.pixelSize: 22
+            color: Regovar.theme.frontColor.normal
+            verticalAlignment: Text.AlignVCenter
         }
     }
 
 
-    Rectangle
+    GridLayout
     {
         anchors.top : header.bottom
         anchors.left: root.left
@@ -36,13 +37,120 @@ Rectangle
         anchors.bottom: root.bottom
         anchors.margins: 10
 
-        color: "transparent"
+        rows: 4
+        columns: 2
+        columnSpacing: 30
+        rowSpacing: 10
+
 
         Text
         {
-            anchors.centerIn: parent
-            text: "Basic settings (name, ref, comment, status, ...)"
-            font.pointSize: 24
+            text: qsTr("Informations")
+            color: Regovar.theme.primaryColor.back.dark
+            font.pixelSize: Regovar.theme.font.size.header
+            font.family: Regovar.theme.font.familly
+            verticalAlignment: Text.AlignVCenter
+            height: 35
+        }
+
+
+        Rectangle
+        {
+            height: 60
+            Layout.fillWidth: true
+
+            color: Regovar.theme.boxColor.back
+            border.color: Regovar.theme.boxColor.border
+            border.width: 1
+
+            GridLayout
+            {
+                anchors.fill: parent
+                anchors.margins: 10
+
+                rows: 2
+                columns: 3
+                rowSpacing: 10
+
+                Text
+                {
+                    text: qsTr("Referencial")
+                    color: Regovar.theme.frontColor.normal
+                    verticalAlignment: Text.AlignVCenter
+                    height: 35
+                }
+                Text
+                {
+                    text: qsTr("Status")
+                    color: Regovar.theme.frontColor.normal
+                    verticalAlignment: Text.AlignVCenter
+                    height: 35
+                }
+                Text
+                {
+                    text: qsTr("Update")
+                    color: Regovar.theme.frontColor.normal
+                    verticalAlignment: Text.AlignVCenter
+                    height: 35
+                }
+                Text
+                {
+                    Layout.fillWidth: true
+                    text: "Hg19" // regovar.currentFilteringAnalysis.refName
+                    color: Regovar.theme.frontColor.disable
+                    verticalAlignment: Text.AlignVCenter
+                }
+                Text
+                {
+                    Layout.fillWidth: true
+                    text: regovar.currentFilteringAnalysis.status
+                    color: Regovar.theme.frontColor.disable
+                    verticalAlignment: Text.AlignVCenter
+                }
+                Text
+                {
+                    Layout.fillWidth: true
+                    text: regovar.currentFilteringAnalysis.lastUpdate.toString()
+                    color: Regovar.theme.frontColor.disable
+                }
+            }
+        }
+
+
+
+
+        Text
+        {
+            text: qsTr("Name")
+            color: Regovar.theme.primaryColor.back.dark
+            font.pixelSize: Regovar.theme.font.size.header
+            font.family: Regovar.theme.font.familly
+            verticalAlignment: Text.AlignVCenter
+            height: 35
+        }
+        TextField
+        {
+            Layout.fillWidth: true
+            text: regovar.currentFilteringAnalysis.name
+            placeholderText: qsTr("The name of the analysis")
+        }
+
+        Text
+        {
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+            text: qsTr("Comment")
+            color: Regovar.theme.primaryColor.back.dark
+            font.pixelSize: Regovar.theme.font.size.header
+            font.family: Regovar.theme.font.familly
+            verticalAlignment: Text.AlignVCenter
+            height: 35
+        }
+        TextArea
+        {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            text: regovar.currentFilteringAnalysis.comment
         }
     }
+
 }

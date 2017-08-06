@@ -13,7 +13,10 @@ class ResultsTreeModel;
 class FilteringAnalysis : public Analysis
 {
     Q_OBJECT
-    Q_PROPERTY(LoadingStatus status READ status NOTIFY statusChanged)
+
+    Q_PROPERTY(QString refName READ refName)
+
+    Q_PROPERTY(QString status READ status NOTIFY statusChanged)
     Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsUpdated)
     Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterUpdated)
     Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsUpdated)
@@ -36,9 +39,11 @@ public:
     explicit FilteringAnalysis(QObject *parent = nullptr);
 
     // Getters
-    inline LoadingStatus status() { return mUIStatus; }
-    inline AnnotationsTreeModel* annotations() { return mAnnotations; }
     inline QString filter() { return mFilter; }
+    inline QString refName() { return mRefName; }
+    inline QString status() { return mStatus; }
+    inline LoadingStatus loadingStatus() { return mLoadingStatus; }
+    inline AnnotationsTreeModel* annotations() { return mAnnotations; }
     inline QStringList fields() { return mFields; }
     inline ResultsTreeModel* results() { return mResults; }
     inline QuickFilterModel* quickfilters() { return mQuickFilters; }
@@ -58,7 +63,8 @@ public:
 
 Q_SIGNALS:
     void isLoading();
-    void statusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
+    void statusChanged();
+    void loadingStatusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
     void annotationsUpdated();
     void filterUpdated();
     void fieldsUpdated();
@@ -81,7 +87,8 @@ private:
     QList<Sample*> mSamples;
     bool mSampleColumnDisplayed;
 
-    LoadingStatus mUIStatus;
+    QString mStatus; // status of the analysis (server side)
+    LoadingStatus mLoadingStatus; // internal (UI) status used to track and coordinates asynchrone initialisation of the analysis
     ResultsTreeModel* mResults;
     AnnotationsTreeModel* mAnnotations;
     QuickFilterModel* mQuickFilters;

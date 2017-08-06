@@ -9,6 +9,7 @@ TextField
     placeholderText: qsTr("Enter description")
     font.pixelSize: Regovar.theme.font.size.control
     font.family: Regovar.theme.font.familly
+    color: Regovar.theme.frontColor.normal
 
     background: Rectangle
     {

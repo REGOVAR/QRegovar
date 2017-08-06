@@ -10,10 +10,10 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
     mResults = new ResultsTreeModel(this);
     mAnnotations = new AnnotationsTreeModel(this);
     mQuickFilters = new QuickFilterModel(this);
-    mUIStatus = empty;
+    mLoadingStatus = empty;
 
 
-    connect(this, SIGNAL(statusChanged(LoadingStatus,LoadingStatus)),
+    connect(this, SIGNAL(loadingStatusChanged(LoadingStatus,LoadingStatus)),
             this, SLOT(asynchLoading(LoadingStatus,LoadingStatus)));
 }
 
@@ -22,10 +22,14 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
 {
     // load basic data from json
     // TODO
-    mId = json["id"].toInt();
-    mName = json["name"].toString();
+    setId(json["id"].toInt());
+    setName(json["name"].toString());
+    setComment(json["comment"].toString());
+    setType("Dynamic filtering analysis");
+    setLastUpdate(QDateTime::fromString(json["update_date"].toString(), Qt::ISODate));
     mRefId = json["ref_id"].toInt();
     mRefName = json["ref_name"].toString();
+    mStatus = json["status"].toString();
 
     // Retrieve samples
     mSamples.clear();
@@ -57,8 +61,8 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     // first : need to load alls annotations available accdording to the referencial and
     // then : need to load result (annotation must be already loaded)
     // Chaining of loading step is done thanks to signals (see asynchLoading slot)
-    emit statusChanged(mUIStatus, loadingAnnotations);
-    mUIStatus = loadingAnnotations;
+    emit loadingStatusChanged(mLoadingStatus, loadingAnnotations);
+    mLoadingStatus = loadingAnnotations;
 
     return true;
 }
@@ -94,21 +98,21 @@ void FilteringAnalysis::loadAnnotations()
             if (mAnnotations->fromJson(json["data"].toObject()))
             {
                 qDebug() << "Filtering analysis init : annotations data loaded";
-                emit statusChanged(mUIStatus, LoadingResults);
-                mUIStatus = LoadingResults;
+                emit loadingStatusChanged(mLoadingStatus, LoadingResults);
+                mLoadingStatus = LoadingResults;
             }
             else
             {
                 qDebug() << "Filtering analysis init : Failed to load annotation data for" << mRefName << mRefId << "reference";
-                emit statusChanged(mUIStatus, error);
-                mUIStatus = error;
+                emit loadingStatusChanged(mLoadingStatus, error);
+                mLoadingStatus = error;
             }
         }
         else
         {
             regovar->error(json);
-            emit statusChanged(mUIStatus, error);
-            mUIStatus = error;
+            emit loadingStatusChanged(mLoadingStatus, error);
+            mLoadingStatus = error;
         }
         req->deleteLater();
     });
@@ -129,21 +133,21 @@ void FilteringAnalysis::loadResults()
             if (mResults->fromJson(json["data"].toObject()))
             {
                 qDebug() << "Filtering analysis init : results loaded";
-                emit statusChanged(mUIStatus, ready);
-                mUIStatus = ready;
+                emit loadingStatusChanged(mLoadingStatus, ready);
+                mLoadingStatus = ready;
             }
             else
             {
                 qDebug() << "Filtering analysis init : Failed to load result";
-                emit statusChanged(mUIStatus, error);
-                mUIStatus = error;
+                emit loadingStatusChanged(mLoadingStatus, error);
+                mLoadingStatus = error;
             }
         }
         else
         {
             regovar->error(json);
-            emit statusChanged(mUIStatus, error);
-            mUIStatus = error;
+            emit loadingStatusChanged(mLoadingStatus, error);
+            mLoadingStatus = error;
         }
         req->deleteLater();
     });
