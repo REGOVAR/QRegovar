@@ -105,7 +105,7 @@ Rectangle
         onEditingFinished:
         {
             regovar.searchRequest = text;
-            // Regovar.mainMenu.selectedIndex=[1,0,-1];
+            Regovar.menuModel.selectedIndex=[1,0,-1];
         }
 
         placeholderText: qsTr("Search anything, project, sample, phenotype, analysis, variant, report, ..")

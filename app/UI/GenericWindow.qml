@@ -16,6 +16,8 @@ ApplicationWindow
     //! Main model
     property MenuModel menuModel
 
+    property var previousIndex : [0,-1,-1]
+
 
     MainMenu
     {
@@ -34,7 +36,7 @@ ApplicationWindow
         }
     }
 
-    Loader
+    Item
     {
         id: stack
         z:0
@@ -42,22 +44,6 @@ ApplicationWindow
         anchors.bottom: parent.bottom
         anchors.left: mainMenu.right
         anchors.right: parent.right
-
-        onSourceComponentChanged:
-        {
-            anim.start()
-        }
-
-        NumberAnimation
-        {
-            id: anim
-            target: stack
-            property: "opacity"
-            easing.type: Easing.OutQuad
-            from: 0
-            to: 1
-            duration: 250
-        }
     }
 
     CloseDialog
@@ -89,8 +75,9 @@ ApplicationWindow
             if (model[idx].page !== "" && model[idx].page[0] !== "@")
             {
                 var comp = Qt.createComponent("Pages/" + model[idx].page);
+                var elmt = comp.createObject(stack, {"visible": false});
                 var uid = baseIndex+idx
-                pages[uid] = comp;
+                pages[uid] = elmt;
                 console.log ("load " + uid + " : Pages/" + model[idx].page)
             }
             else
@@ -112,29 +99,16 @@ ApplicationWindow
     {
         if (root.menuPageMapping !== undefined)
         {
-            var idx = menuModel.selectedIndex;
-            var mIdx = pageIdxKey(idx);
-            console.log ("open " + mIdx);
-            stack.sourceComponent = root.menuPageMapping[mIdx];
+            var newIdx = pageIdxKey(menuModel.selectedIndex);
+            var oldIdx = pageIdxKey(previousIndex);
+            console.log ("close " + oldIdx + " open " + newIdx);
+            root.menuPageMapping[oldIdx].visible = false;
+            root.menuPageMapping[newIdx].visible = true;
+            root.menuPageMapping[newIdx].anchors.fill = stack;
+
+            previousIndex = menuModel.selectedIndex;
         }
     }
-
-
-
-
-
-
-
-
-
-//    Component.onCompleted:
-//    {
-//        if (menuModel !== undefined)
-//        {
-//            buildPages(menuModel.model, "");
-//            stack.sourceComponent = root.menuPageMapping[pageIdxKey(menuModel.mainMenu.selectedIndex)];
-//        }
-//    }
 
     onMenuModelChanged:
     {
@@ -143,7 +117,7 @@ ApplicationWindow
             var pages = {};
             buildPages(pages, menuModel.model, "");
             root.menuPageMapping = pages;
-            stack.sourceComponent = root.menuPageMapping[pageIdxKey(menuModel.selectedIndex)];
+            openPage();
         }
     }
 }
