@@ -147,7 +147,7 @@ Rectangle
                     font.pixelSize: 22
                     font.family: Regovar.theme.font.familly
                     color: Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.verticalCenter
+                    verticalAlignment: Text.AlignVCenter
                     height: 30
                     text: qsTr("+ New project")
                 }
@@ -157,7 +157,7 @@ Rectangle
                     font.pixelSize: 22
                     font.family: Regovar.theme.font.familly
                     color: Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.verticalCenter
+                    verticalAlignment: Text.AlignVCenter
                     height: 30
                     text: qsTr("Last projects")
                 }
@@ -228,7 +228,7 @@ Rectangle
                     font.pixelSize: 22
                     font.family: Regovar.theme.font.familly
                     color: Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.verticalCenter
+                    verticalAlignment: Text.AlignVCenter
                     height: 30
                     text: qsTr("+ New analysis")
                 }
@@ -238,7 +238,7 @@ Rectangle
                     font.pixelSize: 22
                     font.family: Regovar.theme.font.familly
                     color: Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.verticalCenter
+                    verticalAlignment: Text.AlignVCenter
                     height: 30
                     text: qsTr("Last analysis")
                 }
@@ -311,7 +311,7 @@ Rectangle
                     font.pixelSize: 22
                     font.family: Regovar.theme.font.familly
                     color: Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.verticalCenter
+                    verticalAlignment: Text.AlignVCenter
                     height: 30
                     text: qsTr("+ New subject")
                 }
@@ -321,7 +321,7 @@ Rectangle
                     font.pixelSize: 22
                     font.family: Regovar.theme.font.familly
                     color: Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.verticalCenter
+                    verticalAlignment: Text.AlignVCenter
                     height: 30
                     text: qsTr("Last subjects")
                 }
@@ -396,7 +396,7 @@ Rectangle
                     font.pixelSize: 22
                     font.family: Regovar.theme.font.familly
                     color: Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.verticalCenter
+                    verticalAlignment: Text.AlignVCenter
                     height: 30
                     text: qsTr("Last events")
                 }

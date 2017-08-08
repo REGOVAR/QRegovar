@@ -174,8 +174,8 @@ Rectangle
 //        }
 
         var component = Qt.createComponent("../../AnalysisWindow.qml");
-        Regovar.openAnalysisWindows = component.createObject(root);
-        Regovar.openAnalysisWindows.show();
+        var win = component.createObject();
+        win.show();
 
 
 

@@ -1,26 +1,15 @@
 import QtQuick 2.7
 import QtQuick.Window 2.3
 
-Window
+import "Regovar"
+
+GenericWindow
 {
     id: root
-    visible: true
-    title: "Analysis - My analysis"
     width: 800
     height: 600
 
-    Rectangle
-    {
+    menuModel: RegovarAnalysis{}
+    title: mainModel.title
 
-        anchors.fill: parent
-
-        color: "lightGrey"
-
-        Text {
-
-            anchors.centerIn: parent
-
-            text: "My New Window"
-        }
-    }
 }

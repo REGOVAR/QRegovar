@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.2
+
 import "../Regovar"
 
 Item
@@ -7,75 +8,72 @@ Item
     id: mainMenu
     state: "level0"
 
+    property MenuModel model
+
     property var previousIndex: [0, -1,-1]
+    property var selectedIndex
 
 
     property bool subLevelPanelDisplayed: false
     onSubLevelPanelDisplayedChanged: mainMenu.state = mainMenu.subLevelPanelDisplayed ? "level1" : "level0"
-    Binding
+
+
+    onModelChanged:
     {
-        target: Regovar.mainMenu
-        property: "subLevelPanelDisplayed"
-        value: mainMenu.subLevelPanelDisplayed
-    }
-    Binding
-    {
-        target: mainMenu
-        property: "subLevelPanelDisplayed"
-        value: Regovar.mainMenu.subLevelPanelDisplayed
-    }
-
-
-
-
-    Connections
-    {
-        target: Regovar.mainMenu
-        onSelectedIndexChanged:
+        if (model !== undefined)
         {
-            var lvl0 = Regovar.mainMenu.selectedIndex[0];
-            var lvl1 = Regovar.mainMenu.selectedIndex[1];
-            // Check if need to open menu sub level
-            if (Regovar.mainMenu.model[lvl0]["page"] === "")
+            // Properties binding with the model... not working :(
+//            mainMenu.subLevelPanelDisplayed = Qt.binding(function()
+//            {
+//                return model.subLevelPanelDisplayed;
+//            });
+//            mainMenu.selectedIndex = Qt.binding(function()
+//            {
+//                return model.selectedIndex;
+//            });
+
+            // signals connections with the model
+            model.onSelectedIndexChanged.connect(function()
             {
-                // Open sublevel and select subentry
-                if (lvl1 >= 0)
-                {
-                    openLevel2();
-                }
-                else
-                {
-                    closeLevel2();
-                }
-            }
-            else if (Regovar.mainMenu.model[lvl0]["page"] === "@close")
+                mainMenu.selectedIndex = model.selectedIndex;
+            });
+            model.onSubLevelPanelDisplayedChanged.connect(function()
             {
-                regovar.close();
+                mainMenu.subLevelPanelDisplayed = model.subLevelPanelDisplayed;
+            });
+
+            menuModel.append(model.model);
+        }
+    }
+
+    onSelectedIndexChanged:
+    {
+        var lvl0 = model.selectedIndex[0];
+        var lvl1 = model.selectedIndex[1];
+        // Check if need to open menu sub level
+        if (model.model[lvl0]["page"] === "")
+        {
+            // Open sublevel and select subentry
+            if (lvl1 >= 0)
+            {
+                openLevel2();
             }
             else
             {
                 closeLevel2();
             }
-
-            previousIndex = Regovar.mainMenu.selectedIndex;
         }
-    }
-
-
-
-
-    // Display and update submenu for project when project selected
-    Connections
-    {
-        target: regovar
-        onCurrentProjectChanged:
+        else if (model.model[lvl0]["page"] === "@close")
         {
-            Regovar.mainMenu.selectedIndex = 1 // force selection of the Project section
-            openLevel2();
+            regovar.close();
         }
+        else
+        {
+            closeLevel2();
+        }
+
+        previousIndex = model.selectedIndex;
     }
-
-
 
 
 
@@ -89,7 +87,6 @@ Item
     ListModel
     {
         id: menuModel
-        Component.onCompleted: { menuModel.append(Regovar.mainMenu.model)}
     }
 
     ListModel
@@ -104,23 +101,24 @@ Item
     // --------------------------------------------------
     function openLevel2()
     {
-        var lvl0 = Regovar.mainMenu.selectedIndex[0];
-        var lvl1 = Regovar.mainMenu.selectedIndex[1];
+        var lvl0 = model.selectedIndex[0];
+        var lvl1 = model.selectedIndex[1];
 
         if (lvl1 >= 0 && previousIndex[1] !== lvl1)
         {
-            Regovar.mainMenu.subLevelPanelDisplayed = true;
-            Regovar.mainMenu._subLevelPanelDisplayed = true;
+            model.subLevelPanelDisplayed = true;
+            model._subLevelPanelDisplayed = true;
             subMenuModel.clear();
-            subMenuModel.append(Regovar.mainMenu.model[lvl0].sublevel);
+            subMenuModel.append(model.model[lvl0].sublevel);
             return true;
         }
         return false;
     }
     function closeLevel2()
     {
-        Regovar.mainMenu.subLevelPanelDisplayed = false
-        Regovar.mainMenu._subLevelPanelDisplayed = false
+
+        model.subLevelPanelDisplayed = false
+        model._subLevelPanelDisplayed = false
         subMenuModel.clear()
         return true;
     }
@@ -150,6 +148,7 @@ Item
             MenuEntryL1
             {
                 id: menuItem
+                model: mainMenu.model
                 icon: menuModel.get(index).icon
                 label: menuModel.get(index).label
             }
@@ -205,7 +204,7 @@ Item
                     verticalAlignment: Text.AlignVCenter
                     font.bold: true
                     font.pixelSize: 22
-                    text : Regovar.mainMenu.mainTitle
+                    text : model.mainTitle
                     color: Regovar.theme.primaryColor.back.dark
                 }
 
@@ -225,8 +224,9 @@ Item
                 MenuEntryL2
                 {
                     id: menu2Item
-                    icon: subMenuModel.get(index).icon
-                    label: subMenuModel.get(index).label
+                    model: mainMenu.model
+                    icon:  (subMenuModel.get(index) !== undefined) ? subMenuModel.get(index).icon : ""
+                    label: (subMenuModel.get(index) !== undefined) ? subMenuModel.get(index).label : ""
                 }
             }
         }

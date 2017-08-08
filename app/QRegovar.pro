@@ -128,7 +128,6 @@ DISTFILES += \
     UI/Pages/Browse/AnalysesPage.qml \
     UI/Pages/Browse/EventsPage.qml \
     UI/Pages/Browse/FilesPage.qml \
-    UI/Pages/Browse/OmnisearchPage.qml \
     UI/Pages/Browse/ProjectsPage.qml \
     UI/Pages/Browse/SubjectsPage.qml \
     UI/Pages/Project/ProjectsPage.qml \
@@ -149,7 +148,11 @@ DISTFILES += \
     UI/Framework/SwipeView.qml \
     UI/Pages/Help/AboutLicense.qml \
     UI/Framework/TextArea.qml \
-    UI/AnalysisWindow.qml
+    UI/AnalysisWindow.qml \
+    UI/Pages/Browse/SearchPage.qml \
+    UI/Regovar/RegovarAnalysis.qml \
+    UI/MainMenu/MenuModel.qml \
+    UI/GenericWindow.qml
 
 
 

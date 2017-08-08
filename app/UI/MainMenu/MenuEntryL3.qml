@@ -1,4 +1,5 @@
 import QtQuick 2.7
+
 import "../Regovar"
 
 
@@ -21,6 +22,7 @@ Rectangle
     property alias label: label.text
     property string currentState: indexToState()
     property int selectedIndex: -1
+    property MenuModel model
 
 
     function indexToState()
@@ -31,7 +33,7 @@ Rectangle
 
     Component.onCompleted:
     {
-        root.selectedIndex = Regovar.mainMenu.selectedIndex[2];
+        root.selectedIndex = model.selectedIndex[2];
     }
 
 
@@ -39,11 +41,11 @@ Rectangle
     // and inconsistency between views and model
     Connections
     {
-        target: Regovar.mainMenu
+        target: model
         onSelectedIndexChanged:
         {
             // When main model change, notify views that index have changed
-            root.selectedIndex = Regovar.mainMenu.selectedIndex[2];
+            root.selectedIndex = model.selectedIndex[2];
             // Force update of the state
             root.currentState = indexToState();
             root.state = root.currentState;
@@ -76,7 +78,7 @@ Rectangle
         onClicked:
         {
             // Notify model that entry {index} of the level 1 is selected
-            Regovar.mainMenu.select(2, index);
+            model.select(2, index);
         }
     }
 
