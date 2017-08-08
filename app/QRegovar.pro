@@ -150,7 +150,6 @@ DISTFILES += \
     UI/Framework/TextArea.qml \
     UI/AnalysisWindow.qml \
     UI/Pages/Browse/SearchPage.qml \
-    UI/Regovar/RegovarAnalysis.qml \
     UI/MainMenu/MenuModel.qml \
     UI/GenericWindow.qml
 

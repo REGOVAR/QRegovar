@@ -160,7 +160,8 @@ Rectangle
     }
 
 
-
+    property var component
+    property var name: value
 
     /// Retrive model of the selected project in the treeview and set the Regovar.currentProject with it.
     function openSelectedProject()
@@ -172,14 +173,7 @@ Rectangle
 //            console.log("current index: " + browser.currentIndex + " => id: " + id)
 //            regovar.loadProject(id);
 //        }
-
-        var component = Qt.createComponent("../../AnalysisWindow.qml");
-        var win = component.createObject();
-        win.show();
-
-
-
-
+        regovar.openAnalysis(5);
 
 
 //        var req = new XMLHttpRequest();
@@ -200,5 +194,4 @@ Rectangle
 //        req.open("GET", url, true);
 //        req.send(null);
     }
-
 }

@@ -45,6 +45,17 @@ QtObject
                 { "icon": "b", "label": qsTr("Subjects"), "page": "Browse/SubjectsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "H", "label": qsTr("Events"),   "page": "Browse/EventsPage.qml", "sublevel": [], "subindex": -1}
                 ], "subindex": 0},
+            { "icon": "c", "label": qsTr("Project"),      "page": "", "sublevel": [
+                { "icon": "c", "label": qsTr("Browse"),   "page": "Browse/ProjectsPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "6", "label": "My project", "page": "", "sublevel": [
+                    { "label": qsTr("Resume"),       "page": "Project/ResumePage.qml", "sublevel": []},
+                    { "label": qsTr("Events"),       "page": "Project/EventsPage.qml", "sublevel": []},
+                    { "label": qsTr("Subjects"),     "page": "Project/SubjectsPage.qml", "sublevel": []},
+                    { "label": qsTr("Analyses"),     "page": "Project/AnalysesPage.qml", "sublevel": []},
+                    { "label": qsTr("Files"),        "page": "Project/FilesPage.qml", "sublevel": []},
+                    { "label": qsTr("Settings"),     "page": "Project/SettingsPage.qml", "sublevel": []}
+                    ], "subindex": 0},
+                ], "subindex": 0},
             { "icon": "d", "label": qsTr("Settings"),     "page": "",   "sublevel": [
                 { "icon": "q", "label": qsTr("Panel"),    "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "L", "label": qsTr("Pipeline"), "page": "Settings/PipesPage.qml", "sublevel": [], "subindex": -1},

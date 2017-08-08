@@ -4,6 +4,7 @@
 #include <QSettings>
 #include <QNetworkReply>
 #include <QAuthenticator>
+#include <QQmlApplicationEngine>
 #include "project/projectstreemodel.h"
 #include "project/project.h"
 #include "file/tusuploader.h"
@@ -52,7 +53,7 @@ public:
     // Setters
     inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlUpdated(); }
     inline void setSearchRequest(QString searchRequest) { mSearchRequest = searchRequest; emit searchRequestUpdated(); }
-
+    inline void setQmlEngine (QQmlApplicationEngine* engine) { mQmlEngine = engine; }
 
     // Methods
     Q_INVOKABLE void enqueueUploadFile(QList<QString> filesPaths);
@@ -60,6 +61,7 @@ public:
     Q_INVOKABLE void close();
     Q_INVOKABLE void disconnectUser();
     Q_INVOKABLE void quit();
+    Q_INVOKABLE void openAnalysis(int analysisId);
 
 public Q_SLOTS:
 //    void login(QString& login, QString& password);
@@ -114,6 +116,10 @@ private:
     TusUploader * mUploader;
     //! Filtering analysis
     FilteringAnalysis* mCurrentFilteringAnalysis;
+
+
+    //! We need ref to the QML engine to create/open new windows for Analysis
+    QQmlApplicationEngine* mQmlEngine;
 
 };
 

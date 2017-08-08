@@ -44,7 +44,7 @@ void Regovar::init()
     emit currentProjectUpdated();
 
     // DEBUG
-    loadAnalysis(4);
+    loadAnalysis(5);
 }
 
 
@@ -198,6 +198,44 @@ void Regovar::error(QJsonObject error)
     qDebug() << "ERROR Server side [" << error["code"].toString() << "]" << error["msg"].toString();
     emit onError(error["code"].toString(), error["msg"].toString());
 }
+
+#include <QQmlContext>
+#include <QQuickWindow>
+#include <QQuickItem>
+#include <QQmlComponent>
+
+void Regovar::openAnalysis(int analysisId)
+{
+    // Create new QML window
+    QDir dir = QDir::currentPath();
+    QString file = dir.filePath("UI/AnalysisWindow.qml");
+    QUrl url = QUrl::fromLocalFile(file);
+    QQmlComponent *c = new QQmlComponent(mQmlEngine, url, QQmlComponent::PreferSynchronous);
+    QObject* o = c->create();
+    QQuickWindow *i = qobject_cast<QQuickWindow*>(o);
+    QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
+    i->setVisible(true);
+    i->setProperty("title", QString("My analysis n°%1 - Regovar").arg(analysisId));
+    QObject* root = mQmlEngine->rootObjects()[0];
+    QQuickWindow* rootWin = qobject_cast<QQuickWindow*>(root);
+    if (!rootWin)
+    {
+        qFatal("Error: Your root item has to be a window.");
+    }
+    i->setParent(0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 void Regovar::login(QString& login, QString& password)

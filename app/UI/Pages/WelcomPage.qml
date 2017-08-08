@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
+
 import "../Framework"
 import "../Regovar"
 
@@ -47,7 +48,7 @@ Rectangle
             color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
 
-            text: "Olivier Dedolo"
+            text: "Olivier Dodelo"
         }
 
         Text
@@ -104,8 +105,11 @@ Rectangle
 
         onEditingFinished:
         {
-            regovar.searchRequest = text;
-            Regovar.menuModel.selectedIndex=[1,0,-1];
+            if (text != "" && root.visible)
+            {
+                regovar.searchRequest = text;
+                Regovar.menuModel.selectedIndex=[1,0,-1];
+            }
         }
 
         placeholderText: qsTr("Search anything, project, sample, phenotype, analysis, variant, report, ..")

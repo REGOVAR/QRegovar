@@ -1,5 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
+
+
 import "../../Regovar"
 import "../../Framework"
 
@@ -38,11 +40,30 @@ Rectangle
 
         color: "transparent"
 
-        Text
+        ColumnLayout
         {
-            anchors.centerIn: parent
-            text: "Settings of the regovar client (language, theme, ...)"
-            font.pointSize: 24
+            anchors.fill: parent
+
+            Text
+            {
+                text: "TITLE - Title"
+                font.pixelSize: Regovar.theme.font.size.title
+            }
+            Text
+            {
+                text: "HEADER - Header"
+                font.pixelSize: Regovar.theme.font.size.header
+            }
+            Text
+            {
+                text: "CONTOL - Control"
+                font.pixelSize: Regovar.theme.font.size.control
+            }
+            Text
+            {
+                text: "CONTENT - Content"
+                font.pixelSize: Regovar.theme.font.size.content
+            }
         }
     }
 }

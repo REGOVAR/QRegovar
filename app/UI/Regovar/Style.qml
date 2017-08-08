@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import QtQuick.Window 2.3
 
 QtObject
 {
@@ -18,9 +19,17 @@ QtObject
         property string familly : "Sans"
         property QtObject size: QtObject
         {
-            property int header : 16
-            property int control : 12
-            property int content : 11
+            property int title : 5 * Screen.pixelDensity
+            property int header : 4 * Screen.pixelDensity
+            property int control : 3 * Screen.pixelDensity
+            property int content : 2.5 * Screen.pixelDensity
+        }
+        property QtObject boxSize: QtObject
+        {
+            property int title : 5 * Screen.pixelDensity * 2
+            property int header : 4 * Screen.pixelDensity * 2
+            property int control : 3 * Screen.pixelDensity * 2
+            property int content : 2.5 * Screen.pixelDensity * 2
          }
     }
 
