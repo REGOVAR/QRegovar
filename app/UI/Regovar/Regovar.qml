@@ -23,6 +23,9 @@ QtObject
 //    }
 
 
+    //! Collection of sub windows
+    property var openAnalysisWindows;
+
     //! The theme applied to the UI
     property Style theme: Style {}
 

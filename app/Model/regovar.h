@@ -26,6 +26,7 @@ class Regovar : public QObject
     Q_OBJECT
 
     Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlUpdated)
+    Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestUpdated)
     Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewUpdated)
     Q_PROPERTY(FilesTreeModel* remoteFilesTreeView READ remoteFilesTreeView NOTIFY remoteFilesTreeViewUpdated)
     Q_PROPERTY(Project* currentProject READ currentProject  NOTIFY currentProjectUpdated)
@@ -41,6 +42,7 @@ public:
 
     // Accessors
     inline QUrl& serverUrl() { return mApiRootUrl; }
+    inline QString searchRequest() { return mSearchRequest; }
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
     inline FilesTreeModel* remoteFilesTreeView() const { return mRemoteFilesTreeView; }
     inline Project* currentProject() const { return mCurrentProject; }
@@ -49,6 +51,7 @@ public:
 
     // Setters
     inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlUpdated(); }
+    inline void setSearchRequest(QString searchRequest) { mSearchRequest = searchRequest; emit searchRequestUpdated(); }
 
 
     // Methods
@@ -74,6 +77,7 @@ Q_SIGNALS:
     void loginSuccess();
     void loginFailed();
     void logoutSuccess();
+    void searchRequestUpdated();
     void serverUrlUpdated();
     void projectsTreeViewUpdated();
     void remoteFilesTreeViewUpdated();
@@ -96,6 +100,10 @@ private:
     QUrl mApiRootUrl;
     //! The current user of the application
     // UserModel * mUser;
+    //! Search request and results
+    QString mSearchRequest;
+    QStringList* mSearchResult;
+
     //! The model of the projects browser treeview
     ProjectsTreeModel* mProjectsTreeView;
     //! The model of the current project loaded

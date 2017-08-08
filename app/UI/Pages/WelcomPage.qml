@@ -100,6 +100,13 @@ Rectangle
         anchors.margins: 100
         anchors.topMargin: 50
 
+        Component.onCompleted: text = regovar.searchRequest
+
+        onEditingFinished:
+        {
+            regovar.searchRequest = text;
+            // Regovar.mainMenu.selectedIndex=[1,0,-1];
+        }
 
         placeholderText: qsTr("Search anything, project, sample, phenotype, analysis, variant, report, ..")
         focus: true
@@ -159,10 +166,7 @@ Rectangle
                 {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-
-                    color: Regovar.theme.boxColor.back
-                    border.width: 1
-                    border.color: Regovar.theme.boxColor.border
+                    color: "transparent"
 
                     ColumnLayout
                     {
@@ -243,10 +247,7 @@ Rectangle
                 {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-
-                    color: Regovar.theme.boxColor.back
-                    border.width: 1
-                    border.color: Regovar.theme.boxColor.border
+                    color: "transparent"
 
                     ColumnLayout
                     {
@@ -329,10 +330,7 @@ Rectangle
                 {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-
-                    color: Regovar.theme.boxColor.back
-                    border.width: 1
-                    border.color: Regovar.theme.boxColor.border
+                    color: "transparent"
 
                     ColumnLayout
                     {
@@ -407,10 +405,7 @@ Rectangle
                 {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-
-                    color: "transparent" // Regovar.theme.boxColor.back
-//                    border.width: 1
-//                    border.color: Regovar.theme.boxColor.border
+                    color: "transparent"
 
                     ColumnLayout
                     {

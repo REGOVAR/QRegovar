@@ -165,10 +165,20 @@ Rectangle
     /// Retrive model of the selected project in the treeview and set the Regovar.currentProject with it.
     function openSelectedProject()
     {
-        var id = regovar.projectsTreeView.data(browser.currentIndex, 0).id
-        console.log("current index: " + browser.currentIndex + " => id: " + id)
+//        var item = regovar.projectsTreeView.data(browser.currentIndex, 0);
+//        if (item !== undefined)
+//        {
+//            var id = regovar.projectsTreeView.data(browser.currentIndex, 0).id
+//            console.log("current index: " + browser.currentIndex + " => id: " + id)
+//            regovar.loadProject(id);
+//        }
 
-        regovar.loadProject(id);
+        var component = Qt.createComponent("../../AnalysisWindow.qml");
+        Regovar.openAnalysisWindows = component.createObject(root);
+        Regovar.openAnalysisWindows.show();
+
+
+
 
 
 
