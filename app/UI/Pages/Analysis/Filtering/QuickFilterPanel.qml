@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.3
 import org.regovar 1.0
 
 import "../../../Regovar"
+import "../../../Framework"
 import "Quickfilter"
 
 ColumnLayout
@@ -23,19 +24,14 @@ ColumnLayout
     TransmissionQuickForm
     {
         Layout.fillWidth: true
-
     }
-    TransmissionQuickForm
+
+
+    Rectangle
     {
-        Layout.fillWidth: true
-
+        color:"transparent"
+        Layout.fillHeight: true
     }
-    TransmissionQuickForm
-    {
-        Layout.fillWidth: true
-
-    }
-
 
 
     RowLayout

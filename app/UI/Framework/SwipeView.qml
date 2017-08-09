@@ -21,6 +21,7 @@ Item {
             Layout.preferredHeight: 16 * Screen.logicalPixelDensity
             orientation: ListView.Horizontal
             boundsBehavior: Flickable.StopAtBounds
+            interactive: false
             model: swipeView.model
             currentIndex: screensListView.currentIndex
             delegate: Item

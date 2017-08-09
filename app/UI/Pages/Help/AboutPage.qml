@@ -38,22 +38,23 @@ Rectangle
         anchors.bottom: root.bottom
         anchors.margins: 10
 
+
         model: ListModel
         {
             ListElement
             {
                 title: "Informations"
-                source: "TutorialsPage.qml"
+                source: "../Pages/Help/AboutInformations.qml"
             }
             ListElement
             {
                 title: "License"
-                source: "TutorialsPage.qml"
+                source: "../Pages/Help/AboutLicense.qml"
             }
             ListElement
             {
                 title: "Credits"
-                source: "TutorialsPage.qml"
+                source: "../Pages/Help/AboutCredits.qml"
             }
         }
     }

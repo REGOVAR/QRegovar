@@ -59,14 +59,14 @@ QtObject
                 { "icon": "3", "label": qsTr("Filtering"), "page": "Analysis/Filtering/FilteringPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "o", "label": qsTr("Selection"), "page": "Analysis/Filtering/SelectionsPage.qml", "sublevel": [], "subindex": -1}
                 ], "subindex": 0},
-            { "icon": "d", "label": qsTr("Settings"),     "page": "",   "sublevel": [
-                { "icon": "q", "label": qsTr("Panel"),    "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "L", "label": qsTr("Pipeline"), "page": "Settings/PipesPage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "b", "label": qsTr("My pofile"),"page": "Settings/ProfilePage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "¶", "label": qsTr("Server"),   "page": "Settings/ServerPage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "}", "label": qsTr("Interface"),"page": "Settings/InterfacePage.qml", "sublevel": [], "subindex": -1},
+            { "icon": "d", "label": qsTr("Settings"),      "page": "",   "sublevel": [
+                { "icon": "q", "label": qsTr("Panel"),     "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "L", "label": qsTr("Pipeline"),  "page": "Settings/PipesPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "b", "label": qsTr("My profile"),"page": "Settings/ProfilePage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "¶", "label": qsTr("Server"),    "page": "Settings/ServerPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "}", "label": qsTr("Interface"), "page": "Settings/InterfacePage.qml", "sublevel": [], "subindex": -1},
                 ], "subindex": 0},
-            { "icon": "e", "label": qsTr("Help"),         "page": "", "sublevel": [
+            { "icon": "e", "label": qsTr("Help"),           "page": "", "sublevel": [
                 { "icon": "e", "label": qsTr("User guide"), "page": "Help/UserGuidePage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "e", "label": qsTr("Tutorials"),  "page": "Help/TutorialsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "f", "label": qsTr("About"),      "page": "Help/AboutPage.qml", "sublevel": [], "subindex": -1}

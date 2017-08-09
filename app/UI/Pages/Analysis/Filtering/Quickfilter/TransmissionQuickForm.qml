@@ -15,6 +15,7 @@ Rectangle
     color: Regovar.theme.boxColor.back
     border.width: 1
     border.color: Regovar.theme.boxColor.border
+    height: content.height + 30
 
     property bool isEnabled: false
 
@@ -122,6 +123,7 @@ Rectangle
         {
             text: qsTr("Heterozygous")
             onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(0, checked)
+
         }
         CheckBox
         {
@@ -132,6 +134,17 @@ Rectangle
         {
             text: qsTr("Composite heterozygous")
             onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(2, checked)
+        }
+
+        CheckBox
+        {
+            text: qsTr("De novo")
+            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(3, checked)
+        }
+        CheckBox
+        {
+            text: qsTr("X-Linked")
+            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(4, checked)
         }
     }
 
