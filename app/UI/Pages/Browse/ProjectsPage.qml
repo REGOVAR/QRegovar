@@ -160,16 +160,20 @@ Rectangle
     }
 
 
-
+    property var component
+    property var name: value
 
     /// Retrive model of the selected project in the treeview and set the Regovar.currentProject with it.
     function openSelectedProject()
     {
-        var id = regovar.projectsTreeView.data(browser.currentIndex, 0).id
-        console.log("current index: " + browser.currentIndex + " => id: " + id)
-
-        regovar.loadProject(id);
-
+//        var item = regovar.projectsTreeView.data(browser.currentIndex, 0);
+//        if (item !== undefined)
+//        {
+//            var id = regovar.projectsTreeView.data(browser.currentIndex, 0).id
+//            console.log("current index: " + browser.currentIndex + " => id: " + id)
+//            regovar.loadProject(id);
+//        }
+        regovar.openAnalysis(5);
 
 
 //        var req = new XMLHttpRequest();
@@ -190,5 +194,4 @@ Rectangle
 //        req.open("GET", url, true);
 //        req.send(null);
     }
-
 }

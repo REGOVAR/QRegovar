@@ -1,4 +1,5 @@
 import QtQuick 2.7
+
 import "../Regovar"
 
 Rectangle
@@ -13,6 +14,7 @@ Rectangle
     property string currentState: indexToState()
     property int selectedIndex: -1
     property int sublevelListMaxHeight
+    property MenuModel model
 
 
     function indexToState()
@@ -25,10 +27,10 @@ Rectangle
     Component.onCompleted:
     {
         // Get sublevel if exists
-        var lvl0 = Regovar.mainMenu.selectedIndex[0];
-        var lvl1 = Regovar.mainMenu.selectedIndex[1];
-        var lvl2 = Regovar.mainMenu.selectedIndex[2];
-        sublevelModel.append(Regovar.mainMenu.model[lvl0].sublevel[lvl1].sublevel)
+        var lvl0 = model.selectedIndex[0];
+        var lvl1 = model.selectedIndex[1];
+        var lvl2 = model.selectedIndex[2];
+        sublevelModel.append(model.model[lvl0].sublevel[lvl1].sublevel)
         root.sublevelListMaxHeight = sublevelModel.count * 30 // see MenuEntryL3.height
         sublevelList.height = 0
         root.selectedIndex = lvl1;
@@ -38,13 +40,13 @@ Rectangle
     // and inconsistency between views and model
     Connections
     {
-        target: Regovar.mainMenu
+        target: model
         onSelectedIndexChanged:
         {
-            if (root.selectedIndex !== Regovar.mainMenu.selectedIndex[1])
+            if (root.selectedIndex !== model.selectedIndex[1])
             {
                 // When main model change, notify views that index have changed
-                root.selectedIndex = Regovar.mainMenu.selectedIndex[1];
+                root.selectedIndex = model.selectedIndex[1];
                 // Force update of the state
                 root.currentState = indexToState();
                 root.state = root.currentState;
@@ -116,7 +118,7 @@ Rectangle
         onClicked:
         {
             // Notify model that entry {index} of the level 1 is selected
-            Regovar.mainMenu.select(1, index);
+            model.select(1, index);
         }
     }
 
@@ -135,6 +137,7 @@ Rectangle
 
             MenuEntryL3
             {
+                model: model
                 label: sublevelModel.get(index).label
             }
         }

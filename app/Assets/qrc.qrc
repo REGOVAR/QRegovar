@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>loading.gif</file>
         <file>logo.png</file>
+        <file>regovar.png</file>
     </qresource>
 </RCC>

@@ -21,7 +21,7 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            //text: Screen.PixelDensity
+            text: regovar.searchRequest
             placeholderText: qsTr("Search project, subject, sample, analysies, panel, ...")
         }
     }
