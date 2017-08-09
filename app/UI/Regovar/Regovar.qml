@@ -55,7 +55,7 @@ QtObject
                 { "icon": "q", "label": qsTr("Panel"),     "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "L", "label": qsTr("Pipeline"),  "page": "Settings/PipesPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "b", "label": qsTr("My profile"),"page": "Settings/ProfilePage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "¶", "label": qsTr("Server"),    "page": "Settings/ServerPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "7", "label": qsTr("Server"),    "page": "Settings/ServerPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "}", "label": qsTr("Interface"), "page": "Settings/InterfacePage.qml", "sublevel": [], "subindex": -1},
                 ], "subindex": 0},
             { "icon": "e", "label": qsTr("Help"),           "page": "", "sublevel": [

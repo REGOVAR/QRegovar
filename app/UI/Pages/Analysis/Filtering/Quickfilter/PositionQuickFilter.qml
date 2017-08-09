@@ -8,10 +8,9 @@ import org.regovar 1.0
 import "../../../../Regovar"
 import "../../../../Framework"
 
-
 QuickFilterBox
 {
-    title : qsTr("Inheritance mode")
+    title : qsTr("Position")
     isEnabled : false
     isExpanded: false
 
@@ -24,42 +23,29 @@ QuickFilterBox
 
         CheckBox
         {
-            text: qsTr("All")
-            checked: true
+            Layout.fillWidth: true
+            text: qsTr("Exonic")
             onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(0, checked)
 
         }
         CheckBox
         {
-            text: qsTr("Heterozygous")
-            checked: false
+            Layout.fillWidth: true
+            text: qsTr("Intronic")
             onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(1, checked)
 
         }
         CheckBox
         {
-            text: qsTr("Homozygous")
-            checked: false
+            Layout.fillWidth: true
+            text: qsTr("UTR")
             onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(2, checked)
         }
         CheckBox
         {
-            text: qsTr("Composite heterozygous")
-            checked: false
+            Layout.fillWidth: true
+            text: qsTr("Intergene")
             onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(3, checked)
-        }
-
-        CheckBox
-        {
-            text: qsTr("De novo")
-            checked: false
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(4, checked)
-        }
-        CheckBox
-        {
-            text: qsTr("X-linked")
-            checked: false
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(5, checked)
         }
     }
 }

@@ -11,7 +11,7 @@ import "../../../../Framework"
 
 QuickFilterBox
 {
-    title : qsTr("Inheritance mode")
+    title : qsTr("In silico prediction")
     isEnabled : false
     isExpanded: false
 
@@ -24,42 +24,20 @@ QuickFilterBox
 
         CheckBox
         {
-            text: qsTr("All")
-            checked: true
+            text: qsTr("SIFT")
             onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(0, checked)
 
         }
         CheckBox
         {
-            text: qsTr("Heterozygous")
-            checked: false
+            text: qsTr("Polyphen")
             onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(1, checked)
 
         }
         CheckBox
         {
-            text: qsTr("Homozygous")
-            checked: false
+            text: qsTr("CADD")
             onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(2, checked)
-        }
-        CheckBox
-        {
-            text: qsTr("Composite heterozygous")
-            checked: false
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(3, checked)
-        }
-
-        CheckBox
-        {
-            text: qsTr("De novo")
-            checked: false
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(4, checked)
-        }
-        CheckBox
-        {
-            text: qsTr("X-linked")
-            checked: false
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(5, checked)
         }
     }
 }

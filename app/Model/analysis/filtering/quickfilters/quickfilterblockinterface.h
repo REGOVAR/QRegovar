@@ -4,6 +4,50 @@
 #include <QVariant>
 #include <QObject>
 
+
+class QuickFilterField : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QString op READ op WRITE setOp NOTIFY opChanged)
+    Q_PROPERTY(QVariant value READ value WRITE setValue NOTIFY valueChanged)
+    Q_PROPERTY(bool isActive READ isActive WRITE setIsActive NOTIFY isActiveChanged)
+
+public:
+    QuickFilterField(QString fuid="", QString op="==", QVariant value=0, bool isActive=false, QObject* parent=nullptr);
+    QuickFilterField(const QuickFilterField& other);
+    ~QuickFilterField();
+
+    Q_INVOKABLE void clear();
+
+    // Getters
+    inline QString op() { return mOperator; }
+    inline QVariant value() { return mValue; }
+    inline bool isActive() { return mIsActive; }
+    inline QString fuid() { return mFuid; }
+
+    // Setters
+    inline void setOp(QString op) { mOperator = op; emit opChanged(); }
+    inline void setValue(QVariant value) { mValue = value; emit valueChanged(); }
+    inline void setIsActive(bool isActive) { mIsActive = isActive; emit isActiveChanged(); }
+
+Q_SIGNALS:
+    void opChanged();
+    void valueChanged();
+    void isActiveChanged();
+
+private:
+    QString mFuid;
+    QString mOperator;
+    QString mDefaultOperator;
+    QVariant mValue;
+    QVariant mDefaultValue;
+    bool mIsActive;
+    bool mDefaultIsActive;
+};
+
+
+
+
 class QuickFilterBlockInterface : public QObject
 {
     Q_OBJECT

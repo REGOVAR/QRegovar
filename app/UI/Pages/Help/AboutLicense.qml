@@ -46,7 +46,7 @@ Item
                     spacing: 10
                     Text
                     {
-                        text: "µ"
+                        text: "M"
                         font.family: iconsFont.name
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter

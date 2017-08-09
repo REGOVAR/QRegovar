@@ -27,7 +27,12 @@ HEADERS += \
     Model/regovar.h \
     Model/analysis/analysis.h \
     Model/analysis/filtering/filteringanalysis.h \
-    Model/sample/sample.h
+    Model/sample/sample.h \
+    Model/analysis/filtering/quickfilters/qualityquickfilter.h \
+    Model/analysis/filtering/quickfilters/positionquickfilter.h \
+    Model/analysis/filtering/quickfilters/typequickfilter.h \
+    Model/analysis/filtering/quickfilters/frequencequickfilter.h \
+    Model/analysis/filtering/quickfilters/insilicopredquickfilter.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -53,7 +58,12 @@ SOURCES += main.cpp \
     Model/regovar.cpp \
     Model/analysis/analysis.cpp \
     Model/analysis/filtering/filteringanalysis.cpp \
-    Model/sample/sample.cpp
+    Model/sample/sample.cpp \
+    Model/analysis/filtering/quickfilters/qualityquickfilter.cpp \
+    Model/analysis/filtering/quickfilters/positionquickfilter.cpp \
+    Model/analysis/filtering/quickfilters/typequickfilter.cpp \
+    Model/analysis/filtering/quickfilters/frequencequickfilter.cpp \
+    Model/analysis/filtering/quickfilters/insilicopredquickfilter.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -149,12 +159,18 @@ DISTFILES += \
     UI/Pages/Help/AboutLicense.qml \
     UI/Framework/TextArea.qml \
     UI/Pages/Help/AboutInformations.qml \
-    UI/Pages/Help/AboutCredits.qml
+    UI/Pages/Help/AboutCredits.qml \
     UI/AnalysisWindow.qml \
     UI/Pages/Browse/SearchPage.qml \
     UI/MainMenu/MenuModel.qml \
-    UI/GenericWindow.qml
-
+    UI/GenericWindow.qml \
+    UI/Framework/TabView.qml \
+    UI/Pages/Analysis/Filtering/Quickfilter/QualityQuickForm.qml \
+    UI/Pages/Analysis/Filtering/Quickfilter/PositionQuickFilter.qml \
+    UI/Pages/Analysis/Filtering/Quickfilter/TypeQuickFilter.qml \
+    UI/Pages/Analysis/Filtering/Quickfilter/FrequenceQuickFilter.qml \
+    UI/Pages/Analysis/Filtering/Quickfilter/SilicoPredQuickFilter.qml \
+    UI/Pages/Analysis/Filtering/Quickfilter/QuickFilterBox.qml
 
 
 win32 {

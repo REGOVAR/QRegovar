@@ -1,13 +1,11 @@
-import QtQuick 2.4
+import QtQuick 2.7
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
-Item {
-    id: swipeView
+Item
+{
+    id: root
     property var model
-    property bool isDesktopPlatform: Qt.platform.os === "windows" ||
-                                     Qt.platform.os === "linux" ||
-                                     Qt.platform.os === "osx"
 
     ColumnLayout
     {
@@ -36,7 +34,7 @@ Item {
                     anchors.centerIn: parent
                     text: model.title
                     font.pixelSize: headersListView.height * 0.3
-                    font.capitalization: Font.AllUppercase
+                    font.capitalization: Font.AllUppercasej
                 }
 
                 Rectangle
@@ -135,34 +133,5 @@ Item {
             }
         }
 
-        ListView
-        {
-            id: screensListView
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            orientation: ListView.Horizontal
-            snapMode: ListView.SnapOneItem
-            highlightRangeMode: ListView.StrictlyEnforceRange
-            highlightMoveVelocity: 2000
-            clip: true
-            model: swipeView.model
-            onCurrentItemChanged:
-            {
-                if (isDesktopPlatform)
-                    currentItem.item.selected()
-            }
-            delegate: Loader
-            {
-                width: screensListView.width
-                height: screensListView.height
-                source: model.source
-
-                Component.onCompleted:
-                {
-                    item.isFirstScreen = (index === 0)
-                    item.isLastScreen = (index === screensListView.count - 1)
-                }
-            }
-        }
     }
 }

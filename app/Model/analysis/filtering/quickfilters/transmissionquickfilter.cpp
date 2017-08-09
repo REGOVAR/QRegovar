@@ -1,6 +1,6 @@
 #include "transmissionquickfilter.h"
 
-TransmissionQuickFilter::TransmissionQuickFilter(int AnalysisId) : QuickFilterBlockInterface()
+TransmissionQuickFilter::TransmissionQuickFilter(int analysisId) : QuickFilterBlockInterface()
 {
     // Dominant - ref/alt
     mFilters[0] = "[\"==\", [\"field\", \"b33e172643f14920cee93d25daaa3c7b\"], [\"value\", \"2\"]]";

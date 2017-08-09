@@ -21,16 +21,21 @@ ColumnLayout
         Layout.fillWidth: true
     }
 
-    TransmissionQuickForm
+    ScrollView
     {
-        Layout.fillWidth: true
-    }
-
-
-    Rectangle
-    {
-        color:"transparent"
         Layout.fillHeight: true
+        Layout.fillWidth: true
+        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+        Column
+        {
+            TransmissionQuickForm { width: root.width }
+            QualityQuickForm { width: root.width }
+            PositionQuickFilter { width: root.width }
+            TypeQuickFilter { width: root.width }
+            FrequenceQuickFilter { width: root.width }
+            SilicoPredQuickFilter { width: root.width }
+        }
     }
 
 

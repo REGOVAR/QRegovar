@@ -1,6 +1,11 @@
 #include "quickfiltermodel.h"
 
 #include "transmissionquickfilter.h"
+#include "positionquickfilter.h"
+#include "qualityquickfilter.h"
+#include "typequickfilter.h"
+#include "frequencequickfilter.h"
+#include "insilicopredquickfilter.h"
 
 QuickFilterModel::QuickFilterModel(QObject *parent) : QObject(parent)
 {
@@ -11,6 +16,11 @@ void QuickFilterModel::init(int refId, int analysisId)
     mQuickFilters.clear();
     // Load filter according to the refID, analysisId
     mQuickFilters[TransmissionFilter] = new TransmissionQuickFilter(refId);
+    mQuickFilters[QualityFilter] = new QualityQuickFilter(refId);
+    mQuickFilters[PositionFilter] = new PositionQuickFilter(refId);
+    mQuickFilters[TypeFilter] = new TypeQuickFilter(refId);
+    mQuickFilters[FrequenceFilter] = new FrequenceQuickFilter(refId);
+    mQuickFilters[InSilicoPredFilter] = new InSilicoPredQuickFilter(refId);
 }
 
 void QuickFilterModel::setFilter(PredefinedFilter filter, int fieldId, QVariant value)
