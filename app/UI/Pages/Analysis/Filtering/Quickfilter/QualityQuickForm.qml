@@ -18,12 +18,14 @@ QuickFilterBox
 
     Component.onCompleted:
     {
+        console.log("quality filter");
         var t = model.quickfilters.qualityFilter
         var a = model.quickfilters.qualityFilter.depth
         var r = model.quickfilters.qualityFilter.depth.isActivated
         var e = model.quickfilters.qualityFilter.depth.op
         var z = model.quickfilters.qualityFilter.depth.value
     }
+
 
     content: RowLayout
     {
@@ -35,19 +37,25 @@ QuickFilterBox
         CheckBox
         {
             text: qsTr("Depth")
+            // checked: regovar.currentFilteringAnalysis.quickfilters.qualityFilter.depth.isActive
             //checked: model.quickfilters.qualityFilter.isActivated
             //onCheckedChanged: model.quickfilters.qualityFilter.setFilter(0, checked)
         }
         ComboBox
         {
             width: 50
+            model: [ "<", "<=", "==", ">=", ">", "!=" ]
+            // currentText: regovar.currentFilteringAnalysis.quickfilters.qualityFilter.depth.op
             model: [ "<", "≤", "=", "≥", ">", "≠" ] // [ "<", "<=", "==", ">=", ">", "!=" ]
             //currentText: model.quickfilters.qualityFilter.op
         }
         TextField
         {
             Layout.fillWidth: true
+            // text: regovar.currentFilteringAnalysis.quickfilters.qualityFilter.depth.value
             //text: model.quickfilters.qualityFilter.value
         }
+
+
     }
 }

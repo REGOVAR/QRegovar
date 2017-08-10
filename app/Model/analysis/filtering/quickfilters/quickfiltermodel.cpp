@@ -21,6 +21,7 @@ void QuickFilterModel::init(int refId, int analysisId)
     mQuickFilters[TypeFilter] = new TypeQuickFilter(refId);
     mQuickFilters[FrequenceFilter] = new FrequenceQuickFilter(refId);
     mQuickFilters[InSilicoPredFilter] = new InSilicoPredQuickFilter(refId);
+
 }
 
 void QuickFilterModel::setFilter(PredefinedFilter filter, int fieldId, QVariant value)
