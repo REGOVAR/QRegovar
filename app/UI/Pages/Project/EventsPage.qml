@@ -34,7 +34,7 @@ Rectangle
 
     Text
     {
-       text: "DISCONNECT"
+       text: "EVENTS"
        font.pointSize: 24
        anchors.centerIn: parent
     }

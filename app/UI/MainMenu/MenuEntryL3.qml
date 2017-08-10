@@ -31,7 +31,7 @@ Rectangle
     }
 
 
-    Component.onCompleted:
+    onModelChanged:
     {
         root.selectedIndex = model.selectedIndex[2];
     }

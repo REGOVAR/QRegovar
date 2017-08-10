@@ -103,16 +103,19 @@ Item
     {
         var lvl0 = model.selectedIndex[0];
         var lvl1 = model.selectedIndex[1];
+        var lvl2 = model.selectedIndex[2];
 
-        if (lvl1 >= 0 && previousIndex[1] !== lvl1)
+
+
+        if (lvl0 !== previousIndex[0] || lvl1 !== previousIndex[1])
         {
             model.subLevelPanelDisplayed = true;
             model._subLevelPanelDisplayed = true;
             subMenuModel.clear();
             subMenuModel.append(model.model[lvl0].sublevel);
-            return true;
+
         }
-        return false;
+        return true;
     }
     function closeLevel2()
     {

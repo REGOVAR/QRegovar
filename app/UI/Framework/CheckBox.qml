@@ -3,10 +3,14 @@ import QtQuick.Controls 2.0
 
 import "../Regovar"
 
-CheckBox {
+CheckBox
+{
     id: control
     text: qsTr("CheckBox")
     checked: true
+
+
+    font.pixelSize: Regovar.theme.font.size.control
 
     FontLoader
     {
@@ -16,11 +20,11 @@ CheckBox {
 
     indicator: Rectangle
     {
-        implicitWidth:20
-        implicitHeight: 20
+        implicitWidth: Regovar.theme.font.size.control + 4
+        implicitHeight: Regovar.theme.font.size.control + 4
         x: control.leftPadding
         y: parent.height / 2 - height / 2
-        radius: 5
+        radius: 2
         color : control.enabled && control.checked  ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.light
 
         Label
@@ -29,7 +33,7 @@ CheckBox {
             text:"n"
             anchors.centerIn: parent
             color: "white"
-            font.pixelSize: 12
+            font.pixelSize: Regovar.theme.font.size.control
             font.family: iconFont.name
             visible: control.checked ? true : false
         }
@@ -47,8 +51,9 @@ CheckBox {
     {
         text: control.text
         font: control.font
+        color: Regovar.theme.font.color.normal
         opacity: enabled ? 1.0 : 0.3
-        horizontalAlignment: Text.AlignHCenter
+        horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         leftPadding: control.indicator.width + control.spacing
     }

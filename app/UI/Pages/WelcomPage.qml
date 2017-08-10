@@ -109,7 +109,7 @@ Rectangle
             if (text != "" && root.visible)
             {
                 regovar.searchRequest = text;
-                Regovar.menuModel.selectedIndex=[1,0,-1];
+                Regovar.menuModel.selectedIndex=[1,-1,-1];
             }
         }
 

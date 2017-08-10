@@ -26,7 +26,7 @@ Rectangle
     {
         id : iconFont
         source: "../../../../Icons.ttf"
-    }
+    }anchors.left: parent.left
 
     Rectangle
     {

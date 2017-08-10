@@ -137,7 +137,7 @@ Rectangle
 
             MenuEntryL3
             {
-                model: model
+                model: root.model
                 label: sublevelModel.get(index).label
             }
         }

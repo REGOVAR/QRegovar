@@ -25,7 +25,7 @@ public:
     void refresh();
     QVariant newProjectsTreeViewItem(int id, const QString &text);
     void setupModelData(QJsonArray data, TreeItem *parent);
-
+    void setupModelAnalysisData(QJsonArray data, TreeItem *parent);
 
     // Accessors
     inline bool isLoading() { return mIsLoading; }

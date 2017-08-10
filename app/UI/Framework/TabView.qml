@@ -2,6 +2,8 @@ import QtQuick 2.7
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
+import "../Regovar"
+
 Item
 {
     id: root

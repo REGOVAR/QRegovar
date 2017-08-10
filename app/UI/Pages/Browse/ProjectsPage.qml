@@ -174,7 +174,7 @@ Rectangle
 //            console.log("current index: " + browser.currentIndex + " => id: " + id)
 //            regovar.loadProject(id);
 //        }
-        regovar.openAnalysis(5);
+        regovar.openAnalysis(19);
 
 
 //        var req = new XMLHttpRequest();

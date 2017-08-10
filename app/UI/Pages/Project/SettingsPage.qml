@@ -1,4 +1,6 @@
 import QtQuick 2.7
+
+import "../../Framework"
 import "../../Regovar"
 
 Rectangle
@@ -8,34 +10,33 @@ Rectangle
 
     property QtObject model
 
-    Rectangle
-    {
-        id: header
-        anchors.left: root.left
-        anchors.top: root.top
-        anchors.right: root.right
-        height: 50
-        color: Regovar.theme.backgroundColor.alt
 
-        Text
+
+    TabView
+    {
+        id: swipeview
+        anchors.fill : root
+        tabSharedModel: root.model
+
+
+
+        tabsModel: ListModel
         {
-            anchors.top: header.top
-            anchors.left: header.left
-            anchors.bottom: header.bottom
-            anchors.margins: 10
-            font.pixelSize: 22
-            font.family: Regovar.theme.font.familly
-            color: Regovar.theme.frontColor.normal
-            verticalAlignment: Text.AlignVCenter
-
-            text: regovar.currentProject.name
+            ListElement
+            {
+                title: "Informations"
+                source: "../Pages/Project/SettingsInformationsPage.qml"
+            }
+            ListElement
+            {
+                title: "Indicators"
+                source: "../Pages/Project/SettingsIndicatorsPage.qml"
+            }
+            ListElement
+            {
+                title: "Sharing"
+                source: "../Pages/Project/SettingsSharingPage.qml"
+            }
         }
-    }
-
-    Text
-    {
-       text: "Settings (Informations / Indicators / Sharing)"
-       font.pointSize: 24
-       anchors.centerIn: parent
     }
 }
