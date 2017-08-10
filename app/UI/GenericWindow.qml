@@ -9,12 +9,15 @@ ApplicationWindow
     id: root
     visible: true
 
+    // The id of this window that allow "Regovar model" to retrieve corresponding "Analysis model" among open models/windows
+    property int winId
 
     //! Load root's pages of regovar
     property var menuPageMapping
 
-    //! Main model
+    //! Menu model
     property MenuModel menuModel
+
 
     property var previousIndex : [0,-1,-1]
 
@@ -105,6 +108,7 @@ ApplicationWindow
             root.menuPageMapping[oldIdx].visible = false;
             root.menuPageMapping[newIdx].visible = true;
             root.menuPageMapping[newIdx].anchors.fill = stack;
+            root.menuPageMapping[newIdx].model = model
 
             previousIndex = menuModel.selectedIndex;
         }

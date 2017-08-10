@@ -2,6 +2,7 @@
 #define RESULTSTREEITEM_H
 
 #include "Model/treeitem.h"
+#include "Model/analysis/filtering/filteringanalysis.h"
 
 //! Generic TreeItem
 class ResultsTreeItem : public QObject
@@ -13,8 +14,8 @@ class ResultsTreeItem : public QObject
 public:
 
 
-    explicit ResultsTreeItem(QObject *parent = 0);
-    explicit ResultsTreeItem(QString uid, QVariant text, QObject *parent = 0);
+    explicit ResultsTreeItem(FilteringAnalysis* parent=nullptr);
+    explicit ResultsTreeItem(QString uid, QVariant text, FilteringAnalysis* parent=nullptr);
     ResultsTreeItem(const ResultsTreeItem &other);
     ~ResultsTreeItem();
 
@@ -29,6 +30,7 @@ signals:
     void uidChanged();
 
 private:
+    FilteringAnalysis* mFilteringAnalysis;
     QVariant mValue;
     QString mUid;
 };
@@ -46,7 +48,7 @@ class ResultsTreeItem4SampleArray : public QObject
     Q_PROPERTY(QString type READ type)
 
 public:
-    explicit ResultsTreeItem4SampleArray(QObject *parent = 0);
+    explicit ResultsTreeItem4SampleArray(FilteringAnalysis* parent = 0);
     ResultsTreeItem4SampleArray(const ResultsTreeItem4SampleArray &other);
     ~ResultsTreeItem4SampleArray();
 
@@ -68,6 +70,7 @@ signals:
     void uidChanged();
 
 private:
+    FilteringAnalysis* mFilteringAnalysis;
     QHash<int, QVariant> mSamplesValues;
     QStringList mDisplayedValues;
     QString mValueType;

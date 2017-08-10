@@ -160,7 +160,7 @@ void FilteringAnalysis::loadResults()
 //! Return the order of the field in the grid
 int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
 {
-    Annotation* annot = regovar->currentFilteringAnalysis()->annotations()->getAnnotation(uid);
+    Annotation* annot = mAnnotations->getAnnotation(uid);
 
     if (isDisplayed)
     {

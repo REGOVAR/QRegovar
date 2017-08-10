@@ -11,11 +11,13 @@ import "../../../Framework"
 import "../../../MainMenu"
 
 import "Quickfilter"
+import org.regovar 1.0
 
 Rectangle
 {
     id: root
 
+    property FilteringAnalysis model
 
     FontLoader
     {
@@ -122,7 +124,7 @@ Rectangle
                     id: advancedFilterJsonEditor
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    text: regovar.currentFilteringAnalysis.filter
+                    text: root.model.filter
                 }
                 RowLayout
                 {
@@ -133,8 +135,8 @@ Rectangle
                         text: qsTr("Clear")
                         onClicked:
                         {
-                            regovar.currentFilteringAnalysis.filter = "[\"AND\", []]";
-                            regovar.currentFilteringAnalysis.refresh();
+                            root.model.filter = "[\"AND\", []]";
+                            root.model.refresh();
                         }
                     }
                     Button
@@ -142,8 +144,8 @@ Rectangle
                         text: qsTr("Apply")
                         onClicked:
                         {
-                            regovar.currentFilteringAnalysis.filter = advancedFilterJsonEditor.text;
-                            regovar.currentFilteringAnalysis.refresh();
+                            root.model.filter = advancedFilterJsonEditor.text;
+                            root.model.refresh();
                         }
                     }
                     Button
@@ -172,7 +174,7 @@ Rectangle
                 TreeView
                 {
                     id: annotationsSelector
-                    model: regovar.currentFilteringAnalysis.annotations
+                    model: root.model.annotations
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
@@ -264,8 +266,8 @@ Rectangle
                 anchors.fill: rightPanel
                 anchors.margins: 10
                 anchors.topMargin: 60
-                model: regovar.currentFilteringAnalysis.results
-                rowHeight: (regovar.currentFilteringAnalysis.samples.length === 1) ? 25 : regovar.currentFilteringAnalysis.samples.length * 18
+                model: root.model.results
+                rowHeight: (root.model.samples.length === 1) ? 25 : root.model.samples.length * 18
 
                 signal checked(string uid, bool isChecked)
                 onChecked: console.log(uid, isChecked);
@@ -337,7 +339,7 @@ Rectangle
                     role: "samplesNames"
                     title: qsTr("Samples")
                     width: 70
-                    visible: regovar.currentFilteringAnalysis.sampleColumnDisplayed
+                    visible: root.model.sampleColumnDisplayed
                     delegate: Item
                     {
                         ColumnLayout
@@ -347,7 +349,7 @@ Rectangle
                             spacing: 1
                             Repeater
                             {
-                                model: regovar.currentFilteringAnalysis.samples
+                                model: root.model.samples
                                 Text
                                 {
                                     height: 12
@@ -431,13 +433,12 @@ Rectangle
                 Component.onCompleted:
                 {
                     // Display selected fields
-                    var test = regovar.currentFilteringAnalysis;
-                    console.debug("Result tree view ready -> display default columns " +  regovar.currentFilteringAnalysis.fieldsCount())
-                    for (var idx=0; idx < regovar.currentFilteringAnalysis.fieldsCount(); idx++)
+                    console.debug("Result tree view ready -> display default columns " +  root.model.fieldsCount())
+                    for (var idx=0; idx < root.model.fieldsCount(); idx++)
                     {
-                        resultsTree.insertField(regovar.currentFilteringAnalysis.fields[idx], idx);
+                        resultsTree.insertField(root.model.fields[idx], idx);
                     }
-                    regovar.currentFilteringAnalysis.results.refresh();
+                    root.model.results.refresh();
 
                 }
 
@@ -445,7 +446,7 @@ Rectangle
                 function insertField(uid, position, forceRefresh)
                 {
                     console.log("trying to insert field : " + uid + " at " + position);
-                    var annot = regovar.currentFilteringAnalysis.annotations.getAnnotation(uid);
+                    var annot = root.model.annotations.getAnnotation(uid);
                     console.log("  annot = " + annot);
 
                     // Getting QML column according to the type of the fields
@@ -455,21 +456,21 @@ Rectangle
                     else
                         col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
                     console.log("  col = " + col);
-                    position = regovar.currentFilteringAnalysis.setField(uid, true, position) + 2;
+                    position = root.model.setField(uid, true, position) + 2;
                     console.log("  display column " + annot.name + " at " + position);
                     position = Math.min(position, resultsTree.columnCount)
                     resultsTree.insertColumn(position, col);
 
                     if (forceRefresh)
                     {
-                        regovar.currentFilteringAnalysis.results.refresh();
+                        root.model.results.refresh();
                     }
                 }
 
                 function removeField(uid)
                 {
                     console.log("trying to remove field : " + uid);
-                    var annot = regovar.currentFilteringAnalysis.annotations.getAnnotation(uid);
+                    var annot = root.model.annotations.getAnnotation(uid);
                     console.log("  annot = " + annot);
                     var position, col;
                     for (var idx=0; idx< resultsTree.columnCount; idx++ )
@@ -481,7 +482,7 @@ Rectangle
                             // remove columb from UI
                             resultsTree.removeColumn(idx);
                             // Store fields state and position in the view model
-                            regovar.currentFilteringAnalysis.setField(uid, false, idx -2);
+                            root.model.setField(uid, false, idx -2);
                             break;
                         }
                     }

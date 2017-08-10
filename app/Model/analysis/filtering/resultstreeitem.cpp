@@ -4,11 +4,14 @@
 
 // ResultsTreeItem ----------------------------------------------
 
-ResultsTreeItem::ResultsTreeItem(QObject *parent) : QObject(parent)
-{}
+ResultsTreeItem::ResultsTreeItem(FilteringAnalysis* parent) : QObject(parent)
+{
+    mFilteringAnalysis = parent;
+}
 
 ResultsTreeItem::ResultsTreeItem(const ResultsTreeItem &other) : QObject(other.parent())
 {
+    mFilteringAnalysis = other.mFilteringAnalysis;
     mValue = other.mValue;
     mUid= other.mUid;
 }
@@ -18,8 +21,9 @@ ResultsTreeItem::~ResultsTreeItem()
 
 
 
-ResultsTreeItem::ResultsTreeItem(QString uid, QVariant value, QObject *parent) : QObject(parent)
+ResultsTreeItem::ResultsTreeItem(QString uid, QVariant value, FilteringAnalysis* parent) : QObject(parent)
 {
+    mFilteringAnalysis = parent;
     mValue = value;
     mUid= uid;
 }
@@ -31,12 +35,14 @@ ResultsTreeItem::ResultsTreeItem(QString uid, QVariant value, QObject *parent) :
 
 
 // ResultsTreeItem4SampleArray ----------------------------------------------
-ResultsTreeItem4SampleArray::ResultsTreeItem4SampleArray(QObject *parent) : QObject(parent)
+ResultsTreeItem4SampleArray::ResultsTreeItem4SampleArray(FilteringAnalysis* parent) : QObject(parent)
 {
+    mFilteringAnalysis = parent;
 }
 
 ResultsTreeItem4SampleArray::ResultsTreeItem4SampleArray(const ResultsTreeItem4SampleArray &other) : QObject(other.parent())
 {
+    mFilteringAnalysis = other.mFilteringAnalysis;
     mUid= other.mUid;
     mValueType = other.mValueType;
     mSamplesValues = other.mSamplesValues;
@@ -55,7 +61,7 @@ ResultsTreeItem4SampleArray::~ResultsTreeItem4SampleArray()
 void ResultsTreeItem4SampleArray::refreshDisplayedValues()
 {
     mDisplayedValues.clear();
-    foreach (Sample* sample, regovar->currentFilteringAnalysis()->samples())
+    foreach (Sample* sample, mFilteringAnalysis->samples())
     {
         QVariant v = mSamplesValues.value(sample->id());
         mDisplayedValues.append(v.toString());

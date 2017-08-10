@@ -8,12 +8,6 @@
 #include "Model/treeitem.h"
 #include "Model/file/filesystemmodel.cpp"
 #include "Model/analysis/filtering/filteringanalysis.h"
-#include "Model/analysis/filtering/quickfilters/transmissionquickfilter.h"
-#include "Model/analysis/filtering/quickfilters/qualityquickfilter.h"
-#include "Model/analysis/filtering/quickfilters/positionquickfilter.h"
-#include "Model/analysis/filtering/quickfilters/typequickfilter.h"
-#include "Model/analysis/filtering/quickfilters/frequencequickfilter.h"
-#include "Model/analysis/filtering/quickfilters/insilicopredquickfilter.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,13 +25,6 @@ int main(int argc, char *argv[])
     qmlRegisterType<FilteringAnalysis>("org.regovar", 1, 0, "FilteringAnalysis");
     qmlRegisterType<Sample>("org.regovar", 1, 0, "Sample");
 
-//    qmlRegisterType<QuickFilterField>("org.regovar", 1, 0, "QuickFilterField");
-//    qmlRegisterType<TransmissionQuickFilter>("org.regovar", 1, 0, "TransmissionQuickFilter");
-//    qmlRegisterType<QualityQuickFilter>("org.regovar", 1, 0, "QualityQuickFilter");
-//    qmlRegisterType<PositionQuickFilter>("org.regovar", 1, 0, "PositionQuickFilter");
-//    qmlRegisterType<TypeQuickFilter>("org.regovar", 1, 0, "TypeQuickFilter");
-//    qmlRegisterType<FrequenceQuickFilter>("org.regovar", 1, 0, "FrequenceQuickFilter");
-//    qmlRegisterType<InSilicoPredQuickFilter>("org.regovar", 1, 0, "InSilicoPredQuickFilter");
 
 
 

@@ -1,6 +1,10 @@
+#include <QQmlContext>
+#include <QQuickWindow>
+#include <QQuickItem>
+#include <QQmlComponent>
+
 #include "regovar.h"
 #include "request.h"
-
 
 
 Regovar* Regovar::mInstance = Q_NULLPTR;
@@ -36,7 +40,6 @@ void Regovar::init()
     mUploader->setChunkSize(50 * 1024);
     mUploader->setBandWidthLimit(0);
 
-    mCurrentFilteringAnalysis =  new FilteringAnalysis(this);
 
     // Connections
     connect(mUploader, SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
@@ -95,28 +98,48 @@ void Regovar::loadProject(int id)
 }
 
 
+void Regovar::openAnalysis(int analysisId)
+{
+    loadAnalysis(analysisId);
+}
+
 void Regovar::loadAnalysis(int id)
 {
-    // TODO
-//    if (!mCurrentProject->isValid())
-//    {
-//        qDebug() << "ERROR : need to load a project first before load an analysis";
-//    }
-
-
     Request* req = Request::get(QString("/analysis/%1").arg(id));
     connect(req, &Request::responseReceived, [this, req, id](bool success, const QJsonObject& json)
     {
         if (success)
         {
-            if (mCurrentFilteringAnalysis->fromJson(json["data"].toObject()))
+            int lastId = mOpenAnalyses.count();
+            mOpenAnalyses.append(new FilteringAnalysis(this));
+            FilteringAnalysis* analysis = mOpenAnalyses[lastId];
+
+            if (analysis->fromJson(json["data"].toObject()))
             {
-                qDebug() << Q_FUNC_INFO << "CurrentProject loaded";
-                emit currentFilteringAnalysisUpdated();
+                // Create new QML window
+                QDir dir = QDir::currentPath();
+                QString file = dir.filePath("UI/AnalysisWindow.qml");
+                QUrl url = QUrl::fromLocalFile(file);
+                QQmlComponent *c = new QQmlComponent(mQmlEngine, url, QQmlComponent::PreferSynchronous);
+                QObject* o = c->create();
+                QQuickWindow *i = qobject_cast<QQuickWindow*>(o);
+                QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
+                i->setVisible(true);
+                i->setProperty("winId", lastId);
+                QObject* root = mQmlEngine->rootObjects()[0];
+                QQuickWindow* rootWin = qobject_cast<QQuickWindow*>(root);
+                if (!rootWin)
+                {
+                    qFatal("Error: Your root item has to be a window.");
+                }
+                i->setParent(0);
+
+                qDebug() << Q_FUNC_INFO << "Filtering Analysis (id=" << id << ") Loaded. Window id=" << lastId;
+
             }
             else
             {
-                qDebug() << Q_FUNC_INFO << "Failed to load project from id " << id << ". Wrong json data";
+                qDebug() << Q_FUNC_INFO << "Failed to load analysis from id " << id << ". Wrong json data";
             }
         }
         else
@@ -199,33 +222,12 @@ void Regovar::error(QJsonObject error)
     emit onError(error["code"].toString(), error["msg"].toString());
 }
 
-#include <QQmlContext>
-#include <QQuickWindow>
-#include <QQuickItem>
-#include <QQmlComponent>
 
-void Regovar::openAnalysis(int analysisId)
+
+FilteringAnalysis* Regovar::getAnalysisFromWindowId(int winId)
 {
-    // Create new QML window
-    QDir dir = QDir::currentPath();
-    QString file = dir.filePath("UI/AnalysisWindow.qml");
-    QUrl url = QUrl::fromLocalFile(file);
-    QQmlComponent *c = new QQmlComponent(mQmlEngine, url, QQmlComponent::PreferSynchronous);
-    QObject* o = c->create();
-    QQuickWindow *i = qobject_cast<QQuickWindow*>(o);
-    QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
-    i->setVisible(true);
-    i->setProperty("title", QString("My analysis n°%1 - Regovar").arg(analysisId));
-    QObject* root = mQmlEngine->rootObjects()[0];
-    QQuickWindow* rootWin = qobject_cast<QQuickWindow*>(root);
-    if (!rootWin)
-    {
-        qFatal("Error: Your root item has to be a window.");
-    }
-    i->setParent(0);
+    return mOpenAnalyses[winId];
 }
-
-
 
 
 

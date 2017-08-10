@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Window 2.3
+import org.regovar 1.0
 
 import "MainMenu"
 import "Regovar"
@@ -10,6 +11,7 @@ GenericWindow
     width: 800
     height: 600
 
+    property FilteringAnalysis model
 
     menuModel: MenuModel
     {
@@ -27,4 +29,8 @@ GenericWindow
         ]
     }
 
+    Component.onCompleted:
+    {
+        model = regovar.getAnalysisFromWindowId(winId);
+    }
 }

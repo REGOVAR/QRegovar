@@ -85,7 +85,7 @@ QHash<int, QByteArray> ResultsTreeModel::roleNames() const
     roles[roleId] = "id";
     ++roleId;
     // Build role from annotations all annotations available list
-    foreach (QString uid, regovar->currentFilteringAnalysis()->annotations()->annotations()->keys())
+    foreach (QString uid, mFilteringAnalysis->annotations()->annotations()->keys())
     {
         roles[roleId] = uid.toUtf8();
 
@@ -107,7 +107,7 @@ QVariant ResultsTreeModel::newResultsTreeViewItem(Annotation* annot, QString uid
     if (annot != nullptr && annot->type() == "sample_array")
     {
         QJsonObject meta = annot->meta();
-        ResultsTreeItem4SampleArray *t = new ResultsTreeItem4SampleArray(this);
+        ResultsTreeItem4SampleArray *t = new ResultsTreeItem4SampleArray(mFilteringAnalysis);
         t->setUid(uid);
         t->setType(meta["type"].toString());
 
@@ -128,7 +128,7 @@ QVariant ResultsTreeModel::newResultsTreeViewItem(Annotation* annot, QString uid
     }
     else
     {
-        ResultsTreeItem *t = new ResultsTreeItem(this);
+        ResultsTreeItem *t = new ResultsTreeItem(mFilteringAnalysis);
         t->setValue(value.toVariant());
         t->setUid(uid);
         QVariant v;
@@ -151,7 +151,7 @@ void ResultsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 
         foreach (QString uid, mFilteringAnalysis->fields())
         {
-            Annotation* annot = regovar->currentFilteringAnalysis()->annotations()->getAnnotation(uid);
+            Annotation* annot = mFilteringAnalysis->annotations()->getAnnotation(uid);
             columnData.insert(roles.key(uid.toUtf8()), newResultsTreeViewItem(annot, id, r[uid]));
         }
         // qDebug() << "Load variant : " << id;
