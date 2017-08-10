@@ -14,7 +14,7 @@ TextField
     background: Rectangle
     {
         implicitWidth: 200
-        implicitHeight: 35
+        implicitHeight: Regovar.theme.font.size.control * 2
         border.width: 1
         border.color: control.focus ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.boxColor.border
         color: Regovar.theme.boxColor.back

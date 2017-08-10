@@ -178,7 +178,8 @@ DISTFILES += \
     UI/Pages/Subject/SettingsIndicatorsPage.qml \
     UI/Pages/Subject/SettingsInformationsPage.qml \
     UI/Pages/Subject/SettingsPage.qml \
-    UI/Pages/Subject/SettingsSharingPage.qml
+    UI/Pages/Subject/SettingsSharingPage.qml \
+    UI/Framework/TextFieldForm.qml
 
 
 win32 {

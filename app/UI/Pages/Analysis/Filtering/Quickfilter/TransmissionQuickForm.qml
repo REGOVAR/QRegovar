@@ -40,22 +40,15 @@ QuickFilterBox
         anchors.left: parent.left
         anchors.right: parent.right
 
-        Rectangle
+        Text
         {
             anchors.left: parent.left
-            anchors.right: parent.right
-            height: Regovar.theme.font.size.control + 4
-            color: Regovar.theme.darker(Regovar.theme.backgroundColor.alt)
-            Text
-            {
-                anchors.fill: parent
-                anchors.margins: 2
+            anchors.leftMargin: 5
 
-                elide: Text.ElideRight
-                font.pixelSize: Regovar.theme.font.size.control
-                color: Regovar.theme.primaryColor.back.dark
-                text: qsTr("Mode")
-            }
+            elide: Text.ElideRight
+            font.pixelSize: Regovar.theme.font.size.control
+            color: Regovar.theme.primaryColor.back.dark
+            text: qsTr("Mode")
         }
 
 
@@ -205,22 +198,15 @@ QuickFilterBox
         }
 
 
-        Rectangle
+        Text
         {
             anchors.left: parent.left
-            anchors.right: parent.right
-            height: Regovar.theme.font.size.control + 4
-            color: Regovar.theme.darker(Regovar.theme.backgroundColor.alt)
-            Text
-            {
-                anchors.fill: parent
-                anchors.margins: 2
+            anchors.leftMargin: 5
 
-                elide: Text.ElideRight
-                font.pixelSize: Regovar.theme.font.size.control
-                color: Regovar.theme.primaryColor.back.dark
-                text: qsTr("Segregation")
-            }
+            elide: Text.ElideRight
+            font.pixelSize: Regovar.theme.font.size.control
+            color: Regovar.theme.primaryColor.back.dark
+            text: qsTr("Segregation")
         }
         RowLayout
         {
@@ -302,23 +288,16 @@ QuickFilterBox
             }
         }
 
-        Rectangle
+
+        Text
         {
             anchors.left: parent.left
-            anchors.right: parent.right
-            height: Regovar.theme.font.size.control + 4
-            color: Regovar.theme.darker(Regovar.theme.backgroundColor.alt)
+            anchors.leftMargin: 5
 
-            Text
-            {
-                anchors.fill: parent
-                anchors.margins: 2
-
-                elide: Text.ElideRight
-                font.pixelSize: Regovar.theme.font.size.control
-                color: Regovar.theme.primaryColor.back.dark
-                text: qsTr("Localisation")
-            }
+            elide: Text.ElideRight
+            font.pixelSize: Regovar.theme.font.size.control
+            color: Regovar.theme.primaryColor.back.dark
+            text: qsTr("Localisation")
         }
         RowLayout
         {

@@ -65,7 +65,7 @@ QuickFilterBox
         {
             checked:false
             visible: is1000gAfrAvailable
-            text: qsTr("1000G Africa")
+            text: qsTr("1000G AFR")
             onCheckedChanged: model.quickfilters.frequenceFilter.setFilter(3, checked)
         }
         ComboBox
@@ -80,13 +80,14 @@ QuickFilterBox
             visible: is1000gAfrAvailable
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
+            text: "0.01"
         }
 
         // 1000 G AMR
         CheckBox
         {
             visible: is1000gAmrAvailable
-            text: qsTr("1000G America")
+            text: qsTr("1000G AMR")
             onCheckedChanged: model.quickfilters.frequenceFilter.setFilter(4, checked)
         }
         ComboBox
@@ -94,29 +95,33 @@ QuickFilterBox
             visible: is1000gAmrAvailable
             width: 30
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
+            currentIndex: 2
         }
         TextField
         {
             visible: is1000gAmrAvailable
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
+            text: "0.01"
         }
 
         CheckBox
         {
             Layout.fillWidth: true
-            text: qsTr("1000G Asia")
+            text: qsTr("1000G ASN")
             onCheckedChanged: model.quickfilters.frequenceFilter.setFilter(5, checked)
         }
         ComboBox
         {
             width: 50
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
+            currentIndex: 2
         }
         TextField
         {
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
+            text: "0.01"
         }
 
         CheckBox
@@ -129,11 +134,13 @@ QuickFilterBox
         {
             width: 50
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
+            currentIndex: 2
         }
         TextField
         {
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
+            text: "0.01"
         }
 
         CheckBox
@@ -146,11 +153,13 @@ QuickFilterBox
         {
             width: 50
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
+            currentIndex: 2
         }
         TextField
         {
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
+            text: "0.01"
         }
     }
 }

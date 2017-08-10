@@ -49,7 +49,7 @@ Rectangle
             color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
 
-            text: "Olivier Dodelo"
+            text: "Aurélie BECKER"
         }
 
         Text
@@ -147,12 +147,12 @@ Rectangle
                 width: panel.columnWidth
 
 
-                Text
+                Button
                 {
                     font.pixelSize: 22
                     font.family: Regovar.theme.font.familly
-                    color: Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
+//                    color: Regovar.theme.frontColor.normal
+//                    verticalAlignment: Text.AlignVCenter
                     height: 30
                     text: qsTr("+ New project")
                 }
@@ -228,15 +228,33 @@ Rectangle
                 width: panel.columnWidth
 
 
-                Text
+                Row
                 {
-                    font.pixelSize: 22
-                    font.family: Regovar.theme.font.familly
-                    color: Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    height: 30
-                    text: qsTr("+ New analysis")
+                    Text
+                    {
+                        font.pixelSize: 22
+                        font.family: iconsFont.name
+                        color: Regovar.theme.secondaryColor.back.normal
+                        font.weight: Font.Bold
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        height: 30
+                        width: 30
+                        text: "µ"
+                    }
+                    Text
+                    {
+                        font.pixelSize: 22
+                        font.family: Regovar.theme.font.familly
+                        color: Regovar.theme.secondaryColor.back.normal
+                        font.weight: Font.Bold
+                        verticalAlignment: Text.AlignVCenter
+                        height: 30
+                        text: qsTr("New analysis")
+                    }
                 }
+
+
 
                 Text
                 {

@@ -22,13 +22,12 @@ Rectangle
     property bool isExpanded
     property Item content
 
-    property QtObject model
 
     FontLoader
     {
         id : iconFont
         source: "../../../../Icons.ttf"
-    }anchors.left: parent.left
+    }
 
     Rectangle
     {
