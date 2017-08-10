@@ -94,7 +94,6 @@ TreeView
                 anchors.rightMargin: 5
                 font.pixelSize: Regovar.theme.font.size.control
                 font.family: Regovar.theme.font.familly
-                font.bold: false
                 color: Regovar.theme.frontColor.normal
                 horizontalAlignment: styleData.textAlignment
                 verticalAlignment: Text.AlignVCenter

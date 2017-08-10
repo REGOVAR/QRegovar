@@ -25,27 +25,27 @@ QuickFilterBox
         {
             Layout.fillWidth: true
             text: qsTr("Exonic")
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(0, checked)
+            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
 
         }
         CheckBox
         {
             Layout.fillWidth: true
             text: qsTr("Intronic")
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(1, checked)
+            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(1, checked)
 
         }
         CheckBox
         {
             Layout.fillWidth: true
             text: qsTr("UTR")
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(2, checked)
+            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(2, checked)
         }
         CheckBox
         {
             Layout.fillWidth: true
             text: qsTr("Intergene")
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(3, checked)
+            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(3, checked)
         }
     }
 }

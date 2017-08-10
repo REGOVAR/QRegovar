@@ -25,19 +25,19 @@ QuickFilterBox
         CheckBox
         {
             text: qsTr("SIFT")
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(0, checked)
+            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
 
         }
         CheckBox
         {
             text: qsTr("Polyphen")
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(1, checked)
+            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(1, checked)
 
         }
         CheckBox
         {
             text: qsTr("CADD")
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(2, checked)
+            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(2, checked)
         }
     }
 }

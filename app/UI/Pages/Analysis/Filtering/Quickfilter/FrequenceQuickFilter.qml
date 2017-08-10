@@ -17,7 +17,6 @@ QuickFilterBox
 
 
 
-
     property bool is1000gAllAvailable: true
     property bool is1000gAfrAvailable: true
     property bool is1000gAmrAvailable: true
@@ -44,7 +43,7 @@ QuickFilterBox
         {
             visible: is1000gAllAvailable
             text: qsTr("1000G All")
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.frequenceFilter.setFilter(2, checked)
+            onCheckedChanged: model.quickfilters.frequenceFilter.setFilter(2, checked)
         }
         ComboBox
         {
@@ -67,7 +66,7 @@ QuickFilterBox
             checked:false
             visible: is1000gAfrAvailable
             text: qsTr("1000G Africa")
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.frequenceFilter.setFilter(3, checked)
+            onCheckedChanged: model.quickfilters.frequenceFilter.setFilter(3, checked)
         }
         ComboBox
         {
@@ -88,7 +87,7 @@ QuickFilterBox
         {
             visible: is1000gAmrAvailable
             text: qsTr("1000G America")
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.frequenceFilter.setFilter(4, checked)
+            onCheckedChanged: model.quickfilters.frequenceFilter.setFilter(4, checked)
         }
         ComboBox
         {
@@ -107,7 +106,7 @@ QuickFilterBox
         {
             Layout.fillWidth: true
             text: qsTr("1000G Asia")
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.frequenceFilter.setFilter(5, checked)
+            onCheckedChanged: model.quickfilters.frequenceFilter.setFilter(5, checked)
         }
         ComboBox
         {
@@ -124,7 +123,7 @@ QuickFilterBox
         {
             Layout.fillWidth: true
             text: qsTr("1000G Europa")
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.frequenceFilter.setFilter(0, checked)
+            onCheckedChanged: model.quickfilters.frequenceFilter.setFilter(0, checked)
         }
         ComboBox
         {
@@ -141,7 +140,7 @@ QuickFilterBox
         {
             Layout.fillWidth: true
             text: qsTr("Exac AM")
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.frequenceFilter.setFilter(1, checked)
+            onCheckedChanged: model.quickfilters.frequenceFilter.setFilter(1, checked)
         }
         ComboBox
         {

@@ -19,6 +19,13 @@ Rectangle
 
     property FilteringAnalysis model
 
+    onModelChanged:
+    {
+        resultsTree.model = root.model.results
+        resultsTree.rowHeight = (root.model.samples.length === 1) ? 25 : root.model.samples.length * 18
+        samplesNamesColumn.visible = root.model.sampleColumnDisplayed
+    }
+
     FontLoader
     {
         id : iconFont
@@ -94,6 +101,7 @@ Rectangle
                 anchors.topMargin: 60
                 spacing: 10
                 visible: quickFiltersTab.isSelected
+                model: root.model
             }
 
 
@@ -266,8 +274,7 @@ Rectangle
                 anchors.fill: rightPanel
                 anchors.margins: 10
                 anchors.topMargin: 60
-                model: root.model.results
-                rowHeight: (root.model.samples.length === 1) ? 25 : root.model.samples.length * 18
+
 
                 signal checked(string uid, bool isChecked)
                 onChecked: console.log(uid, isChecked);
@@ -336,10 +343,11 @@ Rectangle
                 // Special column to display sample's name when annnotation of type "sample_array" are displayed
                 TableViewColumn
                 {
+                    id: samplesNamesColumn
                     role: "samplesNames"
                     title: qsTr("Samples")
                     width: 70
-                    visible: root.model.sampleColumnDisplayed
+
                     delegate: Item
                     {
                         ColumnLayout
@@ -430,7 +438,7 @@ Rectangle
                     }
                 }
 
-                Component.onCompleted:
+                onModelChanged:
                 {
                     // Display selected fields
                     console.debug("Result tree view ready -> display default columns " +  root.model.fieldsCount())

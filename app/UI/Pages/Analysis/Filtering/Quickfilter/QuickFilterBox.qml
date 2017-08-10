@@ -1,6 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import org.regovar 1.0
 
 import "../../../../Regovar"
 import "../../../../Framework"
@@ -14,6 +15,7 @@ Rectangle
 //    border.color: Regovar.theme.boxColor.border
     height: isExpanded ? content.height + header.height : header.height
 
+    property FilteringAnalysis model
     property real maxHeight: content.height + 30
     property string title
     property bool isEnabled
@@ -96,15 +98,15 @@ Rectangle
                 isExpanded = !isExpanded
             }
         }
+    }
 
-        Container
-        {
-            id: container
-            anchors.top: header.bottom
-            anchors.left: root.left
-            anchors.right: root.right
-            contentItem: content
-            visible: isExpanded
-        }
+    Container
+    {
+        id: container
+        anchors.top: header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        contentItem: content
+        visible: isExpanded
     }
 }

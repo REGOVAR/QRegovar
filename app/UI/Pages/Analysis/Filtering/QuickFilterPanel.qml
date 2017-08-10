@@ -11,6 +11,7 @@ ColumnLayout
 {
     id: root
 
+    property FilteringAnalysis model
 
     Text
     {
@@ -29,12 +30,12 @@ ColumnLayout
 
         Column
         {
-            TransmissionQuickForm { width: root.width }
-            QualityQuickForm { width: root.width }
-            PositionQuickFilter { width: root.width }
-            TypeQuickFilter { width: root.width }
-            FrequenceQuickFilter { width: root.width }
-            SilicoPredQuickFilter { width: root.width }
+            TransmissionQuickForm { width: root.width; model: root.model }
+            QualityQuickForm { width: root.width; model: root.model }
+            PositionQuickFilter { width: root.width; model: root.model }
+            TypeQuickFilter { width: root.width; model: root.model }
+            FrequenceQuickFilter { width: root.width; model: root.model }
+            SilicoPredQuickFilter { width: root.width; model: root.model }
         }
     }
 
@@ -48,9 +49,9 @@ ColumnLayout
             text: qsTr("Clear")
             onClicked:
             {
-                regovar.currentFilteringAnalysis.quickfilters.clear();
-                regovar.currentFilteringAnalysis.setFilter(regovar.currentFilteringAnalysis.quickfilters.getFilter());
-                regovar.currentFilteringAnalysis.results.refresh();
+                model.quickfilters.clear();
+                model.setFilter(model.quickfilters.getFilter());
+                model.results.refresh();
             }
         }
         Button
@@ -58,8 +59,8 @@ ColumnLayout
             text: qsTr("Apply")
             onClicked:
             {
-                regovar.currentFilteringAnalysis.setFilter(regovar.currentFilteringAnalysis.quickfilters.getFilter());
-                regovar.currentFilteringAnalysis.results.refresh();
+                model.setFilter(model.quickfilters.getFilter());
+                model.results.refresh();
             }
         }
         Button

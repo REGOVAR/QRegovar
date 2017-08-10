@@ -71,6 +71,8 @@ ApplicationWindow
         return key;
     }
 
+
+    property var components
     function buildPages(pages, model, baseIndex)
     {
         for (var idx in model)
@@ -78,10 +80,43 @@ ApplicationWindow
             if (model[idx].page !== "" && model[idx].page[0] !== "@")
             {
                 var comp = Qt.createComponent("Pages/" + model[idx].page);
-                var elmt = comp.createObject(stack, {"visible": false});
-                var uid = baseIndex+idx
-                pages[uid] = elmt;
-                console.log ("load " + uid + " : Pages/" + model[idx].page)
+                if (comp.status == Component.Ready)
+                {
+                    var elmt = comp.createObject(stack, {"visible": false});
+                    var uid = baseIndex+idx
+                    pages[uid] = elmt;
+                    console.log ("load " + uid + " : Pages/" + model[idx].page)
+                }
+                else if (comp.status == Component.Error)
+                {
+                    console.log("Error loading component:", comp.errorString());
+                }
+//                else
+//                {
+//                    var uid = baseIndex+idx
+//                    components[uid] = comp;
+//                    console.log ("delayed loading " + uid + " : Pages/" + model[idx].page)
+//                    component.statusChanged.connect(function()
+//                    {
+//                        for (var prop in component)
+//                        {
+//                            if (component.hasOwnProperty(prop)) {
+//                                if (component[prop].status == Component.Ready)
+//                                {
+//                                    var elmt = component[prop].createObject(stack, {"visible": false});
+//                                    var uid = baseIndex+idx
+//                                    pages[uid] = elmt;
+//                                    console.log ("load " + uid + " : Pages/" + model[idx].page)
+//                                }
+//                                else if (component[prop].status == Component.Error)
+//                                {
+//                                    console.log("Error loading component:", component[prop].errorString());
+//                                }
+//                            }
+//                        }
+//                    });
+//                }
+
             }
             else
             {
@@ -118,6 +153,7 @@ ApplicationWindow
     {
         if (menuModel !== undefined)
         {
+            components = {}
             var pages = {};
             buildPages(pages, menuModel.model, "");
             root.menuPageMapping = pages;

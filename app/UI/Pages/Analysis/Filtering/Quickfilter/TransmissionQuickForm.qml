@@ -26,40 +26,40 @@ QuickFilterBox
         {
             text: qsTr("All")
             checked: true
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(0, checked)
+            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
 
         }
         CheckBox
         {
             text: qsTr("Heterozygous")
             checked: false
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(1, checked)
+            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(1, checked)
 
         }
         CheckBox
         {
             text: qsTr("Homozygous")
             checked: false
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(2, checked)
+            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(2, checked)
         }
         CheckBox
         {
             text: qsTr("Composite heterozygous")
             checked: false
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(3, checked)
+            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(3, checked)
         }
 
         CheckBox
         {
             text: qsTr("De novo")
             checked: false
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(4, checked)
+            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(4, checked)
         }
         CheckBox
         {
             text: qsTr("X-linked")
             checked: false
-            onCheckedChanged: regovar.currentFilteringAnalysis.quickfilters.transmissionFilter.setFilter(5, checked)
+            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(5, checked)
         }
     }
 }

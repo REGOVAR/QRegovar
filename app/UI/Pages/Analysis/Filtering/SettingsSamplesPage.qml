@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
+import org.regovar 1.0
 import "../../../Regovar"
 import "../../../Framework"
 
@@ -7,6 +8,8 @@ Rectangle
 {
     id: root
     color: Regovar.theme.backgroundColor.main
+
+    property FilteringAnalysis model
 
     Rectangle
     {

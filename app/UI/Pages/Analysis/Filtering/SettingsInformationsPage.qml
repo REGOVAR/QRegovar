@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
+import org.regovar 1.0
 import "../../../Regovar"
 import "../../../Framework"
 
@@ -7,6 +8,8 @@ Rectangle
 {
     id: root
     color: Regovar.theme.backgroundColor.main
+
+    property FilteringAnalysis model
 
     Rectangle
     {
@@ -21,7 +24,7 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: regovar.currentFilteringAnalysis.name
+            text: root.model.name
             font.pixelSize: 22
             color: Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
@@ -96,21 +99,21 @@ Rectangle
                 Text
                 {
                     Layout.fillWidth: true
-                    text: "Hg19" // regovar.currentFilteringAnalysis.refName
+                    text: "Hg19" // root.model.refName
                     color: Regovar.theme.frontColor.disable
                     verticalAlignment: Text.AlignVCenter
                 }
                 Text
                 {
                     Layout.fillWidth: true
-                    text: regovar.currentFilteringAnalysis.status
+                    text: root.model.status
                     color: Regovar.theme.frontColor.disable
                     verticalAlignment: Text.AlignVCenter
                 }
                 Text
                 {
                     Layout.fillWidth: true
-                    text: regovar.currentFilteringAnalysis.lastUpdate.toString()
+                    text: root.model.lastUpdate.toString()
                     color: Regovar.theme.frontColor.disable
                 }
             }
@@ -131,7 +134,7 @@ Rectangle
         TextField
         {
             Layout.fillWidth: true
-            text: regovar.currentFilteringAnalysis.name
+            text: root.model.name
             placeholderText: qsTr("The name of the analysis")
         }
 
@@ -149,7 +152,7 @@ Rectangle
         {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            text: regovar.currentFilteringAnalysis.comment
+            text: root.model.comment
         }
     }
 

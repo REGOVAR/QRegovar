@@ -157,11 +157,6 @@ Item {
                 height: screensListView.height
                 source: model.source
 
-                Component.onCompleted:
-                {
-                    item.isFirstScreen = (index === 0)
-                    item.isLastScreen = (index === screensListView.count - 1)
-                }
             }
         }
     }
