@@ -9,6 +9,9 @@ GenericWindow
     width: 800
     height: 600
 
+    property QtObject model
+
+
     menuModel: Regovar.menuModel
     title: "Regovar - " + menuModel.mainTitle
 

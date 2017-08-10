@@ -51,6 +51,19 @@ QtObject
                     { "label": qsTr("Settings"),      "page": "Project/SettingsPage.qml", "sublevel": []}
                     ], "subindex": 0},
                 ], "subindex": 0},
+            { "icon": "b", "label": qsTr("Subject"),    "page": "", "sublevel": [
+                { "icon": "z", "label": qsTr("Browse"), "page": "Browse/SubjectsPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "b", "label": "Michel Dupont","page": "", "sublevel": [
+                    { "label": qsTr("Resume"),          "page": "Subject/ResumePage.qml", "sublevel": []},
+                    { "label": qsTr("Informations"),    "page": "Subject/SettingsPage.qml", "sublevel": []},
+                    { "label": qsTr("Phenotype"),       "page": "Subject/PhenotypesPage.qml", "sublevel": []},
+                    { "label": qsTr("Characteristics"), "page": "Subject/CharacteristicsPage.qml", "sublevel": []},
+                    { "label": qsTr("Samples"),         "page": "Subject/SamplesPage.qml", "sublevel": []},
+                    { "label": qsTr("Analyses"),        "page": "Subject/AnalysesPage.qml", "sublevel": []},
+                    { "label": qsTr("Files"),           "page": "Subject/FilesPage.qml", "sublevel": []},
+                    { "label": qsTr("Events"),          "page": "Subject/EventsPage.qml", "sublevel": []}
+                    ], "subindex": 0},
+                ], "subindex": 0},
             { "icon": "d", "label": qsTr("Settings"),      "page": "",   "sublevel": [
                 { "icon": "q", "label": qsTr("Panel"),     "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "L", "label": qsTr("Pipeline"),  "page": "Settings/PipesPage.qml", "sublevel": [], "subindex": -1},

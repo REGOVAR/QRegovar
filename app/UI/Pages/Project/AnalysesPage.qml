@@ -6,6 +6,8 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
+    property QtObject model
+
     Rectangle
     {
         id: header

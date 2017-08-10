@@ -9,37 +9,19 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    Rectangle
-    {
-        id: header
-        anchors.left: root.left
-        anchors.top: root.top
-        anchors.right: root.right
-        height: 50
-        color: Regovar.theme.backgroundColor.alt
-
-        Text
-        {
-            anchors.fill: header
-            anchors.margins: 10
-            text: qsTr("About Regovar")
-            font.pixelSize: 20
-            font.weight: Font.Black
-        }
-    }
+    property QtObject model
 
 
-    SwipeView
+    TabView
     {
         id: swipeview
-        anchors.top : header.bottom
-        anchors.left: root.left
-        anchors.right: root.right
-        anchors.bottom: root.bottom
-        anchors.margins: 10
+        anchors.fill : root
+
+        tabSharedModel: root.model
 
 
-        model: ListModel
+
+        tabsModel: ListModel
         {
             ListElement
             {

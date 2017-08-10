@@ -5,22 +5,29 @@ import QtQuick.Window 2.2
 Item
 {
     id: root
-    property var model
 
-    ColumnLayout
+
+    property var tabsModel
+    property var tabSharedModel
+
+
+    Rectangle
     {
-        anchors.fill: parent
-        spacing: 0
+        id: header
+        anchors.left: root.left
+        anchors.top: root.top
+        anchors.right: root.right
+        height: 50
+        color: Regovar.theme.backgroundColor.alt
 
         ListView
         {
             id: headersListView
-            Layout.fillWidth: true
-            Layout.preferredHeight: 16 * Screen.logicalPixelDensity
+            anchors.fill: header
             orientation: ListView.Horizontal
             boundsBehavior: Flickable.StopAtBounds
             interactive: false
-            model: swipeView.model
+            model: root.tabsModel
             currentIndex: screensListView.currentIndex
             delegate: Item
             {
@@ -34,7 +41,7 @@ Item
                     anchors.centerIn: parent
                     text: model.title
                     font.pixelSize: headersListView.height * 0.3
-                    font.capitalization: Font.AllUppercasej
+                    font.capitalization: Font.AllUppercase
                 }
 
                 Rectangle
@@ -79,6 +86,7 @@ Item
                     onClicked: screensListView.currentIndex = index
                 }
             }
+
             highlightFollowsCurrentItem: false
             highlight: Item
             {
@@ -120,18 +128,32 @@ Item
                     color: "#006325"
                 }
             }
-
-            Rectangle
-            {
-                id: stripRectangle
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                height: parent.height * 0.05
-                z: -1
-                color: "lightgray"
-            }
         }
+    }
 
+    ListView
+    {
+        id: screensListView
+        anchors.top : header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.bottom: root.bottom
+        orientation: ListView.Horizontal
+        snapMode: ListView.SnapOneItem
+        highlightRangeMode: ListView.StrictlyEnforceRange
+        highlightMoveVelocity: 2000
+        clip: true
+        model: root.tabsModel
+        onCurrentItemChanged:
+        {
+            currentItem.item.selected()
+        }
+        delegate: Loader
+        {
+            width: screensListView.width
+            height: screensListView.height
+            source: model.source
+
+        }
     }
 }

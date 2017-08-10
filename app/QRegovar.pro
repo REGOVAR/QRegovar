@@ -135,12 +135,8 @@ DISTFILES += \
     UI/Pages/Analysis/Filtering/QuickFilterPanel.qml \
     UI/Dialogs/CloseDialog.qml \
     UI/Dialogs/ErrorDialog.qml \
-    UI/Pages/Browse/AnalysesPage.qml \
-    UI/Pages/Browse/EventsPage.qml \
-    UI/Pages/Browse/FilesPage.qml \
     UI/Pages/Browse/ProjectsPage.qml \
     UI/Pages/Browse/SubjectsPage.qml \
-    UI/Pages/Project/ProjectsPage.qml \
     UI/Framework/Box.qml \
     UI/Pages/Help/AboutPage.qml \
     UI/Pages/Help/TutorialsPage.qml \
@@ -170,7 +166,19 @@ DISTFILES += \
     UI/Pages/Analysis/Filtering/Quickfilter/TypeQuickFilter.qml \
     UI/Pages/Analysis/Filtering/Quickfilter/FrequenceQuickFilter.qml \
     UI/Pages/Analysis/Filtering/Quickfilter/SilicoPredQuickFilter.qml \
-    UI/Pages/Analysis/Filtering/Quickfilter/QuickFilterBox.qml
+    UI/Pages/Analysis/Filtering/Quickfilter/QuickFilterBox.qml \
+    UI/Pages/Project/SettingsPage.qml \
+    UI/Pages/Subject/AnalysesPage.qml \
+    UI/Pages/Subject/CharacteristicsPage.qml \
+    UI/Pages/Subject/EventsPage.qml \
+    UI/Pages/Subject/FilesPage.qml \
+    UI/Pages/Subject/PhenotypesPage.qml \
+    UI/Pages/Subject/ResumePage.qml \
+    UI/Pages/Subject/SamplesPage.qml \
+    UI/Pages/Subject/SettingsIndicatorsPage.qml \
+    UI/Pages/Subject/SettingsInformationsPage.qml \
+    UI/Pages/Subject/SettingsPage.qml \
+    UI/Pages/Subject/SettingsSharingPage.qml
 
 
 win32 {

@@ -6,8 +6,6 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property QtObject model
-
     Rectangle
     {
         id: header
@@ -34,7 +32,7 @@ Rectangle
 
     Text
     {
-       text: "SUBJECTS"
+       text: "SETTINGS / INDICATORS"
        font.pointSize: 24
        anchors.centerIn: parent
     }

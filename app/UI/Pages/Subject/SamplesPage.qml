@@ -34,7 +34,7 @@ Rectangle
 
     Text
     {
-       text: "SUBJECTS"
+       text: "SAMPLES"
        font.pointSize: 24
        anchors.centerIn: parent
     }

@@ -44,7 +44,7 @@ QuickFilterBox
         CheckBox
         {
             Layout.fillWidth: true
-            text: qsTr("Intergene")
+            text: qsTr("Intergenenic")
             onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(3, checked)
         }
     }

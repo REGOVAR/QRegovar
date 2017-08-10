@@ -11,7 +11,7 @@ import "../../../../Framework"
 
 QuickFilterBox
 {
-    title : qsTr("Inheritance mode")
+    title : qsTr("Transmission mode")
     isEnabled : false
     isExpanded: false
 
@@ -22,44 +22,141 @@ QuickFilterBox
         anchors.left: parent.left
         anchors.right: parent.right
 
-        CheckBox
+        Text
         {
-            text: qsTr("All")
-            checked: true
-            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
-
-        }
-        CheckBox
-        {
-            text: qsTr("Heterozygous")
-            checked: false
-            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(1, checked)
-
-        }
-        CheckBox
-        {
-            text: qsTr("Homozygous")
-            checked: false
-            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(2, checked)
-        }
-        CheckBox
-        {
-            text: qsTr("Composite heterozygous")
-            checked: false
-            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(3, checked)
+            text: qsTr("Mode")
         }
 
-        CheckBox
+        Row
         {
-            text: qsTr("De novo")
-            checked: false
-            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(4, checked)
+            Rectangle { width: 30 }
+            CheckBox
+            {
+                text: qsTr("All")
+                checked: true
+                onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
+            }
         }
-        CheckBox
+        Row
         {
-            text: qsTr("X-linked")
-            checked: false
-            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(5, checked)
+            Rectangle { width: 30 }
+            CheckBox
+            {
+                text: qsTr("Dominant")
+                checked: true
+                onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
+            }
+        }
+        Row
+        {
+            Rectangle { width: 30 }
+            CheckBox
+            {
+                text: qsTr("Recessive")
+                checked: true
+                onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
+            }
+        }
+        Row
+        {
+            Rectangle { width: 60 }
+            CheckBox
+            {
+                text: qsTr("Heterozygous")
+                checked: true
+                onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
+            }
+        }
+        Row
+        {
+            Rectangle { width: 60 }
+            CheckBox
+            {
+                text: qsTr("Compound heterozygous")
+                checked: true
+                onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
+            }
+        }
+
+
+        Text
+        {
+            text: qsTr("Segregation")
+        }
+        Row
+        {
+            Rectangle { width: 30 }
+            CheckBox
+            {
+                text: qsTr("All")
+                checked: true
+                onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
+            }
+        }
+        Row
+        {
+            Rectangle { width: 30 }
+            CheckBox
+            {
+                text: qsTr("De novo")
+                checked: true
+                onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
+            }
+        }
+        Row
+        {
+            Rectangle { width: 30 }
+            CheckBox
+            {
+                text: qsTr("Inherited")
+                checked: true
+                onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
+            }
+        }
+
+        Text
+        {
+            text: qsTr("Localisation")
+        }
+        Row
+        {
+            Rectangle { width: 30 }
+            CheckBox
+            {
+                text: qsTr("All")
+                checked: true
+                onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
+            }
+        }
+        Row
+        {
+            Rectangle { width: 30 }
+            CheckBox
+            {
+                text: qsTr("Autosomal")
+                checked: true
+                onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
+            }
+        }
+        Row
+        {
+            Rectangle { width: 30 }
+            CheckBox
+            {
+                text: qsTr("X-linked")
+                checked: true
+                onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
+            }
+        }
+        Row
+        {
+            Rectangle { width: 30 }
+            CheckBox
+            {
+                text: qsTr("Mitochondrial")
+                checked: true
+                onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
+            }
         }
     }
 }

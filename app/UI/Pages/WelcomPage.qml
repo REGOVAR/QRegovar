@@ -7,6 +7,7 @@ import "../Regovar"
 Rectangle
 {
     id: root
+    property QtObject model
 
     color: Regovar.theme.backgroundColor.main
 

@@ -41,7 +41,7 @@ QuickFilterBox
         ComboBox
         {
             width: 50
-            model: [ "<", "<=", "==", ">=", ">", "!=" ]
+            model: [ "<", "≤", "=", "≥", ">", "≠" ] // [ "<", "<=", "==", ">=", ">", "!=" ]
             //currentText: model.quickfilters.qualityFilter.op
         }
         TextField
