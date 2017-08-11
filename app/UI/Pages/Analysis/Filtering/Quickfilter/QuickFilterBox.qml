@@ -40,19 +40,39 @@ Rectangle
         color: Regovar.theme.backgroundColor.main
 
 
+//        Text
+//        {
+//            id: activeIcon
+//            anchors.top: header.top
+//            anchors.bottom: header.bottom
+//            anchors.left: header.left
+//            width: 30
+//            text: "n"
+//            font.family: iconFont.name
+//            font.pixelSize: Regovar.theme.font.size.header
+//            color: isEnabled ? Regovar.theme.primaryColor.back.dark : Regovar.theme.primaryColor.back.light
+//            verticalAlignment: Text.AlignVCenter
+
+//        }
         Text
         {
-            id: activeIcon
+            id: collapseIcon
+//            anchors.top: header.top
+//            anchors.bottom: header.bottom
+//            anchors.right: header.right
             anchors.top: header.top
             anchors.bottom: header.bottom
             anchors.left: header.left
             width: 30
-            text: "n"
+            height: 30
+            text: "{"
             font.family: iconFont.name
             font.pixelSize: Regovar.theme.font.size.header
-            color: isEnabled ? Regovar.theme.primaryColor.back.dark : Regovar.theme.primaryColor.back.light
+            color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
 
+            rotation: isExpanded ? 90 : 0
         }
 
         Text
@@ -71,23 +91,7 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
         }
 
-        Text
-        {
-            id: collapseIcon
-            anchors.top: header.top
-            anchors.bottom: header.bottom
-            anchors.right: header.right
-            width: 30
-            height: 30
-            text: "{"
-            font.family: iconFont.name
-            font.pixelSize: Regovar.theme.font.size.header
-            color: Regovar.theme.primaryColor.back.dark
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
 
-            rotation: isExpanded ? 90 : 0
-        }
 
         MouseArea
         {
@@ -95,7 +99,6 @@ Rectangle
             cursorShape: "PointingHandCursor"
             onClicked:
             {
-                console.log("click");
                 isExpanded = !isExpanded
             }
         }

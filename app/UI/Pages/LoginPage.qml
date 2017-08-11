@@ -1,112 +1,133 @@
-import QtQuick 2.0
-import QtQuick.Controls 2.0
+import QtQuick 2.7
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.0
 
+import "../Framework"
+import "../Regovar"
 
-Item
+Rectangle
 {
     id: root
+    property QtObject model
 
-    LinearGradient
+    color: Regovar.theme.backgroundColor.main
+
+
+    Rectangle
     {
-        anchors.fill: parent
-        start: Qt.point(0, 0)
-        end: Qt.point(0, 600)
-        gradient: Gradient
-        {
-            GradientStop { position: 0.0; color: "#00FFFFFF" }
-            GradientStop { position: 1.0; color: "#DDDDDDFF" }
-        }
-    }
-
-
-    Text
-    {
-       text: "Welcome " + regovar.currentUser.firstname
-       color: "#55999999"
-       font.family: "Sans"
-       font.weight: Font.Black
-       font.pointSize: 24
-       anchors.left: parent.left
-       anchors.top: parent.top
-       anchors.leftMargin: 30
-    }
-    Text
-    {
-       text: "Your sandbox"
-       color: "#55999999"
-       font.family: "Sans"
-       font.weight: Font.Black
-       font.pointSize: 24
-       anchors.left: parent.left
-       anchors.top: parent.top
-       anchors.leftMargin: 30
-       anchors.topMargin: 30
-    }
-
-    RowLayout
-    {
-        anchors.centerIn: parent
-
-        Button
-        {
-            text: "Import raw data"
-            onClicked: main.about()
-            width: 100
-            height: 100
-        }
-
-        Button
-        {
-            text: "Analyse imported data"
-            onClicked: main.about()
-            width: 100
-            height: 100
-        }
-
-        Button
-        {
-            text: "Generate report"
-            onClicked: main.about()
-            width: 100
-            height: 100
-        }
-    }
-
-
-
-    MainMenu
-    {
+        id: header
+        anchors.left: root.left
         anchors.top: root.top
-        anchors.bottom: root.bottom
-        width: 300
+        anchors.right: root.right
+        height: 50
+        color: Regovar.theme.backgroundColor.alt
+
+
+        Text
+        {
+            id: userIcon
+            anchors.top: header.top
+            anchors.left: header.left
+            anchors.bottom: header.bottom
+            anchors.margins: 10
+            font.pixelSize: 22
+            font.family: Regovar.theme.icons.name
+            color: Regovar.theme.primaryColor.back.dark
+            verticalAlignment: Text.AlignVCenter
+
+            text: "b"
+        }
+        Text
+        {
+            id: userLabel
+            anchors.top: header.top
+            anchors.left: userIcon.right
+            anchors.bottom: header.bottom
+            anchors.margins: 10
+            font.pixelSize: 22
+            font.family: Regovar.theme.font.familly
+            color: Regovar.theme.primaryColor.back.dark
+            verticalAlignment: Text.AlignVCenter
+
+            text: "User not identified"
+        }
+
+        Text
+        {
+            id: serverIcon
+            anchors.top: header.top
+            anchors.right: serverLabel.left
+            anchors.bottom: header.bottom
+            anchors.margins: 10
+            font.pixelSize: 22
+            font.family: Regovar.theme.icons.name
+            color: Regovar.theme.primaryColor.back.dark
+            verticalAlignment: Text.AlignVCenter
+
+            text: "F"
+        }
+        Text
+        {
+            id: serverLabel
+            anchors.top: header.top
+            anchors.right: header.right
+            anchors.bottom: header.bottom
+            anchors.margins: 10
+            font.pixelSize: 22
+            font.family: Regovar.theme.font.familly
+            color: Regovar.theme.primaryColor.back.dark
+            verticalAlignment: Text.AlignVCenter
+
+            text: "https://regovar.chu-nancy.fr"
+        }
     }
 
 
-
-
-
-
-    Item
+    Image
     {
         id: logo
-        width: 300
-        height: 100
-
-        Image
-        {
-            source: "qrc:///img/sandbox.png"
-            height: 100
-            width: 300
-            anchors.left: logo.left
-            anchors.bottom: logo.bottom
-            anchors.bottomMargin: 7
-        }
-        anchors.right: root.right
-        anchors.rightMargin: 10
-        anchors.bottom: root.bottom
-        anchors.bottomMargin: 10
+        source: "qrc:/regovar.png"
+        sourceSize.height: 125
+        anchors.top: header.bottom
+        anchors.topMargin: 50
+        anchors.horizontalCenter: header.horizontalCenter
     }
 
+
+
+    Rectangle
+    {
+        id: panel
+        color: "transparent"
+
+        anchors.top: searchBar.bottom
+        anchors.bottom: root.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.margins: 100
+        anchors.topMargin: 10
+        anchors.bottomMargin: 10
+
+
+        property real columnWidth
+        onWidthChanged: columnWidth = (width - 290) / 4
+        Component.onCompleted: columnWidth = (width - 290) / 4
+
+        GridLayout
+        {
+            id: newButtonsRow
+            anchors.centerIn: panel
+            columns: 2
+            rows: 3
+
+            Text
+            {
+                text: qsTr("Login")
+            }
+            Text
+            {
+                text: qsTr("Password")
+            }
+        }
+
+    }
 }

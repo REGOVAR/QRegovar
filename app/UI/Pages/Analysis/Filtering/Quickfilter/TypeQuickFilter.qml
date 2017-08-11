@@ -14,6 +14,15 @@ QuickFilterBox
     title : qsTr("Type")
     isEnabled : false
     isExpanded: false
+    property bool internalUiUpdate: false
+
+
+    function checkFinal()
+    {
+        // Mode
+        typAll.checked = (!typMis.checked && !typStp.checked && !typSpl.checked);
+        // TODO : send final combination to the model to update the filter
+    }
 
     content: Column
     {
@@ -22,22 +31,118 @@ QuickFilterBox
         anchors.left: parent.left
         anchors.right: parent.right
 
-        CheckBox
-        {
-            text: qsTr("Missense")
-            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
 
-        }
-        CheckBox
-        {
-            text: qsTr("Stop (Nonsense)")
-            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(1, checked)
 
-        }
-        CheckBox
+        RowLayout
         {
-            text: qsTr("Splicing")
-            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(2, checked)
+            width: content.width
+            CheckBox
+            {
+                id: typAll
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("All")
+                checked: true
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            typMis.checked = false;
+                            typStp.checked = false;
+                            typSpl.checked = false;
+                        }
+
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
+            }
+        }
+
+        RowLayout
+        {
+            width: content.width
+            CheckBox
+            {
+                id: typMis
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("Missense")
+                checked: false
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            typAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
+
+            }
+        }
+        RowLayout
+        {
+            width: content.width
+            CheckBox
+            {
+                id: typStp
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("Nonsense (Stop)")
+                checked: false
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            typAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
+
+            }
+        }
+        RowLayout
+        {
+            width: content.width
+            CheckBox
+            {
+                id: typSpl
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("Splicing")
+                checked: false
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            typAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
+
+            }
         }
     }
 }

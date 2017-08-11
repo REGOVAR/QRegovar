@@ -11,7 +11,6 @@ Rectangle
 
     color: Regovar.theme.backgroundColor.main
 
-    FontLoader { id: iconsFont; source: "../Icons.ttf" }
 
     Rectangle
     {
@@ -31,7 +30,7 @@ Rectangle
             anchors.bottom: header.bottom
             anchors.margins: 10
             font.pixelSize: 22
-            font.family: iconsFont.name
+            font.family: Regovar.theme.icons.name
             color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
 
@@ -60,7 +59,7 @@ Rectangle
             anchors.bottom: header.bottom
             anchors.margins: 10
             font.pixelSize: 22
-            font.family: iconsFont.name
+            font.family: Regovar.theme.icons.name
             color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
 
@@ -97,10 +96,11 @@ Rectangle
     {
         id: searchBar
         anchors.top: logo.bottom
-        anchors.left: root.left
-        anchors.right: root.right
-        anchors.margins: 100
+        anchors.horizontalCenter: root.horizontalCenter
+        anchors.margins: 10
+        width: 600
         anchors.topMargin: 50
+
 
         Component.onCompleted: text = regovar.searchRequest
 
@@ -127,17 +127,51 @@ Rectangle
         anchors.left: root.left
         anchors.right: root.right
         anchors.margins: 100
+        anchors.topMargin: 10
         anchors.bottomMargin: 10
 
 
-        RowLayout
+        property real columnWidth
+        onWidthChanged: columnWidth = (width - 290) / 4
+        Component.onCompleted: columnWidth = (width - 290) / 4
+
+        Row
+        {
+            id: newButtonsRow
+            anchors.horizontalCenter: panel.horizontalCenter
+            anchors.top: panel.top
+            height: 100
+            spacing: 30
+
+            ButtonWelcom
+            {
+                text: qsTr("New project")
+                width: panel.columnWidth
+            }
+            ButtonWelcom
+            {
+                text: qsTr("New analysis")
+                width: panel.columnWidth
+            }
+            ButtonWelcom
+            {
+                text: qsTr("New subject")
+                width: panel.columnWidth
+            }
+        }
+
+
+
+        Row
         {
             spacing: 30
 
-            anchors.fill: panel
-            property real columnWidth
-            onWidthChanged: columnWidth = (width - 290) / 4
-            Component.onCompleted: columnWidth = (width - 290) / 4
+            anchors.top: newButtonsRow.bottom
+            anchors.left: panel.left
+            anchors.right: panel.right
+            anchors.bottom: panel.bottom
+
+
 
             // Project
             ColumnLayout
@@ -146,24 +180,13 @@ Rectangle
                 Layout.fillHeight: true
                 width: panel.columnWidth
 
-
-                Button
-                {
-                    font.pixelSize: 22
-                    font.family: Regovar.theme.font.familly
-//                    color: Regovar.theme.frontColor.normal
-//                    verticalAlignment: Text.AlignVCenter
-                    height: 30
-                    text: qsTr("+ New project")
-                }
-
                 Text
                 {
-                    font.pixelSize: 22
-                    font.family: Regovar.theme.font.familly
-                    color: Regovar.theme.frontColor.normal
                     verticalAlignment: Text.AlignVCenter
-                    height: 30
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    color: Regovar.theme.primaryColor.back.dark
+                    height: Regovar.theme.font.boxSize.header
                     text: qsTr("Last projects")
                 }
 
@@ -194,7 +217,7 @@ Rectangle
                                 {
                                     width: 30
                                     font.pixelSize: 12
-                                    font.family: iconsFont.name
+                                    font.family: Regovar.theme.icons.name
                                     color: Regovar.theme.frontColor.normal
                                     verticalAlignment: Text.AlignVCenter
                                     horizontalAlignment: Text.AlignHCenter
@@ -228,41 +251,13 @@ Rectangle
                 width: panel.columnWidth
 
 
-                Row
-                {
-                    Text
-                    {
-                        font.pixelSize: 22
-                        font.family: iconsFont.name
-                        color: Regovar.theme.secondaryColor.back.normal
-                        font.weight: Font.Bold
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        height: 30
-                        width: 30
-                        text: "µ"
-                    }
-                    Text
-                    {
-                        font.pixelSize: 22
-                        font.family: Regovar.theme.font.familly
-                        color: Regovar.theme.secondaryColor.back.normal
-                        font.weight: Font.Bold
-                        verticalAlignment: Text.AlignVCenter
-                        height: 30
-                        text: qsTr("New analysis")
-                    }
-                }
-
-
-
                 Text
                 {
-                    font.pixelSize: 22
-                    font.family: Regovar.theme.font.familly
-                    color: Regovar.theme.frontColor.normal
                     verticalAlignment: Text.AlignVCenter
-                    height: 30
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    color: Regovar.theme.primaryColor.back.dark
+                    height: Regovar.theme.font.boxSize.header
                     text: qsTr("Last analysis")
                 }
 
@@ -295,7 +290,7 @@ Rectangle
                                 {
                                     width: 30
                                     font.pixelSize: 12
-                                    font.family: iconsFont.name
+                                    font.family: Regovar.theme.icons.name
                                     color: Regovar.theme.frontColor.normal
                                     verticalAlignment: Text.AlignVCenter
                                     horizontalAlignment: Text.AlignHCenter
@@ -331,21 +326,11 @@ Rectangle
 
                 Text
                 {
-                    font.pixelSize: 22
-                    font.family: Regovar.theme.font.familly
-                    color: Regovar.theme.frontColor.normal
                     verticalAlignment: Text.AlignVCenter
-                    height: 30
-                    text: qsTr("+ New subject")
-                }
-
-                Text
-                {
-                    font.pixelSize: 22
-                    font.family: Regovar.theme.font.familly
-                    color: Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    height: 30
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    color: Regovar.theme.primaryColor.back.dark
+                    height: Regovar.theme.font.boxSize.header
                     text: qsTr("Last subjects")
                 }
 
@@ -376,7 +361,7 @@ Rectangle
                                 {
                                     width: 30
                                     font.pixelSize: 12
-                                    font.family: iconsFont.name
+                                    font.family: Regovar.theme.icons.name
                                     color: Regovar.theme.frontColor.normal
                                     verticalAlignment: Text.AlignVCenter
                                     horizontalAlignment: Text.AlignHCenter
@@ -412,15 +397,11 @@ Rectangle
 
                 Text
                 {
-                    height: 30
-                }
-                Text
-                {
-                    font.pixelSize: 22
-                    font.family: Regovar.theme.font.familly
-                    color: Regovar.theme.frontColor.normal
                     verticalAlignment: Text.AlignVCenter
-                    height: 30
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    color: Regovar.theme.primaryColor.back.dark
+                    height: Regovar.theme.font.boxSize.header
                     text: qsTr("Last events")
                 }
 
@@ -442,15 +423,15 @@ Rectangle
                             {
                                 ListElement { date: "2017-06-25 14h56"; name: "Article published"; icon:""; color:"" }
                                 ListElement { date: "2017-06-25 14h56"; name: "Start new analysis \"Hugodims\""; icon:""; color:"" }
-                                ListElement { date: "2017-06-25 14h56"; name: "Pause analysis \"Hugodims\""; icon:"m"; color:"orange" }
-                                ListElement { date: "2017-06-25 14h56"; name: "Project 2"; icon:""; color:"" }
+                                ListElement { date: "2017-06-25 14h56"; name: "Pause analysis \"Hugodims\""; icon:"m"; color:"red" }
+                                ListElement { date: "2017-06-25 14h56"; name: "Project 2 creation"; icon:""; color:"" }
                             }
 
                             Row
                             {
                                 Text
                                 {
-                                    width: 50
+                                    width: 120
                                     font.pixelSize: 12
                                     font.family: Regovar.theme.font.familly
                                     verticalAlignment: Text.AlignVCenter
@@ -462,7 +443,7 @@ Rectangle
                                 {
                                     width: 30
                                     font.pixelSize: 12
-                                    font.family: iconsFont.name
+                                    font.family: Regovar.theme.icons.name
                                     verticalAlignment: Text.AlignVCenter
                                     horizontalAlignment: Text.AlignHCenter
                                     text: icon

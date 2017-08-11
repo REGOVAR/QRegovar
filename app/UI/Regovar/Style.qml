@@ -14,9 +14,12 @@ QtObject
     property string name: "Regovar Light Theme"
     property string description: "The official light theme of the Regovar client"
 
+    property FontLoader icons: FontLoader { source: "../Icons.ttf" }
+
     property QtObject font: QtObject
     {
         property string familly : "Sans"
+
         property QtObject size: QtObject
         {
             property int title : 5 * Screen.pixelDensity

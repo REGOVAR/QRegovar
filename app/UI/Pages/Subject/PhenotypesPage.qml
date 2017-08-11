@@ -34,7 +34,7 @@ Rectangle
 
     Text
     {
-       text: "Phenotype"
+       text: "PHENOTYPES & CHARACTERISTICS"
        font.pointSize: 24
        anchors.centerIn: parent
     }

@@ -22,11 +22,11 @@ Rectangle
 
         tabsModel: ListModel
         {
-            ListElement
-            {
-                title: "Informations"
-                source: "../Pages/Project/SettingsInformationsPage.qml"
-            }
+//            ListElement
+//            {
+//                title: "Informations"
+//                source: "../Pages/Project/SettingsInformationsPage.qml"
+//            }
             ListElement
             {
                 title: "Indicators"

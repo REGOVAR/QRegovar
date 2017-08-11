@@ -124,8 +124,9 @@ void Regovar::loadAnalysis(int id)
                 QObject* o = c->create();
                 QQuickWindow *i = qobject_cast<QQuickWindow*>(o);
                 QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
-                i->setVisible(true);
+
                 i->setProperty("winId", lastId);
+                i->setVisible(true);
                 QObject* root = mQmlEngine->rootObjects()[0];
                 QQuickWindow* rootWin = qobject_cast<QQuickWindow*>(root);
                 if (!rootWin)

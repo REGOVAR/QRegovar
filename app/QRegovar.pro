@@ -179,7 +179,13 @@ DISTFILES += \
     UI/Pages/Subject/SettingsInformationsPage.qml \
     UI/Pages/Subject/SettingsPage.qml \
     UI/Pages/Subject/SettingsSharingPage.qml \
-    UI/Framework/TextFieldForm.qml
+    UI/Framework/TextFieldForm.qml \
+    UI/Framework/ButtonWelcom.qml \
+    UI/Framework/ButtonWelcom.qml \
+    UI/Pages/LoginPage.qml \
+    UI/Pages/Analysis/Filtering/AdvancedFilterPanel.qml \
+    UI/Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml \
+    UI/Pages/Analysis/Filtering/ResultsPanel.qml
 
 
 win32 {

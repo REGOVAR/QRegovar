@@ -10,9 +10,20 @@ import "../../../../Framework"
 
 QuickFilterBox
 {
+    id: root
     title : qsTr("Position")
     isEnabled : false
     isExpanded: false
+
+    property bool internalUiUpdate: false
+
+
+    function checkFinal()
+    {
+        // Mode
+        posAll.checked = (!posExo.checked && !posIntro.checked && !posUtr.checked && !posInter.checked);
+        // TODO : send final combination to the model to update the filter
+    }
 
     content: Column
     {
@@ -21,31 +32,146 @@ QuickFilterBox
         anchors.left: parent.left
         anchors.right: parent.right
 
-        CheckBox
-        {
-            Layout.fillWidth: true
-            text: qsTr("Exonic")
-            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(0, checked)
 
-        }
-        CheckBox
-        {
-            Layout.fillWidth: true
-            text: qsTr("Intronic")
-            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(1, checked)
 
-        }
-        CheckBox
+        RowLayout
         {
-            Layout.fillWidth: true
-            text: qsTr("UTR")
-            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(2, checked)
+            width: content.width
+            CheckBox
+            {
+                id: posAll
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("All")
+                checked: true
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            posExo.checked = false;
+                            posIntro.checked = false;
+                            posUtr.checked = false;
+                            posInter.checked = false;
+                        }
+
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
+            }
         }
-        CheckBox
+
+        RowLayout
         {
-            Layout.fillWidth: true
-            text: qsTr("Intergenenic")
-            onCheckedChanged: model.quickfilters.transmissionFilter.setFilter(3, checked)
+            width: content.width
+            CheckBox
+            {
+                id: posExo
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("Exonic")
+                checked: false
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            posAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
+
+            }
+        }
+        RowLayout
+        {
+            width: content.width
+            CheckBox
+            {
+                id: posIntro
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("Intronic")
+                checked: false
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            posAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
+
+            }
+        }
+        RowLayout
+        {
+            width: content.width
+            CheckBox
+            {
+                id: posUtr
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("UTR")
+                checked: false
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            posAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
+
+            }
+        }
+        RowLayout
+        {
+            width: content.width
+            CheckBox
+            {
+                id: posInter
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("Intergenenic")
+                checked: false
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            posUtr.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
+
+            }
         }
     }
 }

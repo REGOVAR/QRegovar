@@ -22,6 +22,7 @@ QuickFilterBox
         anchors.left: root.left
         anchors.right: root.right
         anchors.margins : 5
+        anchors.rightMargin: 30
         spacing: 10
 
 
@@ -29,7 +30,9 @@ QuickFilterBox
         {
             anchors.left: parent.left
             anchors.leftMargin: 25
+            width: 150
             text: qsTr("Depth")
+            checked: false
             //checked: model.quickfilters.qualityFilter.isActivated
             //onCheckedChanged: model.quickfilters.qualityFilter.setFilter(0, checked)
         }

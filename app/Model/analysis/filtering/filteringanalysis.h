@@ -15,7 +15,6 @@ class FilteringAnalysis : public Analysis
     Q_OBJECT
 
     Q_PROPERTY(QString refName READ refName)
-
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
     Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsUpdated)
     Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterUpdated)

@@ -29,8 +29,9 @@ GenericWindow
         ]
     }
 
-    Component.onCompleted:
+    onWinIdChanged:
     {
         model = regovar.getAnalysisFromWindowId(winId);
+        title = model.name;
     }
 }
