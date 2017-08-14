@@ -143,7 +143,6 @@ ApplicationWindow
             root.menuPageMapping[oldIdx].visible = false;
             root.menuPageMapping[newIdx].visible = true;
             root.menuPageMapping[newIdx].anchors.fill = stack;
-            root.menuPageMapping[newIdx].model = model
 
             previousIndex = menuModel.selectedIndex;
         }

@@ -43,7 +43,7 @@ Item
                     anchors.centerIn: parent
                     text: model.title
                     font.pixelSize: headersListView.height * 0.3
-                    font.capitalization: Font.AllUppercase
+                    // font.capitalization: Font.AllUppercase
                 }
 
                 Rectangle
@@ -70,13 +70,13 @@ Item
                 {
                     anchors.fill: parent
                     opacity: (headerMouseArea.pressed) ? 0.4 : 0
-                    color: "#80c342"
+                    color: Regovar.theme.secondaryColor.back.light
 
                     Behavior on opacity
                     {
                         NumberAnimation
                         {
-                            duration: 200
+                            duration: 150
                         }
                     }
                 }
@@ -94,14 +94,14 @@ Item
             {
                 x: headersListView.currentItem.x
                 width: headersListView.currentItem.width
-                height: stripRectangle.height * 3
+                height: 9
                 anchors.bottom: parent.bottom
 
                 Behavior on x
                 {
                     NumberAnimation
                     {
-                        duration: 300
+                        duration: 150
                     }
                 }
 
@@ -109,7 +109,7 @@ Item
                 {
                     NumberAnimation
                     {
-                        duration: 300
+                        duration: 150
                     }
                 }
 
@@ -117,8 +117,8 @@ Item
                 {
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    height: stripRectangle.height * 2
-                    color: "#80c342"
+                    height: 6
+                    color: Regovar.theme.secondaryColor.back.normal
                 }
 
                 Rectangle
@@ -126,8 +126,8 @@ Item
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    height: stripRectangle.height
-                    color: "#006325"
+                    height: 3
+                    color: Regovar.theme.secondaryColor.back.dark
                 }
             }
         }
@@ -143,19 +143,23 @@ Item
         orientation: ListView.Horizontal
         snapMode: ListView.SnapOneItem
         highlightRangeMode: ListView.StrictlyEnforceRange
-        highlightMoveVelocity: 2000
+        highlightMoveVelocity: 10000
         clip: true
         model: root.tabsModel
         onCurrentItemChanged:
         {
-            currentItem.item.selected()
+            //currentItem.item.selected()
         }
         delegate: Loader
         {
             width: screensListView.width
             height: screensListView.height
             source: model.source
-
+            onLoaded:
+            {
+                item.model = Qt.binding(function() { return root.tabSharedModel; });
+                console.log("===> Tabview bind sharedModel to item");
+            }
         }
     }
 }

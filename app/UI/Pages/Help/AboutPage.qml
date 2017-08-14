@@ -1,6 +1,5 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
-import QtWebView 1.1
 import "../../Regovar"
 import "../../Framework"
 
@@ -16,9 +15,7 @@ Rectangle
     {
         id: swipeview
         anchors.fill : root
-
         tabSharedModel: root.model
-
 
 
         tabsModel: ListModel

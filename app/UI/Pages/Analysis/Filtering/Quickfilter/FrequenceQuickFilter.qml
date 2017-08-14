@@ -170,13 +170,11 @@ QuickFilterBox
         }
         ComboBox
         {
-            visible: is1000gAllAvailable
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
             currentIndex: 1
         }
         TextFieldForm
         {
-            visible: is1000gAllAvailable
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             text: "0.01"
@@ -207,13 +205,11 @@ QuickFilterBox
         }
         ComboBox
         {
-            visible: is1000gAllAvailable
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
             currentIndex: 1
         }
         TextFieldForm
         {
-            visible: is1000gAllAvailable
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             text: "0.01"
@@ -244,13 +240,11 @@ QuickFilterBox
         }
         ComboBox
         {
-            visible: is1000gAllAvailable
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
             currentIndex: 1
         }
         TextFieldForm
         {
-            visible: is1000gAllAvailable
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             text: "0.01"
@@ -281,13 +275,11 @@ QuickFilterBox
         }
         ComboBox
         {
-            visible: is1000gAllAvailable
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
             currentIndex: 1
         }
         TextFieldForm
         {
-            visible: is1000gAllAvailable
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             text: "0.01"
@@ -318,13 +310,11 @@ QuickFilterBox
         }
         ComboBox
         {
-            visible: is1000gAllAvailable
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
             currentIndex: 1
         }
         TextFieldForm
         {
-            visible: is1000gAllAvailable
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             text: "0.01"
@@ -355,13 +345,11 @@ QuickFilterBox
         }
         ComboBox
         {
-            visible: is1000gAllAvailable
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
             currentIndex: 1
         }
         TextFieldForm
         {
-            visible: is1000gAllAvailable
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             text: "0.01"
@@ -392,13 +380,11 @@ QuickFilterBox
         }
         ComboBox
         {
-            visible: is1000gAllAvailable
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
             currentIndex: 1
         }
         TextFieldForm
         {
-            visible: is1000gAllAvailable
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             text: "0.01"
@@ -429,13 +415,11 @@ QuickFilterBox
         }
         ComboBox
         {
-            visible: is1000gAllAvailable
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
             currentIndex: 1
         }
         TextFieldForm
         {
-            visible: is1000gAllAvailable
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             text: "0.01"
@@ -466,13 +450,11 @@ QuickFilterBox
         }
         ComboBox
         {
-            visible: is1000gAllAvailable
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
             currentIndex: 1
         }
         TextFieldForm
         {
-            visible: is1000gAllAvailable
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             text: "0.01"
@@ -503,13 +485,11 @@ QuickFilterBox
         }
         ComboBox
         {
-            visible: is1000gAllAvailable
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
             currentIndex: 1
         }
         TextFieldForm
         {
-            visible: is1000gAllAvailable
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             text: "0.01"
@@ -540,13 +520,11 @@ QuickFilterBox
         }
         ComboBox
         {
-            visible: is1000gAllAvailable
             model: [ "<", "≤", "=", "≥", ">", "≠" ]
             currentIndex: 1
         }
         TextFieldForm
         {
-            visible: is1000gAllAvailable
             Layout.fillWidth: true
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             text: "0.01"

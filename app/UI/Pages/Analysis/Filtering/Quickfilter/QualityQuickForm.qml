@@ -19,8 +19,8 @@ QuickFilterBox
 
     content: RowLayout
     {
-        anchors.left: root.left
-        anchors.right: root.right
+        anchors.left: parent.left
+        anchors.right: parent.right
         anchors.margins : 5
         anchors.rightMargin: 30
         spacing: 10

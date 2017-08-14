@@ -51,7 +51,7 @@ CheckBox
     {
         text: control.text
         font: control.font
-        color: Regovar.theme.font.color.normal
+        color: Regovar.theme.frontColor.normal
         opacity: enabled ? 1.0 : 0.3
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter

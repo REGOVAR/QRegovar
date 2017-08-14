@@ -1,19 +1,30 @@
 import QtQuick 2.7
-import QtQuick.Window 2.3
+import QtQuick.Controls 2.0
 import org.regovar 1.0
 
 import "MainMenu"
-import "Regovar"
+import "Dialogs"
 
-GenericWindow
+
+
+ApplicationWindow
 {
     id: root
+    visible: true
     width: 800
     height: 600
 
+    // The id of this window that allow "Regovar model" to retrieve corresponding "Analysis model" among open models/windows
+    property int winId: -1
+
+    //! Analysis model dedicated to the window
     property FilteringAnalysis model
 
-    menuModel: MenuModel
+    //! Load root's pages of regovar
+    property var menuPageMapping
+
+    //! Menu model
+    property MenuModel menuModel: MenuModel
     {
         model:  [
             { "icon": "a", "label": qsTr("Analysis"),            "page": "Analysis/Filtering/ResumePage.qml", "sublevel": [], "subindex": -1},
@@ -28,10 +39,131 @@ GenericWindow
             { "icon": "h", "label": qsTr("Close"),     "page": "@close",      "sublevel": [], "subindex": -1}
         ]
     }
+    property var previousIndex : [0,-1,-1]
 
-    onWinIdChanged:
+
+    MainMenu
     {
+        id: mainMenu
+        z: 10
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        width: 300
+
+        model: menuModel
+
+        onSelectedIndexChanged:
+        {
+            openPage()
+        }
+    }
+
+    Item
+    {
+        id: stack
+        z:0
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: mainMenu.right
+        anchors.right: parent.right
+    }
+
+
+    ErrorDialog
+    {
+        id: errorPopup
+        visible: false
+    }
+
+
+    //! Convert MainMenu index into one string key for internal map with qml pages
+    function pageIdxKey(idx)
+    {
+        var key = idx[0];
+        if (idx[1] >= 0)  key += "-" + idx[1];
+        if (idx[2] >= 0)  key += "-" + idx[2];
+
+        return key;
+    }
+
+
+    property var components
+    function buildPages(pages, model, baseIndex)
+    {
+        for (var idx in model)
+        {
+            if (model[idx].page !== "" && model[idx].page[0] !== "@")
+            {
+                var comp = Qt.createComponent("Pages/" + model[idx].page);
+                if (comp.status == Component.Ready)
+                {
+                    var elmt = comp.createObject(stack, {"visible": false});
+                    var uid = baseIndex+idx
+                    pages[uid] = elmt;
+                    console.log ("load " + uid + " : Pages/" + model[idx].page)
+                }
+                else if (comp.status == Component.Error)
+                {
+                    console.log("Error loading component:", comp.errorString());
+                }
+
+            }
+            else
+            {
+                pages[baseIndex+idx] = false;
+            }
+
+            if (model[idx]["sublevel"].length > 0)
+            {
+                buildPages(pages, model[idx]["sublevel"], baseIndex+idx + "-");
+            }
+
+        }
+    }
+
+
+    //! Open qml page according to the selected indexes
+    function openPage()
+    {
+        if (root.menuPageMapping !== undefined)
+        {
+            var newIdx = pageIdxKey(menuModel.selectedIndex);
+            var oldIdx = pageIdxKey(previousIndex);
+            console.log ("close " + oldIdx + " open " + newIdx);
+            root.menuPageMapping[oldIdx].visible = false;
+            root.menuPageMapping[newIdx].visible = true;
+            root.menuPageMapping[newIdx].anchors.fill = stack;
+            if (root.menuPageMapping[newIdx].model == null)
+            {
+                console.log("===> Analysis windows set model of the page")
+                root.menuPageMapping[newIdx].model = root.model;
+            }
+
+            previousIndex = menuModel.selectedIndex;
+        }
+    }
+
+    Component.onCompleted:
+    {
+        console.log("AnalysisWindows : QML Completed")
+    }
+
+    function initFromCpp(cppWinId)
+    {
+        console.log("AnalysisWindows : winId set from c++ => set model and load pages")
+        winId = cppWinId;
         model = regovar.getAnalysisFromWindowId(winId);
         title = model.name;
+
+        if (menuModel !== undefined)
+        {
+            components = {}
+            var pages = {};
+            buildPages(pages, menuModel.model, "");
+            root.menuPageMapping = pages;
+            openPage();
+        }
     }
 }
+

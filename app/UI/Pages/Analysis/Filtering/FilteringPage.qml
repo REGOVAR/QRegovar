@@ -17,13 +17,17 @@ Rectangle
 {
     id: root
     property FilteringAnalysis model
+    onModelChanged:
+    {
+        console.log("===> FilteringPage model set up");
+    }
 
 //    onModelChanged:
 //    {
 //        lefPanel.tabSharedModel = root.model
-//        rightPanel.model = root.model.results
-//        resultsTree.rowHeight = (root.model.samples.length === 1) ? 25 : root.model.samples.length * 18
-//        samplesNamesColumn.visible = root.model.sampleColumnDisplayed
+//        rightPanel.model = root.model
+////        resultsTree.rowHeight = (root.model.samples.length === 1) ? 25 : root.model.samples.length * 18
+////        samplesNamesColumn.visible = root.model.sampleColumnDisplayed
 //    }
 
     SplitView
@@ -34,6 +38,10 @@ Rectangle
         {
             id: lefPanel
             tabSharedModel: root.model
+            onTabSharedModelChanged:
+            {
+                console.log("===> FilteringPage setting up the shared model of the tabView with its model");
+            }
 
             tabsModel: ListModel
             {

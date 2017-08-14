@@ -10,6 +10,11 @@ ColumnLayout
 {
     id: root
     property FilteringAnalysis model
+    onModelChanged:
+    {
+        console.log("===> AnnotationPanel model set up")
+        annotationsSelector.model = root.model.annotations
+    }
 
     Text
     {
@@ -21,7 +26,7 @@ ColumnLayout
     TreeView
     {
         id: annotationsSelector
-        model: root.model.annotations
+        // model: root.model.annotations
         Layout.fillWidth: true
         Layout.fillHeight: true
 

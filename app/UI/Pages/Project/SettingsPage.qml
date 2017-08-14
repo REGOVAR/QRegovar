@@ -19,7 +19,6 @@ Rectangle
         tabSharedModel: root.model
 
 
-
         tabsModel: ListModel
         {
 //            ListElement

@@ -60,29 +60,27 @@ Rectangle
             text: "Search results"
             font.pointSize: 24
         }
-
-        Row
-        {
-            anchors.top : header.bottom
-            anchors.horizontalCenter: header.horizontalCenter
-            anchors.topMargin: 100
-
-            spacing: 30
-
-            Button
-            {
-                text: "Open Singleton"
-                onClicked: regovar.openAnalysis(19);
-            }
-            Button
-            {
-                text: "Open Trio"
-                onClicked: regovar.openAnalysis(1);
-            }
-        }
-
     }
 
+    Row
+    {
+        anchors.top : header.bottom
+        anchors.horizontalCenter: header.horizontalCenter
+        anchors.topMargin: 100
+
+        spacing: 30
+
+        Button
+        {
+            text: "Open Singleton"
+            onClicked: regovar.openAnalysis(19);
+        }
+        Button
+        {
+            text: "Open Trio"
+            onClicked: regovar.openAnalysis(1);
+        }
+    }
 
 
 

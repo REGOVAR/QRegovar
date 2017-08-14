@@ -35,11 +35,11 @@ int main(int argc, char *argv[])
     regovar->setQmlEngine(&engine);
 
     // Init filesystem model
-//    FileSystemModel* fsm = new FileSystemModel(&engine);
-//    fsm->setRootPath(QDir::homePath());
-//    fsm->setResolveSymlinks(true);
-//    engine.rootContext()->setContextProperty("fileSystemModel", fsm);
-//    engine.rootContext()->setContextProperty("rootPathIndex", fsm->index(fsm->rootPath()));
+    FileSystemModel* fsm = new FileSystemModel(&engine);
+    fsm->setRootPath(QDir::homePath());
+    fsm->setResolveSymlinks(true);
+    engine.rootContext()->setContextProperty("fileSystemModel", fsm);
+    engine.rootContext()->setContextProperty("rootPathIndex", fsm->index(fsm->rootPath()));
 
     engine.rootContext()->setContextProperty("regovar", regovar);
     engine.load(QUrl(QLatin1String("UI/MainWindow.qml")));

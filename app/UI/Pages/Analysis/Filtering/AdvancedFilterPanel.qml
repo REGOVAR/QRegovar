@@ -10,6 +10,10 @@ ColumnLayout
 {
     id: root
     property FilteringAnalysis model
+    onModelChanged:
+    {
+        advancedFilterJsonEditor.model = root.model.filter
+    }
 
 
     Text
@@ -29,7 +33,7 @@ ColumnLayout
         id: advancedFilterJsonEditor
         Layout.fillWidth: true
         Layout.fillHeight: true
-        text: root.model.filter
+        // text: root.model.filter
     }
     RowLayout
     {
