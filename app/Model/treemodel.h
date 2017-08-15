@@ -65,18 +65,18 @@ public:
 
 
 
-    TreeModel(QObject *parent = 0);
-    //explicit  TreeModel(const QStringList &headers, const QString &data, QObject *parent = 0);
+    TreeModel(QObject *parent = nullptr);
     ~TreeModel();
 
     /* QAbstractItemModel interface */
-    QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
-    Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     QModelIndex parent(const QModelIndex &index) const Q_DECL_OVERRIDE;
     int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+
+    Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
     void clear();
 
 
@@ -92,6 +92,9 @@ public:
 //    bool removeColumns(int position, int columns, const QModelIndex &parent = QModelIndex()) override;
 //    bool insertRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
 //    bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
+
+
+
 
 protected:
     void setupModelData(const QStringList &lines, TreeItem *parent);

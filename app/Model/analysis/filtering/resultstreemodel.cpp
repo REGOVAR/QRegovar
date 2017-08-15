@@ -23,6 +23,81 @@ void ResultsTreeModel::initAnalysisData(int analysisId)
     clear();
 }
 
+
+
+////---------------------------------------------------------------------------
+
+
+//bool ResultsTreeModel::canFetchMore(const QModelIndex &parent) const
+//{
+//    if (parent == QModelIndex())
+//        return false;
+
+//    if (parent.parent() == QModelIndex())
+//    {
+//        TreeItem* item = getItem(parent);
+//        return item->virtualChildCount() > 0;
+//    }
+
+//    return false;
+//}
+////---------------------------------------------------------------------------
+
+
+//void ResultsTreeModel::fetchMore(const QModelIndex &parent)
+//{
+//    if (parent == QModelIndex())
+//        return ;
+
+//    TreeItem* item = getItem(parent);
+
+//    int count       = item->virtualChildCount();
+//    int parentRow   = parent.row();
+//    QStringList ids = mRecords[parent.row()].value("childs").toString().split(",");
+
+
+//    qDebug()<<ids;
+
+//    beginInsertRows(parent,0, count-1);
+//    mChilds[parentRow].clear();
+
+//    cvar::VariantQuery temp = mCurrentQuery;
+//    temp.setCondition(QString("%2.id IN (%1)").arg(ids.join(",")).arg(mCurrentQuery.table()));
+//    temp.setGroupBy({});
+//    temp.setNoLimit();
+
+//    QSqlQuery query = cutevariant->sqliteManager()->variants(temp);
+
+//    while (query.next())
+//    {
+//        mChilds[parentRow].append(query.record());
+//    }
+
+
+//    qDebug()<<query.lastError().text();
+//    qDebug()<<query.lastQuery();
+
+//    endInsertRows();
+//}
+////---------------------------------------------------------------------------
+//void ResultsTreeModel::sort(int column, Qt::SortOrder order)
+//{
+
+//    if (column < columnCount()) {
+//        QString col = headerData(column, Qt::Horizontal, Qt::DisplayRole).toString();
+//        qDebug()<<col;
+//        mCurrentQuery.setOrderBy({col});
+//        mCurrentQuery.setSortOrder(order);
+//        load();
+//    }
+
+//}
+////---------------------------------------------------------------------------
+
+
+
+
+
 bool ResultsTreeModel::fromJson(QJsonObject json)
 {
     qDebug() << "Init results tree model of filtering analysis" << mAnalysisId << ":";
@@ -84,15 +159,12 @@ QHash<int, QByteArray> ResultsTreeModel::roleNames() const
     int roleId = Qt::UserRole + 1;
     roles[roleId] = "id";
     ++roleId;
+    roles[roleId] = "checked";
+    ++roleId;
     // Build role from annotations all annotations available list
     foreach (QString uid, mFilteringAnalysis->annotations()->annotations()->keys())
     {
         roles[roleId] = uid.toUtf8();
-
-        // DEBUG
-//        AnnotationModel* annot = regovar->currentAnnotations()->getAnnotation(uid);
-//        qDebug() << "role " << roleId << "=" << roles[roleId] << annot->name();
-
         ++roleId;
     }
     qDebug() << "Result Tree's roles defined : " << roles.count() << "roles";

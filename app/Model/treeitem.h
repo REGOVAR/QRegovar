@@ -83,6 +83,7 @@ private:
     QList<TreeItem*> mChildItems;
     QHash<int, QVariant> mItemData;
     TreeItem *mParentItem;
+    bool mIsSelected;
 };
 
 #endif // TREEITEM_H 

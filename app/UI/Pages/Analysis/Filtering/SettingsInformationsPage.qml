@@ -10,6 +10,15 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property FilteringAnalysis model
+    onModelChanged:
+    {
+        nameLabel = model.name;
+        refLabel = "hg19";
+        statusLabel = model.status
+        dateLabel = model.lastUpdate.toString();
+        nameField = Qt.binding(function() {return model.name;});
+        commentField = Qt.binding(function() {return model.comment;});
+    }
 
     Rectangle
     {
@@ -22,9 +31,9 @@ Rectangle
 
         Text
         {
+            id: nameLabel
             anchors.fill: header
             anchors.margins: 10
-            text: root.model.name
             font.pixelSize: 22
             color: Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
@@ -98,22 +107,22 @@ Rectangle
                 }
                 Text
                 {
+                    id: refLabel
                     Layout.fillWidth: true
-                    text: "Hg19" // root.model.refName
                     color: Regovar.theme.frontColor.disable
                     verticalAlignment: Text.AlignVCenter
                 }
                 Text
                 {
+                    id: statusLabel
                     Layout.fillWidth: true
-                    text: root.model.status
                     color: Regovar.theme.frontColor.disable
                     verticalAlignment: Text.AlignVCenter
                 }
                 Text
                 {
+                    id: dateLabel
                     Layout.fillWidth: true
-                    text: root.model.lastUpdate.toString()
                     color: Regovar.theme.frontColor.disable
                 }
             }
@@ -133,8 +142,8 @@ Rectangle
         }
         TextField
         {
+            id: nameField
             Layout.fillWidth: true
-            text: root.model.name
             placeholderText: qsTr("The name of the analysis")
         }
 
@@ -150,9 +159,9 @@ Rectangle
         }
         TextArea
         {
+            id: commentField
             Layout.fillWidth: true
             Layout.fillHeight: true
-            text: root.model.comment
         }
     }
 

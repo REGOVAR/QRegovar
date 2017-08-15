@@ -21,11 +21,12 @@ ResultsTreeItem::~ResultsTreeItem()
 
 
 
-ResultsTreeItem::ResultsTreeItem(QString uid, QVariant value, FilteringAnalysis* parent) : QObject(parent)
+ResultsTreeItem::ResultsTreeItem(QString uid, QVariant value, FilteringAnalysis* parent, int childCount) : QObject(parent)
 {
     mFilteringAnalysis = parent;
     mValue = value;
     mUid= uid;
+    mVirtualChildCount = childCount;
 }
 
 

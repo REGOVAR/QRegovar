@@ -8,7 +8,8 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
     // Tree model are created to allow QML binding initialisation even if no data loaded
     mType = tr("Variants Filtering");
     mResults = new ResultsTreeModel(this);
-    mAnnotations = new AnnotationsTreeModel(this);
+    mAllAnnotationsTreeModel = new AnnotationsTreeModel(this);
+    mAnnotationsTreeModel = new AnnotationsTreeModel(this);
     mQuickFilters = new QuickFilterModel(this);
     mLoadingStatus = empty;
 
@@ -30,6 +31,17 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     mRefId = json["ref_id"].toInt();
     mRefName = json["ref_name"].toString();
     mStatus = json["status"].toString();
+
+    // Parse settings
+    QJsonObject settings = json["settings"].toObject();
+    foreach (const QJsonValue field, settings["annotations_db"].toArray())
+    {
+        mAnnotationsDBUsed << field.toString();
+    }
+//    bool mIsTrio = ;
+//    int mTrioChild;
+//    int mTrioMother;
+//    int mTrioFather;
 
     // Retrieve samples
     mSamples.clear();
@@ -88,6 +100,8 @@ void FilteringAnalysis::asynchLoading(LoadingStatus oldSatus, LoadingStatus newS
 }
 
 
+
+
 void FilteringAnalysis::loadAnnotations()
 {
     Request* req = Request::get(QString("/annotation/%1").arg(mRefId));
@@ -95,18 +109,66 @@ void FilteringAnalysis::loadAnnotations()
     {
         if (success)
         {
-            if (mAnnotations->fromJson(json["data"].toObject()))
+            qDebug() << "LOAD ANNOT START : ";
+            QJsonObject data = json["data"].toObject();
+            mRefId = data["ref_id"].toInt();
+            mRefName = data["ref_name"].toString();
+
+            // Init list of displayed columns according to analysis settings
+            mAnnotations.clear();
+            mAnnotations.insert("__Samples", new FieldColumnInfos(nullptr, false));
+
+            foreach (const QJsonValue dbv, data["db"].toArray())
             {
-                qDebug() << "Filtering analysis init : annotations data loaded";
-                emit loadingStatusChanged(mLoadingStatus, LoadingResults);
-                mLoadingStatus = LoadingResults;
+                QJsonObject db = dbv.toObject();
+
+                QString dbName = db["name"].toString();
+                QString dbDescription = db["description"].toString();
+                QJsonObject dbVersion = db["versions"].toObject();
+
+
+
+                qDebug() << "  DB:" << dbName;
+                // Foreach available version of annotation database
+                foreach (const QString dbVersionName, dbVersion.keys())
+                {
+                    QString dbUid = dbVersion[dbVersionName].toString();
+                    bool isDbSelected = (mAnnotationsDBUsed.contains(dbUid) || (dbName == "Variant" && dbVersionName=="_regovar_"));
+
+                    qDebug() << "  Version:" << dbVersionName << isDbSelected;
+                    // Build annotation and column infos
+                    foreach(const QJsonValue json, db["fields"].toArray())
+                    {
+                        QJsonObject a = json.toObject();
+
+                        QString uid = a["uid"].toString();
+                        QString dbUid = a["dbuid"].toString();
+                        QString name = a["name"].toString();
+                        QString description = a["description"].toString();
+                        QString type = a["type"].toString();
+                        QJsonObject meta = a["meta"].toObject();
+
+                        qDebug() << "   - " << uid << name;
+
+                        Annotation* annot = new Annotation(this, uid, dbUid, name, description, type, meta, "");
+                        FieldColumnInfos* fInfo = new FieldColumnInfos(annot, mFields.contains(uid), mFields.indexOf(uid));
+                        mAnnotations.insert(uid, fInfo);
+
+                        // add annotation to the "All annotation" treeModel
+                        mAllAnnotationsTreeModel->addEntry(dbName, dbVersionName, dbDescription, isDbSelected, mAnnotations[uid]);
+                        if (isDbSelected)
+                        {
+                            // add annotation to the treeModel of annotation available for this analysis
+                            mAnnotationsTreeModel->addEntry(dbName, dbVersionName, dbDescription, isDbSelected, mAnnotations[uid]);
+                        }
+                    }
+                }
             }
-            else
-            {
-                qDebug() << "Filtering analysis init : Failed to load annotation data for" << mRefName << mRefId << "reference";
-                emit loadingStatusChanged(mLoadingStatus, error);
-                mLoadingStatus = error;
-            }
+
+            refreshDisplayedAnnotationColumns();
+            qDebug() << "Filtering analysis init : annotations data loaded";
+            emit loadingStatusChanged(mLoadingStatus, LoadingResults);
+            mLoadingStatus = LoadingResults;
         }
         else
         {
@@ -117,6 +179,63 @@ void FilteringAnalysis::loadAnnotations()
         req->deleteLater();
     });
 }
+
+void FilteringAnalysis::refreshDisplayedAnnotationColumns()
+{
+    // Set list of displayed columns
+    mDisplayedAnnotationColumns.clear();
+    mAnnotations["__Samples"]->setIsDisplayed(false);
+    int idx = 0;
+    foreach( QString uid, mFields)
+    {
+        if (mAnnotations.contains(uid))
+        {
+            if (mAnnotations[uid]->isSampleColumn() && !mAnnotations["__Samples"]->isDisplayed())
+            {
+                mAnnotations["__Samples"]->setDisplayOrder(idx);
+                mAnnotations["__Samples"]->setIsDisplayed(true);
+                mDisplayedAnnotationColumns.append(mAnnotations["__Samples"]);
+                ++idx;
+            }
+            mAnnotations[uid]->setDisplayOrder(idx);
+            mDisplayedAnnotationColumns.append(mAnnotations[uid]);
+            ++idx;
+        }
+    }
+
+
+    emit resultColumnsChanged();
+}
+
+
+QStringList FilteringAnalysis::displayedSamples()
+{
+    QStringList result;
+    foreach (Sample* sp, mSamples)
+    {
+        result << sp->name();
+    }
+    return result;
+}
+QStringList FilteringAnalysis::resultColumns()
+{
+    QStringList list;
+    list << "_RowHead";
+    foreach (FieldColumnInfos* field, mDisplayedAnnotationColumns)
+    {
+        // TODO : rework better the special case for UI additional column "samples"
+        if (field->annotation() != nullptr)
+        {
+            list << field->annotation()->uid();
+        }
+        else
+        {
+            list << "_Samples";
+        }
+    }
+    return list;
+}
+
 
 void FilteringAnalysis::loadResults()
 {
@@ -160,7 +279,7 @@ void FilteringAnalysis::loadResults()
 //! Return the order of the field in the grid
 int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
 {
-    Annotation* annot = mAnnotations->getAnnotation(uid);
+    Annotation* annot = mAnnotationsTreeModel->getAnnotation(uid);
 
     if (isDisplayed)
     {

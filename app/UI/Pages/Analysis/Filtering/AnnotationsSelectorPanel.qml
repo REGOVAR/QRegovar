@@ -59,7 +59,7 @@ ColumnLayout
                 {
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
-                    checked: styleData.value.isChecked
+                    checked: styleData.value.checked
                     text: (styleData.value == undefined || styleData.value.value == undefined) ? "-"  : styleData.value.value
                     onClicked:
                     {

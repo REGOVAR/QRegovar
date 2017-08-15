@@ -32,7 +32,8 @@ HEADERS += \
     Model/analysis/filtering/quickfilters/positionquickfilter.h \
     Model/analysis/filtering/quickfilters/typequickfilter.h \
     Model/analysis/filtering/quickfilters/frequencequickfilter.h \
-    Model/analysis/filtering/quickfilters/insilicopredquickfilter.h
+    Model/analysis/filtering/quickfilters/insilicopredquickfilter.h \
+    Model/analysis/filtering/fieldcolumninfos.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -63,7 +64,8 @@ SOURCES += main.cpp \
     Model/analysis/filtering/quickfilters/positionquickfilter.cpp \
     Model/analysis/filtering/quickfilters/typequickfilter.cpp \
     Model/analysis/filtering/quickfilters/frequencequickfilter.cpp \
-    Model/analysis/filtering/quickfilters/insilicopredquickfilter.cpp
+    Model/analysis/filtering/quickfilters/insilicopredquickfilter.cpp \
+    Model/analysis/filtering/fieldcolumninfos.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

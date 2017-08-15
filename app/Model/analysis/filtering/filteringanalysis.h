@@ -7,6 +7,7 @@
 #include "annotationstreemodel.h"
 #include "quickfilters/quickfiltermodel.h"
 #include "Model/sample/sample.h"
+#include "fieldcolumninfos.h"
 
 class ResultsTreeModel;
 
@@ -14,15 +15,18 @@ class FilteringAnalysis : public Analysis
 {
     Q_OBJECT
 
+    // Analysis properties
     Q_PROPERTY(QString refName READ refName)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
-    Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsUpdated)
     Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterUpdated)
     Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsUpdated)
+    // Panel & Treeview models
+    Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsUpdated)
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsUpdated)
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY quickfiltersUpdated)
-    Q_PROPERTY(QStringList samples READ displayedSamples() NOTIFY samplesUpdated)
-    Q_PROPERTY(bool sampleColumnDisplayed READ sampleColumnDisplayed() NOTIFY sampleColumnDisplayedUpdated)
+    // "Shortcuts properties" for QML
+    Q_PROPERTY(QStringList samples READ displayedSamples NOTIFY samplesUpdated)
+    Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
 
 public:
     enum LoadingStatus
@@ -42,13 +46,13 @@ public:
     inline QString refName() { return mRefName; }
     inline QString status() { return mStatus; }
     inline LoadingStatus loadingStatus() { return mLoadingStatus; }
-    inline AnnotationsTreeModel* annotations() { return mAnnotations; }
+    inline AnnotationsTreeModel* annotations() { return mAnnotationsTreeModel; }
     inline QStringList fields() { return mFields; }
     inline ResultsTreeModel* results() { return mResults; }
     inline QuickFilterModel* quickfilters() { return mQuickFilters; }
     inline QList<Sample*> samples() { return mSamples; }
-    inline QStringList displayedSamples() { QStringList result; foreach (Sample* sp, mSamples) { result << sp->name();}  return result; }
-    inline bool sampleColumnDisplayed() { return mSampleColumnDisplayed; }
+    QStringList displayedSamples();
+    QStringList resultColumns();
 
     // Setters
     Q_INVOKABLE inline void setFilter(QString filter) { mFilter = filter; emit filterUpdated(); }
@@ -56,7 +60,7 @@ public:
 
     // Methods
     bool fromJson(QJsonObject json);
-    Q_INVOKABLE inline int fieldsCount() { return mFields.count(); }
+    Q_INVOKABLE inline FieldColumnInfos* getColumnInfo(QString uid) { return mAnnotations.contains(uid) ? mAnnotations[uid] : nullptr; }
 
 
 
@@ -71,6 +75,7 @@ Q_SIGNALS:
     void quickfiltersUpdated();
     void samplesUpdated();
     void sampleColumnDisplayedUpdated();
+    void resultColumnsChanged();
 
 
 public Q_SLOTS:
@@ -89,12 +94,24 @@ private:
     QString mStatus; // status of the analysis (server side)
     LoadingStatus mLoadingStatus; // internal (UI) status used to track and coordinates asynchrone initialisation of the analysis
     ResultsTreeModel* mResults;
-    AnnotationsTreeModel* mAnnotations;
     QuickFilterModel* mQuickFilters;
+
+    QHash<QString, FieldColumnInfos*> mAnnotations;
+    AnnotationsTreeModel* mAllAnnotationsTreeModel;
+    AnnotationsTreeModel* mAnnotationsTreeModel;
+    QList<FieldColumnInfos*> mDisplayedAnnotationColumns;
+
+    bool mIsTrio;
+    QStringList mAnnotationsDBUsed;
+    int mTrioChild;
+    int mTrioMother;
+    int mTrioFather;
+
 
     // Methods
     void loadAnnotations();
     void loadResults();
+    void refreshDisplayedAnnotationColumns();
 };
 
 #endif // FILTERINGANALYSIS_H

@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Annotation>("org.regovar", 1, 0, "AnnotationModel");
     qmlRegisterType<FilteringAnalysis>("org.regovar", 1, 0, "FilteringAnalysis");
     qmlRegisterType<Sample>("org.regovar", 1, 0, "Sample");
+    qmlRegisterType<FieldColumnInfos>("org.regovar", 1, 0, "FieldColumnInfos");
 
 
 

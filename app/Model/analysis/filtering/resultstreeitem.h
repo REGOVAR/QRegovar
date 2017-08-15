@@ -15,12 +15,13 @@ public:
 
 
     explicit ResultsTreeItem(FilteringAnalysis* parent=nullptr);
-    explicit ResultsTreeItem(QString uid, QVariant text, FilteringAnalysis* parent=nullptr);
+    explicit ResultsTreeItem(QString uid, QVariant text, FilteringAnalysis* parent=nullptr, int childCount=0);
     ResultsTreeItem(const ResultsTreeItem &other);
     ~ResultsTreeItem();
 
     inline QVariant value() { return mValue; }
     inline QString uid() { return mUid; }
+    inline int virtualChildCount() { return mVirtualChildCount; }
 
     inline void setValue(QVariant value) { mValue = value; emit valueChanged(); }
     inline void setUid(QString uid) { mUid = uid; emit uidChanged(); }
@@ -33,6 +34,7 @@ private:
     FilteringAnalysis* mFilteringAnalysis;
     QVariant mValue;
     QString mUid;
+    int mVirtualChildCount; // number of children (used to know if need to load children)
 };
 
 

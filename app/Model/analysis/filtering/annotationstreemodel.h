@@ -3,6 +3,7 @@
 
 #include "Model/treemodel.h"
 #include "annotation.h"
+#include "fieldcolumninfos.h"
 
 class AnnotationsTreeModel : public TreeModel
 {
@@ -22,9 +23,10 @@ public:
     explicit AnnotationsTreeModel(QObject* parent=nullptr);
     QHash<int, QByteArray> roleNames() const override;
 
-    bool fromJson(QJsonObject data);
-    QVariant newAnnotationsTreeViewItem(QString id, const QVariant &value);
-    void setupModelData(QJsonArray data, TreeItem *parent);
+    bool fromJson(QJsonObject data, QStringList dbUids);
+    void addEntry(QString dbName, QString dbVersion, QString dbDescription, bool isDbSelected, FieldColumnInfos* data);
+    QVariant newAnnotationsTreeViewItem(QString id, const QVariant &value, bool isChecked=false);
+    void setupModelData(QJsonArray data, TreeItem *parent, QStringList dbUids);
 
 
     // Accessors

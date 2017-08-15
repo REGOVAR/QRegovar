@@ -17,6 +17,12 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 
+    /* QAbstractItemModel interface - lazy loading methods */
+//    bool hasChildren(const QModelIndex &parent) const Q_DECL_OVERRIDE;
+//    bool canFetchMore(const QModelIndex &parent) const Q_DECL_OVERRIDE;
+//    void fetchMore(const QModelIndex& parent) Q_DECL_OVERRIDE;
+
+
     Q_INVOKABLE void refresh();
     QVariant newResultsTreeViewItem(Annotation* annot, QString uid, const QJsonValue &value);
     void setupModelData(QJsonArray data, TreeItem *parent);

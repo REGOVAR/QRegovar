@@ -20,3 +20,11 @@ AnnotationsTreeItem::AnnotationsTreeItem(QString uid, QVariant value, QObject *p
     mValue = value;
     mUid= uid;
 }
+
+
+void AnnotationsTreeItem::setChecked(bool checked)
+{
+    mIsChecked = checked;
+    // Todo : check/uncheck child + notify parent that check state have changed
+    emit checkedChanged();
+}
