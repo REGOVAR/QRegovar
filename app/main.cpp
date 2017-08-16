@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 
     // Init filesystem model
     FileSystemModel* fsm = new FileSystemModel(&engine);
-    fsm->setRootPath(QDir::homePath());
+    //fsm->setRootPath(QDir::rootPath());
     fsm->setResolveSymlinks(true);
     engine.rootContext()->setContextProperty("fileSystemModel", fsm);
     engine.rootContext()->setContextProperty("rootPathIndex", fsm->index(fsm->rootPath()));
