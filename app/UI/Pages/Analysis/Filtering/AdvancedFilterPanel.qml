@@ -12,7 +12,10 @@ ColumnLayout
     property FilteringAnalysis model
     onModelChanged:
     {
-        advancedFilterJsonEditor.model = root.model.filter
+        if (root.model != null)
+        {
+            advancedFilterJsonEditor.model = root.model.filter
+        }
     }
 
 

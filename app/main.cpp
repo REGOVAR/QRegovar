@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 
     // Init filesystem model
     FileSystemModel* fsm = new FileSystemModel(&engine);
-    //fsm->setRootPath(QDir::rootPath());
+    //fsm->setRootPath(QDir::rootPath()); // Crash with Ubuntu 16 - Gnome
     fsm->setResolveSymlinks(true);
     engine.rootContext()->setContextProperty("fileSystemModel", fsm);
     engine.rootContext()->setContextProperty("rootPathIndex", fsm->index(fsm->rootPath()));

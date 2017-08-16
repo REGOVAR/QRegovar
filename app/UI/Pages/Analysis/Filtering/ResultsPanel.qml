@@ -21,8 +21,11 @@ Rectangle
     property FilteringAnalysis model
     onModelChanged:
     {
-        resultsTree.model = root.model.results
-        resultsTree.rowHeight = (root.model.samples.length === 1) ? 25 : root.model.samples.length * 18
+        if (root.model != null)
+        {
+            resultsTree.model = root.model.results;
+            resultsTree.rowHeight = (root.model.samples.length === 1) ? 25 : root.model.samples.length * 18;
+        }
     }
 
     Rectangle
@@ -205,7 +208,9 @@ Rectangle
             if (root.model !== null)
             {
                 root.model.resultColumnsChanged.connect(refreshResultColumns);
+                refreshResultColumns();
             }
+
         }
 
         function refreshResultColumns()
@@ -226,24 +231,27 @@ Rectangle
         {
             console.log("trying to insert field : " + uid + " at " + position);
             var col;
-            if (uid === "_Ssamples")
+            var info = root.model.getColumnInfo(uid);
+            console.log("  info = " + info);
+
+            if (uid === "_Samples")
             {
-                col = columnComponent_Samples.createObject(resultsTree);
+                col = columnComponent_Samples.createObject(resultsTree, {"width": info.width});
             }
             else if (uid === "_RowHead")
             {
-                col = columnComponent_RowHead.createObject(resultsTree);
+                col = columnComponent_RowHead.createObject(resultsTree, {"width": info.width});
             }
             else
             {
-                var annot = root.model.annotations.getAnnotation(uid);
-                console.log("  annot = " + annot);
+                var annot = info.annotation;
+
 
                 // Getting QML column according to the type of the fields
                 if (annot.name == "GT")
-                    col = columnComponent_GT.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+                    col = columnComponent_GT.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
                 else
-                    col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+                    col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
             }
 
             console.log("  display column " + uid + " at " + position);

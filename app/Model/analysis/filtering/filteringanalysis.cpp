@@ -116,7 +116,8 @@ void FilteringAnalysis::loadAnnotations()
 
             // Init list of displayed columns according to analysis settings
             mAnnotations.clear();
-            mAnnotations.insert("__Samples", new FieldColumnInfos(nullptr, false));
+            mAnnotations.insert("_RowHead", new FieldColumnInfos(nullptr, true, 0));
+            mAnnotations.insert("_Samples", new FieldColumnInfos(nullptr, false));
 
             foreach (const QJsonValue dbv, data["db"].toArray())
             {
@@ -184,17 +185,17 @@ void FilteringAnalysis::refreshDisplayedAnnotationColumns()
 {
     // Set list of displayed columns
     mDisplayedAnnotationColumns.clear();
-    mAnnotations["__Samples"]->setIsDisplayed(false);
+    mAnnotations["_Samples"]->setIsDisplayed(false);
     int idx = 0;
     foreach( QString uid, mFields)
     {
         if (mAnnotations.contains(uid))
         {
-            if (mAnnotations[uid]->isSampleColumn() && !mAnnotations["__Samples"]->isDisplayed())
+            if (mAnnotations[uid]->isSampleColumn() && !mAnnotations["_Samples"]->isDisplayed())
             {
-                mAnnotations["__Samples"]->setDisplayOrder(idx);
-                mAnnotations["__Samples"]->setIsDisplayed(true);
-                mDisplayedAnnotationColumns.append(mAnnotations["__Samples"]);
+                mAnnotations["_Samples"]->setDisplayOrder(idx);
+                mAnnotations["_Samples"]->setIsDisplayed(true);
+                mDisplayedAnnotationColumns.append(mAnnotations["_Samples"]);
                 ++idx;
             }
             mAnnotations[uid]->setDisplayOrder(idx);
