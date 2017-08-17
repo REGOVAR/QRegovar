@@ -12,11 +12,18 @@ class FieldColumnInfos : public QObject
     Q_PROPERTY(QString sortFilter READ sortFilter WRITE setSortFilter NOTIFY sortFilterChanged)
     Q_PROPERTY(int displayOrder READ displayOrder WRITE setDisplayOrder NOTIFY displayOrderChanged)
     Q_PROPERTY(float width READ width WRITE setWidth NOTIFY widthChanged)
-    Q_PROPERTY(bool isSampleColumn READ isSampleColumn WRITE setIsSampleColumn NOTIFY isSampleColumnChanged)
+    Q_PROPERTY(SpecialRole role READ role WRITE setRole)
 
 public:
+    enum SpecialRole
+    {
+        NormalAnnotation,
+        RowHeader,
+        SamplesNames
+    };
+
     explicit FieldColumnInfos(QObject *parent = nullptr);
-    explicit FieldColumnInfos(Annotation* annotation, bool isDisplayed, int displayOrder=-1, QString sortFilter="");
+    explicit FieldColumnInfos(Annotation* annotation, bool isDisplayed, int displayOrder=-1, QString sortFilter="", QObject *parent = nullptr);
 
     // Getters
     inline Annotation* annotation() { return mAnnotation;}
@@ -24,7 +31,7 @@ public:
     inline QString sortFilter() { return mSortFilter; }
     inline int displayOrder() { return mDisplayOrder; }
     inline float width() { return mWith; }
-    inline bool isSampleColumn() { return mIsSampleColumn; }
+    inline SpecialRole role() { return mRole;}
 
     // Setters
     inline void setAnnotation(Annotation* annotation) { mAnnotation = annotation; emit annotationChanged(); }
@@ -32,8 +39,7 @@ public:
     inline void setSortFilter(QString sortFilter) { mSortFilter = sortFilter; emit sortFilterChanged(); }
     inline void setDisplayOrder(int displayOrder) { mDisplayOrder = displayOrder; emit displayOrderChanged(); }
     inline void setWidth(float width) { mWith = width; emit widthChanged(); }
-    inline void setIsSampleColumn(bool flag) { mIsSampleColumn = flag; emit isSampleColumnChanged(); }
-
+    inline void setRole(SpecialRole role) { mRole = role; }
 
 Q_SIGNALS:
     void annotationChanged();
@@ -41,7 +47,6 @@ Q_SIGNALS:
     void sortFilterChanged();
     void displayOrderChanged();
     void widthChanged();
-    void isSampleColumnChanged();
 
 
 private:
@@ -50,7 +55,7 @@ private:
     QString mSortFilter;
     int mDisplayOrder;
     float mWith;
-    bool mIsSampleColumn;
+    SpecialRole mRole;
 };
 
 #endif // FIELDCOLUMNINFOS_H

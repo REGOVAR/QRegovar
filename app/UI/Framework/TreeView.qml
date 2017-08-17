@@ -129,5 +129,7 @@ TreeView
     }
 
     onDoubleClicked: isExpanded(index) ? collapse(index) : expand(index)
+
+
 }
 

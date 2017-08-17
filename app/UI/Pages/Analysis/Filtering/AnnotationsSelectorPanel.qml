@@ -32,7 +32,7 @@ ColumnLayout
 
 
         signal checked(string uid, bool isChecked)
-        onChecked: console.log(uid, isChecked);
+        onChecked: root.model.setField(uid, isChecked);
 
         // Default delegate for all column
         itemDelegate: Item

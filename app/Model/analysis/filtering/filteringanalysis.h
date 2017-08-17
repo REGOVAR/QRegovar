@@ -20,6 +20,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterUpdated)
     Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsUpdated)
+    Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged)
     // Panel & Treeview models
     Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsUpdated)
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsUpdated)
@@ -51,6 +52,7 @@ public:
     inline ResultsTreeModel* results() { return mResults; }
     inline QuickFilterModel* quickfilters() { return mQuickFilters; }
     inline QList<Sample*> samples() { return mSamples; }
+    inline int resultsTotal() { return mResultsTotal; }
     QStringList displayedSamples();
     QStringList resultColumns();
 
@@ -76,6 +78,7 @@ Q_SIGNALS:
     void samplesUpdated();
     void sampleColumnDisplayedUpdated();
     void resultColumnsChanged();
+    void resultsTotalChanged();
 
 
 public Q_SLOTS:
@@ -106,6 +109,8 @@ private:
     int mTrioChild;
     int mTrioMother;
     int mTrioFather;
+
+    int mResultsTotal;
 
 
     // Methods

@@ -116,8 +116,10 @@ void FilteringAnalysis::loadAnnotations()
 
             // Init list of displayed columns according to analysis settings
             mAnnotations.clear();
-            mAnnotations.insert("_RowHead", new FieldColumnInfos(nullptr, true, 0));
-            mAnnotations.insert("_Samples", new FieldColumnInfos(nullptr, false));
+            mAnnotations.insert("_RowHead", new FieldColumnInfos(nullptr, true, 0, "", this));
+            mAnnotations.insert("_Samples", new FieldColumnInfos(nullptr, false, -1, "", this));
+            mAnnotations["_RowHead"]->setRole(FieldColumnInfos::RowHeader);
+            mAnnotations["_Samples"]->setRole(FieldColumnInfos::SamplesNames);
 
             foreach (const QJsonValue dbv, data["db"].toArray())
             {
@@ -152,7 +154,7 @@ void FilteringAnalysis::loadAnnotations()
                         qDebug() << "   - " << uid << name;
 
                         Annotation* annot = new Annotation(this, uid, dbUid, name, description, type, meta, "");
-                        FieldColumnInfos* fInfo = new FieldColumnInfos(annot, mFields.contains(uid), mFields.indexOf(uid));
+                        FieldColumnInfos* fInfo = new FieldColumnInfos(annot, mFields.contains(uid), mFields.indexOf(uid), "", this);
                         mAnnotations.insert(uid, fInfo);
 
                         // add annotation to the "All annotation" treeModel
@@ -191,7 +193,7 @@ void FilteringAnalysis::refreshDisplayedAnnotationColumns()
     {
         if (mAnnotations.contains(uid))
         {
-            if (mAnnotations[uid]->isSampleColumn() && !mAnnotations["_Samples"]->isDisplayed())
+            if (mAnnotations[uid]->annotation()->type() == "sample_array" && !mAnnotations["_Samples"]->isDisplayed())
             {
                 mAnnotations["_Samples"]->setDisplayOrder(idx);
                 mAnnotations["_Samples"]->setIsDisplayed(true);
@@ -225,11 +227,11 @@ QStringList FilteringAnalysis::resultColumns()
     foreach (FieldColumnInfos* field, mDisplayedAnnotationColumns)
     {
         // TODO : rework better the special case for UI additional column "samples"
-        if (field->annotation() != nullptr)
+        if (field->role() == FieldColumnInfos::NormalAnnotation)
         {
             list << field->annotation()->uid();
         }
-        else
+        else if (field->role() == FieldColumnInfos::SamplesNames)
         {
             list << "_Samples";
         }
@@ -304,11 +306,7 @@ int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
     }
     annot->setOrder(order);
 
-    // check if need to display sample's name columns according to annotations displayed
-    // sample's annotations are in the "INFO" vcf field or computed by regovar server.
-    // sample's fields managed : GT, DP, is_composite,
-    mSampleColumnDisplayed = true;
-    emit sampleColumnDisplayedUpdated();
+
 //    foreach (QString uid, mFields)
 //    {
 //        annot = regovar->currentFilteringAnalysis()->annotations()->getAnnotation(uid);
@@ -317,6 +315,9 @@ int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
 
 
     emit fieldsUpdated();
+
+    // Update columns to display in the QML view according to selected annoations
+    refreshDisplayedAnnotationColumns();
     return order;
 }
 

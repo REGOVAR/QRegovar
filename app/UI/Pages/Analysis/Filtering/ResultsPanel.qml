@@ -36,6 +36,20 @@ Rectangle
         anchors.right: rightPanel.right
         height: 50
         color: Regovar.theme.backgroundColor.alt
+
+        Text
+        {
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.margins: 10
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignRight
+
+            font.pixelSize: Regovar.theme.font.size.header
+            text: root.model.results.loaded + " / " + root.model.results.total
+        }
+
     }
 
 
@@ -201,7 +215,6 @@ Rectangle
         }
 
 
-
         onModelChanged:
         {
             // Display selected fields
@@ -215,14 +228,49 @@ Rectangle
 
         function refreshResultColumns()
         {
-            console.debug("Result tree view ready -> display default columns " + root.model.resultColumns.length)
-            for (var idx=0; idx < root.model.resultColumns.length; idx++)
+            // Remove old columns
+            var position, col;
+            for (var idx=resultsTree.columnCount; idx> 0; idx-- )
             {
-                var uid = root.model.resultColumns[idx];
-                // add anotation column
+                col = resultsTree.getColumn(idx-1);
+                if (col !== null)
+                {
+                    console.log("  remove column " + col.role + " at " + (idx-1));
+                    // remove columb from UI
+                    resultsTree.removeColumn(idx-1);
+                }
+            }
+
+            // Add columns
+            var columns = root.model.resultColumns;
+            for (idx=0; idx < columns.length; idx++)
+            {
+                var uid = columns[idx];
                 resultsTree.insertField(uid, idx);
             }
-            root.model.results.refresh();
+            root.model.results.reset();
+        }
+
+
+        function removeField(uid)
+        {
+            console.log("trying to remove field : " + uid);
+            var annot = root.model.annotations.getAnnotation(uid);
+            console.log("  annot = " + annot);
+            var position, col;
+            for (var idx=0; idx< resultsTree.columnCount; idx++ )
+            {
+                col = resultsTree.getColumn(idx);
+                if (col.role === annot.uid)
+                {
+                    console.log("  remove column " + annot.name + " at " + (idx-2));
+                    // remove columb from UI
+                    resultsTree.removeColumn(idx);
+                    // Store fields state and position in the view model
+                    root.model.setField(uid, false, idx -2);
+                    break;
+                }
+            }
         }
 
 
@@ -260,28 +308,7 @@ Rectangle
 
             if (forceRefresh)
             {
-                root.model.results.refresh();
-            }
-        }
-
-        function removeField(uid)
-        {
-            console.log("trying to remove field : " + uid);
-            var annot = root.model.annotations.getAnnotation(uid);
-            console.log("  annot = " + annot);
-            var position, col;
-            for (var idx=0; idx< resultsTree.columnCount; idx++ )
-            {
-                col = resultsTree.getColumn(idx);
-                if (col.role === annot.uid)
-                {
-                    console.log("  remove column " + annot.name + " at " + (idx-2));
-                    // remove columb from UI
-                    resultsTree.removeColumn(idx);
-                    // Store fields state and position in the view model
-                    root.model.setField(uid, false, idx -2);
-                    break;
-                }
+                root.model.results.reset();
             }
         }
     }

@@ -51,7 +51,7 @@ ColumnLayout
             {
                 model.quickfilters.clear();
                 model.setFilter(model.quickfilters.getFilter());
-                model.results.refresh();
+                model.results.reset();
             }
         }
         Button
@@ -60,7 +60,7 @@ ColumnLayout
             onClicked:
             {
                 model.setFilter(model.quickfilters.getFilter());
-                model.results.refresh();
+                model.results.reset();
             }
         }
         Button

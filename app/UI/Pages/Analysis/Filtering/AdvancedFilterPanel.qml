@@ -48,7 +48,7 @@ ColumnLayout
             onClicked:
             {
                 root.model.filter = "[\"AND\", []]";
-                root.model.refresh();
+                root.model.reset();
             }
         }
         Button
@@ -57,7 +57,7 @@ ColumnLayout
             onClicked:
             {
                 root.model.filter = advancedFilterJsonEditor.text;
-                root.model.refresh();
+                root.model.reset();
             }
         }
         Button
