@@ -63,7 +63,7 @@ public:
     //! Return the filter query as Json string that will be concatened with other quickFilters
     Q_INVOKABLE virtual QString getFilter() = 0;
     //! Generic method to set value of the filter thanks to the UI.
-    Q_INVOKABLE virtual void setFilter(int id, QVariant value) = 0;
+    Q_INVOKABLE virtual void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant()) = 0;
     //! Reset the filter
     Q_INVOKABLE virtual void clear() = 0;
 

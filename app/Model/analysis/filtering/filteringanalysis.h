@@ -23,6 +23,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged)
     // Panel & Treeview models
     Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsUpdated)
+    Q_PROPERTY(AnnotationsTreeModel* allAnnotationsDB READ allAnnotationsDB NOTIFY allAnnotationsDBUpdated)
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsUpdated)
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY quickfiltersUpdated)
     // "Shortcuts properties" for QML
@@ -48,6 +49,7 @@ public:
     inline QString status() { return mStatus; }
     inline LoadingStatus loadingStatus() { return mLoadingStatus; }
     inline AnnotationsTreeModel* annotations() { return mAnnotationsTreeModel; }
+    inline AnnotationsTreeModel* allAnnotationsDB() { return mAllAnnotationsTreeModel; }
     inline QStringList fields() { return mFields; }
     inline ResultsTreeModel* results() { return mResults; }
     inline QuickFilterModel* quickfilters() { return mQuickFilters; }
@@ -71,6 +73,7 @@ Q_SIGNALS:
     void statusChanged();
     void loadingStatusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
     void annotationsUpdated();
+    void allAnnotationsDBUpdated();
     void filterUpdated();
     void fieldsUpdated();
     void resultsUpdated();

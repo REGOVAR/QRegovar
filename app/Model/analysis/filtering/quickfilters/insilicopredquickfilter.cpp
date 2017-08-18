@@ -2,7 +2,7 @@
 
 
 
-InSilicoPredQuickFilter::InSilicoPredQuickFilter(int analysis) : QuickFilterBlockInterface()
+InSilicoPredQuickFilter::InSilicoPredQuickFilter(int) : QuickFilterBlockInterface()
 {
 
     // TODO : Retrieve list of available annotations according to the analysisId
@@ -47,7 +47,7 @@ QString InSilicoPredQuickFilter::getFilter()
 
 
 
-void InSilicoPredQuickFilter::setFilter(int id, QVariant value)
+void InSilicoPredQuickFilter::setFilter(QString, bool, QVariant)
 {
     // Not used...
 }

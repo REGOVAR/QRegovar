@@ -77,8 +77,8 @@ Rectangle
                 anchors.fill: parent
                 verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.control
-                text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
                 elide: Text.ElideRight
+                text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
             }
         }
 
@@ -89,6 +89,83 @@ Rectangle
             TableViewColumn { width: 100 }
         }
 
+        // Number formating
+        Component
+        {
+            id: columnComponent_number
+            TableViewColumn
+            {
+                width: 100
+                delegate: Item
+                {
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.rightMargin: 5
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        font.pixelSize: Regovar.theme.font.size.control
+                        elide: Text.ElideRight
+                        font.family: "monospace"
+                        horizontalAlignment: Text.AlignRight
+                        text: styleData.value.value
+                    }
+                }
+            }
+        }
+
+        // Sequence formating
+        Component
+        {
+            id: columnComponent_sequence
+            TableViewColumn
+            {
+                width: 100
+                delegate: Item
+                {
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.rightMargin: 5
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        font.pixelSize: Regovar.theme.font.size.control
+                        elide: Text.ElideRight
+
+                        font.family: "monospace"
+                        text: styleData.value.value
+                    }
+                }
+            }
+        }
+
+        // Boolean formating
+        Component
+        {
+            id: columnComponent_bool
+            TableViewColumn
+            {
+                width: 30
+                delegate: Item
+                {
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.rightMargin: 5
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        font.pixelSize: Regovar.theme.font.size.control
+                        elide: Text.ElideRight
+
+                        font.family: Regovar.theme.icons.name
+                        horizontalAlignment: Text.AlignHCenter
+                        text: (styleData.value.value) ? "n" : "h"
+                        color: (styleData.value.value) ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.lighter(Regovar.theme.frontColor.normal )
+                    }
+                }
+            }
+        }
+
         // Special column : "RowHead column" with checkbox to select results
         Component
         {
@@ -97,7 +174,7 @@ Rectangle
             {
                 role: "id"
                 title: ""
-                width: 30
+                width: 60
 
 
                 delegate: Item
@@ -178,7 +255,39 @@ Rectangle
                 }
             }
         }
+        // Custom Column Component for DP Annotations
+        Component
+        {
+            id: columnComponent_DP
+            TableViewColumn
+            {
+                width: 60
 
+                delegate: Item
+                {
+                    ColumnLayout
+                    {
+                        anchors.fill: parent
+                        anchors.leftMargin: 5
+                        anchors.rightMargin: 5
+                        spacing: 1
+                        Repeater
+                        {
+
+                            model: styleData.value.values
+
+
+                            Text
+                            {
+                                height: 12
+                                font.pixelSize: 12
+                                text: modelData
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         // Special column to display sample's name when annnotation of type "sample_array" are displayed
         Component
@@ -284,11 +393,11 @@ Rectangle
 
             if (uid === "_Samples")
             {
-                col = columnComponent_Samples.createObject(resultsTree, {"width": info.width});
+                col = columnComponent_Samples.createObject(resultsTree);
             }
             else if (uid === "_RowHead")
             {
-                col = columnComponent_RowHead.createObject(resultsTree, {"width": info.width});
+                col = columnComponent_RowHead.createObject(resultsTree);
             }
             else
             {
@@ -297,9 +406,20 @@ Rectangle
 
                 // Getting QML column according to the type of the fields
                 if (annot.name == "GT")
-                    col = columnComponent_GT.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+                    col = columnComponent_GT.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+                else if (annot.name == "DP")
+                    col = columnComponent_DP.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
                 else
-                    col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+                {
+                    if (annot.type == "int")
+                        col = columnComponent_number.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+                    else if (annot.type == "bool")
+                        col = columnComponent_bool.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+                    else if (annot.type == "sequence")
+                        col = columnComponent_sequence.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+                    else
+                        col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+                }
             }
 
             console.log("  display column " + uid + " at " + position);

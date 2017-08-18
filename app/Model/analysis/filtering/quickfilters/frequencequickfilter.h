@@ -29,7 +29,7 @@ public:
 
     Q_INVOKABLE bool isVisible();
     Q_INVOKABLE QString getFilter();
-    Q_INVOKABLE void setFilter(int id, QVariant value);
+    Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant());
     Q_INVOKABLE void clear();
 
     inline QuickFilterField* _1000GAll() { return mFields[0]; }

@@ -1,6 +1,6 @@
 #include "typequickfilter.h"
 
-TypeQuickFilter::TypeQuickFilter(int analysis) : QuickFilterBlockInterface()
+TypeQuickFilter::TypeQuickFilter(int) : QuickFilterBlockInterface()
 {
     //	effecteffect_impact
     mFields = QList<QuickFilterField*>();
@@ -39,7 +39,7 @@ QString TypeQuickFilter::getFilter()
 
 
 
-void TypeQuickFilter::setFilter(int id, QVariant value)
+void TypeQuickFilter::setFilter(QString, bool, QVariant)
 {
     // Not used...
 }

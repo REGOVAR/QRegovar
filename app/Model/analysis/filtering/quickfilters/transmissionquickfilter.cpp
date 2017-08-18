@@ -1,16 +1,42 @@
 #include "transmissionquickfilter.h"
 
-TransmissionQuickFilter::TransmissionQuickFilter(int analysisId) : QuickFilterBlockInterface()
+// This quick filter is using several of precomputed regovar's annotations
+// These annotations are done and use same fuid for all analaysis/ref
+// fuid mapping
+// is_dom           148e67ffc504d1d0baf8ec988a2b7c4e
+// is_rec_hom       b0fab8b285474229afbbc13fac198dfe
+// is_rec_htzcomp   8cb83d0127aa912f2d290139d298e082
+// is_denovo        92a9da3488b1127623c4e3ac7b6f67e2
+// is_inherited     7ea7055963560e3ba97bd5a0081fa66c
+// is_aut           9b3a9330bc8b5b3c1ebc271876535d8e
+// is_xlk           76117d8b774f5e902ba0580bc302afb0
+// is_mit           0bfb15c0aad2926202f1ca0ee4e44c59
+
+TransmissionQuickFilter::TransmissionQuickFilter(int) : QuickFilterBlockInterface()
 {
-    // Dominant - ref/alt
-    mFilters[0] = "[\"==\", [\"field\", \"b33e172643f14920cee93d25daaa3c7b\"], [\"value\", \"2\"]]";
-    mActiveFilters[0] = false;
-    // Recessif - alt/alt
-    mFilters[1] = "[\"==\", [\"field\", \"b33e172643f14920cee93d25daaa3c7b\"], [\"value\", \"1\"]]";
-    mActiveFilters[1] = false;
-    // Composite - alt1/alt2
-    mFilters[2] = "[\"==\", [\"field\", \"212a9e5be0a47eea6ed028af9992e1bb\"], [\"value\", true]]";
-    mActiveFilters[2] = false;
+    // Dominant
+    mFilters["dom"] = "[\"==\", [\"field\", \"148e67ffc504d1d0baf8ec988a2b7c4e\"], [\"value\", true]]";
+    mActiveFilters["dom"] = false;
+    // Recessif
+    mFilters["rec_hom"] = "[\"==\", [\"field\", \"b0fab8b285474229afbbc13fac198dfe\"], [\"value\", true]]";
+    mActiveFilters["rec_hom"] = false;
+    mFilters["rec_htzcomp"] = "[\"==\", [\"field\", \"8cb83d0127aa912f2d290139d298e082\"], [\"value\", true]]";
+    mActiveFilters["rec_htzcomp"] = false;
+    // De novo
+    mFilters["denovo"] = "[\"==\", [\"field\", \"92a9da3488b1127623c4e3ac7b6f67e2\"], [\"value\", true]]";
+    mActiveFilters["denovo"] = false;
+    // Inherited
+    mFilters["inherited"] = "[\"==\", [\"field\", \"7ea7055963560e3ba97bd5a0081fa66c\"], [\"value\", true]]";
+    mActiveFilters["inherited"] = false;
+    // Autosomal
+    mFilters["aut"] = "[\"==\", [\"field\", \"9b3a9330bc8b5b3c1ebc271876535d8e\"], [\"value\", true]]";
+    mActiveFilters["aut"] = false;
+    // X-linked
+    mFilters["xlk"] = "[\"==\", [\"field\", \"76117d8b774f5e902ba0580bc302afb0\"], [\"value\", true]]";
+    mActiveFilters["xlk"] = false;
+    // Mito
+    mFilters["mit"] = "[\"==\", [\"field\", \"0bfb15c0aad2926202f1ca0ee4e44c59\"], [\"value\", true]]";
+    mActiveFilters["mit"] = false;
 }
 
 
@@ -24,16 +50,19 @@ bool TransmissionQuickFilter::isVisible()
 QString TransmissionQuickFilter::getFilter()
 {
     QStringList filter;
-    for (int idx=0; idx < mActiveFilters.count(); idx++)
+    QStringList recFilter;
+    foreach(QString fid, mActiveFilters.keys())
     {
-        if (mActiveFilters[idx])
+        if (mActiveFilters[fid])
         {
-            filter << mFilters[idx];
+            // TODO manage Rec filter (hom OR htzcomp)
+
+            filter << mFilters[fid];
         }
     }
 
     if (filter.count() > 1)
-        return QString("[\"OR\", [%1]]").arg(filter.join(","));
+        return QString("[\"AND\", [%1]]").arg(filter.join(","));
     else if (filter.count() == 1)
         return filter[0];
     return "";
@@ -41,14 +70,15 @@ QString TransmissionQuickFilter::getFilter()
 
 
 
-void TransmissionQuickFilter::setFilter(int id, QVariant value)
+void TransmissionQuickFilter::setFilter(QString filterId, bool filterActive, QVariant)
 {
-    mActiveFilters[id] = value.toBool();
+    mActiveFilters[filterId] = filterActive;
 }
 
 void TransmissionQuickFilter::clear()
 {
-    mActiveFilters[0] = false;
-    mActiveFilters[1] = false;
-    mActiveFilters[2] = false;
+    foreach(QString fid, mActiveFilters.keys())
+    {
+        mActiveFilters[fid] = false;
+    }
 }

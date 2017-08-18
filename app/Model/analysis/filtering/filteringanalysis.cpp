@@ -28,7 +28,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     setComment(json["comment"].toString());
     setType("Dynamic filtering analysis");
     setLastUpdate(QDateTime::fromString(json["update_date"].toString(), Qt::ISODate));
-    mRefId = json["ref_id"].toInt();
+    mRefId = json["reference_id"].toInt();
     mRefName = json["ref_name"].toString();
     mStatus = json["status"].toString();
 
@@ -159,7 +159,7 @@ void FilteringAnalysis::loadAnnotations()
 
                         // add annotation to the "All annotation" treeModel
                         mAllAnnotationsTreeModel->addEntry(dbName, dbVersionName, dbDescription, isDbSelected, mAnnotations[uid]);
-                        if (isDbSelected)
+                        if (isDbSelected || dbVersionName == "_regovar_")
                         {
                             // add annotation to the treeModel of annotation available for this analysis
                             mAnnotationsTreeModel->addEntry(dbName, dbVersionName, dbDescription, isDbSelected, mAnnotations[uid]);

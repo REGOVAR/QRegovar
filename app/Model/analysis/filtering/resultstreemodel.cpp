@@ -134,7 +134,7 @@ void ResultsTreeModel::fetchMore(const QModelIndex& parent)
 
 
 
-bool ResultsTreeModel::fromJson(QJsonObject json)
+bool ResultsTreeModel::fromJson(QJsonObject)
 {
     qDebug() << "Init results tree model of filtering analysis" << mAnalysisId << ":";
 
@@ -244,7 +244,6 @@ void ResultsTreeModel::loadNext()
     Request* request = Request::post(QString("/analysis/%1/filtering").arg(mAnalysisId), QJsonDocument(body).toJson());
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
-        int oldLoaded = mLoaded;
         if (success)
         {
             setupModelData(json["data"].toArray(), mRootItem);

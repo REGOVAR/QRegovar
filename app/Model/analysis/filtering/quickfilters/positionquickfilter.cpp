@@ -1,6 +1,6 @@
 #include "positionquickfilter.h"
 
-PositionQuickFilter::PositionQuickFilter(int analysisId) : QuickFilterBlockInterface()
+PositionQuickFilter::PositionQuickFilter(int) : QuickFilterBlockInterface()
 {
     //	effecteffect_impact
     mFields = QList<QuickFilterField*>();
@@ -40,7 +40,7 @@ QString PositionQuickFilter::getFilter()
 
 
 
-void PositionQuickFilter::setFilter(int id, QVariant value)
+void PositionQuickFilter::setFilter(QString, bool, QVariant)
 {
     // Not used...
 }

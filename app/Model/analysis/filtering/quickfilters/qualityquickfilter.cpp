@@ -2,7 +2,7 @@
 
 
 
-QualityQuickFilter::QualityQuickFilter(int analysisId) : QuickFilterBlockInterface()
+QualityQuickFilter::QualityQuickFilter(int) : QuickFilterBlockInterface()
 {
     // TODO : Retrieve list of available annotations according to the analysisId
     //      : And then retrieve via regexp fields_uid for dbnsfp
@@ -30,7 +30,7 @@ QString QualityQuickFilter::getFilter()
 
 
 
-void QualityQuickFilter::setFilter(int id, QVariant value)
+void QualityQuickFilter::setFilter(QString, bool, QVariant)
 {
     // Not used
 }

@@ -24,14 +24,6 @@ void QuickFilterModel::init(int refId, int analysisId)
 
 }
 
-void QuickFilterModel::setFilter(PredefinedFilter filter, int fieldId, QVariant value)
-{
-    if (mQuickFilters.contains(filter) && mQuickFilters[filter]->isVisible())
-    {
-        mQuickFilters[filter]->setFilter(fieldId, value);
-        emit filterUpdated();
-    }
-}
 
 
 

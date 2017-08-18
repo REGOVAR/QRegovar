@@ -30,6 +30,14 @@ QuickFilterBox
         locAll.checked = (!locAut.checked && !locMit.checked && !locXlk.checked);
 
         // TODO : send final combination to the model to update the filter
+        model.setFilter("dom", modeDom.checked);
+        model.setFilter("rec_hom", modeRec.checked);
+        model.setFilter("rec_htzcomp", modeHtzComp.checked);
+        model.setFilter("denovo", segDen.checked);
+        model.setFilter("inherited", segInh.checked);
+        model.setFilter("aut", locAut.checked);
+        model.setFilter("xlk", locXlk.checked);
+        model.setFilter("mit", locMit.checked);
     }
 
 

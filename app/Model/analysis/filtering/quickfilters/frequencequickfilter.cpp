@@ -3,7 +3,7 @@
 
 
 
-FrequenceQuickFilter::FrequenceQuickFilter(int analysisId) : QuickFilterBlockInterface()
+FrequenceQuickFilter::FrequenceQuickFilter(int) : QuickFilterBlockInterface()
 {
     // For all above list, the order of idx is the same
     //  0	1000gp1_af
@@ -72,7 +72,7 @@ QString FrequenceQuickFilter::getFilter()
 
 
 
-void FrequenceQuickFilter::setFilter(int id, QVariant value)
+void FrequenceQuickFilter::setFilter(QString, bool , QVariant)
 {
     // Not used...
 }

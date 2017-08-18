@@ -73,7 +73,7 @@ Rectangle
         Button
         {
             text: "Open Singleton"
-            onClicked: regovar.openAnalysis(19);
+            onClicked: regovar.openAnalysis(27);
         }
         Button
         {

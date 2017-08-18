@@ -46,7 +46,6 @@ public:
 
     // Methods
     Q_INVOKABLE QString getFilter();
-    Q_INVOKABLE void setFilter(PredefinedFilter filter, int fieldId, QVariant value);
 
 Q_SIGNALS:
     void filterUpdated();

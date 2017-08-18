@@ -86,8 +86,7 @@ void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent, QSt
         QJsonObject dbVersion = db["version"].toObject();
 
 
-        // dbVersion.keys();
-        // TODO : version sublevel
+        // Version sublevel
         foreach (QString dbUid, dbVersion.keys())
         {
             // Keep only annotations used in the analyses
