@@ -14,6 +14,9 @@ Dialog
     width: 300
     height: 200
 
+
+    modality: Qt.WindowModal
+
     property string errorCode
     property string errorMessage
 

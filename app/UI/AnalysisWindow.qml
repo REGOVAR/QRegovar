@@ -109,6 +109,13 @@ ApplicationWindow
                 }
 
             }
+            else if ( model[idx].page[0] === "@")
+            {
+                if (model[idx].page === "@close")
+                {
+                    pages[baseIndex+idx] = "@close";
+                }
+            }
             else
             {
                 pages[baseIndex+idx] = false;
@@ -131,16 +138,23 @@ ApplicationWindow
             var newIdx = pageIdxKey(menuModel.selectedIndex);
             var oldIdx = pageIdxKey(previousIndex);
             console.log ("close " + oldIdx + " open " + newIdx);
-            root.menuPageMapping[oldIdx].visible = false;
-            root.menuPageMapping[newIdx].visible = true;
-            root.menuPageMapping[newIdx].anchors.fill = stack;
-            if (root.menuPageMapping[newIdx].model == null)
+            if (root.menuPageMapping[newIdx] == "@close")
             {
-                console.log("===> Analysis windows set model of the page")
-                root.menuPageMapping[newIdx].model = root.model;
+                root.close();
             }
+            else if (root.menuPageMapping[oldIdx])
+            {
+                root.menuPageMapping[oldIdx].visible = false;
+                root.menuPageMapping[newIdx].visible = true;
+                root.menuPageMapping[newIdx].anchors.fill = stack;
+                if (root.menuPageMapping[newIdx].model == null)
+                {
+                    console.log("===> Analysis windows set model of the page")
+                    root.menuPageMapping[newIdx].model = root.model;
+                }
 
-            previousIndex = menuModel.selectedIndex;
+                previousIndex = menuModel.selectedIndex;
+            }
         }
     }
 

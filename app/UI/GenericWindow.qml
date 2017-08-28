@@ -59,6 +59,15 @@ ApplicationWindow
         id: errorPopup
         visible: false
     }
+    Connections
+    {
+        target: regovar
+        onError:
+        {
+            errorPopup.open();
+            console.log("C++ error retrieve by QML");
+        }
+    }
 
 
     //! Convert MainMenu index into one string key for internal map with qml pages
@@ -91,32 +100,6 @@ ApplicationWindow
                 {
                     console.log("Error loading component:", comp.errorString());
                 }
-//                else
-//                {
-//                    var uid = baseIndex+idx
-//                    components[uid] = comp;
-//                    console.log ("delayed loading " + uid + " : Pages/" + model[idx].page)
-//                    component.statusChanged.connect(function()
-//                    {
-//                        for (var prop in component)
-//                        {
-//                            if (component.hasOwnProperty(prop)) {
-//                                if (component[prop].status == Component.Ready)
-//                                {
-//                                    var elmt = component[prop].createObject(stack, {"visible": false});
-//                                    var uid = baseIndex+idx
-//                                    pages[uid] = elmt;
-//                                    console.log ("load " + uid + " : Pages/" + model[idx].page)
-//                                }
-//                                else if (component[prop].status == Component.Error)
-//                                {
-//                                    console.log("Error loading component:", component[prop].errorString());
-//                                }
-//                            }
-//                        }
-//                    });
-//                }
-
             }
             else
             {
@@ -140,11 +123,18 @@ ApplicationWindow
             var newIdx = pageIdxKey(menuModel.selectedIndex);
             var oldIdx = pageIdxKey(previousIndex);
             console.log ("close " + oldIdx + " open " + newIdx);
-            root.menuPageMapping[oldIdx].visible = false;
-            root.menuPageMapping[newIdx].visible = true;
-            root.menuPageMapping[newIdx].anchors.fill = stack;
+            if (root.menuPageMapping[newIdx] == "@close")
+            {
+                closePopup.open();
+            }
+            else if (root.menuPageMapping[oldIdx])
+            {
+                root.menuPageMapping[oldIdx].visible = false;
+                root.menuPageMapping[newIdx].visible = true;
+                root.menuPageMapping[newIdx].anchors.fill = stack;
 
-            previousIndex = menuModel.selectedIndex;
+                previousIndex = menuModel.selectedIndex;
+            }
         }
     }
 

@@ -33,7 +33,9 @@ HEADERS += \
     Model/analysis/filtering/quickfilters/typequickfilter.h \
     Model/analysis/filtering/quickfilters/frequencequickfilter.h \
     Model/analysis/filtering/quickfilters/insilicopredquickfilter.h \
-    Model/analysis/filtering/fieldcolumninfos.h
+    Model/analysis/filtering/fieldcolumninfos.h \
+    Model/analysis/filtering/remotesampletreeitem.h \
+    Model/analysis/filtering/remotesampletreemodel.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -65,7 +67,9 @@ SOURCES += main.cpp \
     Model/analysis/filtering/quickfilters/typequickfilter.cpp \
     Model/analysis/filtering/quickfilters/frequencequickfilter.cpp \
     Model/analysis/filtering/quickfilters/insilicopredquickfilter.cpp \
-    Model/analysis/filtering/fieldcolumninfos.cpp
+    Model/analysis/filtering/fieldcolumninfos.cpp \
+    Model/analysis/filtering/remotesampletreeitem.cpp \
+    Model/analysis/filtering/remotesampletreemodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -187,7 +191,9 @@ DISTFILES += \
     UI/Pages/LoginPage.qml \
     UI/Pages/Analysis/Filtering/AdvancedFilterPanel.qml \
     UI/Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml \
-    UI/Pages/Analysis/Filtering/ResultsPanel.qml
+    UI/Pages/Analysis/Filtering/ResultsPanel.qml \
+    UI/Pages/Analysis/Filtering/HelpPage.qml \
+    UI/Dialogs/SelectSamplesDialog.qml
 
 
 win32 {

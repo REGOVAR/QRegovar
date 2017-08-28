@@ -68,7 +68,7 @@ Rectangle
     Column
     {
         id: actionsPanel
-        anchors.top: helpInfoBox.bottom
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
         anchors.right: root.right
         anchors.margins : 10
         spacing: 10
@@ -112,7 +112,7 @@ Rectangle
     {
         id: browser
         anchors.left: root.left
-        anchors.top: helpInfoBox.bottom
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10

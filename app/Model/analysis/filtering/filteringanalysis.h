@@ -46,6 +46,7 @@ public:
     // Getters
     inline QString filter() { return mFilter; }
     inline QString refName() { return mRefName; }
+    inline int refId() { return mRefId; }
     inline QString status() { return mStatus; }
     inline LoadingStatus loadingStatus() { return mLoadingStatus; }
     inline AnnotationsTreeModel* annotations() { return mAnnotationsTreeModel; }
@@ -112,8 +113,8 @@ private:
     int mTrioChild;
     int mTrioMother;
     int mTrioFather;
-
     int mResultsTotal;
+
 
 
     // Methods
