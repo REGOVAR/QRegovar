@@ -1,7 +1,6 @@
 import QtQuick 2.7
-import QtGraphicalEffects 1.0
-import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
+import QtQuick.Controls 2.2
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 import org.regovar 1.0
@@ -53,6 +52,44 @@ Rectangle
     }
 
 
+    Menu
+    {
+        id: resultContextMenu
+        background: Rectangle
+        {
+            implicitWidth: 200
+            color: Regovar.theme.backgroundColor.main
+            border.color: Regovar.theme.boxColor.border
+        }
+
+        MenuItem {
+            text: qsTr("New...")
+        }
+        MenuItem {
+            text: qsTr("Open...")
+            onClicked: {
+                Qt.openUrlExternally("http://www.stackoverflow.com/");
+            }
+        }
+        MenuSeparator
+        {
+            padding: 0
+            topPadding: 12
+            bottomPadding: 12
+            contentItem: Rectangle
+            {
+                implicitWidth: 200
+                implicitHeight: 1
+                color: Regovar.theme.boxColor.border
+            }
+        }
+
+        MenuItem {
+            text: qsTr("Save")
+        }
+    }
+
+
 
 
     TreeView
@@ -81,6 +118,16 @@ Rectangle
                 text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
             }
         }
+
+        MouseArea
+        {
+            anchors.fill: parent
+            anchors.topMargin: 24 // 24 = Header height (see UI/Framework/TreeView.qml)
+
+            acceptedButtons: Qt.RightButton
+            onClicked: resultsTree.openResultContextMenu(mouse)
+        }
+
 
         // Generic Column component use to display new one when user select a new annotation
         Component
@@ -329,11 +376,52 @@ Rectangle
             // Display selected fields
             if (root.model !== null)
             {
+                root.model.onContextualVariantInformationReady.connect(onOpenResultContextMenuFinish);
                 root.model.resultColumnsChanged.connect(refreshResultColumns);
                 refreshResultColumns();
             }
 
         }
+
+
+
+        function openResultContextMenu(mouse)
+        {
+            // 0- display context menu as "loading indicator"
+            resultContextMenu.open()
+            resultContextMenu.x = mouse.x
+            resultContextMenu.y = mouse.y
+
+            // 1- retrieve row index
+            var index = resultsTree.indexAt(mouse.x, mouse.y)
+            if (!index.valid)
+            {
+                console.log("error : unable to get valid result's treeview row index.");
+                return;
+            }
+            // 2- retrieve variant id
+            var variantId = resultsTree.model.data(index, Qt.UserRole +1); // enum value of ResultsTreeModel.ColumnRole.id
+            variantId = variantId.uid.split("_")[0];
+            resultContextMenu.title = "show context menu for variant: " + variantId;
+
+            // 3- get variant information
+            root.model.getVariantInfo(variantId);
+
+            // 4-... call to server are asynch.
+            // See connection to the signal model.onContextualVariantInformationReady
+
+        }
+        function onOpenResultContextMenuFinish(json)
+        {
+            console.log(json);
+            json["online_tools_variant"]["varsome"];
+
+            resultContextMenu.add
+            // 4- wait answers
+
+        }
+
+
 
         function refreshResultColumns()
         {

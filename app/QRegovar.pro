@@ -3,6 +3,7 @@ QT += qml quick widgets
 CONFIG += c++11
 
 
+
 HEADERS += \
     Model/treeitem.h \
     Model/treemodel.h \

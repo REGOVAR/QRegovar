@@ -70,6 +70,7 @@ public:
     // Methods
     bool fromJson(QJsonObject json);
     Q_INVOKABLE inline FieldColumnInfos* getColumnInfo(QString uid) { return mAnnotations.contains(uid) ? mAnnotations[uid] : nullptr; }
+    Q_INVOKABLE void getVariantInfo(QString variantId);
 
 
 Q_SIGNALS:
@@ -87,6 +88,7 @@ Q_SIGNALS:
     void sampleColumnDisplayedUpdated();
     void resultColumnsChanged();
     void resultsTotalChanged();
+    void onContextualVariantInformationReady(QJsonObject json);
 
 
 public Q_SLOTS:

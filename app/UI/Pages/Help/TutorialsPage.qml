@@ -3,6 +3,12 @@ import QtQuick.Layouts 1.3
 import "../../Regovar"
 import "../../Framework"
 
+
+
+import QtGraphicalEffects 1.0
+import QtQuick.Controls 2.2
+import QtQuick.Layouts 1.3
+
 Rectangle
 {
     id: root
@@ -45,6 +51,28 @@ Rectangle
             anchors.centerIn: parent
             text: "Tutorials (from web)"
             font.pointSize: 24
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    MouseArea
+    {
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+        onClicked:
+        {
+            resultContextMenu.open()
+            resultContextMenu.x = mouse.x - 10
+            resultContextMenu.y = mouse.y // TODO take in account screen borders
         }
     }
 

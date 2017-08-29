@@ -282,6 +282,30 @@ void FilteringAnalysis::loadResults()
 
 
 
+void FilteringAnalysis::getVariantInfo(QString variantId)
+{
+    QString refId = QString::number(mRefId);
+    QString analysisId = QString::number(mId);
+
+    Request* req = Request::get(QString("/variant/%1/%2/%3").arg(refId, variantId, analysisId));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            emit onContextualVariantInformationReady(json["data"].toObject());
+            qDebug() << "Variant information retrieved !";
+        }
+        else
+        {
+            regovar->error(json);
+            emit loadingStatusChanged(mLoadingStatus, error);
+            mLoadingStatus = error;
+        }
+        req->deleteLater();
+    });
+}
+
+
 //! Add or remove a field to the display result and update or set the order
 //! Return the order of the field in the grid
 int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
