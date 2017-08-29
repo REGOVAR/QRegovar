@@ -5,11 +5,13 @@
 #include "../analysis.h"
 #include "resultstreemodel.h"
 #include "annotationstreemodel.h"
+#include "remotesampletreemodel.h"
 #include "quickfilters/quickfiltermodel.h"
 #include "Model/sample/sample.h"
 #include "fieldcolumninfos.h"
 
 class ResultsTreeModel;
+class RemoteSampleTreeModel;
 
 class FilteringAnalysis : public Analysis
 {
@@ -26,6 +28,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(AnnotationsTreeModel* allAnnotationsDB READ allAnnotationsDB NOTIFY allAnnotationsDBUpdated)
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsUpdated)
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY quickfiltersUpdated)
+    Q_PROPERTY(RemoteSampleTreeModel* remoteSamples READ remoteSamples NOTIFY remoteSamplesUpdated)
     // "Shortcuts properties" for QML
     Q_PROPERTY(QStringList samples READ displayedSamples NOTIFY samplesUpdated)
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
@@ -54,6 +57,7 @@ public:
     inline QStringList fields() { return mFields; }
     inline ResultsTreeModel* results() { return mResults; }
     inline QuickFilterModel* quickfilters() { return mQuickFilters; }
+    inline RemoteSampleTreeModel* remoteSamples() { return mRemoteSampleTreeModel; }
     inline QList<Sample*> samples() { return mSamples; }
     inline int resultsTotal() { return mResultsTotal; }
     QStringList displayedSamples();
@@ -68,7 +72,6 @@ public:
     Q_INVOKABLE inline FieldColumnInfos* getColumnInfo(QString uid) { return mAnnotations.contains(uid) ? mAnnotations[uid] : nullptr; }
 
 
-
 Q_SIGNALS:
     void isLoading();
     void statusChanged();
@@ -79,6 +82,7 @@ Q_SIGNALS:
     void fieldsUpdated();
     void resultsUpdated();
     void quickfiltersUpdated();
+    void remoteSamplesUpdated();
     void samplesUpdated();
     void sampleColumnDisplayedUpdated();
     void resultColumnsChanged();
@@ -106,6 +110,7 @@ private:
     QHash<QString, FieldColumnInfos*> mAnnotations;
     AnnotationsTreeModel* mAllAnnotationsTreeModel;
     AnnotationsTreeModel* mAnnotationsTreeModel;
+    RemoteSampleTreeModel* mRemoteSampleTreeModel;
     QList<FieldColumnInfos*> mDisplayedAnnotationColumns;
 
     bool mIsTrio;

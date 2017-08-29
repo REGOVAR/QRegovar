@@ -123,7 +123,7 @@ TreeView
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: styleData.textAlignment
             font.pixelSize: Regovar.theme.font.size.control
-            text: styleData.value // + " (" + styleData.row + "," + styleData.column + ")"
+            text: (styleData.value !== undefined && styleData.value !== null) ? styleData.value : "" // + " (" + styleData.row + "," + styleData.column + ")"
             elide: Text.ElideRight
         }
     }

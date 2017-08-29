@@ -12,6 +12,13 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property FilteringAnalysis model
+    onModelChanged:
+    {
+        if (model !== undefined)
+        {
+            addSampleDialog.remoteSampleTreeModel = model.remoteSamples;
+        }
+    }
 
     Rectangle
     {
@@ -148,11 +155,17 @@ Rectangle
     {
         id: addSampleDialog
         visible: false
+
+        onAccepted:
+        {
+            addSelectedSamples();
+        }
     }
 
 
 
-    ListModel {
+    ListModel
+    {
         id: sampleModel
         ListElement {
             db_id: 12
@@ -185,5 +198,26 @@ Rectangle
             sex: "M"
             attr_1: "custom value"
         }
+    }
+
+
+
+
+    //! Add samples selected in the "addSampleDialog" Dialog
+    function addSelectedSamples()
+    {
+        // TODO : manage multiple selection
+        var sampleIdRole = Qt.UserRole +1 // enum value of RemoteSampleTreeModel.ColumnRole.sampleIdRole
+        var sampleId = model.remoteSamples.data(remoteIndex, sampleIdRole);
+        console.log("Add selected sample (" + sampleId + ") to the analysis");
+    }
+
+    //! Remove samples selected in the sample tree view
+    function removeSelectedSamples()
+    {
+        // TODO : manage multiple selection
+        var sampleIdRole = Qt.UserRole +1 // enum value of RemoteSampleTreeModel.ColumnRole.sampleIdRole
+        var sampleId = model.remoteSamples.data(remoteIndex, sampleIdRole);
+        console.log("remove selected sample (" + sampleId + ") to the analysis");
     }
 }

@@ -52,6 +52,10 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     }
     emit samplesUpdated();
 
+    // Init remote samples tree model
+    mRemoteSampleTreeModel = new RemoteSampleTreeModel(this);
+    emit remoteSamplesUpdated();
+
     // Retrieve fields
     foreach (const QJsonValue field, json["fields"].toArray())
     {

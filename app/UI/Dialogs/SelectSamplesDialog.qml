@@ -17,16 +17,18 @@ Dialog
     height: 400
 
 
-    property alias remoteIndex: remoteFiles.currentIndex
     property alias localIndex: localFiles.currentIndex
-    property alias remoteSelection: remoteFiles.selection
     property alias localSelection: localFiles.selection
+    property alias remoteSampleTreeModel: remoteSamples.model
+    property alias remoteIndex: remoteSamples.currentIndex
+    property alias remoteSelection: remoteSamples.selection
 
 
     onAccepted: console.log("Ok clicked")
     onRejected: console.log("Cancel clicked")
     Keys.onEscapePressed: root.reject()
     Keys.onBackPressed: root.reject() // especially necessary on Android
+
 
 
     contentItem: Rectangle
@@ -64,14 +66,32 @@ Dialog
 
             TreeView
             {
-                id: remoteFiles
+                id: remoteSamples
                 anchors.top : remoteFilterField.bottom
                 anchors.left: rootRemoteView.left
                 anchors.right: rootRemoteView.right
                 anchors.bottom: remoteSwitchButton.top
                 anchors.margins: 10
 
-                model: regovar.remoteSamplesTreeView
+                // TODO : enable multiple selection for the treeview
+//                selection: ItemSelectionModel
+//                {
+//                    onSelectionChanged:
+//                    {
+//                        console.log(currentIndex)
+//                    }
+//                 }
+//                selectionMode: OLD.SelectionMode.ExtendedSelection
+
+                OLD.TableViewColumn { title: qsTr("Name"); role: "name" }
+                OLD.TableViewColumn { title: qsTr("Status"); role: "status" }
+                OLD.TableViewColumn { title: qsTr("Firstname"); role: "firstname" }
+                OLD.TableViewColumn { title: qsTr("Lastname"); role: "lastname" }
+                OLD.TableViewColumn { title: qsTr("Sex"); role: "sex" }
+                OLD.TableViewColumn { title: qsTr("Import date"); role: "importDate" }
+                OLD.TableViewColumn { title: qsTr("File"); role: "filename" }
+                OLD.TableViewColumn { title: qsTr("Comment"); role: "comment" }
+
             }
 
             Button

@@ -12,6 +12,24 @@ class RemoteSampleTreeModel : public TreeModel
     Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
 
 public:
+    enum ColumnRole
+    {
+        // technical columns (hidden)
+        sampleIdRole = Qt::UserRole + 1,
+        subjectIdRole,
+        fileIdRole,
+        // info columns
+        nameRole,
+        commentRole,
+        statusRole,
+        filenameRole,
+        importDateRole,
+        firstnameRole,
+        lastnameRole,
+        sexRole,
+        birthdayRole,
+        deathdayRole
+    };
 
     explicit RemoteSampleTreeModel(FilteringAnalysis* parent=nullptr);
 
@@ -25,7 +43,7 @@ public:
 
 
     // Methods
-    QVariant newRemoteSampleTreeViewItem(Annotation* annot, QString uid, const QJsonValue &value);
+    QVariant newRemoteSampleTreeViewItem(int sampleId, int subjectId, int fileId, const QJsonValue &value);
     void setupModelData(QJsonArray data, TreeItem *parent);
     void loadAnalysisData();
     void reset();
