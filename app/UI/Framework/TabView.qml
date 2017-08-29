@@ -26,59 +26,90 @@ Item
         {
             id: headersListView
             anchors.fill: header
+            anchors.topMargin: 5
+            anchors.leftMargin: 5
             orientation: ListView.Horizontal
             boundsBehavior: Flickable.StopAtBounds
             interactive: false
             model: root.tabsModel
             currentIndex: screensListView.currentIndex
+
+
+
             delegate: Item
             {
-                width: headerLabel.width + headersListView.height * 0.4
+                height: 45
+                width: headerLabel.width + headerIcon.width + (hasLabel ? 20 : 0)
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
 
-                Text
-                {
-                    id: headerLabel
-                    anchors.centerIn: parent
-                    text: model.title
-                    font.pixelSize: headersListView.height * 0.3
-                    // font.capitalization: Font.AllUppercase
-                }
-
-                Rectangle
-                {
-                    visible: index !== 0
-                    anchors.left: parent.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 1
-                    height: parent.height * 0.4
-                    color: "lightgray"
-                }
-
-                Rectangle
-                {
-                    visible: index !== headersListView.count - 1
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 1
-                    height: parent.height * 0.4
-                    color: "lightgray"
-                }
+                property bool hasIcon: model.icon !== undefined && model.icon !== null && model.icon !== ""
+                property bool hasLabel: model.title !== undefined && model.title !== null && model.title !== ""
+                property bool isSelected: screensListView.currentIndex == index
 
                 Rectangle
                 {
                     anchors.fill: parent
-                    opacity: (headerMouseArea.pressed) ? 0.4 : 0
-                    color: Regovar.theme.secondaryColor.back.light
+                    color: parent.isSelected ? Regovar.theme.backgroundColor.main : Regovar.theme.backgroundColor.alt
+                }
 
-                    Behavior on opacity
-                    {
-                        NumberAnimation
-                        {
-                            duration: 150
-                        }
-                    }
+                Rectangle
+                {
+                    visible: parent.isSelected
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    width: 1
+                    color: Regovar.theme.boxColor.border
+                }
+                Rectangle
+                {
+                    visible: parent.isSelected
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    width: 1
+                    color: Regovar.theme.boxColor.border
+                }
+                Rectangle
+                {
+                    visible: parent.isSelected
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.left: parent.left
+                    height: 1
+                    color: Regovar.theme.boxColor.border
+                }
+
+                Text
+                {
+                    id: headerIcon
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+
+                    width: parent.hasIcon ? 50 : 0
+
+                    text: (parent.hasIcon) ? model.icon : ""
+                    color: parent.isSelected ? Regovar.theme.primaryColor.back.dark : Regovar.theme.primaryColor.back.light
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: Regovar.theme.font.size.title
+                    font.family: Regovar.theme.icons.name
+                }
+
+                Text
+                {
+                    id: headerLabel
+                    anchors.left: (parent.hasIcon) ? headerIcon.right : parent.left
+                    anchors.leftMargin: 10
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+
+                    text: (parent.hasLabel) ? model.title : ""
+                    color: parent.isSelected ? Regovar.theme.primaryColor.back.dark : Regovar.theme.primaryColor.back.light
+                    verticalAlignment: Text.AlignVCenter
+                    font.pixelSize: Regovar.theme.font.size.title
                 }
 
                 MouseArea
@@ -86,48 +117,6 @@ Item
                     id: headerMouseArea
                     anchors.fill: parent
                     onClicked: screensListView.currentIndex = index
-                }
-            }
-
-            highlightFollowsCurrentItem: false
-            highlight: Item
-            {
-                x: headersListView.currentItem.x
-                width: headersListView.currentItem.width
-                height: 9
-                anchors.bottom: parent.bottom
-
-                Behavior on x
-                {
-                    NumberAnimation
-                    {
-                        duration: 150
-                    }
-                }
-
-                Behavior on width
-                {
-                    NumberAnimation
-                    {
-                        duration: 150
-                    }
-                }
-
-                Rectangle
-                {
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    height: 6
-                    color: Regovar.theme.secondaryColor.back.normal
-                }
-
-                Rectangle
-                {
-                    anchors.bottom: parent.bottom
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    height: 3
-                    color: Regovar.theme.secondaryColor.back.dark
                 }
             }
         }
@@ -146,6 +135,8 @@ Item
         highlightMoveVelocity: 10000
         clip: true
         model: root.tabsModel
+        interactive: false
+        currentIndex: 0
         onCurrentItemChanged:
         {
             //currentItem.item.selected()
@@ -157,8 +148,11 @@ Item
             source: model.source
             onLoaded:
             {
-                item.model = Qt.binding(function() { return root.tabSharedModel; });
-                console.log("===> Tabview bind sharedModel to item");
+                if (item.hasOwnProperty("model"))
+                {
+                    item.model = Qt.binding(function() { return root.tabSharedModel; });
+                    console.log("===> Tabview bind sharedModel to item");
+                }
             }
         }
     }

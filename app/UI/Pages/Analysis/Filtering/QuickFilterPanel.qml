@@ -30,12 +30,12 @@ ColumnLayout
 
         Column
         {
-            TransmissionQuickForm { width: root.width; model: root.model }
-            QualityQuickForm { width: root.width; model: root.model }
-            PositionQuickFilter { width: root.width; model: root.model }
-            TypeQuickFilter { width: root.width; model: root.model }
-            FrequenceQuickFilter { width: root.width; model: root.model }
-            SilicoPredQuickFilter { width: root.width; model: root.model }
+            TransmissionQuickForm { width: root.width; model: root.model; }
+            QualityQuickForm { width: root.width; model: root.model; }
+            PositionQuickFilter { width: root.width; model: root.model; }
+            TypeQuickFilter { width: root.width; model: root.model; }
+            FrequenceQuickFilter { width: root.width; model: root.model; }
+            SilicoPredQuickFilter { width: root.width; model: root.model; }
         }
     }
 

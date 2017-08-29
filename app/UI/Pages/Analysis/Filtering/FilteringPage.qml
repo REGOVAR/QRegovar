@@ -47,19 +47,19 @@ Rectangle
             {
                 ListElement
                 {
-                    title: qsTr("Quick filters")
-                    icon: "F"
+                    //title: qsTr("Quick filters")
+                    icon: "2"
                     source: "../Pages/Analysis/Filtering/QuickFilterPanel.qml"
                 }
                 ListElement
                 {
-                    title: qsTr("Advanced filters")
+                    //title: qsTr("Advanced filters")
                     icon: "3"
                     source: "../Pages/Analysis/Filtering/AdvancedFilterPanel.qml"
                 }
                 ListElement
                 {
-                    title: qsTr("Annotations")
+                    //title: qsTr("Annotations")
                     icon: "o"
                     source: "../Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml"
                 }
