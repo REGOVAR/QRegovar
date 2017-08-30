@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
+import Qt.labs.settings 1.0
 import org.regovar 1.0
 
 import "MainMenu"
@@ -41,6 +42,13 @@ ApplicationWindow
     }
     property var previousIndex : [0,-1,-1]
 
+    Settings
+    {
+        property alias x: root.x
+        property alias y: root.y
+        property alias width: root.width
+        property alias height: root.height
+    }
 
     MainMenu
     {

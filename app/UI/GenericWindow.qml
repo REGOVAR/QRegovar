@@ -59,15 +59,15 @@ ApplicationWindow
         id: errorPopup
         visible: false
     }
-    Connections
-    {
-        target: regovar
-        onError:
-        {
-            errorPopup.open();
-            console.log("C++ error retrieve by QML");
-        }
-    }
+//    Connections
+//    {
+//        target: regovar
+//        onClose:
+//        {
+//            // errorPopup.open();
+//            console.log("C++ error retrieve by QML");
+//        }
+//    }
 
 
     //! Convert MainMenu index into one string key for internal map with qml pages
