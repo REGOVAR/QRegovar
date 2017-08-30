@@ -194,7 +194,9 @@ DISTFILES += \
     UI/Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml \
     UI/Pages/Analysis/Filtering/ResultsPanel.qml \
     UI/Pages/Analysis/Filtering/HelpPage.qml \
-    UI/Dialogs/SelectSamplesDialog.qml
+    UI/Dialogs/SelectSamplesDialog.qml \
+    UI/Pages/Analysis/Filtering/ResultContextMenu.qml \
+    UI/Pages/Analysis/Filtering/ResultContextMenuAction.qml
 
 
 win32 {

@@ -52,41 +52,11 @@ Rectangle
     }
 
 
-    Menu
+
+    ResultContextMenu
     {
         id: resultContextMenu
-        background: Rectangle
-        {
-            implicitWidth: 200
-            color: Regovar.theme.backgroundColor.main
-            border.color: Regovar.theme.boxColor.border
-        }
-
-        MenuItem {
-            text: qsTr("New...")
-        }
-        MenuItem {
-            text: qsTr("Open...")
-            onClicked: {
-                Qt.openUrlExternally("http://www.stackoverflow.com/");
-            }
-        }
-        MenuSeparator
-        {
-            padding: 0
-            topPadding: 12
-            bottomPadding: 12
-            contentItem: Rectangle
-            {
-                implicitWidth: 200
-                implicitHeight: 1
-                color: Regovar.theme.boxColor.border
-            }
-        }
-
-        MenuItem {
-            text: qsTr("Save")
-        }
+        visible: false
     }
 
 
@@ -402,7 +372,7 @@ Rectangle
             // 2- retrieve variant id
             var variantId = resultsTree.model.data(index, Qt.UserRole +1); // enum value of ResultsTreeModel.ColumnRole.id
             variantId = variantId.uid.split("_")[0];
-            resultContextMenu.title = "show context menu for variant: " + variantId;
+            resultContextMenu.title = "Variant : " + variantId;
 
             // 3- get variant information
             root.model.getVariantInfo(variantId);
@@ -413,10 +383,10 @@ Rectangle
         }
         function onOpenResultContextMenuFinish(json)
         {
-            console.log(json);
-            json["online_tools_variant"]["varsome"];
+            resultContextMenu.title = "chr" + json["chr"] + ":" + json["pos"] + " " + json["ref"] + ">" + json["alt"];
+            resultContextMenu.varsomUrl = json["online_tools_variant"]["varsome"];
+            resultContextMenu.marrvelUrl = json["online_tools_variant"]["marrvel"];
 
-            resultContextMenu.add
             // 4- wait answers
 
         }
