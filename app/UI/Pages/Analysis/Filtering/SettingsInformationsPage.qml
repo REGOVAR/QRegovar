@@ -12,12 +12,12 @@ Rectangle
     property FilteringAnalysis model
     onModelChanged:
     {
-        nameLabel = model.name;
-        refLabel = "hg19";
-        statusLabel = model.status
-        dateLabel = model.lastUpdate.toString();
-        nameField = Qt.binding(function() {return model.name;});
-        commentField = Qt.binding(function() {return model.comment;});
+        nameLabel.text = model.name;
+        refLabel.text = "hg19";
+        statusLabel.text = model.status
+        dateLabel.text = model.lastUpdate.toString();
+        nameField.text = Qt.binding(function() {return model.name;});
+        commentField.text = Qt.binding(function() {return model.comment;});
     }
 
     Rectangle

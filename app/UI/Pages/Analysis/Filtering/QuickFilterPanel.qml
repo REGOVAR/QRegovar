@@ -7,65 +7,75 @@ import "../../../Regovar"
 import "../../../Framework"
 import "Quickfilter"
 
-ColumnLayout
+Rectangle
 {
     id: root
-
     property FilteringAnalysis model
 
-    Text
-    {
-        text: qsTr("Quick filters")
-        elide: Text.ElideRight
-        font.pixelSize: Regovar.theme.font.size.header
-        color: Regovar.theme.primaryColor.back.dark
-        Layout.fillWidth: true
-    }
+    color: Regovar.theme.backgroundColor.main
 
-    ScrollView
+    ColumnLayout
     {
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+        anchors.fill: parent
 
-        Column
+        Text
         {
-            TransmissionQuickForm { width: root.width; model: root.model; }
-            QualityQuickForm { width: root.width; model: root.model; }
-            PositionQuickFilter { width: root.width; model: root.model; }
-            TypeQuickFilter { width: root.width; model: root.model; }
-            FrequenceQuickFilter { width: root.width; model: root.model; }
-            SilicoPredQuickFilter { width: root.width; model: root.model; }
+            text: qsTr("Quick filters")
+            height: Regovar.theme.font.boxSize.header
+            Layout.fillWidth: true
+            anchors.left: parent.left
+            anchors.leftMargin: 5
+            verticalAlignment: Text.AlignVCenter
+            font.pixelSize: Regovar.theme.font.size.header
+            color: Regovar.theme.primaryColor.back.dark
+            elide: Text.ElideRight
         }
-    }
 
-
-    RowLayout
-    {
-        Layout.fillWidth: true
-
-        Button
+        ScrollView
         {
-            text: qsTr("Clear")
-            onClicked:
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+            Column
             {
-                model.quickfilters.clear();
-                model.setFilter(model.quickfilters.getFilter());
-                model.results.reset();
+                TransmissionQuickForm { width: root.width; model: root.model; }
+                QualityQuickForm { width: root.width; model: root.model; }
+                PositionQuickFilter { width: root.width; model: root.model; }
+                TypeQuickFilter { width: root.width; model: root.model; }
+                FrequenceQuickFilter { width: root.width; model: root.model; }
+                SilicoPredQuickFilter { width: root.width; model: root.model; }
             }
         }
-        Button
+
+
+        RowLayout
         {
-            text: qsTr("Apply")
-            onClicked:
+            Layout.fillWidth: true
+
+            Button
             {
-                model.setFilter(model.quickfilters.getFilter());
-                model.results.reset();
+                text: qsTr("Clear")
+                onClicked:
+                {
+                    model.quickfilters.clear();
+                    model.setFilter(model.quickfilters.getFilter());
+                    model.results.reset();
+                }
             }
-        }
-        Button
-        {
-            text: qsTr("Save")
+            Button
+            {
+                text: qsTr("Apply")
+                onClicked:
+                {
+                    model.setFilter(model.quickfilters.getFilter());
+                    model.results.reset();
+                }
+            }
+            Button
+            {
+                text: qsTr("Save")
+            }
         }
     }
 }

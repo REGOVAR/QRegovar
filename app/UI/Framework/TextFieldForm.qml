@@ -11,6 +11,8 @@ TextField
     font.family: "monospace"
     color: Regovar.theme.frontColor.normal
 
+    selectByMouse :true
+
     background: Rectangle
     {
         implicitWidth: 200

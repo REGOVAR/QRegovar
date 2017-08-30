@@ -12,7 +12,7 @@ Rectangle
     property FilteringAnalysis model
     onModelChanged:
     {
-        nameLabel = model.name;
+        nameLabel.text = model.name;
     }
 
     Rectangle

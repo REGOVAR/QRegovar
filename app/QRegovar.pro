@@ -196,7 +196,9 @@ DISTFILES += \
     UI/Pages/Analysis/Filtering/HelpPage.qml \
     UI/Dialogs/SelectSamplesDialog.qml \
     UI/Pages/Analysis/Filtering/ResultContextMenu.qml \
-    UI/Pages/Analysis/Filtering/ResultContextMenuAction.qml
+    UI/Pages/Analysis/Filtering/ResultContextMenuAction.qml \
+    UI/Framework/ComboBox.qml \
+    UI/Pages/Analysis/Filtering/Quickfilter/QuickFilterFieldControl.qml
 
 
 win32 {

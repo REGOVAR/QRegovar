@@ -9,10 +9,10 @@ InSilicoPredQuickFilter::InSilicoPredQuickFilter(int) : QuickFilterBlockInterfac
     //      : And then retrieve via regexp fields_uid for dbnsfp
 
     // List of fields uid
-    mFields = QList<QuickFilterField*>();
-    mFields << new QuickFilterField("60b0b4839b6d5695f93667b7204de187", "==", "Benin");   // sift (VEP)
-    mFields << new QuickFilterField("150a41806541fd1c09be22cb1c92b03b", "==", "Benin");   // polyphen (VEP)
-    mFields << new QuickFilterField("89b35362318e2992c3f05f0042889830", ">", 15);         // cadd (dbNSFP)
+//    mFields = QList<QuickFilterField*>();
+//    mFields << new QuickFilterField("60b0b4839b6d5695f93667b7204de187", "==", "Benin");   // sift (VEP)
+//    mFields << new QuickFilterField("150a41806541fd1c09be22cb1c92b03b", "==", "Benin");   // polyphen (VEP)
+//    mFields << new QuickFilterField("89b35362318e2992c3f05f0042889830", ">", 15);         // cadd (dbNSFP)
 
     mFilter = "[\"%2\", [\"field\", \"%1\"], [\"value\", %3]]";
 }

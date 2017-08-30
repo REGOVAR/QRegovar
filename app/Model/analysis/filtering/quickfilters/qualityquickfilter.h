@@ -34,6 +34,8 @@ Q_SIGNALS:
 private:
     QuickFilterField* mDepth;
     QString mFilter;
+    QHash<QString, QString> mOpMapping;
+    QStringList mOperators;
 };
 
 

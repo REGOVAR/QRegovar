@@ -1,11 +1,20 @@
 #include "quickfilterblockinterface.h"
 
 
-QuickFilterField::QuickFilterField(QString fuid, QString op, QVariant value, bool isActive, QObject* parent)
+QuickFilterField::QuickFilterField(QObject* parent) : QObject(parent)
+{
+    mIsDisplayed = false;
+    mIsActive = false;
+}
+
+QuickFilterField::QuickFilterField(QString fuid, QString label, QStringList opList, QString op, QVariant value, bool isActive, QObject* parent)
     : QObject(parent)
 {
+    mIsDisplayed = true;
     mFuid = fuid;
+    mLabel = label;
     mOperator = op;
+    mOperatorsValues = opList;
     mDefaultOperator = op;
     mValue = value;
     mDefaultValue = value;
@@ -17,8 +26,11 @@ QuickFilterField::QuickFilterField(QString fuid, QString op, QVariant value, boo
 
 QuickFilterField::QuickFilterField(const QuickFilterField& other) : QObject(other.parent())
 {
+    mIsDisplayed = other.mIsDisplayed;
     mFuid = other.mFuid;
+    mLabel = other.mLabel;
     mOperator = other.mOperator;
+    mOperatorsValues = other.mOperatorsValues;
     mDefaultOperator = other.mDefaultOperator;
     mValue = other.mValue;
     mDefaultValue = other.mDefaultValue;

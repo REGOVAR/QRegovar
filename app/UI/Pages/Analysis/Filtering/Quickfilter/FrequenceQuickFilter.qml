@@ -29,7 +29,25 @@ QuickFilterBox
         // TODO : send final combination to the model to update the filter
     }
 
-    content: GridLayout
+    onModelChanged:
+    {
+        _100GAll.model = model.quickfilters.frequenceFilter._1000GAll;
+        _100GAfr.model = model.quickfilters.frequenceFilter._1000GAfr;
+        _100GAmr.model = model.quickfilters.frequenceFilter._1000GAmr;
+        _100GAsn.model = model.quickfilters.frequenceFilter._1000GAsn;
+        _100GEur.model = model.quickfilters.frequenceFilter._1000GEur;
+
+        exacAll.model = model.quickfilters.frequenceFilter.exacAll;
+        exacAfr.model = model.quickfilters.frequenceFilter.exacAfr;
+        exacAmr.model = model.quickfilters.frequenceFilter.exacAmr;
+        exacAdj.model = model.quickfilters.frequenceFilter.exacAdj;
+        exacEas.model = model.quickfilters.frequenceFilter.exacEas;
+        exacFin.model = model.quickfilters.frequenceFilter.exacFin;
+        exacNfe.model = model.quickfilters.frequenceFilter.exacNfe;
+        exacSas.model = model.quickfilters.frequenceFilter.exacSas;
+    }
+
+    content: ColumnLayout
     {
         id: content
         anchors.top: parent.top
@@ -37,20 +55,17 @@ QuickFilterBox
         anchors.right: parent.right
         anchors.rightMargin: 30
 
-        columns: 3
-        rows: 14
-
 
         // All
         RowLayout
         {
-            Layout.columnSpan: 3
+            Layout.columnSpan: 5
             width: content.width
             CheckBox
             {
                 id: frqAll
                 anchors.left: parent.left
-                anchors.leftMargin: 30
+                anchors.leftMargin: 25
                 text: qsTr("All")
                 checked: true
                 onCheckedChanged:
@@ -75,459 +90,253 @@ QuickFilterBox
         }
 
         // 1000 G ALL
-        CheckBox
+        QuickFilterFieldControl
         {
             id: _100GAll
-            width: 150
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            text: qsTr("1000G All")
-            checked: false
-            onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
+//            onCheckedChanged:
+//            {
+//                if (!internalUiUpdate)
+//                {
+//                    // Update other checkboxes
+//                    internalUiUpdate = true;
+//                    if (checked)
+//                    {
+//                        frqAll.checked = false;
+//                    }
+//                    checkFinal();
+//                    internalUiUpdate = false;
+//                }
+//            }
         }
-        ComboBox
-        {
-            model: [ "<", "≤", "=", "≥", ">", "≠" ]
-            currentIndex: 1
-        }
-        TextFieldForm
-        {
-            Layout.fillWidth: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: "0.01"
-        }
-
         // 1000 G AFR
-        CheckBox
+        QuickFilterFieldControl
         {
             id: _100GAfr
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            text: qsTr("1000G AFR")
-            checked: false
-            onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
+//            onCheckedChanged:
+//            {
+//                if (!internalUiUpdate)
+//                {
+//                    // Update other checkboxes
+//                    internalUiUpdate = true;
+//                    if (checked)
+//                    {
+//                        frqAll.checked = false;
+//                    }
+//                    checkFinal();
+//                    internalUiUpdate = false;
+//                }
+//            }
         }
-        ComboBox
-        {
-            model: [ "<", "≤", "=", "≥", ">", "≠" ]
-            currentIndex: 1
-        }
-        TextFieldForm
-        {
-            Layout.fillWidth: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: "0.01"
-        }
-
         // 1000 G AMR
-        CheckBox
+        QuickFilterFieldControl
         {
             id: _100GAmr
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            text: qsTr("1000G AMR")
-            checked: false
-            onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
+//            onCheckedChanged:
+//            {
+//                if (!internalUiUpdate)
+//                {
+//                    // Update other checkboxes
+//                    internalUiUpdate = true;
+//                    if (checked)
+//                    {
+//                        frqAll.checked = false;
+//                    }
+//                    checkFinal();
+//                    internalUiUpdate = false;
+//                }
+//            }
         }
-        ComboBox
-        {
-            model: [ "<", "≤", "=", "≥", ">", "≠" ]
-            currentIndex: 1
-        }
-        TextFieldForm
-        {
-            Layout.fillWidth: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: "0.01"
-        }
-
         // 1000 G ASN
-        CheckBox
+        QuickFilterFieldControl
         {
             id: _100GAsn
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            text: qsTr("1000G ASN")
-            checked: false
-            onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
+//            onCheckedChanged:
+//            {
+//                if (!internalUiUpdate)
+//                {
+//                    // Update other checkboxes
+//                    internalUiUpdate = true;
+//                    if (checked)
+//                    {
+//                        frqAll.checked = false;
+//                    }
+//                    checkFinal();
+//                    internalUiUpdate = false;
+//                }
+//            }
         }
-        ComboBox
-        {
-            model: [ "<", "≤", "=", "≥", ">", "≠" ]
-            currentIndex: 1
-        }
-        TextFieldForm
-        {
-            Layout.fillWidth: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: "0.01"
-        }
-
         // 1000 G EUR
-        CheckBox
+        QuickFilterFieldControl
         {
             id: _100GEur
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            text: qsTr("1000G EUR")
-            checked: false
-            onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
+//            onCheckedChanged:
+//            {
+//                if (!internalUiUpdate)
+//                {
+//                    // Update other checkboxes
+//                    internalUiUpdate = true;
+//                    if (checked)
+//                    {
+//                        frqAll.checked = false;
+//                    }
+//                    checkFinal();
+//                    internalUiUpdate = false;
+//                }
+//            }
         }
-        ComboBox
-        {
-            model: [ "<", "≤", "=", "≥", ">", "≠" ]
-            currentIndex: 1
-        }
-        TextFieldForm
-        {
-            Layout.fillWidth: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: "0.01"
-        }
+
 
         // Exac All
-        CheckBox
+        QuickFilterFieldControl
         {
             id: exacAll
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            text: qsTr("Exac All")
-            checked: false
-            onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
+//            onCheckedChanged:
+//            {
+//                if (!internalUiUpdate)
+//                {
+//                    // Update other checkboxes
+//                    internalUiUpdate = true;
+//                    if (checked)
+//                    {
+//                        frqAll.checked = false;
+//                    }
+//                    checkFinal();
+//                    internalUiUpdate = false;
+//                }
+//            }
         }
-        ComboBox
-        {
-            model: [ "<", "≤", "=", "≥", ">", "≠" ]
-            currentIndex: 1
-        }
-        TextFieldForm
-        {
-            Layout.fillWidth: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: "0.01"
-        }
-
         // Exac AFR
-        CheckBox
+        QuickFilterFieldControl
         {
             id: exacAfr
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            text: qsTr("Exac AFR")
-            checked: false
-            onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
+//            onCheckedChanged:
+//            {
+//                if (!internalUiUpdate)
+//                {
+//                    // Update other checkboxes
+//                    internalUiUpdate = true;
+//                    if (checked)
+//                    {
+//                        frqAll.checked = false;
+//                    }
+//                    checkFinal();
+//                    internalUiUpdate = false;
+//                }
+//            }
         }
-        ComboBox
-        {
-            model: [ "<", "≤", "=", "≥", ">", "≠" ]
-            currentIndex: 1
-        }
-        TextFieldForm
-        {
-            Layout.fillWidth: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: "0.01"
-        }
-
         // Exac AMR
-        CheckBox
+        QuickFilterFieldControl
         {
             id: exacAmr
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            text: qsTr("Exac AMR")
-            checked: false
-            onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
+//            onCheckedChanged:
+//            {
+//                if (!internalUiUpdate)
+//                {
+//                    // Update other checkboxes
+//                    internalUiUpdate = true;
+//                    if (checked)
+//                    {
+//                        frqAll.checked = false;
+//                    }
+//                    checkFinal();
+//                    internalUiUpdate = false;
+//                }
+//            }
         }
-        ComboBox
-        {
-            model: [ "<", "≤", "=", "≥", ">", "≠" ]
-            currentIndex: 1
-        }
-        TextFieldForm
-        {
-            Layout.fillWidth: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: "0.01"
-        }
-
         // Exac Adj
-        CheckBox
+        QuickFilterFieldControl
         {
             id: exacAdj
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            text: qsTr("Exac ADJ")
-            checked: false
-            onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
+//            onCheckedChanged:
+//            {
+//                if (!internalUiUpdate)
+//                {
+//                    // Update other checkboxes
+//                    internalUiUpdate = true;
+//                    if (checked)
+//                    {
+//                        frqAll.checked = false;
+//                    }
+//                    checkFinal();
+//                    internalUiUpdate = false;
+//                }
+//            }
         }
-        ComboBox
-        {
-            model: [ "<", "≤", "=", "≥", ">", "≠" ]
-            currentIndex: 1
-        }
-        TextFieldForm
-        {
-            Layout.fillWidth: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: "0.01"
-        }
-
         // Exac EAS
-        CheckBox
+        QuickFilterFieldControl
         {
             id: exacEas
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            text: qsTr("Exac EAS")
-            checked: false
-            onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
+//            onCheckedChanged:
+//            {
+//                if (!internalUiUpdate)
+//                {
+//                    // Update other checkboxes
+//                    internalUiUpdate = true;
+//                    if (checked)
+//                    {
+//                        frqAll.checked = false;
+//                    }
+//                    checkFinal();
+//                    internalUiUpdate = false;
+//                }
+//            }
         }
-        ComboBox
-        {
-            model: [ "<", "≤", "=", "≥", ">", "≠" ]
-            currentIndex: 1
-        }
-        TextFieldForm
-        {
-            Layout.fillWidth: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: "0.01"
-        }
-
         // Exac FIN
-        CheckBox
+        QuickFilterFieldControl
         {
             id: exacFin
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            text: qsTr("Exac FIN")
-            checked: false
-            onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
+//            onCheckedChanged:
+//            {
+//                if (!internalUiUpdate)
+//                {
+//                    // Update other checkboxes
+//                    internalUiUpdate = true;
+//                    if (checked)
+//                    {
+//                        frqAll.checked = false;
+//                    }
+//                    checkFinal();
+//                    internalUiUpdate = false;
+//                }
+//            }
         }
-        ComboBox
-        {
-            model: [ "<", "≤", "=", "≥", ">", "≠" ]
-            currentIndex: 1
-        }
-        TextFieldForm
-        {
-            Layout.fillWidth: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: "0.01"
-        }
-
         // Exac NFE
-        CheckBox
+        QuickFilterFieldControl
         {
             id: exacNfe
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            text: qsTr("Exac NFE")
-            checked: false
-            onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
+//            onCheckedChanged:
+//            {
+//                if (!internalUiUpdate)
+//                {
+//                    // Update other checkboxes
+//                    internalUiUpdate = true;
+//                    if (checked)
+//                    {
+//                        frqAll.checked = false;
+//                    }
+//                    checkFinal();
+//                    internalUiUpdate = false;
+//                }
+//            }
         }
-        ComboBox
-        {
-            model: [ "<", "≤", "=", "≥", ">", "≠" ]
-            currentIndex: 1
-        }
-        TextFieldForm
-        {
-            Layout.fillWidth: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: "0.01"
-        }
-
         // Exac SAS
-        CheckBox
+        QuickFilterFieldControl
         {
             id: exacSas
-            anchors.left: parent.left
-            anchors.leftMargin: 30
-            text: qsTr("Exac SAS")
-            checked: false
-            onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
-        }
-        ComboBox
-        {
-            model: [ "<", "≤", "=", "≥", ">", "≠" ]
-            currentIndex: 1
-        }
-        TextFieldForm
-        {
-            Layout.fillWidth: true
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            text: "0.01"
+//            onCheckedChanged:
+//            {
+//                if (!internalUiUpdate)
+//                {
+//                    // Update other checkboxes
+//                    internalUiUpdate = true;
+//                    if (checked)
+//                    {
+//                        frqAll.checked = false;
+//                    }
+//                    checkFinal();
+//                    internalUiUpdate = false;
+//                }
+//            }
         }
     }
 }

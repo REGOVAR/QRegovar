@@ -3,11 +3,11 @@
 PositionQuickFilter::PositionQuickFilter(int) : QuickFilterBlockInterface()
 {
     //	effecteffect_impact
-    mFields = QList<QuickFilterField*>();
-    mFields << new QuickFilterField("4e39ceb7e0ec73f3d734de59e241fb6d", "==", "exonic");
-    mFields << new QuickFilterField("4e39ceb7e0ec73f3d734de59e241fb6d", "==", "intronic");
-    mFields << new QuickFilterField("4e39ceb7e0ec73f3d734de59e241fb6d", "==", "utr");
-    mFields << new QuickFilterField("4e39ceb7e0ec73f3d734de59e241fb6d", "==", "intergene");
+//    mFields = QList<QuickFilterField*>();
+//    mFields << new QuickFilterField("5803633f01600a2e047aad3ee2faa133", "==", "exonic");
+//    mFields << new QuickFilterField("5803633f01600a2e047aad3ee2faa133", "==", "intronic");
+//    mFields << new QuickFilterField("5803633f01600a2e047aad3ee2faa133", "==", "utr");
+//    mFields << new QuickFilterField("5803633f01600a2e047aad3ee2faa133", "==", "intergene");
 
     mFilter = "[\"%2\", [\"field\", \"%1\"], [\"value\", %3]]";
 }

@@ -23,12 +23,6 @@ Rectangle
     property Item content
 
 
-    FontLoader
-    {
-        id : iconFont
-        source: "../../../../Icons.ttf"
-    }
-
     Rectangle
     {
         id: header
@@ -40,33 +34,17 @@ Rectangle
         color: Regovar.theme.backgroundColor.main
 
 
-//        Text
-//        {
-//            id: activeIcon
-//            anchors.top: header.top
-//            anchors.bottom: header.bottom
-//            anchors.left: header.left
-//            width: 30
-//            text: "n"
-//            font.family: iconFont.name
-//            font.pixelSize: Regovar.theme.font.size.header
-//            color: isEnabled ? Regovar.theme.primaryColor.back.dark : Regovar.theme.primaryColor.back.light
-//            verticalAlignment: Text.AlignVCenter
 
-//        }
         Text
         {
             id: collapseIcon
-//            anchors.top: header.top
-//            anchors.bottom: header.bottom
-//            anchors.right: header.right
             anchors.top: header.top
             anchors.bottom: header.bottom
             anchors.left: header.left
             width: 30
             height: 30
             text: "{"
-            font.family: iconFont.name
+            font.family: Regovar.theme.icons.name
             font.pixelSize: Regovar.theme.font.size.header
             color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter

@@ -37,6 +37,7 @@ Rectangle
         TabView
         {
             id: lefPanel
+            width: 200
             tabSharedModel: root.model
             onTabSharedModelChanged:
             {
@@ -70,6 +71,7 @@ Rectangle
         {
             id: rightPanel
             model: root.model
+            Layout.fillWidth: true
         }
     }
 }

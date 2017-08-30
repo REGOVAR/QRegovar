@@ -7,6 +7,8 @@
 #include "frequencequickfilter.h"
 #include "insilicopredquickfilter.h"
 
+#include <QDebug>
+
 QuickFilterModel::QuickFilterModel(QObject *parent) : QObject(parent)
 {
 }
@@ -42,7 +44,9 @@ QString QuickFilterModel::getFilter()
         }
     }
 
-    return QString("[\"AND\",[%1]]").arg(filters.join(","));
+    QString request = QString("[\"AND\",[%1]]").arg(filters.join(","));
+    qDebug() << "Quick filter generated : " << request;
+    return request;
 }
 
 void QuickFilterModel::clear()

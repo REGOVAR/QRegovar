@@ -50,6 +50,8 @@ public:
 private:
     QList<QuickFilterField*> mFields;
     QString mFilter;
+    QStringList mOperators;
+    QHash<QString, QString> mOpMapping;
 };
 
 #endif // FREQUENCEQUICKFILTER_H

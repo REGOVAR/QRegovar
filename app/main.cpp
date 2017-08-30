@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<FilteringAnalysis>("org.regovar", 1, 0, "FilteringAnalysis");
     qmlRegisterType<Sample>("org.regovar", 1, 0, "Sample");
     qmlRegisterType<FieldColumnInfos>("org.regovar", 1, 0, "FieldColumnInfos");
+    qmlRegisterType<QuickFilterField>("org.regovar", 1, 0, "QuickFilterField");
 
 
 
