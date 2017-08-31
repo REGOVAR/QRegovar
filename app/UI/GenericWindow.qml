@@ -81,7 +81,6 @@ ApplicationWindow
     }
 
 
-    property var components
     function buildPages(pages, model, baseIndex)
     {
         for (var idx in model)
@@ -110,7 +109,6 @@ ApplicationWindow
             {
                 buildPages(pages, model[idx]["sublevel"], baseIndex+idx + "-");
             }
-
         }
     }
 
@@ -142,7 +140,6 @@ ApplicationWindow
     {
         if (menuModel !== undefined)
         {
-            components = {}
             var pages = {};
             buildPages(pages, menuModel.model, "");
             root.menuPageMapping = pages;

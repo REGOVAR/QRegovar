@@ -24,7 +24,7 @@ Item
 
         ListView
         {
-            id: headersListView
+            id: tabsPanel
             anchors.fill: header
             anchors.topMargin: 5
             anchors.leftMargin: 5
@@ -32,7 +32,8 @@ Item
             boundsBehavior: Flickable.StopAtBounds
             interactive: false
             model: root.tabsModel
-            currentIndex: screensListView.currentIndex
+            currentIndex: 0
+            onCurrentItemChanged: openPage();
 
 
 
@@ -45,7 +46,7 @@ Item
 
                 property bool hasIcon: model.icon !== undefined && model.icon !== null && model.icon !== ""
                 property bool hasLabel: model.title !== undefined && model.title !== null && model.title !== ""
-                property bool isSelected: screensListView.currentIndex == index
+                property bool isSelected: tabsPanel.currentIndex == index
 
                 Rectangle
                 {
@@ -116,43 +117,78 @@ Item
                 {
                     id: headerMouseArea
                     anchors.fill: parent
-                    onClicked: screensListView.currentIndex = index
+                    onClicked: tabsPanel.currentIndex = index
                 }
             }
         }
     }
 
-    ListView
+    Item
     {
-        id: screensListView
+        id: stackPanel
         anchors.top : header.bottom
         anchors.left: root.left
         anchors.right: root.right
         anchors.bottom: root.bottom
-        orientation: ListView.Horizontal
-        snapMode: ListView.SnapOneItem
-        highlightRangeMode: ListView.StrictlyEnforceRange
-        highlightMoveVelocity: 10000
+
         clip: true
-        model: root.tabsModel
-        interactive: false
-        currentIndex: 0
-        onCurrentItemChanged:
+    }
+
+
+
+    property var menuPageMapping
+    property var previousIndex
+
+    onTabsModelChanged:
+    {
+        console.log ("Init TabPanel :");
+        if (tabsModel !== undefined)
         {
-            //currentItem.item.selected()
-        }
-        delegate: Loader
-        {
-            width: screensListView.width
-            height: screensListView.height
-            source: model.source
-            onLoaded:
+            var pages = {};
+            for (var idx=0; idx<tabsModel.count; idx++)
             {
-                if (item.hasOwnProperty("model"))
+                var model = tabsModel.get(idx);
+                console.log ("> Tab n°" + idx + " : " + model.title + " " + model.source);
+                var comp = Qt.createComponent(model.source);
+                if (comp.status == Component.Ready)
                 {
-                    item.model = Qt.binding(function() { return root.tabSharedModel; });
-                    console.log("===> Tabview bind sharedModel to item");
+                    console.log("> Create QML component");
+                    var elmt = comp.createObject(stackPanel, {"visible": false});
+                    pages[idx] = elmt;
+                    if (elmt.hasOwnProperty("model"))
+                    {
+                        elmt.model = Qt.binding(function() { return tabSharedModel; });
+                        console.log("> bind sharedModel to component");
+                    }
+
+
                 }
+                else if (comp.status == Component.Error)
+                {
+                    console.log("> Error creating QML component : ", comp.errorString());
+                }
+            }
+
+            menuPageMapping = pages;
+            previousIndex = 0
+            openPage();
+        }
+    }
+
+    //! Open qml page according to the selected index
+    function openPage()
+    {
+        if (menuPageMapping !== undefined)
+        {
+            var newIdx = tabsPanel.currentIndex;
+
+            if (menuPageMapping[previousIndex])
+            {
+                menuPageMapping[previousIndex].visible = false;
+                menuPageMapping[newIdx].visible = true;
+                menuPageMapping[newIdx].anchors.fill = stackPanel;
+
+                previousIndex = newIdx;
             }
         }
     }
