@@ -179,7 +179,7 @@ void FilteringAnalysis::loadAnnotations()
         }
         else
         {
-            regovar->error(json);
+            regovar->raiseError(json);
             emit loadingStatusChanged(mLoadingStatus, error);
             mLoadingStatus = error;
         }
@@ -271,7 +271,7 @@ void FilteringAnalysis::loadResults()
         }
         else
         {
-            regovar->error(json);
+            regovar->raiseError(json);
             emit loadingStatusChanged(mLoadingStatus, error);
             mLoadingStatus = error;
         }
@@ -297,7 +297,7 @@ void FilteringAnalysis::getVariantInfo(QString variantId)
         }
         else
         {
-            regovar->error(json);
+            regovar->raiseError(json);
             emit loadingStatusChanged(mLoadingStatus, error);
             mLoadingStatus = error;
         }

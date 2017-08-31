@@ -78,10 +78,26 @@ ApplicationWindow
     }
 
 
+
     ErrorDialog
     {
         id: errorPopup
         visible: false
+    }
+
+    Connections
+    {
+        target: regovar
+        onOnError:
+        {
+            if (active)
+            {
+                console.log("server error occured : [" + errCode + "] " + message);
+                errorPopup.errorCode = errCode;
+                errorPopup.errorMessage = message;
+                errorPopup.open();
+            }
+        }
     }
 
 

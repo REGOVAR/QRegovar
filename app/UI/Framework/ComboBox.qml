@@ -25,7 +25,7 @@ ComboBox
     indicator: Text
     {
         anchors.right: control.right
-        text: ","
+        text: "["
         width: Regovar.theme.font.boxSize.control
         height: Regovar.theme.font.boxSize.control
         horizontalAlignment: Text.AlignHCenter

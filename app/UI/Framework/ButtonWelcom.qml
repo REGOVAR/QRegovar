@@ -6,6 +6,7 @@ Button
 {
     id: control
     text: "Button"
+    property string iconText: "µ"
     width: 1.5 * Regovar.theme.font.boxSize.title + textElmt.width
     height: Regovar.theme.font.boxSize.title
 
@@ -23,7 +24,7 @@ Button
             horizontalAlignment: Text.AlignHCenter
             height: Regovar.theme.font.boxSize.title
             width: Regovar.theme.font.boxSize.title
-            text: "µ"
+            text: iconText
         }
         Text
         {

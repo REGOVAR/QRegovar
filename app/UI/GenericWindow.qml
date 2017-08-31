@@ -22,6 +22,7 @@ ApplicationWindow
     property var previousIndex : [0,-1,-1]
 
 
+
     MainMenu
     {
         id: mainMenu
@@ -59,15 +60,21 @@ ApplicationWindow
         id: errorPopup
         visible: false
     }
-//    Connections
-//    {
-//        target: regovar
-//        onClose:
-//        {
-//            // errorPopup.open();
-//            console.log("C++ error retrieve by QML");
-//        }
-//    }
+
+    Connections
+    {
+        target: regovar
+        onOnError:
+        {
+            if (active)
+            {
+                console.log("server error occured : [" + errCode + "] " + message);
+                errorPopup.errorCode = errCode;
+                errorPopup.errorMessage = message;
+                errorPopup.open();
+            }
+        }
+    }
 
 
     //! Convert MainMenu index into one string key for internal map with qml pages

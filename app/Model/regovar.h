@@ -53,7 +53,7 @@ public:
 
     // Methods
     Q_INVOKABLE void enqueueUploadFile(QList<QString> filesPaths);
-    Q_INVOKABLE void error(QJsonObject error);
+    Q_INVOKABLE void raiseError(QJsonObject raiseError);
     Q_INVOKABLE void close();
     Q_INVOKABLE void disconnectUser();
     Q_INVOKABLE void quit();

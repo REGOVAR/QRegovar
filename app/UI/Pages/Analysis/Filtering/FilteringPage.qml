@@ -17,17 +17,9 @@ Rectangle
 {
     id: root
     property FilteringAnalysis model
-    onModelChanged:
-    {
-        console.log("===> FilteringPage model set up");
-    }
-
 //    onModelChanged:
 //    {
-//        lefPanel.tabSharedModel = root.model
-//        rightPanel.model = root.model
-////        resultsTree.rowHeight = (root.model.samples.length === 1) ? 25 : root.model.samples.length * 18
-////        samplesNamesColumn.visible = root.model.sampleColumnDisplayed
+//        console.log("===> FilteringPage model set up");
 //    }
 
     SplitView
@@ -37,7 +29,7 @@ Rectangle
         TabView
         {
             id: lefPanel
-            width: 200
+            width: 250
             tabSharedModel: root.model
             onTabSharedModelChanged:
             {
@@ -74,4 +66,24 @@ Rectangle
             Layout.fillWidth: true
         }
     }
+
+
+    Popup
+    {
+        id: filterSavingFormPopup
+        padding: 1
+        background: Rectangle
+        {
+            color: Regovar.theme.backgroundColor.main
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+        }
+
+        Text
+        {
+            anchors.centerIn: parent
+            text: "save your filter !"
+        }
+    }
+
 }

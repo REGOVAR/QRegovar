@@ -91,7 +91,7 @@ void Regovar::loadProject(int id)
         }
         else
         {
-            regovar->error(json);
+            regovar->raiseError(json);
         }
         req->deleteLater();
     });
@@ -147,7 +147,7 @@ void Regovar::loadAnalysis(int id)
         }
         else
         {
-            regovar->error(json);
+            regovar->raiseError(json);
         }
         req->deleteLater();
     });
@@ -182,7 +182,7 @@ void Regovar::loadFilesBrowser()
         }
         else
         {
-            regovar->error(json);
+            regovar->raiseError(json);
         }
         req->deleteLater();
     });
@@ -219,10 +219,10 @@ void Regovar::quit()
     qDebug() << "quit regovar app !";
 }
 
-void Regovar::error(QJsonObject error)
+void Regovar::raiseError(QJsonObject json)
 {
-    qDebug() << "ERROR Server side [" << error["code"].toString() << "]" << error["msg"].toString();
-    emit onError(error["code"].toString(), error["msg"].toString());
+    qDebug() << "ERROR Server side [" << json["code"].toString() << "]" << json["msg"].toString();
+    emit onError(json["code"].toString(), json["msg"].toString());
 }
 
 

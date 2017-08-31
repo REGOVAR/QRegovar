@@ -38,7 +38,7 @@ Rectangle
 
             ItemDelegate
             {
-                contentItem: itemDelegate
+                contentItem: delegate
             }
             MouseArea
             {

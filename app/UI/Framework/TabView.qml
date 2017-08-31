@@ -141,7 +141,6 @@ Item
 
     onTabsModelChanged:
     {
-        console.log ("Init TabPanel :");
         if (tabsModel !== undefined)
         {
             var pages = {};
@@ -152,20 +151,18 @@ Item
                 var comp = Qt.createComponent(model.source);
                 if (comp.status == Component.Ready)
                 {
-                    console.log("> Create QML component");
                     var elmt = comp.createObject(stackPanel, {"visible": false});
                     pages[idx] = elmt;
                     if (elmt.hasOwnProperty("model"))
                     {
                         elmt.model = Qt.binding(function() { return tabSharedModel; });
-                        console.log("> bind sharedModel to component");
                     }
 
 
                 }
                 else if (comp.status == Component.Error)
                 {
-                    console.log("> Error creating QML component : ", comp.errorString());
+                    console.log("> Error creating tab's QML component : ", comp.errorString());
                 }
             }
 

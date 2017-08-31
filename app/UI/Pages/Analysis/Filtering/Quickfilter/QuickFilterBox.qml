@@ -13,7 +13,7 @@ Rectangle
     color: Regovar.theme.backgroundColor.alt
 //    border.width: 1
 //    border.color: Regovar.theme.boxColor.border
-    height: isExpanded ? content.height + header.height : header.height
+    height: isExpanded ? content.height + header.height + 1: header.height +1
 
     property FilteringAnalysis model
     property real maxHeight: content.height + 30
@@ -90,5 +90,14 @@ Rectangle
         anchors.right: root.right
         contentItem: content
         visible: isExpanded
+    }
+
+
+    Rectangle
+    {
+        Layout.fillWidth: true
+        anchors.bottom: header.bottom
+        height: 1
+        color: Regovar.theme.backgroundColor.alt
     }
 }
