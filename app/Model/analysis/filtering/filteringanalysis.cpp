@@ -86,6 +86,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
 
 
 
+
 void FilteringAnalysis::asynchLoading(LoadingStatus oldSatus, LoadingStatus newStatus)
 {
 
@@ -298,12 +299,45 @@ void FilteringAnalysis::getVariantInfo(QString variantId)
         else
         {
             regovar->raiseError(json);
-            emit loadingStatusChanged(mLoadingStatus, error);
-            mLoadingStatus = error;
         }
         req->deleteLater();
     });
 }
+
+
+
+
+
+void FilteringAnalysis::saveCurrentFilter(QString filterName, QString filterDescription)
+{
+    QJsonObject body;
+    QJsonDocument filter = QJsonDocument::fromJson(mFilter.toUtf8());
+    body.insert("filter", filter.array());
+    body.insert("name", filterName);
+    if (!filterDescription.isEmpty())
+    {
+        body.insert("description", filterDescription);
+    }
+
+    Request* req = Request::post(QString("/analysis/%1/filter").arg(mId), QJsonDocument(body).toJson());
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            // TODO : refresh list of filter in the view
+            qDebug() << "Filter saved !";
+        }
+        else
+        {
+            regovar->raiseError(json);
+        }
+        req->deleteLater();
+    });
+}
+
+
+
+
 
 
 //! Add or remove a field to the display result and update or set the order

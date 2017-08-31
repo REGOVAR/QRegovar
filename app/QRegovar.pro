@@ -36,7 +36,8 @@ HEADERS += \
     Model/analysis/filtering/quickfilters/insilicopredquickfilter.h \
     Model/analysis/filtering/fieldcolumninfos.h \
     Model/analysis/filtering/remotesampletreeitem.h \
-    Model/analysis/filtering/remotesampletreemodel.h
+    Model/analysis/filtering/remotesampletreemodel.h \
+    Model/analysis/filtering/filter.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -70,7 +71,8 @@ SOURCES += main.cpp \
     Model/analysis/filtering/quickfilters/insilicopredquickfilter.cpp \
     Model/analysis/filtering/fieldcolumninfos.cpp \
     Model/analysis/filtering/remotesampletreeitem.cpp \
-    Model/analysis/filtering/remotesampletreemodel.cpp
+    Model/analysis/filtering/remotesampletreemodel.cpp \
+    Model/analysis/filtering/filter.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

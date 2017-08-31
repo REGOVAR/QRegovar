@@ -137,8 +137,7 @@ Rectangle
             iconText: "5"
             onClicked:
             {
-                model.setFilter(model.quickfilters.getFilter());
-                model.results.reset();
+                model.emitDisplayFilterSavingFormPopup();
             }
         }
     }

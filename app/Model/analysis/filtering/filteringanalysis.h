@@ -9,6 +9,7 @@
 #include "quickfilters/quickfiltermodel.h"
 #include "Model/sample/sample.h"
 #include "fieldcolumninfos.h"
+#include "filter.h"
 
 class ResultsTreeModel;
 class RemoteSampleTreeModel;
@@ -23,6 +24,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterUpdated)
     Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsUpdated)
     Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged)
+    Q_PROPERTY(QList<Filter>* filters READ filters NOTIFY filtersChanged)
     // Panel & Treeview models
     Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsUpdated)
     Q_PROPERTY(AnnotationsTreeModel* allAnnotationsDB READ allAnnotationsDB NOTIFY allAnnotationsDBUpdated)
@@ -32,6 +34,7 @@ class FilteringAnalysis : public Analysis
     // "Shortcuts properties" for QML
     Q_PROPERTY(QStringList samples READ displayedSamples NOTIFY samplesUpdated)
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
+
 
 public:
     enum LoadingStatus
@@ -47,19 +50,24 @@ public:
     explicit FilteringAnalysis(QObject *parent = nullptr);
 
     // Getters
-    inline QString filter() { return mFilter; }
-    inline QString refName() { return mRefName; }
+    // Internal
     inline int refId() { return mRefId; }
-    inline QString status() { return mStatus; }
     inline LoadingStatus loadingStatus() { return mLoadingStatus; }
+    inline QList<Sample*> samples() { return mSamples; }
+    // Analysis properties
+    inline QString refName() { return mRefName; }
+    inline QString status() { return mStatus; }
+    inline QString filter() { return mFilter; }
+    inline QStringList fields() { return mFields; }
+    inline int resultsTotal() { return mResultsTotal; }
+    inline QList<Filter>* filters() { return mFilters; }
+    // Panel & Treeview models
     inline AnnotationsTreeModel* annotations() { return mAnnotationsTreeModel; }
     inline AnnotationsTreeModel* allAnnotationsDB() { return mAllAnnotationsTreeModel; }
-    inline QStringList fields() { return mFields; }
     inline ResultsTreeModel* results() { return mResults; }
     inline QuickFilterModel* quickfilters() { return mQuickFilters; }
     inline RemoteSampleTreeModel* remoteSamples() { return mRemoteSampleTreeModel; }
-    inline QList<Sample*> samples() { return mSamples; }
-    inline int resultsTotal() { return mResultsTotal; }
+    // "Shortcuts properties" for QML
     QStringList displayedSamples();
     QStringList resultColumns();
 
@@ -71,6 +79,8 @@ public:
     bool fromJson(QJsonObject json);
     Q_INVOKABLE inline FieldColumnInfos* getColumnInfo(QString uid) { return mAnnotations.contains(uid) ? mAnnotations[uid] : nullptr; }
     Q_INVOKABLE void getVariantInfo(QString variantId);
+    Q_INVOKABLE inline void emitDisplayFilterSavingFormPopup() { emit displayFilterSavingFormPopup(); }
+    Q_INVOKABLE void saveCurrentFilter(QString filterName, QString filterDescription);
 
 
 Q_SIGNALS:
@@ -80,6 +90,7 @@ Q_SIGNALS:
     void annotationsUpdated();
     void allAnnotationsDBUpdated();
     void filterUpdated();
+    void filtersChanged();
     void fieldsUpdated();
     void resultsUpdated();
     void quickfiltersUpdated();
@@ -89,6 +100,7 @@ Q_SIGNALS:
     void resultColumnsChanged();
     void resultsTotalChanged();
     void onContextualVariantInformationReady(QJsonObject json);
+    void displayFilterSavingFormPopup();
 
 
 public Q_SLOTS:
@@ -121,7 +133,7 @@ private:
     int mTrioMother;
     int mTrioFather;
     int mResultsTotal;
-
+    QList<Filter>* mFilters;
 
 
     // Methods
