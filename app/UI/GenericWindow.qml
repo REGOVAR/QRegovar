@@ -127,7 +127,6 @@ ApplicationWindow
         {
             var newIdx = pageIdxKey(menuModel.selectedIndex);
             var oldIdx = pageIdxKey(previousIndex);
-            console.log ("close " + oldIdx + " open " + newIdx);
             if (root.menuPageMapping[newIdx] == "@close")
             {
                 closePopup.open();

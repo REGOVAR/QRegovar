@@ -102,47 +102,55 @@ Rectangle
             anchors.fill : parent
             color: Regovar.theme.backgroundColor.main
 
-            ColumnLayout
+            Rectangle
             {
-                anchors.fill : parent
-                Rectangle
+                id: header
+                color: Regovar.theme.primaryColor.back.dark
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                height: 50
+
+                Row
                 {
-                    id: header
-                    color: Regovar.theme.primaryColor.back.dark
-                    height: 50
-                    width: parent.width
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
 
-                    Row
+                    Text
                     {
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        anchors.left: parent.left
+                        text: "5"
+                        color: Regovar.theme.primaryColor.front.dark
+                        font.family: Regovar.theme.icons.name
+                        font.weight: Font.Black
+                        font.pointSize: Regovar.theme.font.size.header
+                        width: 50
+                        height: 50
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment:  Text.AlignHCenter
+                    }
 
-                        Text
-                        {
-                            text: "5"
-                            color: Regovar.theme.primaryColor.front.dark
-                            font.family: Regovar.theme.icons.name
-                            font.weight: Font.Black
-                            font.pointSize: Regovar.theme.font.size.header
-                            width: 50
-                            height: 50
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment:  Text.AlignHCenter
-                        }
-
-                        Text
-                        {
-                            text: qsTr("Save your filter")
-                            color: Regovar.theme.primaryColor.front.dark
-                            font.family: "Sans"
-                            font.weight: Font.Black
-                            font.pointSize: Regovar.theme.font.size.header
-                            height: 50
-                            verticalAlignment: Text.AlignVCenter
-                        }
+                    Text
+                    {
+                        text: qsTr("Save your filter")
+                        color: Regovar.theme.primaryColor.front.dark
+                        font.family: "Sans"
+                        font.weight: Font.Black
+                        font.pointSize: Regovar.theme.font.size.header
+                        height: 50
+                        verticalAlignment: Text.AlignVCenter
                     }
                 }
+            }
+
+            ColumnLayout
+            {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: header.bottom
+                anchors.bottom: parent.bottom
+                anchors.margins: 10
+
 
                 Grid
                 {

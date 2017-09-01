@@ -21,6 +21,7 @@ public:
     Q_INVOKABLE QString getFilter();
     Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant());
     Q_INVOKABLE void clear();
+    bool loadFilter(QJsonArray filter);
 
     inline QuickFilterField* missense() { return mFields[0]; }
     inline QuickFilterField* nonsense() { return mFields[1]; }

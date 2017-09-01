@@ -1,4 +1,5 @@
 #include "positionquickfilter.h"
+#include <QJsonArray>
 
 PositionQuickFilter::PositionQuickFilter(int) : QuickFilterBlockInterface()
 {
@@ -51,4 +52,11 @@ void PositionQuickFilter::clear()
     {
         field->clear();
     }
+}
+
+
+bool PositionQuickFilter::loadFilter(QJsonArray filter)
+{
+    // TODO or not TODO ?
+    return false;
 }

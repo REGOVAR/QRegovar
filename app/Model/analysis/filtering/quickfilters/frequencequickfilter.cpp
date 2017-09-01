@@ -1,4 +1,5 @@
 #include "frequencequickfilter.h"
+#include <QJsonArray>
 
 
 
@@ -84,4 +85,11 @@ void FrequenceQuickFilter::clear()
     {
         field->clear();
     }
+}
+
+
+bool FrequenceQuickFilter::loadFilter(QJsonArray filter)
+{
+    // TODO or not TODO ?
+    return false;
 }

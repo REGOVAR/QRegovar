@@ -12,7 +12,7 @@ Item
     Text
     {
         anchors.centerIn: parent
-        text: "Informations"
+        text: "Informations (le projet regovar qu'est-ce que c'est : en gros le poster de la jobim)"
         font.pointSize: 24
     }
 

@@ -41,7 +41,7 @@ RowLayout
     ComboBox
     {
         id: dpOperator
-        onCurrentTextChanged: root.model.op = currentText
+        onCurrentTextChanged: { if (root.model != null) { root.model.op = currentText; }}
     }
 
     TextFieldForm

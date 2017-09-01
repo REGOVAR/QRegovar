@@ -22,6 +22,7 @@ public:
     Q_INVOKABLE QString getFilter();
     Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant());
     Q_INVOKABLE void clear();
+    bool loadFilter(QJsonArray filter);
 
     // Getters
     inline QuickFilterField* depth() { return mDepth; }

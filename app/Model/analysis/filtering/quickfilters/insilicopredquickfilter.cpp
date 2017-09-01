@@ -1,4 +1,5 @@
 #include "insilicopredquickfilter.h"
+#include <QJsonArray>
 
 
 
@@ -58,4 +59,11 @@ void InSilicoPredQuickFilter::clear()
     {
         field->clear();
     }
+}
+
+
+bool InSilicoPredQuickFilter::loadFilter(QJsonArray filter)
+{
+    // TODO or not TODO ?
+    return false;
 }

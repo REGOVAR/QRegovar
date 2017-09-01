@@ -46,6 +46,7 @@ public:
 
     // Methods
     Q_INVOKABLE QString getFilter();
+    void loadFilter(QJsonArray filter);
 
 Q_SIGNALS:
     void filterUpdated();

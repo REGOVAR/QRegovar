@@ -32,6 +32,21 @@ Rectangle
         }
     }
 
+    // Help information on this page
+    Box
+    {
+        id: helpInfoBox
+        anchors.top : header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.margins: 10
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        mainColor: Regovar.theme.frontColor.success
+        icon: "f"
+        text: qsTr("Regovar application's settings. Note that your settings are saved on this local computer only.")
+    }
 
     Rectangle
     {
@@ -40,33 +55,16 @@ Rectangle
         anchors.right: root.right
         anchors.bottom: root.bottom
         anchors.margins: 10
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 10 : 10
+
 
         color: "transparent"
 
-        ColumnLayout
+        Text
         {
-            anchors.fill: parent
-
-            Text
-            {
-                text: "TITLE - Title"
-                font.pixelSize: Regovar.theme.font.size.title
-            }
-            Text
-            {
-                text: "HEADER - Header"
-                font.pixelSize: Regovar.theme.font.size.header
-            }
-            Text
-            {
-                text: "CONTOL - Control"
-                font.pixelSize: Regovar.theme.font.size.control
-            }
-            Text
-            {
-                text: "CONTENT - Content"
-                font.pixelSize: Regovar.theme.font.size.content
-            }
+            anchors.centerIn: parent
+            text: "Application settings (language, font size, theme, help boxes display ?)"
+            font.pointSize: 24
         }
     }
 }

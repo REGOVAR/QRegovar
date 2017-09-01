@@ -36,17 +36,37 @@ Dialog
             anchors.top: parent.top
             height: 50
 
-            Text
+            Row
             {
-                anchors.centerIn: parent
-                text: qsTr("Error occured")
-                color: Regovar.theme.primaryColor.front.dark
-                font.family: "Sans"
-                font.weight: Font.Black
-                font.pointSize: Regovar.theme.font.size.header
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+
+                Text
+                {
+                    text: "~"
+                    color: Regovar.theme.primaryColor.front.dark
+                    font.family: Regovar.theme.icons.name
+                    font.weight: Font.Black
+                    font.pointSize: Regovar.theme.font.size.header
+                    width: 50
+                    height: 50
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment:  Text.AlignHCenter
+                }
+
+                Text
+                {
+                    text: qsTr("Error occured")
+                    color: Regovar.theme.primaryColor.front.dark
+                    font.family: "Sans"
+                    font.weight: Font.Black
+                    font.pointSize: Regovar.theme.font.size.header
+                    height: 50
+                    verticalAlignment: Text.AlignVCenter
+                }
             }
         }
-
 
         Grid
         {
@@ -59,7 +79,8 @@ Dialog
 
             columns: 2
             rows:2
-            spacing: 10
+            columnSpacing: 30
+            rowSpacing: 10
 
             Text
             {
@@ -72,11 +93,13 @@ Dialog
             }
             Text
             {
-                text: qsTr("Message :")
+                text: qsTr("Message")
                 font.weight: Font.Black
             }
             Text
             {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
                 text: errorPopup.errorMessage
             }
         }

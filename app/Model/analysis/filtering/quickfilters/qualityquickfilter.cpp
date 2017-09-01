@@ -1,4 +1,5 @@
 #include "qualityquickfilter.h"
+#include <QJsonArray>
 
 
 
@@ -53,7 +54,17 @@ void QualityQuickFilter::setFilter(QString, bool, QVariant)
     // Not used
 }
 
+
+
 void QualityQuickFilter::clear()
 {
     mDepth->clear();
 }
+
+
+bool QualityQuickFilter::loadFilter(QJsonArray filter)
+{
+    // TODO or not TODO ?
+    return false;
+}
+

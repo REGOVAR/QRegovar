@@ -46,7 +46,7 @@ Rectangle
             horizontalAlignment: Text.AlignRight
 
             font.pixelSize: Regovar.theme.font.size.header
-            text: root.model.results.loaded + " / " + root.model.results.total
+            text: ( root.model != null) ? root.model.results.loaded + " / " + root.model.results.total : ""
         }
 
     }

@@ -161,7 +161,6 @@ ApplicationWindow
         {
             var newIdx = pageIdxKey(menuModel.selectedIndex);
             var oldIdx = pageIdxKey(previousIndex);
-            console.log ("close " + oldIdx + " open " + newIdx);
             if (root.menuPageMapping[newIdx] == "@close")
             {
                 root.close();
@@ -173,23 +172,15 @@ ApplicationWindow
                 root.menuPageMapping[newIdx].anchors.fill = stack;
                 if (root.menuPageMapping[newIdx].model == null)
                 {
-                    console.log("===> Analysis windows set model of the page")
                     root.menuPageMapping[newIdx].model = root.model;
                 }
-
                 previousIndex = menuModel.selectedIndex;
             }
         }
     }
 
-    Component.onCompleted:
-    {
-        console.log("AnalysisWindows : QML Completed")
-    }
-
     function initFromCpp(cppWinId)
     {
-        console.log("AnalysisWindows : winId set from c++ => set model and load pages")
         winId = cppWinId;
         model = regovar.getAnalysisFromWindowId(winId);
         title = model.name;

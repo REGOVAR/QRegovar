@@ -1,4 +1,5 @@
 #include "transmissionquickfilter.h"
+#include <QJsonArray>
 
 // This quick filter is using several of precomputed regovar's annotations
 // These annotations are done and use same fuid for all analaysis/ref
@@ -75,10 +76,19 @@ void TransmissionQuickFilter::setFilter(QString filterId, bool filterActive, QVa
     mActiveFilters[filterId] = filterActive;
 }
 
+
+
 void TransmissionQuickFilter::clear()
 {
     foreach(QString fid, mActiveFilters.keys())
     {
         mActiveFilters[fid] = false;
     }
+}
+
+
+bool TransmissionQuickFilter::loadFilter(QJsonArray filter)
+{
+    // TODO or not TODO ?
+    return false;
 }

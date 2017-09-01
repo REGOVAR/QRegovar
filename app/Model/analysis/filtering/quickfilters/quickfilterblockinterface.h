@@ -80,6 +80,8 @@ public:
     Q_INVOKABLE virtual void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant()) = 0;
     //! Reset the filter
     Q_INVOKABLE virtual void clear() = 0;
+    //! Init the filter with the provided json formated filter (load from server)
+    virtual bool loadFilter(QJsonArray filter) = 0;
 
 
 };

@@ -221,8 +221,15 @@ void Regovar::quit()
 
 void Regovar::raiseError(QJsonObject json)
 {
-    qDebug() << "ERROR Server side [" << json["code"].toString() << "]" << json["msg"].toString();
-    emit onError(json["code"].toString(), json["msg"].toString());
+    QString code = json["code"].toString();
+    QString msg  = json["msg"].toString();
+    if (code.isEmpty() && msg.isEmpty())
+    {
+        code = "00000";
+        msg  = "Enable to connect to the server.";
+    }
+    qDebug() << "ERROR Server side [" << code << "]" << msg;
+    emit onError(code, msg);
 }
 
 
@@ -302,19 +309,21 @@ void Regovar::logout()
         });
     }
 }
+*/
+
 
 void Regovar::authenticationRequired(QNetworkReply* request, QAuthenticator* authenticator)
 {
     // Basic authentication requested by the server.
     // Try authentication using current user credentials
-    if (authenticator->password() != currentUser()->password() || authenticator->user() != currentUser()->login())
-    {
-        authenticator->setUser(currentUser()->login());
-        authenticator->setPassword(currentUser()->password());
-    }
-    else
-    {
-        request->error();
-    }
+//    if (authenticator->password() != currentUser()->password() || authenticator->user() != currentUser()->login())
+//    {
+//        authenticator->setUser(currentUser()->login());
+//        authenticator->setPassword(currentUser()->password());
+//    }
+//    else
+//    {
+//        request->error();
+//    }
 }
-*/
+

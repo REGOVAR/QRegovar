@@ -12,7 +12,7 @@ Item
     Text
     {
         anchors.centerIn: parent
-        text: "Credits"
+        text: "Credits (l'équipe, les rémerciement, citations, outils utilisés, etc)"
         font.pointSize: 24
     }
 

@@ -36,8 +36,7 @@ HEADERS += \
     Model/analysis/filtering/quickfilters/insilicopredquickfilter.h \
     Model/analysis/filtering/fieldcolumninfos.h \
     Model/analysis/filtering/remotesampletreeitem.h \
-    Model/analysis/filtering/remotesampletreemodel.h \
-    Model/analysis/filtering/filter.h
+    Model/analysis/filtering/remotesampletreemodel.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -71,8 +70,7 @@ SOURCES += main.cpp \
     Model/analysis/filtering/quickfilters/insilicopredquickfilter.cpp \
     Model/analysis/filtering/fieldcolumninfos.cpp \
     Model/analysis/filtering/remotesampletreeitem.cpp \
-    Model/analysis/filtering/remotesampletreemodel.cpp \
-    Model/analysis/filtering/filter.cpp
+    Model/analysis/filtering/remotesampletreemodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -101,7 +99,6 @@ DISTFILES += \
     UI/Icons.ttf \
     UI/Framework/Button.qml \
     UI/Framework/CheckBox.qml \
-    UI/Framework/ListViewItem.qml \
     UI/Framework/ProgressBar.qml \
     UI/Framework/Switch.qml \
     UI/Framework/TextField.qml \
@@ -131,7 +128,6 @@ DISTFILES += \
     UI/Pages/Project/SubjectsPage.qml \
     UI/MainMenu/MenuEntryL3.qml \
     UI/Framework/TreeView.qml \
-    UI/Framework/ListView.qml \
     UI/Regovar/Themes/HalloweenTheme.js \
     UI/Regovar/Themes/HalloweenTheme.js \
     UI/Regovar/Themes/RegovarDarkTheme.js \
@@ -200,7 +196,10 @@ DISTFILES += \
     UI/Pages/Analysis/Filtering/ResultContextMenu.qml \
     UI/Pages/Analysis/Filtering/ResultContextMenuAction.qml \
     UI/Framework/ComboBox.qml \
-    UI/Pages/Analysis/Filtering/Quickfilter/QuickFilterFieldControl.qml
+    UI/Pages/Analysis/Filtering/Quickfilter/QuickFilterFieldControl.qml \
+    UI/Pages/Analysis/Filtering/AdvancedFilter/FieldBlock.qml \
+    UI/Pages/Analysis/Filtering/AdvancedFilter/LogicalBlock.qml \
+    UI/Pages/Analysis/Filtering/AdvancedFilter/SetBlock.qml
 
 
 win32 {

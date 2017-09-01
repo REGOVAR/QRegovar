@@ -63,7 +63,7 @@ public:
 public Q_SLOTS:
 //    void login(QString& login, QString& password);
 //    void logout();
-//    void authenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
+    void authenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
 
     void refreshProjectsTreeView();
     void loadFilesBrowser();

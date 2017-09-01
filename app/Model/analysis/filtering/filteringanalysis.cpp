@@ -56,6 +56,15 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     mRemoteSampleTreeModel = new RemoteSampleTreeModel(this);
     emit remoteSamplesUpdated();
 
+
+    // Retrieve saved filters
+    mFilters.clear();
+    foreach (const QJsonValue filterdata, json["filters"].toArray())
+    {
+        mFilters.append(filterdata.toObject());
+    }
+    emit filtersChanged();
+
     // Retrieve fields
     foreach (const QJsonValue field, json["fields"].toArray())
     {
@@ -67,7 +76,11 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     // Retrieve filter
     QJsonDocument doc;
     doc.setArray(json["filter"].toArray());
-    mFilter = QString(doc.toJson(QJsonDocument::Indented));
+    setFilter(QString(doc.toJson(QJsonDocument::Indented)));
+    // init UI according to filter
+    mQuickFilters->loadFilter(json["filter"].toArray());
+
+
 
 
     mResults->initAnalysisData(mId);
@@ -114,7 +127,7 @@ void FilteringAnalysis::loadAnnotations()
     {
         if (success)
         {
-            qDebug() << "LOAD ANNOT START : ";
+            // qDebug() << "LOAD ANNOT START : ";
             QJsonObject data = json["data"].toObject();
             mRefId = data["ref_id"].toInt();
             mRefName = data["ref_name"].toString();
@@ -136,14 +149,14 @@ void FilteringAnalysis::loadAnnotations()
 
 
 
-                qDebug() << "  DB:" << dbName;
+                // qDebug() << "  DB:" << dbName;
                 // Foreach available version of annotation database
                 foreach (const QString dbVersionName, dbVersion.keys())
                 {
                     QString dbUid = dbVersion[dbVersionName].toString();
                     bool isDbSelected = (mAnnotationsDBUsed.contains(dbUid) || (dbName == "Variant" && dbVersionName=="_regovar_"));
 
-                    qDebug() << "  Version:" << dbVersionName << isDbSelected;
+                    // qDebug() << "  Version:" << dbVersionName << isDbSelected;
                     // Build annotation and column infos
                     foreach(const QJsonValue json, db["fields"].toArray())
                     {
@@ -156,7 +169,7 @@ void FilteringAnalysis::loadAnnotations()
                         QString type = a["type"].toString();
                         QJsonObject meta = a["meta"].toObject();
 
-                        qDebug() << "   - " << uid << name;
+                        // qDebug() << "   - " << uid << name;
 
                         Annotation* annot = new Annotation(this, uid, dbUid, name, description, type, meta, "");
                         FieldColumnInfos* fInfo = new FieldColumnInfos(annot, mFields.contains(uid), mFields.indexOf(uid), "", this);
@@ -174,7 +187,6 @@ void FilteringAnalysis::loadAnnotations()
             }
 
             refreshDisplayedAnnotationColumns();
-            qDebug() << "Filtering analysis init : annotations data loaded";
             emit loadingStatusChanged(mLoadingStatus, LoadingResults);
             mLoadingStatus = LoadingResults;
         }
@@ -210,8 +222,6 @@ void FilteringAnalysis::refreshDisplayedAnnotationColumns()
             ++idx;
         }
     }
-
-
     emit resultColumnsChanged();
 }
 
@@ -259,7 +269,6 @@ void FilteringAnalysis::loadResults()
         {
             if (mResults->fromJson(json["data"].toObject()))
             {
-                qDebug() << "Filtering analysis init : results loaded";
                 emit loadingStatusChanged(mLoadingStatus, ready);
                 mLoadingStatus = ready;
             }
@@ -294,7 +303,6 @@ void FilteringAnalysis::getVariantInfo(QString variantId)
         if (success)
         {
             emit onContextualVariantInformationReady(json["data"].toObject());
-            qDebug() << "Variant information retrieved !";
         }
         else
         {
@@ -336,6 +344,15 @@ void FilteringAnalysis::saveCurrentFilter(QString filterName, QString filterDesc
 }
 
 
+void FilteringAnalysis::loadFilter(QJsonObject filter)
+{
+    // Retrieve filter
+    QJsonDocument doc;
+    doc.setArray(filter["filter"].toArray());
+    setFilter(QString(doc.toJson(QJsonDocument::Indented)));
+    // init UI according to filter
+    mQuickFilters->loadFilter(filter["filter"].toArray());
+}
 
 
 

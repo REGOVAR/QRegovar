@@ -31,6 +31,23 @@ Rectangle
     }
 
 
+
+    // Help information on this page
+    Box
+    {
+        id: helpInfoBox
+        anchors.top : header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.margins: 10
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        mainColor: Regovar.theme.frontColor.success
+        icon: "f"
+        text: qsTr("Edit your profile's informations")
+    }
+
     Rectangle
     {
         anchors.top : header.bottom
@@ -38,6 +55,8 @@ Rectangle
         anchors.right: root.right
         anchors.bottom: root.bottom
         anchors.margins: 10
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 10 : 10
+
 
         color: "transparent"
 

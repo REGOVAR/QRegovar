@@ -9,8 +9,6 @@
 #include "quickfilters/quickfiltermodel.h"
 #include "Model/sample/sample.h"
 #include "fieldcolumninfos.h"
-#include "filter.h"
-
 class ResultsTreeModel;
 class RemoteSampleTreeModel;
 
@@ -24,7 +22,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterUpdated)
     Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsUpdated)
     Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged)
-    Q_PROPERTY(QList<Filter>* filters READ filters NOTIFY filtersChanged)
+    Q_PROPERTY(QVariantList filters READ filters NOTIFY filtersChanged)
     // Panel & Treeview models
     Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsUpdated)
     Q_PROPERTY(AnnotationsTreeModel* allAnnotationsDB READ allAnnotationsDB NOTIFY allAnnotationsDBUpdated)
@@ -60,7 +58,7 @@ public:
     inline QString filter() { return mFilter; }
     inline QStringList fields() { return mFields; }
     inline int resultsTotal() { return mResultsTotal; }
-    inline QList<Filter>* filters() { return mFilters; }
+    inline QVariantList filters() { return mFilters; }
     // Panel & Treeview models
     inline AnnotationsTreeModel* annotations() { return mAnnotationsTreeModel; }
     inline AnnotationsTreeModel* allAnnotationsDB() { return mAllAnnotationsTreeModel; }
@@ -81,6 +79,7 @@ public:
     Q_INVOKABLE void getVariantInfo(QString variantId);
     Q_INVOKABLE inline void emitDisplayFilterSavingFormPopup() { emit displayFilterSavingFormPopup(); }
     Q_INVOKABLE void saveCurrentFilter(QString filterName, QString filterDescription);
+    Q_INVOKABLE void loadFilter(QJsonObject filter);
 
 
 Q_SIGNALS:
@@ -133,7 +132,7 @@ private:
     int mTrioMother;
     int mTrioFather;
     int mResultsTotal;
-    QList<Filter>* mFilters;
+    QVariantList mFilters;
 
 
     // Methods

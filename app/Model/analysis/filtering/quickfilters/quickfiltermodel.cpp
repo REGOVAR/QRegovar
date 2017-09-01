@@ -1,4 +1,6 @@
 #include "quickfiltermodel.h"
+#include <QDebug>
+#include <QJsonArray>
 
 #include "transmissionquickfilter.h"
 #include "positionquickfilter.h"
@@ -7,7 +9,6 @@
 #include "frequencequickfilter.h"
 #include "insilicopredquickfilter.h"
 
-#include <QDebug>
 
 QuickFilterModel::QuickFilterModel(QObject *parent) : QObject(parent)
 {
@@ -48,6 +49,16 @@ QString QuickFilterModel::getFilter()
     qDebug() << "Quick filter generated : " << request;
     return request;
 }
+
+
+void QuickFilterModel::loadFilter(QJsonArray json)
+{
+    foreach (QuickFilterBlockInterface* filter, mQuickFilters.values())
+    {
+        filter->loadFilter(json);
+    }
+}
+
 
 void QuickFilterModel::clear()
 {

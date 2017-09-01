@@ -30,6 +30,21 @@ Rectangle
         }
     }
 
+    // Help information on this page
+    Box
+    {
+        id: helpInfoBox
+        anchors.top : header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.margins: 10
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        mainColor: Regovar.theme.frontColor.success
+        icon: "f"
+        text: qsTr("Regovar server's settings. Tell the application how to connect to the Regovar's servers.")
+    }
 
     Rectangle
     {
@@ -38,13 +53,15 @@ Rectangle
         anchors.right: root.right
         anchors.bottom: root.bottom
         anchors.margins: 10
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 10 : 10
+
 
         color: "transparent"
 
         Text
         {
             anchors.centerIn: parent
-            text: "Settings to connect to the server (remote url, auto update, proxy, ...)"
+            text: "Server settings (proxy, share server url, local server url, auto update ?)"
             font.pointSize: 24
         }
     }

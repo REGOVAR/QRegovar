@@ -1,4 +1,5 @@
 #include "typequickfilter.h"
+#include <QJsonArray>
 
 TypeQuickFilter::TypeQuickFilter(int) : QuickFilterBlockInterface()
 {
@@ -50,4 +51,11 @@ void TypeQuickFilter::clear()
     {
         field->clear();
     }
+}
+
+
+bool TypeQuickFilter::loadFilter(QJsonArray filter)
+{
+    // TODO or not TODO ?
+    return false;
 }
