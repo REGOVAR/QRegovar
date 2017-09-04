@@ -120,7 +120,7 @@ Rectangle
         Row
         {
             anchors.bottom: parent.bottom
-            anchors.horizontalCenter: header.horizontalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
             anchors.topMargin: 100
 
             spacing: 30
@@ -515,8 +515,8 @@ Rectangle
 
         Rectangle
         {
-            anchors.left: root.left
-            anchors.right: root.right
+            anchors.left: resultsList.left
+            anchors.right: resultsList.right
             anchors.bottom: scrollarea.top
             height: 1
             color: Regovar.theme.primaryColor.back.normal

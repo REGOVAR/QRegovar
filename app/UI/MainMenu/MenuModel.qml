@@ -13,7 +13,7 @@ QtObject
 
     property var model // MUST contains the list of item in the menu. See init in xxxWindow.qml files
 
-    property string mainTitle: model[selectedMainIndex]["label"]
+    property string mainTitle: model[selectedIndex[0]]["label"]
     onSelectedIndexChanged:
     {
         // Store selected subindexes to be able to restore it next

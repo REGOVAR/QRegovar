@@ -46,8 +46,8 @@ Rectangle
 
         ComboBox
         {
-            anchors.top: root.top
-            anchors.left: root.left
+            anchors.top: parent.top
+            anchors.left: parent.left
             model: ["AND", "OR"]
 
             color: "red"

@@ -18,7 +18,7 @@ Rectangle
     {
         if (root.model != null)
         {
-            advancedFilterTextEditor.text = root.model.filter
+            //advancedFilterTextEditor.text = root.model.filter
             advancedFilterEditor.model = root.model.filterJson
         }
     }
