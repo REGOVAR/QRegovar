@@ -56,5 +56,6 @@ CheckBox
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         leftPadding: control.indicator.width + control.spacing
+        elide: Text.ElideRight
     }
 }

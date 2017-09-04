@@ -57,6 +57,12 @@ Rectangle
                     icon: "o"
                     source: "../Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml"
                 }
+                ListElement
+                {
+                    //title: qsTr("Quick filters")
+                    icon: "D"
+                    source: "../Pages/Analysis/Filtering/FavoritesPanel.qml"
+                }
             }
         }
 

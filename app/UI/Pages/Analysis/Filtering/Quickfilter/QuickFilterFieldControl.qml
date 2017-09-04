@@ -13,25 +13,31 @@ RowLayout
     spacing: 10
 
     property QuickFilterField model
+    property bool initializing: false
+    property alias checkBox: fieldCheck
+    property alias checked: fieldCheck.checked
+
 
     onModelChanged:
     {
-        dpCheck.text = model.label;
-        dpCheck.checked = Qt.binding(function() { return model.isActive; });
-        dpOperator.model = model.opList;
-        dpOperator.currentIndex = model.opList.indexOf(model.op);
-        dpValue.text = Qt.binding(function() { return model.value; });
+        initializing = true;
+        fieldCheck.text = model.label;
+        fieldCheck.checked = Qt.binding(function() { return model.isActive; });
+        fieldOperator.model = model.opList;
+        fieldOperator.currentIndex = model.opList.indexOf(model.op);
+        fieldValue.text = Qt.binding(function() { return model.value; });
+        initializing = false;
     }
 
 
     CheckBox
     {
-        id: dpCheck
+        id: fieldCheck
         anchors.left: parent.left
         anchors.leftMargin: 25
         width: 150
     }
-    Binding { target: model; property: "isActive"; value: dpCheck.checked; }
+    Binding { target: model; property: "isActive"; value: fieldCheck.checked; }
 
 
     // FIXME : Weird bug, need to add free space otherwise ComboBox is hover the CheckBox
@@ -40,16 +46,25 @@ RowLayout
 
     ComboBox
     {
-        id: dpOperator
-        onCurrentTextChanged: { if (root.model != null) { root.model.op = currentText; }}
+        id: fieldOperator
+        onCurrentTextChanged:
+        {
+            if (root.model != null)
+            {
+                root.model.op = currentText;
+                if (!initializing) fieldCheck.checked = true;
+            }
+        }
+
     }
 
     TextFieldForm
     {
-        id: dpValue
+        id: fieldValue
         Layout.fillWidth: true
+        onTextEdited: fieldCheck.checked = true
     }
-    Binding { target: model; property: "value"; value: dpValue.text; }
+    Binding { target: model; property: "value"; value: fieldValue.text; }
 
 
     // FIXME : Qt BUG, margin value not take in account when control resize by the Splitter

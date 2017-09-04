@@ -108,7 +108,7 @@ Rectangle
         {
             if (text != "" && root.visible)
             {
-                regovar.searchRequest = text;
+                regovar.search(text);
                 Regovar.menuModel.selectedIndex=[1,-1,-1];
             }
         }
@@ -131,11 +131,11 @@ Rectangle
         anchors.bottomMargin: 10
 
 
-        property real columnWidth
-        onWidthChanged: columnWidth = (width - 290) / 4
-        Component.onCompleted: columnWidth = (width - 290) / 4
+        property real columnsAvailableWidth
+        onWidthChanged: columnsAvailableWidth = width - 260 // 260 = 2*100 + 2*30 = margin + columns spacing
+        Component.onCompleted: columnsAvailableWidth = width - 260 // 260 = 2*100 + 2*30 = margin + columns spacing
 
-        Row
+        RowLayout
         {
             id: newButtonsRow
             anchors.horizontalCenter: panel.horizontalCenter
@@ -145,18 +145,18 @@ Rectangle
 
             ButtonWelcom
             {
+                Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New project")
-                width: panel.columnWidth
             }
             ButtonWelcom
             {
+                Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New analysis")
-                width: panel.columnWidth
             }
             ButtonWelcom
             {
+                Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New subject")
-                width: panel.columnWidth
             }
         }
 
@@ -171,228 +171,12 @@ Rectangle
             anchors.right: panel.right
             anchors.bottom: panel.bottom
 
-
-
-            // Project
-            ColumnLayout
-            {
-                spacing: 10
-                Layout.fillHeight: true
-                width: panel.columnWidth
-
-                Text
-                {
-                    verticalAlignment: Text.AlignVCenter
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    color: Regovar.theme.primaryColor.back.dark
-                    height: Regovar.theme.font.boxSize.header
-                    text: qsTr("Last projects")
-                }
-
-                Rectangle
-                {
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    color: "transparent"
-
-                    ColumnLayout
-                    {
-                        anchors.fill: parent
-                        anchors.margins: 5
-                        spacing: 10
-
-                        Repeater
-                        {
-                            model : ListModel
-                            {
-                                ListElement { name: "Project 1" }
-                                ListElement { name: "Project 2" }
-                                ListElement { name: "Project 3" }
-                            }
-
-                            Row
-                            {
-                                Text
-                                {
-                                    width: 30
-                                    font.pixelSize: 12
-                                    font.family: Regovar.theme.icons.name
-                                    color: Regovar.theme.frontColor.normal
-                                    verticalAlignment: Text.AlignVCenter
-                                    horizontalAlignment: Text.AlignHCenter
-                                    text: "c"
-                                }
-                                Text
-                                {
-                                    font.pixelSize: 12
-                                    font.family: Regovar.theme.font.familly
-                                    color: Regovar.theme.frontColor.normal
-                                    verticalAlignment: Text.AlignVCenter
-                                    text: name
-                                }
-                            }
-                        }
-
-                        Rectangle
-                        {
-                            color: "transparent"
-                            Layout.fillHeight: true
-                        }
-                    }
-                }
-            }
-
-            // Analysis
-            ColumnLayout
-            {
-                spacing: 10
-                Layout.fillHeight: true
-                width: panel.columnWidth
-
-
-                Text
-                {
-                    verticalAlignment: Text.AlignVCenter
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    color: Regovar.theme.primaryColor.back.dark
-                    height: Regovar.theme.font.boxSize.header
-                    text: qsTr("Last analysis")
-                }
-
-                Rectangle
-                {
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    color: "transparent"
-
-                    ColumnLayout
-                    {
-                        anchors.fill: parent
-                        anchors.margins: 5
-                        spacing: 10
-
-                        Repeater
-                        {
-                            model : ListModel
-                            {
-                                ListElement { name: "Analysis 1" }
-                                ListElement { name: "Analysis 2" }
-                                ListElement { name: "Analysis 3" }
-                                ListElement { name: "Analysis 4" }
-                                ListElement { name: "Analysis 5" }
-                            }
-
-                            Row
-                            {
-                                Text
-                                {
-                                    width: 30
-                                    font.pixelSize: 12
-                                    font.family: Regovar.theme.icons.name
-                                    color: Regovar.theme.frontColor.normal
-                                    verticalAlignment: Text.AlignVCenter
-                                    horizontalAlignment: Text.AlignHCenter
-                                    text: "I"
-                                }
-                                Text
-                                {
-                                    font.pixelSize: 12
-                                    font.family: Regovar.theme.font.familly
-                                    color: Regovar.theme.frontColor.normal
-                                    verticalAlignment: Text.AlignVCenter
-                                    text: name
-                                }
-                            }
-                        }
-
-                        Rectangle
-                        {
-                            color: "transparent"
-                            Layout.fillHeight: true
-                        }
-                    }
-                }
-            }
-
-            // Subject
-            ColumnLayout
-            {
-                spacing: 10
-                Layout.fillHeight: true
-                width: panel.columnWidth
-
-
-                Text
-                {
-                    verticalAlignment: Text.AlignVCenter
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    color: Regovar.theme.primaryColor.back.dark
-                    height: Regovar.theme.font.boxSize.header
-                    text: qsTr("Last subjects")
-                }
-
-                Rectangle
-                {
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    color: "transparent"
-
-                    ColumnLayout
-                    {
-                        anchors.fill: parent
-                        anchors.margins: 5
-                        spacing: 10
-
-                        Repeater
-                        {
-                            model : ListModel
-                            {
-                                ListElement { name: "Michel Dupont (MD-45-77)" }
-                                ListElement { name: "Jeannette Pignon (JP-02-45)" }
-                                ListElement { name: "François Jacquet (FJ-55-63)" }
-                            }
-
-                            Row
-                            {
-                                Text
-                                {
-                                    width: 30
-                                    font.pixelSize: 12
-                                    font.family: Regovar.theme.icons.name
-                                    color: Regovar.theme.frontColor.normal
-                                    verticalAlignment: Text.AlignVCenter
-                                    horizontalAlignment: Text.AlignHCenter
-                                    text: "b"
-                                }
-                                Text
-                                {
-                                    font.pixelSize: 12
-                                    font.family: Regovar.theme.font.familly
-                                    color: Regovar.theme.frontColor.normal
-                                    verticalAlignment: Text.AlignVCenter
-                                    text: name
-                                }
-                            }
-                        }
-
-                        Rectangle
-                        {
-                            color: "transparent"
-                            Layout.fillHeight: true
-                        }
-                    }
-                }
-            }
-
             // Events
             ColumnLayout
             {
                 spacing: 10
                 Layout.fillHeight: true
-                width: panel.columnWidth
+                width: panel.columnsAvailableWidth / 2
 
 
                 Text
@@ -468,6 +252,150 @@ Rectangle
                     }
                 }
             }
+
+            // Analysis
+            ColumnLayout
+            {
+                spacing: 10
+                Layout.fillHeight: true
+                width: panel.columnsAvailableWidth/4
+                Layout.alignment: Qt.AlignLeft
+
+
+                Text
+                {
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    color: Regovar.theme.primaryColor.back.dark
+                    height: Regovar.theme.font.boxSize.header
+                    text: qsTr("Last analysis")
+                }
+
+                Rectangle
+                {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    color: "transparent"
+
+                    ColumnLayout
+                    {
+                        anchors.fill: parent
+                        spacing: 10
+
+                        Repeater
+                        {
+                            model : ListModel
+                            {
+                                ListElement { name: "Analysis 1" }
+                                ListElement { name: "Analysis 2" }
+                                ListElement { name: "Analysis 3" }
+                                ListElement { name: "Analysis 4" }
+                                ListElement { name: "Analysis 5" }
+                            }
+
+                            Row
+                            {
+                                Text
+                                {
+                                    width: Regovar.theme.font.boxSize.control
+                                    font.pixelSize: Regovar.theme.font.size.control
+                                    font.family: Regovar.theme.icons.name
+                                    color: Regovar.theme.frontColor.normal
+                                    verticalAlignment: Text.AlignVCenter
+                                    text: "I"
+                                }
+                                Text
+                                {
+                                    font.pixelSize: Regovar.theme.font.size.control
+                                    font.family: Regovar.theme.font.familly
+                                    color: Regovar.theme.frontColor.normal
+                                    verticalAlignment: Text.AlignVCenter
+                                    text: name
+                                }
+                            }
+                        }
+
+                        Rectangle
+                        {
+                            color: "transparent"
+                            Layout.fillHeight: true
+                        }
+                    }
+                }
+            }
+
+            // Subject
+            ColumnLayout
+            {
+                spacing: 10
+                Layout.fillHeight: true
+                width: panel.columnsAvailableWidth/4
+                Layout.alignment: Qt.AlignLeft
+
+
+                Text
+                {
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    color: Regovar.theme.primaryColor.back.dark
+                    height: Regovar.theme.font.boxSize.header
+                    text: qsTr("Last subjects")
+                }
+
+                Rectangle
+                {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    color: "transparent"
+
+                    ColumnLayout
+                    {
+                        anchors.fill: parent
+                        spacing: 10
+
+                        Repeater
+                        {
+                            model : ListModel
+                            {
+                                ListElement { name: "Michel Dupont (MD-45-77)" }
+                                ListElement { name: "Jeannette Pignon (JP-02-45)" }
+                                ListElement { name: "François Jacquet (FJ-55-63)" }
+                            }
+
+                            Row
+                            {
+                                Text
+                                {
+                                    width: Regovar.theme.font.boxSize.control
+                                    font.pixelSize: Regovar.theme.font.size.control
+                                    font.family: Regovar.theme.icons.name
+                                    color: Regovar.theme.frontColor.normal
+                                    verticalAlignment: Text.AlignVCenter
+                                    text: "b"
+                                }
+                                Text
+                                {
+                                    font.pixelSize: Regovar.theme.font.size.control
+                                    font.family: Regovar.theme.font.familly
+                                    color: Regovar.theme.frontColor.normal
+                                    verticalAlignment: Text.AlignVCenter
+                                    text: name
+                                }
+                            }
+                        }
+
+                        Rectangle
+                        {
+                            color: "transparent"
+                            Layout.fillHeight: true
+                        }
+                    }
+                }
+            }
+
+
         }
     }
 }

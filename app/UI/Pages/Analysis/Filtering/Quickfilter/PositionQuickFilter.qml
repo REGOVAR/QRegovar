@@ -11,7 +11,7 @@ import "../../../../Framework"
 QuickFilterBox
 {
     id: root
-    title : qsTr("Position")
+    title : qsTr("Region")
     isEnabled : false
     isExpanded: false
 

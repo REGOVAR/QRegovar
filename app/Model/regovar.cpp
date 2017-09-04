@@ -44,7 +44,7 @@ void Regovar::init()
     // Connections
     connect(mUploader, SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
 
-    emit currentProjectUpdated();
+    emit currentProjectChanged();
 
     // DEBUG
     // loadAnalysis(4);
@@ -82,7 +82,7 @@ void Regovar::loadProject(int id)
             if (mCurrentProject->fromJson(json["data"].toObject()))
             {
                 qDebug() << Q_FUNC_INFO << "CurrentProject loaded";
-                emit currentProjectUpdated();
+                emit currentProjectChanged();
             }
             else
             {
@@ -173,7 +173,7 @@ void Regovar::loadFilesBrowser()
             if (mRemoteFilesTreeView->fromJson(json["data"].toArray()))
             {
                 qDebug() << Q_FUNC_INFO << "File browser ready";
-                emit remoteFilesTreeViewUpdated();
+                emit remoteFilesTreeViewChanged();
             }
             else
             {
@@ -240,7 +240,26 @@ FilteringAnalysis* Regovar::getAnalysisFromWindowId(int winId)
 }
 
 
+void Regovar::search(QString query)
+{
+    setSearchInProgress(true);
 
+    setSearchRequest(query);
+    Request* req = Request::get(QString("/search/%1").arg(query));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            setSearchResult(json["data"].toObject());
+        }
+        else
+        {
+            regovar->raiseError(json);
+        }
+        req->deleteLater();
+        setSearchInProgress(false);
+    });
+}
 
 
 
