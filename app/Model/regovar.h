@@ -9,7 +9,7 @@
 #include "project/project.h"
 #include "file/tusuploader.h"
 #include "analysis/filtering/filteringanalysis.h"
-
+#include <QtWebSockets/QtWebSockets>
 
 #ifndef regovar
 #define regovar (Regovar::i())
@@ -79,6 +79,13 @@ public Q_SLOTS:
     void loadProject(int id);
     void loadAnalysis(int id);
 
+    // Websocket
+    void websocketConnected();
+    void websocketClosed();
+    void websocketMessageReceived(QString message);
+
+
+signals:
 Q_SIGNALS:
     void loginSuccess();
     void loginFailed();
@@ -92,7 +99,6 @@ Q_SIGNALS:
     void currentProjectChanged();
     void onClose();
     void onError(QString errCode, QString message);
-
 
 
 private:
@@ -127,6 +133,9 @@ private:
     //! We need ref to the QML engine to create/open new windows for Analysis
     QQmlApplicationEngine* mQmlEngine;
 
+    //! Websocket
+    QWebSocket mWebSocket;
+    QUrl mWebsocketUrl;
 };
 
 

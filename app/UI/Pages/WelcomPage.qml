@@ -186,7 +186,7 @@ Rectangle
                     font.pixelSize: Regovar.theme.font.size.header
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.header
-                    text: qsTr("Last events")
+                    text: qsTr("Last events ++")
                 }
 
                 Rectangle
