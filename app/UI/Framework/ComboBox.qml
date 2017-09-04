@@ -8,6 +8,8 @@ ComboBox
     id: control
     model: ["First", "Second", "Third"]
 
+    property var color: Regovar.theme.boxColor.border
+
     delegate: ItemDelegate
     {
         width: control.width
@@ -51,7 +53,7 @@ ComboBox
         implicitWidth: 60
         implicitHeight: Regovar.theme.font.boxSize.control
         color: Regovar.theme.boxColor.back
-        border.color: control.pressed ? Regovar.theme.secondaryColor.back.light : Regovar.theme.boxColor.border
+        border.color: control.pressed ? Regovar.theme.secondaryColor.back.light : control.color
         border.width: 1
     }
 
@@ -74,7 +76,7 @@ ComboBox
 
         background: Rectangle
         {
-            border.color: Regovar.theme.boxColor.border
+            border.color: control.color
             radius: 2
         }
     }
