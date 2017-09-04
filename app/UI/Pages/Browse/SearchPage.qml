@@ -111,7 +111,7 @@ Rectangle
         Text
         {
             anchors.top: parent.top
-            text: qsTr("Result found") + " (" + regovar.searchResult["total_result"] + ")"
+            text: regovar.searchResult["total_result"] + " " + ( (regovar.searchResult["total_result"] > 1 ) ? qsTr("results found") : qsTr("result found"))
             font.pointSize: Regovar.theme.font.size.header
             height: Regovar.theme.font.boxSize.header
             color: Regovar.theme.primaryColor.back.dark
@@ -138,14 +138,7 @@ Rectangle
         }
 
 
-        Rectangle
-        {
-            anchors.left: root.left
-            anchors.right: root.right
-            anchors.bottom: scrollarea.top
-            height: 1
-            color: Regovar.theme.primaryColor.back.normal
-        }
+
 
         ScrollView
         {
@@ -170,6 +163,8 @@ Rectangle
                     Text
                     {
                         text: qsTr("Projects") + " (" + projectsResult.count + ")"
+                        font.pointSize: Regovar.theme.font.size.header
+                        color: Regovar.theme.primaryColor.back.dark
                     }
 
                     Repeater
@@ -516,6 +511,15 @@ Rectangle
                     }
                 }
             }
+        }
+
+        Rectangle
+        {
+            anchors.left: root.left
+            anchors.right: root.right
+            anchors.bottom: scrollarea.top
+            height: 1
+            color: Regovar.theme.primaryColor.back.normal
         }
     }
 
