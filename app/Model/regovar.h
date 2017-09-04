@@ -9,7 +9,7 @@
 #include "project/project.h"
 #include "file/tusuploader.h"
 #include "analysis/filtering/filteringanalysis.h"
-
+#include <QtWebSockets/QtWebSockets>
 
 #ifndef regovar
 #define regovar (Regovar::i())
@@ -26,11 +26,13 @@ class Regovar : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlUpdated)
-    Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestUpdated)
-    Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewUpdated)
-    Q_PROPERTY(FilesTreeModel* remoteFilesTreeView READ remoteFilesTreeView NOTIFY remoteFilesTreeViewUpdated)
-    Q_PROPERTY(Project* currentProject READ currentProject  NOTIFY currentProjectUpdated)
+    Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlChanged)
+    Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
+    Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
+    Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
+    Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewChanged)
+    Q_PROPERTY(FilesTreeModel* remoteFilesTreeView READ remoteFilesTreeView NOTIFY remoteFilesTreeViewChanged)
+    Q_PROPERTY(Project* currentProject READ currentProject  NOTIFY currentProjectChanged)
 
 public:
     static Regovar* i();
@@ -41,14 +43,18 @@ public:
     // Accessors
     inline QUrl& serverUrl() { return mApiRootUrl; }
     inline QString searchRequest() { return mSearchRequest; }
+    inline QJsonObject searchResult() const { return mSearchResult; }
+    inline bool searchInProgress() const { return mSearchInProgress; }
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
     inline FilesTreeModel* remoteFilesTreeView() const { return mRemoteFilesTreeView; }
     inline Project* currentProject() const { return mCurrentProject; }
     //inline UserModel* currentUser() const { return mUser; }
 
     // Setters
-    inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlUpdated(); }
-    inline void setSearchRequest(QString searchRequest) { mSearchRequest = searchRequest; emit searchRequestUpdated(); }
+    inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlChanged(); }
+    inline void setSearchRequest(QString searchRequest) { mSearchRequest = searchRequest; emit searchRequestChanged(); }
+    inline void setSearchResult(QJsonObject searchResult) { mSearchResult = searchResult; emit searchResultChanged(); }
+    inline void setSearchInProgress(bool flag) { mSearchInProgress = flag; emit searchInProgressChanged(); }
     inline void setQmlEngine (QQmlApplicationEngine* engine) { mQmlEngine = engine; }
 
     // Methods
@@ -59,6 +65,7 @@ public:
     Q_INVOKABLE void quit();
     Q_INVOKABLE void openAnalysis(int analysisId);
     Q_INVOKABLE FilteringAnalysis* getAnalysisFromWindowId(int winId);
+    Q_INVOKABLE void search(QString query);
 
 public Q_SLOTS:
 //    void login(QString& login, QString& password);
@@ -72,18 +79,26 @@ public Q_SLOTS:
     void loadProject(int id);
     void loadAnalysis(int id);
 
+    // Websocket
+    void websocketConnected();
+    void websocketClosed();
+    void websocketMessageReceived(QString message);
+
+
+signals:
 Q_SIGNALS:
     void loginSuccess();
     void loginFailed();
     void logoutSuccess();
-    void searchRequestUpdated();
-    void serverUrlUpdated();
-    void projectsTreeViewUpdated();
-    void remoteFilesTreeViewUpdated();
-    void currentProjectUpdated();
+    void searchRequestChanged();
+    void searchResultChanged();
+    void searchInProgressChanged();
+    void serverUrlChanged();
+    void projectsTreeViewChanged();
+    void remoteFilesTreeViewChanged();
+    void currentProjectChanged();
     void onClose();
     void onError(QString errCode, QString message);
-
 
 
 private:
@@ -100,7 +115,8 @@ private:
     // UserModel * mUser;
     //! Search request and results
     QString mSearchRequest;
-    QStringList* mSearchResult;
+    QJsonObject mSearchResult;
+    bool mSearchInProgress = false;
 
     //! The model of the projects browser treeview
     ProjectsTreeModel* mProjectsTreeView;
@@ -117,6 +133,9 @@ private:
     //! We need ref to the QML engine to create/open new windows for Analysis
     QQmlApplicationEngine* mQmlEngine;
 
+    //! Websocket
+    QWebSocket mWebSocket;
+    QUrl mWebsocketUrl;
 };
 
 

@@ -6,9 +6,11 @@ import org.regovar 1.0
 import "../../../Regovar"
 import "../../../Framework"
 
-ColumnLayout
+Rectangle
 {
     id: root
+    color: Regovar.theme.backgroundColor.main
+
     property FilteringAnalysis model
     onModelChanged:
     {
@@ -16,70 +18,82 @@ ColumnLayout
         annotationsSelector.model = root.model.annotations
     }
 
-    Text
+    ColumnLayout
     {
-        text: qsTr("Displayed columns")
-        font.pixelSize: Regovar.theme.font.size.header
-        color: Regovar.theme.primaryColor.back.dark
-    }
+        anchors.fill: parent
+        anchors.margins: 10
 
-    TreeView
-    {
-        id: annotationsSelector
-        // model: root.model.annotations
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-
-
-        signal checked(string uid, bool isChecked)
-        onChecked: root.model.setField(uid, isChecked);
-
-        // Default delegate for all column
-        itemDelegate: Item
+        Text
         {
-            Text
-            {
-                anchors.leftMargin: 5
-                anchors.fill: parent
-                verticalAlignment: Text.AlignVCenter
-                font.pixelSize: Regovar.theme.font.size.control
-                text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
-                elide: Text.ElideRight
-            }
+            text: qsTr("Displayed columns")
+            font.pixelSize: Regovar.theme.font.size.header
+            color: Regovar.theme.primaryColor.back.dark
         }
 
-        TableViewColumn
+        TreeView
         {
-            role: "name"
-            title: "Name"
+            id: annotationsSelector
+            // model: root.model.annotations
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
-            delegate: Item
+
+            signal checked(string uid, bool isChecked)
+            onChecked: root.model.setField(uid, isChecked);
+
+            // Default delegate for all column
+            itemDelegate: Item
             {
-                CheckBox
+                Text
                 {
-                    anchors.left: parent.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    checked: styleData.value.checked
-                    text: (styleData.value == undefined || styleData.value.value == undefined) ? "-"  : styleData.value.value
-                    onClicked:
+                    anchors.leftMargin: 5
+                    anchors.fill: parent
+                    verticalAlignment: Text.AlignVCenter
+                    font.pixelSize: Regovar.theme.font.size.control
+                    text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
+                    elide: Text.ElideRight
+                }
+            }
+
+            TableViewColumn
+            {
+                role: "name"
+                title: "Name"
+
+                delegate: Item
+                {
+                    CheckBox
                     {
-                        var test = styleData.value
-                        annotationsSelector.checked(styleData.value.uid, checked);
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        checked: styleData.value.checked
+                        text: (styleData.value == undefined || styleData.value.value == undefined) ? "-"  : styleData.value.value
+                        onClicked:
+                        {
+                            var test = styleData.value
+                            annotationsSelector.checked(styleData.value.uid, checked);
+                        }
                     }
+                }
+            }
+
+            TableViewColumn
+            {
+                role: "description"
+                title: "Description"
+                width: 250
+                delegate: Text
+                {
+                    text: (styleData.value == undefined || styleData.value.value == undefined) ? "-"  : styleData.value.value
+                    elide: Text.ElideRight
                 }
             }
         }
 
-        TableViewColumn {
-            role: "description"
-            title: "Description"
-            width: 250
+        TextField
+        {
+            Layout.fillWidth: true
+            placeholderText: qsTr("Search annotation...")
         }
-    }
-
-    TextField
-    {
-        Layout.fillWidth: true
-        placeholderText: qsTr("Search annotation...")
     }
 }

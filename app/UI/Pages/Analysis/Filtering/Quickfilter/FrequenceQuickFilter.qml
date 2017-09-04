@@ -76,10 +76,20 @@ QuickFilterBox
                         internalUiUpdate = true;
                         if (checked)
                         {
-                            posExo.checked = false;
-                            posIntro.checked = false;
-                            posUtr.checked = false;
-                            posInter.checked = false;
+                            _100GAll.checked = false;
+                            _100GAfr.checked = false;
+                            _100GAmr.checked = false;
+                            _100GAsn.checked = false;
+                            _100GEur.checked = false;
+
+                            exacAll.checked = false;
+                            exacAfr.checked = false;
+                            exacAmr.checked = false;
+                            exacAdj.checked = false;
+                            exacEas.checked = false;
+                            exacFin.checked = false;
+                            exacNfe.checked = false;
+                            exacSas.checked = false;
                         }
 
                         checkFinal();
@@ -93,96 +103,96 @@ QuickFilterBox
         QuickFilterFieldControl
         {
             id: _100GAll
-//            onCheckedChanged:
-//            {
-//                if (!internalUiUpdate)
-//                {
-//                    // Update other checkboxes
-//                    internalUiUpdate = true;
-//                    if (checked)
-//                    {
-//                        frqAll.checked = false;
-//                    }
-//                    checkFinal();
-//                    internalUiUpdate = false;
-//                }
-//            }
+            checkBox.onCheckedChanged:
+            {
+                if (!internalUiUpdate)
+                {
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
+                    {
+                        frqAll.checked = false;
+                    }
+                    checkFinal();
+                    internalUiUpdate = false;
+                }
+            }
         }
         // 1000 G AFR
         QuickFilterFieldControl
         {
             id: _100GAfr
-//            onCheckedChanged:
-//            {
-//                if (!internalUiUpdate)
-//                {
-//                    // Update other checkboxes
-//                    internalUiUpdate = true;
-//                    if (checked)
-//                    {
-//                        frqAll.checked = false;
-//                    }
-//                    checkFinal();
-//                    internalUiUpdate = false;
-//                }
-//            }
+            checkBox.onCheckedChanged:
+            {
+                if (!internalUiUpdate)
+                {
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
+                    {
+                        frqAll.checked = false;
+                    }
+                    checkFinal();
+                    internalUiUpdate = false;
+                }
+            }
         }
         // 1000 G AMR
         QuickFilterFieldControl
         {
             id: _100GAmr
-//            onCheckedChanged:
-//            {
-//                if (!internalUiUpdate)
-//                {
-//                    // Update other checkboxes
-//                    internalUiUpdate = true;
-//                    if (checked)
-//                    {
-//                        frqAll.checked = false;
-//                    }
-//                    checkFinal();
-//                    internalUiUpdate = false;
-//                }
-//            }
+            checkBox.onCheckedChanged:
+            {
+                if (!internalUiUpdate)
+                {
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
+                    {
+                        frqAll.checked = false;
+                    }
+                    checkFinal();
+                    internalUiUpdate = false;
+                }
+            }
         }
         // 1000 G ASN
         QuickFilterFieldControl
         {
             id: _100GAsn
-//            onCheckedChanged:
-//            {
-//                if (!internalUiUpdate)
-//                {
-//                    // Update other checkboxes
-//                    internalUiUpdate = true;
-//                    if (checked)
-//                    {
-//                        frqAll.checked = false;
-//                    }
-//                    checkFinal();
-//                    internalUiUpdate = false;
-//                }
-//            }
+            checkBox.onCheckedChanged:
+            {
+                if (!internalUiUpdate)
+                {
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
+                    {
+                        frqAll.checked = false;
+                    }
+                    checkFinal();
+                    internalUiUpdate = false;
+                }
+            }
         }
         // 1000 G EUR
         QuickFilterFieldControl
         {
             id: _100GEur
-//            onCheckedChanged:
-//            {
-//                if (!internalUiUpdate)
-//                {
-//                    // Update other checkboxes
-//                    internalUiUpdate = true;
-//                    if (checked)
-//                    {
-//                        frqAll.checked = false;
-//                    }
-//                    checkFinal();
-//                    internalUiUpdate = false;
-//                }
-//            }
+            checkBox.onCheckedChanged:
+            {
+                if (!internalUiUpdate)
+                {
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
+                    {
+                        frqAll.checked = false;
+                    }
+                    checkFinal();
+                    internalUiUpdate = false;
+                }
+            }
         }
 
 
@@ -190,153 +200,153 @@ QuickFilterBox
         QuickFilterFieldControl
         {
             id: exacAll
-//            onCheckedChanged:
-//            {
-//                if (!internalUiUpdate)
-//                {
-//                    // Update other checkboxes
-//                    internalUiUpdate = true;
-//                    if (checked)
-//                    {
-//                        frqAll.checked = false;
-//                    }
-//                    checkFinal();
-//                    internalUiUpdate = false;
-//                }
-//            }
+            checkBox.onCheckedChanged:
+            {
+                if (!internalUiUpdate)
+                {
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
+                    {
+                        frqAll.checked = false;
+                    }
+                    checkFinal();
+                    internalUiUpdate = false;
+                }
+            }
         }
         // Exac AFR
         QuickFilterFieldControl
         {
             id: exacAfr
-//            onCheckedChanged:
-//            {
-//                if (!internalUiUpdate)
-//                {
-//                    // Update other checkboxes
-//                    internalUiUpdate = true;
-//                    if (checked)
-//                    {
-//                        frqAll.checked = false;
-//                    }
-//                    checkFinal();
-//                    internalUiUpdate = false;
-//                }
-//            }
+            checkBox.onCheckedChanged:
+            {
+                if (!internalUiUpdate)
+                {
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
+                    {
+                        frqAll.checked = false;
+                    }
+                    checkFinal();
+                    internalUiUpdate = false;
+                }
+            }
         }
         // Exac AMR
         QuickFilterFieldControl
         {
             id: exacAmr
-//            onCheckedChanged:
-//            {
-//                if (!internalUiUpdate)
-//                {
-//                    // Update other checkboxes
-//                    internalUiUpdate = true;
-//                    if (checked)
-//                    {
-//                        frqAll.checked = false;
-//                    }
-//                    checkFinal();
-//                    internalUiUpdate = false;
-//                }
-//            }
+            checkBox.onCheckedChanged:
+            {
+                if (!internalUiUpdate)
+                {
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
+                    {
+                        frqAll.checked = false;
+                    }
+                    checkFinal();
+                    internalUiUpdate = false;
+                }
+            }
         }
         // Exac Adj
         QuickFilterFieldControl
         {
             id: exacAdj
-//            onCheckedChanged:
-//            {
-//                if (!internalUiUpdate)
-//                {
-//                    // Update other checkboxes
-//                    internalUiUpdate = true;
-//                    if (checked)
-//                    {
-//                        frqAll.checked = false;
-//                    }
-//                    checkFinal();
-//                    internalUiUpdate = false;
-//                }
-//            }
+            checkBox.onCheckedChanged:
+            {
+                if (!internalUiUpdate)
+                {
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
+                    {
+                        frqAll.checked = false;
+                    }
+                    checkFinal();
+                    internalUiUpdate = false;
+                }
+            }
         }
         // Exac EAS
         QuickFilterFieldControl
         {
             id: exacEas
-//            onCheckedChanged:
-//            {
-//                if (!internalUiUpdate)
-//                {
-//                    // Update other checkboxes
-//                    internalUiUpdate = true;
-//                    if (checked)
-//                    {
-//                        frqAll.checked = false;
-//                    }
-//                    checkFinal();
-//                    internalUiUpdate = false;
-//                }
-//            }
+            checkBox.onCheckedChanged:
+            {
+                if (!internalUiUpdate)
+                {
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
+                    {
+                        frqAll.checked = false;
+                    }
+                    checkFinal();
+                    internalUiUpdate = false;
+                }
+            }
         }
         // Exac FIN
         QuickFilterFieldControl
         {
             id: exacFin
-//            onCheckedChanged:
-//            {
-//                if (!internalUiUpdate)
-//                {
-//                    // Update other checkboxes
-//                    internalUiUpdate = true;
-//                    if (checked)
-//                    {
-//                        frqAll.checked = false;
-//                    }
-//                    checkFinal();
-//                    internalUiUpdate = false;
-//                }
-//            }
+            checkBox.onCheckedChanged:
+            {
+                if (!internalUiUpdate)
+                {
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
+                    {
+                        frqAll.checked = false;
+                    }
+                    checkFinal();
+                    internalUiUpdate = false;
+                }
+            }
         }
         // Exac NFE
         QuickFilterFieldControl
         {
             id: exacNfe
-//            onCheckedChanged:
-//            {
-//                if (!internalUiUpdate)
-//                {
-//                    // Update other checkboxes
-//                    internalUiUpdate = true;
-//                    if (checked)
-//                    {
-//                        frqAll.checked = false;
-//                    }
-//                    checkFinal();
-//                    internalUiUpdate = false;
-//                }
-//            }
+            checkBox.onCheckedChanged:
+            {
+                if (!internalUiUpdate)
+                {
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
+                    {
+                        frqAll.checked = false;
+                    }
+                    checkFinal();
+                    internalUiUpdate = false;
+                }
+            }
         }
         // Exac SAS
         QuickFilterFieldControl
         {
             id: exacSas
-//            onCheckedChanged:
-//            {
-//                if (!internalUiUpdate)
-//                {
-//                    // Update other checkboxes
-//                    internalUiUpdate = true;
-//                    if (checked)
-//                    {
-//                        frqAll.checked = false;
-//                    }
-//                    checkFinal();
-//                    internalUiUpdate = false;
-//                }
-//            }
+            checkBox.onCheckedChanged:
+            {
+                if (!internalUiUpdate)
+                {
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
+                    {
+                        frqAll.checked = false;
+                    }
+                    checkFinal();
+                    internalUiUpdate = false;
+                }
+            }
         }
     }
 }

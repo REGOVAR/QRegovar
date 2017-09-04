@@ -4,6 +4,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 import org.regovar 1.0
+import QtQml.Models 2.2
 
 import "../../../Regovar"
 import "../../../Framework"
@@ -46,7 +47,7 @@ Rectangle
             horizontalAlignment: Text.AlignRight
 
             font.pixelSize: Regovar.theme.font.size.header
-            text: ( root.model != null) ? root.model.results.loaded + " / " + root.model.results.total : ""
+            text: ( root.model != null) ?  root.model.results.total + " " + ((root.model.results.total > 1) ? qsTr("results") : qsTr("result")) : ""
         }
 
     }
@@ -95,7 +96,7 @@ Rectangle
             anchors.topMargin: 24 // 24 = Header height (see UI/Framework/TreeView.qml)
 
             acceptedButtons: Qt.RightButton
-            onClicked: resultsTree.openResultContextMenu(mouse)
+            onClicked: resultsTree.openResultContextMenu(mouse.x, mouse.y + 24) // compense header's margin
         }
 
 
@@ -353,22 +354,21 @@ Rectangle
 
         }
 
-
-
-        function openResultContextMenu(mouse)
+        function openResultContextMenu(x, y)
         {
-            // 0- display context menu as "loading indicator"
-            resultContextMenu.open()
-            resultContextMenu.x = mouse.x
-            resultContextMenu.y = mouse.y
-
-            // 1- retrieve row index
-            var index = resultsTree.indexAt(mouse.x, mouse.y)
+            // 0- retrieve row index
+            var index = resultsTree.indexAt(x, y)
             if (!index.valid)
             {
                 console.log("error : unable to get valid result's treeview row index.");
                 return;
             }
+
+            // 1- display context menu as "loading indicator"
+            resultContextMenu.open();
+            resultContextMenu.x = x;
+            resultContextMenu.y = y + resultContextMenu.height / 2;
+
             // 2- retrieve variant id
             var variantId = resultsTree.model.data(index, Qt.UserRole +1); // enum value of ResultsTreeModel.ColumnRole.id
             variantId = variantId.uid.split("_")[0];

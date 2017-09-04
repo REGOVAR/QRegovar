@@ -1,4 +1,4 @@
-QT += qml quick widgets
+QT += qml quick widgets websockets
 
 CONFIG += c++11
 
@@ -199,7 +199,8 @@ DISTFILES += \
     UI/Pages/Analysis/Filtering/Quickfilter/QuickFilterFieldControl.qml \
     UI/Pages/Analysis/Filtering/AdvancedFilter/FieldBlock.qml \
     UI/Pages/Analysis/Filtering/AdvancedFilter/LogicalBlock.qml \
-    UI/Pages/Analysis/Filtering/AdvancedFilter/SetBlock.qml
+    UI/Pages/Analysis/Filtering/AdvancedFilter/SetBlock.qml \
+    UI/Pages/Analysis/Filtering/FavoritesPanel.qml
 
 
 win32 {

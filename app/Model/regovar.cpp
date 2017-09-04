@@ -42,24 +42,64 @@ void Regovar::init()
 
 
     // Connections
-    connect(mUploader, SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
+    connect(mUploader,  SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
+//    connect(mWebSocket, SIGNAL(connected()), this, SLOT(websocketConnected()));
+//    connect(mWebSocket, SIGNAL(disconnected()), this, SLOT(websocketClosed()));
+    connect(&mWebSocket, &QWebSocket::connected, this, &Regovar::websocketConnected);
+    connect(&mWebSocket, &QWebSocket::disconnected, this, &Regovar::websocketClosed);
 
-    emit currentProjectUpdated();
+
+    emit currentProjectChanged();
 
     // DEBUG
     // loadAnalysis(4);
+    mWebSocket.open(QUrl(mWebsocketUrl));
 }
 
+
+void Regovar::websocketConnected()
+{
+    qDebug() << "Websocket connected !";
+    connect(&mWebSocket, &QWebSocket::textMessageReceived, this, &Regovar::websocketMessageReceived);
+    mWebSocket.sendTextMessage(QStringLiteral("hello"));
+}
+
+void Regovar::websocketMessageReceived(QString message)
+{
+    qDebug() << "Websoket received :" << message;
+}
+
+void Regovar::websocketClosed()
+{
+    qDebug() << "Websocket closed !";
+}
 
 
 void Regovar::readSettings()
 {
     // TODO : No hardcoded value => Load default from local config file ?
     QSettings settings;
-    settings.beginGroup("RemoteServer");
-    mApiRootUrl.setScheme(settings.value("scheme", "http").toString());
-    mApiRootUrl.setHost(settings.value("host", "dev.regovar.org").toString());
-    mApiRootUrl.setPort(settings.value("port", 80).toInt());
+    QString schm = settings.value("scheme", "http").toString();
+    QString host = settings.value("host", "dev.regovar.org").toString();
+    int port = settings.value("port", 80).toInt();
+
+    // Localsite server
+    settings.beginGroup("LocalServer");
+    mApiRootUrl.setScheme(schm);
+    mApiRootUrl.setHost(host);
+    mApiRootUrl.setPort(port);
+    // Sharing server
+//    settings.beginGroup("SharingServer");
+//    mApiRootUrl.setScheme(settings.value("scheme", "http").toString());
+//    mApiRootUrl.setHost(settings.value("host", "dev.regovar.org").toString());
+//    mApiRootUrl.setPort(settings.value("port", 80).toInt());
+
+    // Websocket
+    mWebsocketUrl.setScheme(schm == "https" ? "wss" : "ws");
+    mWebsocketUrl.setHost(host);
+    mWebsocketUrl.setPath("/ws");
+    mWebsocketUrl.setPort(port);
+
     settings.endGroup();
 }
 
@@ -82,7 +122,7 @@ void Regovar::loadProject(int id)
             if (mCurrentProject->fromJson(json["data"].toObject()))
             {
                 qDebug() << Q_FUNC_INFO << "CurrentProject loaded";
-                emit currentProjectUpdated();
+                emit currentProjectChanged();
             }
             else
             {
@@ -173,7 +213,7 @@ void Regovar::loadFilesBrowser()
             if (mRemoteFilesTreeView->fromJson(json["data"].toArray()))
             {
                 qDebug() << Q_FUNC_INFO << "File browser ready";
-                emit remoteFilesTreeViewUpdated();
+                emit remoteFilesTreeViewChanged();
             }
             else
             {
@@ -240,7 +280,26 @@ FilteringAnalysis* Regovar::getAnalysisFromWindowId(int winId)
 }
 
 
+void Regovar::search(QString query)
+{
+    setSearchInProgress(true);
 
+    setSearchRequest(query);
+    Request* req = Request::get(QString("/search/%1").arg(query));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            setSearchResult(json["data"].toObject());
+        }
+        else
+        {
+            regovar->raiseError(json);
+        }
+        req->deleteLater();
+        setSearchInProgress(false);
+    });
+}
 
 
 
