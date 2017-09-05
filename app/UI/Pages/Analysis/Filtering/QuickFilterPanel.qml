@@ -14,10 +14,6 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property FilteringAnalysis model
-    onModelChanged:
-    {
-        filterList.model = model.filters;
-    }
 
     ColumnLayout
     {
@@ -103,8 +99,4 @@ Rectangle
             }
         }
     }
-
-
-
-
 }

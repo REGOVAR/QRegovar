@@ -78,7 +78,7 @@ Rectangle
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
                         anchors.right: parent.right
-                        text: model.modelData.count
+                        text: (model.modelData.total_variants == null) ? "?" : model.modelData.total_variants
                     }
 
                     MouseArea

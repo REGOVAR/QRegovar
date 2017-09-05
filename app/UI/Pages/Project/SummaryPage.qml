@@ -34,7 +34,7 @@ Rectangle
 
     Text
     {
-       text: "RESUME"
+       text: "SUMMARY"
        font.pointSize: 24
        anchors.centerIn: parent
     }

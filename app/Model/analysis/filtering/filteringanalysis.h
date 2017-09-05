@@ -19,18 +19,19 @@ class FilteringAnalysis : public Analysis
     // Analysis properties
     Q_PROPERTY(QString refName READ refName)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
-    Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterUpdated)
-    Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsUpdated)
+    Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterChanged)
+    Q_PROPERTY(QJsonArray filterJson READ filterJson NOTIFY filterJsonChanged)
+    Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsChanged)
     Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged)
     Q_PROPERTY(QVariantList filters READ filters NOTIFY filtersChanged)
     // Panel & Treeview models
-    Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsUpdated)
-    Q_PROPERTY(AnnotationsTreeModel* allAnnotationsDB READ allAnnotationsDB NOTIFY allAnnotationsDBUpdated)
-    Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsUpdated)
-    Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY quickfiltersUpdated)
-    Q_PROPERTY(RemoteSampleTreeModel* remoteSamples READ remoteSamples NOTIFY remoteSamplesUpdated)
+    Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsChanged)
+    Q_PROPERTY(AnnotationsTreeModel* allAnnotationsDB READ allAnnotationsDB NOTIFY allAnnotationsDBChanged)
+    Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsChanged)
+    Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY quickfiltersChanged)
+    Q_PROPERTY(RemoteSampleTreeModel* remoteSamples READ remoteSamples NOTIFY remoteSamplesChanged)
     // "Shortcuts properties" for QML
-    Q_PROPERTY(QStringList samples READ displayedSamples NOTIFY samplesUpdated)
+    Q_PROPERTY(QStringList samples READ displayedSamples NOTIFY samplesChanged)
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
 
 
@@ -56,6 +57,7 @@ public:
     inline QString refName() { return mRefName; }
     inline QString status() { return mStatus; }
     inline QString filter() { return mFilter; }
+    inline QJsonArray filterJson() { return mFilterJson; }
     inline QStringList fields() { return mFields; }
     inline int resultsTotal() { return mResultsTotal; }
     inline QVariantList filters() { return mFilters; }
@@ -70,7 +72,8 @@ public:
     QStringList resultColumns();
 
     // Setters
-    Q_INVOKABLE inline void setFilter(QString filter) { mFilter = filter; emit filterUpdated(); }
+    Q_INVOKABLE inline void setFilter(QString filter) { mFilter = filter; emit filterChanged(); }
+    Q_INVOKABLE inline void setFilterJson(QJsonArray filterJson) { mFilterJson = filterJson; emit filterJsonChanged(); }
     Q_INVOKABLE int setField(QString uid, bool isDisplayed, int order=-1);
 
     // Methods
@@ -80,21 +83,23 @@ public:
     Q_INVOKABLE inline void emitDisplayFilterSavingFormPopup() { emit displayFilterSavingFormPopup(); }
     Q_INVOKABLE void saveCurrentFilter(QString filterName, QString filterDescription);
     Q_INVOKABLE void loadFilter(QJsonObject filter);
+    Q_INVOKABLE void loadFilter(QString filter);
 
 
 Q_SIGNALS:
     void isLoading();
     void statusChanged();
     void loadingStatusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
-    void annotationsUpdated();
-    void allAnnotationsDBUpdated();
-    void filterUpdated();
+    void annotationsChanged();
+    void allAnnotationsDBChanged();
+    void filterChanged();
+    void filterJsonChanged();
     void filtersChanged();
-    void fieldsUpdated();
-    void resultsUpdated();
-    void quickfiltersUpdated();
-    void remoteSamplesUpdated();
-    void samplesUpdated();
+    void fieldsChanged();
+    void resultsChanged();
+    void quickfiltersChanged();
+    void remoteSamplesChanged();
+    void samplesChanged();
     void sampleColumnDisplayedUpdated();
     void resultColumnsChanged();
     void resultsTotalChanged();
@@ -112,6 +117,7 @@ private:
     QString mRefName;
     QStringList mFields;
     QString mFilter;
+    QJsonArray mFilterJson;
     QList<Sample*> mSamples;
     bool mSampleColumnDisplayed;
 

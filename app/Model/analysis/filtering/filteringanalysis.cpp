@@ -50,11 +50,11 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
         int id = field.toInt();
         mSamples.append(new Sample(id, QString("Sample n°%1").arg(id), "", this));
     }
-    emit samplesUpdated();
+    emit samplesChanged();
 
     // Init remote samples tree model
     mRemoteSampleTreeModel = new RemoteSampleTreeModel(this);
-    emit remoteSamplesUpdated();
+    emit remoteSamplesChanged();
 
 
     // Retrieve saved filters
@@ -74,11 +74,12 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     }
 
     // Retrieve filter
+    setFilterJson(json["filter"].toArray());
     QJsonDocument doc;
-    doc.setArray(json["filter"].toArray());
+    doc.setArray(mFilterJson);
     setFilter(QString(doc.toJson(QJsonDocument::Indented)));
     // init UI according to filter
-    mQuickFilters->loadFilter(json["filter"].toArray());
+    // mQuickFilters->loadFilter(mFilterJson);
 
 
 
@@ -344,14 +345,28 @@ void FilteringAnalysis::saveCurrentFilter(QString filterName, QString filterDesc
 }
 
 
+
+void FilteringAnalysis::loadFilter(QString filter)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(filter.toUtf8());
+    setFilter(filter);
+    setFilterJson(doc.array());
+
+    // TODO : Abandonned ? as quickfilter are too limitated to load every filters possibilities
+    // init UI according to filter
+    // mQuickFilters->loadFilter(mFilterJson);
+}
 void FilteringAnalysis::loadFilter(QJsonObject filter)
 {
     // Retrieve filter
+    setFilterJson(filter["filter"].toArray());
     QJsonDocument doc;
-    doc.setArray(filter["filter"].toArray());
+    doc.setArray(mFilterJson);
     setFilter(QString(doc.toJson(QJsonDocument::Indented)));
+
+    // TODO : Abandonned ? as quickfilter are too limitated to load every filters possibilities
     // init UI according to filter
-    mQuickFilters->loadFilter(filter["filter"].toArray());
+    // mQuickFilters->loadFilter(mFilterJson);
 }
 
 
@@ -393,7 +408,7 @@ int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
 //    }
 
 
-    emit fieldsUpdated();
+    emit fieldsChanged();
 
     // Update columns to display in the QML view according to selected annoations
     refreshDisplayedAnnotationColumns();

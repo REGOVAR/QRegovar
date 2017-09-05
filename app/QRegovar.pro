@@ -121,7 +121,6 @@ DISTFILES += \
     UI/Pages/Project/AnalysesPage.qml \
     UI/Pages/Project/EventsPage.qml \
     UI/Pages/Project/FilesPage.qml \
-    UI/Pages/Project/ResumePage.qml \
     UI/Pages/Project/SettingsIndicatorsPage.qml \
     UI/Pages/Project/SettingsInformationsPage.qml \
     UI/Pages/Project/SettingsSharingPage.qml \
@@ -200,7 +199,9 @@ DISTFILES += \
     UI/Pages/Analysis/Filtering/AdvancedFilter/FieldBlock.qml \
     UI/Pages/Analysis/Filtering/AdvancedFilter/LogicalBlock.qml \
     UI/Pages/Analysis/Filtering/AdvancedFilter/SetBlock.qml \
-    UI/Pages/Analysis/Filtering/FavoritesPanel.qml
+    UI/Pages/Analysis/Filtering/FavoritesPanel.qml \
+    UI/Pages/Analysis/Filtering/AdvancedFilter/GenericBlock.qml \
+    UI/Pages/Project/SummaryPage.qml
 
 
 win32 {

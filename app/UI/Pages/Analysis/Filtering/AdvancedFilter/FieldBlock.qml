@@ -5,20 +5,63 @@ import QtQuick.Layouts 1.3
 import org.regovar 1.0
 
 import "../../../../Regovar"
-import "../../../../Framework"
 
 Rectangle
 {
     id: root
-    width: parent.width
+    height: Regovar.theme.font.boxSize.control
     implicitHeight: Regovar.theme.font.boxSize.control
 
+    color: "transparent"
+
+    property FilteringAnalysis analysis
     property var model
+    property var opMapping: {"<":"<", "<=": "≤", "==": "=", ">=": "≥", ">": ">", "!=": "≠"}
+    property var opMappingR: {"<":"<", "≤": "<=", "=": "==", "≥": ">=", ">": ">", "≠": "!="}
 
+    onModelChanged: updateView()
+    Component.onCompleted: updateView()
+    onAnalysisChanged: updateView()
 
-    Text
+    function updateView()
     {
-        anchors.fill: root
-        text: "the field block !"
+        if (model !== undefined && analysis !== null)
+        {
+            operator.text = opMapping[model[0]] ;
+            leftOp.text = analysis.getColumnInfo(model[1][1]).annotation.name;
+            rightOp.text = model[2][1];
+        }
+    }
+
+    Rectangle
+    {
+        anchors.fill: parent
+        color: "#aaaaaaaa"
+
+        Row
+        {
+            anchors.fill: parent
+            spacing: 5
+
+
+            Text
+            {
+                id: leftOp
+                text: "-"
+                font.pixelSize: Regovar.theme.font.size.control
+            }
+            Text
+            {
+                id: operator
+                text: "?"
+                font.pixelSize: Regovar.theme.font.size.control
+            }
+            Text
+            {
+                id: rightOp
+                text: "-"
+                font.pixelSize: Regovar.theme.font.size.control
+            }
+        }
     }
 }

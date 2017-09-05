@@ -10,51 +10,73 @@ import "../../../../Framework"
 Rectangle
 {
     id: root
-    width: parent.width
-    height: header.height + subItemsList.height + footer.height + 10
-    implicitHeight: Regovar.theme.font.boxSize.control
-
     color: "transparent"
 
+    property FilteringAnalysis analysis
     property var model
     property var subItems
+    property bool isExpand: true
+    onIsExpandChanged: resize()
 
-    onModelChanged:
+    property string logicalColor: "red" // Regovar.theme.boxColor.border
+
+    onModelChanged: updateView()
+    onAnalysisChanged: updateView()
+    Component.onCompleted: updateView()
+
+    border.width: 1
+    border.color: "purple"
+
+    function updateView()
     {
-        console.log("model changed");
-        root.subItems = [1,2,3,4];
+        if (model != null && analysis != null)
+        {
+            root.subItems = model[1];
+            operator.currentIndex = model[0] === "AND" ? 0 : 1;
+        }
     }
 
-    Component.onCompleted:
+
+    function fullSize()
     {
-        console.log(header.height + " " + subItemsList.height + " " + footer.height)
+        var totalHeight = header.height + addConditionButton.height;
+        for(var idx=0; idx < subItemsList.children.length; idx ++)
+        {
+            totalHeight += subItemsList.children[idx].height;
+        }
+        return totalHeight;
     }
 
-
+    function resize()
+    {
+        root.height = isExpand ? fullSize() : header.height;
+        console.log("resize height : " + root.height);
+    }
 
 
 
     Rectangle
     {
         id: header
-        width: parent.width
         height: Regovar.theme.font.boxSize.control
         anchors.top: root.top
         anchors.left: root.left
         anchors.right: root.right
-        anchors.margins: 5
+        color: "#aaaaaaaa"
 
         ComboBox
         {
+            id: operator
             anchors.top: parent.top
             anchors.left: parent.left
             model: ["AND", "OR"]
 
-            color: "red"
+            color: root.logicalColor
         }
 
         Text
         {
+            anchors.top: parent.top
             anchors.right: parent.right
             text: "|"
             height: Regovar.theme.font.boxSize.header
@@ -64,6 +86,12 @@ Rectangle
             font.pixelSize: Regovar.theme.font.size.header
             // color: loadFilterButton.mouseHover ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
             font.family: Regovar.theme.icons.name
+
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: isExpand = !isExpand
+            }
         }
     }
 
@@ -71,41 +99,50 @@ Rectangle
 
     Rectangle
     {
+        visible: isExpand
         anchors.top : header.bottom
         anchors.left: parent.left
-        anchors.leftMargin: 5 + Regovar.theme.font.boxSize.header / 2
+        anchors.leftMargin: Regovar.theme.font.boxSize.header / 2
         height: subItemsList.height
         width: 1
-        color: "red" // Regovar.theme.boxColor.border
+        color: root.logicalColor
     }
 
     Column
     {
         id: subItemsList
+        visible: isExpand
         anchors.top : header.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin: 5
-        anchors.rightMargin: 5
+
+        onHeightChanged: { console.log("L height=" + height + " total="+fullSize()); resize(); }
 
         Repeater
         {
-            model: 10
+            id: repeater
+            model:root.subItems
+
 
             Rectangle
             {
-                height: Regovar.theme.font.boxSize.control
-                width: parent.width
-                color: "transparent"
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 246 // Regovar.theme.font.boxSize.control
 
+                color: "lightgreen"
+                border.color: "darkgreen"
+                border.width: 1
+
+
+                // onHeightChanged: resize()
 
                 Text
                 {
-                    height: Regovar.theme.font.boxSize.header
-                    width: Regovar.theme.font.boxSize.header
+                    height: Regovar.theme.font.boxSize.control
+                    width: Regovar.theme.font.boxSize.control
                     anchors.left: parent.left
                     anchors.top: parent.top
-                    anchors.bottom: parent.bottom
 
                     text: "p"
                     font.family: Regovar.theme.icons.name
@@ -115,14 +152,18 @@ Rectangle
 
                     color: "red"
                 }
-                Text
+                GenericBlock
                 {
-                    text:"n°" + index
+                    analysis: root.analysis
+                    model: modelData
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
-                    verticalAlignment: Text.AlignVCenter
                     anchors.leftMargin: 5 + Regovar.theme.font.boxSize.control
+
+
+                    onHeightChanged: { parent.height = height; console.log("z height=" + height + " total="+fullSize()); resize(); }
+                    //Component.onCompleted: { parent.height = height; console.log("c height=" + height + " total="+fullSize());}
                 }
             }
         }
@@ -130,62 +171,68 @@ Rectangle
 
     Rectangle
     {
-        id: footer
-        width: parent.width
+        visible: isExpand
+
+        id: addConditionButton
         height: Regovar.theme.font.boxSize.control
         anchors.bottom: root.bottom
         anchors.left: root.left
         anchors.right: root.right
-        anchors.margins: 5
+
+        color: "yellow"
+
+        Rectangle
+        {
+            anchors.top : parent.top
+            anchors.left: parent.left
+            anchors.leftMargin: Regovar.theme.font.boxSize.control / 2
+            width: 1
+            height: parent.height/2
+            color: root.logicalColor
+        }
+
+        Rectangle
+        {
+            color: "transparent"
+            anchors.top : parent.top
+            anchors.left: parent.left
+            height: Regovar.theme.font.boxSize.control
+            width: Regovar.theme.font.boxSize.control
+
+            Rectangle
+            {
+                anchors.centerIn: parent
+
+                height: Regovar.theme.font.boxSize.control * 0.75
+                width: Regovar.theme.font.boxSize.control * 0.75
+                radius: width * 0.5
+
+                color: Regovar.theme.backgroundColor.main
+                border.width: 1
+                border.color: root.logicalColor
+            }
+            Text
+            {
+                anchors.centerIn: parent
+                text:  "µ"
+
+                font.family: Regovar.theme.icons.name
+                font.pixelSize: Regovar.theme.font.size.control
+            }
+        }
 
         Text
         {
+            anchors.top : parent.top
+            anchors.left: parent.left
+            anchors.leftMargin: Regovar.theme.font.boxSize.header + 5
             height: Regovar.theme.font.boxSize.header
-            width: Regovar.theme.font.boxSize.header
-            text:  "µ"
+            text:  "Add condition"
 
-            font.family: Regovar.theme.icons.name
             verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
             font.pixelSize: Regovar.theme.font.size.control
         }
+
+
     }
-
-
-//        Rectangle
-//        {
-//            Row
-//            {
-//                Text
-//                {
-//                    width: parent.width
-//                    height: Regovar.theme.font.boxSize.control
-//                    visible: (model == null || model.length ) ? true : false
-//                    text:  "p"
-//                    font.family: Regovar.theme.icons.name
-//                    verticalAlignment: Text.AlignVCenter
-//                    font.pixelSize: Regovar.theme.font.size.header
-//                }
-//            }
-//        }
-
-//        Repeater
-//        {
-//            id: subItemsContainer
-//            // visible: (model == null || model.length ) ? false : true
-//            model : [1,2,3,4,5] // subItems
-
-
-
-//        }
-
-//        Text
-//        {
-//            width: parent.width
-//            height: Regovar.theme.font.boxSize.control
-//            visible: (model == null || model.length ) ? true : false
-//            text:  "Empty..."
-//            verticalAlignment: Text.AlignVCenter
-//            font.pixelSize: Regovar.theme.font.size.header
-//        }
 }

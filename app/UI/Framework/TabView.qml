@@ -132,6 +132,20 @@ Item
         anchors.bottom: root.bottom
 
         clip: true
+
+        Rectangle
+        {
+            // To be sure to hide tabs that are not selected ( selectedTab.z = 100, otherTabs.z = 0)
+            anchors.fill: parent
+            color: Regovar.theme.backgroundColor.main
+            z: 99
+
+            // block click otherwise risk to interact with hidden tabs
+            MouseArea
+            {
+                anchors.fill: parent
+            }
+        }
     }
 
 
@@ -151,7 +165,7 @@ Item
                 var comp = Qt.createComponent(model.source);
                 if (comp.status == Component.Ready)
                 {
-                    var elmt = comp.createObject(stackPanel, {"visible": false});
+                    var elmt = comp.createObject(stackPanel, {"z": 0});
                     pages[idx] = elmt;
                     if (elmt.hasOwnProperty("model"))
                     {
@@ -181,10 +195,9 @@ Item
 
             if (menuPageMapping[previousIndex])
             {
-                menuPageMapping[previousIndex].visible = false;
-                menuPageMapping[newIdx].visible = true;
+                menuPageMapping[previousIndex].z = 0;
+                menuPageMapping[newIdx].z = 100;
                 menuPageMapping[newIdx].anchors.fill = stackPanel;
-
                 previousIndex = newIdx;
             }
         }

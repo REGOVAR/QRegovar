@@ -43,7 +43,7 @@ QtObject
             { "icon": "c", "label": qsTr("Project"),      "page": "", "sublevel": [
                 { "icon": "c", "label": qsTr("Browse"),   "page": "Browse/ProjectsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "6", "label": "DPNI",           "page": "", "sublevel": [
-                    { "label": qsTr("Resume"),        "page": "Project/ResumePage.qml", "sublevel": []},
+                    { "label": qsTr("Summary"),        "page": "Project/SummaryPage.qml", "sublevel": []},
                     //{ "label": qsTr("Events"),        "page": "Project/EventsPage.qml", "sublevel": []},
                     { "label": qsTr("Analyses"),      "page": "Project/AnalysesPage.qml", "sublevel": []},
                     { "label": qsTr("Subjects"),      "page": "Project/SubjectsPage.qml", "sublevel": []},

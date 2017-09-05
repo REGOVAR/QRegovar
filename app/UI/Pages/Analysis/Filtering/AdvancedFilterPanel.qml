@@ -14,14 +14,6 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property FilteringAnalysis model
-    onModelChanged:
-    {
-        if (root.model != null)
-        {
-            //advancedFilterTextEditor.text = root.model.filter
-            advancedFilterEditor.model = root.model.filterJson
-        }
-    }
 
     ColumnLayout
     {
@@ -34,6 +26,7 @@ Rectangle
             height: Regovar.theme.font.size.header + 20 // 20 = 2*10 to add spacing top+bottom
             Layout.fillWidth: true
             color: Regovar.theme.backgroundColor.main
+
 
             Text
             {
@@ -65,9 +58,18 @@ Rectangle
             Layout.fillWidth: true
             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
+//            onWidthChanged: advancedFilterEditor.width = viewport.width
+//            Component.onCompleted: advancedFilterEditor.width = viewport.width
+
             LogicalBlock
             {
                 id:advancedFilterEditor
+                model: root.model.filterJson
+                analysis : root.model
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: 5
             }
         }
 
@@ -94,7 +96,8 @@ Rectangle
             iconText: "x"
             onClicked:
             {
-                model.setFilter(model.quickfilters.getFilter());
+
+                model.loadFilter(model.quickfilters.getFilter());
                 model.results.reset();
             }
         }
