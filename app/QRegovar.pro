@@ -217,7 +217,8 @@ DISTFILES += \
     UI/Dialogs/NewAnalysisWizardScreens/InputsScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/StartScreen.qml
+    UI/Dialogs/NewAnalysisWizardScreens/StartScreen.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml
 
 
 win32 {

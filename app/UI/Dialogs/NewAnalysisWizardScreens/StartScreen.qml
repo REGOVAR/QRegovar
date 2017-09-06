@@ -37,17 +37,19 @@ Rectangle
         {
             text : "Analyse a file"
             onClicked: selected(1);
+            Layout.alignment : Qt.AlignHCenter
         }
         Button
         {
             text : "Run a pipeline"
             onClicked: selected(2);
+            Layout.alignment : Qt.AlignHCenter
         }
         Button
         {
             text : "Filtering variant"
             onClicked: selected(3);
+            Layout.alignment : Qt.AlignHCenter
         }
     }
-
 }

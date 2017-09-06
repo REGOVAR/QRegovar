@@ -17,6 +17,7 @@ Dialog
     width: 600
     height: 400
 
+    onVisibleChanged: startScreen.visible = true
 
     property var menuModel
     property int menuSelectedIndex
@@ -55,10 +56,10 @@ Dialog
                 {
                     root.menuModel = [
                         { "title" : qsTr("Start"), "checked": true, "selected": false},
-                        { "title" : qsTr("Select files"), "checked": false, "selected": true},
-                        { "title" : qsTr("Select pipeline"), "checked": false, "selected": false},
-                        { "title" : qsTr("Configure"), "checked": false, "selected": false},
-                        { "title" : qsTr("Launch"), "checked": false, "selected": false}
+                        { "title" : qsTr("Select files"), "checked": false, "selected": true, "source":"../Dialogs/NewAnalysisWizardScreens/InputsScreen.qml"},
+                        { "title" : qsTr("Select pipeline"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml"},
+                        { "title" : qsTr("Configure"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml"},
+                        { "title" : qsTr("Launch"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
                     ];
                     root.analysisModel["type"] = "pipeline";
                 }
@@ -66,10 +67,10 @@ Dialog
                 {
                     root.menuModel = [
                         { "title" : qsTr("Start"), "checked": true, "selected": false},
-                        { "title" : qsTr("Select pipeline"), "checked": false, "selected": true},
-                        { "title" : qsTr("Select files"), "checked": false, "selected": false},
-                        { "title" : qsTr("Configure"), "checked": false, "selected": false},
-                        { "title" : qsTr("Launch"), "checked": false, "selected": false}
+                        { "title" : qsTr("Select pipeline"), "checked": false, "selected": true, "source":"../Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml"},
+                        { "title" : qsTr("Select files"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/InputsScreen.qml"},
+                        { "title" : qsTr("Configure"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml"},
+                        { "title" : qsTr("Launch"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
                     ];
                     root.analysisModel["type"] = "pipeline";
                 }
@@ -77,10 +78,10 @@ Dialog
                 {
                     root.menuModel = [
                         { "title" : qsTr("Start"), "checked": true, "selected": false},
-                        { "title" : qsTr("Settings"), "checked": false, "selected": true},
-                        { "title" : qsTr("Select samples"), "checked": false, "selected": false},
-                        { "title" : qsTr("Select annotations"), "checked": false, "selected": false},
-                        { "title" : qsTr("Launch"), "checked": false, "selected": false}
+                        { "title" : qsTr("Settings"), "checked": false, "selected": true, "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSettingsScreen.qml"},
+                        { "title" : qsTr("Select samples"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSamplesScreen.qml"},
+                        { "title" : qsTr("Select annotations"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/FilteringAnnotationScreen.qml"},
+                        { "title" : qsTr("Launch"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
                     ];
                     root.analysisModel["type"] = "filtering";
                 }
@@ -123,37 +124,54 @@ Dialog
                 {
                     model: root.menuModel
 
-
-                    Row
+                    Rectangle
                     {
                         id: menuItem
+
                         width: naviguationPanel.width
                         height: Regovar.theme.font.boxSize.header
+                        color: isHover ? Regovar.theme.secondaryColor.back.normal: "transparent"
+
+                        property bool isHover: false
                         property bool isSelected: modelData["selected"]
                         property bool isChecked: modelData["checked"]
-                        spacing: 5
 
-                        Text
+
+                        Row
                         {
-                            height: Regovar.theme.font.boxSize.control
-                            width: Regovar.theme.font.boxSize.header
+                            anchors.fill: parent
+                            spacing: 5
 
-                            text: menuItem.isChecked ? "p" : "r"
-                            font.family: Regovar.theme.icons.name
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            font.pixelSize: Regovar.theme.font.size.control
+                            Text
+                            {
+                                height: Regovar.theme.font.boxSize.control
+                                width: Regovar.theme.font.boxSize.header
 
-                            color: menuItem.isSelected ? Regovar.theme.secondaryColor.back.light : Regovar.theme.primaryColor.front.dark
+                                text: menuItem.isChecked ? "p" : "r"
+                                font.family: Regovar.theme.icons.name
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: Text.AlignHCenter
+                                font.pixelSize: Regovar.theme.font.size.control
+
+                                color: menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light : Regovar.theme.primaryColor.front.dark
+                            }
+                            Text
+                            {
+                                height: Regovar.theme.font.boxSize.control
+                                text: modelData["title"]
+                                color: menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light : menuItem.isChecked ? Regovar.theme.primaryColor.front.dark : Regovar.theme.primaryColor.back.light
+                                font.pixelSize: Regovar.theme.font.size.control
+                                font.family: Regovar.theme.font.familly
+                                verticalAlignment: Text.AlignVCenter
+                            }
                         }
-                        Text
+
+                        MouseArea
                         {
-                            height: Regovar.theme.font.boxSize.control
-                            text: modelData["title"]
-                            color: menuItem.isSelected ? Regovar.theme.secondaryColor.back.light : menuItem.isChecked ? Regovar.theme.primaryColor.front.dark : Regovar.theme.primaryColor.back.light
-                            font.pixelSize: Regovar.theme.font.size.control
-                            font.family: Regovar.theme.font.familly
-                            verticalAlignment: Text.AlignVCenter
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onEntered: parent.isHover = true
+                            onExited: parent.isHover = false
                         }
                     }
                 }

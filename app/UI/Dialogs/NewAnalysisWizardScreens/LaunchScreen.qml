@@ -12,6 +12,6 @@ GenericScreen
     Text
     {
         anchors.centerIn: parent
-        text: "Pipeline settings"
+        text: "Launch"
     }
 }
