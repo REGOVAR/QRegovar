@@ -48,18 +48,24 @@ Rectangle
             {
                 id: leftOp
                 text: "-"
+                height: Regovar.theme.font.boxSize.control
+                verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.control
             }
             Text
             {
                 id: operator
                 text: "?"
+                height: Regovar.theme.font.boxSize.control
+                verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.control
             }
             Text
             {
                 id: rightOp
                 text: "-"
+                height: Regovar.theme.font.boxSize.control
+                verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.control
             }
         }

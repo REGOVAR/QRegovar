@@ -73,6 +73,24 @@ Rectangle
             }
         }
 
+//        ScrollView
+//        {
+//            Layout.fillHeight: true
+//            Layout.fillWidth: true
+//            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+//            onWidthChanged: advancedFilterEditor.width = viewport.width - 10
+//            Component.onCompleted: advancedFilterEditor.width = viewport.width - 10
+
+//            GenericBlock
+//            {
+//                id:advancedFilterEditor
+//                model: root.model.filterJson
+//                x: 5
+//                y: 5
+//            }
+//        }
+
 //        TextArea
 //        {
 //            Layout.fillHeight: true
