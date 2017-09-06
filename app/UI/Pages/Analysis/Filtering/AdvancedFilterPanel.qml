@@ -61,7 +61,7 @@ Rectangle
             onWidthChanged: advancedFilterEditor.width = viewport.width - 10
             Component.onCompleted: advancedFilterEditor.width = viewport.width - 10
 
-            LogicalBlock
+            GenericBlock
             {
                 id:advancedFilterEditor
                 model: root.model.filterJson

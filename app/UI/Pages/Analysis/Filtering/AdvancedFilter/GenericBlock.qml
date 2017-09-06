@@ -6,16 +6,73 @@ import org.regovar 1.0
 
 import "../../../../Regovar"
 
+
+
 Rectangle
 {
     id: root
-    width: parent.width - 5 - Regovar.theme.font.boxSize.control
+    implicitWidth: 200
+    implicitHeight: container.height
 
-    color: "transparent"
+    color: "lightgreen"
+    border.color: "darkgreen"
+    border.width: 1
 
     property FilteringAnalysis analysis
     property var model
     property var component
+    property bool enabled: true
+    property string logicalColor: ""
+
+    Rectangle
+    {
+        x: Regovar.theme.font.boxSize.control / 2
+        y: 0
+        width: 1
+        height: parent.height / 3
+        color: root.logicalColor
+    }
+
+    Text
+    {
+        height: Regovar.theme.font.boxSize.control
+        width: Regovar.theme.font.boxSize.control
+        x: 5
+        y: 0
+
+        text: enabled ? "p" : "r"
+        font.family: Regovar.theme.icons.name
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
+        font.pixelSize: 0
+
+        color: root.logicalColor
+    }
+
+    Container
+    {
+        id: container
+        x: 0
+        y: 5 + Regovar.theme.font.boxSize.control
+
+        implicitHeight: Regovar.theme.font.boxSize.control
+        width: root.width - 5 - Regovar.theme.font.boxSize.control
+        onWidthChanged: console.log("new width : " + width);
+        onHeightChanged: console.log("new height : " + height);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     onModelChanged:
     {
@@ -30,11 +87,16 @@ Rectangle
         }
         else
         {
+            console.log("create FIELD block");
             component = createBlock("FieldBlock.qml", model);
         }
     }
 
 
+    function updateHeight()
+    {
+        container.height = component.height;
+    }
 
     function createBlock(type, model)
     {
@@ -42,12 +104,9 @@ Rectangle
         var elmt;
         if (comp.status == Component.Ready)
         {
-            elmt = comp.createObject(root);
+            elmt = comp.createObject(container);
             elmt.analysis = root.analysis;
-            elmt.anchors.top = root.top;
-            elmt.anchors.right = root.right;
-            elmt.anchors.left = root.left;
-            root.height = Qt.binding(function() { return elmt.height; });
+            elmt.onHeightChanged.connect(updateHeight);
 
             if (elmt.hasOwnProperty("model"))
             {
