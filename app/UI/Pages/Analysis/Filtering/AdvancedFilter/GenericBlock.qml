@@ -9,7 +9,7 @@ import "../../../../Regovar"
 Rectangle
 {
     id: root
-    width: parent.width
+    width: parent.width - 5 - Regovar.theme.font.boxSize.control
 
     color: "transparent"
 

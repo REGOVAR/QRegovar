@@ -16,7 +16,7 @@ Rectangle
     property var model
     property var subItems
     property bool isExpand: true
-    onIsExpandChanged: resize()
+    onIsExpandChanged: { console.log("Expand " + isExpand + " " + root.height); resize();}
 
     property string logicalColor: "red" // Regovar.theme.boxColor.border
 
@@ -74,25 +74,25 @@ Rectangle
             color: root.logicalColor
         }
 
-        Text
-        {
-            anchors.top: parent.top
-            anchors.right: parent.right
-            text: "|"
-            height: Regovar.theme.font.boxSize.header
-            width: Regovar.theme.font.boxSize.header
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: Regovar.theme.font.size.header
-            // color: loadFilterButton.mouseHover ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
-            font.family: Regovar.theme.icons.name
+//        Text
+//        {
+//            anchors.top: parent.top
+//            anchors.right: parent.right
+//            text: "|"
+//            height: Regovar.theme.font.boxSize.header
+//            width: Regovar.theme.font.boxSize.header
+//            verticalAlignment: Text.AlignVCenter
+//            horizontalAlignment: Text.AlignHCenter
+//            font.pixelSize: Regovar.theme.font.size.header
+//            // color: loadFilterButton.mouseHover ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
+//            font.family: Regovar.theme.icons.name
 
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: isExpand = !isExpand
-            }
-        }
+//            MouseArea
+//            {
+//                anchors.fill: parent
+//                onClicked: isExpand = !isExpand
+//            }
+//        }
     }
 
 
@@ -123,20 +123,16 @@ Rectangle
             id: repeater
             model:root.subItems
 
-
             Rectangle
             {
-                anchors.left: parent.left
-                anchors.right: parent.right
-                height: 246 // Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.control
+                width: root.width
 
                 color: "lightgreen"
                 border.color: "darkgreen"
                 border.width: 1
 
-
                 // onHeightChanged: resize()
-
                 Text
                 {
                     height: Regovar.theme.font.boxSize.control
@@ -161,6 +157,9 @@ Rectangle
                     anchors.left: parent.left
                     anchors.leftMargin: 5 + Regovar.theme.font.boxSize.control
 
+                    color: "brown"
+                    border.width: 2
+                    border.color: "black"
 
                     onHeightChanged: { parent.height = height; console.log("z height=" + height + " total="+fullSize()); resize(); }
                     //Component.onCompleted: { parent.height = height; console.log("c height=" + height + " total="+fullSize());}
@@ -224,8 +223,9 @@ Rectangle
         Text
         {
             anchors.top : parent.top
+            anchors.bottom : parent.bottom
             anchors.left: parent.left
-            anchors.leftMargin: Regovar.theme.font.boxSize.header + 5
+            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
             height: Regovar.theme.font.boxSize.header
             text:  "Add condition"
 

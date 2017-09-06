@@ -58,18 +58,15 @@ Rectangle
             Layout.fillWidth: true
             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-//            onWidthChanged: advancedFilterEditor.width = viewport.width
-//            Component.onCompleted: advancedFilterEditor.width = viewport.width
+            onWidthChanged: advancedFilterEditor.width = viewport.width - 10
+            Component.onCompleted: advancedFilterEditor.width = viewport.width - 10
 
             LogicalBlock
             {
                 id:advancedFilterEditor
                 model: root.model.filterJson
-                analysis : root.model
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: 5
+                x: 5
+                y: 5
             }
         }
 
