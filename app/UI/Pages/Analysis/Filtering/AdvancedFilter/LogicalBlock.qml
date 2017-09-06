@@ -18,14 +18,15 @@ Rectangle
     property bool isExpand: true
     onIsExpandChanged: resize()
 
+
     property string logicalColor: "red" // Regovar.theme.boxColor.border
 
     onModelChanged: updateView()
     onAnalysisChanged: updateView()
     Component.onCompleted: updateView()
 
-    border.width: 1
-    border.color: "purple"
+//    border.width: 1
+//    border.color: "purple"
 
     function updateView()
     {
@@ -62,7 +63,7 @@ Rectangle
         anchors.top: root.top
         anchors.left: root.left
         anchors.right: root.right
-        color: "#aaaaaaaa"
+//        color: "#aaaaaaaa"
 
         ComboBox
         {
@@ -74,25 +75,25 @@ Rectangle
             color: root.logicalColor
         }
 
-        Text
-        {
-            anchors.top: parent.top
-            anchors.right: parent.right
-            text: "|"
-            height: Regovar.theme.font.boxSize.header
-            width: Regovar.theme.font.boxSize.header
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: Regovar.theme.font.size.header
-            // color: loadFilterButton.mouseHover ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
-            font.family: Regovar.theme.icons.name
+//        Text
+//        {
+//            anchors.top: parent.top
+//            anchors.right: parent.right
+//            text: "|"
+//            height: Regovar.theme.font.boxSize.header
+//            width: Regovar.theme.font.boxSize.header
+//            verticalAlignment: Text.AlignVCenter
+//            horizontalAlignment: Text.AlignHCenter
+//            font.pixelSize: Regovar.theme.font.size.header
+//            // color: loadFilterButton.mouseHover ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
+//            font.family: Regovar.theme.icons.name
 
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: isExpand = !isExpand
-            }
-        }
+//            MouseArea
+//            {
+//                anchors.fill: parent
+//                onClicked: isExpand = !isExpand
+//            }
+//        }
     }
 
 
@@ -130,12 +131,9 @@ Rectangle
                 anchors.right: parent.right
                 height: 246 // Regovar.theme.font.boxSize.control
 
-                color: "lightgreen"
-                border.color: "darkgreen"
-                border.width: 1
-
-
-                // onHeightChanged: resize()
+//                color: "lightgreen"
+//                border.color: "darkgreen"
+//                border.width: 1
 
                 Text
                 {
@@ -163,7 +161,6 @@ Rectangle
 
 
                     onHeightChanged: { parent.height = height; console.log("z height=" + height + " total="+fullSize()); resize(); }
-                    //Component.onCompleted: { parent.height = height; console.log("c height=" + height + " total="+fullSize());}
                 }
             }
         }
@@ -174,6 +171,7 @@ Rectangle
         visible: isExpand
 
         id: addConditionButton
+
         height: Regovar.theme.font.boxSize.control
         anchors.bottom: root.bottom
         anchors.left: root.left
@@ -233,6 +231,10 @@ Rectangle
             font.pixelSize: Regovar.theme.font.size.control
         }
 
-
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: analysis.emitDisplayFilterNewCondPopup(root.model)
+        }
     }
 }

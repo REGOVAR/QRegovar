@@ -13,7 +13,7 @@ Rectangle
     color: Regovar.theme.lighter(root.mainColor)
     border.width: 1
     border.color: root.mainColor
-
+    height: max(logo.height, message.height)
 
     FontLoader { id: iconsFont; source: "../Icons.ttf" }
 
@@ -23,8 +23,10 @@ Rectangle
         anchors.fill: root
         anchors.margins: 5
 
+
         Text
         {
+            id: logo
             width: 30
             height: 20
             Layout.minimumWidth: 30
@@ -39,12 +41,14 @@ Rectangle
 
         Text
         {
+            id: message
             Layout.minimumWidth: 30
             Layout.minimumHeight: 20
             Layout.fillWidth: true
             text: root.text
             color: Regovar.theme.darker(root.mainColor)
             verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.WordWrap
         }
     }
 

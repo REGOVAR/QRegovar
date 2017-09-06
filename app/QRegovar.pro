@@ -201,7 +201,23 @@ DISTFILES += \
     UI/Pages/Analysis/Filtering/AdvancedFilter/SetBlock.qml \
     UI/Pages/Analysis/Filtering/FavoritesPanel.qml \
     UI/Pages/Analysis/Filtering/AdvancedFilter/GenericBlock.qml \
-    UI/Pages/Project/SummaryPage.qml
+    UI/Pages/Project/SummaryPage.qml \
+    UI/Dialogs/FilterSaveDialog.qml \
+    UI/Dialogs/FilterNewConditionDialog.qml \
+    UI/Pages/Analysis/Filtering/AdvancedFilter/FilterFormLogical.qml \
+    UI/Pages/Analysis/Filtering/AdvancedFilter/FilterFormField.qml \
+    UI/Pages/Analysis/Filtering/AdvancedFilter/FilterFormSet.qml \
+    UI/Dialogs/NewProjectDialog.qml \
+    UI/Dialogs/NewAnalysisDialog.qml \
+    UI/Dialogs/NewSubjectDialog.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/FilteringAnnotationScreen.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/FilteringSamplesScreen.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/FilteringSettingsScreen.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/GenericScreen.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/InputsScreen.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/StartScreen.qml
 
 
 win32 {

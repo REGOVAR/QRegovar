@@ -58,6 +58,9 @@ public:
     inline void setQmlEngine (QQmlApplicationEngine* engine) { mQmlEngine = engine; }
 
     // Methods
+    Q_INVOKABLE void newProject(QString name, QString comment);
+    Q_INVOKABLE void newAnalysis(QJsonObject data);
+    Q_INVOKABLE void newSubject(QJsonObject data);
     Q_INVOKABLE void enqueueUploadFile(QList<QString> filesPaths);
     Q_INVOKABLE void raiseError(QJsonObject raiseError);
     Q_INVOKABLE void close();
@@ -99,6 +102,10 @@ Q_SIGNALS:
     void currentProjectChanged();
     void onClose();
     void onError(QString errCode, QString message);
+    void projectCreationDone(bool success, int projectId);
+    void analysisCreationDone(bool success, int analysisId);
+    void subjectCreationDone(bool success, int subjectId);
+
 
 
 private:

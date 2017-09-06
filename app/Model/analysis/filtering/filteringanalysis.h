@@ -81,6 +81,7 @@ public:
     Q_INVOKABLE inline FieldColumnInfos* getColumnInfo(QString uid) { return mAnnotations.contains(uid) ? mAnnotations[uid] : nullptr; }
     Q_INVOKABLE void getVariantInfo(QString variantId);
     Q_INVOKABLE inline void emitDisplayFilterSavingFormPopup() { emit displayFilterSavingFormPopup(); }
+    Q_INVOKABLE inline void emitDisplayFilterNewCondPopup(QJsonArray filter) { emit displayFilterNewCondPopup(); }
     Q_INVOKABLE void saveCurrentFilter(QString filterName, QString filterDescription);
     Q_INVOKABLE void loadFilter(QJsonObject filter);
     Q_INVOKABLE void loadFilter(QString filter);
@@ -105,6 +106,7 @@ Q_SIGNALS:
     void resultsTotalChanged();
     void onContextualVariantInformationReady(QJsonObject json);
     void displayFilterSavingFormPopup();
+    void displayFilterNewCondPopup();
 
 
 public Q_SLOTS:

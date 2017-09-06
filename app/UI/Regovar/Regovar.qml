@@ -41,7 +41,7 @@ QtObject
             { "icon": "a", "label": qsTr("Welcome"),      "page": "WelcomPage.qml", "sublevel": [], "subindex": -1},
             { "icon": "z", "label": qsTr("Search"),       "page": "Browse/SearchPage.qml", "sublevel": [], "subindex": -1},
             { "icon": "c", "label": qsTr("Project"),      "page": "", "sublevel": [
-                { "icon": "c", "label": qsTr("Browse"),   "page": "Browse/ProjectsPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "c", "label": qsTr("Browser"),   "page": "Browse/ProjectsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "6", "label": "DPNI",           "page": "", "sublevel": [
                     { "label": qsTr("Summary"),        "page": "Project/SummaryPage.qml", "sublevel": []},
                     //{ "label": qsTr("Events"),        "page": "Project/EventsPage.qml", "sublevel": []},
@@ -52,7 +52,7 @@ QtObject
                     ], "subindex": 0},
                 ], "subindex": 0},
             { "icon": "b", "label": qsTr("Subject"),    "page": "", "sublevel": [
-                { "icon": "z", "label": qsTr("Browse"), "page": "Browse/SubjectsPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "z", "label": qsTr("Browser"), "page": "Browse/SubjectsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "b", "label": "Michel Dupont","page": "", "sublevel": [
                     //{ "label": qsTr("Resume"),          "page": "Subject/ResumePage.qml", "sublevel": []},
                     { "label": qsTr("Informations"),    "page": "Subject/SettingsPage.qml", "sublevel": []},

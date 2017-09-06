@@ -239,6 +239,26 @@ void Regovar::filesEnqueued(QHash<QString,QString> mapping)
 }
 
 
+
+
+void Regovar::newProject(QString name, QString comment)
+{
+    // TODO
+    emit projectCreationDone(true, 6);
+}
+void Regovar::newAnalysis(QJsonObject data)
+{
+    // TODO
+    emit analysisCreationDone(true, 6);
+}
+void Regovar::newSubject(QJsonObject data)
+{
+    // TODO
+    emit subjectCreationDone(true, 1);
+}
+
+
+
 void Regovar::enqueueUploadFile(QList<QString> filesPaths)
 {
     mUploader->enqueue(filesPaths);

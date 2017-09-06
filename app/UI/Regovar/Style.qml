@@ -11,6 +11,7 @@ QtObject
 
 
 
+
     property string name: "Regovar Light Theme"
     property string description: "The official light theme of the Regovar client"
 
@@ -93,6 +94,15 @@ QtObject
         property color warning : "#f77a99"
         property color danger : "#f44455"
     }
+
+    property QtObject logo: QtObject
+    {
+        property color color1: "#80d6ff"
+        property color color2: "#0077c2"
+    }
+
+
+
 
 
 

@@ -89,12 +89,12 @@ Dialog
             }
             Text
             {
-                text: errorPopup.errorCode
+                text: qsTr("Message")
+                font.weight: Font.Black
             }
             Text
             {
-                text: qsTr("Message")
-                font.weight: Font.Black
+                text: errorPopup.errorCode
             }
             Text
             {

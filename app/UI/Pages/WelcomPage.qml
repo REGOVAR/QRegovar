@@ -1,8 +1,10 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
+import QtGraphicalEffects 1.0
 
 import "../Framework"
 import "../Regovar"
+import "../Dialogs"
 
 Rectangle
 {
@@ -90,7 +92,21 @@ Rectangle
         anchors.top: header.bottom
         anchors.topMargin: 50
         anchors.horizontalCenter: header.horizontalCenter
+
+        LinearGradient
+        {
+            anchors.fill: parent
+            start: Qt.point(0, logo.height / 3)
+            end: Qt.point(0, logo.height)
+            gradient: Gradient
+            {
+                GradientStop { position: 0.0; color: Regovar.theme.logo.color1 }
+                GradientStop { position: 1.0; color: Regovar.theme.logo.color2  }
+            }
+            source: logo
+        }
     }
+
 
     TextField
     {
@@ -116,6 +132,7 @@ Rectangle
         placeholderText: qsTr("Search anything, project, sample, phenotype, analysis, variant, report, ..")
         focus: true
     }
+
 
     Rectangle
     {
@@ -147,16 +164,19 @@ Rectangle
             {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New project")
+                onClicked: newProjectDialog.open()
             }
             ButtonWelcom
             {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New analysis")
+                onClicked: newAnalysisDialog.open()
             }
             ButtonWelcom
             {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New subject")
+                onClicked: newSubjectDialog.open()
             }
         }
 
@@ -186,7 +206,7 @@ Rectangle
                     font.pixelSize: Regovar.theme.font.size.header
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.header
-                    text: qsTr("Last events ++")
+                    text: qsTr("Last events")
                 }
 
                 Rectangle
@@ -394,8 +414,47 @@ Rectangle
                     }
                 }
             }
+        }
+    }
 
+    // DIALOGS
+    NewProjectDialog { id: newProjectDialog }
+    Connections
+    {
+        target: regovar
+        onProjectCreationDone:
+        {
+            if (success)
+            {
+                Regovar.menuModel.selectedIndex=[2,-1,-1];
+            }
+        }
+    }
 
+    NewAnalysisDialog { id: newAnalysisDialog }
+    Connections
+    {
+        target: regovar
+        onAnalysisCreationDone:
+        {
+            if (success)
+            {
+                regovar.openAnalysis(analysisId);
+            }
+        }
+    }
+
+    NewSubjectDialog { id: newSubjectDialog }
+    Connections
+    {
+        target: regovar
+        onSubjectCreationDone:
+        {
+            if (success)
+            {
+                Regovar.menuModel.selectedIndex=[3,-1,-1];
+            }
         }
     }
 }
+

@@ -22,12 +22,21 @@ Item
         height: 50
         color: Regovar.theme.backgroundColor.alt
 
+        Rectangle
+        {
+            height: 1
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            color:  Regovar.theme.boxColor.border
+        }
+
         ListView
         {
             id: tabsPanel
             anchors.fill: header
             anchors.topMargin: 5
-            anchors.leftMargin: 5
+            anchors.leftMargin: 0
             orientation: ListView.Horizontal
             boundsBehavior: Flickable.StopAtBounds
             interactive: false
@@ -81,6 +90,15 @@ Item
                     height: 1
                     color: Regovar.theme.boxColor.border
                 }
+                Rectangle
+                {
+                    visible: !parent.isSelected
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                    anchors.left: parent.left
+                    height: 1
+                    color: Regovar.theme.boxColor.border
+                }
 
                 Text
                 {
@@ -121,6 +139,8 @@ Item
                 }
             }
         }
+
+
     }
 
     Item
