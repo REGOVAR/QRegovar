@@ -117,28 +117,6 @@ Rectangle
             color: Regovar.theme.primaryColor.back.dark
         }
 
-        Row
-        {
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: 100
-
-            spacing: 30
-
-            Button
-            {
-                text: "Open Singleton"
-                onClicked: regovar.openAnalysis(27);
-            }
-            Button
-            {
-                text: "Open Trio"
-                onClicked: regovar.openAnalysis(1);
-            }
-        }
-
-
-
 
         ScrollView
         {
@@ -162,33 +140,25 @@ Rectangle
 
                     Text
                     {
-                        text: qsTr("Projects") + " (" + projectsResult.count + ")"
-                        font.pointSize: Regovar.theme.font.size.header
+                        text: "" + projectsResult.count + " " + (projectsResult.count > 1 ? qsTr("Projects") : qsTr("Project"))
+                        font.pointSize: Regovar.theme.font.size.control
                         color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.control
                     }
+
 
                     Repeater
                     {
                         model: projectsResult.model
-                        Row
+                        onModelChanged: projectsResult.count = projectsResult.model.length
+
+                        SearchResultProject
                         {
-                            Text
-                            {
-                                width: Regovar.theme.font.boxSize.control
-                                font.pixelSize: Regovar.theme.font.size.control
-                                font.family: Regovar.theme.icons.name
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: "c"
-                            }
-                            Text
-                            {
-                                font.pixelSize: Regovar.theme.font.size.control
-                                font.family: Regovar.theme.font.familly
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: model.modelData.name
-                            }
+                            width: scrollarea.viewport.width
+                            date: model.modelData.update_date
+                            name: model.modelData.name
+
+                            onClicked: console.log("open project " + model.modelData.id) // regovar.openAnalysis(model.modelData.id)
                         }
                     }
                 }
@@ -203,34 +173,24 @@ Rectangle
 
                     Text
                     {
-                        text: qsTr("Analyses") + " (" + analysessResult.count + ")"
+                        text: "" + analysessResult.count + " " + (analysessResult.count > 1 ? qsTr("Analyses") : qsTr("Analysis"))
+                        font.pointSize: Regovar.theme.font.size.control
+                        color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.control
                     }
 
                     Repeater
                     {
                         model: analysessResult.model
-                        Row
+                        onModelChanged: analysessResult.count = analysessResult.model.length
+                        SearchResultAnalysis
                         {
-                            Row
-                            {
-                                Text
-                                {
-                                    width: Regovar.theme.font.boxSize.control
-                                    font.pixelSize: Regovar.theme.font.size.control
-                                    font.family: Regovar.theme.icons.name
-                                    color: Regovar.theme.frontColor.normal
-                                    verticalAlignment: Text.AlignVCenter
-                                    text: "I"
-                                }
-                                Text
-                                {
-                                    font.pixelSize: Regovar.theme.font.size.control
-                                    font.family: Regovar.theme.font.familly
-                                    color: Regovar.theme.frontColor.normal
-                                    verticalAlignment: Text.AlignVCenter
-                                    text: model.modelData.name
-                                }
-                            }
+                            width: scrollarea.viewport.width
+                            date: model.modelData.update_date
+                            name: model.modelData.name
+                            projectName: model.modelData.project.name
+
+                            onClicked: regovar.openAnalysis(model.modelData.id)
                         }
                     }
                 }
@@ -245,9 +205,12 @@ Rectangle
 
                     Text
                     {
-                        text: qsTr("Subjects") + " (" + subjectsResult.count + ")"
+                        width: scrollarea.viewport.width
+                        text: "" + subjectsResult.count + " " + subjectsResult.count > 1 ? qsTr("Subjects") : qsTr("Subject")
+                        font.pointSize: Regovar.theme.font.size.control
+                        color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.control
                     }
-
                     Repeater
                     {
                         model: subjectsResult.model
@@ -287,31 +250,22 @@ Rectangle
 
                     Text
                     {
-                        text: qsTr("Samples") + " (" + samplesResult.count + ")"
+                        text: "" + samplesResult.count + " " + (samplesResult.count > 1 ? qsTr("Samples") : qsTr("Sample"))
+                        font.pointSize: Regovar.theme.font.size.control
+                        color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.control
                     }
 
                     Repeater
                     {
                         model: samplesResult.model
-                        Row
+                        onModelChanged: samplesResult.count = samplesResult.model.length
+                        SearchResultSample
                         {
-                            Text
-                            {
-                                width: Regovar.theme.font.boxSize.control
-                                font.pixelSize: Regovar.theme.font.size.control
-                                font.family: Regovar.theme.icons.name
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: "4"
-                            }
-                            Text
-                            {
-                                font.pixelSize: Regovar.theme.font.size.control
-                                font.family: Regovar.theme.font.familly
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: model.modelData.name
-                            }
+                            width: scrollarea.viewport.width
+                            date: model.modelData.update_date
+                            name: model.modelData.name
+                            onClicked: console.log("open sample " + model.modelData.id) // regovar.openAnalysis(model.modelData.id)
                         }
                     }
                 }

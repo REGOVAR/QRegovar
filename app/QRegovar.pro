@@ -218,7 +218,10 @@ DISTFILES += \
     UI/Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/StartScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml
+    UI/Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml \
+    UI/Pages/Browse/SearchResultAnalysis.qml \
+    UI/Pages/Browse/SearchResultProject.qml \
+    UI/Pages/Browse/SearchResultSample.qml
 
 
 win32 {

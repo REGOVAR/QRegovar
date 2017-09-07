@@ -55,33 +55,33 @@ Dialog
                 if (choice == 1)
                 {
                     root.menuModel = [
-                        { "title" : qsTr("Start"), "checked": true, "selected": false},
-                        { "title" : qsTr("Select files"), "checked": false, "selected": true, "source":"../Dialogs/NewAnalysisWizardScreens/InputsScreen.qml"},
-                        { "title" : qsTr("Select pipeline"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml"},
-                        { "title" : qsTr("Configure"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml"},
-                        { "title" : qsTr("Launch"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
+                        { "title" : qsTr("Start"), "checked": true},
+                        { "title" : qsTr("Select files"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/InputsScreen.qml"},
+                        { "title" : qsTr("Select pipeline"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml"},
+                        { "title" : qsTr("Configure"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml"},
+                        { "title" : qsTr("Launch"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
                     ];
                     root.analysisModel["type"] = "pipeline";
                 }
                 else if (choice == 2)
                 {
                     root.menuModel = [
-                        { "title" : qsTr("Start"), "checked": true, "selected": false},
-                        { "title" : qsTr("Select pipeline"), "checked": false, "selected": true, "source":"../Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml"},
-                        { "title" : qsTr("Select files"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/InputsScreen.qml"},
-                        { "title" : qsTr("Configure"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml"},
-                        { "title" : qsTr("Launch"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
+                        { "title" : qsTr("Start"), "checked": true},
+                        { "title" : qsTr("Select pipeline"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml"},
+                        { "title" : qsTr("Select files"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/InputsScreen.qml"},
+                        { "title" : qsTr("Configure"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml"},
+                        { "title" : qsTr("Launch"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
                     ];
                     root.analysisModel["type"] = "pipeline";
                 }
                 else if (choice == 3)
                 {
                     root.menuModel = [
-                        { "title" : qsTr("Start"), "checked": true, "selected": false},
-                        { "title" : qsTr("Settings"), "checked": false, "selected": true, "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSettingsScreen.qml"},
-                        { "title" : qsTr("Select samples"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSamplesScreen.qml"},
-                        { "title" : qsTr("Select annotations"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/FilteringAnnotationScreen.qml"},
-                        { "title" : qsTr("Launch"), "checked": false, "selected": false, "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
+                        { "title" : qsTr("Start"), "checked": true},
+                        { "title" : qsTr("Settings"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSettingsScreen.qml"},
+                        { "title" : qsTr("Select samples"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSamplesScreen.qml"},
+                        { "title" : qsTr("Select annotations"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/FilteringAnnotationScreen.qml"},
+                        { "title" : qsTr("Launch"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
                     ];
                     root.analysisModel["type"] = "filtering";
                 }
@@ -107,7 +107,7 @@ Dialog
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.margins: 5
-                text: qsTr("Step") + " " + (menuSelectedIndex + 1) + "/" + root.menuModel.length
+                text: (root.menuModel !== undefined) ? qsTr("Step") + " " + (menuSelectedIndex + 1) + "/" + root.menuModel.length : ""
                 color: Regovar.theme.primaryColor.front.dark
                 font.pixelSize: Regovar.theme.font.size.control
                 font.family: Regovar.theme.font.familly
@@ -133,7 +133,7 @@ Dialog
                         color: isHover ? Regovar.theme.secondaryColor.back.normal: "transparent"
 
                         property bool isHover: false
-                        property bool isSelected: modelData["selected"]
+                        property bool isSelected: index == menuSelectedIndex
                         property bool isChecked: modelData["checked"]
 
 
@@ -177,14 +177,85 @@ Dialog
                 }
             }
         }
-        Container
+
+        Rectangle
         {
-            id: currentPageContainer
-            anchors.top: parent.top
+            id: controls
             anchors.bottom: parent.bottom
             anchors.left: naviguationPanel.right
             anchors.right: parent.right
+            anchors.margins: 10
+            height: Regovar.theme.font.boxSize.control
+            color: "transparent"
 
+            Button
+            {
+                id: previousButton
+                visible: false
+                text: qsTr("< Previous")
+                onClicked:
+                {
+                    if (menuSelectedIndex > 1)
+                    {
+                        openPage(menuSelectedIndex - 1);
+                    }
+                    else
+                    {
+                        reset();
+                        startScreen.visible = true;
+                    }
+                }
+            }
+            Row
+            {
+                anchors.right: parent.right
+                spacing: 10
+
+                Button
+                {
+                    id: cancelButton
+                    text: qsTr("Cancel")
+                    onClicked: close()
+                }
+                Button
+                {
+                    id: nextButton
+                    visible: false
+                    text: qsTr("Next >")
+                    onClicked: openPage(menuSelectedIndex + 1)
+                }
+                Button
+                {
+                    id: launchButton
+                    visible: false
+                    text: qsTr("Launch !")
+                    onClicked: console.log ("launch");
+                }
+            }
+        }
+
+        Item
+        {
+            id: stackPanel
+            anchors.top: parent.top
+            anchors.bottom: controls.top
+            anchors.left: naviguationPanel.right
+            anchors.right: parent.right
+            anchors.margins: 10
+
+            Rectangle
+            {
+                // To be sure to hide tabs that are not selected ( selectedTab.z = 100, otherTabs.z = 0)
+                anchors.fill: parent
+                color: Regovar.theme.backgroundColor.main
+                z: 99
+
+                // block click otherwise risk to interact with hidden tabs
+                MouseArea
+                {
+                    anchors.fill: parent
+                }
+            }
         }
 
 
@@ -200,6 +271,80 @@ Dialog
             BusyIndicator
             {
                 anchors.centerIn: parent
+            }
+        }
+    }
+
+
+    property var menuPageMapping: ({"length": 0})
+    onMenuModelChanged:
+    {
+        if (menuModel !== undefined)
+        {
+             reset();
+
+            // Load new pages
+            var pages = {};
+            for (var idx=1; idx<menuModel.length; idx++)
+            {
+                var model = menuModel[idx];
+                console.log ("> Page n°" + idx + " : " + model.title + " " + model.source);
+                var comp = Qt.createComponent(model.source);
+                if (comp.status == Component.Ready)
+                {
+                    var elmt = comp.createObject(stackPanel, {"z": 0});
+                    pages[idx] = elmt;
+                    elmt.anchors.fill = stackPanel;
+                    if (elmt.hasOwnProperty("model"))
+                    {
+                        elmt.model = model;
+                    }
+                }
+                else if (comp.status == Component.Error)
+                {
+                    console.log("> Error creating page QML component : ", comp.errorString());
+                }
+            }
+
+            menuPageMapping = pages;
+            menuSelectedIndex = 1;
+            menuPageMapping[1].z = 100;
+            // menuPageMapping[1].anchors.fill = stackPanel;
+
+            previousButton.visible = Qt.binding(function() { return menuSelectedIndex > 0;});
+            nextButton.visible = Qt.binding(function() { return menuSelectedIndex < menuModel.length -1; });
+            launchButton.visible = Qt.binding(function() { return menuSelectedIndex == menuModel.length -1; });
+        }
+    }
+
+    function reset()
+    {
+        // Clear old pages
+        for(var i = stackPanel.children.length; i > 0 ; i--)
+        {
+            stackPanel.children[i-1].destroy()
+        }
+    }
+
+    //! Open qml page according to the selected index
+    function openPage(newIdx)
+    {
+        if (menuPageMapping !== undefined && newIdx>0 && newIdx != menuSelectedIndex)
+        {
+            if (menuPageMapping[menuSelectedIndex])
+            {
+                menuPageMapping[menuSelectedIndex].z = 0;
+                naviguationPanel.children[1].children[menuSelectedIndex].isChecked = menuPageMapping[menuSelectedIndex].readyForNext;
+                menuPageMapping[newIdx].z = 100;
+                menuPageMapping[newIdx].anchors.fill = stackPanel;
+                nextButton.enabled = Qt.binding(function()
+                {
+                    var ready = menuPageMapping[newIdx].readyForNext;
+                    naviguationPanel.children[1].children[menuSelectedIndex].isChecked = ready;
+                    //menuModel[newIdx]["checked"] = ready;
+                    return ready;
+                });
+                menuSelectedIndex = newIdx;
             }
         }
     }

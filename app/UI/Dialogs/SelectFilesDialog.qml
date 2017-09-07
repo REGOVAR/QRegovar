@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4 as OLD
 import QtQml.Models 2.2
 import QtQuick.Dialogs 1.2
+import org.regovar 1.0
 
 import "../Regovar"
 import "../Framework"
@@ -176,8 +177,9 @@ Dialog
 
                 onActivated :
                 {
-                    var url = fileSystemModel.data(index, FileSystemModel.UrlStringRole)
-                    Qt.openUrlExternally(url)
+
+                    var url = fileSystemModel.data(index, FileSystemModel.UrlStringRole);
+                    Qt.openUrlExternally(url);
                 }
             }
 

@@ -12,6 +12,6 @@ GenericScreen
     Text
     {
         anchors.centerIn: parent
-        text: "Launch"
+        text: "Resume and confirmation"
     }
 }

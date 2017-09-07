@@ -107,8 +107,8 @@ Rectangle
         {
             name: "normal"
             PropertyChanges { target: root; color: Regovar.theme.primaryColor.back.dark}
-            PropertyChanges { target: icon; color: Regovar.theme.primaryColor.back.normal}
-            PropertyChanges { target: label; color: Regovar.theme.primaryColor.back.normal}
+            PropertyChanges { target: icon; color: Regovar.theme.primaryColor.back.light}
+            PropertyChanges { target: label; color: Regovar.theme.primaryColor.back.light}
             PropertyChanges { target: selectHighlight; visible: false}
         },
         State

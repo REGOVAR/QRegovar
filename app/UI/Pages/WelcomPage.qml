@@ -426,7 +426,7 @@ Rectangle
         {
             if (success)
             {
-                Regovar.menuModel.selectedIndex=[2,-1,-1];
+                Regovar.menuModel.selectedIndex=[2,1,0];
             }
         }
     }
@@ -452,7 +452,7 @@ Rectangle
         {
             if (success)
             {
-                Regovar.menuModel.selectedIndex=[3,-1,-1];
+                Regovar.menuModel.selectedIndex=[3,1,0];
             }
         }
     }

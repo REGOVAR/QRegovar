@@ -8,9 +8,9 @@ import "../../Framework"
 Rectangle
 {
     id: root
-    color: Regovar.theme.backgroundColor.main
+    color: Regovar.theme.backgroundColor.alt
+    clip: true
 
-
-
-
+    property bool readyForNext: false
+    property var analysisModel: ({})
 }
