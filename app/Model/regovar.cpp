@@ -43,8 +43,6 @@ void Regovar::init()
 
     // Connections
     connect(mUploader,  SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
-//    connect(mWebSocket, SIGNAL(connected()), this, SLOT(websocketConnected()));
-//    connect(mWebSocket, SIGNAL(disconnected()), this, SLOT(websocketClosed()));
     connect(&mWebSocket, &QWebSocket::connected, this, &Regovar::websocketConnected);
     connect(&mWebSocket, &QWebSocket::disconnected, this, &Regovar::websocketClosed);
 
@@ -54,6 +52,7 @@ void Regovar::init()
     // DEBUG
     // loadAnalysis(4);
     mWebSocket.open(QUrl(mWebsocketUrl));
+    getWelcomLastData();
 }
 
 
@@ -61,7 +60,7 @@ void Regovar::websocketConnected()
 {
     qDebug() << "Websocket connected !";
     connect(&mWebSocket, &QWebSocket::textMessageReceived, this, &Regovar::websocketMessageReceived);
-    mWebSocket.sendTextMessage(QStringLiteral("hello"));
+    mWebSocket.sendTextMessage(QStringLiteral("{ \"msg\" : \"hello\"}"));
 }
 
 void Regovar::websocketMessageReceived(QString message)
@@ -128,6 +127,31 @@ void Regovar::loadProject(int id)
             {
                 qDebug() << Q_FUNC_INFO << "Failed to load project from id " << id << ". Wrong json data";
             }
+        }
+        else
+        {
+            regovar->raiseError(json);
+        }
+        req->deleteLater();
+    });
+}
+
+
+
+void Regovar::getWelcomLastData()
+{
+    Request* req = Request::get(QString("/"));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            QJsonObject data = json["data"].toObject();
+            mLastAnalyses = data["last_analyses"].toArray();
+            emit lastAnalysesChanged();
+            mLastEvents = data["last_events"].toArray();
+            emit lastEventChanged();
+            mLastSubjects = data["last_subjects"].toArray();
+            emit lastSubjectsChanged();
         }
         else
         {

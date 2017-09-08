@@ -32,7 +32,10 @@ class Regovar : public QObject
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
     Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewChanged)
     Q_PROPERTY(FilesTreeModel* remoteFilesTreeView READ remoteFilesTreeView NOTIFY remoteFilesTreeViewChanged)
-    Q_PROPERTY(Project* currentProject READ currentProject  NOTIFY currentProjectChanged)
+    Q_PROPERTY(Project* currentProject READ currentProject NOTIFY currentProjectChanged)
+    Q_PROPERTY(QJsonArray lastAnalyses READ lastAnalyses NOTIFY lastAnalysesChanged)
+    Q_PROPERTY(QJsonArray lastEvent READ lastEvent NOTIFY lastEventChanged)
+    Q_PROPERTY(QJsonArray lastSubjects READ lastSubjects NOTIFY lastSubjectsChanged)
 
 public:
     static Regovar* i();
@@ -48,6 +51,9 @@ public:
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
     inline FilesTreeModel* remoteFilesTreeView() const { return mRemoteFilesTreeView; }
     inline Project* currentProject() const { return mCurrentProject; }
+    inline QJsonArray lastAnalyses() const { return mLastAnalyses; }
+    inline QJsonArray lastEvent() const { return mLastEvents; }
+    inline QJsonArray lastSubjects() const { return mLastSubjects; }
     //inline UserModel* currentUser() const { return mUser; }
 
     // Setters
@@ -69,6 +75,9 @@ public:
     Q_INVOKABLE void openAnalysis(int analysisId);
     Q_INVOKABLE FilteringAnalysis* getAnalysisFromWindowId(int winId);
     Q_INVOKABLE void search(QString query);
+    Q_INVOKABLE void getWelcomLastData();
+
+
 
 public Q_SLOTS:
 //    void login(QString& login, QString& password);
@@ -105,15 +114,14 @@ Q_SIGNALS:
     void projectCreationDone(bool success, int projectId);
     void analysisCreationDone(bool success, int analysisId);
     void subjectCreationDone(bool success, int subjectId);
-
-
+    void lastAnalysesChanged();
+    void lastEventChanged();
+    void lastSubjectsChanged();
 
 private:
     Regovar();
     ~Regovar();
     static Regovar* mInstance;
-
-
 
     // Models
     //! The root url to the server api
@@ -135,6 +143,10 @@ private:
     TusUploader * mUploader;
     //! Filtering analyses
     QList<FilteringAnalysis*> mOpenAnalyses;
+    //! Welcom last data
+    QJsonArray mLastEvents;
+    QJsonArray mLastAnalyses;
+    QJsonArray mLastSubjects;
 
 
     //! We need ref to the QML engine to create/open new windows for Analysis
