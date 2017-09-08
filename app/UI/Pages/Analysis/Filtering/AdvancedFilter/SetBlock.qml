@@ -16,6 +16,7 @@ Rectangle
     color: "transparent"
 
     property FilteringAnalysis analysis
+    property bool isChecked: true
     property var model
     property var operator
     property var leftOp
@@ -48,16 +49,19 @@ Rectangle
             {
                 text: (root.leftOp !== null) ? root.leftOp[1] : ""
                 font.pixelSize: Regovar.theme.font.size.control
+                color: root.isChecked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
             }
             Text
             {
                 text: root.operator
                 font.pixelSize: Regovar.theme.font.size.control
+                color: root.isChecked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
             }
             Text
             {
                 text: (root.rightOp !== null) ? root.rightOp[1] : ""
                 font.pixelSize: Regovar.theme.font.size.control
+                color: root.isChecked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
             }
         }
     }

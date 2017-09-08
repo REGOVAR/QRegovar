@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4 as OLD
 import QtQml.Models 2.2
 import QtQuick.Dialogs 1.2
+import org.regovar 1.0
 
 import "../Regovar"
 import "../Framework"
@@ -16,7 +17,7 @@ Dialog
     width: 500
     height: 400
 
-
+    property FilteringAnalysis currentAnalysis
     property alias localIndex: localFiles.currentIndex
     property alias localSelection: localFiles.selection
     property alias remoteSampleTreeModel: remoteSamples.model
@@ -72,6 +73,8 @@ Dialog
                 anchors.right: rootRemoteView.right
                 anchors.bottom: remoteSwitchButton.top
                 anchors.margins: 10
+
+                model: currentAnalysis.remoteSamples
 
                 // TODO : enable multiple selection for the treeview
 //                selection: ItemSelectionModel

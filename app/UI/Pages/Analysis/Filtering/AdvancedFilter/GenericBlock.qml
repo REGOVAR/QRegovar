@@ -9,13 +9,13 @@ import "../../../../Regovar"
 Rectangle
 {
     id: root
-    width: parent.width
-
-    color: "transparent"
 
     property FilteringAnalysis analysis
+    property bool isChecked
     property var model
     property var component
+
+    color: "transparent"
 
     onModelChanged:
     {
@@ -47,11 +47,13 @@ Rectangle
             elmt.anchors.top = root.top;
             elmt.anchors.right = root.right;
             elmt.anchors.left = root.left;
+            elmt.anchors.topMargin = 1;
             root.height = Qt.binding(function() { return elmt.height; });
 
             if (elmt.hasOwnProperty("model"))
             {
                 elmt.model = Qt.binding(function() { return root.model; });
+                elmt.isChecked = Qt.binding(function() { return root.isChecked; });
             }
         }
         else if (comp.status == Component.Error)

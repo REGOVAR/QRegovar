@@ -59,19 +59,36 @@ GenericScreen
                     clip: true
                     anchors.fill: parent
                     anchors.margins: 1
+
+                    model: [{"subject" : "MD-02-75 - DUPONT Michel (64y)", "sample" : "HP-col5"}, {"subject" : "MD-02-72 - DUPONT Michelline", "sample" : "HP-col75"}, {"subject" : "MD-02-77 - DUPONT Michou", "sample" : "HP-col8"}]
+
                     delegate: Rectangle
                     {
                         width: inputsList.width
                         height: Regovar.theme.font.boxSize.control
                         color: index % 2 == 0 ? Regovar.theme.backgroundColor.main : "transparent"
 
-                        Text
+                        Row
                         {
-                            anchors.left: parent.left
-                            anchors.leftMargin: 5
-                            anchors.verticalCenter: parent.verticalCenter
-
-                            text: index
+                            anchors.fill: parent
+                            Text
+                            {
+                                text: model.modelData.subject
+                            }
+                            Text
+                            {
+                                width: Regovar.theme.font.boxSize.control
+                                font.pixelSize: Regovar.theme.font.size.control
+                                font.family: Regovar.theme.icons.name
+                                color: Regovar.theme.frontColor.normal
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: Text.AlignHCenter
+                                text: "{"
+                            }
+                            Text
+                            {
+                                text: model.modelData.sample
+                            }
                         }
                     }
                 }

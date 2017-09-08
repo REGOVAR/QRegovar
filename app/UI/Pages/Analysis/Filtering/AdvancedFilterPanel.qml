@@ -66,10 +66,11 @@ Rectangle
                 id:advancedFilterEditor
                 model: root.model.filterJson
                 analysis : root.model
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: 5
+
+                x: 5
+                y: 5
+                width: root.width - 10
+
             }
         }
 

@@ -101,6 +101,17 @@ QtObject
         property color color2: "#0077c2"
     }
 
+    property QtObject filtering: QtObject
+    {
+        property color seqA: "#80d6ff"
+        property color seqC: "#0077c2"
+        property color seqG: "#80d6ff"
+        property color seqT: "#0077c2"
+        property color filterAND: "#3770cc"
+        property color filterOR: "#37cc77"
+        property color filterXOR: "#cc3737"
+    }
+
 
 
 

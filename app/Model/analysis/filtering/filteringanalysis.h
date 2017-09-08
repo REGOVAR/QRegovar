@@ -35,6 +35,8 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
 
 
+
+
 public:
     enum LoadingStatus
     {

@@ -98,31 +98,31 @@ GenericScreen
                     onCurrentIndexChanged: root.readyForNext = checkReadyreadyForNext();
                 }
             }
-            RowLayout
-            {
-                width: scrollArea.viewport.width
-                spacing: 10
+//            RowLayout
+//            {
+//                width: scrollArea.viewport.width
+//                spacing: 10
 
-                Text
-                {
-                    height: Regovar.theme.font.size.header
-                    Layout.minimumWidth: root.labelColWidth
-                    text: qsTr("Type")
-                    color: Regovar.theme.frontColor.normal
-                    font.pixelSize: Regovar.theme.font.size.control
-                    font.family: Regovar.theme.font.familly
-                    verticalAlignment: Text.AlignVCenter
-                    Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
-                }
+//                Text
+//                {
+//                    height: Regovar.theme.font.size.header
+//                    Layout.minimumWidth: root.labelColWidth
+//                    text: qsTr("Type")
+//                    color: Regovar.theme.frontColor.normal
+//                    font.pixelSize: Regovar.theme.font.size.control
+//                    font.family: Regovar.theme.font.familly
+//                    verticalAlignment: Text.AlignVCenter
+//                    Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
+//                }
 
-                ComboBox
-                {
-                    Layout.fillWidth: true
-                    id: typeField
-                    model: ["Cutom", "Trio"]
-                    onCurrentIndexChanged: root.readyForNext = checkReadyreadyForNext();
-                }
-            }
+//                ComboBox
+//                {
+//                    Layout.fillWidth: true
+//                    id: typeField
+//                    model: ["Cutom", "Trio"]
+//                    onCurrentIndexChanged: root.readyForNext = checkReadyreadyForNext();
+//                }
+//            }
             RowLayout
             {
                 width: scrollArea.viewport.width

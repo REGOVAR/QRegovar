@@ -15,6 +15,7 @@ Rectangle
     color: "transparent"
 
     property FilteringAnalysis analysis
+    property bool isChecked: true
     property var model
     property var opMapping: {"<":"<", "<=": "≤", "==": "=", ">=": "≥", ">": ">", "!=": "≠"}
     property var opMappingR: {"<":"<", "≤": "<=", "=": "==", "≥": ">=", ">": ">", "≠": "!="}
@@ -36,7 +37,7 @@ Rectangle
     Rectangle
     {
         anchors.fill: parent
-        color: "#aaaaaaaa"
+        color: "transparent"
 
         Row
         {
@@ -51,6 +52,7 @@ Rectangle
                 height: Regovar.theme.font.boxSize.control
                 verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.control
+                color: root.isChecked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
             }
             Text
             {
@@ -59,6 +61,7 @@ Rectangle
                 height: Regovar.theme.font.boxSize.control
                 verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.control
+                color: root.isChecked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
             }
             Text
             {
@@ -67,6 +70,7 @@ Rectangle
                 height: Regovar.theme.font.boxSize.control
                 verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.control
+                color: root.isChecked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
             }
         }
     }

@@ -13,20 +13,19 @@ Rectangle
     color: "transparent"
 
     property FilteringAnalysis analysis
+    property bool isChecked: true
     property var model
     property var subItems
     property bool isExpand: true
     onIsExpandChanged: resize()
 
 
-    property string logicalColor: "red" // Regovar.theme.boxColor.border
+    property string logicalColor: Regovar.theme.filtering.filterAND
 
     onModelChanged: updateView()
     onAnalysisChanged: updateView()
     Component.onCompleted: updateView()
 
-//    border.width: 1
-//    border.color: "purple"
 
     function updateView()
     {
@@ -63,37 +62,43 @@ Rectangle
         anchors.top: root.top
         anchors.left: root.left
         anchors.right: root.right
-//        color: "#aaaaaaaa"
+        color: "transparent"
 
         ComboBox
         {
             id: operator
             anchors.top: parent.top
             anchors.left: parent.left
+            enabled: root.isChecked
             model: ["AND", "OR"]
+            color: root.isChecked ? root.logicalColor : Regovar.theme.frontColor.disable
+            onCurrentIndexChanged:
+            {
+                root.logicalColor = currentIndex == 0 ? Regovar.theme.filtering.filterAND : Regovar.theme.filtering.filterOR;
+            }
 
-            color: root.logicalColor
+
         }
 
-//        Text
-//        {
-//            anchors.top: parent.top
-//            anchors.right: parent.right
-//            text: "|"
-//            height: Regovar.theme.font.boxSize.header
-//            width: Regovar.theme.font.boxSize.header
-//            verticalAlignment: Text.AlignVCenter
-//            horizontalAlignment: Text.AlignHCenter
-//            font.pixelSize: Regovar.theme.font.size.header
-//            // color: loadFilterButton.mouseHover ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
-//            font.family: Regovar.theme.icons.name
+        Text
+        {
+            anchors.top: parent.top
+            anchors.right: parent.right
+            text: "|"
+            height: Regovar.theme.font.boxSize.header
+            width: Regovar.theme.font.boxSize.header
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: Regovar.theme.font.size.header
+            // color: loadFilterButton.mouseHover ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
+            font.family: Regovar.theme.icons.name
 
-//            MouseArea
-//            {
-//                anchors.fill: parent
-//                onClicked: isExpand = !isExpand
-//            }
-//        }
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: isExpand = !isExpand
+            }
+        }
     }
 
 
@@ -103,10 +108,10 @@ Rectangle
         visible: isExpand
         anchors.top : header.bottom
         anchors.left: parent.left
-        anchors.leftMargin: Regovar.theme.font.boxSize.header / 2
+        anchors.leftMargin: Regovar.theme.font.boxSize.control / 2
         height: subItemsList.height
         width: 1
-        color: root.logicalColor
+        color: root.isChecked ? root.logicalColor : Regovar.theme.frontColor.disable
     }
 
     Column
@@ -129,36 +134,66 @@ Rectangle
             {
                 anchors.left: parent.left
                 anchors.right: parent.right
-                height: 246 // Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.control // This default size is overrided when the child GenericBlock height changed
+                color: "transparent"
 
-//                color: "lightgreen"
-//                border.color: "darkgreen"
-//                border.width: 1
+                id: logicalSubItem
+                property bool isChecked: true
 
-                Text
+                Rectangle
                 {
                     height: Regovar.theme.font.boxSize.control
                     width: Regovar.theme.font.boxSize.control
                     anchors.left: parent.left
                     anchors.top: parent.top
+                    color: "transparent"
 
-                    text: "p"
-                    font.family: Regovar.theme.icons.name
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pixelSize: Regovar.theme.font.size.control
+                    Text
+                    {
+                        anchors.centerIn: parent
+                        text: "r"
+                        font.family: Regovar.theme.icons.name
+                        font.pixelSize: Regovar.theme.font.size.control
 
-                    color: "red"
+                        color: Regovar.theme.backgroundColor.main
+                    }
+                    Text
+                    {
+                        anchors.centerIn: parent
+                        text: "²"
+                        font.family: Regovar.theme.icons.name
+                        font.pixelSize: Regovar.theme.font.size.control
+
+                        color: root.isChecked ? root.logicalColor : Regovar.theme.frontColor.disable
+                    }
+                    Text
+                    {
+                        anchors.centerIn: parent
+                        visible: logicalSubItem.isChecked
+                        text: "p"
+                        font.family: Regovar.theme.icons.name
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.pixelSize: Regovar.theme.font.size.content
+
+                        color: root.logicalColor
+                    }
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked: logicalSubItem.isChecked = !logicalSubItem.isChecked
+                    }
                 }
+
                 GenericBlock
                 {
                     analysis: root.analysis
                     model: modelData
                     anchors.top: parent.top
-                    anchors.bottom: parent.bottom
                     anchors.left: parent.left
                     anchors.leftMargin: 5 + Regovar.theme.font.boxSize.control
-
+                    width: root.width - 5 - Regovar.theme.font.boxSize.control
+                    isChecked: logicalSubItem.isChecked
 
                     onHeightChanged: { parent.height = height; console.log("z height=" + height + " total="+fullSize()); resize(); }
                 }
@@ -171,13 +206,14 @@ Rectangle
         visible: isExpand
 
         id: addConditionButton
+        property bool isHover: false
 
         height: Regovar.theme.font.boxSize.control
         anchors.bottom: root.bottom
         anchors.left: root.left
         anchors.right: root.right
 
-        color: "yellow"
+        color: "transparent"
 
         Rectangle
         {
@@ -186,7 +222,7 @@ Rectangle
             anchors.leftMargin: Regovar.theme.font.boxSize.control / 2
             width: 1
             height: parent.height/2
-            color: root.logicalColor
+            color: root.isChecked ? root.logicalColor : Regovar.theme.frontColor.disable
         }
 
         Rectangle
@@ -205,15 +241,15 @@ Rectangle
                 width: Regovar.theme.font.boxSize.control * 0.75
                 radius: width * 0.5
 
-                color: Regovar.theme.backgroundColor.main
+                color: addConditionButton.isHover ? Regovar.theme.secondaryColor.back.light : Regovar.theme.backgroundColor.main
                 border.width: 1
-                border.color: root.logicalColor
+                border.color: root.isChecked ? root.logicalColor : Regovar.theme.frontColor.disable
             }
             Text
             {
                 anchors.centerIn: parent
                 text:  "µ"
-
+                color: addConditionButton.isHover ? Regovar.theme.secondaryColor.back.dark : root.isChecked ? root.logicalColor : Regovar.theme.frontColor.disable
                 font.family: Regovar.theme.icons.name
                 font.pixelSize: Regovar.theme.font.size.control
             }
@@ -223,9 +259,10 @@ Rectangle
         {
             anchors.top : parent.top
             anchors.left: parent.left
-            anchors.leftMargin: Regovar.theme.font.boxSize.header + 5
-            height: Regovar.theme.font.boxSize.header
+            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+            height: Regovar.theme.font.boxSize.control
             text:  "Add condition"
+            color: addConditionButton.isHover ? Regovar.theme.secondaryColor.back.dark : Regovar.theme.frontColor.disable
 
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Regovar.theme.font.size.control
@@ -234,6 +271,9 @@ Rectangle
         MouseArea
         {
             anchors.fill: parent
+            hoverEnabled: true
+            onEntered: addConditionButton.isHover = true
+            onExited: addConditionButton.isHover = false
             onClicked: analysis.emitDisplayFilterNewCondPopup(root.model)
         }
     }
