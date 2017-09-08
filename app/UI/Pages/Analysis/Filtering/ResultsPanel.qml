@@ -126,7 +126,7 @@ Rectangle
                         elide: Text.ElideRight
                         font.family: "monospace"
                         horizontalAlignment: Text.AlignRight
-                        text: styleData.value.value
+                        text: styleData.value.value ? styleData.value.value : "-"
                     }
                 }
             }
