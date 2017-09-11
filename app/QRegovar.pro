@@ -36,7 +36,8 @@ HEADERS += \
     Model/analysis/filtering/quickfilters/insilicopredquickfilter.h \
     Model/analysis/filtering/fieldcolumninfos.h \
     Model/analysis/filtering/remotesampletreeitem.h \
-    Model/analysis/filtering/remotesampletreemodel.h
+    Model/analysis/filtering/remotesampletreemodel.h \
+    Model/analysis/pipeline/pipelineanalysis.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -70,7 +71,8 @@ SOURCES += main.cpp \
     Model/analysis/filtering/quickfilters/insilicopredquickfilter.cpp \
     Model/analysis/filtering/fieldcolumninfos.cpp \
     Model/analysis/filtering/remotesampletreeitem.cpp \
-    Model/analysis/filtering/remotesampletreemodel.cpp
+    Model/analysis/filtering/remotesampletreemodel.cpp \
+    Model/analysis/pipeline/pipelineanalysis.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -221,7 +223,7 @@ DISTFILES += \
     UI/Pages/Browse/SearchResultAnalysis.qml \
     UI/Pages/Browse/SearchResultProject.qml \
     UI/Pages/Browse/SearchResultSample.qml \
-    UI/MainMenu/MenuProjectEntry.qml
+    UI/Framework/TableView.qml
 
 
 win32 {

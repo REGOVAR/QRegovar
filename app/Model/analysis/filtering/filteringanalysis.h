@@ -48,7 +48,7 @@ public:
     };
 
     // Constructor
-    explicit FilteringAnalysis(QObject *parent = nullptr);
+    explicit FilteringAnalysis(QObject* parent = nullptr);
 
     // Getters
     // Internal

@@ -10,6 +10,7 @@
 #include "file/tusuploader.h"
 #include "analysis/filtering/filteringanalysis.h"
 #include <QtWebSockets/QtWebSockets>
+#include "Model/analysis/pipeline/pipelineanalysis.h"
 
 #ifndef regovar
 #define regovar (Regovar::i())
@@ -31,13 +32,16 @@ class Regovar : public QObject
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
     Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewChanged)
-    Q_PROPERTY(FilesTreeModel* remoteFilesTreeView READ remoteFilesTreeView NOTIFY remoteFilesTreeViewChanged)
+    Q_PROPERTY(QList<QObject*> remoteFilesList READ remoteFilesList NOTIFY remoteFilesListChanged)
     Q_PROPERTY(Project* currentProject READ currentProject NOTIFY currentProjectChanged)
     Q_PROPERTY(QJsonArray lastAnalyses READ lastAnalyses NOTIFY lastAnalysesChanged)
     Q_PROPERTY(QJsonArray lastEvent READ lastEvent NOTIFY lastEventChanged)
     Q_PROPERTY(QJsonArray lastSubjects READ lastSubjects NOTIFY lastSubjectsChanged)
     Q_PROPERTY(QList<QObject*> projectsOpen READ projectsOpen NOTIFY projectsOpenChanged)
     Q_PROPERTY(QVariantList subjetsOpen READ subjetsOpen NOTIFY subjetsOpenChanged)
+
+    Q_PROPERTY(PipelineAnalysis* newPipelineAnalysis READ newPipelineAnalysis NOTIFY newPipelineAnalysisChanged)
+    Q_PROPERTY(FilteringAnalysis* newFilteringAnalysis READ newFilteringAnalysis NOTIFY newFilteringAnalysisChanged)
 
 public:
     static Regovar* i();
@@ -51,7 +55,7 @@ public:
     inline QJsonObject searchResult() const { return mSearchResult; }
     inline bool searchInProgress() const { return mSearchInProgress; }
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
-    inline FilesTreeModel* remoteFilesTreeView() const { return mRemoteFilesTreeView; }
+    inline QList<QObject*> remoteFilesList() const { return mRemoteFilesList; }
     inline Project* currentProject() const { return mCurrentProject; }
     inline QJsonArray lastAnalyses() const { return mLastAnalyses; }
     inline QJsonArray lastEvent() const { return mLastEvents; }
@@ -59,6 +63,8 @@ public:
     inline QList<QObject*> projectsOpen() const { return mProjectsOpen; }
     inline QVariantList subjetsOpen() const { return mSubjectsOpen; }
     //inline UserModel* currentUser() const { return mUser; }
+    inline PipelineAnalysis* newPipelineAnalysis() const { return mNewPipelineAnalysis; }
+    inline FilteringAnalysis* newFilteringAnalysis() const { return mNewFilteringAnalysis; }
 
     // Setters
     inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlChanged(); }
@@ -80,13 +86,14 @@ public:
     Q_INVOKABLE FilteringAnalysis* getAnalysisFromWindowId(int winId);
     Q_INVOKABLE void search(QString query);
     Q_INVOKABLE void getWelcomLastData();
+    Q_INVOKABLE void resetNewAnalysisWizardModels();
 
 
 
 public Q_SLOTS:
 //    void login(QString& login, QString& password);
 //    void logout();
-    void authenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
+    void onAuthenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
 
     void refreshProjectsTreeView();
     void loadFilesBrowser();
@@ -96,9 +103,9 @@ public Q_SLOTS:
     void loadAnalysis(int id);
 
     // Websocket
-    void websocketConnected();
-    void websocketClosed();
-    void websocketMessageReceived(QString message);
+    void onWebsocketConnected();
+    void onWebsocketClosed();
+    void onWebsocketReceived(QString message);
 
 
 signals:
@@ -111,7 +118,7 @@ Q_SIGNALS:
     void searchInProgressChanged();
     void serverUrlChanged();
     void projectsTreeViewChanged();
-    void remoteFilesTreeViewChanged();
+    void remoteFilesListChanged();
     void currentProjectChanged();
     void onClose();
     void onError(QString errCode, QString message);
@@ -123,6 +130,9 @@ Q_SIGNALS:
     void lastSubjectsChanged();
     void subjetsOpenChanged();
     void projectsOpenChanged();
+    void newPipelineAnalysisChanged();
+    void newFilteringAnalysisChanged();
+    void websocketMessageReceived(QString action, QJsonObject data);
 
 private:
     Regovar();
@@ -144,7 +154,7 @@ private:
     //! The model of the current project loaded
     Project* mCurrentProject;
     //! The model used to browse all files available on the server
-    FilesTreeModel* mRemoteFilesTreeView;
+    QList<QObject*> mRemoteFilesList;
     //! The uploader that manage TUS protocol (resumable upload)
     TusUploader * mUploader;
     //! Filtering analyses
@@ -156,7 +166,9 @@ private:
     //! list of project/subject open
     QList<QObject*> mProjectsOpen;
     QVariantList mSubjectsOpen;
-
+    //! model to hold data when using form to create a new analysis
+    PipelineAnalysis* mNewPipelineAnalysis;
+    FilteringAnalysis* mNewFilteringAnalysis;
 
     //! We need ref to the QML engine to create/open new windows for Analysis
     QQmlApplicationEngine* mQmlEngine;

@@ -1,6 +1,6 @@
 import QtQuick 2.7
+import QtQuick.Controls 1.4
 import QtQuick.Controls 2.2
-import QtQuick.Controls 1.4 as OLD
 import QtQml.Models 2.2
 import QtQuick.Dialogs 1.2
 import org.regovar 1.0
@@ -18,7 +18,7 @@ Dialog
     height: 400
 
 
-    property alias remoteIndex: remoteFiles.currentIndex
+    property alias remoteIndex: remoteFiles.currentRow
     property alias localIndex: localFiles.currentIndex
     property alias remoteSelection: remoteFiles.selection
     property alias localSelection: localFiles.selection
@@ -29,6 +29,7 @@ Dialog
     Keys.onEscapePressed: root.reject()
     Keys.onBackPressed: root.reject() // especially necessary on Android
 
+    signal fileSelected(var files)
 
     contentItem: Rectangle
     {
@@ -63,7 +64,7 @@ Dialog
                 placeholderText: qsTr("Search file by name, date, comment, ...")
             }
 
-            TreeView
+            TableView
             {
                 id: remoteFiles
                 anchors.top : remoteFilterField.bottom
@@ -72,7 +73,82 @@ Dialog
                 anchors.bottom: remoteSwitchButton.top
                 anchors.margins: 10
 
-                model: regovar.remoteFilesTreeView
+                model: regovar.remoteFilesList
+                selectionMode: SelectionMode.ExtendedSelection
+
+
+                TableViewColumn
+                {
+                    title: "Name"
+                    role: "filenameUI"
+                    delegate: Item
+                    {
+
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.icon
+                            font.family: Regovar.theme.icons.name
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.fill: parent
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.filename
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
+                TableViewColumn
+                {
+                    title: "Status"
+                    role: "statusUI"
+                    delegate: Item
+                    {
+
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.status == 0 ? "/" : styleData.value.status == 3 ? "l" : "n"
+                            font.family: Regovar.theme.icons.name
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.label
+                            elide: Text.ElideRight
+                        }
+
+                    }
+                }
+                TableViewColumn { title: "Size"; role: "sizeUI" }
+                TableViewColumn { title: "Date"; role: "updateDate" }
+                TableViewColumn { title: "Source"; role: "sourceUI" }
+                TableViewColumn { title: "Comment"; role: "comment" }
+
+                Component.onCompleted: regovar.loadFilesBrowser()
             }
 
             Button
@@ -144,14 +220,14 @@ Dialog
                 selection: sel
                 selectionMode:2
 
-                OLD.TableViewColumn
+                TableViewColumn
                 {
                     title: "Name"
                     role: "fileName"
                     resizable: true
                 }
 
-                OLD.TableViewColumn
+                TableViewColumn
                 {
                     title: "Size"
                     role: "size"
@@ -160,7 +236,7 @@ Dialog
                     width: 70
                 }
 
-                OLD.TableViewColumn
+                TableViewColumn
                 {
                     title: "Permissions"
                     role: "displayableFilePermissions"
@@ -168,7 +244,7 @@ Dialog
                     width: 100
                 }
 
-                OLD.TableViewColumn
+                TableViewColumn
                 {
                     title: "Date Modified"
                     role: "lastModified"
@@ -210,7 +286,32 @@ Dialog
             anchors.margins: 10
 
             text: qsTr("Ok")
-            onClicked: fileDialog.accept()
+            onClicked:
+            {
+                var files=[];
+                if (rootRemoteView.visible)
+                {
+                    remoteFiles.selection.forEach( function(rowIndex)
+                    {
+                        files = files.concat(regovar.remoteFilesList[rowIndex]);
+                    });
+                }
+                if (rootLocalView.visible)
+                {
+                    // First retrieve local files
+                    remoteFiles.selection.forEach( function(rowIndex)
+                    {
+                        files = files.concat(regovar.remoteFilesList[rowIndex]);
+                    });
+                    // Init upload and retrieve id
+
+                    // Retrieve
+                }
+
+
+                fileSelected(files);
+                fileDialog.accept();
+            }
         }
 
         Button
@@ -222,6 +323,13 @@ Dialog
             text: qsTr("Cancel")
             onClicked: fileDialog.reject()
         }
+    }
+
+    function reset()
+    {
+        rootRemoteView.visible = true;
+        rootLocalView.visible = false;
+        remoteFiles.selection.select(0);
     }
 }
 

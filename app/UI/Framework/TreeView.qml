@@ -12,9 +12,8 @@ TreeView
 
 
     property var currentItem
-    property int rowHeight: 22
+    property int rowHeight: Regovar.theme.font.boxSize.control
 
-    FontLoader { id: iconsFont; source: "../Icons.ttf" }
 
     style: TreeViewStyle
     {
@@ -54,8 +53,8 @@ TreeView
                 end: Qt.point(0, 24)
                 gradient: Gradient
                 {
-                    GradientStop { position: 0.0; color: "#fcfcfd" }
-                    GradientStop { position: 1.0; color: "#e7e7e7" }
+                    GradientStop { position: 0.0; color: Regovar.theme.boxColor.header1  }
+                    GradientStop { position: 1.0; color: Regovar.theme.boxColor.header2  }
                 }
             }
 
@@ -108,7 +107,7 @@ TreeView
 
             font.pixelSize: 16 // Regovar.theme.font.size.control
             text: styleData.isExpanded ? "{" : "["
-            font.family: iconsFont.name
+            font.family: Regovar.theme.icons.name
         }
     }
 

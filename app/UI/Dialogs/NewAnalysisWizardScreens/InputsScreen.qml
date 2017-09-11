@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
+import QtQuick.Controls 1.4
 
 import "../../Regovar"
 import "../../Framework"
@@ -45,37 +46,88 @@ GenericScreen
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            Rectangle
+
+            TableView
             {
+                id: inputsList
+                clip: true
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                color: Regovar.theme.boxColor.back
-                border.width: 1
-                border.color: Regovar.theme.boxColor.border
 
-                ListView
+                model: regovar.newPipelineAnalysis.inputsFilesList
+
+                TableViewColumn
                 {
-                    id: inputsList
-                    clip: true
-                    anchors.fill: parent
-                    anchors.margins: 1
-                    delegate: Rectangle
+                    title: "Name"
+                    role: "filenameUI"
+                    delegate: Item
                     {
-                        width: inputsList.width
-                        height: Regovar.theme.font.boxSize.control
-                        color: index % 2 == 0 ? Regovar.theme.backgroundColor.main : "transparent"
 
                         Text
                         {
-                            anchors.left: parent.left
                             anchors.leftMargin: 5
+                            anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
-
-                            text: index
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.icon
+                            font.family: Regovar.theme.icons.name
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.fill: parent
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.filename
+                            elide: Text.ElideRight
                         }
                     }
                 }
+                TableViewColumn
+                {
+                    title: "Status"
+                    role: "statusUI"
+                    delegate: Item
+                    {
+
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.status == 0 ? "/" : styleData.value.status == 3 ? "l" : "n"
+                            font.family: Regovar.theme.icons.name
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.label
+                            elide: Text.ElideRight
+                        }
+
+                    }
+                }
+                TableViewColumn { title: "Size"; role: "sizeUI" }
+                TableViewColumn { title: "Date"; role: "updateDate" }
+                TableViewColumn { title: "Source"; role: "sourceUI" }
+                TableViewColumn { title: "Comment"; role: "comment" }
             }
+
 
 
 
@@ -87,19 +139,47 @@ GenericScreen
                 {
                     id: addButton
                     text: qsTr("Add file")
-                    onClicked: { fileSelector.open(); inputsList.model = 10; }
+                    onClicked: { fileSelector.reset(); fileSelector.open(); }
                 }
                 Button
                 {
                     id: remButton
                     text: qsTr("Remove file")
-                    onClicked: inputsList.model = null;
+                    onClicked:
+                    {
+                        // Get list of objects to remove
+                        var files= []
+                        inputsList.selection.forEach( function(rowIndex)
+                        {
+                            files = files.concat(regovar.remoteFilesList[rowIndex]);
+                        });
+                        regovar.newPipelineAnalysis.removeInputs(files);
+                    }
                 }
             }
         }
     }
 
 
-    SelectFilesDialog { id: fileSelector }
+    SelectFilesDialog
+    {
+        id: fileSelector
+        onFileSelected: regovar.newPipelineAnalysis.addInputs(files);
+    }
+
+    Connections
+    {
+        target: regovar
+        onOnWebsocketMessageReceived:
+        {
+            // We assume that if a file is downloading, it's for us...
+            if (action == "file_upload")
+            {
+                regovar.newPipelineAnalysis.addInputFromId(data["id"]);
+            }
+
+            console.log ("WS [" + action + "] " + data);
+        }
+    }
 
 }

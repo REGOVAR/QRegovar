@@ -6,6 +6,8 @@
 #include "regovar.h"
 #include "request.h"
 
+#include "Model/file/file.h"
+
 
 Regovar* Regovar::mInstance = Q_NULLPTR;
 Regovar* Regovar::i()
@@ -32,9 +34,9 @@ void Regovar::init()
     // Init models
     // mUser = new UserModel(); //1, "Olivier", "Gueudelot");
     mProjectsTreeView = new ProjectsTreeModel();
-    mRemoteFilesTreeView = new FilesTreeModel();
     mCurrentProject = new Project();
     mUploader = new TusUploader();
+    resetNewAnalysisWizardModels();
     mUploader->setUploadUrl(mApiRootUrl.toString() + "/file/upload");
     mUploader->setRootUrl(mApiRootUrl.toString());
     mUploader->setChunkSize(50 * 1024);
@@ -43,8 +45,8 @@ void Regovar::init()
 
     // Connections
     connect(mUploader,  SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
-    connect(&mWebSocket, &QWebSocket::connected, this, &Regovar::websocketConnected);
-    connect(&mWebSocket, &QWebSocket::disconnected, this, &Regovar::websocketClosed);
+    connect(&mWebSocket, &QWebSocket::connected, this, &Regovar::onWebsocketConnected);
+    connect(&mWebSocket, &QWebSocket::disconnected, this, &Regovar::onWebsocketClosed);
 
 
     emit currentProjectChanged();
@@ -56,21 +58,25 @@ void Regovar::init()
 }
 
 
-void Regovar::websocketConnected()
+void Regovar::onWebsocketConnected()
 {
     qDebug() << "Websocket connected !";
-    connect(&mWebSocket, &QWebSocket::textMessageReceived, this, &Regovar::websocketMessageReceived);
-    mWebSocket.sendTextMessage(QStringLiteral("{ \"msg\" : \"hello\"}"));
+    connect(&mWebSocket, &QWebSocket::textMessageReceived, this, &Regovar::onWebsocketReceived);
+    mWebSocket.sendTextMessage(QStringLiteral("{ \"action\" : \"hello\"}"));
 }
 
-void Regovar::websocketMessageReceived(QString message)
+void Regovar::onWebsocketReceived(QString message)
 {
-    qDebug() << "Websoket received :" << message;
+    qDebug() << "Websocket" << message;
+    QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
+    QJsonObject obj = doc.object();
+    emit websocketMessageReceived(obj["action"].toString(), obj["data"].toObject());
 }
 
-void Regovar::websocketClosed()
+void Regovar::onWebsocketClosed()
 {
-    qDebug() << "Websocket closed !";
+    qDebug() << "Websocket closed => reinit it";
+    mWebSocket.open(QUrl(mWebsocketUrl));
 }
 
 
@@ -162,6 +168,14 @@ void Regovar::getWelcomLastData()
 }
 
 
+void Regovar::resetNewAnalysisWizardModels()
+{
+    mNewPipelineAnalysis = new PipelineAnalysis();
+    mNewFilteringAnalysis = new FilteringAnalysis();
+    emit newPipelineAnalysisChanged();
+    emit newFilteringAnalysisChanged();
+}
+
 void Regovar::openAnalysis(int analysisId)
 {
     loadAnalysis(analysisId);
@@ -234,15 +248,14 @@ void Regovar::loadFilesBrowser()
     {
         if (success)
         {
-            if (mRemoteFilesTreeView->fromJson(json["data"].toArray()))
+            mRemoteFilesList.clear();
+            foreach( QJsonValue data, json["data"].toArray())
             {
-                qDebug() << Q_FUNC_INFO << "File browser ready";
-                emit remoteFilesTreeViewChanged();
+                File* file = new File();
+                file->fromJson(data.toObject());
+                mRemoteFilesList.append(file);
             }
-            else
-            {
-                qDebug() << Q_FUNC_INFO << "Failed to load remote file browser. Wrong json data";
-            }
+            emit remoteFilesListChanged();
         }
         else
         {
@@ -460,7 +473,7 @@ void Regovar::logout()
 */
 
 
-void Regovar::authenticationRequired(QNetworkReply* request, QAuthenticator* authenticator)
+void Regovar::onAuthenticationRequired(QNetworkReply* request, QAuthenticator* authenticator)
 {
     // Basic authentication requested by the server.
     // Try authentication using current user credentials

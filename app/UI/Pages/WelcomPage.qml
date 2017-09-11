@@ -163,7 +163,7 @@ Rectangle
             {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New project")
-                onClicked: newProjectDialog.open()
+                onClicked: { newProjectDialog.reset(); newProjectDialog.open(); }
             }
             ButtonWelcom
             {

@@ -143,4 +143,10 @@ Dialog
             }
         }
     }
+
+    function reset()
+    {
+        nameField.text = "";
+        commentField.text = "";
+    }
 }

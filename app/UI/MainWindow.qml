@@ -36,4 +36,15 @@ GenericWindow
             Regovar.menuModel.selectedIndex=[2, regovar.projectsOpen.length,0];
         }
     }
+
+    Connections
+    {
+        target: regovar
+        onWebsocketMessageReceived:
+        {
+            //console.log ("WS [" + action + "] " + data);
+        }
+    }
+
+
 }
