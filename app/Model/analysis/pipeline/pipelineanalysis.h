@@ -23,6 +23,7 @@ public:
     // Methods
     Q_INVOKABLE void addInputs(QList<QObject*> inputs);
     Q_INVOKABLE void removeInputs(QList<QObject*> inputs);
+    Q_INVOKABLE void addInputFromId(int fileId);
 
 
 public Q_SLOTS:
@@ -35,7 +36,7 @@ Q_SIGNALS:
 private:
     //! The list of files used as input for the analysis
     QList<QObject*> mInputsFilesList;
-
+    QList<int> mInputsFilesIds;
 
 };
 
