@@ -6,6 +6,7 @@
 #include "Model/regovar.h" // include regovar singleton which wrap all models and is the interface with the server
 #include "Model/treemodel.h"
 #include "Model/treeitem.h"
+#include "Model/project/project.h"
 #include "Model/file/filesystemmodel.cpp"
 #include "Model/analysis/filtering/filteringanalysis.h"
 
@@ -26,6 +27,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Sample>("org.regovar", 1, 0, "Sample");
     qmlRegisterType<FieldColumnInfos>("org.regovar", 1, 0, "FieldColumnInfos");
     qmlRegisterType<QuickFilterField>("org.regovar", 1, 0, "QuickFilterField");
+    qmlRegisterType<Project>("org.regovar", 1, 0, "Project");
 
 
 

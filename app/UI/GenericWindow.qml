@@ -12,9 +12,6 @@ ApplicationWindow
     // The id of this window that allow "Regovar model" to retrieve corresponding "Analysis model" among open models/windows
     property int winId
 
-    //! Load root's pages of regovar
-    property var menuPageMapping
-
     //! Menu model
     property MenuModel menuModel
 
@@ -77,44 +74,46 @@ ApplicationWindow
     }
 
 
-    //! Convert MainMenu index into one string key for internal map with qml pages
-    function pageIdxKey(idx)
+    //! Retrieve the Qml component corresponding to the provided index
+    function pageIdxToQml(idx)
     {
-        var key = idx[0];
-        if (idx[1] >= 0)  key += "-" + idx[1];
-        if (idx[2] >= 0)  key += "-" + idx[2];
+        var model = menuModel.model[idx[0]];
+        if (idx[1] >= 0)  model =  model["sublevel"][idx[1]];
+        if (idx[2] >= 0)  model =  model["sublevel"][idx[2]];
 
-        return key;
+        return model.qml;
     }
 
 
-    function buildPages(pages, model, baseIndex)
+    function buildPages(model)
     {
         for (var idx in model)
         {
-            if (model[idx].page !== "" && model[idx].page[0] !== "@")
+            if (model[idx].qml === undefined)
             {
-                var comp = Qt.createComponent("Pages/" + model[idx].page);
-                if (comp.status == Component.Ready)
+                if (model[idx].page !== "" && model[idx].page[0] !== "@")
                 {
-                    var elmt = comp.createObject(stack, {"visible": false});
-                    var uid = baseIndex+idx
-                    pages[uid] = elmt;
-                    console.log ("load " + uid + " : Pages/" + model[idx].page)
+                    var comp = Qt.createComponent("Pages/" + model[idx].page);
+                    if (comp.status == Component.Ready)
+                    {
+                        var elmt = comp.createObject(stack, {"visible": false});
+                        model[idx].qml = elmt;
+                        console.log ("load Pages/" + model[idx].page)
+                    }
+                    else if (comp.status == Component.Error)
+                    {
+                        console.log("Error loading component:", comp.errorString());
+                    }
                 }
-                else if (comp.status == Component.Error)
+                else
                 {
-                    console.log("Error loading component:", comp.errorString());
+                    model[idx].qml = false;
                 }
-            }
-            else
-            {
-                pages[baseIndex+idx] = false;
-            }
 
-            if (model[idx]["sublevel"].length > 0)
-            {
-                buildPages(pages, model[idx]["sublevel"], baseIndex+idx + "-");
+                if (model[idx]["sublevel"].length > 0)
+                {
+                    buildPages(model[idx]["sublevel"]);
+                }
             }
         }
     }
@@ -123,23 +122,13 @@ ApplicationWindow
     //! Open qml page according to the selected indexes
     function openPage()
     {
-        if (root.menuPageMapping !== undefined)
-        {
-            var newIdx = pageIdxKey(menuModel.selectedIndex);
-            var oldIdx = pageIdxKey(previousIndex);
-            if (root.menuPageMapping[newIdx] == "@close")
-            {
-                closePopup.open();
-            }
-            else if (root.menuPageMapping[oldIdx])
-            {
-                root.menuPageMapping[oldIdx].visible = false;
-                root.menuPageMapping[newIdx].visible = true;
-                root.menuPageMapping[newIdx].anchors.fill = stack;
+        var oldQmlPage = pageIdxToQml(previousIndex);
+        var newQmlPage = pageIdxToQml(menuModel.selectedIndex);
 
-                previousIndex = menuModel.selectedIndex;
-            }
-        }
+        oldQmlPage.visible = false;
+        newQmlPage.visible = true;
+        newQmlPage.anchors.fill = stack;
+        previousIndex = menuModel.selectedIndex;
     }
 
     onMenuModelChanged:
@@ -147,8 +136,7 @@ ApplicationWindow
         if (menuModel !== undefined)
         {
             var pages = {};
-            buildPages(pages, menuModel.model, "");
-            root.menuPageMapping = pages;
+            buildPages(menuModel.model);
             openPage();
         }
     }

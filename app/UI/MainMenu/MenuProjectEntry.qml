@@ -1,5 +1,5 @@
 import QtQuick 2.7
-
+import org.regovar 1.0
 import "../Regovar"
 
 Rectangle
@@ -9,12 +9,11 @@ Rectangle
     height: header.height + sublevelList.height
     state: indexToState()
 
-    property alias icon: icon.text
-    property alias label: label.text
     property string currentState: indexToState()
     property int selectedIndex: -1
     property int sublevelListMaxHeight
     property MenuModel model
+    property Project project
 
 
     function indexToState()
@@ -69,7 +68,7 @@ Rectangle
 
         Text
         {
-            id: icon
+            text: "6"
             width: 50
             height: header.height
             horizontalAlignment: Text.AlignHCenter
@@ -79,7 +78,7 @@ Rectangle
         }
         Text
         {
-            id: label
+            text: project.name
             height: header.height
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Regovar.theme.font.size.header

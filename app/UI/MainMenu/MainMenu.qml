@@ -88,7 +88,6 @@ Item
     {
         id: menuModel
     }
-
     ListModel
     {
         id: subMenuModel
@@ -157,6 +156,9 @@ Item
             }
         }
     }
+
+
+
 
     // --------------------------------------------------
     // The view (level 2)

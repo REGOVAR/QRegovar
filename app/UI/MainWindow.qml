@@ -22,4 +22,18 @@ GenericWindow
         property alias width: root.width
         property alias height: root.height
     }
+
+
+    Connections
+    {
+        target: regovar
+        onProjectsOpenChanged:
+        {
+            console.log ("ReloadMenu");
+            Regovar.reloadProjectsOpenEntries();
+            buildPages(menuModel.model[2]["sublevel"]);
+            // select currentEntry
+            Regovar.menuModel.selectedIndex=[2, regovar.projectsOpen.length,0];
+        }
+    }
 }

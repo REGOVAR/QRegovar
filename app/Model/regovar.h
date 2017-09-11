@@ -36,6 +36,8 @@ class Regovar : public QObject
     Q_PROPERTY(QJsonArray lastAnalyses READ lastAnalyses NOTIFY lastAnalysesChanged)
     Q_PROPERTY(QJsonArray lastEvent READ lastEvent NOTIFY lastEventChanged)
     Q_PROPERTY(QJsonArray lastSubjects READ lastSubjects NOTIFY lastSubjectsChanged)
+    Q_PROPERTY(QList<QObject*> projectsOpen READ projectsOpen NOTIFY projectsOpenChanged)
+    Q_PROPERTY(QVariantList subjetsOpen READ subjetsOpen NOTIFY subjetsOpenChanged)
 
 public:
     static Regovar* i();
@@ -54,6 +56,8 @@ public:
     inline QJsonArray lastAnalyses() const { return mLastAnalyses; }
     inline QJsonArray lastEvent() const { return mLastEvents; }
     inline QJsonArray lastSubjects() const { return mLastSubjects; }
+    inline QList<QObject*> projectsOpen() const { return mProjectsOpen; }
+    inline QVariantList subjetsOpen() const { return mSubjectsOpen; }
     //inline UserModel* currentUser() const { return mUser; }
 
     // Setters
@@ -117,6 +121,8 @@ Q_SIGNALS:
     void lastAnalysesChanged();
     void lastEventChanged();
     void lastSubjectsChanged();
+    void subjetsOpenChanged();
+    void projectsOpenChanged();
 
 private:
     Regovar();
@@ -147,6 +153,9 @@ private:
     QJsonArray mLastEvents;
     QJsonArray mLastAnalyses;
     QJsonArray mLastSubjects;
+    //! list of project/subject open
+    QList<QObject*> mProjectsOpen;
+    QVariantList mSubjectsOpen;
 
 
     //! We need ref to the QML engine to create/open new windows for Analysis

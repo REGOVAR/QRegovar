@@ -133,7 +133,6 @@ DISTFILES += \
     UI/Regovar/Themes/RegovarLightTheme.js \
     UI/Dialogs/SelectFilesDialog.qml \
     UI/Framework/BusyIndicator.qml \
-    UI/MainMenu/HeaderTabEntry.qml \
     UI/Pages/Analysis/Filtering/FilteringPage.qml \
     UI/Pages/Analysis/Filtering/Quickfilter/TransmissionQuickForm.qml \
     UI/Pages/Analysis/Filtering/QuickFilterPanel.qml \
@@ -221,7 +220,8 @@ DISTFILES += \
     UI/Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml \
     UI/Pages/Browse/SearchResultAnalysis.qml \
     UI/Pages/Browse/SearchResultProject.qml \
-    UI/Pages/Browse/SearchResultSample.qml
+    UI/Pages/Browse/SearchResultSample.qml \
+    UI/MainMenu/MenuProjectEntry.qml
 
 
 win32 {

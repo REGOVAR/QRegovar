@@ -406,42 +406,9 @@ Rectangle
 
     // DIALOGS
     NewProjectDialog { id: newProjectDialog }
-    Connections
-    {
-        target: regovar
-        onProjectCreationDone:
-        {
-            if (success)
-            {
-                Regovar.menuModel.selectedIndex=[2,1,0];
-            }
-        }
-    }
 
     NewAnalysisDialog { id: newAnalysisDialog }
-    Connections
-    {
-        target: regovar
-        onAnalysisCreationDone:
-        {
-            if (success)
-            {
-                regovar.openAnalysis(analysisId);
-            }
-        }
-    }
 
     NewSubjectDialog { id: newSubjectDialog }
-    Connections
-    {
-        target: regovar
-        onSubjectCreationDone:
-        {
-            if (success)
-            {
-                Regovar.menuModel.selectedIndex=[3,1,0];
-            }
-        }
-    }
 }
 

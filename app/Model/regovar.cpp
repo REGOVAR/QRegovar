@@ -267,8 +267,53 @@ void Regovar::filesEnqueued(QHash<QString,QString> mapping)
 
 void Regovar::newProject(QString name, QString comment)
 {
-    // TODO
-    emit projectCreationDone(true, 6);
+    QJsonObject body;
+    body.insert("name", name);
+    body.insert("is_filter", false);
+    body.insert("comment", comment);
+
+    Request* req = Request::post(QString("/project"), QJsonDocument(body).toJson());
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            QJsonObject projectData = json["data"].toObject();
+            Request* req2 = Request::get(QString("/project/%1").arg(projectData["id"].toInt()));
+            connect(req2, &Request::responseReceived, [this, req2](bool success, const QJsonObject& json)
+            {
+                if (success)
+                {
+                    Project* project = new Project(regovar);
+
+                    if (project->fromJson(json["data"].toObject()))
+                    {
+                        // store project model
+                        mProjectsOpen.append(project);
+                        qDebug() << Q_FUNC_INFO << "Project open !";
+
+                        emit projectsTreeViewChanged();
+                        emit projectsOpenChanged();
+                        emit projectCreationDone(true, mProjectsOpen.count() - 1);
+                    }
+                    else
+                    {
+                        qDebug() << Q_FUNC_INFO << "Failed to load project data.";
+                    }
+                }
+                else
+                {
+                    regovar->raiseError(json);
+                }
+                req2->deleteLater();
+            });
+        }
+        else
+        {
+            regovar->raiseError(json);
+        }
+        req->deleteLater();
+    });
+
 }
 void Regovar::newAnalysis(QJsonObject data)
 {
