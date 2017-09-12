@@ -47,20 +47,20 @@ void TusUploader::enqueue(QList<QString> paths)
     // The following hash will be set with uploadUrl returned by the server
     QHash<QString, QString>* serverMapping =  new QHash<QString, QString>();
 
-    // First we populate it with all file's paths
-    foreach (QString path, paths)
-    {
-        QFileInfo fi(path);
-        if (fi.isFile()) serverMapping->insert(path, "");
-    }
-
     // Then for each file we sent a request to the server to prepare uploadUrl for it
     foreach (QString path, paths)
     {
+        if (path.startsWith("file://"))
+        {
+            path = path.mid(7);
+        }
+
         QFileInfo fi(path);
         if (fi.isFile())
         {
             qDebug() << "Prepare upload for " << path;
+            serverMapping->insert(path, "");
+
 
             TusUploadItem* item = new TusUploadItem();
             item->path = path;

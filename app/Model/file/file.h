@@ -136,6 +136,17 @@ private:
     // Methods
     inline void setUpdateDate(QDateTime date) { mUpdateDate = date; emit updateDateChanged(); }
 
+
+    QStringList zip = {"zip", "gz", "xz", "tar", "rar"};
+    QStringList txt = {"txt", "vcf", "sam", "fasta", "fastq", "csv"};
+    QStringList src = {"sh", "bat", "xml", "css", "py", "js", "html", "htm"};
+    QStringList aud = {"wav", "ogg", "mp3"};
+    QStringList vid = {"avi", "wmv", "mov", "mpg", "mpeg", "mkv"};
+    QStringList img = {"tiff", "tif", "gif", "jpeg", "jpg", "jpe", "png", "bmp"};
+    QStringList xls = {"xls", "xlsx", "ods"};
+    QStringList doc = {"doc", "docx", "odt"};
+    QStringList prz = {"ppt", "pps", "ppsx", "pptx", "odp"};
+    QStringList pdf = {"pdf", "ps"};
 };
 
 #endif // FILE_H

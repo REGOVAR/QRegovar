@@ -80,7 +80,7 @@ GenericScreen
                             anchors.rightMargin: 5
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
                             anchors.fill: parent
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.control
@@ -122,8 +122,28 @@ GenericScreen
 
                     }
                 }
-                TableViewColumn { title: "Size"; role: "sizeUI" }
-                TableViewColumn { title: "Date"; role: "updateDate" }
+                TableViewColumn { title: "Size"; role: "sizeUI"; horizontalAlignment: Text.AlignRight }
+                TableViewColumn
+                {
+                    title: "Date"
+                    role: "updateDate"
+                    delegate: Item
+                    {
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text:styleData.value.toLocaleDateString()
+                            elide: Text.ElideRight
+                        }
+
+                    }
+                }
                 TableViewColumn { title: "Source"; role: "sourceUI" }
                 TableViewColumn { title: "Comment"; role: "comment" }
             }
@@ -175,7 +195,7 @@ GenericScreen
             // We assume that if a file is downloading, it's for us...
             if (action == "file_upload")
             {
-                regovar.newPipelineAnalysis.addInputFromId(data["id"]);
+                regovar.newPipelineAnalysis.addInputFromWS(data);
             }
 
             console.log ("WS [" + action + "] " + data);

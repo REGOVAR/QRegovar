@@ -50,7 +50,7 @@ Dialog
                 anchors.right: rootRemoteView.right
                 anchors.margins: 10
 
-                text: qsTr("Select files already on the server")
+                text: qsTr("Select files already on Regovar server")
                 font.pixelSize: Regovar.theme.font.size.control
             }
 
@@ -193,7 +193,7 @@ Dialog
                 anchors.right: rootLocalView.right
                 anchors.margins: 10
 
-                text: qsTr("Select local files to upload on the server")
+                text: qsTr("Select files on your computer. Selected files will be uploaded on the Regovar server.")
                 font.pixelSize: Regovar.theme.font.size.control
             }
 
@@ -295,21 +295,28 @@ Dialog
                     {
                         files = files.concat(regovar.remoteFilesList[rowIndex]);
                     });
+                    fileSelected(files);
                 }
                 if (rootLocalView.visible)
                 {
-                    // First retrieve local files
-                    remoteFiles.selection.forEach( function(rowIndex)
+                    // First retrieve local files url
+                    for(var i=0; i<localFiles.selection.selectedIndexes.length; i++)
                     {
-                        files = files.concat(regovar.remoteFilesList[rowIndex]);
-                    });
-                    // Init upload and retrieve id
+                        var idx = localFiles.selection.selectedIndexes[i];
+                        var url = fileSystemModel.data(idx, FileSystemModel.UrlStringRole);
+                        files = files.concat(url);
+                    }
+
+                    // Start tus upload for
+                    console.log("Start upload of files : " + files);
+                    regovar.enqueueUploadFile(files);
 
                     // Retrieve
+                    // No need to send "fileSelected(files)" signal as the tus upload will auto add it to the inputsList
+                    // TODO : find a better way to manage it to avoid multiuser problem and so on...
                 }
 
 
-                fileSelected(files);
                 fileDialog.accept();
             }
         }

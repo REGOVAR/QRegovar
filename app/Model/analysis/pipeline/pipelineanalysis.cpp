@@ -39,11 +39,15 @@ void PipelineAnalysis::removeInputs(QList<QObject*> inputs)
     emit inputsFilesListChanged();
 }
 
-void PipelineAnalysis::addInputFromId(int fileId)
+void PipelineAnalysis::addInputFromWS(QJsonObject json)
 {
-    if (!mInputsFilesIds.contains(fileId))
+    if (!mInputsFilesIds.contains(json["id"].toInt()))
     {
-        // TODO request to get info and add it to mInputsFilesList
+        File* file = new File();
+        file->fromJson(json);
+        mInputsFilesIds.append(file->id());
+        mInputsFilesList.append(file);
+        emit inputsFilesListChanged();
     }
 }
 

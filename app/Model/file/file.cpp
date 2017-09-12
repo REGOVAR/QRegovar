@@ -66,13 +66,66 @@ bool File::fromJson(QJsonObject json)
 
 QString File::extensionToIco(QString ext)
 {
-    return "T";
+    if (zip.contains(ext)) return "P";
+    if (txt.contains(ext)) return "Y";
+    if (img.contains(ext)) return "T";
+    if (src.contains(ext)) return "R";
+    if (aud.contains(ext)) return "Q";
+    if (vid.contains(ext)) return "Z";
+    if (xls.contains(ext)) return "S";
+    if (doc.contains(ext)) return "0";
+    if (prz.contains(ext)) return "W";
+    if (pdf.contains(ext)) return "V";
+    return "U";
 }
+
+
 QString File::sizeToHumanReadable(qint64 size, qint64 uploadOffset)
 {
-    return "1.2 Go";
+    QStringList suffixes = {"o", "Ko", "Mo", "Go", "To", "Po"};
+    QString uploadString = "";
+
+    if (size == 0) return "0 o";
+    if (uploadOffset < size)
+    {
+        float i = 0;
+        double s = uploadOffset;
+        while (s >= 1024 && i < suffixes.count()-1)
+        {
+            s /= 1024.;
+            i += 1;
+        }
+        uploadString = QString::number( s, 'f', 2 ) + " / ";
+    }
+
+
+
+    float i = 0;
+    double s = size;
+    while (s >= 1024 && i < suffixes.count()-1)
+    {
+        s /= 1024.;
+        i += 1;
+    }
+    QString sizeString = QString::number( s, 'f', 2 );
+
+
+
+    return QString("%1%2 %3").arg(uploadString, sizeString, suffixes[i]);
 }
+
+
 QString File::statusToLabel(FileStatus status, qint64 size, qint64 uploadOffset)
 {
-    return tr("Uploaded");
+
+    if(status == uploading)
+    {
+        QString progress;
+        double s = size;
+        if (s>0) progress = QString::number( uploadOffset/s*100, 'f', 2 );
+        return tr("Uploading") + QString(" (%1%)").arg(progress);
+    }
+    if(status == checked) return tr("Checked");
+    if(status == uploaded) return tr("Uploaded");
+    return tr("Error");
 }

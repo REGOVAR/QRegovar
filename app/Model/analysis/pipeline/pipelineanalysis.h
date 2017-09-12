@@ -23,7 +23,7 @@ public:
     // Methods
     Q_INVOKABLE void addInputs(QList<QObject*> inputs);
     Q_INVOKABLE void removeInputs(QList<QObject*> inputs);
-    Q_INVOKABLE void addInputFromId(int fileId);
+    Q_INVOKABLE void addInputFromWS(QJsonObject json);
 
 
 public Q_SLOTS:
