@@ -10,7 +10,7 @@ GenericScreen
 {
     id: root
 
-    readyForNext: samplesList.count > 0
+    readyForNext: true
 
     Text
     {
@@ -18,7 +18,7 @@ GenericScreen
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        text:  qsTr("Select the sample(s) you want to analyse.")
+        text:  qsTr("This step is optional.\nYou can linked samples to subjects. Next, it will be easier to retrieve their samples and analyses.")
         wrapMode: Text.WordWrap
         font.pixelSize: Regovar.theme.font.size.control
         color: Regovar.theme.primaryColor.back.normal
@@ -120,7 +120,6 @@ GenericScreen
     SelectSamplesDialog
     {
         id: sampleSelector
-        currentAnalysis: regovar.newFilteringAnalysis
         //onSampleSelected: { regovar.newPipelineAnalysis.addInputs(files); checkReady(); }
     }
 

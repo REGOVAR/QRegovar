@@ -11,7 +11,15 @@ GenericScreen
 {
     id: root
 
-    readyForNext: inputsList.count > 0
+    readyForNext: checkReady()
+    onZChanged: checkReady()
+    Component.onCompleted: checkReady()
+
+    function checkReady()
+    {
+        return inputsList.count > 0;
+    }
+
 
     Text
     {
@@ -184,7 +192,7 @@ GenericScreen
     SelectFilesDialog
     {
         id: fileSelector
-        onFileSelected: regovar.newPipelineAnalysis.addInputs(files);
+        onFileSelected: { regovar.newPipelineAnalysis.addInputs(files); checkReady(); }
     }
 
     Connections
@@ -196,10 +204,10 @@ GenericScreen
             if (action == "file_upload")
             {
                 regovar.newPipelineAnalysis.addInputFromWS(data);
+                checkReady();
             }
 
             console.log ("WS [" + action + "] " + data);
         }
     }
-
 }

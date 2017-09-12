@@ -158,6 +158,14 @@ void Regovar::getWelcomLastData()
             emit lastEventChanged();
             mLastSubjects = data["last_subjects"].toArray();
             emit lastSubjectsChanged();
+
+            // Get referencial available
+            mReferencialDefault = data["referencial_default"].toInt();
+            foreach (QJsonValue jsonVal, json["referencials"].toArray())
+            {
+                QJsonObject jsonRef = jsonVal.toObject();
+                mReferencials.insert(jsonRef["id"].toInt(), jsonRef["name"].toString());
+            }
         }
         else
         {
@@ -368,7 +376,7 @@ void Regovar::raiseError(QJsonObject json)
     if (code.isEmpty() && msg.isEmpty())
     {
         code = "00000";
-        msg  = "Enable to connect to the server.";
+        msg  = "Unable to connect to the server.";
     }
     qDebug() << "ERROR Server side [" << code << "]" << msg;
     emit onError(code, msg);

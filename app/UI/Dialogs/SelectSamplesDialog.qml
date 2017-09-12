@@ -74,7 +74,7 @@ Dialog
                 anchors.bottom: remoteSwitchButton.top
                 anchors.margins: 10
 
-                model: currentAnalysis.remoteSamples
+                model: (currentAnalysis != null) ? currentAnalysis.remoteSamples : null
 
                 // TODO : enable multiple selection for the treeview
 //                selection: ItemSelectionModel

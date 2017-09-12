@@ -43,7 +43,7 @@ Dialog
 
 
         // Start screen
-        StartScreen
+        AnalysisTypeScreen
         {
             id: startScreen
             anchors.fill: parent
@@ -55,33 +55,23 @@ Dialog
                 if (choice == 1)
                 {
                     root.menuModel = [
-                        { "title" : qsTr("Start"), "checked": true},
-                        { "title" : qsTr("Select files"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/InputsScreen.qml"},
-                        { "title" : qsTr("Select pipeline"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml"},
-                        { "title" : qsTr("Configure"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml"},
-                        { "title" : qsTr("Launch"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
+                        { "title" : qsTr("Analysis type")},
+                        { "title" : qsTr("Pipeline"), "source":"../Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml"},
+                        { "title" : qsTr("Inputs files"), "source":"../Dialogs/NewAnalysisWizardScreens/InputsScreen.qml"},
+                        { "title" : qsTr("Configure"), "source":"../Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml"},
+                        { "title" : qsTr("Launch"), "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
                     ];
                     root.analysisModel["type"] = "pipeline";
                 }
                 else if (choice == 2)
                 {
                     root.menuModel = [
-                        { "title" : qsTr("Start"), "checked": true},
-                        { "title" : qsTr("Select pipeline"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml"},
-                        { "title" : qsTr("Select files"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/InputsScreen.qml"},
-                        { "title" : qsTr("Configure"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml"},
-                        { "title" : qsTr("Launch"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
-                    ];
-                    root.analysisModel["type"] = "pipeline";
-                }
-                else if (choice == 3)
-                {
-                    root.menuModel = [
-                        { "title" : qsTr("Start"), "checked": true},
-                        { "title" : qsTr("Settings"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSettingsScreen.qml"},
-                        { "title" : qsTr("Select samples"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSamplesScreen.qml"},
-                        { "title" : qsTr("Select annotations"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/FilteringAnnotationScreen.qml"},
-                        { "title" : qsTr("Launch"), "checked": false, "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
+                        { "title" : qsTr("Analysis type")},
+                        { "title" : qsTr("Referencial"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringReferencialScreen.qml"},
+                        { "title" : qsTr("Samples"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSamplesScreen.qml"},
+                        { "title" : qsTr("Subjects associations"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSubjectsScreen.qml"},
+                        { "title" : qsTr("Configure"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSettingsScreen.qml"},
+                        { "title" : qsTr("Launch"), "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
                     ];
                     root.analysisModel["type"] = "filtering";
                 }
@@ -107,7 +97,7 @@ Dialog
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.margins: 5
-                text: (root.menuModel !== undefined) ? qsTr("Step") + " " + (menuSelectedIndex + 1) + "/" + root.menuModel.length : ""
+                text:  qsTr("New analysis") + " :" // (root.menuModel !== undefined) ? qsTr("Step") + " " + (menuSelectedIndex + 1) + "/" + root.menuModel.length : ""
                 color: Regovar.theme.primaryColor.front.dark
                 font.pixelSize: Regovar.theme.font.size.control
                 font.family: Regovar.theme.font.familly
@@ -134,32 +124,30 @@ Dialog
 
                         property bool isHover: false
                         property bool isSelected: index == menuSelectedIndex
-                        property bool isChecked: modelData["checked"]
 
 
                         Row
                         {
                             anchors.fill: parent
+                            anchors.leftMargin: 5
                             spacing: 5
 
                             Text
                             {
-                                height: Regovar.theme.font.boxSize.control
-                                width: Regovar.theme.font.boxSize.header
+                                height: Regovar.theme.font.boxSize.header
+                                width: Regovar.theme.font.boxSize.control
 
-                                text: menuItem.isChecked ? "p" : "r"
-                                font.family: Regovar.theme.icons.name
+                                text: (index+1) + "."
                                 verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: Text.AlignHCenter
                                 font.pixelSize: Regovar.theme.font.size.control
 
-                                color: menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light : Regovar.theme.primaryColor.front.dark
+                                color: menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light : menuSelectedIndex > index ? Regovar.theme.primaryColor.front.dark : Regovar.theme.primaryColor.back.light
                             }
                             Text
                             {
-                                height: Regovar.theme.font.boxSize.control
+                                height: Regovar.theme.font.boxSize.header
                                 text: modelData["title"]
-                                color: menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light : menuItem.isChecked ? Regovar.theme.primaryColor.front.dark : Regovar.theme.primaryColor.back.light
+                                color: menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light : menuSelectedIndex > index ? Regovar.theme.primaryColor.front.dark : Regovar.theme.primaryColor.back.light
                                 font.pixelSize: Regovar.theme.font.size.control
                                 font.family: Regovar.theme.font.familly
                                 verticalAlignment: Text.AlignVCenter
@@ -334,13 +322,11 @@ Dialog
             if (menuPageMapping[menuSelectedIndex])
             {
                 menuPageMapping[menuSelectedIndex].z = 0;
-                naviguationPanel.children[1].children[menuSelectedIndex].isChecked = menuPageMapping[menuSelectedIndex].readyForNext;
                 menuPageMapping[newIdx].z = 100;
                 menuPageMapping[newIdx].anchors.fill = stackPanel;
                 nextButton.enabled = Qt.binding(function()
                 {
                     var ready = menuPageMapping[newIdx].readyForNext;
-                    naviguationPanel.children[1].children[menuSelectedIndex].isChecked = ready;
                     //menuModel[newIdx]["checked"] = ready;
                     return ready;
                 });

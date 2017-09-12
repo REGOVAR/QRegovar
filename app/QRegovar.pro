@@ -218,12 +218,16 @@ DISTFILES += \
     UI/Dialogs/NewAnalysisWizardScreens/InputsScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/StartScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml \
     UI/Pages/Browse/SearchResultAnalysis.qml \
     UI/Pages/Browse/SearchResultProject.qml \
     UI/Pages/Browse/SearchResultSample.qml \
-    UI/Framework/TableView.qml
+    UI/Framework/TableView.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/ProjectScreen.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/AnalysisTypeScreen.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/FilteringReferencialScreen.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/AnalysisTypeButtom.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/FilteringSubjectsScreen.qml
 
 
 win32 {

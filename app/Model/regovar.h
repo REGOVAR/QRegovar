@@ -39,6 +39,7 @@ class Regovar : public QObject
     Q_PROPERTY(QJsonArray lastSubjects READ lastSubjects NOTIFY lastSubjectsChanged)
     Q_PROPERTY(QList<QObject*> projectsOpen READ projectsOpen NOTIFY projectsOpenChanged)
     Q_PROPERTY(QVariantList subjetsOpen READ subjetsOpen NOTIFY subjetsOpenChanged)
+    Q_PROPERTY(QStringList referencials READ referencials NOTIFY referencialsChanged)
 
     Q_PROPERTY(PipelineAnalysis* newPipelineAnalysis READ newPipelineAnalysis NOTIFY newPipelineAnalysisChanged)
     Q_PROPERTY(FilteringAnalysis* newFilteringAnalysis READ newFilteringAnalysis NOTIFY newFilteringAnalysisChanged)
@@ -65,6 +66,7 @@ public:
     //inline UserModel* currentUser() const { return mUser; }
     inline PipelineAnalysis* newPipelineAnalysis() const { return mNewPipelineAnalysis; }
     inline FilteringAnalysis* newFilteringAnalysis() const { return mNewFilteringAnalysis; }
+    inline QStringList referencials() const { QStringList result; foreach (QString ref, mReferencials.values()) { result.append(ref); } return result; }
 
     // Setters
     inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlChanged(); }
@@ -120,6 +122,7 @@ Q_SIGNALS:
     void projectsTreeViewChanged();
     void remoteFilesListChanged();
     void currentProjectChanged();
+    void referencialsChanged();
     void onClose();
     void onError(QString errCode, QString message);
     void projectCreationDone(bool success, int projectId);
@@ -163,6 +166,9 @@ private:
     QJsonArray mLastEvents;
     QJsonArray mLastAnalyses;
     QJsonArray mLastSubjects;
+    //! list of referencials supported by the server
+    QHash<int, QString> mReferencials;
+    int mReferencialDefault;
     //! list of project/subject open
     QList<QObject*> mProjectsOpen;
     QVariantList mSubjectsOpen;
