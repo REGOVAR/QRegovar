@@ -12,6 +12,7 @@ Rectangle
     property string date: ""
     property string name: ""
     property string projectName: ""
+    property int indent: 1
 
     property bool isHover: false
     signal clicked()
@@ -23,7 +24,7 @@ Rectangle
         anchors.fill: parent
         Rectangle
         {
-            width: Regovar.theme.font.boxSize.control
+            width: indent * Regovar.theme.font.boxSize.control
             height: Regovar.theme.font.boxSize.control
             color: "transparent"
         }

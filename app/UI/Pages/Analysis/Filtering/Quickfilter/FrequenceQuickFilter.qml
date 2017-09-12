@@ -11,7 +11,7 @@ import "../../../../Framework"
 
 QuickFilterBox
 {
-    title : qsTr("Frequence")
+    title : qsTr("Allelic frequency")
     isEnabled : false
     isExpanded: false
 

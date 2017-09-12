@@ -14,11 +14,11 @@ void PipelineAnalysis::addInputs(QList<QObject*> inputs)
 {
     foreach(QObject* o1, inputs)
     {
-        File* fileToAdd = qobject_cast<File*>(o1);
-        if (!mInputsFilesIds.contains(fileToAdd->id()))
+        File* file = qobject_cast<File*>(o1);
+        if (!mInputsFilesIds.contains(file->id()))
         {
-            mInputsFilesIds.append(fileToAdd->id());
-            mInputsFilesList.append(fileToAdd);
+            mInputsFilesIds.append(file->id());
+            mInputsFilesList.append(file);
         }
     }
     emit inputsFilesListChanged();
@@ -29,10 +29,10 @@ void PipelineAnalysis::removeInputs(QList<QObject*> inputs)
 {
     foreach(QObject* o1, inputs)
     {
-        File* fileToRemove = qobject_cast<File*>(o1);
-        if (mInputsFilesIds.contains(fileToAdd->id()))
+        File* file = qobject_cast<File*>(o1);
+        if (mInputsFilesIds.contains(file->id()))
         {
-            mInputsFilesIds.removeAll(fileToAdd->id());
+            mInputsFilesIds.removeAll(file->id());
             mInputsFilesList.removeAll(file);
         }
     }

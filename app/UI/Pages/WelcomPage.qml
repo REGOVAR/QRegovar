@@ -238,11 +238,14 @@ Rectangle
                             anchors.rightMargin: 15
                             Column
                             {
+                                y: 5
+                                x: 0
                                 Repeater
                                 {
                                     model: regovar.lastAnalyses
                                     SearchResultAnalysis
                                     {
+                                        indent: 0
                                         width: analysesScrollArea.width - 30 // 15 right margin + 15 ScrollBar width
                                         date: model.modelData.update_date
                                         name: model.modelData.name
