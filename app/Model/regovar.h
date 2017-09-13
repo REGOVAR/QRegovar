@@ -79,7 +79,7 @@ public:
     Q_INVOKABLE void newProject(QString name, QString comment);
     Q_INVOKABLE void newAnalysis(QJsonObject data);
     Q_INVOKABLE void newSubject(QJsonObject data);
-    Q_INVOKABLE void enqueueUploadFile(QList<QString> filesPaths);
+    Q_INVOKABLE void enqueueUploadFile(QStringList filesPaths);
     Q_INVOKABLE void raiseError(QJsonObject raiseError);
     Q_INVOKABLE void close();
     Q_INVOKABLE void disconnectUser();

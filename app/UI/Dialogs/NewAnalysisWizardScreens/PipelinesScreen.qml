@@ -11,7 +11,7 @@ GenericScreen
 {
     id: root
 
-    readyForNext: inputsList.count > 0
+    readyForNext: true
 
     Text
     {

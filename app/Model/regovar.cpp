@@ -349,7 +349,7 @@ void Regovar::newSubject(QJsonObject data)
 
 
 
-void Regovar::enqueueUploadFile(QList<QString> filesPaths)
+void Regovar::enqueueUploadFile(QStringList filesPaths)
 {
     mUploader->enqueue(filesPaths);
 }

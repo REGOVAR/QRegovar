@@ -11,14 +11,7 @@ GenericScreen
 {
     id: root
 
-    readyForNext: checkReady()
-    onZChanged: checkReady()
-    Component.onCompleted: checkReady()
-
-    function checkReady()
-    {
-        return inputsList.count > 0;
-    }
+    readyForNext: true
 
 
     Text
@@ -63,6 +56,45 @@ GenericScreen
                 Layout.fillHeight: true
 
                 model: regovar.newPipelineAnalysis.inputsFilesList
+
+
+                Rectangle
+                {
+                    id: dropAreaFeedBack
+                    anchors.fill: parent;
+                    color: "#99ffffff"
+                    visible: false
+                    Text
+                    {
+                        anchors.centerIn: parent
+                        text: qsTr("Drop your files here")
+                    }
+                }
+
+                DropArea
+                {
+                    id: dropArea;
+                    anchors.fill: parent;
+                    onEntered:
+                    {
+                        if (drag.hasUrls)
+                        {
+                            dropAreaFeedBack.visible = true;
+                            drag.accept (Qt.CopyAction);
+                        }
+                    }
+                    onDropped:
+                    {
+                        var files= []
+                        for(var i=0; i<drop.urls.length; i++)
+                        {
+                            files = files.concat(drop.urls[i]);
+                        }
+                        regovar.enqueueUploadFile(files);
+                        dropAreaFeedBack.visible = false;
+                    }
+                    onExited: dropAreaFeedBack.visible = false;
+                }
 
                 TableViewColumn
                 {
@@ -192,7 +224,7 @@ GenericScreen
     SelectFilesDialog
     {
         id: fileSelector
-        onFileSelected: { regovar.newPipelineAnalysis.addInputs(files); checkReady(); }
+        onFileSelected: { regovar.newPipelineAnalysis.addInputs(files); }
     }
 
     Connections
@@ -204,7 +236,6 @@ GenericScreen
             if (action == "file_upload")
             {
                 regovar.newPipelineAnalysis.addInputFromWS(data);
-                checkReady();
             }
 
             console.log ("WS [" + action + "] " + data);

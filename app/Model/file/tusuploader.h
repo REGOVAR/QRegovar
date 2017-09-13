@@ -41,7 +41,7 @@ public:
     // Methods
     void loadSettings();
     void writteSettings();
-    void enqueue(QList<QString> paths); //! Register file to the server, enqueue them and start upload as soon as possible
+    void enqueue(QStringList paths); //! Register file to the server, enqueue them and start upload as soon as possible
     void pause(QString path);           //! Suspend upload for the file
     void cancel(QString path);          //! Cancel upload for the file
     void start(QString path);           //! Start/Resume upload for the file

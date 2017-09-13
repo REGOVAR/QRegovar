@@ -42,7 +42,7 @@ void TusUploader::writteSettings()
 
 
 
-void TusUploader::enqueue(QList<QString> paths)
+void TusUploader::enqueue(QStringList paths)
 {
     // The following hash will be set with uploadUrl returned by the server
     QHash<QString, QString>* serverMapping =  new QHash<QString, QString>();
