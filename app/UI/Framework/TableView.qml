@@ -20,6 +20,12 @@ TableView
         alternateBackgroundColor: Regovar.theme.backgroundColor.alt
         highlightedTextColor: Regovar.theme.secondaryColor.front.light
         textColor: Regovar.theme.frontColor.normal
+        frame: Rectangle
+        {
+            color: Regovar.theme.boxColor.back
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+        }
     }
 
 

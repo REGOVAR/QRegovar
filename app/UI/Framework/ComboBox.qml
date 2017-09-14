@@ -16,7 +16,7 @@ ComboBox
         contentItem: Text
         {
             text: modelData
-            color: Regovar.theme.boxColor.front
+            color: enabled ? Regovar.theme.boxColor.front : Regovar.theme.frontColor.disable
             font: control.font
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
@@ -33,7 +33,7 @@ ComboBox
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         font.family: Regovar.theme.icons.name
-        color: control.pressed ? Regovar.theme.secondaryColor.back.light : Regovar.theme.boxColor.front
+        color: !enabled ? Regovar.theme.frontColor.disable :  control.pressed ? Regovar.theme.secondaryColor.back.light : Regovar.theme.boxColor.front
     }
 
     contentItem: Text
@@ -42,7 +42,7 @@ ComboBox
         rightPadding: control.indicator.width + control.spacing
 
         text: control.displayText
-        color: control.pressed ? Regovar.theme.secondaryColor.back.light : Regovar.theme.boxColor.front
+        color: !enabled ? Regovar.theme.frontColor.disable : control.pressed ? Regovar.theme.secondaryColor.back.light : Regovar.theme.boxColor.front
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
@@ -52,8 +52,8 @@ ComboBox
     {
         implicitWidth: 60
         implicitHeight: Regovar.theme.font.boxSize.control
-        color: Regovar.theme.boxColor.back
-        border.color: control.pressed ? Regovar.theme.secondaryColor.back.light : control.color
+        color: enabled ? Regovar.theme.boxColor.back : "transparent"
+        border.color: !enabled ? Regovar.theme.frontColor.disable : control.pressed ? Regovar.theme.secondaryColor.back.light : control.color
         border.width: 1
     }
 

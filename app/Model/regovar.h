@@ -33,6 +33,7 @@ class Regovar : public QObject
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
     Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewChanged)
     Q_PROPERTY(QList<QObject*> remoteFilesList READ remoteFilesList NOTIFY remoteFilesListChanged)
+    Q_PROPERTY(QList<QObject*> remoteSamplesList READ remoteSamplesList NOTIFY remoteSamplesListChanged)
     Q_PROPERTY(Project* currentProject READ currentProject NOTIFY currentProjectChanged)
     Q_PROPERTY(QJsonArray lastAnalyses READ lastAnalyses NOTIFY lastAnalysesChanged)
     Q_PROPERTY(QJsonArray lastEvent READ lastEvent NOTIFY lastEventChanged)
@@ -57,6 +58,7 @@ public:
     inline bool searchInProgress() const { return mSearchInProgress; }
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
     inline QList<QObject*> remoteFilesList() const { return mRemoteFilesList; }
+    inline QList<QObject*> remoteSamplesList() const { return mRemoteSamplesList; }
     inline Project* currentProject() const { return mCurrentProject; }
     inline QJsonArray lastAnalyses() const { return mLastAnalyses; }
     inline QJsonArray lastEvent() const { return mLastEvents; }
@@ -91,6 +93,9 @@ public:
     Q_INVOKABLE void resetNewAnalysisWizardModels();
 
 
+    Q_INVOKABLE void loadFilesBrowser();
+    Q_INVOKABLE void loadSampleBrowser(int refId);
+
 
 public Q_SLOTS:
 //    void login(QString& login, QString& password);
@@ -98,7 +103,6 @@ public Q_SLOTS:
     void onAuthenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
 
     void refreshProjectsTreeView();
-    void loadFilesBrowser();
     void filesEnqueued(QHash<QString,QString> mapping);
 
     void loadProject(int id);
@@ -121,6 +125,7 @@ Q_SIGNALS:
     void serverUrlChanged();
     void projectsTreeViewChanged();
     void remoteFilesListChanged();
+    void remoteSamplesListChanged();
     void currentProjectChanged();
     void referencialsChanged();
     void onClose();
@@ -158,6 +163,8 @@ private:
     Project* mCurrentProject;
     //! The model used to browse all files available on the server
     QList<QObject*> mRemoteFilesList;
+    //! The model used to browse all samples available on the server
+    QList<QObject*> mRemoteSamplesList;
     //! The uploader that manage TUS protocol (resumable upload)
     TusUploader * mUploader;
     //! Filtering analyses

@@ -22,7 +22,6 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 bool FilteringAnalysis::fromJson(QJsonObject json)
 {
     // load basic data from json
-    // TODO
     setId(json["id"].toInt());
     setName(json["name"].toString());
     setComment(json["comment"].toString());
@@ -45,10 +44,13 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
 
     // Retrieve samples
     mSamples.clear();
-    foreach (const QJsonValue field, json["samples_ids"].toArray())
+    foreach (const QJsonValue spJson, json["samples"].toArray())
     {
-        int id = field.toInt();
-        mSamples.append(new Sample(id, QString("Sample n°%1").arg(id), "", this));
+        Sample* sample = new Sample(this);
+        if(sample->fromJson(spJson.toObject()))
+        {
+            mSamples.append(sample);
+        }
     }
     emit samplesChanged();
 
@@ -227,12 +229,13 @@ void FilteringAnalysis::refreshDisplayedAnnotationColumns()
 }
 
 
-QStringList FilteringAnalysis::displayedSamples()
+QList<QObject*> FilteringAnalysis::samples4qml()
 {
-    QStringList result;
+    QList<QObject*> result;
     foreach (Sample* sp, mSamples)
     {
-        result << sp->name();
+        QObject* obj = qobject_cast<QObject*>(sp);
+        result << obj;
     }
     return result;
 }

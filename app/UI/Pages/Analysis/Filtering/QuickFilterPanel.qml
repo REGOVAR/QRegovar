@@ -66,6 +66,7 @@ Rectangle
                 TypeQuickFilter { width: root.width; model: root.model; }
                 FrequenceQuickFilter { width: root.width; model: root.model; }
                 SilicoPredQuickFilter { width: root.width; model: root.model; }
+                PanelQuickForm { width: root.width; model: root.model; }
             }
         }
 

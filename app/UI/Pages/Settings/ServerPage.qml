@@ -42,7 +42,7 @@ Rectangle
 
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
-        icon: "f"
+        icon: "k"
         text: qsTr("Regovar server's settings. Tell the application how to connect to the Regovar's servers.")
     }
 

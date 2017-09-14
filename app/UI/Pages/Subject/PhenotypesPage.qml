@@ -32,10 +32,18 @@ Rectangle
         }
     }
 
-    Text
+
+    Image
     {
-       text: "PHENOTYPES & CHARACTERISTICS"
-       font.pointSize: 24
-       anchors.centerIn: parent
+        anchors.top: header.bottom
+        anchors.left: root.left
+
+        source: "qrc:/a231 Subject Phenotype.png"
     }
+//    Text
+//    {
+//       text: "PHENOTYPES & CHARACTERISTICS"
+//       font.pointSize: 24
+//       anchors.centerIn: parent
+//    }
 }

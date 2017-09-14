@@ -45,7 +45,7 @@ Rectangle
             anchors.fill: header
             anchors.margins: 10
             //text: Screen.PixelDensity
-            placeholderText: qsTr("Search project by name, date, comment, ...")
+            placeholderText: qsTr("Search projects by names, dates, comments...")
         }
     }
 
@@ -61,8 +61,8 @@ Rectangle
 
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
-        icon: "f"
-        text: qsTr("Browse all available project in regovar thanks to the tree below. You can filter the project's tree thanks to the search field above.")
+        icon: "k"
+        text: qsTr("Browse all available projects in Regovar thanks to the tree below. You can filter the project's tree thanks to the search field above.")
     }
 
     Column

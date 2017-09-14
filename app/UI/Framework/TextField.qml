@@ -16,8 +16,8 @@ TextField
     {
         implicitWidth: 200
         implicitHeight: Regovar.theme.font.boxSize.control
-        border.width: 1
+        border.width: enabled ? 1 : 0
         border.color: control.focus ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.boxColor.border
-        color: Regovar.theme.boxColor.back
+        color: enabled ? Regovar.theme.boxColor.back : "transparent"
     }
 }

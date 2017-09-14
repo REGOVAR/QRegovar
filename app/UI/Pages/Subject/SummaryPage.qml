@@ -12,6 +12,7 @@ Rectangle
     property QtObject model
     property bool editionMode: false
 
+
     Rectangle
     {
         id: header
@@ -35,38 +36,15 @@ Rectangle
             text: regovar.currentProject.name
         }
     }
-
-
-
-    // Help information on this page
-    Box
-    {
-        id: helpInfoBox
-        anchors.top : header.bottom
-        anchors.left: root.left
-        anchors.right: root.right
-        anchors.margins: 10
-        height: 30
-
-        visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
-        icon: "k"
-        text: qsTr("This page gives you an overview of the project.")
-    }
-
-
-
-
     GridLayout
     {
         anchors.top : header.bottom
         anchors.left: root.left
         anchors.right: root.right
         anchors.bottom: root.bottom
-        anchors.margins : 10
-        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
+        anchors.margins: 10
 
-        rows: 3
+        rows: 8
         columns: 3
         columnSpacing: 10
         rowSpacing: 10
@@ -74,7 +52,7 @@ Rectangle
 
         Text
         {
-            text: qsTr("Name*")
+            text: qsTr("Identifier*")
             font.bold: true
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.control
@@ -87,13 +65,13 @@ Rectangle
             id: nameField
             Layout.fillWidth: true
             enabled: editionMode
-            placeholderText: qsTr("Name of the project")
-            text: "Name of the project"
+            placeholderText: qsTr("Unique anonymous identifier")
+            text: "MD-65-45"
         }
 
         Column
         {
-            Layout.rowSpan: 2
+            Layout.rowSpan: 7
             Layout.alignment: Qt.AlignTop
             spacing: 10
 
@@ -112,45 +90,130 @@ Rectangle
         }
 
 
+
+
         Text
         {
-            text: qsTr("Comment")
-            Layout.alignment: Qt.AlignTop
+            text: qsTr("Firstname")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.control
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
-            height: 45
+            height: 35
         }
-        TextArea
+        TextField
         {
             Layout.fillWidth: true
             enabled: editionMode
-            text: qsTr("Comment on the project")
+            placeholderText: qsTr("Firstname of the subject")
+            text: "Michel"
         }
 
+        Text
+        {
+            text: qsTr("Lastname")
+            color: Regovar.theme.primaryColor.back.dark
+            font.pixelSize: Regovar.theme.font.size.control
+            font.family: Regovar.theme.font.familly
+            verticalAlignment: Text.AlignVCenter
+            height: 35
+        }
+        TextField
+        {
+            Layout.fillWidth: true
+            enabled: editionMode
+            placeholderText: qsTr("Lastname of the subject")
+            text: "DUPONT"
+        }
+
+        Text
+        {
+            text: qsTr("Date of birth")
+            color: Regovar.theme.primaryColor.back.dark
+            font.pixelSize: Regovar.theme.font.size.control
+            font.family: Regovar.theme.font.familly
+            verticalAlignment: Text.AlignVCenter
+            height: 35
+        }
+        TextField
+        {
+            Layout.fillWidth: true
+            enabled: editionMode
+            placeholderText: qsTr("Date of birth of the subject")
+            text: "1956-03-17"
+        }
+
+        Text
+        {
+            text: qsTr("Family number")
+            color: Regovar.theme.primaryColor.back.dark
+            font.pixelSize: Regovar.theme.font.size.control
+            font.family: Regovar.theme.font.familly
+            verticalAlignment: Text.AlignVCenter
+            height: 35
+        }
+        TextField
+        {
+            Layout.fillWidth: true
+            enabled: editionMode
+            placeholderText: qsTr("Familly number of the subject")
+            text: "1254"
+        }
+
+        Text
+        {
+            text: qsTr("Priority")
+            color: Regovar.theme.primaryColor.back.dark
+            font.pixelSize: Regovar.theme.font.size.control
+            font.family: Regovar.theme.font.familly
+            verticalAlignment: Text.AlignVCenter
+            height: 35
+        }
+        ComboBox
+        {
+            enabled: editionMode
+            model: ["Emergency", "Hight", "Normal", "Low", "None"]
+            currentIndex: 1
+        }
 
 
         Text
         {
-            Layout.alignment: Qt.AlignTop
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+            text: qsTr("Comment")
+            color: Regovar.theme.primaryColor.back.dark
+            font.pixelSize: Regovar.theme.font.size.control
+            font.family: Regovar.theme.font.familly
+            verticalAlignment: Text.AlignVCenter
+            height: 35
+        }
+        TextArea
+        {
+            id: commentField
+            Layout.fillWidth: true
+            enabled: editionMode
+            height: 3 * Regovar.theme.font.size.control
+            text: "Comment about the subject"
+        }
+
+
+        Text
+        {
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
             text: qsTr("Events")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.control
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
-            height: 45
+            height: 35
         }
-
-
 
 
 
         TreeView
         {
-            id: events
-            Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.fillHeight: true
 
 
             TableViewColumn
@@ -165,25 +228,25 @@ Rectangle
             }
         }
 
+
         Column
         {
-            spacing: 10
             Layout.alignment: Qt.AlignTop
+            spacing: 10
 
 
             Button
             {
                 id: addFile
                 text: qsTr("Add event")
-                onClicked:  fileDialog.open()
             }
 
             Button
             {
                 id: editFile
                 text: qsTr("Edit event")
-                onClicked: customPopup.open()
             }
         }
+
     }
 }

@@ -44,7 +44,7 @@ Rectangle
 
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
-        icon: "f"
+        icon: "k"
         text: qsTr("Regovar application's settings. Note that your settings are saved on this local computer only.")
     }
 

@@ -6,16 +6,18 @@ import "../Regovar"
 
 TextArea
 {
+    implicitHeight: 3 * Regovar.theme.font.boxSize.control
     style: TextAreaStyle
     {
-        textColor: Regovar.theme.frontColor.normal
+        textColor: enabled ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
         selectionColor: Regovar.theme.secondaryColor.back.light
         selectedTextColor: Regovar.theme.secondaryColor.front.light
-        backgroundColor: Regovar.theme.boxColor.back
+        backgroundColor: enabled ? Regovar.theme.boxColor.back : "transparent"
+
         frame: Rectangle
         {
-            color: Regovar.theme.boxColor.back
-            border.width: 1
+            color: enabled ? Regovar.theme.boxColor.back : "transparent"
+            border.width: enabled ? 1 : 0
             border.color: Regovar.theme.boxColor.border
         }
     }

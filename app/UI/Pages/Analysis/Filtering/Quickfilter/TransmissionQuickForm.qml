@@ -159,7 +159,7 @@ QuickFilterBox
                 id: modeHtz
                 anchors.left: parent.left
                 anchors.leftMargin: 50
-                text: qsTr("Heterozygous")
+                text: qsTr("Homozygous")
                 checked: false
                 onCheckedChanged:
                 {

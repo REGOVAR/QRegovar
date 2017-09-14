@@ -77,7 +77,7 @@ Popup
         {
             url: root.varsomUrl
             iconText: "_"
-            label: "Varsom"
+            label: "Varsome"
             width: root.width - 2
         }
 

@@ -13,8 +13,8 @@ Dialog
 
     title: qsTr("Create new project")
 
-    width: 400
-    height: 300
+    width: 800
+    height: 600
 
 
     Connections
@@ -43,7 +43,7 @@ Dialog
             anchors.right: parent.right
             anchors.margins: 10
 
-            text: qsTr("Creating a new project will allow you to organize your analyzes and find them more easily afterwards.\nTo create a project, the name is mandatory.")
+            text: qsTr("Creating a new project will allow you to organize your analyses and find them more easily afterwards.\nTo create a project, the name is mandatory.")
             wrapMode: Text.WordWrap
             font.pixelSize: Regovar.theme.font.size.control
             color: Regovar.theme.frontColor.normal
@@ -78,7 +78,7 @@ Dialog
             {
                 id: nameField
                 Layout.fillWidth: true
-                placeholderText: qsTr("The name of the project")
+                placeholderText: qsTr("Name of the project")
             }
 
             Text
@@ -103,13 +103,17 @@ Dialog
         {
             id: footer
             anchors.bottom: parent.bottom
-            anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
 
             height: Regovar.theme.font.boxSize.control
             spacing: 10
-            layoutDirection: Qt.RightToLeft
+
+            Button
+            {
+                text: qsTr("Cancel")
+                onClicked: root.close()
+            }
 
             Button
             {
@@ -122,11 +126,6 @@ Dialog
                         regovar.newProject(nameField.text, commentField.text);
                     }
                 }
-            }
-            Button
-            {
-                text: qsTr("Cancel")
-                onClicked: root.close()
             }
         }
 

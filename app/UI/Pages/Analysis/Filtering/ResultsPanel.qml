@@ -331,7 +331,7 @@ Rectangle
                             {
                                 height: 12
                                 verticalAlignment: Text.AlignVCenter
-                                text : modelData
+                                text : modelData.name
                                 font.pixelSize: 10
                                 color: "grey"
                             }

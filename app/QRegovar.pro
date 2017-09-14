@@ -121,11 +121,7 @@ DISTFILES += \
     UI/Regovar/Style.qml \
     UI/MainWindow.qml \
     UI/Pages/Project/AnalysesPage.qml \
-    UI/Pages/Project/EventsPage.qml \
     UI/Pages/Project/FilesPage.qml \
-    UI/Pages/Project/SettingsIndicatorsPage.qml \
-    UI/Pages/Project/SettingsInformationsPage.qml \
-    UI/Pages/Project/SettingsSharingPage.qml \
     UI/Pages/Project/SubjectsPage.qml \
     UI/MainMenu/MenuEntryL3.qml \
     UI/Framework/TreeView.qml \
@@ -144,18 +140,13 @@ DISTFILES += \
     UI/Pages/Browse/SubjectsPage.qml \
     UI/Framework/Box.qml \
     UI/Pages/Help/AboutPage.qml \
-    UI/Pages/Help/TutorialsPage.qml \
     UI/Pages/Help/UserGuidePage.qml \
     UI/Pages/Settings/InterfacePage.qml \
     UI/Pages/Settings/PanelsPage.qml \
     UI/Pages/Settings/PipesPage.qml \
     UI/Pages/Settings/ProfilePage.qml \
     UI/Pages/Settings/ServerPage.qml \
-    UI/Pages/Analysis/Filtering/ResumePage.qml \
-    UI/Pages/Analysis/Filtering/SettingsAnnotationsDBPage.qml \
-    UI/Pages/Analysis/Filtering/SettingsSamplesPage.qml \
     UI/Pages/Analysis/Filtering/SelectionsPage.qml \
-    UI/Pages/Analysis/Filtering/SettingsInformationsPage.qml \
     UI/Framework/SwipeView.qml \
     UI/Pages/Help/AboutLicense.qml \
     UI/Framework/TextArea.qml \
@@ -172,18 +163,10 @@ DISTFILES += \
     UI/Pages/Analysis/Filtering/Quickfilter/FrequenceQuickFilter.qml \
     UI/Pages/Analysis/Filtering/Quickfilter/SilicoPredQuickFilter.qml \
     UI/Pages/Analysis/Filtering/Quickfilter/QuickFilterBox.qml \
-    UI/Pages/Project/SettingsPage.qml \
     UI/Pages/Subject/AnalysesPage.qml \
-    UI/Pages/Subject/CharacteristicsPage.qml \
-    UI/Pages/Subject/EventsPage.qml \
     UI/Pages/Subject/FilesPage.qml \
     UI/Pages/Subject/PhenotypesPage.qml \
-    UI/Pages/Subject/ResumePage.qml \
     UI/Pages/Subject/SamplesPage.qml \
-    UI/Pages/Subject/SettingsIndicatorsPage.qml \
-    UI/Pages/Subject/SettingsInformationsPage.qml \
-    UI/Pages/Subject/SettingsPage.qml \
-    UI/Pages/Subject/SettingsSharingPage.qml \
     UI/Framework/TextFieldForm.qml \
     UI/Framework/ButtonWelcom.qml \
     UI/Framework/ButtonWelcom.qml \
@@ -227,7 +210,11 @@ DISTFILES += \
     UI/Dialogs/NewAnalysisWizardScreens/AnalysisTypeScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/FilteringReferencialScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/AnalysisTypeButtom.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/FilteringSubjectsScreen.qml
+    UI/Dialogs/NewAnalysisWizardScreens/FilteringSubjectsScreen.qml \
+    UI/Pages/Subject/SummaryPage.qml \
+    UI/Pages/Analysis/Filtering/StatisticsPage.qml \
+    UI/Pages/Analysis/Filtering/Quickfilter/PanelQuickForm.qml \
+    UI/Pages/Analysis/Filtering/SummaryPage.qml
 
 
 win32 {

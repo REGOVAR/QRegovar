@@ -24,7 +24,7 @@ Rectangle
             anchors.fill: header
             anchors.margins: 10
             //text: Screen.PixelDensity
-            placeholderText: qsTr("Search subject or sample  by name, comments, ...")
+            placeholderText: qsTr("Search subjects or samples by names, comments...")
         }
     }
 
@@ -40,27 +40,22 @@ Rectangle
 
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
-        icon: "f"
-        text: qsTr("Browse all available subjects and sample in regovar thanks to the tree below. You can filter the subject's tree thanks to the search field above.")
+        icon: "k"
+        text: qsTr("Browse all available subjects and samples in Regovar thanks to the tree below. You can filter the subject's tree thanks to the search field above.")
     }
 
-    Rectangle
+
+
+
+    Image
     {
         anchors.top : helpInfoBox.bottom
         anchors.left: root.left
-        anchors.right: root.right
-        anchors.bottom: root.bottom
         anchors.margins: 10
 
-        color: "transparent"
-
-        Text
-        {
-            anchors.centerIn: parent
-            text: "Browse subjects/samples"
-            font.pointSize: 24
-        }
+        source: "qrc:/a200 Subject Browser.png"
     }
+
 
 
 

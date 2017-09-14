@@ -24,6 +24,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsChanged)
     Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged)
     Q_PROPERTY(QVariantList filters READ filters NOTIFY filtersChanged)
+    Q_PROPERTY(QList<QObject*> samples READ samples4qml NOTIFY samplesChanged)
     // Panel & Treeview models
     Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsChanged)
     Q_PROPERTY(AnnotationsTreeModel* allAnnotationsDB READ allAnnotationsDB NOTIFY allAnnotationsDBChanged)
@@ -31,7 +32,6 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY quickfiltersChanged)
     Q_PROPERTY(RemoteSampleTreeModel* remoteSamples READ remoteSamples NOTIFY remoteSamplesChanged)
     // "Shortcuts properties" for QML
-    Q_PROPERTY(QStringList samples READ displayedSamples NOTIFY samplesChanged)
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
 
 
@@ -54,7 +54,6 @@ public:
     // Internal
     inline int refId() { return mRefId; }
     inline LoadingStatus loadingStatus() { return mLoadingStatus; }
-    inline QList<Sample*> samples() { return mSamples; }
     // Analysis properties
     inline QString refName() { return mRefName; }
     inline QString status() { return mStatus; }
@@ -63,6 +62,7 @@ public:
     inline QStringList fields() { return mFields; }
     inline int resultsTotal() { return mResultsTotal; }
     inline QVariantList filters() { return mFilters; }
+    inline QList<Sample*> samples() { return mSamples; }
     // Panel & Treeview models
     inline AnnotationsTreeModel* annotations() { return mAnnotationsTreeModel; }
     inline AnnotationsTreeModel* allAnnotationsDB() { return mAllAnnotationsTreeModel; }
@@ -70,7 +70,7 @@ public:
     inline QuickFilterModel* quickfilters() { return mQuickFilters; }
     inline RemoteSampleTreeModel* remoteSamples() { return mRemoteSampleTreeModel; }
     // "Shortcuts properties" for QML
-    QStringList displayedSamples();
+    QList<QObject*> samples4qml();
     QStringList resultColumns();
 
     // Setters

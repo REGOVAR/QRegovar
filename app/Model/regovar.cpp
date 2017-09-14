@@ -60,22 +60,21 @@ void Regovar::init()
 
 void Regovar::onWebsocketConnected()
 {
-    qDebug() << "Websocket connected !";
     connect(&mWebSocket, &QWebSocket::textMessageReceived, this, &Regovar::onWebsocketReceived);
     mWebSocket.sendTextMessage(QStringLiteral("{ \"action\" : \"hello\"}"));
 }
 
 void Regovar::onWebsocketReceived(QString message)
 {
-    qDebug() << "Websocket" << message;
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
     QJsonObject obj = doc.object();
+    if (obj["action"].toString() != "hello") qDebug() << "Websocket" << message;
     emit websocketMessageReceived(obj["action"].toString(), obj["data"].toObject());
 }
 
 void Regovar::onWebsocketClosed()
 {
-    qDebug() << "Websocket closed => reinit it";
+    disconnect(&mWebSocket, &QWebSocket::textMessageReceived, 0, 0);
     mWebSocket.open(QUrl(mWebsocketUrl));
 }
 
@@ -212,8 +211,7 @@ void Regovar::loadAnalysis(int id)
                 QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
 
                 //i->setProperty("winId", lastId);
-                QMetaObject::invokeMethod(i, "initFromCpp",
-                    Q_ARG(QVariant, lastId));
+                QMetaObject::invokeMethod(i, "initFromCpp", Q_ARG(QVariant, lastId));
                 i->setVisible(true);
                 QObject* root = mQmlEngine->rootObjects()[0];
                 QQuickWindow* rootWin = qobject_cast<QQuickWindow*>(root);
@@ -282,6 +280,42 @@ void Regovar::filesEnqueued(QHash<QString,QString> mapping)
         qDebug() << key << " => " << mapping[key];
     }
 }
+
+
+
+
+
+
+void Regovar::loadSampleBrowser(int refId)
+{
+    Request* req = Request::get(QString("/browserTree/%1").arg(refId));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            mRemoteSamplesList.clear();
+            foreach( QJsonValue sbjData, json["data"].toArray())
+            {
+                QJsonObject subject = sbjData.toObject();
+                // TODO subject info
+                foreach( QJsonValue splData, subject["samples"].toArray())
+                {
+                    Sample* sample = new Sample();
+                    sample->fromJson(splData.toObject());
+                    mRemoteSamplesList.append(sample);
+                }
+            }
+            emit remoteSamplesListChanged();
+        }
+        else
+        {
+            regovar->raiseError(json);
+        }
+        req->deleteLater();
+    });
+}
+
+
 
 
 

@@ -11,10 +11,10 @@ Dialog
     id: filterSavingFormPopup
     modality: Qt.WindowModal
 
-    title: qsTr("Create new project")
+    title: qsTr("Create new subject")
 
-    width: 400
-    height: 400
+    width: 600
+    height: 500
 
 
 
@@ -33,10 +33,10 @@ Dialog
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
-            height: Regovar.theme.font.boxSize.header
+            height: Regovar.theme.font.boxSize.control
 
-            text: qsTr("Project  ")
-            font.pixelSize: Regovar.theme.font.size.header
+            text: qsTr("Create new subject. ")
+            font.pixelSize: Regovar.theme.font.size.control
 
 
         }
@@ -49,17 +49,19 @@ Dialog
             anchors.bottom: footer.top
             anchors.margins: 10
 
-            rows: 2
+            rows: 6
             columns: 2
             columnSpacing: 30
             rowSpacing: 10
 
 
+
             Text
             {
-                text: qsTr("Name")
+                text: qsTr("Identifier*")
+                font.bold: true
                 color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.header
+                font.pixelSize: Regovar.theme.font.size.control
                 font.family: Regovar.theme.font.familly
                 verticalAlignment: Text.AlignVCenter
                 height: 35
@@ -68,15 +70,76 @@ Dialog
             {
                 id: nameField
                 Layout.fillWidth: true
-                placeholderText: qsTr("The name of the project")
+                placeholderText: qsTr("Unique anonymous identifier")
             }
+
+            Text
+            {
+                text: qsTr("Firstname")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.control
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height: 35
+            }
+            TextField
+            {
+                Layout.fillWidth: true
+                placeholderText: qsTr("Firstname of the subject")
+            }
+
+            Text
+            {
+                text: qsTr("Lastname")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.control
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height: 35
+            }
+            TextField
+            {
+                Layout.fillWidth: true
+                placeholderText: qsTr("Lastname of the subject")
+            }
+
+            Text
+            {
+                text: qsTr("Date of birth")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.control
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height: 35
+            }
+            TextField
+            {
+                Layout.fillWidth: true
+                placeholderText: qsTr("Date of birth of the subject")
+            }
+
+            Text
+            {
+                text: qsTr("Family number")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.control
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height: 35
+            }
+            TextField
+            {
+                Layout.fillWidth: true
+                placeholderText: qsTr("Familly number of the subject")
+            }
+
 
             Text
             {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 text: qsTr("Comment")
                 color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.header
+                font.pixelSize: Regovar.theme.font.size.control
                 font.family: Regovar.theme.font.familly
                 verticalAlignment: Text.AlignVCenter
                 height: 35
@@ -86,6 +149,7 @@ Dialog
                 id: commentField
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                height: 3 * Regovar.theme.font.size.control
             }
         }
 
@@ -93,13 +157,11 @@ Dialog
         {
             id: footer
             anchors.bottom: parent.bottom
-            anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
 
             height: Regovar.theme.font.boxSize.control
             spacing: 10
-            layoutDirection: Qt.RightToLeft
 
             Button
             {

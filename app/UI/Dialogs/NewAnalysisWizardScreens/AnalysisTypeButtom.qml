@@ -34,7 +34,6 @@ Item
         AnimatedImage
         {
             id: animation
-            source: "animation.gif"
             anchors.fill: parent
         }
 

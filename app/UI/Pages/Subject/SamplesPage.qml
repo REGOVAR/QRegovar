@@ -31,11 +31,18 @@ Rectangle
             text: regovar.currentProject.name
         }
     }
-
-    Text
+    Image
     {
-       text: "SAMPLES"
-       font.pointSize: 24
-       anchors.centerIn: parent
+        anchors.top: header.bottom
+        anchors.left: root.left
+
+        source: "qrc:/a250 Subject Samples.png"
     }
+
+//    Text
+//    {
+//       text: "SAMPLES"
+//       font.pointSize: 24
+//       anchors.centerIn: parent
+//    }
 }

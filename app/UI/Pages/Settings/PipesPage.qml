@@ -44,7 +44,7 @@ Rectangle
 
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
-        icon: "f"
+        icon: "k"
         text: qsTr("Browse, install and uninstall pipeline.")
     }
 

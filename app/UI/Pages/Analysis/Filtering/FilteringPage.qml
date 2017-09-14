@@ -32,7 +32,7 @@ Rectangle
         TabView
         {
             id: lefPanel
-            width: 250
+            width: 275
             tabSharedModel: root.model
             onTabSharedModelChanged:
             {

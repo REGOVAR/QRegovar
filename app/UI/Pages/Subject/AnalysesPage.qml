@@ -31,11 +31,11 @@ Rectangle
             text: regovar.currentProject.name
         }
     }
-
-    Text
+    Image
     {
-       text: "Analyses"
-       font.pointSize: 24
-       anchors.centerIn: parent
+        anchors.top: header.bottom
+        anchors.left: root.left
+
+        source: "qrc:/a240 Subject Analyses.png"
     }
 }

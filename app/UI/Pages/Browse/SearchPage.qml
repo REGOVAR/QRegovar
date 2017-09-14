@@ -44,7 +44,7 @@ Rectangle
             anchors.fill: header
             anchors.margins: 10
             text: regovar.searchRequest
-            placeholderText: qsTr("Search project, subject, sample, analysies, panel, ...")
+            placeholderText: qsTr("Search projects, subjects, samples, analyses, panels...")
             onEditingFinished:
             {
                 if (formerSearch != text)
@@ -68,7 +68,7 @@ Rectangle
 
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
-        icon: "f"
+        icon: "k"
         text: qsTr("Use the field above to search everything in Regovar. Then double click on the result below to open it and see details.")
     }
 
@@ -158,7 +158,14 @@ Rectangle
                             date: model.modelData.update_date
                             name: model.modelData.name
 
-                            onClicked: console.log("open project " + model.modelData.id) // regovar.openAnalysis(model.modelData.id)
+                            onClicked:
+                            {
+                                regovar.loadProject(model.modelData.id);
+                                Regovar.reloadProjectsOpenEntries();
+                                buildPages(menuModel.model[2]["sublevel"]);
+                                // select currentEntry
+                                Regovar.menuModel.selectedIndex=[2, regovar.projectsOpen.length,0];
+                            }
                         }
                     }
                 }

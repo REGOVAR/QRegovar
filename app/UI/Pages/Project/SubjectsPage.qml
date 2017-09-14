@@ -32,10 +32,12 @@ Rectangle
         }
     }
 
-    Text
+    Image
     {
-       text: "SUBJECTS"
-       font.pointSize: 24
-       anchors.centerIn: parent
+        anchors.top: header.bottom
+        anchors.left: root.left
+
+        source: "qrc:/a130 Project Subjects.png"
     }
+
 }

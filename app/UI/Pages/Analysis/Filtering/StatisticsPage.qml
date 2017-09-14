@@ -1,8 +1,10 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
+import QtQuick.Controls 1.4
 import org.regovar 1.0
 import "../../../Regovar"
 import "../../../Framework"
+import "../../../Dialogs"
 
 Rectangle
 {
@@ -10,7 +12,6 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property FilteringAnalysis model
-
 
     Rectangle
     {
@@ -25,28 +26,31 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Analysis Resume Page")
             font.pixelSize: 20
             font.weight: Font.Black
         }
     }
 
-
-    Rectangle
+    // Help information on this page
+    Box
     {
+        id: helpInfoBox
         anchors.top : header.bottom
         anchors.left: root.left
         anchors.right: root.right
-        anchors.bottom: root.bottom
         anchors.margins: 10
+        height: 30
 
-        color: "transparent"
+        visible: Regovar.helpInfoBoxDisplayed
+        mainColor: Regovar.theme.frontColor.success
+        icon: "k"
+        text: qsTr("Statistics about your variants and quality scores from DepthOfCoverage.")
+    }
 
-        Text
-        {
-            anchors.centerIn: parent
-            text: "Resume of the analysis"
-            font.pointSize: 24
-        }
+    Text
+    {
+       text: "Statistics & Quality"
+       font.pointSize: 24
+       anchors.centerIn: parent
     }
 }

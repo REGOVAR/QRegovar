@@ -46,18 +46,15 @@ QtObject
                 { "icon": "c", "label": qsTr("Browser"),   "page": "Browse/ProjectsPage.qml", "sublevel": [], "subindex": -1, "projectId": -1}
                 ], "subindex": 0},
             { "icon": "b", "label": qsTr("Subject"),    "page": "", "sublevel": [
-                { "icon": "z", "label": qsTr("Browser"), "page": "Browse/SubjectsPage.qml", "sublevel": [], "subindex": -1, "subjectId": -1}
-//                { "icon": "b", "label": "Michel Dupont","page": "", "sublevel": [
-//                    //{ "label": qsTr("Resume"),          "page": "Subject/ResumePage.qml", "sublevel": []},
-//                    { "label": qsTr("Informations"),    "page": "Subject/SettingsPage.qml", "sublevel": []},
-//                    { "label": qsTr("Phenotype"),       "page": "Subject/PhenotypesPage.qml", "sublevel": []},
-//                    //{ "label": qsTr("Characteristics"), "page": "Subject/CharacteristicsPage.qml", "sublevel": []},
-//                    { "label": qsTr("Samples"),         "page": "Subject/SamplesPage.qml", "sublevel": []},
-//                    { "label": qsTr("Analyses"),        "page": "Subject/AnalysesPage.qml", "sublevel": []},
-//                    { "label": qsTr("Files"),           "page": "Subject/FilesPage.qml", "sublevel": []},
-//                    //{ "label": qsTr("Events"),          "page": "Subject/EventsPage.qml", "sublevel": []}
-//                    ], "subindex": 0},
+                { "icon": "z", "label": qsTr("Browser"), "page": "Browse/SubjectsPage.qml", "sublevel": [], "subindex": -1, "subjectId": -1},
+                { "icon": "b", "label": "Michel Dupont","page": "", "sublevel": [
+                    { "label": qsTr("Summary"),    "page": "Subject/SummaryPage.qml", "sublevel": []},
+                    { "label": qsTr("Phenotype"),  "page": "Subject/PhenotypesPage.qml", "sublevel": []},
+                    { "label": qsTr("Samples"),    "page": "Subject/SamplesPage.qml", "sublevel": []},
+                    { "label": qsTr("Analyses"),   "page": "Subject/AnalysesPage.qml", "sublevel": []},
+                    { "label": qsTr("Files"),      "page": "Subject/FilesPage.qml", "sublevel": []},
                 ], "subindex": 0},
+            ], "subindex": 0},
             { "icon": "d", "label": qsTr("Settings"),      "page": "",   "sublevel": [
                 { "icon": "q", "label": qsTr("Panel"),     "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "L", "label": qsTr("Pipeline"),  "page": "Settings/PipesPage.qml", "sublevel": [], "subindex": -1},
@@ -67,7 +64,6 @@ QtObject
                 ], "subindex": 0},
             { "icon": "e", "label": qsTr("Help"),           "page": "", "sublevel": [
                 { "icon": "e", "label": qsTr("User guide"), "page": "Help/UserGuidePage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "e", "label": qsTr("Tutorials"),  "page": "Help/TutorialsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "f", "label": qsTr("About"),      "page": "Help/AboutPage.qml", "sublevel": [], "subindex": -1}
                 ], "subindex": 0},
             { "icon": "h", "label": qsTr("Close"),        "page": "@close",      "sublevel": [], "subindex": -1}//,
@@ -99,11 +95,9 @@ QtObject
                 var project = regovar.projectsOpen[i];
                 menuModel.model[2]["sublevel"] = menuModel.model[2]["sublevel"].concat({ "icon": "6", "label": project.name, "projectId": project.id, "page": "", "sublevel": [
                   { "label": qsTr("Summary"),       "page": "Project/SummaryPage.qml", "sublevel": []},
-                  //{ "label": qsTr("Events"),      "page": "Project/EventsPage.qml", "sublevel": []},
                   { "label": qsTr("Analyses"),      "page": "Project/AnalysesPage.qml", "sublevel": []},
                   { "label": qsTr("Subjects"),      "page": "Project/SubjectsPage.qml", "sublevel": []},
                   { "label": qsTr("Files"),         "page": "Project/FilesPage.qml", "sublevel": []},
-                  { "label": qsTr("Settings"),      "page": "Project/SettingsPage.qml", "sublevel": []},
                    ], "subindex": 0});
             }
 

@@ -44,28 +44,19 @@ Rectangle
 
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
-        icon: "f"
+        icon: "k"
         text: qsTr("Browse, create and edit gene's panels.")
     }
 
-    Rectangle
+    Image
     {
-        anchors.top : header.bottom
+        anchors.top : helpInfoBox.bottom
         anchors.left: root.left
-        anchors.right: root.right
-        anchors.bottom: root.bottom
         anchors.margins: 10
-        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 10 : 10
 
 
-        color: "transparent"
+        source: "qrc:/a310 Settings Panels.png"
 
-        Text
-        {
-            anchors.centerIn: parent
-            text: "Panels management"
-            font.pointSize: 24
-        }
     }
 
 

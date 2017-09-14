@@ -27,34 +27,34 @@ Rectangle
         color: Regovar.theme.backgroundColor.alt
 
 
-        Text
-        {
-            id: userIcon
-            anchors.top: header.top
-            anchors.left: header.left
-            anchors.bottom: header.bottom
-            anchors.margins: 10
-            font.pixelSize: 22
-            font.family: Regovar.theme.icons.name
-            color: Regovar.theme.primaryColor.back.dark
-            verticalAlignment: Text.AlignVCenter
+//        Text
+//        {
+//            id: userIcon
+//            anchors.top: header.top
+//            anchors.left: header.left
+//            anchors.bottom: header.bottom
+//            anchors.margins: 10
+//            font.pixelSize: 22
+//            font.family: Regovar.theme.icons.name
+//            color: Regovar.theme.primaryColor.back.dark
+//            verticalAlignment: Text.AlignVCenter
 
-            text: "b"
-        }
-        Text
-        {
-            id: userLabel
-            anchors.top: header.top
-            anchors.left: userIcon.right
-            anchors.bottom: header.bottom
-            anchors.margins: 10
-            font.pixelSize: 22
-            font.family: Regovar.theme.font.familly
-            color: Regovar.theme.primaryColor.back.dark
-            verticalAlignment: Text.AlignVCenter
+//            text: "F"
+//        }
+//        Text
+//        {
+//            id: userLabel
+//            anchors.top: header.top
+//            anchors.left: userIcon.right
+//            anchors.bottom: header.bottom
+//            anchors.margins: 10
+//            font.pixelSize: 22
+//            font.family: Regovar.theme.font.familly
+//            color: Regovar.theme.primaryColor.back.dark
+//            verticalAlignment: Text.AlignVCenter
 
-            text: "Aurélie BECKER"
-        }
+//            text: "https://regovar.chu-nancy.fr"
+//        }
 
         Text
         {
@@ -68,7 +68,7 @@ Rectangle
             color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
 
-            text: "F"
+            text: "b"
         }
         Text
         {
@@ -82,7 +82,7 @@ Rectangle
             color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
 
-            text: "https://regovar.chu-nancy.fr"
+            text: "Aurélie BECKER"
         }
     }
 
@@ -132,7 +132,7 @@ Rectangle
             }
         }
 
-        placeholderText: qsTr("Search anything, project, sample, phenotype, analysis, variant, report, ..")
+        placeholderText: qsTr("Search anything, project, sample, phenotype, analysis, variant, report...")
         focus: true
     }
 
