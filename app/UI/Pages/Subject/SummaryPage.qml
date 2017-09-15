@@ -172,7 +172,7 @@ Rectangle
         ComboBox
         {
             enabled: editionMode
-            model: ["Emergency", "Hight", "Normal", "Low", "None"]
+            model: ["Urgent", "High", "Normal", "Low"]
             currentIndex: 1
         }
 

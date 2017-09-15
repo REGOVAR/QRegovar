@@ -27,7 +27,7 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Analysis Resume Page")
+            text: qsTr("My test")
             font.pixelSize: 20
             font.weight: Font.Black
         }
@@ -136,7 +136,7 @@ Rectangle
         ComboBox
         {
             enabled: editionMode
-            model: ["Emergency", "Hight", "Normal", "Low", "None"]
+            model: ["Urgent", "High", "Normal", "Low"]
             currentIndex: 1
         }
 
@@ -362,67 +362,29 @@ Rectangle
         }
         Column
         {
-            Row
+            Text
             {
-                Text
-                {
-                    width: Regovar.theme.font.boxSize.control
-                    font.pixelSize: Regovar.theme.font.size.control
-                    font.family: Regovar.theme.icons.name
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    text: "B"
-                }
-
-                Text
-                {
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    text: "VEP (v76)"
-                }
-            }
-            Row
-            {
-                Text
-                {
-                    width: Regovar.theme.font.boxSize.control
-                    font.pixelSize: Regovar.theme.font.size.control
-                    font.family: Regovar.theme.icons.name
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    text: "B"
-                }
-
-                Text
-                {
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    text: "SnpEff (v4.2)"
-                }
-            }
-            Row
-            {
-                Text
-                {
-                    width: Regovar.theme.font.boxSize.control
-                    font.pixelSize: Regovar.theme.font.size.control
-                    font.family: Regovar.theme.icons.name
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    text: "B"
-                }
-
-                Text
-                {
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    text: "dbNSFP (v3.3)"
-                }
+                font.pixelSize: Regovar.theme.font.size.control
+                color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
+                verticalAlignment: Text.AlignVCenter
+                text: "VEP (v76)"
             }
 
+            Text
+            {
+                font.pixelSize: Regovar.theme.font.size.control
+                color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
+                verticalAlignment: Text.AlignVCenter
+                text: "SnpEff (v4.2)"
+            }
+
+            Text
+            {
+                font.pixelSize: Regovar.theme.font.size.control
+                color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
+                verticalAlignment: Text.AlignVCenter
+                text: "dbNSFP (v3.3)"
+            }
         }
 
 

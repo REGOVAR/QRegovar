@@ -45,7 +45,7 @@ Rectangle
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("Browse, create and edit gene's panels.")
+        text: qsTr("Browse, create and edit gene panels.")
     }
 
     Image

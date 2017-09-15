@@ -1,5 +1,4 @@
 import QtQuick 2.7
-import QtWebView 1.0
 import "../../Regovar"
 
 Rectangle

@@ -27,7 +27,7 @@ GenericScreen
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        text: qsTr("Choose which genome referencial must be used for this analysis.")
+        text: qsTr("Choose which genome reference must be used for this analysis.")
         wrapMode: Text.WordWrap
         font.pixelSize: Regovar.theme.font.size.control
         color: Regovar.theme.primaryColor.back.normal
@@ -58,7 +58,7 @@ GenericScreen
                 {
                     height: Regovar.theme.font.size.header
                     Layout.minimumWidth: root.labelColWidth
-                    text: qsTr("Referencial")
+                    text: qsTr("Reference")
                     color: Regovar.theme.frontColor.normal
                     font.pixelSize: Regovar.theme.font.size.control
                     font.family: Regovar.theme.font.familly
@@ -70,7 +70,7 @@ GenericScreen
                 {
                     Layout.fillWidth: true
                     id: refField
-                    model: regovar.referencials
+                    model: ["Hg38", "Hg19", "Hg18"] //regovar.referencials
                     currentIndex: 1
                     onCurrentIndexChanged: checkReady();
                 }

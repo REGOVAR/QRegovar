@@ -154,7 +154,7 @@ QuickFilterBox
                 id: posInter
                 anchors.left: parent.left
                 anchors.leftMargin: 30
-                text: qsTr("Intergenenic")
+                text: qsTr("Intergenic")
                 checked: false
                 onCheckedChanged:
                 {

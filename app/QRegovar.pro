@@ -194,9 +194,7 @@ DISTFILES += \
     UI/Dialogs/NewProjectDialog.qml \
     UI/Dialogs/NewAnalysisDialog.qml \
     UI/Dialogs/NewSubjectDialog.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/FilteringAnnotationScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/FilteringSamplesScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/FilteringSettingsScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/GenericScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/InputsScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml \
@@ -208,13 +206,15 @@ DISTFILES += \
     UI/Framework/TableView.qml \
     UI/Dialogs/NewAnalysisWizardScreens/ProjectScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/AnalysisTypeScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/FilteringReferencialScreen.qml \
     UI/Dialogs/NewAnalysisWizardScreens/AnalysisTypeButtom.qml \
     UI/Dialogs/NewAnalysisWizardScreens/FilteringSubjectsScreen.qml \
     UI/Pages/Subject/SummaryPage.qml \
     UI/Pages/Analysis/Filtering/StatisticsPage.qml \
     UI/Pages/Analysis/Filtering/Quickfilter/PanelQuickForm.qml \
-    UI/Pages/Analysis/Filtering/SummaryPage.qml
+    UI/Pages/Analysis/Filtering/SummaryPage.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/FilteringReferenceScreen.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/FilteringAnnotationsScreen.qml \
+    UI/Dialogs/NewAnalysisWizardScreens/PipelineLaunch.qml
 
 
 win32 {

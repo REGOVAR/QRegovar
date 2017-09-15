@@ -41,7 +41,7 @@ Rectangle
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("Browse all available subjects and samples in Regovar thanks to the tree below. You can filter the subject's tree thanks to the search field above.")
+        text: qsTr("The list below shows all subjects and samples available. You can filter the list using the search field.")
     }
 
 

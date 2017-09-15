@@ -59,7 +59,7 @@ Dialog
                         { "title" : qsTr("Pipeline"), "source":"../Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml"},
                         { "title" : qsTr("Inputs files"), "source":"../Dialogs/NewAnalysisWizardScreens/InputsScreen.qml"},
                         { "title" : qsTr("Configure"), "source":"../Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml"},
-                        { "title" : qsTr("Launch"), "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
+                        { "title" : qsTr("Launch"), "source":"../Dialogs/NewAnalysisWizardScreens/PipelineLaunch.qml"}
                     ];
                     root.analysisModel["type"] = "pipeline";
                 }
@@ -67,10 +67,10 @@ Dialog
                 {
                     root.menuModel = [
                         { "title" : qsTr("Analysis type")},
-                        { "title" : qsTr("Referencial"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringReferencialScreen.qml"},
+                        { "title" : qsTr("Reference"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringReferenceScreen.qml"},
                         { "title" : qsTr("Samples"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSamplesScreen.qml"},
                         { "title" : qsTr("Subjects associations"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSubjectsScreen.qml"},
-                        { "title" : qsTr("Configure"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSettingsScreen.qml"},
+                        { "title" : qsTr("Annotations"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringAnnotationsScreen.qml"},
                         { "title" : qsTr("Launch"), "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
                     ];
                     root.analysisModel["type"] = "filtering";
@@ -326,8 +326,12 @@ Dialog
                 menuPageMapping[newIdx].anchors.fill = stackPanel;
                 nextButton.enabled = Qt.binding(function()
                 {
-                    var ready = menuPageMapping[newIdx].readyForNext;
-                    //menuModel[newIdx]["checked"] = ready;
+                    var ready = false;
+                    if ( menuPageMapping[newIdx])
+                    {
+                        ready = menuPageMapping[newIdx].readyForNext;
+                        //menuModel[newIdx]["checked"] = ready;
+                    }
                     return ready;
                 });
                 menuSelectedIndex = newIdx;

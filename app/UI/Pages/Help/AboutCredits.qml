@@ -1,6 +1,5 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
-import QtWebView 1.1
 import "../../Regovar"
 
 Item
@@ -12,7 +11,7 @@ Item
     Text
     {
         anchors.centerIn: parent
-        text: "Credits (l'équipe, les rémerciement, citations, outils utilisés, etc)"
+        text: "Credits (team, acknowledgements, tools...)"
         font.pointSize: 24
     }
 

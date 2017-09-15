@@ -45,7 +45,7 @@ Rectangle
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("Edit your profile's informations")
+        text: qsTr("Edit your profile information")
     }
 
     Rectangle
@@ -63,7 +63,7 @@ Rectangle
         Text
         {
             anchors.centerIn: parent
-            text: "Edit your profile informations (password, firstname, lastname, email, ...)"
+            text: "Edit your profile information (password, first name, last name, email...)"
             font.pointSize: 24
         }
     }

@@ -50,9 +50,9 @@ void TusUploader::enqueue(QStringList paths)
     // Then for each file we sent a request to the server to prepare uploadUrl for it
     foreach (QString path, paths)
     {
-        if (path.startsWith("file://"))
+        if (path.startsWith("file:///"))
         {
-            path = path.mid(7);
+            path = path.mid(8);
         }
 
         QFileInfo fi(path);

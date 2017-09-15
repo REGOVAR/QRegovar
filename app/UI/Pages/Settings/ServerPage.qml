@@ -43,7 +43,7 @@ Rectangle
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("Regovar server's settings. Tell the application how to connect to the Regovar's servers.")
+        text: qsTr("Regovar server settings. Tell the application how to connect to the Regovar server.")
     }
 
     Rectangle
@@ -61,7 +61,7 @@ Rectangle
         Text
         {
             anchors.centerIn: parent
-            text: "Server settings (proxy, share server url, local server url, auto update ?)"
+            text: "Server settings (proxy, share server URL, local server URL, auto-update)"
             font.pointSize: 24
         }
     }

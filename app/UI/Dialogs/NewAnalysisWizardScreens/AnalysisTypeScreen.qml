@@ -20,7 +20,7 @@ Rectangle
         anchors.right: parent.right
         anchors.margins: 10
 
-        text: qsTr("Select which kind of analysis you want to do.")
+        text: qsTr("Select which kind of analysis you want to perform.")
         wrapMode: Text.WordWrap
         font.pixelSize: Regovar.theme.font.size.header
         color: Regovar.theme.primaryColor.back.dark
@@ -58,7 +58,7 @@ Rectangle
         {
             Layout.alignment : Qt.AlignHCenter
             label : qsTr("Variants filtering")
-            description: qsTr("Load your sample's data into the Regovar database and then dynamically filter the variants thanks the friendly interface.")
+            description: qsTr("Load your samples' data into the Regovar database and then dynamically filter the variants thanks to the friendly interface.")
             //source: "qrc:/filtering.gif"
             onClicked: selected(2);
             onIsHoverChanged:

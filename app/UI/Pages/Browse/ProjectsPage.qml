@@ -62,7 +62,7 @@ Rectangle
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("Browse all available projects in Regovar thanks to the tree below. You can filter the project's tree thanks to the search field above.")
+        text: qsTr("Use the tree below to browse all available projects. You can filter the tree using the search field.")
     }
 
     Column

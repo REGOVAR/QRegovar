@@ -88,7 +88,7 @@ Rectangle
             Layout.fillWidth: true
             enabled: editionMode
             placeholderText: qsTr("Name of the project")
-            text: "Name of the project"
+            text: "My test"
         }
 
         Column

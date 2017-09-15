@@ -45,7 +45,7 @@ Rectangle
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("Regovar application's settings. Note that your settings are saved on this local computer only.")
+        text: qsTr("Regovar application settings. Note that your settings are saved on this computer only.")
     }
 
     Rectangle
@@ -63,7 +63,7 @@ Rectangle
         Text
         {
             anchors.centerIn: parent
-            text: "Application settings (language, font size, theme, help boxes display ?)"
+            text: "Application settings (language, font size, theme, help boxes display)"
             font.pointSize: 24
         }
     }
