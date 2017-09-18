@@ -65,6 +65,7 @@ public:
     inline QJsonObject searchResult() const { return mSearchResult; }
     inline bool searchInProgress() const { return mSearchInProgress; }
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
+    inline QList<QObject*> projectsList() const { return mProjectsList; }
     inline QList<QObject*> remoteFilesList() const { return mRemoteFilesList; }
     inline QList<QObject*> remoteSamplesList() const { return mRemoteSamplesList; }
     inline Project* currentProject() const { return mCurrentProject; }
@@ -168,6 +169,8 @@ private:
 
     //! The model of the projects browser treeview
     ProjectsTreeModel* mProjectsTreeView;
+    //! The flat list of project (use for project's combobox selection)
+    QList<QObject*> mProjectsList;
     //! The model of the current project loaded
     Project* mCurrentProject;
     //! The model used to browse all files available on the server
