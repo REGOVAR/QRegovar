@@ -2,7 +2,7 @@
 #include "Model/regovar.h"
 #include <QDebug>
 
-QNetworkAccessManager* Request::mNetManager = Q_NULLPTR;
+QNetworkAccessManager* Request::mNetManager = nullptr;
 QNetworkAccessManager* Request::netManager()
 {
     if (mNetManager == Q_NULLPTR)
@@ -16,13 +16,11 @@ QNetworkAccessManager* Request::netManager()
 
     return mNetManager;
 }
-
-
-
+//------------------------------------------------------------------------------------------------
 Request::Request(Verb verb, const QString& query, QHttpMultiPart* data, QObject* parent) : QObject(parent)
 {
     QNetworkRequest request = Request::makeRequest(query);
-    mReply = Q_NULLPTR;
+    mReply = nullptr;
     switch (verb)
     {
         case Request::Get:
@@ -42,13 +40,14 @@ Request::Request(Verb verb, const QString& query, QHttpMultiPart* data, QObject*
             qCritical() << Q_FUNC_INFO << "Unknow query verb ... \"" << verb << "\" : \"" << query << "\"";
             break;
     }
-    if (mReply != Q_NULLPTR)
+    if (mReply != nullptr)
     {
         mLoading = true;
         connect(mReply, SIGNAL(finished()), this,SLOT(received()));
     }
 }
-Request::Request(Verb verb, const QString& query, QByteArray data, QObject* parent) : QObject(parent)
+//------------------------------------------------------------------------------------------------
+Request::Request(Verb verb, const QString& query, const QByteArray& data, QObject* parent) : QObject(parent)
 {
     QNetworkRequest request = Request::makeRequest(query);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -73,45 +72,43 @@ Request::Request(Verb verb, const QString& query, QByteArray data, QObject* pare
             qCritical() << Q_FUNC_INFO << "Unknow query verb ... \"" << verb << "\" : \"" << query << "\"";
             break;
     }
-    if (mReply != Q_NULLPTR)
+    if (mReply != nullptr)
     {
         mLoading = true;
         connect(mReply, SIGNAL(finished()), this,SLOT(received()));
     }
 }
-
-
-
-
-
-Request* Request::get(const QString query)
+//------------------------------------------------------------------------------------------------
+Request* Request::get(const QString& query)
 {
     return new Request(Get, query);
 }
-
-Request* Request::put(const QString query, QHttpMultiPart* data)
+//------------------------------------------------------------------------------------------------
+Request* Request::put(const QString& query, QHttpMultiPart* data)
 {
     return new Request(Put, query, data);
 }
-Request* Request::put(const QString query, QByteArray data)
+//------------------------------------------------------------------------------------------------
+Request* Request::put(const QString& query, const QByteArray& data)
 {
     return new Request(Put, query, data);
 }
-
-Request* Request::post(const QString query, QHttpMultiPart* data)
+//------------------------------------------------------------------------------------------------
+Request* Request::post(const QString& query, QHttpMultiPart* data)
 {
     return new Request(Post, query, data);
 }
-Request* Request::post(const QString query, QByteArray data)
+//------------------------------------------------------------------------------------------------
+Request* Request::post(const QString& query, const QByteArray& data)
 {
     return new Request(Post, query, data);
 }
-
-Request* Request::del(const QString query)
+//------------------------------------------------------------------------------------------------
+Request* Request::del(const QString& query)
 {
     return new Request(Del, query);
 }
-
+//------------------------------------------------------------------------------------------------
 QNetworkRequest Request::makeRequest(const QString& resource)
 {
     QUrl url(Regovar::i()->serverUrl());
@@ -121,15 +118,12 @@ QNetworkRequest Request::makeRequest(const QString& resource)
     QNetworkRequest request(url);
     return request;
 }
-
-
-
-
+//------------------------------------------------------------------------------------------------
 const QJsonObject &Request::json() const
 {
     return mJson;
 }
-
+//------------------------------------------------------------------------------------------------
 void Request::received()
 {
     mLoading = false;
@@ -158,3 +152,4 @@ void Request::received()
         qWarning() << Q_FUNC_INFO << "Request ends with no answer ? ";
     }
 }
+//------------------------------------------------------------------------------------------------
