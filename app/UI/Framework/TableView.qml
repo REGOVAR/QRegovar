@@ -109,19 +109,19 @@ TableView
 
 
 
-    // Default delegate for all column
-    itemDelegate: Item
-    {
-        Text
-        {
-            anchors.leftMargin: 5
-            anchors.rightMargin: 5
-            anchors.fill: parent
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: styleData.textAlignment
-            font.pixelSize: Regovar.theme.font.size.control
-            text: (styleData.value !== undefined && styleData.value !== null) ? styleData.value : "" // + " (" + styleData.row + "," + styleData.column + ")"
-            elide: Text.ElideRight
-        }
-    }
+//    // Default delegate for all column
+//    itemDelegate: Item
+//    {
+//        Text
+//        {
+//            anchors.leftMargin: 5
+//            anchors.rightMargin: 5
+//            anchors.fill: parent
+//            verticalAlignment: Text.AlignVCenter
+//            horizontalAlignment: styleData.textAlignment
+//            font.pixelSize: Regovar.theme.font.size.control
+//            text: (styleData.value !== undefined && styleData.value !== null) ? styleData.value : "" // + " (" + styleData.row + "," + styleData.column + ")"
+//            elide: Text.ElideRight
+//        }
+//    }
 }

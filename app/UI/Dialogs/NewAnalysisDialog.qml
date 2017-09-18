@@ -14,8 +14,8 @@ Dialog
 
     title: qsTr("Create new analysis")
 
-    width: 600
-    height: 400
+    width: 900
+    height: 500
 
     onVisibleChanged: startScreen.visible = true
 
@@ -239,10 +239,10 @@ Dialog
                 z: 99
 
                 // block click otherwise risk to interact with hidden tabs
-                MouseArea
-                {
-                    anchors.fill: parent
-                }
+//                MouseArea
+//                {
+//                    anchors.fill: parent
+//                }
             }
         }
 

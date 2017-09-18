@@ -1,12 +1,17 @@
 import QtQuick 2.7
-import QtQuick.Controls 2.2
-import QtQuick.Controls 1.4 as OLD
-import QtQml.Models 2.2
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
-import org.regovar 1.0
 
 import "../Regovar"
 import "../Framework"
+
+
+
+
+
+
+
 
 Dialog
 {
@@ -17,18 +22,17 @@ Dialog
     width: 500
     height: 400
 
-    property FilteringAnalysis currentAnalysis
-    property alias localIndex: localFiles.currentIndex
-    property alias localSelection: localFiles.selection
-    property alias remoteSampleTreeModel: remoteSamples.model
-    property alias remoteIndex: remoteSamples.currentIndex
-    property alias remoteSelection: remoteSamples.selection
+//    property alias localIndex: localFiles.currentIndex
+//    property alias localSelection: localFiles.selection
+//    property alias remoteSampleTreeModel: remoteSamples.model
+//    property alias remoteIndex: remoteSamples.currentIndex
+//    property alias remoteSelection: remoteSamples.selection
 
 
     onAccepted: console.log("Ok clicked")
     onRejected: console.log("Cancel clicked")
-    Keys.onEscapePressed: root.reject()
-    Keys.onBackPressed: root.reject() // especially necessary on Android
+
+    signal samplesSelected(var samples)
 
 
 
@@ -37,6 +41,7 @@ Dialog
 
         id: root
         color: Regovar.theme.backgroundColor.main
+        anchors.fill: parent
 
         Rectangle
         {
@@ -65,7 +70,8 @@ Dialog
                 placeholderText: qsTr("Search sample by identifiant or vcf filename, subject's name, birthday, sex, comment, ...")
             }
 
-            TreeView
+
+            TableView
             {
                 id: remoteSamples
                 anchors.top : remoteFilterField.bottom
@@ -74,27 +80,111 @@ Dialog
                 anchors.bottom: remoteSwitchButton.top
                 anchors.margins: 10
 
-                model: (currentAnalysis != null) ? currentAnalysis.remoteSamples : null
+                model: regovar.remoteSamplesList
+                selectionMode: SelectionMode.ExtendedSelection
+                Component.onCompleted: regovar.loadSampleBrowser(2);
+                property var statusIcons: ["m", "/", "n", "h"]
 
-                // TODO : enable multiple selection for the treeview
-//                selection: ItemSelectionModel
-//                {
-//                    onSelectionChanged:
-//                    {
-//                        console.log(currentIndex)
-//                    }
-//                 }
-//                selectionMode: OLD.SelectionMode.ExtendedSelection
+                TableViewColumn { title: qsTr("Sample"); role: "name"; horizontalAlignment: Text.AlignLeft; }
+                TableViewColumn
+                {
+                    title: "Status"
+                    role: "statusUI"
+                    delegate: Item
+                    {
 
-                OLD.TableViewColumn { title: qsTr("Name"); role: "name" }
-                OLD.TableViewColumn { title: qsTr("Status"); role: "status" }
-                OLD.TableViewColumn { title: qsTr("Firstname"); role: "firstname" }
-                OLD.TableViewColumn { title: qsTr("Lastname"); role: "lastname" }
-                OLD.TableViewColumn { title: qsTr("Sex"); role: "sex" }
-                OLD.TableViewColumn { title: qsTr("Import date"); role: "importDate" }
-                OLD.TableViewColumn { title: qsTr("File"); role: "filename" }
-                OLD.TableViewColumn { title: qsTr("Comment"); role: "comment" }
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: remoteSamples.statusIcons[styleData.value.status]
+                            font.family: Regovar.theme.icons.name
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.label
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
+                TableViewColumn
+                {
+                    title: qsTr("Subject")
+                    role: "subjectUI"
+                    delegate: Item
+                    {
 
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.sex == "M" ? "9" : styleData.value.sex == "F" ? "<" : ""
+                            font.family: Regovar.theme.icons.name
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.lastname + " " + styleData.value.firstname + "(" + styleData.value.age + ")"
+                            elide: Text.ElideRight
+                        }
+
+                    }
+                }
+                TableViewColumn
+                {
+                    title: qsTr("Source")
+                    role: "sourceUI"
+                    delegate: Item
+                    {
+
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.icon
+                            font.family: Regovar.theme.icons.name
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.fill: parent
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.filename
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
+                TableViewColumn { title: qsTr("Comment"); role: "comment" }
             }
 
             Button
@@ -123,87 +213,6 @@ Dialog
             visible: false
 
 
-            ItemSelectionModel
-            {
-                id: sel
-                model: fileSystemModel
-            }
-
-
-
-            Text
-            {
-                id: localLabel
-                anchors.top : rootLocalView.top
-                anchors.left: rootLocalView.left
-                anchors.right: rootLocalView.right
-                anchors.margins: 10
-
-                text: qsTr("Select local VCF file to upload it on the server and import samples data.")
-                font.pixelSize: Regovar.theme.font.size.control
-            }
-
-            TextField
-            {
-                id: localFilterField
-                anchors.top : localLabel.bottom
-                anchors.left: rootLocalView.left
-                anchors.right: rootLocalView.right
-                anchors.margins: 10
-                placeholderText: qsTr("Search file by name, date, comment, ...")
-            }
-
-            TreeView
-            {
-                id: localFiles
-                anchors.top : localFilterField.bottom
-                anchors.left: rootLocalView.left
-                anchors.right: rootLocalView.right
-                anchors.bottom: localSwitchButton.top
-                anchors.margins: 10
-                model: fileSystemModel
-                rootIndex: rootPathIndex
-                selection: sel
-                selectionMode:2
-
-                OLD.TableViewColumn
-                {
-                    title: "Name"
-                    role: "fileName"
-                    resizable: true
-                }
-
-                OLD.TableViewColumn
-                {
-                    title: "Size"
-                    role: "size"
-                    resizable: true
-                    horizontalAlignment : Text.AlignRight
-                    width: 70
-                }
-
-                OLD.TableViewColumn
-                {
-                    title: "Permissions"
-                    role: "displayableFilePermissions"
-                    resizable: true
-                    width: 100
-                }
-
-                OLD.TableViewColumn
-                {
-                    title: "Date Modified"
-                    role: "lastModified"
-                    resizable: true
-                }
-
-                onActivated :
-                {
-                    var url = fileSystemModel.data(index, FileSystemModel.UrlStringRole)
-                    Qt.openUrlExternally(url)
-                }
-            }
-
 
             Button
             {
@@ -231,7 +240,39 @@ Dialog
             anchors.margins: 10
 
             text: qsTr("Ok")
-            onClicked: sampleDialog.accept()
+            onClicked:
+            {
+                var samples=[];
+                if (rootRemoteView.visible)
+                {
+                    remoteSamples.selection.forEach( function(rowIndex)
+                    {
+                        samples = samples.concat(regovar.remoteSamplesList[rowIndex]);
+                    });
+                    samplesSelected(samples);
+                }
+//                if (rootLocalView.visible)
+//                {
+//                    // First retrieve local files url
+//                    for(var i=0; i<localFiles.selection.selectedIndexes.length; i++)
+//                    {
+//                        var idx = localFiles.selection.selectedIndexes[i];
+//                        var url = fileSystemModel.data(idx, FileSystemModel.UrlStringRole);
+//                        files = files.concat(url);
+//                    }
+
+//                    // Start tus upload for
+//                    console.log("Start upload of files : " + files);
+//                    regovar.enqueueUploadFile(files);
+
+//                    // Retrieve
+//                    // No need to send "fileSelected(files)" signal as the tus upload will auto add it to the inputsList
+//                    // TODO : find a better way to manage it to avoid multiuser problem and so on...
+//                }
+
+
+                sampleDialog.accept();
+            }
         }
 
         Button

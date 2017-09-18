@@ -70,7 +70,7 @@ GenericScreen
                 {
                     Layout.fillWidth: true
                     id: refField
-                    model: ["Hg38", "Hg19", "Hg18"] //regovar.referencials
+                    model: regovar.referencials
                     currentIndex: 1
                     onCurrentIndexChanged: checkReady();
                 }

@@ -7,6 +7,7 @@
 #include "request.h"
 
 #include "Model/file/file.h"
+#include "Model/analysis/filtering/reference.h"
 
 
 Regovar* Regovar::mInstance = Q_NULLPTR;
@@ -159,11 +160,12 @@ void Regovar::getWelcomLastData()
             emit lastSubjectsChanged();
 
             // Get referencial available
-            mReferencialDefault = data["referencial_default"].toInt();
-            foreach (QJsonValue jsonVal, json["referencials"].toArray())
+            mReferenceDefault = data["default_reference_id"].toInt();
+            foreach (QJsonValue jsonVal, data["references"].toArray())
             {
-                QJsonObject jsonRef = jsonVal.toObject();
-                mReferencials.insert(jsonRef["id"].toInt(), jsonRef["name"].toString());
+                Reference* ref = new Reference();
+                ref->fromJson(jsonVal.toObject());
+                mReferences.append(ref);
             }
         }
         else
@@ -288,7 +290,7 @@ void Regovar::filesEnqueued(QHash<QString,QString> mapping)
 
 void Regovar::loadSampleBrowser(int refId)
 {
-    Request* req = Request::get(QString("/browserTree/%1").arg(refId));
+    Request* req = Request::get(QString("/sample/browserTree/%1").arg(2)); // refId));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)

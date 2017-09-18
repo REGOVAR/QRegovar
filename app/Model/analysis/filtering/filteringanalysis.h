@@ -17,6 +17,7 @@ class FilteringAnalysis : public Analysis
     Q_OBJECT
 
     // Analysis properties
+    Q_PROPERTY(int refId READ refId)
     Q_PROPERTY(QString refName READ refName)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterChanged)
@@ -27,10 +28,10 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QList<QObject*> samples READ samples4qml NOTIFY samplesChanged)
     // Panel & Treeview models
     Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsChanged)
-    Q_PROPERTY(AnnotationsTreeModel* allAnnotationsDB READ allAnnotationsDB NOTIFY allAnnotationsDBChanged)
+    //Q_PROPERTY(QList<QObject*> allAnnotationsDB READ allAnnotationsDB NOTIFY allAnnotationsDBChanged)
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsChanged)
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY quickfiltersChanged)
-    Q_PROPERTY(RemoteSampleTreeModel* remoteSamples READ remoteSamples NOTIFY remoteSamplesChanged)
+    //Q_PROPERTY(RemoteSampleTreeModel* remoteSamples READ remoteSamples NOTIFY remoteSamplesChanged)
     // "Shortcuts properties" for QML
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
 
@@ -87,6 +88,8 @@ public:
     Q_INVOKABLE void saveCurrentFilter(QString filterName, QString filterDescription);
     Q_INVOKABLE void loadFilter(QJsonObject filter);
     Q_INVOKABLE void loadFilter(QString filter);
+    Q_INVOKABLE void addSamples(QList<QObject*> samples);
+    Q_INVOKABLE void removeSamples(QList<QObject*> samples);
 
 
 Q_SIGNALS:
@@ -143,12 +146,15 @@ private:
     int mTrioFather;
     int mResultsTotal;
     QVariantList mFilters;
+    QList<int> mSamplesIds; // = mSamples, but use as shortcuts to check quickly by sample id
 
 
     // Methods
     void loadAnnotations();
     void loadResults();
     void refreshDisplayedAnnotationColumns();
+
+
 };
 
 #endif // FILTERINGANALYSIS_H

@@ -26,8 +26,6 @@ Dialog
 
     onAccepted: console.log("Ok clicked")
     onRejected: console.log("Cancel clicked")
-    Keys.onEscapePressed: root.reject()
-    Keys.onBackPressed: root.reject() // especially necessary on Android
 
     signal fileSelected(var files)
 

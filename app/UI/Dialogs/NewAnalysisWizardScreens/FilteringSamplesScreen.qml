@@ -11,7 +11,12 @@ GenericScreen
 {
     id: root
 
-    readyForNext: true // samplesList.count > 0
+    readyForNext: true
+
+    function checkReady()
+    {
+        readyForNext = true; // samplesList.count > 0;
+    }
 
     Text
     {
@@ -53,61 +58,109 @@ GenericScreen
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                // model: regovar.newFilteringAnalysis.samples
+                model: regovar.newFilteringAnalysis.samples
+                property var statusIcons: ["m", "/", "n", "h"]
 
-                model: ListModel
-                {
-                    ListElement {
-                        nameUI: "Hp-4456223"
-                        subjectUI: "Michel DUPONT"
-                        statusUI: "Ready"
-                        sourceUI: "trio-dm-00.vcf"
-                        comment: ""
-                    }
-                    ListElement {
-                        nameUI: "Hp-4177789"
-                        subjectUI: "Micheline DUPONT"
-                        statusUI: "Ready"
-                        sourceUI: "trio-dm-00.vcf"
-                        comment: ""
-                    }
-                    ListElement {
-                        nameUI: "Hp-4177789"
-                        subjectUI: ""
-                        statusUI: "Loading (63%)"
-                        sourceUI: "trio-dm-01.vcf"
-                        comment: ""
-                    }
-                }
-
-
+                TableViewColumn { title: qsTr("Sample"); role: "name" }
                 TableViewColumn
                 {
-                    title: qsTr("Sample")
-                    role: "nameUI"
+                    title: qsTr("Subject")
+                    role: "subjectUI"
                     delegate: Item
                     {
-                        TextField
+
+                        Text
                         {
-                            anchors.fill: parent
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
-                            text: model.nickname // styleData.value
-                            placeholderText: model.nameUI
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.sex == "M" ? "9" : styleData.value.sex == "F" ? "<" : ""
+                            font.family: Regovar.theme.icons.name
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.lastname + " " + styleData.value.firstname + " (" + styleData.value.age + ")"
+                            elide: Text.ElideRight
+                        }
+
+                    }
+                }
+                TableViewColumn
+                {
+                    title: "Status"
+                    role: "statusUI"
+                    delegate: Item
+                    {
+
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: samplesList.statusIcons[styleData.value.status]
+                            font.family: Regovar.theme.icons.name
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.label
+                            elide: Text.ElideRight
                         }
                     }
                 }
                 TableViewColumn
                 {
-                    title: qsTr("Subject")
-                    role: "subjectUI"
+                    title: qsTr("Source")
+                    role: "sourceUI"
+                    delegate: Item
+                    {
+
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.icon
+                            font.family: Regovar.theme.icons.name
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.fill: parent
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.control
+                            text: styleData.value.filename
+                            elide: Text.ElideRight
+                        }
+                    }
                 }
-                TableViewColumn
-                {
-                    title: qsTr("Status")
-                    role: "statusUI"
-                }
-                TableViewColumn { title: "Source"; role: "sourceUI" }
-                TableViewColumn { title: "Comment"; role: "comment" }
+                TableViewColumn { title: qsTr("Comment"); role: "comment" }
             }
 
             Column
@@ -118,22 +171,124 @@ GenericScreen
                 {
                     id: addButton
                     text: qsTr("Add sample")
-                   // onClicked: { regovar.loadSampleBrowser(2); sampleSelector.open(); }
+                    onClicked: { sampleSelector.reset(); sampleSelector.open(); }
                 }
                 Button
                 {
                     id: remButton
                     text: qsTr("Remove sample")
-                    onClicked: samplesList.model = null;
+                    onClicked:
+                    {
+                        // Get list of objects to remove
+                        var samples= []
+                        samplesList.selection.forEach( function(rowIndex)
+                        {
+                            samples = samples.concat(regovar.remoteSamplesList[rowIndex]);
+                        });
+                        regovar.newFilteringAnalysis.removeSamples(samples);
+                    }
                 }
             }
         }
+        RowLayout
+        {
+            spacing: 10
+            Layout.fillWidth: true
+            CheckBox
+            {
+                id: trioActivated
+                text: "Trio"
+                checked: false
+            }
+
+        }
+        GridLayout
+        {
+            Layout.fillWidth: true
+            rowSpacing: 5
+            columnSpacing: 5
+
+            rows:3
+            columns: 5
+
+            Text { text: "Child"; enabled: trioActivated.checked }
+            ComboBox
+            {
+                id: childSample
+                model: regovar.newFilteringAnalysis.samples
+                Layout.fillWidth: true
+                enabled: trioActivated.checked
+                delegate: Text
+                {
+                    text: modelData.name
+                }
+            }
+            CheckBox
+            {
+                id: childIndex
+                enabled: trioActivated.checked
+                checked: false
+                text: "Index"
+            }
+            Text { text: "Sex"; enabled: trioActivated.checked }
+            ComboBox
+            {
+                id: childSex
+                enabled: trioActivated.checked
+                model: ["Male", "Female"]
+            }
+
+            Text { text: "Mother"; enabled: trioActivated.checked }
+            ComboBox
+            {
+                id: motherSample
+                enabled: trioActivated.checked
+                model: regovar.newFilteringAnalysis.samples
+                Layout.fillWidth: true
+                delegate: Text
+                {
+                    text: modelData.name
+                }
+            }
+            CheckBox
+            {
+                id: motherdIndex
+                enabled: trioActivated.checked
+                text: "Index"
+                checked: true
+            }
+            Text { text: ""; Layout.columnSpan: 2 }
+
+            Text { text: "Father"; enabled: trioActivated.checked }
+            ComboBox
+            {
+                id: fatherSample
+                enabled: trioActivated.checked
+                model: regovar.newFilteringAnalysis.samples
+                Layout.fillWidth: true
+                delegate: Text
+                {
+                    text: modelData.name
+                }
+            }
+            CheckBox
+            {
+                id: fatherIndex
+                enabled: trioActivated.checked
+                text: "Index"
+            }
+            Text { text: ""; Layout.columnSpan: 2 }
+        }
+
     }
 
-//    SelectSamplesDialog
-//    {
-//        id: sampleSelector
-//        currentAnalysis: regovar.newFilteringAnalysis
-//        //onSampleSelected: { regovar.newPipelineAnalysis.addInputs(files); checkReady(); }
-//    }
+    SelectSamplesDialog
+    {
+        id: sampleSelector
+        onSamplesSelected:
+        {
+            regovar.newFilteringAnalysis.addSamples(samples);
+            checkReady();
+        }
+    }
 }

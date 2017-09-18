@@ -52,7 +52,7 @@ GenericScreen
         {
             Layout.fillWidth: true
             id: projectField
-            model: ["Select a project", "DPNI", "Panel onchogénétique", "Hugodims"]
+            model: ["DPNI", "Panel onchogénétique", "Hugodims"]
             onCurrentIndexChanged: checkReady();
         }
     }

@@ -46,13 +46,13 @@ public:
 
 
 private:
-    QString mUid="";
-    QString mDbUid="";
-    QString mName="";
-    QString mDescription="";
-    QString mType="";
+    QString mUid;
+    QString mDbUid;
+    QString mName;
+    QString mDescription;
+    QString mType;
     QJsonObject mMeta;
-    QString mVersion="";
+    QString mVersion;
     int mOrder=-1;
 };
 

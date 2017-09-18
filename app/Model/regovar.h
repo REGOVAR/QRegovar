@@ -28,22 +28,30 @@ class Regovar : public QObject
     Q_OBJECT
 
     Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlChanged)
+    // Welcom
     Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
-    Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewChanged)
-    Q_PROPERTY(QList<QObject*> remoteFilesList READ remoteFilesList NOTIFY remoteFilesListChanged)
-    Q_PROPERTY(QList<QObject*> remoteSamplesList READ remoteSamplesList NOTIFY remoteSamplesListChanged)
-    Q_PROPERTY(Project* currentProject READ currentProject NOTIFY currentProjectChanged)
     Q_PROPERTY(QJsonArray lastAnalyses READ lastAnalyses NOTIFY lastAnalysesChanged)
     Q_PROPERTY(QJsonArray lastEvent READ lastEvent NOTIFY lastEventChanged)
     Q_PROPERTY(QJsonArray lastSubjects READ lastSubjects NOTIFY lastSubjectsChanged)
+
+    // Browsers
+    Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewChanged)
     Q_PROPERTY(QList<QObject*> projectsOpen READ projectsOpen NOTIFY projectsOpenChanged)
     Q_PROPERTY(QVariantList subjetsOpen READ subjetsOpen NOTIFY subjetsOpenChanged)
-    Q_PROPERTY(QStringList referencials READ referencials NOTIFY referencialsChanged)
 
+    // New analysis wizard
+    Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
+    Q_PROPERTY(QList<QObject*> projects READ projectsList NOTIFY projectsListChanged)
+    Q_PROPERTY(QList<QObject*> remoteFilesList READ remoteFilesList NOTIFY remoteFilesListChanged)
+    Q_PROPERTY(QList<QObject*> remoteSamplesList READ remoteSamplesList NOTIFY remoteSamplesListChanged)
     Q_PROPERTY(PipelineAnalysis* newPipelineAnalysis READ newPipelineAnalysis NOTIFY newPipelineAnalysisChanged)
     Q_PROPERTY(FilteringAnalysis* newFilteringAnalysis READ newFilteringAnalysis NOTIFY newFilteringAnalysisChanged)
+
+    //
+    Q_PROPERTY(Project* currentProject READ currentProject NOTIFY currentProjectChanged)
+
 
 public:
     static Regovar* i();
@@ -68,7 +76,7 @@ public:
     //inline UserModel* currentUser() const { return mUser; }
     inline PipelineAnalysis* newPipelineAnalysis() const { return mNewPipelineAnalysis; }
     inline FilteringAnalysis* newFilteringAnalysis() const { return mNewFilteringAnalysis; }
-    inline QStringList referencials() const { QStringList result; foreach (QString ref, mReferencials.values()) { result.append(ref); } return result; }
+    inline QList<QObject*> references() const { return mReferences; }
 
     // Setters
     inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlChanged(); }
@@ -127,7 +135,7 @@ Q_SIGNALS:
     void remoteFilesListChanged();
     void remoteSamplesListChanged();
     void currentProjectChanged();
-    void referencialsChanged();
+    void referencesChanged();
     void onClose();
     void onError(QString errCode, QString message);
     void projectCreationDone(bool success, int projectId);
@@ -141,6 +149,7 @@ Q_SIGNALS:
     void newPipelineAnalysisChanged();
     void newFilteringAnalysisChanged();
     void websocketMessageReceived(QString action, QJsonObject data);
+    void projectsListChanged();
 
 private:
     Regovar();
@@ -173,9 +182,9 @@ private:
     QJsonArray mLastEvents;
     QJsonArray mLastAnalyses;
     QJsonArray mLastSubjects;
-    //! list of referencials supported by the server
-    QHash<int, QString> mReferencials;
-    int mReferencialDefault;
+    //! list of references supported by the server
+    QList<QObject*> mReferences;
+    int mReferenceDefault;
     //! list of project/subject open
     QList<QObject*> mProjectsOpen;
     QVariantList mSubjectsOpen;

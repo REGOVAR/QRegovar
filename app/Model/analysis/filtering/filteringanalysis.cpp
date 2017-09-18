@@ -372,6 +372,34 @@ void FilteringAnalysis::loadFilter(QJsonObject filter)
     // mQuickFilters->loadFilter(mFilterJson);
 }
 
+void FilteringAnalysis::addSamples(QList<QObject*> samples)
+{
+    foreach(QObject* o1, samples)
+    {
+        Sample* sample = qobject_cast<Sample*>(o1);
+        if (!mSamplesIds.contains(sample->id()))
+        {
+            mSamplesIds.append(sample->id());
+            mSamples.append(sample);
+        }
+    }
+    emit samplesChanged();
+
+}
+
+void FilteringAnalysis::removeSamples(QList<QObject*> samples)
+{
+    foreach(QObject* o1, samples)
+    {
+        Sample* sample = qobject_cast<Sample*>(o1);
+        if (mSamplesIds.contains(sample->id()))
+        {
+            mSamplesIds.removeAll(sample->id());
+            mSamples.removeAll(sample);
+        }
+    }
+    emit samplesChanged();
+}
 
 
 

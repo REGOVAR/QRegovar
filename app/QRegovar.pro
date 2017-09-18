@@ -7,7 +7,6 @@ CONFIG += c++11
 HEADERS += \
     Model/treeitem.h \
     Model/treemodel.h \
-    Model/jsonmodel.h \
     Model/request.h \
     Model/file/filesystemmodel.h \
     Model/file/tusuploader.h \
@@ -37,12 +36,13 @@ HEADERS += \
     Model/analysis/filtering/fieldcolumninfos.h \
     Model/analysis/filtering/remotesampletreeitem.h \
     Model/analysis/filtering/remotesampletreemodel.h \
-    Model/analysis/pipeline/pipelineanalysis.h
+    Model/analysis/pipeline/pipelineanalysis.h \
+    Model/analysis/filtering/reference.h \
+    Model/analysis/filtering/annotationdb.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
     Model/treemodel.cpp \
-    Model/jsonmodel.cpp \
     Model/request.cpp \
     Model/file/filesystemmodel.cpp \
     Model/file/tusuploader.cpp \
@@ -72,7 +72,9 @@ SOURCES += main.cpp \
     Model/analysis/filtering/fieldcolumninfos.cpp \
     Model/analysis/filtering/remotesampletreeitem.cpp \
     Model/analysis/filtering/remotesampletreemodel.cpp \
-    Model/analysis/pipeline/pipelineanalysis.cpp
+    Model/analysis/pipeline/pipelineanalysis.cpp \
+    Model/analysis/filtering/reference.cpp \
+    Model/analysis/filtering/annotationdb.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
