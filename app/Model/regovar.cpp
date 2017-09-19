@@ -206,7 +206,7 @@ void Regovar::loadAnalysis(int id)
                 // Create new QML window
                 QDir dir = QDir::currentPath();
                 QString file = dir.filePath("UI/AnalysisWindow.qml");
-                QUrl url = QUrl::fromLocalFile(file);
+                QUrl url = QUrl("qrc:/qml/AnalysisWindow.qml");
                 QQmlComponent *c = new QQmlComponent(mQmlEngine, url, QQmlComponent::PreferSynchronous);
                 QObject* o = c->create();
                 QQuickWindow *i = qobject_cast<QQuickWindow*>(o);
