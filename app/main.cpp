@@ -10,6 +10,7 @@
 #include "Model/file/filesystemmodel.cpp"
 #include "Model/analysis/filtering/filteringanalysis.h"
 #include "Model/analysis/pipeline/pipelineanalysis.h"
+#include "Model/analysis/filtering/reference.h"
 
 int main(int argc, char *argv[])
 {
@@ -27,6 +28,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<FilteringAnalysis>("org.regovar", 1, 0, "FilteringAnalysis");
     qmlRegisterType<PipelineAnalysis>("org.regovar", 1, 0, "PipelineAnalysis");
     qmlRegisterType<Sample>("org.regovar", 1, 0, "Sample");
+    qmlRegisterType<Reference>("org.regovar", 1, 0, "Reference");
     qmlRegisterType<FieldColumnInfos>("org.regovar", 1, 0, "FieldColumnInfos");
     qmlRegisterType<QuickFilterField>("org.regovar", 1, 0, "QuickFilterField");
     qmlRegisterType<Project>("org.regovar", 1, 0, "Project");

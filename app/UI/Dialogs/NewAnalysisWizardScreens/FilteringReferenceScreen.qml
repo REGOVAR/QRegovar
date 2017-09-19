@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 
@@ -70,9 +71,33 @@ GenericScreen
                 {
                     Layout.fillWidth: true
                     id: refField
-                    model: regovar.referencials
-                    currentIndex: 1
-                    onCurrentIndexChanged: checkReady();
+                    model: regovar.references
+                    textRole: 'name'
+                    currentIndex: regovar.selectedReference
+                    onCurrentIndexChanged:
+                    {
+                        if (currentIndex != regovar.selectedReference)
+                        {
+                            regovar.selectedReference = currentIndex;
+                            checkReady();
+                        }
+                    }
+                    delegate: ItemDelegate
+                    {
+                        width: refField.width
+                        height: Regovar.theme.font.boxSize.control
+                        contentItem: Text
+                        {
+                            text: modelData.name
+                            color: enabled ? Regovar.theme.boxColor.front : Regovar.theme.frontColor.disable
+                            font: refField.font
+                            elide: Text.ElideRight
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+
+                        highlighted: refField.highlightedIndex === index
+                    }
                 }
             }
         }

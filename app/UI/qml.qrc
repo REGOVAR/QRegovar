@@ -112,5 +112,6 @@
         <file>Regovar/Regovar.qml</file>
         <file>Regovar/Style.qml</file>
         <file>Regovar/qmldir</file>
+        <file>Framework/ComboBoxDelegate.qml</file>
     </qresource>
 </RCC>

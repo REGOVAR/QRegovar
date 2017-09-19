@@ -179,67 +179,66 @@ Rectangle
             }
         }
 
-        ColumnLayout
+        ScrollView
         {
+            visible: regovar.welcomIsLoading
             anchors.top: newButtonsRow.bottom
             anchors.topMargin: 70
             anchors.left: panel.left
             anchors.right: panel.right
             anchors.bottom: panel.bottom
 
-            spacing: 30
-
-
-            Rectangle
+            Column
             {
-                color: "transparent"
-                Layout.minimumHeight: 3*Regovar.theme.font.boxSize.control
-                Layout.preferredHeight: 12*Regovar.theme.font.boxSize.control
-                Layout.fillWidth: true
-                clip: true
+                spacing: 30
 
-                SplitView
+
+                Rectangle
                 {
-                    id: row
-                    anchors.fill: parent
+                    color: "transparent"
+                    // Layout.minimumHeight: 3*Regovar.theme.font.boxSize.control
+                    height: analysesColumn.height
+                    width: parent.width
 
-                    Rectangle
+                    SplitView
                     {
-                        id: analysesScrollArea
-                        Layout.fillHeight: true
-                        color: "transparent"
-                        width: row.width / 2
-
-                        Text
-                        {
-                            id: analysesHeader
-                            verticalAlignment: Text.AlignVCenter
-                            elide: Text.ElideRight
-                            font.pixelSize: Regovar.theme.font.size.header
-                            color: Regovar.theme.primaryColor.back.dark
-                            height: Regovar.theme.font.boxSize.header
-                            text: qsTr("Last analyses")
-                        }
+                        id: row
+                        anchors.fill: parent
 
                         Rectangle
                         {
-                            anchors.top: analysesHeader.bottom
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.rightMargin: 15
-                            height: 1
-                            color: Regovar.theme.primaryColor.back.normal
-                        }
+                            id: analysesScrollArea
+                            Layout.fillHeight: true
+                            color: "transparent"
+                            width: row.width / 2
 
-                        ScrollView
-                        {
-                            anchors.fill: parent
-                            anchors.topMargin: Regovar.theme.font.boxSize.header + 1
-                            anchors.rightMargin: 15
+                            Text
+                            {
+                                id: analysesHeader
+                                verticalAlignment: Text.AlignVCenter
+                                elide: Text.ElideRight
+                                font.pixelSize: Regovar.theme.font.size.header
+                                color: Regovar.theme.primaryColor.back.dark
+                                height: Regovar.theme.font.boxSize.header
+                                text: qsTr("Last analyses")
+                            }
+
+                            Rectangle
+                            {
+                                anchors.top: analysesHeader.bottom
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.rightMargin: 15
+                                height: 1
+                                color: Regovar.theme.primaryColor.back.normal
+                            }
+
                             Column
                             {
-                                y: 5
-                                x: 0
+                                id: analysesColumn
+                                anchors.fill: parent
+                                anchors.topMargin: Regovar.theme.font.boxSize.header + 5
+                                anchors.rightMargin: 15
                                 Repeater
                                 {
                                     model: regovar.lastAnalyses
@@ -256,45 +255,43 @@ Rectangle
                                 }
                             }
                         }
-                    }
-
-                    Rectangle
-                    {
-                        id: subjectScrollArea
-                        Layout.fillHeight: true
-
-                        color: "transparent"
-
-                        Text
-                        {
-                            id: subjectsHeader
-                            anchors.left: parent.left
-                            anchors.leftMargin: 15
-                            verticalAlignment: Text.AlignVCenter
-                            elide: Text.ElideRight
-                            font.pixelSize: Regovar.theme.font.size.header
-                            color: Regovar.theme.primaryColor.back.dark
-                            height: Regovar.theme.font.boxSize.header
-                            text: qsTr("Last subjects")
-                        }
 
                         Rectangle
                         {
-                            anchors.top: subjectsHeader.bottom
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.leftMargin: 15
-                            height: 1
-                            color: Regovar.theme.primaryColor.back.normal
-                        }
+                            id: subjectScrollArea
+                            Layout.fillHeight: true
 
-                        ScrollView
-                        {
-                            anchors.fill: parent
-                            anchors.topMargin: Regovar.theme.font.boxSize.header + 1
-                            anchors.rightMargin: 15
+                            color: "transparent"
+
+                            Text
+                            {
+                                id: subjectsHeader
+                                anchors.left: parent.left
+                                anchors.leftMargin: 15
+                                verticalAlignment: Text.AlignVCenter
+                                elide: Text.ElideRight
+                                font.pixelSize: Regovar.theme.font.size.header
+                                color: Regovar.theme.primaryColor.back.dark
+                                height: Regovar.theme.font.boxSize.header
+                                text: qsTr("Last subjects")
+                            }
+
+                            Rectangle
+                            {
+                                anchors.top: subjectsHeader.bottom
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.leftMargin: 15
+                                height: 1
+                                color: Regovar.theme.primaryColor.back.normal
+                            }
+
                             Column
                             {
+                                anchors.fill: parent
+                                anchors.topMargin: Regovar.theme.font.boxSize.header + 5
+                                anchors.rightMargin: 15
+
                                 Repeater
                                 {
                                     model: regovar.lastSubjects
@@ -312,95 +309,105 @@ Rectangle
                         }
                     }
                 }
-            }
 
 
-            ColumnLayout
-            {
-                Layout.minimumHeight: 3*Regovar.theme.font.boxSize.control
-                Layout.fillHeight: true
-
-
-                Text
+                ColumnLayout
                 {
-                    verticalAlignment: Text.AlignVCenter
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    color: Regovar.theme.primaryColor.back.dark
-                    height: Regovar.theme.font.boxSize.header
-                    text: qsTr("Last events")
-                }
-
-                Rectangle
-                {
-                    Layout.fillWidth: true
-                    height: 1
-                    color: Regovar.theme.primaryColor.back.normal
-                }
-
-                Rectangle
-                {
+                    Layout.minimumHeight: 3*Regovar.theme.font.boxSize.control
                     Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    color: "transparent"
 
-                    ColumnLayout
+
+                    Text
                     {
-                        anchors.fill: parent
-                        anchors.margins: 5
-                        spacing: 10
+                        verticalAlignment: Text.AlignVCenter
+                        elide: Text.ElideRight
+                        font.pixelSize: Regovar.theme.font.size.header
+                        color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.header
+                        text: qsTr("Last events")
+                    }
 
-                        Repeater
+                    Rectangle
+                    {
+                        Layout.fillWidth: true
+                        height: 1
+                        color: Regovar.theme.primaryColor.back.normal
+                    }
+
+                    Rectangle
+                    {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        color: "transparent"
+
+                        ColumnLayout
                         {
-                            model : ListModel
+                            anchors.fill: parent
+                            anchors.margins: 5
+                            spacing: 10
+
+                            Repeater
                             {
-                                ListElement { date: "2017-06-25 14h56"; name: "Article published"; icon:""; color:"" }
-                                ListElement { date: "2017-06-25 14h56"; name: "Start new analysis \"Hugodims\""; icon:""; color:"" }
-                                ListElement { date: "2017-06-25 14h56"; name: "Pause analysis \"Hugodims\""; icon:"m"; color:"red" }
-                                ListElement { date: "2017-06-25 14h56"; name: "Project 2 creation"; icon:""; color:"" }
+                                model : ListModel
+                                {
+                                    ListElement { date: "2017-06-25 14h56"; name: "Article published"; icon:""; color:"" }
+                                    ListElement { date: "2017-06-25 14h56"; name: "Start new analysis \"Hugodims\""; icon:""; color:"" }
+                                    ListElement { date: "2017-06-25 14h56"; name: "Pause analysis \"Hugodims\""; icon:"m"; color:"red" }
+                                    ListElement { date: "2017-06-25 14h56"; name: "Project 2 creation"; icon:""; color:"" }
+                                }
+
+                                Row
+                                {
+                                    Text
+                                    {
+                                        width: 120
+                                        font.pixelSize: 12
+                                        font.family: Regovar.theme.font.familly
+                                        verticalAlignment: Text.AlignVCenter
+                                        horizontalAlignment: Text.left
+                                        text: date
+                                        color: Regovar.theme.frontColor.disable
+                                    }
+                                    Text
+                                    {
+                                        width: 30
+                                        font.pixelSize: 12
+                                        font.family: Regovar.theme.icons.name
+                                        verticalAlignment: Text.AlignVCenter
+                                        horizontalAlignment: Text.AlignHCenter
+                                        text: icon
+                                        color: color
+                                    }
+                                    Text
+                                    {
+                                        font.pixelSize: 12
+                                        font.family: Regovar.theme.font.familly
+                                        color: Regovar.theme.frontColor.normal
+                                        verticalAlignment: Text.AlignVCenter
+                                        text: name
+                                    }
+                                }
                             }
 
-                            Row
+                            Rectangle
                             {
-                                Text
-                                {
-                                    width: 120
-                                    font.pixelSize: 12
-                                    font.family: Regovar.theme.font.familly
-                                    verticalAlignment: Text.AlignVCenter
-                                    horizontalAlignment: Text.left
-                                    text: date
-                                    color: Regovar.theme.frontColor.disable
-                                }
-                                Text
-                                {
-                                    width: 30
-                                    font.pixelSize: 12
-                                    font.family: Regovar.theme.icons.name
-                                    verticalAlignment: Text.AlignVCenter
-                                    horizontalAlignment: Text.AlignHCenter
-                                    text: icon
-                                    color: color
-                                }
-                                Text
-                                {
-                                    font.pixelSize: 12
-                                    font.family: Regovar.theme.font.familly
-                                    color: Regovar.theme.frontColor.normal
-                                    verticalAlignment: Text.AlignVCenter
-                                    text: name
-                                }
+                                color: "transparent"
+                                Layout.fillHeight: true
                             }
-                        }
-
-                        Rectangle
-                        {
-                            color: "transparent"
-                            Layout.fillHeight: true
                         }
                     }
                 }
+
             }
+        }
+        BusyIndicator
+        {
+            visible: !regovar.welcomIsLoading
+            anchors.top: newButtonsRow.bottom
+            anchors.topMargin: 70
+            anchors.left: panel.left
+            anchors.right: panel.right
+            anchors.bottom: panel.bottom
 
         }
 

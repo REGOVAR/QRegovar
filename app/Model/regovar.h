@@ -35,6 +35,7 @@ class Regovar : public QObject
     Q_PROPERTY(QJsonArray lastAnalyses READ lastAnalyses NOTIFY lastAnalysesChanged)
     Q_PROPERTY(QJsonArray lastEvent READ lastEvent NOTIFY lastEventChanged)
     Q_PROPERTY(QJsonArray lastSubjects READ lastSubjects NOTIFY lastSubjectsChanged)
+    Q_PROPERTY(bool welcomIsLoading READ welcomIsLoading WRITE setWelcomIsLoading NOTIFY welcomIsLoadingChanged)
 
     // Browsers
     Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewChanged)
@@ -43,13 +44,13 @@ class Regovar : public QObject
 
     // New analysis wizard
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
+    Q_PROPERTY(int selectedReference READ selectedReference WRITE setSelectedReference NOTIFY selectedReferenceChanged)
     Q_PROPERTY(QList<QObject*> projects READ projectsList NOTIFY projectsListChanged)
     Q_PROPERTY(QList<QObject*> remoteFilesList READ remoteFilesList NOTIFY remoteFilesListChanged)
     Q_PROPERTY(QList<QObject*> remoteSamplesList READ remoteSamplesList NOTIFY remoteSamplesListChanged)
     Q_PROPERTY(PipelineAnalysis* newPipelineAnalysis READ newPipelineAnalysis NOTIFY newPipelineAnalysisChanged)
     Q_PROPERTY(FilteringAnalysis* newFilteringAnalysis READ newFilteringAnalysis NOTIFY newFilteringAnalysisChanged)
 
-    //
     Q_PROPERTY(Project* currentProject READ currentProject NOTIFY currentProjectChanged)
 
 
@@ -64,20 +65,25 @@ public:
     inline QString searchRequest() { return mSearchRequest; }
     inline QJsonObject searchResult() const { return mSearchResult; }
     inline bool searchInProgress() const { return mSearchInProgress; }
-    inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
-    inline QList<QObject*> projectsList() const { return mProjectsList; }
-    inline QList<QObject*> remoteFilesList() const { return mRemoteFilesList; }
-    inline QList<QObject*> remoteSamplesList() const { return mRemoteSamplesList; }
-    inline Project* currentProject() const { return mCurrentProject; }
     inline QJsonArray lastAnalyses() const { return mLastAnalyses; }
     inline QJsonArray lastEvent() const { return mLastEvents; }
     inline QJsonArray lastSubjects() const { return mLastSubjects; }
+    inline bool welcomIsLoading() const { return mWelcomIsLoading; }
+    //--
+    inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
     inline QList<QObject*> projectsOpen() const { return mProjectsOpen; }
     inline QVariantList subjetsOpen() const { return mSubjectsOpen; }
-    //inline UserModel* currentUser() const { return mUser; }
+    //--
+    inline QList<QObject*> references() const { return mReferences; }
+    inline int selectedReference() const { return mSelectedReference; }
+    inline QList<QObject*> projectsList() const { return mProjectsList; }
+    inline QList<QObject*> remoteFilesList() const { return mRemoteFilesList; }
+    inline QList<QObject*> remoteSamplesList() const { return mRemoteSamplesList; }
     inline PipelineAnalysis* newPipelineAnalysis() const { return mNewPipelineAnalysis; }
     inline FilteringAnalysis* newFilteringAnalysis() const { return mNewFilteringAnalysis; }
-    inline QList<QObject*> references() const { return mReferences; }
+    //--
+    inline Project* currentProject() const { return mCurrentProject; }
+    //inline UserModel* currentUser() const { return mUser; }
 
     // Setters
     inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlChanged(); }
@@ -85,10 +91,12 @@ public:
     inline void setSearchResult(QJsonObject searchResult) { mSearchResult = searchResult; emit searchResultChanged(); }
     inline void setSearchInProgress(bool flag) { mSearchInProgress = flag; emit searchInProgressChanged(); }
     inline void setQmlEngine (QQmlApplicationEngine* engine) { mQmlEngine = engine; }
+    inline void setWelcomIsLoading(bool flag) { mWelcomIsLoading=flag; emit welcomIsLoadingChanged(); }
+    void setSelectedReference(int idx);
 
     // Methods
     Q_INVOKABLE void newProject(QString name, QString comment);
-    Q_INVOKABLE void newAnalysis(QJsonObject data);
+    Q_INVOKABLE bool newAnalysis(QString type);
     Q_INVOKABLE void newSubject(QJsonObject data);
     Q_INVOKABLE void enqueueUploadFile(QStringList filesPaths);
     Q_INVOKABLE void raiseError(QJsonObject raiseError);
@@ -98,10 +106,10 @@ public:
     Q_INVOKABLE void openAnalysis(int analysisId);
     Q_INVOKABLE FilteringAnalysis* getAnalysisFromWindowId(int winId);
     Q_INVOKABLE void search(QString query);
-    Q_INVOKABLE void getWelcomLastData();
     Q_INVOKABLE void resetNewAnalysisWizardModels();
+    Reference* referencesFromId(int id);
 
-
+    Q_INVOKABLE void loadWelcomData();
     Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void loadSampleBrowser(int refId);
 
@@ -151,6 +159,8 @@ Q_SIGNALS:
     void newFilteringAnalysisChanged();
     void websocketMessageReceived(QString action, QJsonObject data);
     void projectsListChanged();
+    void welcomIsLoadingChanged();
+    void selectedReferenceChanged();
 
 private:
     Regovar();
@@ -166,6 +176,7 @@ private:
     QString mSearchRequest;
     QJsonObject mSearchResult;
     bool mSearchInProgress = false;
+    bool mWelcomIsLoading = false;
 
     //! The model of the projects browser treeview
     ProjectsTreeModel* mProjectsTreeView;
@@ -188,6 +199,7 @@ private:
     //! list of references supported by the server
     QList<QObject*> mReferences;
     int mReferenceDefault;
+    int mSelectedReference;
     //! list of project/subject open
     QList<QObject*> mProjectsOpen;
     QVariantList mSubjectsOpen;

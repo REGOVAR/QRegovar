@@ -9,6 +9,8 @@
 #include "quickfilters/quickfiltermodel.h"
 #include "Model/sample/sample.h"
 #include "fieldcolumninfos.h"
+#include "reference.h"
+
 class ResultsTreeModel;
 class RemoteSampleTreeModel;
 
@@ -17,8 +19,8 @@ class FilteringAnalysis : public Analysis
     Q_OBJECT
 
     // Analysis properties
-    Q_PROPERTY(int refId READ refId)
-    Q_PROPERTY(QString refName READ refName)
+    Q_PROPERTY(int refId READ refId NOTIFY refChanged)
+    Q_PROPERTY(QString refName READ refName NOTIFY refChanged)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterChanged)
     Q_PROPERTY(QJsonArray filterJson READ filterJson NOTIFY filterJsonChanged)
@@ -26,14 +28,16 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged)
     Q_PROPERTY(QVariantList filters READ filters NOTIFY filtersChanged)
     Q_PROPERTY(QList<QObject*> samples READ samples4qml NOTIFY samplesChanged)
+    Q_PROPERTY(bool isTrio READ isTrio WRITE setIsTrio NOTIFY isTrioChanged)
     // Panel & Treeview models
     Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsChanged)
-    //Q_PROPERTY(QList<QObject*> allAnnotationsDB READ allAnnotationsDB NOTIFY allAnnotationsDBChanged)
+    Q_PROPERTY(QList<QObject*> allAnnotations READ allAnnotations NOTIFY allAnnotationsChanged)
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsChanged)
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY quickfiltersChanged)
     //Q_PROPERTY(RemoteSampleTreeModel* remoteSamples READ remoteSamples NOTIFY remoteSamplesChanged)
     // "Shortcuts properties" for QML
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
+    Q_PROPERTY(QStringList selectedAnnotationsDB READ selectedAnnotationsDB NOTIFY selectedAnnotationsDBChanged)
 
 
 
@@ -64,20 +68,24 @@ public:
     inline int resultsTotal() { return mResultsTotal; }
     inline QVariantList filters() { return mFilters; }
     inline QList<Sample*> samples() { return mSamples; }
+    inline bool isTrio() const { return mIsTrio; }
     // Panel & Treeview models
     inline AnnotationsTreeModel* annotations() { return mAnnotationsTreeModel; }
-    inline AnnotationsTreeModel* allAnnotationsDB() { return mAllAnnotationsTreeModel; }
+    inline QList<QObject*> allAnnotations() { return mAllAnnotations; }
     inline ResultsTreeModel* results() { return mResults; }
     inline QuickFilterModel* quickfilters() { return mQuickFilters; }
     inline RemoteSampleTreeModel* remoteSamples() { return mRemoteSampleTreeModel; }
     // "Shortcuts properties" for QML
     QList<QObject*> samples4qml();
     QStringList resultColumns();
+    QStringList selectedAnnotationsDB();
 
     // Setters
     Q_INVOKABLE inline void setFilter(QString filter) { mFilter = filter; emit filterChanged(); }
     Q_INVOKABLE inline void setFilterJson(QJsonArray filterJson) { mFilterJson = filterJson; emit filterJsonChanged(); }
     Q_INVOKABLE int setField(QString uid, bool isDisplayed, int order=-1);
+    Q_INVOKABLE void setReference(Reference* ref);
+    Q_INVOKABLE void setIsTrio(bool flag) { mIsTrio=flag; emit isTrioChanged(); }
 
     // Methods
     bool fromJson(QJsonObject json);
@@ -85,6 +93,7 @@ public:
     Q_INVOKABLE void getVariantInfo(QString variantId);
     Q_INVOKABLE inline void emitDisplayFilterSavingFormPopup() { emit displayFilterSavingFormPopup(); }
     Q_INVOKABLE inline void emitDisplayFilterNewCondPopup(QJsonArray filter) { emit displayFilterNewCondPopup(); }
+    Q_INVOKABLE inline void emitSelectedAnnotationsDBChanged() { emit selectedAnnotationsDBChanged(); }
     Q_INVOKABLE void saveCurrentFilter(QString filterName, QString filterDescription);
     Q_INVOKABLE void loadFilter(QJsonObject filter);
     Q_INVOKABLE void loadFilter(QString filter);
@@ -97,7 +106,7 @@ Q_SIGNALS:
     void statusChanged();
     void loadingStatusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
     void annotationsChanged();
-    void allAnnotationsDBChanged();
+    void allAnnotationsChanged();
     void filterChanged();
     void filterJsonChanged();
     void filtersChanged();
@@ -112,10 +121,13 @@ Q_SIGNALS:
     void onContextualVariantInformationReady(QJsonObject json);
     void displayFilterSavingFormPopup();
     void displayFilterNewCondPopup();
-
+    void selectedAnnotationsDBChanged();
+    void refChanged();
+    void isTrioChanged();
 
 public Q_SLOTS:
-    void asynchLoading(LoadingStatus oldSatus, LoadingStatus newStatus);
+    //! method use to "chain" asynch request for the init of the analysis
+    void asynchLoadingCoordination(LoadingStatus oldSatus, LoadingStatus newStatus);
 
 
 private:
@@ -134,7 +146,7 @@ private:
     QuickFilterModel* mQuickFilters;
 
     QHash<QString, FieldColumnInfos*> mAnnotations;
-    AnnotationsTreeModel* mAllAnnotationsTreeModel;
+    QList<QObject*> mAllAnnotations;
     AnnotationsTreeModel* mAnnotationsTreeModel;
     RemoteSampleTreeModel* mRemoteSampleTreeModel;
     QList<FieldColumnInfos*> mDisplayedAnnotationColumns;

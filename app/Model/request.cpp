@@ -11,7 +11,7 @@ QNetworkAccessManager* Request::netManager()
         connect ( mNetManager,
                   SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
                   Regovar::i(),
-                  SLOT(authenticationRequired(QNetworkReply*, QAuthenticator*)));
+                  SLOT(onAuthenticationRequired(QNetworkReply*, QAuthenticator*)));
     }
 
     return mNetManager;
@@ -113,7 +113,7 @@ QNetworkRequest Request::makeRequest(const QString& resource)
 {
     QUrl url(Regovar::i()->serverUrl());
     url.setPath(resource);
-    qDebug() << Q_FUNC_INFO << url;
+    qDebug() << "REQUEST:" << url.toString();
 
     QNetworkRequest request(url);
     return request;

@@ -51,7 +51,7 @@ Dialog
 
             onSelected:
             {
-                root.analysisModel = {"inputs": [], "settings": {}, "name": "", "comment": "", "type": ""}
+                root.analysisModel = {"inputs": [], "settings": {}, "name": "", "comment": "", "type": ""};
                 if (choice == 1)
                 {
                     root.menuModel = [
@@ -217,7 +217,7 @@ Dialog
                     id: launchButton
                     visible: false
                     text: qsTr("Launch !")
-                    onClicked: console.log ("launch");
+                    onClicked: launchAnalaysis()
                 }
             }
         }
@@ -338,4 +338,18 @@ Dialog
             }
         }
     }
+
+
+    function launchAnalaysis()
+    {
+        if (regovar.newAnalysis(root.analysisModel["type"]))
+        {
+
+        }
+        else
+        {
+            // Unable to create analysis.
+        }
+    }
+
 }

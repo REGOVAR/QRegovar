@@ -83,7 +83,6 @@ Item
     {
         NumberAnimation
         {
-            easing: Easing.OutQuad
             duration : 150
         }
     }

@@ -8,6 +8,7 @@
 
 #include "Model/file/file.h"
 #include "Model/analysis/filtering/reference.h"
+#include "sample/sample.h"
 
 
 Regovar* Regovar::mInstance = Q_NULLPTR;
@@ -55,7 +56,7 @@ void Regovar::init()
     // DEBUG
     // loadAnalysis(4);
     mWebSocket.open(QUrl(mWebsocketUrl));
-    getWelcomLastData();
+    loadWelcomData();
 }
 
 
@@ -144,8 +145,9 @@ void Regovar::loadProject(int id)
 
 
 
-void Regovar::getWelcomLastData()
+void Regovar::loadWelcomData()
 {
+    setWelcomIsLoading(true);
     Request* req = Request::get(QString("/"));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
@@ -161,18 +163,21 @@ void Regovar::getWelcomLastData()
 
             // Get referencial available
             mReferenceDefault = data["default_reference_id"].toInt();
+            mSelectedReference = -1;
             foreach (QJsonValue jsonVal, data["references"].toArray())
             {
                 Reference* ref = new Reference();
                 ref->fromJson(jsonVal.toObject());
                 mReferences.append(ref);
             }
+            emit referencesChanged();
         }
         else
         {
             regovar->raiseError(json);
         }
         req->deleteLater();
+        setWelcomIsLoading(true);
     });
 }
 
@@ -184,6 +189,21 @@ void Regovar::resetNewAnalysisWizardModels()
     emit newPipelineAnalysisChanged();
     emit newFilteringAnalysisChanged();
 }
+
+Reference* Regovar::referencesFromId(int id)
+{
+    foreach (QObject* o, mReferences)
+    {
+        Reference* ref = qobject_cast<Reference*>(o);
+        if (ref->id()==id)
+        {
+            return ref;
+        }
+    }
+    return nullptr;
+}
+
+
 
 void Regovar::openAnalysis(int analysisId)
 {
@@ -242,7 +262,13 @@ void Regovar::loadAnalysis(int id)
 
 
 
-
+void Regovar::setSelectedReference(int idx)
+{
+    mSelectedReference=idx;
+    Reference* ref = qobject_cast<Reference*>(mReferences[idx]);
+    mNewFilteringAnalysis->setReference(ref);
+    emit selectedReferenceChanged();
+}
 
 
 
@@ -372,10 +398,56 @@ void Regovar::newProject(QString name, QString comment)
     });
 
 }
-void Regovar::newAnalysis(QJsonObject data)
+
+
+bool Regovar::newAnalysis(QString type)
 {
-    // TODO
-    emit analysisCreationDone(true, 6);
+    if (type == "filtering")
+    {
+        QStringList ids;
+        foreach (Sample* s, mNewFilteringAnalysis->samples())
+        {
+            ids << QString::number(s->id());
+        }
+
+        QVariant settings = false;
+        if (mNewFilteringAnalysis->isTrio())
+        {
+            QJsonObject settingsData;
+
+
+            settings = settingsData;
+        }
+
+        QJsonObject body;
+        body.insert("project_id", 2);
+        body.insert("reference_id", mNewFilteringAnalysis->refId());
+        body.insert("name", mNewFilteringAnalysis->name());
+        body.insert("samples_ids", QJsonValue::fromVariant(QVariant(ids)));
+        body.insert("settings", QJsonValue::fromVariant(QVariant(settings)));
+
+        Request* req = Request::post(QString("/analysis"), QJsonDocument(body).toJson());
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+        {
+            if (success)
+            {
+                // Start creation of the working table by sending the first "filtering" query
+
+
+                // notify HMI that analysis is created
+                emit analysisCreationDone(true, 6);
+            }
+            else
+            {
+                regovar->raiseError(json);
+            }
+            req->deleteLater();
+        });
+    }
+    else if (type == "pipeline")
+    {
+
+    }
 }
 void Regovar::newSubject(QJsonObject data)
 {

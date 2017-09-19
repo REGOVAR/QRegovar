@@ -56,49 +56,7 @@ GenericScreen
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            model: ListModel
-            {
-                ListElement {
-                    name: "VEP"
-                    version: "76"
-                    description: ""
-                }
-                ListElement {
-                    name: "VEP"
-                    version: "75"
-                    description: ""
-                }
-                ListElement {
-                    name: "VEP"
-                    version: "59"
-                    description: ""
-                }
-                ListElement {
-                    name: "SnpEff"
-                    version: "2.3"
-                    description: ""
-                }
-                ListElement {
-                    name: "SnpEff"
-                    version: "2.1"
-                    description: ""
-                }
-                ListElement {
-                    name: "dbNFSP"
-                    version: "3.3"
-                    description: ""
-                }
-                ListElement {
-                    name: "dbNFSP"
-                    version: "3.2"
-                    description: ""
-                }
-                ListElement {
-                    name: "dbNFSP"
-                    version: "3.1"
-                    description: ""
-                }
-            }
+            model: regovar.newFilteringAnalysis.allAnnotations
 
             TableViewColumn
             {
@@ -106,19 +64,27 @@ GenericScreen
                 role: "name"
                 delegate: CheckBox
                 {
-                    text: model.name
-                    checked: false
+                    text: modelData.name
+                    checked: modelData.selected
+                    onCheckedChanged:
+                    {
+                        if (modelData.selected != checked) modelData.selected = checked;
+                        regovar.newFilteringAnalysis.emitSelectedAnnotationsDBChanged();
+                    }
+                    enabled: modelData.name == "Regovar" || modelData.name == "Variant" ? false : true
                 }
             }
             TableViewColumn
             {
                 title: qsTr("Version")
                 role: "version"
+                width: 60
             }
             TableViewColumn
             {
                 title: qsTr("Description")
                 role: "description"
+                width: 400
             }
         }
 

@@ -31,7 +31,7 @@ BusyIndicator
 
         indicator: Rectangle
         {
-            color: Regovar.theme.addTransparency(style.bgColor, 0.5)
+            color: "transparent"
             visible: control.running
 
 

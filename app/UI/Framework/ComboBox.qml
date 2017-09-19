@@ -13,6 +13,7 @@ ComboBox
     delegate: ItemDelegate
     {
         width: control.width
+        height: Regovar.theme.font.boxSize.control
         contentItem: Text
         {
             text: modelData

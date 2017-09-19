@@ -2,20 +2,20 @@
 
 #include "Model/request.h"
 #include "Model/regovar.h"
+#include "annotation.h"
 
 FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 {
     // Tree model are created to allow QML binding initialisation even if no data loaded
     mType = tr("Variants Filtering");
     mResults = new ResultsTreeModel(this);
-    mAllAnnotationsTreeModel = new AnnotationsTreeModel(this);
     mAnnotationsTreeModel = new AnnotationsTreeModel(this);
     mQuickFilters = new QuickFilterModel(this);
     mLoadingStatus = empty;
 
 
     connect(this, SIGNAL(loadingStatusChanged(LoadingStatus,LoadingStatus)),
-            this, SLOT(asynchLoading(LoadingStatus,LoadingStatus)));
+            this, SLOT(asynchLoadingCoordination(LoadingStatus,LoadingStatus)));
 }
 
 
@@ -27,8 +27,6 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     setComment(json["comment"].toString());
     setType("Dynamic filtering analysis");
     setLastUpdate(QDateTime::fromString(json["update_date"].toString(), Qt::ISODate));
-    mRefId = json["reference_id"].toInt();
-    mRefName = json["ref_name"].toString();
     mStatus = json["status"].toString();
 
     // Parse settings
@@ -37,10 +35,21 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     {
         mAnnotationsDBUsed << field.toString();
     }
-//    bool mIsTrio = ;
-//    int mTrioChild;
-//    int mTrioMother;
-//    int mTrioFather;
+    if (settings["trio"].isBool())
+    {
+        mIsTrio = false;
+    }
+    else
+    {
+        mIsTrio = true;
+//        mTrioChild;
+//        mTrioMother;
+//        mTrioFather;
+//        mTrioSexChild;
+//        mTrioIndexChild;
+//        mTrioIndexMother;
+//        mTrioIndexFather;
+    }
 
     // Retrieve samples
     mSamples.clear();
@@ -93,19 +102,73 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     // first : need to load alls annotations available accdording to the referencial and
     // then : need to load result (annotation must be already loaded)
     // Chaining of loading step is done thanks to signals (see asynchLoading slot)
-    emit loadingStatusChanged(mLoadingStatus, loadingAnnotations);
-    mLoadingStatus = loadingAnnotations;
+    Reference* ref = regovar->referencesFromId(json["reference_id"].toInt());
+    if (ref == nullptr) return false;
+    setReference(ref);
+
 
     return true;
+}
+
+void FilteringAnalysis::setReference(Reference* ref)
+{
+    if (ref->id() == mRefId) return;
+
+    // Set current ref
+    mRefId = ref->id();
+    mRefName = ref->name();
+    emit refChanged();
+
+    // Load complient annotations DB
+    Request* req = Request::get(QString("/annotation/%1").arg(mRefId));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        mAllAnnotations.clear();
+        if (success)
+        {
+            QJsonObject data = json["data"].toObject();
+            foreach (const QJsonValue dbjson, data["db"].toArray())
+            {
+                QJsonObject db = dbjson.toObject();
+                QString name = db["name"].toString();
+                QString desc = db["description"].toString();
+                QString duid = db["default"].toString();
+                QJsonObject djsn = db["versions"].toObject();
+                foreach (const QString dbuid, djsn.keys())
+                {
+                    QJsonObject dbv = djsn[dbuid].toObject();
+                    QString version = dbv["version"].toString();
+                    QJsonArray fields = dbv["fields"].toArray();
+                    bool isDefault = duid == dbv["uid"].toString();
+                    AnnotationDB* adb = new AnnotationDB(name, desc, version, isDefault, fields, this);
+                    mAllAnnotations.append(adb);
+                }
+            }
+
+            // continue by loading results
+            // loadAnnotations();
+            // emit loadingStatusChanged(mLoadingStatus, loadingAnnotations);
+            // mLoadingStatus = loadingAnnotations;
+        }
+        else
+        {
+            regovar->raiseError(json);
+            emit loadingStatusChanged(mLoadingStatus, error);
+            mLoadingStatus = error;
+        }
+        emit allAnnotationsChanged();
+        emit selectedAnnotationsDBChanged();
+        req->deleteLater();
+    });
 }
 
 
 
 
 
-void FilteringAnalysis::asynchLoading(LoadingStatus oldSatus, LoadingStatus newStatus)
-{
 
+void FilteringAnalysis::asynchLoadingCoordination(LoadingStatus oldSatus, LoadingStatus newStatus)
+{
     if (newStatus == loadingAnnotations)
     {
         loadAnnotations();
@@ -125,82 +188,30 @@ void FilteringAnalysis::asynchLoading(LoadingStatus oldSatus, LoadingStatus newS
 
 void FilteringAnalysis::loadAnnotations()
 {
-    Request* req = Request::get(QString("/annotation/%1").arg(mRefId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    // Init list of displayed columns according to analysis settings
+    mAnnotations.clear();
+    mAnnotations.insert("_RowHead", new FieldColumnInfos(nullptr, true, 0, "", this));
+    mAnnotations.insert("_Samples", new FieldColumnInfos(nullptr, false, -1, "", this));
+    mAnnotations["_RowHead"]->setRole(FieldColumnInfos::RowHeader);
+    mAnnotations["_Samples"]->setRole(FieldColumnInfos::SamplesNames);
+
+    foreach (QObject* o, mAllAnnotations)
     {
-        if (success)
+        AnnotationDB* db = qobject_cast<AnnotationDB*>(o);
+        if (mAnnotationsDBUsed.contains(db->uid()) || db->isMandatory())
         {
-            // qDebug() << "LOAD ANNOT START : ";
-            QJsonObject data = json["data"].toObject();
-            mRefId = data["ref_id"].toInt();
-            mRefName = data["ref_name"].toString();
-
-            // Init list of displayed columns according to analysis settings
-            mAnnotations.clear();
-            mAnnotations.insert("_RowHead", new FieldColumnInfos(nullptr, true, 0, "", this));
-            mAnnotations.insert("_Samples", new FieldColumnInfos(nullptr, false, -1, "", this));
-            mAnnotations["_RowHead"]->setRole(FieldColumnInfos::RowHeader);
-            mAnnotations["_Samples"]->setRole(FieldColumnInfos::SamplesNames);
-
-            foreach (const QJsonValue dbv, data["db"].toArray())
+            foreach (Annotation* annot, db->fields())
             {
-                QJsonObject db = dbv.toObject();
-
-                QString dbName = db["name"].toString();
-                QString dbDescription = db["description"].toString();
-                QJsonObject dbVersion = db["versions"].toObject();
-
-
-
-                // qDebug() << "  DB:" << dbName;
-                // Foreach available version of annotation database
-                foreach (const QString dbVersionName, dbVersion.keys())
-                {
-                    QString dbUid = dbVersion[dbVersionName].toString();
-                    bool isDbSelected = (mAnnotationsDBUsed.contains(dbUid) || (dbName == "Variant" && dbVersionName=="_regovar_"));
-
-                    // qDebug() << "  Version:" << dbVersionName << isDbSelected;
-                    // Build annotation and column infos
-                    foreach(const QJsonValue json, db["fields"].toArray())
-                    {
-                        QJsonObject a = json.toObject();
-
-                        QString uid = a["uid"].toString();
-                        QString dbUid = a["dbuid"].toString();
-                        QString name = a["name"].toString();
-                        QString description = a["description"].toString();
-                        QString type = a["type"].toString();
-                        QJsonObject meta = a["meta"].toObject();
-
-                        // qDebug() << "   - " << uid << name;
-
-                        Annotation* annot = new Annotation(this, uid, dbUid, name, description, type, meta, "");
-                        FieldColumnInfos* fInfo = new FieldColumnInfos(annot, mFields.contains(uid), mFields.indexOf(uid), "", this);
-                        mAnnotations.insert(uid, fInfo);
-
-                        // add annotation to the "All annotation" treeModel
-                        mAllAnnotationsTreeModel->addEntry(dbName, dbVersionName, dbDescription, isDbSelected, mAnnotations[uid]);
-                        if (isDbSelected || dbVersionName == "_regovar_")
-                        {
-                            // add annotation to the treeModel of annotation available for this analysis
-                            mAnnotationsTreeModel->addEntry(dbName, dbVersionName, dbDescription, isDbSelected, mAnnotations[uid]);
-                        }
-                    }
-                }
+                QString uid = annot->uid();
+                FieldColumnInfos* fInfo = new FieldColumnInfos(annot, mFields.contains(uid), mFields.indexOf(uid), "", this);
+                mAnnotations.insert(uid, fInfo);
             }
+        }
+    }
 
-            refreshDisplayedAnnotationColumns();
-            emit loadingStatusChanged(mLoadingStatus, LoadingResults);
-            mLoadingStatus = LoadingResults;
-        }
-        else
-        {
-            regovar->raiseError(json);
-            emit loadingStatusChanged(mLoadingStatus, error);
-            mLoadingStatus = error;
-        }
-        req->deleteLater();
-    });
+//    refreshDisplayedAnnotationColumns();
+//    emit loadingStatusChanged(mLoadingStatus, LoadingResults);
+    mLoadingStatus = LoadingResults;
 }
 
 void FilteringAnalysis::refreshDisplayedAnnotationColumns()
@@ -253,6 +264,25 @@ QStringList FilteringAnalysis::resultColumns()
         else if (field->role() == FieldColumnInfos::SamplesNames)
         {
             list << "_Samples";
+        }
+    }
+    return list;
+}
+
+QStringList FilteringAnalysis::selectedAnnotationsDB()
+{
+    QStringList list;
+    foreach (QObject* o, mAllAnnotations)
+    {
+        AnnotationDB* db = qobject_cast<AnnotationDB*>(o);
+        if (db->selected())
+        {
+            QString name = db->name();
+            if (db->version() != "")
+            {
+                name += " (" + db->version() + ")";
+            }
+            list << name;
         }
     }
     return list;
