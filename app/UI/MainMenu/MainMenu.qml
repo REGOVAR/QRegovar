@@ -12,6 +12,8 @@ Item
 
     property var previousIndex: [0, -1,-1]
     property var selectedIndex
+    property bool collapsable: false
+    clip: true
 
 
     property bool subLevelPanelDisplayed: false
@@ -77,6 +79,14 @@ Item
 
 
 
+    Behavior on width
+    {
+        NumberAnimation
+        {
+            easing: Easing.OutQuad
+            duration : 150
+        }
+    }
 
 
 
@@ -158,8 +168,6 @@ Item
     }
 
 
-
-
     // --------------------------------------------------
     // The view (level 2)
     // --------------------------------------------------
@@ -233,6 +241,63 @@ Item
                     icon:  (subMenuModel.get(index) !== undefined) ? subMenuModel.get(index).icon : ""
                     label: (subMenuModel.get(index) !== undefined) ? subMenuModel.get(index).label : ""
                 }
+            }
+        }
+    }
+
+    Rectangle
+    {
+        visible: mainMenu.collapsable
+        anchors.bottom: mainMenu.bottom
+        anchors.left: mainMenu.left
+        width: 50
+        height: 50
+        color: "transparent"
+        z: 1000
+
+        Text
+        {
+            id: collapseIcon
+            anchors.fill: parent
+            text: "t"
+            font.pixelSize: Regovar.theme.font.size.title
+            font.family: Regovar.theme.icons.name
+            color: Regovar.theme.primaryColor.back.light
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            elide: Text.ElideRight
+        }
+
+        MouseArea
+        {
+            enabled: mainMenu.collapsable
+            anchors.fill: parent
+            hoverEnabled: true
+            onEntered: collapseIcon.color = Regovar.theme.secondaryColor.back.normal
+            onExited: collapseIcon.color = Regovar.theme.primaryColor.back.light
+            onClicked:
+            {
+                if (mainMenu.width == 250)
+                {
+                    mainMenu.width = 50;
+                    collapseIcon.text = "s";
+                    subLevel.visible = false;
+                }
+                else
+                {
+                    mainMenu.width = 250;
+                    collapseIcon.text = "t";
+                    subLevel.visible = true;
+                }
+
+            }
+        }
+
+        Behavior on color
+        {
+            ColorAnimation
+            {
+               duration : 200
             }
         }
     }

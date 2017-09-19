@@ -41,7 +41,6 @@ Rectangle
     }
 
 
-    FontLoader { id: iconsFont; source: "../Icons.ttf" }
 
 
 
@@ -57,8 +56,8 @@ Rectangle
             height: root.height
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            font.family: iconsFont.name
-            font.pixelSize: 22
+            font.family: Regovar.theme.icons.name
+            font.pixelSize: Regovar.theme.font.size.title
         }
         Text
         {
@@ -66,7 +65,7 @@ Rectangle
             height: root.height
             verticalAlignment: Text.AlignVCenter
             //font.bold: true
-            font.pixelSize: 22
+            font.pixelSize: Regovar.theme.font.size.title
         }
     }
 

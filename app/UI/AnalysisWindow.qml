@@ -15,6 +15,7 @@ ApplicationWindow
     width: 800
     height: 600
 
+
     // The id of this window that allow "Regovar model" to retrieve corresponding "Analysis model" among open models/windows
     property int winId: -1
 
@@ -58,7 +59,8 @@ ApplicationWindow
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        width: 300
+        width: 250
+        collapsable: true
 
         model: menuModel
 
@@ -67,6 +69,10 @@ ApplicationWindow
             openPage()
         }
     }
+
+
+
+
 
     Item
     {
