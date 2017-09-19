@@ -82,7 +82,7 @@ Rectangle
             color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
 
-            text: "Aurélie BECKER"
+            text: "Aurélie BECKER 2"
         }
     }
 

@@ -48,7 +48,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("rootPathIndex", fsm->index(fsm->rootPath()));
 
     engine.rootContext()->setContextProperty("regovar", regovar);
-    engine.load(QUrl(QLatin1String("UI/MainWindow.qml")));
+    engine.addImportPath("qrc:/qml/");
+    engine.load(QUrl(QLatin1String("qrc:/qml/MainWindow.qml")));
 
     app.setWindowIcon(QIcon(":/logo.png"));
     return app.exec();

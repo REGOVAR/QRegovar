@@ -99,141 +99,24 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    UI/Icons.ttf \
-    UI/Framework/Button.qml \
-    UI/Framework/CheckBox.qml \
-    UI/Framework/ProgressBar.qml \
-    UI/Framework/Switch.qml \
-    UI/Framework/TextField.qml \
-    UI/MainMenu/MainMenu.qml \
-    UI/MainMenu/MenuEntryL1.qml \
-    UI/MainMenu/MenuEntryL2.qml \
-    UI/Pages/AboutPage.qml \
-    UI/Pages/ClosePage.qml \
-    UI/Pages/DisconnectPage.qml \
-    UI/Pages/HelpPage.qml \
-    UI/Pages/Login.qml \
-    UI/Pages/ProjectPage.qml \
-    UI/Pages/SettingsPage.qml \
-    UI/Pages/WelcomPage.qml \
-    UI/Framework/qmldir \
-    UI/Regovar/qmldir \
-    UI/Regovar/Regovar.qml \
-    UI/Regovar/Style.qml \
-    UI/MainWindow.qml \
-    UI/Pages/Project/AnalysesPage.qml \
-    UI/Pages/Project/FilesPage.qml \
-    UI/Pages/Project/SubjectsPage.qml \
-    UI/MainMenu/MenuEntryL3.qml \
-    UI/Framework/TreeView.qml \
-    UI/Regovar/Themes/HalloweenTheme.js \
-    UI/Regovar/Themes/HalloweenTheme.js \
-    UI/Regovar/Themes/RegovarDarkTheme.js \
-    UI/Regovar/Themes/RegovarLightTheme.js \
-    UI/Dialogs/SelectFilesDialog.qml \
-    UI/Framework/BusyIndicator.qml \
-    UI/Pages/Analysis/Filtering/FilteringPage.qml \
-    UI/Pages/Analysis/Filtering/Quickfilter/TransmissionQuickForm.qml \
-    UI/Pages/Analysis/Filtering/QuickFilterPanel.qml \
-    UI/Dialogs/CloseDialog.qml \
-    UI/Dialogs/ErrorDialog.qml \
-    UI/Pages/Browse/ProjectsPage.qml \
-    UI/Pages/Browse/SubjectsPage.qml \
-    UI/Framework/Box.qml \
-    UI/Pages/Help/AboutPage.qml \
-    UI/Pages/Help/UserGuidePage.qml \
-    UI/Pages/Settings/InterfacePage.qml \
-    UI/Pages/Settings/PanelsPage.qml \
-    UI/Pages/Settings/PipesPage.qml \
-    UI/Pages/Settings/ProfilePage.qml \
-    UI/Pages/Settings/ServerPage.qml \
-    UI/Pages/Analysis/Filtering/SelectionsPage.qml \
-    UI/Framework/SwipeView.qml \
-    UI/Pages/Help/AboutLicense.qml \
-    UI/Framework/TextArea.qml \
-    UI/Pages/Help/AboutInformations.qml \
-    UI/Pages/Help/AboutCredits.qml \
-    UI/AnalysisWindow.qml \
-    UI/Pages/Browse/SearchPage.qml \
-    UI/MainMenu/MenuModel.qml \
-    UI/GenericWindow.qml \
-    UI/Framework/TabView.qml \
-    UI/Pages/Analysis/Filtering/Quickfilter/QualityQuickForm.qml \
-    UI/Pages/Analysis/Filtering/Quickfilter/PositionQuickFilter.qml \
-    UI/Pages/Analysis/Filtering/Quickfilter/TypeQuickFilter.qml \
-    UI/Pages/Analysis/Filtering/Quickfilter/FrequenceQuickFilter.qml \
-    UI/Pages/Analysis/Filtering/Quickfilter/SilicoPredQuickFilter.qml \
-    UI/Pages/Analysis/Filtering/Quickfilter/QuickFilterBox.qml \
-    UI/Pages/Subject/AnalysesPage.qml \
-    UI/Pages/Subject/FilesPage.qml \
-    UI/Pages/Subject/PhenotypesPage.qml \
-    UI/Pages/Subject/SamplesPage.qml \
-    UI/Framework/TextFieldForm.qml \
-    UI/Framework/ButtonWelcom.qml \
-    UI/Framework/ButtonWelcom.qml \
-    UI/Pages/LoginPage.qml \
-    UI/Pages/Analysis/Filtering/AdvancedFilterPanel.qml \
-    UI/Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml \
-    UI/Pages/Analysis/Filtering/ResultsPanel.qml \
-    UI/Pages/Analysis/Filtering/HelpPage.qml \
-    UI/Dialogs/SelectSamplesDialog.qml \
-    UI/Pages/Analysis/Filtering/ResultContextMenu.qml \
-    UI/Pages/Analysis/Filtering/ResultContextMenuAction.qml \
-    UI/Framework/ComboBox.qml \
-    UI/Pages/Analysis/Filtering/Quickfilter/QuickFilterFieldControl.qml \
-    UI/Pages/Analysis/Filtering/AdvancedFilter/FieldBlock.qml \
-    UI/Pages/Analysis/Filtering/AdvancedFilter/LogicalBlock.qml \
-    UI/Pages/Analysis/Filtering/AdvancedFilter/SetBlock.qml \
-    UI/Pages/Analysis/Filtering/FavoritesPanel.qml \
-    UI/Pages/Analysis/Filtering/AdvancedFilter/GenericBlock.qml \
-    UI/Pages/Project/SummaryPage.qml \
-    UI/Dialogs/FilterSaveDialog.qml \
-    UI/Dialogs/FilterNewConditionDialog.qml \
-    UI/Pages/Analysis/Filtering/AdvancedFilter/FilterFormLogical.qml \
-    UI/Pages/Analysis/Filtering/AdvancedFilter/FilterFormField.qml \
-    UI/Pages/Analysis/Filtering/AdvancedFilter/FilterFormSet.qml \
-    UI/Dialogs/NewProjectDialog.qml \
-    UI/Dialogs/NewAnalysisDialog.qml \
-    UI/Dialogs/NewSubjectDialog.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/FilteringSamplesScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/GenericScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/InputsScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml \
-    UI/Pages/Browse/SearchResultAnalysis.qml \
-    UI/Pages/Browse/SearchResultProject.qml \
-    UI/Pages/Browse/SearchResultSample.qml \
-    UI/Framework/TableView.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/ProjectScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/AnalysisTypeScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/AnalysisTypeButtom.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/FilteringSubjectsScreen.qml \
-    UI/Pages/Subject/SummaryPage.qml \
-    UI/Pages/Analysis/Filtering/StatisticsPage.qml \
-    UI/Pages/Analysis/Filtering/Quickfilter/PanelQuickForm.qml \
-    UI/Pages/Analysis/Filtering/SummaryPage.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/FilteringReferenceScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/FilteringAnnotationsScreen.qml \
-    UI/Dialogs/NewAnalysisWizardScreens/PipelineLaunch.qml
 
 
-win32 {
-    COPY_FROM_PATH=$$shell_path($$PWD/UI)
-    COPY_TO_PATH=$$shell_path($$OUT_PWD/UI)
-}
-else {
-    COPY_FROM_PATH=$$PWD/UI/
-    COPY_TO_PATH=$$OUT_PWD/UI/
-}
+#win32 {
+#    COPY_FROM_PATH=$$shell_path($$PWD/UI)
+#    COPY_TO_PATH=$$shell_path($$OUT_PWD/UI)
+#}
+#else {
+#    COPY_FROM_PATH=$$PWD/UI/
+#    COPY_TO_PATH=$$OUT_PWD/UI/
+#}
 
-copydata.commands = $(COPY_DIR) $$COPY_FROM_PATH $$COPY_TO_PATH
-first.depends = $(first) copydata
-export(first.depends)
-export(copydata.commands)
-QMAKE_EXTRA_TARGETS += first copydata
+#copydata.commands = $(COPY_DIR) $$COPY_FROM_PATH $$COPY_TO_PATH
+#first.depends = $(first) copydata
+#export(first.depends)
+#export(copydata.commands)
+#QMAKE_EXTRA_TARGETS += first copydata
 
 RESOURCES += \
-    Assets/qrc.qrc
+    Assets/qrc.qrc \
+    UI/qml.qrc
 
