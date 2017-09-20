@@ -38,7 +38,8 @@ void Regovar::init()
     mProjectsTreeView = new ProjectsTreeModel();
     mCurrentProject = new Project();
     mUploader = new TusUploader();
-    resetNewAnalysisWizardModels();
+    mNewPipelineAnalysis = new PipelineAnalysis();
+    mNewFilteringAnalysis = new FilteringAnalysis();
     mUploader->setUploadUrl(mApiRootUrl.toString() + "/file/upload");
     mUploader->setRootUrl(mApiRootUrl.toString());
     mUploader->setChunkSize(50 * 1024);
@@ -49,13 +50,13 @@ void Regovar::init()
     connect(mUploader,  SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
     connect(&mWebSocket, &QWebSocket::connected, this, &Regovar::onWebsocketConnected);
     connect(&mWebSocket, &QWebSocket::disconnected, this, &Regovar::onWebsocketClosed);
-
-
-    emit currentProjectChanged();
-
-    // DEBUG
-    // loadAnalysis(4);
     mWebSocket.open(QUrl(mWebsocketUrl));
+
+
+    // Init sub models
+    initFlatProjectList();
+    mProjectsTreeView->refresh();
+
     loadWelcomData();
 }
 
@@ -182,13 +183,59 @@ void Regovar::loadWelcomData()
 }
 
 
+void Regovar::initFlatProjectListRecursive(QJsonArray data, QString prefix)
+{
+    foreach(const QJsonValue json, data)
+    {
+        QJsonObject p = json.toObject();
+        QString name = p["name"].toString();
+
+
+        // If folder, need to retrieve subitems recursively
+        if (p["is_folder"].toBool())
+        {
+            initFlatProjectListRecursive(p["children"].toArray(), prefix + name + "/");
+        }
+        else
+        {
+            p.insert("fullpath", prefix + name);
+            Project* proj = new Project();
+            proj->fromJson(p);
+            mProjectsList << proj;
+        }
+    }
+}
+
+void Regovar::initFlatProjectList()
+{
+    Request* request = Request::get("/project/browserTree");
+    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            mProjectsList.clear();
+            initFlatProjectListRecursive(json["data"].toArray(), "");
+        }
+        else
+        {
+            qCritical() << Q_FUNC_INFO << "Unable to build projects tree model (due to request error)";
+        }
+        request->deleteLater();
+    });
+}
+
+
+
 void Regovar::resetNewAnalysisWizardModels()
 {
-    mNewPipelineAnalysis = new PipelineAnalysis();
-    mNewFilteringAnalysis = new FilteringAnalysis();
+    // TODO without breaking binding...
+//    mNewPipelineAnalysis = new PipelineAnalysis();
+//    mNewFilteringAnalysis = new FilteringAnalysis();
     emit newPipelineAnalysisChanged();
     emit newFilteringAnalysisChanged();
 }
+
+
 
 Reference* Regovar::referencesFromId(int id)
 {
@@ -205,11 +252,6 @@ Reference* Regovar::referencesFromId(int id)
 
 
 
-void Regovar::openAnalysis(int analysisId)
-{
-    loadAnalysis(analysisId);
-}
-
 void Regovar::loadAnalysis(int id)
 {
     Request* req = Request::get(QString("/analysis/%1").arg(id));
@@ -217,34 +259,9 @@ void Regovar::loadAnalysis(int id)
     {
         if (success)
         {
-            int lastId = mOpenAnalyses.count();
-            mOpenAnalyses.append(new FilteringAnalysis(this));
-            FilteringAnalysis* analysis = mOpenAnalyses[lastId];
-
-            if (analysis->fromJson(json["data"].toObject()))
+            if (loadAnalysis(json["data"].toObject()))
             {
-                // Create new QML window
-                QDir dir = QDir::currentPath();
-                QString file = dir.filePath("UI/AnalysisWindow.qml");
-                QUrl url = QUrl("qrc:/qml/AnalysisWindow.qml");
-                QQmlComponent *c = new QQmlComponent(mQmlEngine, url, QQmlComponent::PreferSynchronous);
-                QObject* o = c->create();
-                QQuickWindow *i = qobject_cast<QQuickWindow*>(o);
-                QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
-
-                //i->setProperty("winId", lastId);
-                QMetaObject::invokeMethod(i, "initFromCpp", Q_ARG(QVariant, lastId));
-                i->setVisible(true);
-                QObject* root = mQmlEngine->rootObjects()[0];
-                QQuickWindow* rootWin = qobject_cast<QQuickWindow*>(root);
-                if (!rootWin)
-                {
-                    qFatal("Error: Your root item has to be a window.");
-                }
-                i->setParent(0);
-
-                qDebug() << Q_FUNC_INFO << "Filtering Analysis (id=" << id << ") Loaded. Window id=" << lastId;
-
+                qDebug() << Q_FUNC_INFO << "Filtering Analysis (id=" << id << ") Loaded.";
             }
             else
             {
@@ -258,7 +275,36 @@ void Regovar::loadAnalysis(int id)
         req->deleteLater();
     });
 }
+bool Regovar::loadAnalysis(QJsonObject data)
+{
+    int lastId = mOpenAnalyses.count();
+    mOpenAnalyses.append(new FilteringAnalysis(this));
+    FilteringAnalysis* analysis = mOpenAnalyses[lastId];
 
+    if (analysis->fromJson(data))
+    {
+        // Create new QML window
+        QUrl url = QUrl("qrc:/qml/AnalysisWindow.qml");
+        QQmlComponent *c = new QQmlComponent(mQmlEngine, url, QQmlComponent::PreferSynchronous);
+        QObject* o = c->create();
+        QQuickWindow *i = qobject_cast<QQuickWindow*>(o);
+        QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
+
+        //i->setProperty("winId", lastId);
+        QMetaObject::invokeMethod(i, "initFromCpp", Q_ARG(QVariant, lastId));
+        i->setVisible(true);
+        QObject* root = mQmlEngine->rootObjects()[0];
+        QQuickWindow* rootWin = qobject_cast<QQuickWindow*>(root);
+        if (!rootWin)
+        {
+            qFatal("Error: Your root item has to be a window.");
+            return false;
+        }
+        i->setParent(0);
+        return true;
+    }
+    return false;
+}
 
 
 
@@ -270,7 +316,11 @@ void Regovar::setSelectedReference(int idx)
     emit selectedReferenceChanged();
 }
 
-
+void Regovar::setSelectedProject(int idx)
+{
+    mSelectedProject=idx;
+    emit selectedProjectChanged();
+}
 
 
 
@@ -404,38 +454,52 @@ bool Regovar::newAnalysis(QString type)
 {
     if (type == "filtering")
     {
-        QStringList ids;
+        QJsonArray ids;
         foreach (Sample* s, mNewFilteringAnalysis->samples())
         {
-            ids << QString::number(s->id());
+            ids.append(QJsonValue(s->id()));
         }
 
-        QVariant settings = false;
+        QJsonObject settings;
+        QJsonArray dbs;
+        settings.insert("annotations_db", dbs);
         if (mNewFilteringAnalysis->isTrio())
         {
-            QJsonObject settingsData;
-
-
-            settings = settingsData;
+            QJsonObject trioSettings;
+            settings.insert("trio", trioSettings);
+        }
+        else
+        {
+            settings.insert("trio", false);
         }
 
         QJsonObject body;
-        body.insert("project_id", 2);
+        Project* proj = qobject_cast<Project*>(mProjectsList[mSelectedProject]);
+        body.insert("project_id", proj->id());
         body.insert("reference_id", mNewFilteringAnalysis->refId());
         body.insert("name", mNewFilteringAnalysis->name());
-        body.insert("samples_ids", QJsonValue::fromVariant(QVariant(ids)));
-        body.insert("settings", QJsonValue::fromVariant(QVariant(settings)));
+        body.insert("samples_ids", ids);
+        body.insert("settings", settings);
 
         Request* req = Request::post(QString("/analysis"), QJsonDocument(body).toJson());
         connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
             if (success)
             {
-                // Start creation of the working table by sending the first "filtering" query
+                QJsonObject data = json["data"].toObject();
+                // Open new analysis
+                loadAnalysis(data);
+                int id = data["id"].toInt();
 
+                // Start creation of the working table by sending the first "filtering" query
+                QJsonObject body;
+                body.insert("filter", data["filter"].toArray());
+                body.insert("fields", data["fields"].toArray());
+                Request* req2 = Request::post(QString("/analysis/%1/filtering").arg(id), QJsonDocument(body).toJson());
+                req2->deleteLater();
 
                 // notify HMI that analysis is created
-                emit analysisCreationDone(true, 6);
+                emit analysisCreationDone(true, id);
             }
             else
             {
@@ -454,7 +518,6 @@ void Regovar::newSubject(QJsonObject data)
     // TODO
     emit subjectCreationDone(true, 1);
 }
-
 
 
 void Regovar::enqueueUploadFile(QStringList filesPaths)

@@ -9,14 +9,15 @@ class Project : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int id READ id)
-    Q_PROPERTY(Project* parent READ parent WRITE setParent NOTIFY parentUpdated)
+    Q_PROPERTY(Project* parent READ parent WRITE setParent NOTIFY dataChanged)
     Q_PROPERTY(QDateTime creationDate READ creationDate)
-    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY updateDateUpdated)
+    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
     Q_PROPERTY(bool isSandbox READ isSandbox)
     Q_PROPERTY(bool isFolder READ isFolder)
-    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentUpdated)
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameUpdated)
-    Q_PROPERTY(FilesTreeModel* files READ files NOTIFY filesUpdated)
+    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
+    Q_PROPERTY(FilesTreeModel* files READ files NOTIFY dataChanged)
+    Q_PROPERTY(QString fullPath READ fullPath NOTIFY dataChanged)
 
 
 public:
@@ -36,11 +37,12 @@ public:
     inline QString name() { return mName; }
     inline QString comment() { return mComment; }
     inline FilesTreeModel* files() { return mFiles; }
+    inline QString fullPath() { return mFullPath; }
 
     // Setters
     void setParent(Project* parent);
-    inline void setComment(QString comment) { mComment = comment; emit commentUpdated(); }
-    inline void setName(QString name) { mName = name; emit nameUpdated(); }
+    inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
+    inline void setName(QString name) { mName = name; emit dataChanged(); }
 
 
 
@@ -49,11 +51,7 @@ public:
 
 
 Q_SIGNALS:
-    void parentUpdated();
-    void updateDateUpdated();
-    void commentUpdated();
-    void nameUpdated();
-    void filesUpdated();
+    void dataChanged();
 
 
 
@@ -78,7 +76,7 @@ private:
     // mEvents
 
     // Methods
-    inline void setUpdateDate(QDateTime date) { mUpdateDate = date; emit updateDateUpdated(); }
+    inline void setUpdateDate(QDateTime date) { mUpdateDate = date; emit dataChanged(); }
 
 };
 

@@ -250,7 +250,7 @@ Rectangle
                                         name: model.modelData.name
                                         projectName: model.modelData.project.name
 
-                                        onClicked: regovar.openAnalysis(model.modelData.id)
+                                        onClicked: regovar.loadAnalysis(model.modelData.id)
                                     }
                                 }
                             }
@@ -302,7 +302,7 @@ Rectangle
                                         name: model.modelData.name
                                         projectName: model.modelData.project.name
 
-                                        onClicked: regovar.openAnalysis(model.modelData.id)
+                                        onClicked: regovar.loadAnalysis(model.modelData.id)
                                     }
                                 }
                             }

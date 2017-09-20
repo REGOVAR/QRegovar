@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 
@@ -52,8 +53,32 @@ GenericScreen
         {
             Layout.fillWidth: true
             id: projectField
-            model: ["DPNI", "Panel onchogénétique", "Hugodims"]
-            onCurrentIndexChanged: checkReady();
+            model: regovar.projects
+            currentIndex: regovar.selectedProject
+            onCurrentIndexChanged:
+            {
+                if (regovar.selectedProject != currentIndex)
+                {
+                    regovar.selectedProject = currentIndex;
+                    checkReady();
+                }
+            }
+            delegate: ItemDelegate
+            {
+                width: refField.width
+                height: Regovar.theme.font.boxSize.control
+                contentItem: Text
+                {
+                    text: modelData.fullPath
+                    color: enabled ? Regovar.theme.boxColor.front : Regovar.theme.frontColor.disable
+                    font: refField.font
+                    elide: Text.ElideRight
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+
+                highlighted: refField.highlightedIndex === index
+            }
         }
     }
     RowLayout
@@ -82,7 +107,16 @@ GenericScreen
             id: nameField
             Layout.fillWidth: true
             placeholderText: qsTr("The name of the analysis")
-            text: autoName()
+            text: regovar.newFilteringAnalysis.name
+            onTextChanged:
+            {
+                if (regovar.newFilteringAnalysis.name != text)
+                {
+                    regovar.newFilteringAnalysis.name = text;
+                    checkReady();
+                }
+            }
+            Component.onCompleted: text=autoName();
         }
         Button
         {

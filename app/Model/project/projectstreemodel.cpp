@@ -14,7 +14,6 @@ ProjectsTreeModel::ProjectsTreeModel() : TreeModel(0)
         rootData.insert(roleId, QString(roles[roleId]));
     }
     mRootItem = new TreeItem(rootData);
-    refresh();
 }
 
 

@@ -46,6 +46,7 @@ class Regovar : public QObject
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
     Q_PROPERTY(int selectedReference READ selectedReference WRITE setSelectedReference NOTIFY selectedReferenceChanged)
     Q_PROPERTY(QList<QObject*> projects READ projectsList NOTIFY projectsListChanged)
+    Q_PROPERTY(int selectedProject READ selectedProject WRITE setSelectedProject NOTIFY selectedProjectChanged)
     Q_PROPERTY(QList<QObject*> remoteFilesList READ remoteFilesList NOTIFY remoteFilesListChanged)
     Q_PROPERTY(QList<QObject*> remoteSamplesList READ remoteSamplesList NOTIFY remoteSamplesListChanged)
     Q_PROPERTY(PipelineAnalysis* newPipelineAnalysis READ newPipelineAnalysis NOTIFY newPipelineAnalysisChanged)
@@ -77,6 +78,7 @@ public:
     inline QList<QObject*> references() const { return mReferences; }
     inline int selectedReference() const { return mSelectedReference; }
     inline QList<QObject*> projectsList() const { return mProjectsList; }
+    inline int selectedProject() const { return mSelectedProject; }
     inline QList<QObject*> remoteFilesList() const { return mRemoteFilesList; }
     inline QList<QObject*> remoteSamplesList() const { return mRemoteSamplesList; }
     inline PipelineAnalysis* newPipelineAnalysis() const { return mNewPipelineAnalysis; }
@@ -93,6 +95,7 @@ public:
     inline void setQmlEngine (QQmlApplicationEngine* engine) { mQmlEngine = engine; }
     inline void setWelcomIsLoading(bool flag) { mWelcomIsLoading=flag; emit welcomIsLoadingChanged(); }
     void setSelectedReference(int idx);
+    void setSelectedProject(int idx);
 
     // Methods
     Q_INVOKABLE void newProject(QString name, QString comment);
@@ -103,7 +106,6 @@ public:
     Q_INVOKABLE void close();
     Q_INVOKABLE void disconnectUser();
     Q_INVOKABLE void quit();
-    Q_INVOKABLE void openAnalysis(int analysisId);
     Q_INVOKABLE FilteringAnalysis* getAnalysisFromWindowId(int winId);
     Q_INVOKABLE void search(QString query);
     Q_INVOKABLE void resetNewAnalysisWizardModels();
@@ -112,6 +114,8 @@ public:
     Q_INVOKABLE void loadWelcomData();
     Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void loadSampleBrowser(int refId);
+    void initFlatProjectList();
+    void initFlatProjectListRecursive(QJsonArray data, QString prefix);
 
 
 public Q_SLOTS:
@@ -124,6 +128,7 @@ public Q_SLOTS:
 
     void loadProject(int id);
     void loadAnalysis(int id);
+    bool loadAnalysis(QJsonObject data);
 
     // Websocket
     void onWebsocketConnected();
@@ -161,6 +166,7 @@ Q_SIGNALS:
     void projectsListChanged();
     void welcomIsLoadingChanged();
     void selectedReferenceChanged();
+    void selectedProjectChanged();
 
 private:
     Regovar();
@@ -182,6 +188,7 @@ private:
     ProjectsTreeModel* mProjectsTreeView;
     //! The flat list of project (use for project's combobox selection)
     QList<QObject*> mProjectsList;
+    int mSelectedProject;
     //! The model of the current project loaded
     Project* mCurrentProject;
     //! The model used to browse all files available on the server

@@ -197,7 +197,7 @@ Rectangle
                             name: model.modelData.name
                             projectName: model.modelData.project.name
 
-                            onClicked: regovar.openAnalysis(model.modelData.id)
+                            onClicked: regovar.loadAnalysis(model.modelData.id)
                         }
                     }
                 }
@@ -272,7 +272,7 @@ Rectangle
                             width: scrollarea.viewport.width
                             date: model.modelData.update_date
                             name: model.modelData.name
-                            onClicked: console.log("open sample " + model.modelData.id) // regovar.openAnalysis(model.modelData.id)
+                            onClicked: console.log("open sample " + model.modelData.id) // regovar.loadAnalysis(model.modelData.id)
                         }
                     }
                 }

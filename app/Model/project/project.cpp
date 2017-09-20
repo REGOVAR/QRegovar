@@ -24,8 +24,10 @@ bool Project::fromJson(QJsonDocument json)
 bool Project::fromJson(QJsonObject json)
 {
     mId = json["id"].toInt();
-    mFullPath = "";
-    //mParent->fromJson(json["parent"].toObject());
+    if(json.keys().contains("fullpath"))
+    {
+        mFullPath = json["fullpath"].toString();
+    }
     mCreationDate = QDateTime::fromString(json["creation_date"].toString());
     mUpdateDate = QDateTime::fromString(json["update_date"].toString());
     mIsSandbox = json["is_sandbox"].toBool();
@@ -36,11 +38,7 @@ bool Project::fromJson(QJsonObject json)
     mFiles->fromJson(json["files"].toArray());
 
 
-    emit parentUpdated();
-    emit updateDateUpdated();
-    emit commentUpdated();
-    emit nameUpdated();
-    emit filesUpdated();
+    emit dataChanged();
 
     return true;
 }
@@ -52,5 +50,5 @@ void Project::setParent(Project* parent)
 {
     // TODO : to be complient with QML binding : need to copy parent into mParent instead of erasing mParent
     mParent = parent;
-    emit parentUpdated();
+    emit dataChanged();
 }
