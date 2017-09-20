@@ -19,6 +19,35 @@ GenericScreen
         readyForNext = true; // samplesList.count > 0;
     }
 
+
+
+    onZChanged:
+    {
+        if (z == 0)
+        {
+            // When sample screen disapear (occure on next/previous)
+            // Refresh selected annotation by default according to the samples
+            var idx;
+            for(idx=2; idx<regovar.newFilteringAnalysis.allAnnotations.length; idx++)
+            {
+                regovar.newFilteringAnalysis.allAnnotations[idx].selected = false;
+            }
+
+            for(idx=0; idx<regovar.newFilteringAnalysis.samples.length; idx++)
+            {
+                var sample = regovar.newFilteringAnalysis.samples[idx];
+                for(var j=0; j<sample.defaultAnnotationsDbUid.length; j++)
+                {
+                     regovar.newFilteringAnalysis.allAnnotations[idx]
+                }
+            }
+
+            regovar.newFilteringAnalysis
+        }
+
+
+    }
+
     Text
     {
         id: header

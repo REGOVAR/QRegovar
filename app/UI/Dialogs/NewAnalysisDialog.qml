@@ -242,10 +242,10 @@ Dialog
                 z: 99
 
                 // block click otherwise risk to interact with hidden tabs
-//                MouseArea
-//                {
-//                    anchors.fill: parent
-//                }
+                MouseArea
+                {
+                    anchors.fill: parent
+                }
             }
         }
 
