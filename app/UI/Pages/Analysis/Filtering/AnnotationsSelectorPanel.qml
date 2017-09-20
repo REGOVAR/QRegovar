@@ -65,6 +65,7 @@ Rectangle
                     CheckBox
                     {
                         anchors.left: parent.left
+                        anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         checked: styleData.value.checked
                         text: (styleData.value == undefined || styleData.value.value == undefined) ? "-"  : styleData.value.value

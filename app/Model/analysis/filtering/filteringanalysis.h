@@ -84,7 +84,7 @@ public:
     Q_INVOKABLE inline void setFilter(QString filter) { mFilter = filter; emit filterChanged(); }
     Q_INVOKABLE inline void setFilterJson(QJsonArray filterJson) { mFilterJson = filterJson; emit filterJsonChanged(); }
     Q_INVOKABLE int setField(QString uid, bool isDisplayed, int order=-1);
-    Q_INVOKABLE void setReference(Reference* ref);
+    Q_INVOKABLE void setReference(Reference* ref, bool continueInit=false);
     Q_INVOKABLE void setIsTrio(bool flag) { mIsTrio=flag; emit isTrioChanged(); }
 
     // Methods

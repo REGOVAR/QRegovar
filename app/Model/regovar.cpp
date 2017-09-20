@@ -312,7 +312,7 @@ void Regovar::setSelectedReference(int idx)
 {
     mSelectedReference=idx;
     Reference* ref = qobject_cast<Reference*>(mReferences[idx]);
-    mNewFilteringAnalysis->setReference(ref);
+    mNewFilteringAnalysis->setReference(ref, false);
     emit selectedReferenceChanged();
 }
 

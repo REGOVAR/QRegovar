@@ -19,7 +19,7 @@ Rectangle
 
     height: Regovar.theme.font.boxSize.control
     color: "transparent"
-    Row
+    RowLayout
     {
         anchors.fill: parent
         Rectangle
@@ -77,6 +77,7 @@ Rectangle
 
         Text
         {
+            Layout.fillWidth: true
             font.pixelSize: Regovar.theme.font.size.control
             font.family: Regovar.theme.font.familly
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal

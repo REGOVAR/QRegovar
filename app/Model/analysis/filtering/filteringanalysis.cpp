@@ -104,13 +104,14 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     // Chaining of loading step is done thanks to signals (see asynchLoading slot)
     Reference* ref = regovar->referencesFromId(json["reference_id"].toInt());
     if (ref == nullptr) return false;
-    setReference(ref);
+    setReference(ref, true);
 
 
     return true;
 }
 
-void FilteringAnalysis::setReference(Reference* ref)
+
+void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
 {
     if (ref->id() == mRefId) return;
 
@@ -121,7 +122,7 @@ void FilteringAnalysis::setReference(Reference* ref)
 
     // Load complient annotations DB
     Request* req = Request::get(QString("/annotation/%1").arg(mRefId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    connect(req, &Request::responseReceived, [this, req, continueInit](bool success, const QJsonObject& json)
     {
         mAllAnnotations.clear();
         if (success)
@@ -146,9 +147,11 @@ void FilteringAnalysis::setReference(Reference* ref)
             }
 
             // continue by loading results
-            // loadAnnotations();
-            // emit loadingStatusChanged(mLoadingStatus, loadingAnnotations);
-            // mLoadingStatus = loadingAnnotations;
+            if (continueInit)
+            {
+                emit loadingStatusChanged(mLoadingStatus, loadingAnnotations);
+                mLoadingStatus = loadingAnnotations;
+            }
         }
         else
         {
@@ -205,12 +208,15 @@ void FilteringAnalysis::loadAnnotations()
                 QString uid = annot->uid();
                 FieldColumnInfos* fInfo = new FieldColumnInfos(annot, mFields.contains(uid), mFields.indexOf(uid), "", this);
                 mAnnotations.insert(uid, fInfo);
+
+                // add annotation to the treeModel of annotation available for this analysis
+                mAnnotationsTreeModel->addEntry(db->name(), db->version(), db->description(), true, fInfo);
             }
         }
     }
 
-//    refreshDisplayedAnnotationColumns();
-//    emit loadingStatusChanged(mLoadingStatus, LoadingResults);
+    refreshDisplayedAnnotationColumns();
+    emit loadingStatusChanged(mLoadingStatus, LoadingResults);
     mLoadingStatus = LoadingResults;
 }
 
