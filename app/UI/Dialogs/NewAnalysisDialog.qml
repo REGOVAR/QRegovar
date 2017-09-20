@@ -17,12 +17,15 @@ Dialog
     width: 900
     height: 500
 
-    onVisibleChanged: startScreen.visible = true
+    onVisibleChanged:
+    {
+        startScreen.visible = true;
+        regovar.resetNewAnalysisWizardModels();
+    }
 
     property var menuModel
     property int menuSelectedIndex
     property var analysisModel
-
 
     Connections
     {

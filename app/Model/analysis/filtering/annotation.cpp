@@ -49,7 +49,6 @@ AnnotationDB::AnnotationDB(QObject* parent) : QObject(parent)
 
 AnnotationDB::AnnotationDB(QString uid, QString name, QString description, QString version, bool isDefault, QJsonArray fields, QObject* parent) : QObject(parent)
 {
-    qDebug() << "CONSTRUCT AnnotationDB : " << uid << name << version << description ;
     mUid = uid;
     mName = name;
     mDescription = description;

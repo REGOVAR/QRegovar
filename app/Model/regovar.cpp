@@ -164,12 +164,12 @@ void Regovar::loadWelcomData()
 
             // Get referencial available
             mReferenceDefault = data["default_reference_id"].toInt();
-            mSelectedReference = -1;
+            mSelectedReference = 0;
             foreach (QJsonValue jsonVal, data["references"].toArray())
             {
                 Reference* ref = new Reference();
                 ref->fromJson(jsonVal.toObject());
-                mReferences.append(ref);
+                if (ref->id() > 0) mReferences.append(ref);
             }
             emit referencesChanged();
         }
@@ -228,7 +228,33 @@ void Regovar::initFlatProjectList()
 
 void Regovar::resetNewAnalysisWizardModels()
 {
-    // TODO without breaking binding...
+    // clear data in newAnalyses wrappers
+    mNewFilteringAnalysis->samples().clear();
+    mNewFilteringAnalysis->setComment("");
+    mNewFilteringAnalysis->setName("");
+    mNewFilteringAnalysis->setIsTrio(false);
+
+    // reset references
+    mSelectedReference = 0;
+    int idx = 0;
+    foreach (QObject* o, mReferences)
+    {
+        Reference* ref = qobject_cast<Reference*>(o);
+        if (ref->id() == mReferenceDefault)
+        {
+            mSelectedReference = idx;
+            mNewFilteringAnalysis->setReference(ref);
+            break;
+        }
+        ++idx;
+    }
+
+
+
+
+    // Pipeline analysis
+
+
 //    mNewPipelineAnalysis = new PipelineAnalysis();
 //    mNewFilteringAnalysis = new FilteringAnalysis();
     emit newPipelineAnalysisChanged();

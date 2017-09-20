@@ -98,9 +98,11 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     mResults->initAnalysisData(mId);
     mQuickFilters->init(mRefId, mId);
 
-    // Loading of an analysis required 2 steps
-    // first : need to load alls annotations available accdording to the referencial and
-    // then : need to load result (annotation must be already loaded)
+    // Loading of an analysis required several asynch steps
+    // 1 : need to load alls annotations available accdording to the referencial
+    // 2 : prepare quick filter (they need to check that they are complient with available annotations
+    // 3 : set filter with the last applied filter
+    // 4 : load results
     // Chaining of loading step is done thanks to signals (see asynchLoading slot)
     Reference* ref = regovar->referencesFromId(json["reference_id"].toInt());
     if (ref == nullptr) return false;
@@ -201,7 +203,6 @@ void FilteringAnalysis::loadAnnotations()
     foreach (QObject* o, mAllAnnotations)
     {
         AnnotationDB* db = qobject_cast<AnnotationDB*>(o);
-        qDebug() << "TEST AnnotationDB: " << db->uid() << db->name() << db->version() << db->description() ;
         if (mAnnotationsDBUsed.contains(db->uid()) || db->isMandatory())
         {
             foreach (Annotation* annot, db->fields())
