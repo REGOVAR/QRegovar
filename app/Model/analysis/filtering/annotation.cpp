@@ -47,8 +47,10 @@ AnnotationDB::AnnotationDB(QObject* parent) : QObject(parent)
 {
 }
 
-AnnotationDB::AnnotationDB(QString name, QString description, QString version, bool isDefault, QJsonArray fields, QObject* parent) : QObject(parent)
+AnnotationDB::AnnotationDB(QString uid, QString name, QString description, QString version, bool isDefault, QJsonArray fields, QObject* parent) : QObject(parent)
 {
+    qDebug() << "CONSTRUCT AnnotationDB : " << uid << name << version << description ;
+    mUid = uid;
     mName = name;
     mDescription = description;
     mVersion = version == "_all_" ? "" : version;
@@ -68,4 +70,6 @@ AnnotationDB::AnnotationDB(QString name, QString description, QString version, b
 
         mFields.append(annot);
     }
+
+    emit dataChanged();
 }

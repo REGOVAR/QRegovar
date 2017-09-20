@@ -141,7 +141,7 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
                     QString version = dbv["version"].toString();
                     QJsonArray fields = dbv["fields"].toArray();
                     bool isDefault = duid == dbv["uid"].toString();
-                    AnnotationDB* adb = new AnnotationDB(name, desc, version, isDefault, fields, this);
+                    AnnotationDB* adb = new AnnotationDB(dbuid, name, desc, version, isDefault, fields, this);
                     mAllAnnotations.append(adb);
                 }
             }
@@ -201,6 +201,7 @@ void FilteringAnalysis::loadAnnotations()
     foreach (QObject* o, mAllAnnotations)
     {
         AnnotationDB* db = qobject_cast<AnnotationDB*>(o);
+        qDebug() << "TEST AnnotationDB: " << db->uid() << db->name() << db->version() << db->description() ;
         if (mAnnotationsDBUsed.contains(db->uid()) || db->isMandatory())
         {
             foreach (Annotation* annot, db->fields())

@@ -73,7 +73,7 @@ class AnnotationDB : public QObject
 
 public:
     AnnotationDB(QObject* parent=nullptr);
-    AnnotationDB(QString name, QString description, QString version, bool isDefault, QJsonArray fields, QObject* parent=nullptr);
+    AnnotationDB(QString uid, QString name, QString description, QString version, bool isDefault, QJsonArray fields, QObject* parent=nullptr);
 
     // Getters
     inline QString uid() const { return mUid; }
