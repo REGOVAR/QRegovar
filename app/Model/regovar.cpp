@@ -229,6 +229,8 @@ void Regovar::initFlatProjectList()
 void Regovar::resetNewAnalysisWizardModels()
 {
     // clear data in newAnalyses wrappers
+
+    mNewFilteringAnalysis->removeSamples(mNewFilteringAnalysis->samples4qml());
     mNewFilteringAnalysis->samples().clear();
     mNewFilteringAnalysis->setComment("");
     mNewFilteringAnalysis->setName("");
