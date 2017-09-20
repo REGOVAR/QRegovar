@@ -65,19 +65,19 @@ GenericScreen
             }
             delegate: ItemDelegate
             {
-                width: refField.width
+                width: projectField.width
                 height: Regovar.theme.font.boxSize.control
                 contentItem: Text
                 {
                     text: modelData.fullPath
                     color: enabled ? Regovar.theme.boxColor.front : Regovar.theme.frontColor.disable
-                    font: refField.font
+                    font: projectField.font
                     elide: Text.ElideRight
                     verticalAlignment: Text.AlignVCenter
                 }
 
 
-                highlighted: refField.highlightedIndex === index
+                highlighted: projectField.highlightedIndex === index
             }
         }
     }

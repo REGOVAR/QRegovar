@@ -27,7 +27,7 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("My test")
+            text: model.name
             font.pixelSize: 20
             font.weight: Font.Black
         }
@@ -59,7 +59,7 @@ Rectangle
         anchors.margins: 10
         anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
 
-        rows: 10
+        rows: 11
         columns: 3
         columnSpacing: 10
         rowSpacing: 10
@@ -81,12 +81,13 @@ Rectangle
             Layout.fillWidth: true
             enabled: editionMode
             placeholderText: qsTr("Name of the analysis")
-            text: "Série B12"
+            text: model.name
+            onTextChanged: if (model.name != text) model.name = text
         }
 
         Column
         {
-            Layout.rowSpan: 9
+            Layout.rowSpan: 10
             Layout.alignment: Qt.AlignTop
             spacing: 10
 
@@ -120,7 +121,8 @@ Rectangle
             Layout.fillWidth: true
             enabled: editionMode
             height: 3 * Regovar.theme.font.size.control
-            text: "Comment about the subject"
+            text: model.comment
+            onTextChanged: if (model.comment != text) model.comment = text
         }
 
 
@@ -151,6 +153,26 @@ Rectangle
         }
 
 
+
+        Text
+        {
+            text: qsTr("Status")
+            color: Regovar.theme.primaryColor.back.dark
+            font.pixelSize: Regovar.theme.font.size.control
+            font.family: Regovar.theme.font.familly
+            verticalAlignment: Text.AlignVCenter
+            height: 35
+        }
+        Text
+        {
+            Layout.fillWidth: true
+            height: Regovar.theme.font.size.header
+            text: model.status
+            color: Regovar.theme.frontColor.normal
+            font.pixelSize: Regovar.theme.font.size.control
+            font.family: Regovar.theme.font.familly
+            verticalAlignment: Text.AlignVCenter
+        }
 
         Text
         {
@@ -186,7 +208,7 @@ Rectangle
         {
             Layout.fillWidth: true
             height: Regovar.theme.font.size.header
-            text: "Hg19"
+            text: model.refName
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.control
             font.family: Regovar.theme.font.familly
@@ -207,145 +229,49 @@ Rectangle
         }
         Column
         {
-            Row
+            Layout.fillWidth: true
+
+            Repeater
             {
+                model: model.samples
 
-                Text
+                Row
                 {
-                    width: Regovar.theme.font.boxSize.control
-                    font.pixelSize: Regovar.theme.font.size.control
-                    font.family: Regovar.theme.icons.name
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    text: "9"
-                }
+                    Text
+                    {
+                        verticalAlignment: Text.AlignVCenter
+                        font.pixelSize: Regovar.theme.font.size.control
+                        width: Regovar.theme.font.size.control
+                        text: modelData.subjectUI.sex == "M" ? "9" :modelData.subjectUI.sex == "F" ? "<" : ""
+                        font.family: Regovar.theme.icons.name
+                        color: Regovar.theme.frontColor.normal
+                    }
+                    Text
+                    {
+                        font.pixelSize: Regovar.theme.font.size.control
+                        text: modelData.subjectUI.lastname + " " + modelData.subjectUI.firstname + " (" + modelData.subjectUI.age + ")"
+                        elide: Text.ElideRight
+                        color: Regovar.theme.frontColor.normal
+                    }
 
-                Text
-                {
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    font.family: "monospace"
-                    text: "MD-02-75"+ " - "
-                }
-                Text
-                {
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    text: "DUPONT Michel (64y)"
-                }
-                Text
-                {
-                    width: Regovar.theme.font.boxSize.control
-                    font.pixelSize: Regovar.theme.font.size.control
-                    font.family: Regovar.theme.icons.name
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    text: "{"
-                }
-                Text
-                {
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    font.family: "monospace"
-                    text: "Hp-A7-5663"
-                }
-            }
-            Row
-            {
-
-                Text
-                {
-                    width: Regovar.theme.font.boxSize.control
-                    font.pixelSize: Regovar.theme.font.size.control
-                    font.family: Regovar.theme.icons.name
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    text: "<"
-                }
-
-                Text
-                {
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    font.family: "monospace"
-                    text: "MD-02-76"+ " - "
-                }
-                Text
-                {
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    text: "DUPONT Micheline (60y)"
-                }
-                Text
-                {
-                    width: Regovar.theme.font.boxSize.control
-                    font.pixelSize: Regovar.theme.font.size.control
-                    font.family: Regovar.theme.icons.name
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    text: "{"
-                }
-                Text
-                {
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    font.family: "monospace"
-                    text: "Gtk-8999112"
-                }
-            }
-            Row
-            {
-
-                Text
-                {
-                    width: Regovar.theme.font.boxSize.control
-                    font.pixelSize: Regovar.theme.font.size.control
-                    font.family: Regovar.theme.icons.name
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    text: "9"
-                }
-
-                Text
-                {
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    font.family: "monospace"
-                    text: "MM-11-86"+ " - "
-                }
-                Text
-                {
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    text: "DUPONT Michou (11y)"
-                }
-                Text
-                {
-                    width: Regovar.theme.font.boxSize.control
-                    font.pixelSize: Regovar.theme.font.size.control
-                    font.family: Regovar.theme.icons.name
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    text: "{"
-                }
-                Text
-                {
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    font.family: "monospace"
-                    text: "GHJ-446"
+                    Text
+                    {
+                        width: Regovar.theme.font.boxSize.control
+                        font.pixelSize: Regovar.theme.font.size.control
+                        font.family: Regovar.theme.icons.name
+                        color: Regovar.theme.frontColor.normal
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        text: "{"
+                    }
+                    Text
+                    {
+                        font.pixelSize: Regovar.theme.font.size.control
+                        color: Regovar.theme.frontColor.normal
+                        verticalAlignment: Text.AlignVCenter
+                        font.family: "monospace"
+                        text: modelData.name
+                    }
                 }
             }
         }
@@ -362,31 +288,21 @@ Rectangle
         }
         Column
         {
-            Text
-            {
-                font.pixelSize: Regovar.theme.font.size.control
-                color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                verticalAlignment: Text.AlignVCenter
-                text: "VEP (v76)"
-            }
+            Layout.fillWidth: true
 
-            Text
+            Repeater
             {
-                font.pixelSize: Regovar.theme.font.size.control
-                color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                verticalAlignment: Text.AlignVCenter
-                text: "SnpEff (v4.2)"
-            }
+                model: model.selectedAnnotationsDB
 
-            Text
-            {
-                font.pixelSize: Regovar.theme.font.size.control
-                color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-                verticalAlignment: Text.AlignVCenter
-                text: "dbNSFP (v3.3)"
+                Text
+                {
+                    font.pixelSize: Regovar.theme.font.size.control
+                    color: Regovar.theme.frontColor.normal
+                    verticalAlignment: Text.AlignVCenter
+                    text: modelData
+                }
             }
         }
-
 
 
         Rectangle

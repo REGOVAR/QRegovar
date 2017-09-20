@@ -51,6 +51,7 @@ Rectangle
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
             text: "I"
+            elide: Text.ElideRight
         }
 
         Text
@@ -60,6 +61,7 @@ Rectangle
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
             text: projectName
+            elide: Text.ElideRight
         }
         Text
         {
@@ -70,6 +72,7 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
             text: "{"
+            elide: Text.ElideRight
         }
 
         Text
@@ -79,6 +82,7 @@ Rectangle
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
             text: name
+            elide: Text.ElideRight
         }
     }
 
