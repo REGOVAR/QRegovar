@@ -13,8 +13,11 @@ GenericScreen
     property real labelColWidth: 100
     readyForNext: true
 
-    onZChanged: checkReady()
-    Component.onCompleted: checkReady()
+    onZChanged:
+    {
+        nameField.text = autoName();
+        checkReady();
+    }
 
     Text
     {
@@ -54,6 +57,7 @@ GenericScreen
             Layout.fillWidth: true
             id: projectField
             model: regovar.projects
+            textRole: "fullPath"
             currentIndex: regovar.selectedProject
             onCurrentIndexChanged:
             {
@@ -116,7 +120,6 @@ GenericScreen
                     checkReady();
                 }
             }
-            Component.onCompleted: text=autoName();
         }
         Button
         {
@@ -335,11 +338,24 @@ GenericScreen
         readyForNext = true; //refField.currentIndex > 0;
     }
 
+    property date currentDate: new Date()
     function autoName()
     {
-        var name = qsTr("Trio");
-        name += "-MD-02-75-2017-09.15";
-        name += Qt.formatDate(Date.now(), "yyyy-MM-dd");
+        currentDate = new Date();
+
+        var name = currentDate.toLocaleString(Qt.locale(), "yyyy.MM.dd");
+        if (regovar.newFilteringAnalysis.samples.length == 1)
+        {
+            name = qsTr("Singleton ") + regovar.newFilteringAnalysis.samples[0].name + " - " + name;
+        }
+        else if (regovar.newFilteringAnalysis.samples.length == 3 && regovar.newFilteringAnalysis.isTrio)
+        {
+            name = qsTr("Trio ") + regovar.newFilteringAnalysis.child.name + " - " + name;
+        }
+        else
+        {
+            name = qsTr("Custom ") + name;
+        }
         return name;
     }
 

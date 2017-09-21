@@ -21,6 +21,9 @@ class Sample : public QObject
     Q_PROPERTY(QVariant subjectUI READ subjectUI WRITE setSubjectUI NOTIFY subjectUIChanged)
     Q_PROPERTY(QVariant statusUI READ statusUI WRITE setStatusUI NOTIFY statusUIChanged)
     Q_PROPERTY(QVariant sourceUI READ sourceUI WRITE setSourceUI NOTIFY sourceUIChanged)
+    // Property only used client side by the newAnalysis wizard
+    Q_PROPERTY(bool isIndex READ isIndex WRITE setIsIndex NOTIFY isIndexChanged)
+    Q_PROPERTY(QString sex READ sex WRITE setSex NOTIFY sexChanged)
 
 
 public:
@@ -50,6 +53,8 @@ public:
     inline QVariant subjectUI() { return mSubjectUI; }
     inline QVariant statusUI() { return mStatusUI; }
     inline QVariant sourceUI() { return mSourceUI; }
+    inline bool isIndex() { return mIsIndex; }
+    inline QString sex() { return mSex; }
 
     // Setters
     inline void setName(QString name) { mName = name; emit nameChanged(); }
@@ -62,6 +67,8 @@ public:
     inline void setSubjectUI(QVariant data) { mSubjectUI = data; emit subjectUIChanged(); }
     inline void setStatusUI(QVariant data) { mStatusUI = data; emit statusUIChanged(); }
     inline void setSourceUI(QVariant data) { mSourceUI = data; emit sourceUIChanged(); }
+    inline void setIsIndex(bool flag) { mIsIndex = flag; emit isIndexChanged(); }
+    inline void setSex(QString sex) { mSex = sex; emit sexChanged(); }
 
     // Methods
     Q_INVOKABLE bool fromJson(QJsonObject json);
@@ -79,6 +86,8 @@ Q_SIGNALS:
     void sourceUIChanged();
     void sourceChanged();
     void statusChanged();
+    void sexChanged();
+    void isIndexChanged();
 
 public Q_SLOTS:
 
@@ -96,6 +105,8 @@ private:
     QVariant mSubjectUI;
     QVariant mStatusUI;
     QVariant mSourceUI;
+    bool mIsIndex;
+    QString mSex;
 };
 
 #endif // SAMPLE_H

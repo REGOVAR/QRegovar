@@ -16,13 +16,49 @@ GenericScreen
 
     function checkReady()
     {
-        readyForNext = true; // samplesList.count > 0;
+        // security if method is called before init of a component
+        if (!trioActivated || !childSample || !motherSample || !fatherSample || !childIndex || !motherIndex || !fatherIndex || !childSex)
+            return;
+
+        readyForNext = false;
+
+        if (regovar.newFilteringAnalysis.samples.length > 0)
+        {
+
+            // Check for trio
+            regovar.newFilteringAnalysis.isTrio = trioActivated.checked;
+            if (trioActivated.checked)
+            {
+                // assert that child/mother/father are distinct samples
+                if (childSample.currentIndex  != motherSample.currentIndex &&
+                    childSample.currentIndex  !=  fatherSample.currentIndex &&
+                    motherSample.currentIndex != fatherSample.currentIndex)
+                {
+                    regovar.newFilteringAnalysis.child = regovar.newFilteringAnalysis.samples[childSample.currentIndex];
+                    regovar.newFilteringAnalysis.mother = regovar.newFilteringAnalysis.samples[motherSample.currentIndex];
+                    regovar.newFilteringAnalysis.father = regovar.newFilteringAnalysis.samples[fatherSample.currentIndex];
+
+                    regovar.newFilteringAnalysis.child.isIndex = childIndex.checked;
+                    regovar.newFilteringAnalysis.mother.isIndex = motherIndex.checked;
+                    regovar.newFilteringAnalysis.father.isIndex = fatherIndex.checked;
+
+                    regovar.newFilteringAnalysis.child.sex = childSex.model[childSex.currentIndex];
+
+                    readyForNext = true;
+                }
+            }
+            else
+            {
+                readyForNext = true;
+            }
+        }
     }
 
 
 
     onZChanged:
     {
+        checkReady();
         if (z == 0)
         {
             // When sample screen disapear (occure on next/previous)
@@ -204,7 +240,11 @@ GenericScreen
                 id: trioActivated
                 text: "Trio"
                 checked: false
-                onCheckedChanged: checked = regovar.newFilteringAnalysis.samples.length == 3 && checked
+                onCheckedChanged:
+                {
+                    checked = regovar.newFilteringAnalysis.samples.length == 3 && checked;
+                    checkReady();
+                }
             }
 
             GridLayout
@@ -228,7 +268,6 @@ GenericScreen
                     {
                         if (currentIndex != regovar.selectedReference)
                         {
-                            // Todo
                             checkReady();
                         }
                     }
@@ -251,15 +290,15 @@ GenericScreen
                 {
                     id: childIndex
                     enabled: trioActivated.checked
+                    text: qsTr("Index")
                     checked: false
-                    text: "Index"
                 }
                 Text { text: "Sex"; enabled: trioActivated.checked }
                 ComboBox
                 {
                     id: childSex
                     enabled: trioActivated.checked
-                    model: ["Male", "Female"]
+                    model: [qsTr("Unknow"), qsTr("Male"), qsTr("Female")]
                 }
 
                 Text { text: "Mother"; enabled: trioActivated.checked }
@@ -274,7 +313,6 @@ GenericScreen
                     {
                         if (currentIndex != regovar.selectedReference)
                         {
-                            // Todo
                             checkReady();
                         }
                     }
@@ -295,9 +333,9 @@ GenericScreen
                 }
                 CheckBox
                 {
-                    id: motherdIndex
+                    id: motherIndex
                     enabled: trioActivated.checked
-                    text: "Index"
+                    text: qsTr("Index")
                     checked: true
                 }
                 Text { text: ""; Layout.columnSpan: 2 }
@@ -314,7 +352,6 @@ GenericScreen
                     {
                         if (currentIndex != regovar.selectedReference)
                         {
-                            // Todo
                             checkReady();
                         }
                     }
@@ -337,7 +374,8 @@ GenericScreen
                 {
                     id: fatherIndex
                     enabled: trioActivated.checked
-                    text: "Index"
+                    text: qsTr("Index")
+                    checked: regovar.newFilteringAnalysis.father.isIndex
                 }
                 Text { text: ""; Layout.columnSpan: 2 }
             }
