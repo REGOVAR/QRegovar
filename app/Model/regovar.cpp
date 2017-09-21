@@ -581,8 +581,8 @@ void Regovar::raiseError(QJsonObject json)
     QString msg  = json["msg"].toString();
     if (code.isEmpty() && msg.isEmpty())
     {
-        code = "00000";
-        msg  = "Unable to connect to the server.";
+        code = "E00000?";
+        msg  = "Error not catched !!";
     }
     qDebug() << "ERROR Server side [" << code << "]" << msg;
     emit onError(code, msg);

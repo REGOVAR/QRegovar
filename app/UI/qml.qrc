@@ -114,5 +114,6 @@
         <file>Regovar/qmldir</file>
         <file>Framework/ComboBoxDelegate.qml</file>
         <file>Framework/Text.qml</file>
+        <file>Framework/ConnectionStatus.qml</file>
     </qresource>
 </RCC>

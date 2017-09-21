@@ -28,6 +28,7 @@ class Regovar : public QObject
     Q_OBJECT
 
     Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlChanged)
+    Q_PROPERTY(ServerStatus connectionStatus READ connectionStatus WRITE setConnectionStatus NOTIFY connectionStatusChanged)
     // Welcom
     Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
@@ -56,13 +57,28 @@ class Regovar : public QObject
 
 
 public:
+    enum ServerStatus
+    {
+        // Connected to the sever.
+        ready=0,
+        // Connection refused : user need to login
+        accessDenied,
+        // Server is in error : returned HTTP 500
+        error,
+        // Not eable to reach the server : are url/proxy settings good ? Is the server on ?
+        unreachable
+    };
+    Q_ENUMS(ServerStatus)
+
     static Regovar* i();
     void init();
     void readSettings();
     void writeSettings();
 
     // Accessors
+    inline ServerStatus connectionStatus() { return mConnectionStatus; }
     inline QUrl& serverUrl() { return mApiRootUrl; }
+    //--
     inline QString searchRequest() { return mSearchRequest; }
     inline QJsonObject searchResult() const { return mSearchResult; }
     inline bool searchInProgress() const { return mSearchInProgress; }
@@ -89,6 +105,7 @@ public:
 
     // Setters
     inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlChanged(); }
+    inline void setConnectionStatus(ServerStatus flag) { mConnectionStatus = flag; emit connectionStatusChanged(); }
     inline void setSearchRequest(QString searchRequest) { mSearchRequest = searchRequest; emit searchRequestChanged(); }
     inline void setSearchResult(QJsonObject searchResult) { mSearchResult = searchResult; emit searchResultChanged(); }
     inline void setSearchInProgress(bool flag) { mSearchInProgress = flag; emit searchInProgressChanged(); }
@@ -167,6 +184,7 @@ Q_SIGNALS:
     void welcomIsLoadingChanged();
     void selectedReferenceChanged();
     void selectedProjectChanged();
+    void connectionStatusChanged();
 
 private:
     Regovar();
@@ -176,6 +194,8 @@ private:
     // Models
     //! The root url to the server api
     QUrl mApiRootUrl;
+    //! Server connection status
+    ServerStatus mConnectionStatus;
     //! The current user of the application
     // UserModel * mUser;
     //! Search request and results

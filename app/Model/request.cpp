@@ -134,6 +134,7 @@ void Request::received()
         mReplyError = reply->error();
         if (mReplyError == QNetworkReply::NoError)
         {
+            regovar->setConnectionStatus(Regovar::ServerStatus::ready);
             QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
             mJson = doc.object();
             mSuccess = mJson["success"].toBool();
@@ -141,15 +142,35 @@ void Request::received()
         }
         else
         {
-            qDebug() << "ERROR" << Q_FUNC_INFO << mReplyError;
-            mSuccess = false;
+            QString code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString();
+            QString reason = reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+            qWarning() << "ERROR" << code << reason << mReplyError;
             mJson = QJsonObject();
+            if (code == "502")
+            {
+                regovar->setConnectionStatus(Regovar::ServerStatus::unreachable);
+                mJson.insert("code", "E000000");
+                mJson.insert("msg",  tr("Server unreachable. Check your settings and ensure that the server is ON."));
+            }
+            else if (code == "403")
+            {
+                regovar->setConnectionStatus(Regovar::ServerStatus::accessDenied);
+                mJson.insert("code", "E000001");
+                mJson.insert("msg",  tr("Authentication required. Please log in."));
+            }
+            else
+            {
+                regovar->setConnectionStatus(Regovar::ServerStatus::error);
+                mJson.insert("code", "E000002");
+                mJson.insert("msg",  tr("An unexpected error occured server side. More informations available on server logs."));
+            }
+            mSuccess = false;
             emit responseReceived(mSuccess, mJson);
         }
     }
     else
     {
-        qWarning() << Q_FUNC_INFO << "Request ends with no answer ? ";
+        qCritical() << "CRITICAL ERROR"<< Q_FUNC_INFO << "Request ends with no answer ? How it's possible";
     }
 }
 //------------------------------------------------------------------------------------------------
