@@ -494,6 +494,13 @@ bool Regovar::newAnalysis(QString type)
         if (mNewFilteringAnalysis->isTrio())
         {
             QJsonObject trioSettings;
+            trioSettings.insert("child_id", mNewFilteringAnalysis->trioChild()->id());
+            trioSettings.insert("child_index", mNewFilteringAnalysis->trioChild()->isIndex());
+            trioSettings.insert("child_sex", mNewFilteringAnalysis->trioChild()->sex());
+            trioSettings.insert("mother_id", mNewFilteringAnalysis->trioMother()->id());
+            trioSettings.insert("mother_index", mNewFilteringAnalysis->trioMother()->isIndex());
+            trioSettings.insert("father_id", mNewFilteringAnalysis->trioFather()->id());
+            trioSettings.insert("father_index", mNewFilteringAnalysis->trioFather()->isIndex());
             settings.insert("trio", trioSettings);
         }
         else

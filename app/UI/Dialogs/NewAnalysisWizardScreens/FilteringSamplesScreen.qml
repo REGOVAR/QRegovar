@@ -42,7 +42,7 @@ GenericScreen
                     regovar.newFilteringAnalysis.mother.isIndex = motherIndex.checked;
                     regovar.newFilteringAnalysis.father.isIndex = fatherIndex.checked;
 
-                    regovar.newFilteringAnalysis.child.sex = childSex.model[childSex.currentIndex];
+                    regovar.newFilteringAnalysis.child.sex = childSex.currentIndex == 1 ? "F" : "M";
 
                     readyForNext = true;
                 }
@@ -298,7 +298,7 @@ GenericScreen
                 {
                     id: childSex
                     enabled: trioActivated.checked
-                    model: [qsTr("Unknow"), qsTr("Male"), qsTr("Female")]
+                    model: [qsTr("Male"), qsTr("Female")]
                 }
 
                 Text { text: "Mother"; enabled: trioActivated.checked }
