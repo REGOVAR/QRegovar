@@ -25,7 +25,7 @@ GenericScreen
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        text: qsTr("Select the annotations databases and their versions to annotate the variants.")
+        text: qsTr("This step is optional.\nSelect the annotations databases and their versions to annotate the variants. Annotations of the samples vcf files are selected by default.")
         wrapMode: Text.WordWrap
         font.pixelSize: Regovar.theme.font.size.control
         color: Regovar.theme.primaryColor.back.normal
