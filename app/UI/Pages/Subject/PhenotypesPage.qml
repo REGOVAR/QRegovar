@@ -28,7 +28,7 @@ Rectangle
             color: Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
 
-            text: regovar.currentProject.name
+            text: model.name
         }
     }
 

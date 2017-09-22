@@ -7,6 +7,7 @@ import QtQuick.Controls.Styles 1.4
 
 import "../../Regovar"
 import "../../Framework"
+import "../../Dialogs"
 
 Rectangle
 {
@@ -14,20 +15,6 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property QtObject model
-
-    Dialog
-    {
-        id: newProjectDialog
-        modality:  Qt.WindowModal // Qt.NonModal
-        title:  qsTr("Create new project")
-
-        standardButtons: StandardButton.Save | StandardButton.Cancel
-
-        Label
-        {
-            text: "Hello world!"
-        }
-    }
 
 
 
@@ -80,31 +67,22 @@ Rectangle
             text: qsTr("Open")
             onClicked:  openSelectedProject()
         }
-
-        Item
-        {
-            height:20
-        }
-
         Button
         {
             id: newProject
             text: qsTr("New Project")
-            onClicked: newProjectDialog.open()
+             onClicked: { newProjectDialog.reset(); newProjectDialog.open(); }
         }
-
-        Button
-        {
-            id: newFolder
-            enabled: false
-            text: qsTr("New Folder")
-        }
-
-        Button
-        {
-            id: deleteProject
-            text: qsTr("Delete Project")
-        }
+//        Button
+//        {
+//            id: newFolder
+//            text: qsTr("New Folder")
+//        }
+//        Button
+//        {
+//            id: deleteProject
+//            text: qsTr("Delete Project")
+//        }
     }
 
 
@@ -127,7 +105,7 @@ Rectangle
                 anchors.fill: parent
                 verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.control
-                text: styleData.value.text
+                text: styleData.value.text + " (" + styleData.value.id + ")"
                 elide: Text.ElideRight
             }
         }
@@ -136,30 +114,20 @@ Rectangle
         {
             role: "name"
             title: "Name"
-
-            // Deletegate for this column only
-//            delegate: Item
-//            {
-//                Text
-//                {
-//                    anchors.fill: parent
-//                    color: "red"
-//                    text: styleData.row + ": " + styleData.column + " = " + styleData.value
-//                }
-//            }
         }
-
-        TableViewColumn {
+        TableViewColumn
+        {
             role: "date"
             title: "Date"
         }
-
-        TableViewColumn {
+        TableViewColumn
+        {
             role: "comment"
             title: "Comment"
         }
     }
 
+    NewProjectDialog { id: newProjectDialog }
 
     property var component
     property var name
@@ -167,32 +135,14 @@ Rectangle
     /// Retrive model of the selected project in the treeview and set the Regovar.currentProject with it.
     function openSelectedProject()
     {
-//        var item = regovar.projectsTreeView.data(browser.currentIndex, 0);
-//        if (item !== undefined)
-//        {
-//            var id = regovar.projectsTreeView.data(browser.currentIndex, 0).id
-//            console.log("current index: " + browser.currentIndex + " => id: " + id)
-//            regovar.loadProject(id);
-//        }
-        regovar.loadAnalysis(19);
 
-
-//        var req = new XMLHttpRequest();
-//        var url = regovar.serverUrl + "/project/" + id;
-
-//        // Do the job when the answer is ready
-//        req.onreadystatechange = function()
-//        {
-//            if (req.readyState == 4)
-//            {
-//                // turn the text in a javascript object while setting the ListView's model to it
-//                var data = JSON.parse(req.responseText);
-//                regovar.currentProject = data["data"];
-//                Regovar.mainMenu.selectedSubIndex = 0;
-//            }
-//        };
-//        console.log(url)
-//        req.open("GET", url, true);
-//        req.send(null);
+        var item = regovar.projectsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
+        if (item !== undefined)
+        {
+            if (item.isAnalysis)
+                regovar.openAnalysis(item.id);
+            else
+                regovar.openProject(item.id);
+        }
     }
 }

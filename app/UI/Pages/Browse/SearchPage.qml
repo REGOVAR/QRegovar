@@ -157,15 +157,7 @@ Rectangle
                             width: scrollarea.viewport.width
                             date: model.modelData.update_date
                             name: model.modelData.name
-
-                            onClicked:
-                            {
-                                regovar.loadProject(model.modelData.id);
-                                Regovar.reloadProjectsOpenEntries();
-                                buildPages(menuModel.model[2]["sublevel"]);
-                                // select currentEntry
-                                Regovar.menuModel.selectedIndex=[2, regovar.projectsOpen.length,0];
-                            }
+                            onClicked: regovar.openProject(model.modelData.id);
                         }
                     }
                 }

@@ -53,7 +53,6 @@ class Regovar : public QObject
     Q_PROPERTY(PipelineAnalysis* newPipelineAnalysis READ newPipelineAnalysis NOTIFY newPipelineAnalysisChanged)
     Q_PROPERTY(FilteringAnalysis* newFilteringAnalysis READ newFilteringAnalysis NOTIFY newFilteringAnalysisChanged)
 
-    Q_PROPERTY(Project* currentProject READ currentProject NOTIFY currentProjectChanged)
 
 
 public:
@@ -100,7 +99,6 @@ public:
     inline PipelineAnalysis* newPipelineAnalysis() const { return mNewPipelineAnalysis; }
     inline FilteringAnalysis* newFilteringAnalysis() const { return mNewFilteringAnalysis; }
     //--
-    inline Project* currentProject() const { return mCurrentProject; }
     //inline UserModel* currentUser() const { return mUser; }
 
     // Setters
@@ -126,6 +124,8 @@ public:
     Q_INVOKABLE FilteringAnalysis* getAnalysisFromWindowId(int winId);
     Q_INVOKABLE void search(QString query);
     Q_INVOKABLE void resetNewAnalysisWizardModels();
+    Q_INVOKABLE void openProject(QJsonObject json);
+    Q_INVOKABLE void openProject(int id);
     Reference* referencesFromId(int id);
 
     Q_INVOKABLE void loadWelcomData();
@@ -143,9 +143,8 @@ public Q_SLOTS:
     void refreshProjectsTreeView();
     void filesEnqueued(QHash<QString,QString> mapping);
 
-    void loadProject(int id);
-    void loadAnalysis(int id);
-    bool loadAnalysis(QJsonObject data);
+    void openAnalysis(int id);
+    bool openAnalysis(QJsonObject data);
 
     // Websocket
     void onWebsocketConnected();
@@ -167,7 +166,6 @@ Q_SIGNALS:
     void projectsTreeViewChanged();
     void remoteFilesListChanged();
     void remoteSamplesListChanged();
-    void currentProjectChanged();
     void referencesChanged();
     void onClose();
     void onError(QString errCode, QString message);
@@ -211,8 +209,6 @@ private:
     //! The flat list of project (use for project's combobox selection)
     QList<QObject*> mProjectsList;
     int mSelectedProject;
-    //! The model of the current project loaded
-    Project* mCurrentProject;
     //! The model used to browse all files available on the server
     QList<QObject*> mRemoteFilesList;
     //! The model used to browse all samples available on the server

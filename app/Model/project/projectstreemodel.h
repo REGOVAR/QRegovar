@@ -23,7 +23,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     void refresh();
-    QVariant newProjectsTreeViewItem(int id, const QString &text);
+    QVariant newProjectsTreeViewItem(int id, bool isAnalaysis, const QString &text);
     void setupModelData(QJsonArray data, TreeItem *parent);
     void setupModelAnalysisData(QJsonArray data, TreeItem *parent);
 

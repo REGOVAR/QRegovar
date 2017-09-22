@@ -57,11 +57,12 @@ QHash<int, QByteArray> ProjectsTreeModel::roleNames() const
 
 
 
-QVariant ProjectsTreeModel::newProjectsTreeViewItem(int id, const QString &text)
+QVariant ProjectsTreeModel::newProjectsTreeViewItem(int id, bool isAnalysis, const QString &text)
 {
     ProjectsTreeItem *t = new ProjectsTreeItem(this);
     t->setText(text);
     t->setId(id);
+    t->setIsAnalysis(isAnalysis);
     QVariant v;
     v.setValue(t);
     return v;
@@ -76,9 +77,9 @@ void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 
         // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
         QHash<int, QVariant> columnData;
-        columnData.insert(NameRole, newProjectsTreeViewItem(id, p["name"].toString()));
-        columnData.insert(CommentRole, newProjectsTreeViewItem(id, p["comment"].toString()));
-        columnData.insert(DateRole, newProjectsTreeViewItem(id, p["update_date"].toString()));
+        columnData.insert(NameRole, newProjectsTreeViewItem(id, false, p["name"].toString()));
+        columnData.insert(CommentRole, newProjectsTreeViewItem(id, false, p["comment"].toString()));
+        columnData.insert(DateRole, newProjectsTreeViewItem(id, false, p["update_date"].toString()));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);
@@ -106,9 +107,9 @@ void ProjectsTreeModel::setupModelAnalysisData(QJsonArray data, TreeItem *parent
 
         // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
         QHash<int, QVariant> columnData;
-        columnData.insert(NameRole, newProjectsTreeViewItem(id, p["name"].toString()));
-        columnData.insert(CommentRole, newProjectsTreeViewItem(id, p["comment"].toString()));
-        columnData.insert(DateRole, newProjectsTreeViewItem(id, p["update_date"].toString()));
+        columnData.insert(NameRole, newProjectsTreeViewItem(id, true, p["name"].toString()));
+        columnData.insert(CommentRole, newProjectsTreeViewItem(id, true, p["comment"].toString()));
+        columnData.insert(DateRole, newProjectsTreeViewItem(id, true, p["update_date"].toString()));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);

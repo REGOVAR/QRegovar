@@ -36,7 +36,6 @@ void Regovar::init()
     // Init models
     // mUser = new UserModel(); //1, "Olivier", "Gueudelot");
     mProjectsTreeView = new ProjectsTreeModel();
-    mCurrentProject = new Project();
     mUploader = new TusUploader();
     mNewPipelineAnalysis = new PipelineAnalysis();
     mNewFilteringAnalysis = new FilteringAnalysis();
@@ -136,30 +135,6 @@ void Regovar::refreshProjectsTreeView()
     qDebug() << Q_FUNC_INFO << "TODO";
 }
 
-void Regovar::loadProject(int id)
-{
-    Request* req = Request::get(QString("/project/%1").arg(id));
-    connect(req, &Request::responseReceived, [this, req, id](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            if (mCurrentProject->fromJson(json["data"].toObject()))
-            {
-                qDebug() << Q_FUNC_INFO << "CurrentProject loaded";
-                emit currentProjectChanged();
-            }
-            else
-            {
-                qDebug() << Q_FUNC_INFO << "Failed to load project from id " << id << ". Wrong json data";
-            }
-        }
-        else
-        {
-            regovar->raiseError(json);
-        }
-        req->deleteLater();
-    });
-}
 
 
 
@@ -297,14 +272,14 @@ Reference* Regovar::referencesFromId(int id)
 
 
 
-void Regovar::loadAnalysis(int id)
+void Regovar::openAnalysis(int id)
 {
     Request* req = Request::get(QString("/analysis/%1").arg(id));
     connect(req, &Request::responseReceived, [this, req, id](bool success, const QJsonObject& json)
     {
         if (success)
         {
-            if (loadAnalysis(json["data"].toObject()))
+            if (openAnalysis(json["data"].toObject()))
             {
                 qDebug() << Q_FUNC_INFO << "Filtering Analysis (id=" << id << ") Loaded.";
             }
@@ -320,7 +295,7 @@ void Regovar::loadAnalysis(int id)
         req->deleteLater();
     });
 }
-bool Regovar::loadAnalysis(QJsonObject data)
+bool Regovar::openAnalysis(QJsonObject data)
 {
     int lastId = mOpenAnalyses.count();
     mOpenAnalyses.append(new FilteringAnalysis(this));
@@ -461,22 +436,7 @@ void Regovar::newProject(QString name, QString comment)
             {
                 if (success)
                 {
-                    Project* project = new Project(regovar);
-
-                    if (project->fromJson(json["data"].toObject()))
-                    {
-                        // store project model
-                        mProjectsOpen.append(project);
-                        qDebug() << Q_FUNC_INFO << "Project open !";
-
-                        emit projectsTreeViewChanged();
-                        emit projectsOpenChanged();
-                        emit projectCreationDone(true, mProjectsOpen.count() - 1);
-                    }
-                    else
-                    {
-                        qDebug() << Q_FUNC_INFO << "Failed to load project data.";
-                    }
+                    openProject(json);
                 }
                 else
                 {
@@ -494,6 +454,43 @@ void Regovar::newProject(QString name, QString comment)
 
 }
 
+
+void Regovar::openProject(int id)
+{
+    Request* req = Request::get(QString("/project/%1").arg(id));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            openProject(json);
+        }
+        else
+        {
+            regovar->raiseError(json);
+        }
+        req->deleteLater();
+    });
+}
+
+void Regovar::openProject(QJsonObject json)
+{
+    Project* project = new Project(regovar);
+
+    if (project->fromJson(json["data"].toObject()))
+    {
+        // store project model
+        mProjectsOpen.append(project);
+        qDebug() << Q_FUNC_INFO << "Project open !";
+
+        emit projectsTreeViewChanged();
+        emit projectsOpenChanged();
+        emit projectCreationDone(true, mProjectsOpen.count() - 1);
+    }
+    else
+    {
+        qDebug() << Q_FUNC_INFO << "Failed to load project data.";
+    }
+}
 
 bool Regovar::newAnalysis(QString type)
 {
@@ -540,7 +537,7 @@ bool Regovar::newAnalysis(QString type)
             {
                 QJsonObject data = json["data"].toObject();
                 // Open new analysis
-                loadAnalysis(data);
+                openAnalysis(data);
                 int id = data["id"].toInt();
 
                 // Start creation of the working table by sending the first "filtering" query

@@ -43,7 +43,7 @@ Rectangle
             color: Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
 
-            text: regovar.currentProject.name
+            text: "todo"
         }
     }
 
@@ -87,7 +87,7 @@ Rectangle
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
-        model: regovar.currentProject.files
+        model: model.files
 
         // Default delegate for all column
         itemDelegate: Item

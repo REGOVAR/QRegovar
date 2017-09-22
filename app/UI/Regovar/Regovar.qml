@@ -100,10 +100,6 @@ QtObject
                   { "label": qsTr("Files"),         "page": "Project/FilesPage.qml", "sublevel": []},
                    ], "subindex": 0});
             }
-
-
         }
-
-
     }
 } 
