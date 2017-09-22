@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import "../../Regovar"
+import "../../Framework"
 
 Rectangle
 {
@@ -29,6 +30,14 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
 
             text: regovar.currentProject.name
+        }
+        ConnectionStatus
+        {
+            anchors.top: header.top
+            anchors.right: header.right
+            anchors.bottom: header.bottom
+            anchors.margins: 5
+            anchors.rightMargin: 10
         }
     }
 

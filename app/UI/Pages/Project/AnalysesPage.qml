@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import "../../Regovar"
+import "../../Framework"
 
 Rectangle
 {
@@ -17,19 +18,27 @@ Rectangle
         height: 50
         color: Regovar.theme.backgroundColor.alt
 
-//        Text
-//        {
-//            anchors.top: header.top
-//            anchors.left: header.left
-//            anchors.bottom: header.bottom
-//            anchors.margins: 10
-//            font.pixelSize: 22
-//            font.family: Regovar.theme.font.familly
-//            color: Regovar.theme.frontColor.normal
-//            verticalAlignment: Text.AlignVCenter
+        Text
+        {
+            anchors.top: header.top
+            anchors.left: header.left
+            anchors.bottom: header.bottom
+            anchors.margins: 10
+            font.pixelSize: 22
+            font.family: Regovar.theme.font.familly
+            color: Regovar.theme.frontColor.normal
+            verticalAlignment: Text.AlignVCenter
 
-//            text: regovar.currentProject.name
-//        }
+            text: model.name
+        }
+        ConnectionStatus
+        {
+            anchors.top: header.top
+            anchors.right: header.right
+            anchors.bottom: header.bottom
+            anchors.margins: 5
+            anchors.rightMargin: 10
+        }
 
     }
 

@@ -59,7 +59,7 @@ Rectangle
             Layout.alignment : Qt.AlignHCenter
             label : qsTr("Variants filtering")
             description: qsTr("Load your samples' data into the Regovar database and then dynamically filter the variants thanks to the friendly interface.")
-            //source: "qrc:/filtering.gif"
+            source: "qrc:/filteringIcon.jpg"
             onClicked: selected(2);
             onIsHoverChanged:
             {

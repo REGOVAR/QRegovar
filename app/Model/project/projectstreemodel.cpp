@@ -79,7 +79,8 @@ void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
         QHash<int, QVariant> columnData;
         columnData.insert(NameRole, newProjectsTreeViewItem(id, false, p["name"].toString()));
         columnData.insert(CommentRole, newProjectsTreeViewItem(id, false, p["comment"].toString()));
-        columnData.insert(DateRole, newProjectsTreeViewItem(id, false, p["update_date"].toString()));
+        QDateTime date = QDateTime::fromString(p["update_date"].toString(), Qt::ISODate);
+        columnData.insert(DateRole, newProjectsTreeViewItem(id, false, date.toString("yyyy-MM-dd HH\hmm")));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);

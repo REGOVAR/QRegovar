@@ -32,7 +32,15 @@ Rectangle
             font.family: Regovar.theme.font.familly
             color: Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: regovar.currentProject.name
+            text: model.name
+        }
+        ConnectionStatus
+        {
+            anchors.top: header.top
+            anchors.right: header.right
+            anchors.bottom: header.bottom
+            anchors.margins: 5
+            anchors.rightMargin: 10
         }
     }
 
@@ -88,7 +96,7 @@ Rectangle
             Layout.fillWidth: true
             enabled: editionMode
             placeholderText: qsTr("Name of the project")
-            text: "My test"
+            text: model.name
         }
 
         Column
@@ -126,7 +134,7 @@ Rectangle
         {
             Layout.fillWidth: true
             enabled: editionMode
-            text: qsTr("Comment on the project")
+            text: model.comment
         }
 
 
@@ -146,7 +154,7 @@ Rectangle
 
 
 
-        TreeView
+        TableView
         {
             id: events
             Layout.fillHeight: true

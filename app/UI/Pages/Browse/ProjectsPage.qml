@@ -27,9 +27,23 @@ Rectangle
         height: 50
         color: Regovar.theme.backgroundColor.alt
 
+
+        ConnectionStatus
+        {
+            id: connectionStatus
+            anchors.top: header.top
+            anchors.right: header.right
+            anchors.bottom: header.bottom
+            anchors.margins: 5
+            anchors.rightMargin: 10
+        }
+
         TextField
         {
-            anchors.fill: header
+            anchors.top: header.top
+            anchors.left: header.left
+            anchors.bottom: header.bottom
+            anchors.right: connectionStatus.left
             anchors.margins: 10
             //text: Screen.PixelDensity
             placeholderText: qsTr("Search projects by names, dates, comments...")
@@ -105,7 +119,7 @@ Rectangle
                 anchors.fill: parent
                 verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.control
-                text: styleData.value.text + " (" + styleData.value.id + ")"
+                text: styleData.value.text
                 elide: Text.ElideRight
             }
         }
@@ -114,6 +128,7 @@ Rectangle
         {
             role: "name"
             title: "Name"
+            width: 400
         }
         TableViewColumn
         {
@@ -124,6 +139,7 @@ Rectangle
         {
             role: "comment"
             title: "Comment"
+            width: 400
         }
     }
 

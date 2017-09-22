@@ -90,7 +90,6 @@
         <file>Pages/Help/UserGuidePage.qml</file>
         <file>Pages/Project/AnalysesPage.qml</file>
         <file>Pages/Project/FilesPage.qml</file>
-        <file>Pages/Project/SubjectPage.qml</file>
         <file>Pages/Project/SubjectsPage.qml</file>
         <file>Pages/Project/SummaryPage.qml</file>
         <file>Pages/Settings/InterfacePage.qml</file>

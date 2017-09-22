@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
 
 import "../../Regovar"
 Item
@@ -7,7 +8,7 @@ Item
     property string label
     property string description
     property bool isHover: false
-    property alias source: animation.source
+    property alias source: logo.source
     onIsHoverChanged: hover(isHover)
 
     signal clicked()
@@ -31,10 +32,18 @@ Item
         border.width: 1
         radius: 5
 
-        AnimatedImage
+        Image
         {
-            id: animation
+            id: logo
             anchors.fill: parent
+
+//            ColorOverlay
+//            {
+//                anchors.fill: parent
+//                source: logo
+//                color: (isHover) ? Regovar.theme.secondaryColor.back.light : Regovar.theme.primaryColor.back.normal
+//            }
+
         }
 
     }
