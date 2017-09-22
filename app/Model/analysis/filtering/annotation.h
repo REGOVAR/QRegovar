@@ -68,12 +68,13 @@ class AnnotationDB : public QObject
     Q_PROPERTY(QString name READ name NOTIFY dataChanged)
     Q_PROPERTY(QString description READ description NOTIFY dataChanged)
     Q_PROPERTY(QString version READ version NOTIFY dataChanged)
-    Q_PROPERTY(bool isDefault READ isDefault NOTIFY dataChanged)
+    Q_PROPERTY(bool isDefault READ isDefault WRITE setIsDefault NOTIFY isDefaultChanged)
+    Q_PROPERTY(bool isHeadVersion READ isHeadVersion NOTIFY dataChanged)
     Q_PROPERTY(bool selected READ selected WRITE setSelected NOTIFY selectedChanged)
 
 public:
     AnnotationDB(QObject* parent=nullptr);
-    AnnotationDB(QString uid, QString name, QString description, QString version, bool isDefault, QJsonArray fields, QObject* parent=nullptr);
+    AnnotationDB(QString uid, QString name, QString description, QString version, bool isHeadVersion, QJsonArray fields, QObject* parent=nullptr);
 
     // Getters
     inline QString uid() const { return mUid; }
@@ -82,16 +83,19 @@ public:
     inline QString version() const { return mVersion; }
     inline QList<Annotation*> fields() const { return mFields; }
     inline bool isDefault() const { return mDefault; }
+    inline bool isHeadVersion() const { return mIsHeadVersion; }
     inline bool selected() const { return mSelected; }
 
     // Setters
     Q_INVOKABLE void setSelected(bool flag) { mSelected = flag; emit selectedChanged(); }
+    Q_INVOKABLE void setIsDefault(bool flag) { mDefault = flag; emit isDefaultChanged(); }
     inline bool isMandatory() { return mName == "Variant" || mName == "Regovar"; }
 
 
 Q_SIGNALS:
     void dataChanged();
     void selectedChanged();
+    void isDefaultChanged();
 
 private:
     QString mUid;
@@ -99,6 +103,7 @@ private:
     QString mVersion;
     QString mDescription;
     bool mDefault;
+    bool mIsHeadVersion;
     bool mSelected;
     QList<Annotation*> mFields;
 };

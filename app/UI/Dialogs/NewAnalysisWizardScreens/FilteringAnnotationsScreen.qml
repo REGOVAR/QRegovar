@@ -19,13 +19,24 @@ GenericScreen
         return nameField.text.trim() != "" && projectField.currentIndex > 0;
     }
 
+    onZChanged:
+    {
+        if (z==100)
+        {
+            samplesList.model = regovar.newFilteringAnalysis.allAnnotations;
+        }
+    }
+
     Text
     {
         id: header
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        text: qsTr("This step is optional.\nSelect the annotations databases and their versions to annotate the variants. Annotations of the samples vcf files are selected by default.")
+        text: qsTr("This step is optional.\n" +
+                   "Select the annotations databases and their versions to annotate the variants. Annotations of the samples vcf files are selected by default.\n\n" +
+                   "Note :\n - Default annotations databases complient with selected samples are in bold.\n" +
+                   " - Quick filters need VEP and dbNSFP databases to work; Otherwise some filters will be disabled.")
         wrapMode: Text.WordWrap
         font.pixelSize: Regovar.theme.font.size.control
         color: Regovar.theme.primaryColor.back.normal
@@ -56,7 +67,7 @@ GenericScreen
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            model: regovar.newFilteringAnalysis.allAnnotations
+            // model: regovar.newFilteringAnalysis.allAnnotations
 
             TableViewColumn
             {
@@ -66,6 +77,7 @@ GenericScreen
                 {
                     text: modelData.name
                     checked: modelData.selected
+                    font.bold: modelData.isDefault
                     onCheckedChanged:
                     {
                         if (modelData.selected != checked) modelData.selected = checked;

@@ -86,8 +86,11 @@ void Regovar::onWebsocketClosed()
 
 void Regovar::onWebsocketError(QAbstractSocket::SocketError err)
 {
-    qDebug() << "WS ERROR : " << err;
-    setConnectionStatus(err == QAbstractSocket::ConnectionRefusedError ? unreachable : error);
+    if (err != QAbstractSocket::RemoteHostClosedError)
+    {
+        qDebug() << "WS ERROR : " << err;
+        setConnectionStatus(err == QAbstractSocket::ConnectionRefusedError ? unreachable : error);
+    }
 }
 
 void Regovar::onWebsocketStateChanged(QAbstractSocket::SocketState state)

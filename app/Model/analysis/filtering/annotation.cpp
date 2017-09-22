@@ -47,14 +47,14 @@ AnnotationDB::AnnotationDB(QObject* parent) : QObject(parent)
 {
 }
 
-AnnotationDB::AnnotationDB(QString uid, QString name, QString description, QString version, bool isDefault, QJsonArray fields, QObject* parent) : QObject(parent)
+AnnotationDB::AnnotationDB(QString uid, QString name, QString description, QString version, bool isHeadVersion, QJsonArray fields, QObject* parent) : QObject(parent)
 {
     mUid = uid;
     mName = name;
     mDescription = description;
     mVersion = version == "_all_" ? "" : version;
-    mDefault = isDefault;
-    setSelected(version == "_all_" ? true: isDefault);
+    mIsHeadVersion = isHeadVersion;
+    setSelected(version == "_all_" ? true: isHeadVersion);
 
     foreach (const QJsonValue data, fields)
     {

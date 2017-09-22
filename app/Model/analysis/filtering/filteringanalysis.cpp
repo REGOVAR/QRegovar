@@ -142,8 +142,8 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
                     QJsonObject dbv = djsn[dbuid].toObject();
                     QString version = dbv["version"].toString();
                     QJsonArray fields = dbv["fields"].toArray();
-                    bool isDefault = duid == dbv["uid"].toString();
-                    AnnotationDB* adb = new AnnotationDB(dbuid, name, desc, version, isDefault, fields, this);
+                    bool isHeadVersion = duid == dbv["uid"].toString();
+                    AnnotationDB* adb = new AnnotationDB(dbuid, name, desc, version, isHeadVersion, fields, this);
                     mAllAnnotations.append(adb);
                 }
             }

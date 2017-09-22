@@ -78,9 +78,11 @@ GenericScreen
                 }
             }
 
-            for(idx=2; idx<regovar.newFilteringAnalysis.allAnnotations.length; idx++)
+            for(idx=0; idx<regovar.newFilteringAnalysis.allAnnotations.length; idx++)
             {
-                regovar.newFilteringAnalysis.allAnnotations[idx].selected = annotDbUid.indexOf(regovar.newFilteringAnalysis.allAnnotations[idx].uid) > -1;
+                var isDefault = annotDbUid.indexOf(regovar.newFilteringAnalysis.allAnnotations[idx].uid) > -1;
+                regovar.newFilteringAnalysis.allAnnotations[idx].selected = idx < 2 || isDefault;
+                regovar.newFilteringAnalysis.allAnnotations[idx].isDefault = isDefault;
             }
         }
     }
