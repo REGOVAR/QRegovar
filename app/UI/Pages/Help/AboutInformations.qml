@@ -14,7 +14,7 @@ Item
     {
         anchors.centerIn: parent
         text: "Information (cf. poster)"
-        font.pointSize: 24
+        font.pixelSize: 24
     }
 
 

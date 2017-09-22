@@ -28,6 +28,14 @@ Rectangle
             font.pixelSize: 20
             font.weight: Font.Black
         }
+        ConnectionStatus
+        {
+            anchors.top: header.top
+            anchors.right: header.right
+            anchors.bottom: header.bottom
+            anchors.margins: 5
+            anchors.rightMargin: 10
+        }
     }
 
 
@@ -64,7 +72,7 @@ Rectangle
         {
             anchors.centerIn: parent
             text: "Pipeline management (browse, (un)install pipelines)"
-            font.pointSize: 24
+            font.pixelSize: 24
         }
     }
 

@@ -2,7 +2,7 @@
 #include <QQuickWindow>
 #include <QQuickItem>
 #include <QQmlComponent>
-
+#include <QAbstractSocket>
 #include "regovar.h"
 #include "request.h"
 
@@ -50,6 +50,8 @@ void Regovar::init()
     connect(mUploader,  SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
     connect(&mWebSocket, &QWebSocket::connected, this, &Regovar::onWebsocketConnected);
     connect(&mWebSocket, &QWebSocket::disconnected, this, &Regovar::onWebsocketClosed);
+    connect(&mWebSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onWebsocketError(QAbstractSocket::SocketError)));
+    // connect(&mWebSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onWebsocketStateChanged(QAbstractSocket::SocketState)));
     mWebSocket.open(QUrl(mWebsocketUrl));
 
 
@@ -63,6 +65,7 @@ void Regovar::init()
 
 void Regovar::onWebsocketConnected()
 {
+    setConnectionStatus(ready);
     connect(&mWebSocket, &QWebSocket::textMessageReceived, this, &Regovar::onWebsocketReceived);
     mWebSocket.sendTextMessage(QStringLiteral("{ \"action\" : \"hello\"}"));
 }
@@ -79,6 +82,17 @@ void Regovar::onWebsocketClosed()
 {
     disconnect(&mWebSocket, &QWebSocket::textMessageReceived, 0, 0);
     mWebSocket.open(QUrl(mWebsocketUrl));
+}
+
+void Regovar::onWebsocketError(QAbstractSocket::SocketError err)
+{
+    qDebug() << "WS ERROR : " << err;
+    setConnectionStatus(err == QAbstractSocket::ConnectionRefusedError ? unreachable : error);
+}
+
+void Regovar::onWebsocketStateChanged(QAbstractSocket::SocketState state)
+{
+    // qDebug() << "WS state" << state;
 }
 
 

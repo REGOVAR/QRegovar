@@ -12,7 +12,7 @@ Item
     {
         anchors.centerIn: parent
         text: "Credits (team, acknowledgements, tools...)"
-        font.pointSize: 24
+        font.pixelSize: 24
     }
 
 }

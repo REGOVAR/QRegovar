@@ -30,6 +30,14 @@ Rectangle
             font.pixelSize: 20
             font.weight: Font.Black
         }
+        ConnectionStatus
+        {
+            anchors.top: header.top
+            anchors.right: header.right
+            anchors.bottom: header.bottom
+            anchors.margins: 5
+            anchors.rightMargin: 10
+        }
     }
 
     // Help information on this page
@@ -64,7 +72,7 @@ Rectangle
         {
             anchors.centerIn: parent
             text: "Application settings (language, font size, theme, help boxes display)"
-            font.pointSize: 24
+            font.pixelSize: 24
         }
     }
 }

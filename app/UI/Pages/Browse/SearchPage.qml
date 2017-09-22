@@ -88,7 +88,7 @@ Rectangle
         {
             anchors.centerIn: parent
             text: "No result"
-            font.pointSize: Regovar.theme.font.size.title
+            font.pixelSize: Regovar.theme.font.size.title
             color: Regovar.theme.primaryColor.back.light
         }
     }
@@ -112,7 +112,7 @@ Rectangle
         {
             anchors.top: parent.top
             text: regovar.searchResult["total_result"] + " " + ( (regovar.searchResult["total_result"] > 1 ) ? qsTr("results found") : qsTr("result found"))
-            font.pointSize: Regovar.theme.font.size.header
+            font.pixelSize: Regovar.theme.font.size.header
             height: Regovar.theme.font.boxSize.header
             color: Regovar.theme.primaryColor.back.dark
         }
@@ -141,7 +141,7 @@ Rectangle
                     Text
                     {
                         text: "" + projectsResult.count + " " + (projectsResult.count > 1 ? qsTr("Projects") : qsTr("Project"))
-                        font.pointSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.control
                         color: Regovar.theme.primaryColor.back.dark
                         height: Regovar.theme.font.boxSize.control
                     }
@@ -181,7 +181,7 @@ Rectangle
                     Text
                     {
                         text: "" + analysessResult.count + " " + (analysessResult.count > 1 ? qsTr("Analyses") : qsTr("Analysis"))
-                        font.pointSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.control
                         color: Regovar.theme.primaryColor.back.dark
                         height: Regovar.theme.font.boxSize.control
                     }
@@ -214,7 +214,7 @@ Rectangle
                     {
                         width: scrollarea.viewport.width
                         text: "" + subjectsResult.count + " " + subjectsResult.count > 1 ? qsTr("Subjects") : qsTr("Subject")
-                        font.pointSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.control
                         color: Regovar.theme.primaryColor.back.dark
                         height: Regovar.theme.font.boxSize.control
                     }
@@ -258,7 +258,7 @@ Rectangle
                     Text
                     {
                         text: "" + samplesResult.count + " " + (samplesResult.count > 1 ? qsTr("Samples") : qsTr("Sample"))
-                        font.pointSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.control
                         color: Regovar.theme.primaryColor.back.dark
                         height: Regovar.theme.font.boxSize.control
                     }

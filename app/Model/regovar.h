@@ -150,6 +150,8 @@ public Q_SLOTS:
     // Websocket
     void onWebsocketConnected();
     void onWebsocketClosed();
+    void onWebsocketError(QAbstractSocket::SocketError error);
+    void onWebsocketStateChanged(QAbstractSocket::SocketState state);
     void onWebsocketReceived(QString message);
 
 

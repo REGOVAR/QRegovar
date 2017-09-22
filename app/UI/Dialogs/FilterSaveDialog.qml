@@ -48,7 +48,7 @@ Dialog
                     color: Regovar.theme.primaryColor.front.dark
                     font.family: Regovar.theme.icons.name
                     font.weight: Font.Black
-                    font.pointSize: Regovar.theme.font.size.header
+                    font.pixelSize: Regovar.theme.font.size.header
                     width: 50
                     height: 50
                     verticalAlignment: Text.AlignVCenter
@@ -61,7 +61,7 @@ Dialog
                     color: Regovar.theme.primaryColor.front.dark
                     font.family: "Sans"
                     font.weight: Font.Black
-                    font.pointSize: Regovar.theme.font.size.header
+                    font.pixelSize: Regovar.theme.font.size.header
                     height: 50
                     verticalAlignment: Text.AlignVCenter
                 }

@@ -37,7 +37,7 @@ Dialog
                 color: Regovar.theme.primaryColor.front.dark
                 font.family: "Sans"
                 font.weight: Font.Black
-                font.pointSize: Regovar.theme.font.size.header
+                font.pixelSize: Regovar.theme.font.size.header
             }
         }
 

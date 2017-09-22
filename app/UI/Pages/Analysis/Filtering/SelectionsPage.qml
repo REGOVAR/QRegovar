@@ -45,7 +45,7 @@ Rectangle
         {
             anchors.centerIn: parent
             text: "Selections of variants"
-            font.pointSize: 24
+            font.pixelSize: 24
         }
     }
 }

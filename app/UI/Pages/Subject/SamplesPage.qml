@@ -42,7 +42,7 @@ Rectangle
 //    Text
 //    {
 //       text: "SAMPLES"
-//       font.pointSize: 24
+//       font.pixelSize: 24
 //       anchors.centerIn: parent
 //    }
 }

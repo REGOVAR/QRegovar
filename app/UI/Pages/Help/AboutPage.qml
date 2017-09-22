@@ -37,4 +37,14 @@ Rectangle
             }
         }
     }
+
+
+    ConnectionStatus
+    {
+        anchors.top: root.top
+        anchors.right: root.right
+        height: 40 // = header.height - 2x5 margins
+        anchors.margins: 5
+        anchors.rightMargin: 10
+    }
 }
