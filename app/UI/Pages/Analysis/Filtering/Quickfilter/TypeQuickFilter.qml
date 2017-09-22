@@ -12,7 +12,6 @@ import "../../../../Framework"
 QuickFilterBox
 {
     title : qsTr("Type")
-    isEnabled : false
     isExpanded: false
     property bool internalUiUpdate: false
 

@@ -11,6 +11,7 @@ PositionQuickFilter::PositionQuickFilter(int) : QuickFilterBlockInterface()
 //    mFields << new QuickFilterField("5803633f01600a2e047aad3ee2faa133", "==", "intergene");
 
     mFilter = "[\"%2\", [\"field\", \"%1\"], [\"value\", %3]]";
+    mIsVisible = false;
 }
 
 
@@ -53,6 +54,27 @@ void PositionQuickFilter::clear()
         field->clear();
     }
 }
+
+
+
+void PositionQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
+{
+    mIsVisible = false;
+    foreach (QObject* o, dbs)
+    {
+        AnnotationDB* db = qobject_cast<AnnotationDB*>(o);
+        if (db->selected())
+        {
+            if (db->name().toLower() == "dbnfsp")
+            {
+                // TODO set mapping according to keys !
+                mIsVisible = true;
+                return;
+            }
+        }
+    }
+}
+
 
 
 bool PositionQuickFilter::loadFilter(QJsonArray filter)

@@ -16,6 +16,7 @@ InSilicoPredQuickFilter::InSilicoPredQuickFilter(int) : QuickFilterBlockInterfac
 //    mFields << new QuickFilterField("89b35362318e2992c3f05f0042889830", ">", 15);         // cadd (dbNSFP)
 
     mFilter = "[\"%2\", [\"field\", \"%1\"], [\"value\", %3]]";
+    mIsVisible = false;
 }
 
 
@@ -23,8 +24,7 @@ InSilicoPredQuickFilter::InSilicoPredQuickFilter(int) : QuickFilterBlockInterfac
 
 bool InSilicoPredQuickFilter::isVisible()
 {
-    // This filter is always availble in the UI
-    return true;
+    return mIsVisible;
 }
 
 
@@ -58,6 +58,24 @@ void InSilicoPredQuickFilter::clear()
     foreach (QuickFilterField* field, mFields)
     {
         field->clear();
+    }
+}
+
+void InSilicoPredQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
+{
+    mIsVisible = false;
+    foreach (QObject* o, dbs)
+    {
+        AnnotationDB* db = qobject_cast<AnnotationDB*>(o);
+        if (db->selected())
+        {
+            if (db->name().toLower() == "vep")
+            {
+                // TODO set mapping according to keys !
+                mIsVisible = true;
+                return;
+            }
+        }
     }
 }
 

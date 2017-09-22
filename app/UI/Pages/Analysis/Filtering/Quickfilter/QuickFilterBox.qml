@@ -18,10 +18,8 @@ Rectangle
     property FilteringAnalysis model
     property real maxHeight: content.height + 30
     property string title
-    property bool isEnabled
     property bool isExpanded
     property Item content
-
 
     Rectangle
     {
@@ -46,7 +44,7 @@ Rectangle
             text: "{"
             font.family: Regovar.theme.icons.name
             font.pixelSize: Regovar.theme.font.size.header
-            color: Regovar.theme.primaryColor.back.dark
+            color: root.enabled ? Regovar.theme.primaryColor.back.dark : Regovar.theme.frontColor.disable
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
 
@@ -65,7 +63,7 @@ Rectangle
             text: title
             elide: Text.ElideRight
             font.pixelSize: Regovar.theme.font.size.header
-            color: Regovar.theme.primaryColor.back.dark
+            color: root.enabled ? Regovar.theme.primaryColor.back.dark : Regovar.theme.frontColor.disable
             verticalAlignment: Text.AlignVCenter
         }
 
@@ -73,6 +71,7 @@ Rectangle
 
         MouseArea
         {
+            enabled: root.enabled
             anchors.fill: parent
             cursorShape: "PointingHandCursor"
             onClicked:
@@ -89,9 +88,8 @@ Rectangle
         anchors.left: root.left
         anchors.right: root.right
         contentItem: content
-        visible: isExpanded
+        visible: root.enabled && isExpanded
     }
-
 
     Rectangle
     {

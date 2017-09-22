@@ -12,7 +12,6 @@ import "../../../../Framework"
 QuickFilterBox
 {
     title : qsTr("In silico prediction")
-    isEnabled : false
     isExpanded: false
 
     property bool internalUiUpdate: false

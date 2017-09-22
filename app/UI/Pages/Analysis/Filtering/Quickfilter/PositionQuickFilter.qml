@@ -12,7 +12,6 @@ QuickFilterBox
 {
     id: root
     title : qsTr("Region")
-    isEnabled : false
     isExpanded: false
 
     property bool internalUiUpdate: false

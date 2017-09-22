@@ -27,7 +27,6 @@ QualityQuickFilter::QualityQuickFilter(int) : QuickFilterBlockInterface()
     mOpMapping.insert("≥", ">=");
     mOpMapping.insert(">", ">");
     mOpMapping.insert("≠", "!=");
-
 }
 
 
@@ -59,6 +58,10 @@ void QualityQuickFilter::setFilter(QString, bool, QVariant)
 void QualityQuickFilter::clear()
 {
     mDepth->clear();
+}
+
+void QualityQuickFilter::checkAnnotationsDB(QList<QObject*>)
+{
 }
 
 

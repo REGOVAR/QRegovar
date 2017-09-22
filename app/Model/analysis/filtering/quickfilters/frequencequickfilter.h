@@ -31,6 +31,7 @@ public:
     Q_INVOKABLE QString getFilter();
     Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant());
     Q_INVOKABLE void clear();
+    Q_INVOKABLE void checkAnnotationsDB(QList<QObject*> dbs);
     bool loadFilter(QJsonArray filter);
 
     inline QuickFilterField* _1000GAll() { return mFields[0]; }
@@ -53,6 +54,8 @@ private:
     QString mFilter;
     QStringList mOperators;
     QHash<QString, QString> mOpMapping;
+
+    bool mIsVisible;
 };
 
 #endif // FREQUENCEQUICKFILTER_H

@@ -50,6 +50,15 @@ QString QuickFilterModel::getFilter()
     return request;
 }
 
+QString QuickFilterModel::checkAnnotationsDB(QList<QObject*> dbs)
+{
+    mQuickFilters[TransmissionFilter]->checkAnnotationsDB(dbs);
+    mQuickFilters[QualityFilter]->checkAnnotationsDB(dbs);
+    mQuickFilters[PositionFilter]->checkAnnotationsDB(dbs);
+    mQuickFilters[TypeFilter]->checkAnnotationsDB(dbs);
+    mQuickFilters[FrequenceFilter]->checkAnnotationsDB(dbs);
+    mQuickFilters[InSilicoPredFilter]->checkAnnotationsDB(dbs);
+}
 
 void QuickFilterModel::loadFilter(QJsonArray json)
 {

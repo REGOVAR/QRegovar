@@ -44,13 +44,13 @@ FrequenceQuickFilter::FrequenceQuickFilter(int) : QuickFilterBlockInterface()
     foreach (QuickFilterField* field, mFields){ field->setIsActive(false); }
 
     mFilter = "[\"%2\", [\"field\", \"%1\"], [\"value\", %3]]";
+    mIsVisible = false;
 }
 
 
 bool FrequenceQuickFilter::isVisible()
 {
-    // This filter is always availble in the UI
-    return true;
+    return mIsVisible;
 }
 
 
@@ -87,9 +87,31 @@ void FrequenceQuickFilter::clear()
     }
 }
 
+void FrequenceQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
+{
+    mIsVisible = false;
+    foreach (QObject* o, dbs)
+    {
+        AnnotationDB* db = qobject_cast<AnnotationDB*>(o);
+        if (db->selected())
+        {
+            if (db->name().toLower() == "dbnfsp")
+            {
+                // TODO set mapping according to keys !
+                mIsVisible = true;
+                return;
+            }
+        }
+    }
+}
+
 
 bool FrequenceQuickFilter::loadFilter(QJsonArray filter)
 {
     // TODO or not TODO ?
     return false;
 }
+
+
+
+

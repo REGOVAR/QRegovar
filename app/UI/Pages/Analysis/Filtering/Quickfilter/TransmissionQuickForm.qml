@@ -13,7 +13,6 @@ QuickFilterBox
 {
     id: root
     title : qsTr("Transmission mode")
-    isEnabled : false
     isExpanded: false
 
     property bool internalUiUpdate: false

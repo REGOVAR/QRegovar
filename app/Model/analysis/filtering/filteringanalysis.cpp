@@ -42,13 +42,6 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     else
     {
         mIsTrio = true;
-//        mTrioChild;
-//        mTrioMother;
-//        mTrioFather;
-//        mTrioSexChild;
-//        mTrioIndexChild;
-//        mTrioIndexMother;
-//        mTrioIndexFather;
     }
 
     // Retrieve samples
@@ -102,7 +95,8 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     // 1 : need to load alls annotations available accdording to the referencial
     // 2 : prepare quick filter (they need to check that they are complient with available annotations
     // 3 : set filter with the last applied filter
-    // 4 : load results
+    // 4 :
+    // 5 : load results
     // Chaining of loading step is done thanks to signals (see asynchLoading slot)
     Reference* ref = regovar->referencesFromId(json["reference_id"].toInt());
     if (ref == nullptr) return false;
@@ -200,11 +194,13 @@ void FilteringAnalysis::loadAnnotations()
     mAnnotations["_RowHead"]->setRole(FieldColumnInfos::RowHeader);
     mAnnotations["_Samples"]->setRole(FieldColumnInfos::SamplesNames);
 
+    // Update annotations databases
     foreach (QObject* o, mAllAnnotations)
     {
         AnnotationDB* db = qobject_cast<AnnotationDB*>(o);
         if (mAnnotationsDBUsed.contains(db->uid()) || db->isMandatory())
         {
+            db->setSelected(true);
             foreach (Annotation* annot, db->fields())
             {
                 QString uid = annot->uid();
@@ -215,9 +211,23 @@ void FilteringAnalysis::loadAnnotations()
                 mAnnotationsTreeModel->addEntry(db->name(), db->version(), db->description(), true, fInfo);
             }
         }
+        else
+        {
+            db->setSelected(false);
+        }
     }
 
+    // prepare quick filter (they need to check that they are complient with available annotations
+    mQuickFilters->checkAnnotationsDB(mAllAnnotations);
+
+
+    // set filter with the last applied filter
+
+
+    // Init columns displayed in the results table
     refreshDisplayedAnnotationColumns();
+
+    // Load results(asynch)
     emit loadingStatusChanged(mLoadingStatus, LoadingResults);
     mLoadingStatus = LoadingResults;
 }

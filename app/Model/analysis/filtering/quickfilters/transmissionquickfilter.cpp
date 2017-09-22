@@ -86,6 +86,10 @@ void TransmissionQuickFilter::clear()
     }
 }
 
+void TransmissionQuickFilter::checkAnnotationsDB(QList<QObject*>)
+{
+}
+
 
 bool TransmissionQuickFilter::loadFilter(QJsonArray filter)
 {

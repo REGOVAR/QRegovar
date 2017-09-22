@@ -11,9 +11,11 @@ import "../../../../Framework"
 
 QuickFilterBox
 {
+    id: root
     title : qsTr("Allelic frequency")
-    isEnabled : false
     isExpanded: false
+
+
 
 
 
@@ -45,6 +47,8 @@ QuickFilterBox
         exacFin.model = model.quickfilters.frequenceFilter.exacFin;
         exacNfe.model = model.quickfilters.frequenceFilter.exacNfe;
         exacSas.model = model.quickfilters.frequenceFilter.exacSas;
+
+        root.enabled = model.quickfilters.frequenceFilter.isVisible();
     }
 
     content: ColumnLayout

@@ -20,6 +20,7 @@ public:
     Q_INVOKABLE QString getFilter();
     Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant());
     Q_INVOKABLE void clear();
+    Q_INVOKABLE void checkAnnotationsDB(QList<QObject*> dbs);
     bool loadFilter(QJsonArray filter);
 
 
@@ -31,6 +32,7 @@ public:
 private:
     QList<QuickFilterField*> mFields;
     QString mFilter;
+    bool mIsVisible;
 };
 
 

@@ -5,6 +5,7 @@
 #include <QHash>
 #include <QVariant>
 #include "quickfilterblockinterface.h"
+#include "Model/analysis/filtering/annotation.h"
 
 
 class QuickFilterModel : public QObject
@@ -46,6 +47,7 @@ public:
 
     // Methods
     Q_INVOKABLE QString getFilter();
+    Q_INVOKABLE QString checkAnnotationsDB(QList<QObject*> dbs);
     void loadFilter(QJsonArray filter);
 
 Q_SIGNALS:

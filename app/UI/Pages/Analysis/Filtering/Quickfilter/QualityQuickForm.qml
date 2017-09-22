@@ -13,12 +13,12 @@ QuickFilterBox
 {
     id: root
     title : qsTr("Quality")
-    isEnabled : false
     isExpanded: false
 
     onModelChanged:
     {
         depth.model = model.quickfilters.qualityFilter.depth;
+        root.enabled = model.quickfilters.qualityFilter.isVisible();
     }
 
     content: QuickFilterFieldControl
