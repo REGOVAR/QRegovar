@@ -34,8 +34,15 @@ Rectangle
             y:10
 
             placeholderText: "Search fied"
-
-            model: regovar.remoteFilesList
+            
+            model: ListModel
+            {
+                ListElement
+                {
+                    name: "azerty"
+                    
+                }
+            }
 
         }
 

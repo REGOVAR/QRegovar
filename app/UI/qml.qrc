@@ -114,5 +114,6 @@
         <file>Framework/ComboBoxDelegate.qml</file>
         <file>Framework/Text.qml</file>
         <file>Framework/ConnectionStatus.qml</file>
+        <file>Framework/AutoCompleteTextField.qml</file>
     </qresource>
 </RCC>

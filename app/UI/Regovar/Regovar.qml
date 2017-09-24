@@ -1,5 +1,5 @@
 pragma Singleton
-import QtQuick 2.0
+import QtQuick 2.7
 import Qt.labs.settings 1.0
 import org.regovar 1.0
 

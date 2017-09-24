@@ -34,8 +34,40 @@ Rectangle
             y:10
 
             placeholderText: "Search fied"
-
-            model: regovar.remoteFilesList
+            
+            model: ListModel
+            {
+                ListElement
+                {
+                    name: "azerty"
+                    note: "vep"
+                }
+                ListElement
+                {
+                    name: "qsdf"
+                    note: "vep"
+                }
+                ListElement
+                {
+                    name: "wxcv"
+                    note: "vep"
+                }
+                ListElement
+                {
+                    name: "tyuuu"
+                    note: "ert"
+                }
+                ListElement
+                {
+                    name: "ghjgk"
+                    note: "ert"
+                }
+                ListElement
+                {
+                    name: "uiopop"
+                    note: "ert"
+                }
+            }
 
         }
 

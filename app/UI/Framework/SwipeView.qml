@@ -1,5 +1,5 @@
-import QtQuick 2.4
-import QtQuick.Layouts 1.1
+import QtQuick 2.7
+import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 
 Item {

@@ -32,10 +32,8 @@ Rectangle
         {
             x:10
             y:10
-
-            placeholderText: "Search fied"
-
-            model: regovar.remoteFilesList
+            
+            placeholder: "Search fil"
 
         }
 
