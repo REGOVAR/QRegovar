@@ -7,13 +7,11 @@ Button
     id: control
     text: "Button"
     property string iconText: "µ"
-    width: 1.5 * Regovar.theme.font.boxSize.title + textElmt.width
+    //width: 3 * Regovar.theme.font.boxSize.title + textElmt.width
     height: Regovar.theme.font.boxSize.title
-
 
     contentItem: Row
     {
-        anchors.fill: control
         Text
         {
             font.pixelSize: Regovar.theme.font.size.title
@@ -35,6 +33,12 @@ Button
             verticalAlignment: Text.AlignVCenter
             height: Regovar.theme.font.boxSize.title
             text: control.text
+        }
+        Rectangle
+        {
+            height: Regovar.theme.font.boxSize.title
+            width: Regovar.theme.font.boxSize.title / 2
+            color: "transparent"
         }
     }
 

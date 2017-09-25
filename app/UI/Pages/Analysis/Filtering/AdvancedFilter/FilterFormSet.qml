@@ -19,7 +19,7 @@ Rectangle
         Text
         {
             Layout.fillWidth: true
-            text: qsTr("To filter by variant (chr-pos-ref-alt) or by site (chr-pos) that are (or not) in a specific set. Sets can be samples, saved filters and panels.")
+            text: qsTr("Filter by variant (chr-pos-ref-alt) or by site (chr-pos) that are (or not) in a specific set. Sets can be samples, saved filters or panels.")
             wrapMode: Text.WordWrap
         }
 

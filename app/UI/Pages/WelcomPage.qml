@@ -28,16 +28,6 @@ Rectangle
 
 
 
-        AutoCompleteTextField
-        {
-            x:10
-            y:10
-
-            placeholderText: "Search fied"
-
-            model: regovar.remoteFilesList
-
-        }
 
 
         ConnectionStatus
@@ -229,7 +219,7 @@ Rectangle
                                         name: model.modelData.name
                                         projectName: model.modelData.project.name
 
-                                        onClicked: regovar.loadAnalysis(model.modelData.id)
+                                        onClicked: regovar.openAnalysis(model.modelData.id)
                                         anchors.left: analysesColumn.left
                                         anchors.right: analysesColumn.right
                                     }

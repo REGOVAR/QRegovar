@@ -2,6 +2,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
+import org.regovar 1.0
 
 import "../Regovar"
 import "../Framework"
@@ -15,6 +16,7 @@ Dialog
 
     width: 400
     height: 400
+    property FilteringAnalysis model
 
 
 

@@ -92,7 +92,7 @@ Rectangle
         }
     }
 
-    FilterNewConditionDialog { id: filterNewCondPopup }
+    FilterNewConditionDialog { id: filterNewCondPopup; model: root.model }
     Connections
     {
         target: model

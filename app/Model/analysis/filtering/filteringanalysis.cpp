@@ -189,6 +189,7 @@ void FilteringAnalysis::loadAnnotations()
 {
     // Init list of displayed columns according to analysis settings
     mAnnotations.clear();
+    mAnnotationsFlatList.clear();
     mAnnotations.insert("_RowHead", new FieldColumnInfos(nullptr, true, 0, "", this));
     mAnnotations.insert("_Samples", new FieldColumnInfos(nullptr, false, -1, "", this));
     mAnnotations["_RowHead"]->setRole(FieldColumnInfos::RowHeader);
@@ -206,6 +207,7 @@ void FilteringAnalysis::loadAnnotations()
                 QString uid = annot->uid();
                 FieldColumnInfos* fInfo = new FieldColumnInfos(annot, mFields.contains(uid), mFields.indexOf(uid), "", this);
                 mAnnotations.insert(uid, fInfo);
+                mAnnotationsFlatList.append(annot);
 
                 // add annotation to the treeModel of annotation available for this analysis
                 mAnnotationsTreeModel->addEntry(db->name(), db->version(), db->description(), true, fInfo);

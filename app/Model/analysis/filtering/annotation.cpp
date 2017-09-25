@@ -25,12 +25,13 @@ Annotation::Annotation(QObject *parent) : QObject(parent)
 
 
 Annotation::Annotation(QObject* parent, QString uid, QString dbUid, QString name, QString description,
-                                 QString type, QJsonObject meta, QString version, int order)
+                                 QString type, QJsonObject meta, QString version, QString dbName, int order)
 : QObject(parent)
 {
     mUid = uid;
     mDbUid = dbUid;
     mName = name;
+    mDbName = dbName;
     mDescription = description;
     mType = type;
     mMeta = meta;
@@ -65,7 +66,7 @@ AnnotationDB::AnnotationDB(QString uid, QString name, QString description, QStri
         QString description = a["description"].toString();
         QString type = a["type"].toString();
         QJsonObject meta = a["meta"].toObject();
-        Annotation* annot = new Annotation(this, uid, dbUid, name, description, type, meta, "");
+        Annotation* annot = new Annotation(this, uid, dbUid, name, description, type, meta, mVersion, mName);
 
         mFields.append(annot);
     }

@@ -34,6 +34,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(Sample* father READ trioFather WRITE setTrioFather NOTIFY trioFatherChanged)
     // Panel & Treeview models
     Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsChanged)
+    Q_PROPERTY(QList<QObject*> annotationsFlatList READ annotationsFlatList NOTIFY annotationsFlatListChanged)
     Q_PROPERTY(QList<QObject*> allAnnotations READ allAnnotations NOTIFY allAnnotationsChanged)
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsChanged)
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY quickfiltersChanged)
@@ -77,6 +78,7 @@ public:
     inline Sample* trioFather() const { return mTrioFather; }
     // Panel & Treeview models
     inline AnnotationsTreeModel* annotations() { return mAnnotationsTreeModel; }
+    inline QList<QObject*> annotationsFlatList() { return mAnnotationsFlatList; }
     inline QList<QObject*> allAnnotations() { return mAllAnnotations; }
     inline ResultsTreeModel* results() { return mResults; }
     inline QuickFilterModel* quickfilters() { return mQuickFilters; }
@@ -115,6 +117,7 @@ Q_SIGNALS:
     void statusChanged();
     void loadingStatusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
     void annotationsChanged();
+    void annotationsFlatListChanged();
     void allAnnotationsChanged();
     void filterChanged();
     void filterJsonChanged();
@@ -158,6 +161,7 @@ private:
     QuickFilterModel* mQuickFilters;
 
     QHash<QString, FieldColumnInfos*> mAnnotations;
+    QList<QObject*> mAnnotationsFlatList;
     QList<QObject*> mAllAnnotations;
     AnnotationsTreeModel* mAnnotationsTreeModel;
     RemoteSampleTreeModel* mRemoteSampleTreeModel;

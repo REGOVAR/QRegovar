@@ -64,7 +64,7 @@ Rectangle
             LogicalBlock
             {
                 id:advancedFilterEditor
-                model: root.model.filterJson
+                //model: root.model.filterJson
                 analysis : root.model
 
                 x: 5

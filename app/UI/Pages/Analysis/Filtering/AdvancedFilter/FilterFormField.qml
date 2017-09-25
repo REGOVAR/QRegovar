@@ -1,6 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.2 as OLD
+import org.regovar 1.0
+
 
 import "../../../../Regovar"
 import "../../../../Framework"
@@ -10,6 +11,15 @@ Rectangle
 {
     id: root
     color: Regovar.theme.backgroundColor.main
+    property FilteringAnalysis model
+    onModelChanged:
+    {
+        if (model)
+        {
+            fieldSelector.model = model.annotationsFlatList;
+
+        }
+    }
 
 
 
@@ -30,11 +40,22 @@ Rectangle
         {
             text: qsTr("Field")
         }
-        OLD.ComboBox
+
+        AutoCompleteTextField
         {
+            id: fieldSelector
             Layout.fillWidth: true
-            editable: true
-            model: ["Toto", "Tata", "Tota", "ToTu", "Tato", "Tutu", "Tuta", "tuto"]
+            placeholderText: "Search fied"
+            onSelectedItemChanged: updateFilterControls()
+        }
+        Text
+        {
+            id: fieldDescription
+            text: "-"
+            Layout.minimumHeight: 2 * Regovar.theme.font.size.content
+            font.pixelSize: Regovar.theme.font.size.content
+            wrapMode: Text.WordWrap
+            color: Regovar.theme.primaryColor.back.normal
         }
 
         Text
@@ -43,6 +64,7 @@ Rectangle
         }
         ComboBox
         {
+            id: operatorSelector
             Layout.fillWidth: true
             model: ["<", ">", "=", "!="]
         }
@@ -53,8 +75,12 @@ Rectangle
         }
         TextField
         {
+            id: fieldStringInput
             Layout.fillWidth: true
         }
+        // fieldRealInput
+        // fieldIntInput
+        // fieldEnumInput
 
         Rectangle
         {
@@ -88,5 +114,20 @@ Rectangle
         anchors.bottom: root.bottom
         anchors.top: root.top
         color: Regovar.theme.boxColor.border
+    }
+
+
+
+    function updateFilterControls()
+    {
+        var item = fieldSelector.selectedItem;
+        if (item)
+        {
+            fieldDescription.text = item.description;
+        }
+        else
+        {
+            fieldDescription.text = "-";
+        }
     }
 }
