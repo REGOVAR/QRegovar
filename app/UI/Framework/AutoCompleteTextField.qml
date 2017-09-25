@@ -14,6 +14,7 @@ Rectangle
     property alias placeholderText: textField.placeholderText
     property int proposalContextWidth: 100
     property var model
+    property int maxPopupHeight: 200
     onModelChanged: initModel()
 
     property QtObject selectedItem
@@ -25,6 +26,14 @@ Rectangle
 
         onTextEdited: searchFor(text)
         iconRight: popup.visible ? "|" : "["
+
+        onFocusChanged:
+        {
+            if (focus)
+            {
+                searchFor(text);
+            }
+        }
 
     }
 
@@ -81,12 +90,12 @@ Rectangle
             x:1
             y:1
             height: maxPopupHeight
-            width: 350
+            width: root.width
             clip: true
             focus: true
 
             property int desiredSize: 300
-            onDesiredSizeChanged:  width = Math.max(root.width-2, desiredSize)
+            //onDesiredSizeChanged:  width = Math.max(root.width-2, desiredSize)
 
             highlight: Rectangle { color: Regovar.theme.secondaryColor.back.light; }
 
@@ -109,6 +118,7 @@ Rectangle
                     text: model.modelData.text
                     verticalAlignment: Text.AlignVCenter
                     onWidthChanged: proposalsList.desiredSize = Math.max(width + root.proposalContextWidth, proposalsList.desiredSize)
+                    wrapMode: Text.WordWrap
                 }
                 Text
                 {
@@ -152,7 +162,6 @@ Rectangle
         }
     }
 
-    property int maxPopupHeight: 100
 
     function cleanWord(word)
     {

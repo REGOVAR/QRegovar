@@ -58,47 +58,18 @@ Rectangle
             Layout.fillWidth: true
             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-//            onWidthChanged: advancedFilterEditor.width = viewport.width
-//            Component.onCompleted: advancedFilterEditor.width = viewport.width
-
             LogicalBlock
             {
                 id:advancedFilterEditor
-                //model: root.model.filterJson
+                model: root.model.filterJson
                 analysis : root.model
 
                 x: 5
                 y: 5
                 width: root.width - 10
-
             }
         }
 
-//        ScrollView
-//        {
-//            Layout.fillHeight: true
-//            Layout.fillWidth: true
-//            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
-//            onWidthChanged: advancedFilterEditor.width = viewport.width - 10
-//            Component.onCompleted: advancedFilterEditor.width = viewport.width - 10
-
-//            GenericBlock
-//            {
-//                id:advancedFilterEditor
-//                model: root.model.filterJson
-//                x: 5
-//                y: 5
-//            }
-//        }
-
-//        TextArea
-//        {
-//            Layout.fillHeight: true
-//            Layout.fillWidth: true
-//            id: advancedFilterTextEditor
-//            // text: root.model.filter
-//        }
 
         Rectangle
         {

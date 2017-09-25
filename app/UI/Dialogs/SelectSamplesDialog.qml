@@ -254,18 +254,19 @@ Dialog
                 TableViewColumn { title: qsTr("Comment"); role: "comment" }
             }
 
-            Button
+            ButtonIcon
             {
                 id: remoteSwitchButton
                 anchors.bottom : rootRemoteView.bottom
                 anchors.left: rootRemoteView.left
                 anchors.margins: 10
 
-                text: qsTr("+ Import sample(s) from local file")
+                icon: "µ"
+                text: qsTr("Import sample from file")
                 onClicked:
                 {
                     rootRemoteView.visible = false;
-                    rootLocalView.visible = true;
+                    rootFileView.visible = true;
                 }
             }
         }
@@ -273,7 +274,7 @@ Dialog
 
         Rectangle
         {
-            id: rootLocalView
+            id: rootFileView
             color: Regovar.theme.backgroundColor.main
 
             anchors.fill: root
@@ -283,9 +284,9 @@ Dialog
             Rectangle
             {
                 id: localHeader
-                anchors.top : rootLocalView.top
-                anchors.left: rootLocalView.left
-                anchors.right: rootLocalView.right
+                anchors.top : rootFileView.top
+                anchors.left: rootFileView.left
+                anchors.right: rootFileView.right
                 height: 100
 
                 color: Regovar.theme.primaryColor.back.normal
@@ -346,8 +347,8 @@ Dialog
             {
                 spacing: 10
                 anchors.top : localHeader.bottom
-                anchors.left: rootLocalView.left
-                anchors.right: rootLocalView.right
+                anchors.left: rootFileView.left
+                anchors.right: rootFileView.right
                 anchors.bottom: localSwitchButton.top
                 anchors.margins: 10
 
@@ -527,17 +528,18 @@ Dialog
 
 
 
-            Button
+            ButtonIcon
             {
                 id: localSwitchButton
-                anchors.bottom : rootLocalView.bottom
-                anchors.left: rootLocalView.left
+                anchors.bottom : rootFileView.bottom
+                anchors.left: rootFileView.left
                 anchors.margins: 10
 
-                text: qsTr("< Back to remote samples")
+                icon: "]"
+                text: qsTr("Back to remote samples")
                 onClicked:
                 {
-                    rootLocalView.visible = false;
+                    rootFileView.visible = false;
                     rootRemoteView.visible = true;
                 }
             }
@@ -564,7 +566,14 @@ Dialog
                     });
                     samplesSelected(samples);
                 }
-//                if (rootLocalView.visible)
+
+                else if (rootFileView.visible)
+                {
+
+{"msg": "import_vcf_start", "data": {"samples": [{"id": 62, "name": "BIL_M_pere"}, {"id": 63, "name": "RIC_C_mere"}, {"id": 61, "name": "BIL_L"}], "file_id": "25"}}
+                }
+
+//                if (rootFileView.visible)
 //                {
 //                    // First retrieve local files url
 //                    for(var i=0; i<localFiles.selection.selectedIndexes.length; i++)

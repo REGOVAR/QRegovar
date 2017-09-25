@@ -20,10 +20,6 @@ Rectangle
 {
     id: root
     property FilteringAnalysis model
-//    onModelChanged:
-//    {
-//        console.log("===> FilteringPage model set up");
-//    }
 
     SplitView
     {

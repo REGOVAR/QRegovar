@@ -14,8 +14,8 @@ Dialog
 
     title: qsTr("Add new filter's condition")
 
-    width: 400
-    height: 400
+    width: 600
+    height: 500
     property FilteringAnalysis model
 
 
@@ -28,19 +28,65 @@ Dialog
         color: Regovar.theme.backgroundColor.alt
 
 
-        Text
+        Rectangle
         {
             id: header
-            anchors.top: parent.top
+            anchors.top : parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.margins: 10
-            height: Regovar.theme.font.boxSize.header
+            height: 100
 
-            text: qsTr("Choose the type of condition you want to add")
-            font.pixelSize: Regovar.theme.font.size.header
+            color: Regovar.theme.primaryColor.back.normal
+
+            Text
+            {
+                anchors.top : parent.top
+                anchors.left: parent.left
+                anchors.margins: 10
+                width: 80
+                height: 80
+
+                text: "3"
+                font.pixelSize: 80
+                font.family: Regovar.theme.icons.name
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+
+                color: Regovar.theme.primaryColor.front.normal
+                elide: Text.ElideRight
+            }
+
+            Text
+            {
+                anchors.top : parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.topMargin: 10
+                anchors.leftMargin: 100
 
 
+                text: qsTr("New filter condition")
+                font.pixelSize: Regovar.theme.font.size.title
+                font.bold: true
+                color: Regovar.theme.primaryColor.front.normal
+                elide: Text.ElideRight
+            }
+            Text
+            {
+                anchors.top : parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.margins: 10
+                anchors.topMargin: 15 + Regovar.theme.font.size.title
+                anchors.leftMargin: 100
+                wrapMode: "WordWrap"
+                elide: Text.ElideRight
+
+                text: qsTr("Choose the type of condition you want to add and then configure it.")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.primaryColor.front.normal
+            }
         }
 
         TabView
@@ -92,10 +138,12 @@ Dialog
             Button
             {
                 text: qsTr("Add filter")
+
             }
             Button
             {
                 text: qsTr("Close")
+                onClicked: filterSavingFormPopup.close()
             }
         }
 

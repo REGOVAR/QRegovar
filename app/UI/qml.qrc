@@ -115,5 +115,6 @@
         <file>Framework/Text.qml</file>
         <file>Framework/ConnectionStatus.qml</file>
         <file>Framework/AutoCompleteTextField.qml</file>
+        <file>Framework/ButtonIcon.qml</file>
     </qresource>
 </RCC>
