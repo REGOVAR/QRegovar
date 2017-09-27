@@ -16,6 +16,8 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 
     connect(this, SIGNAL(loadingStatusChanged(LoadingStatus,LoadingStatus)),
             this, SLOT(asynchLoadingCoordination(LoadingStatus,LoadingStatus)));
+    connect(regovar, SIGNAL(websocketMessageReceived(QString,QJsonObject)),
+            this, SLOT(onWebsocketMessageReceived(QString,QJsonObject)));
 }
 
 
@@ -434,7 +436,6 @@ void FilteringAnalysis::addSamples(QList<QObject*> samples)
         }
     }
     emit samplesChanged();
-
 }
 
 void FilteringAnalysis::removeSamples(QList<QObject*> samples)
@@ -451,6 +452,40 @@ void FilteringAnalysis::removeSamples(QList<QObject*> samples)
     emit samplesChanged();
 }
 
+void FilteringAnalysis::addSamplesFromFile(int fileId)
+{
+    Request* req = Request::get(QString("/sample/import/%1/%2").arg(QString(fileId), QString(mRefId)));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            foreach (QJsonValue sampleValue, json["data"].toArray())
+            {
+                Sample* sample = new Sample();
+                if (sample->fromJson(sampleValue.toObject()))
+                {
+                    if (!mSamplesIds.contains(sample->id()))
+                    {
+                        mSamplesIds.append(sample->id());
+                        mSamples.append(sample);
+                    }
+                }
+                else
+                {
+                    sample->deleteLater();
+                }
+            }
+            emit samplesChanged();
+        }
+        else
+        {
+            regovar->raiseError(json);
+            emit loadingStatusChanged(mLoadingStatus, error);
+            mLoadingStatus = error;
+        }
+        req->deleteLater();
+    });
+}
 
 
 //! Add or remove a field to the display result and update or set the order
@@ -497,6 +532,35 @@ int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
 }
 
 
+
+
+
+void FilteringAnalysis::onWebsocketMessageReceived(QString action, QJsonObject data)
+{
+    if (action == "import_vcf_processing")
+    {
+        double progressValue = data["progress"].toDouble();
+        QString status = data["status"].toString();
+
+        foreach(QJsonValue json, data["samples"].toArray())
+        {
+            QJsonObject obj = json.toObject();
+            int sid = obj["id"].toInt();
+            foreach (Sample* sample, mSamples)
+            {
+                if (sample->id() == sid)
+                {
+                    sample->setStatus(status);
+                    QJsonObject statusInfo;
+                    statusInfo.insert("status", status);
+                    statusInfo.insert("label", sample->statusToLabel(sample->status(), progressValue));
+                    sample->setStatusUI(QVariant::fromValue(statusInfo));
+                    break;
+                }
+            }
+        }
+    }
+}
 
 
 

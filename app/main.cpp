@@ -12,6 +12,7 @@
 #include "Model/analysis/pipeline/pipelineanalysis.h"
 #include "Model/analysis/filtering/reference.h"
 
+
 int main(int argc, char *argv[])
 {
     //QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -54,6 +55,7 @@ int main(int argc, char *argv[])
     engine.load(QUrl(QLatin1String("qrc:/qml/MainWindow.qml")));
 
     app.setWindowIcon(QIcon(":/logo.png"));
+
     return app.exec();
 }
 

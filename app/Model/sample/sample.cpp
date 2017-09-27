@@ -7,6 +7,11 @@ Sample::Sample(QObject *parent) : QObject(parent)
 }
 
 
+void Sample::setStatus(QString status)
+{
+    auto meta = QMetaEnum::fromType<SampleStatus>();
+    setStatus(static_cast<SampleStatus>(meta.keyToValue(status.toStdString().c_str()))); // T_T .... tout ça pour ça ....
+}
 
 bool Sample::fromJson(QJsonObject json)
 {
@@ -23,8 +28,7 @@ bool Sample::fromJson(QJsonObject json)
         mDefaultAnnotationsDbUid << field.toString();
     }
 
-    auto meta = QMetaEnum::fromType<SampleStatus>();
-    setStatus(static_cast<SampleStatus>(meta.keyToValue(json["status"].toString().toStdString().c_str()))); // T_T .... tout ça pour ça ....
+    setStatus(json["status"].toString());
 
     File* source = new File();
     source->fromJson(json["file"].toObject());

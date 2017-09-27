@@ -233,6 +233,46 @@ GenericScreen
                     }
                 }
                 TableViewColumn { title: qsTr("Comment"); role: "comment" }
+
+
+                Rectangle
+                {
+                    id: helpPanel
+                    anchors.fill: parent
+
+                    color: "#aaffffff"
+
+                    visible: regovar.newFilteringAnalysis.samples.length == 0
+
+                    Text
+                    {
+                        text: qsTr("No sample selected for the analysis.\nClick on the adjacent button to add it.")
+                        font.pixelSize: Regovar.theme.font.size.header
+                        color: Regovar.theme.primaryColor.back.normal
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        wrapMode: Text.WordWrap
+                    }
+                    Text
+                    {
+                        anchors.right: parent.right
+                        anchors.top : parent.top
+                        text: ""
+                        font.family: Regovar.theme.icons.name
+                        font.pixelSize: 30
+                        color: Regovar.theme.primaryColor.back.normal
+
+                        NumberAnimation on anchors.rightMargin
+                        {
+                            duration: 2000
+                            loops: Animation.Infinite
+                            from: 30
+                            to: 0
+                            easing.type: Easing.SineCurve
+                        }
+                    }
+                }
             }
 
 
@@ -377,7 +417,7 @@ GenericScreen
                     id: fatherIndex
                     enabled: trioActivated.checked
                     text: qsTr("Index")
-                    checked: regovar.newFilteringAnalysis.father.isIndex
+                    checked: true
                 }
                 Text { text: ""; Layout.columnSpan: 2 }
             }

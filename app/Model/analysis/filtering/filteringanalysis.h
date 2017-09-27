@@ -110,6 +110,7 @@ public:
     Q_INVOKABLE void loadFilter(QString filter);
     Q_INVOKABLE void addSamples(QList<QObject*> samples);
     Q_INVOKABLE void removeSamples(QList<QObject*> samples);
+    Q_INVOKABLE void addSamplesFromFile(int fileId);
 
 
 Q_SIGNALS:
@@ -143,7 +144,8 @@ Q_SIGNALS:
 public Q_SLOTS:
     //! method use to "chain" asynch request for the init of the analysis
     void asynchLoadingCoordination(LoadingStatus oldSatus, LoadingStatus newStatus);
-
+    //! handle message received from server via websocket
+    void onWebsocketMessageReceived(QString ,QJsonObject);
 
 private:
     // Attributes

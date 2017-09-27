@@ -7,6 +7,13 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property QtObject model
+    onModelChanged:
+    {
+        if (model != undefined)
+        {
+            nameLabel.text = model.name;
+        }
+    }
 
     Rectangle
     {
@@ -19,6 +26,7 @@ Rectangle
 
         Text
         {
+            id: nameLabel
             anchors.top: header.top
             anchors.left: header.left
             anchors.bottom: header.bottom
@@ -28,7 +36,7 @@ Rectangle
             color: Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
 
-            text: model.name
+            text: "-"
         }
     }
     Image

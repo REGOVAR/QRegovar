@@ -9,8 +9,15 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property QtObject model
     property bool editionMode: false
+    property QtObject model
+    onModelChanged:
+    {
+        if (model != undefined)
+        {
+            nameLabel.text = model.name;
+        }
+    }
 
 
     Rectangle
@@ -24,6 +31,7 @@ Rectangle
 
         Text
         {
+            id: nameLabel
             anchors.top: header.top
             anchors.left: header.left
             anchors.bottom: header.bottom
@@ -33,7 +41,7 @@ Rectangle
             font.family: Regovar.theme.font.familly
             color: Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: model.name
+            text: "-"
         }
     }
     GridLayout

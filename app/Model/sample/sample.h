@@ -63,6 +63,7 @@ public:
     inline void setComment(QString comment) { mComment = comment; emit commentChanged(); }
     inline void setSource(File* source) { mSource = source; emit sourceChanged(); }
     inline void setStatus(SampleStatus status) { mStatus = status; emit statusChanged(); }
+    void setStatus(QString status);
     inline void setNameUI(QVariant data) { mNameUI = data; emit nameUIChanged(); }
     inline void setSubjectUI(QVariant data) { mSubjectUI = data; emit subjectUIChanged(); }
     inline void setStatusUI(QVariant data) { mStatusUI = data; emit statusUIChanged(); }

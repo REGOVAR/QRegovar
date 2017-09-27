@@ -30,7 +30,13 @@ Dialog
 //    property alias remoteSelection: remoteSamples.selection
 
 
-    onAccepted: console.log("Ok clicked")
+    onAccepted:
+    {
+        // sample/import/file
+        // => answer create sample object into regovar.newFilteringAnalysis.samples
+        //
+        console.log("Ok clicked")
+    }
     onRejected: console.log("Cancel clicked")
 
     signal samplesSelected(var samples)
@@ -60,23 +66,6 @@ Dialog
 
                 color: Regovar.theme.primaryColor.back.normal
 
-//                Image
-//                {
-//                    id: remoteLogo
-//                    anchors.top : parent.top
-//                    anchors.left: parent.left
-//                    anchors.margins: 10
-//                    width: 80
-//                    height: 80
-
-//                    source: "qrc:/logo.png"
-//                    ColorOverlay
-//                    {
-//                        anchors.fill: parent
-//                        source: remoteLogo
-//                        color: Regovar.theme.primaryColor.front.normal
-//                    }
-//                }
                 Text
                 {
                     anchors.top : parent.top
@@ -135,7 +124,7 @@ Dialog
                 anchors.left: rootRemoteView.left
                 anchors.right: rootRemoteView.right
                 anchors.margins: 10
-                placeholderText: qsTr("Search sample by identifiant or vcf filename, subject's name, birthday, sex, comment, ...")
+                placeholderText: qsTr("Search sample by identifiant or vcf filename, subject's name, date of birth, sex, comment, ...")
             }
 
             TableView
@@ -252,6 +241,46 @@ Dialog
                     }
                 }
                 TableViewColumn { title: qsTr("Comment"); role: "comment" }
+
+                Rectangle
+                {
+                    id: sampleHelpPanel
+                    anchors.fill: parent
+
+                    color: "#aaffffff"
+
+                    visible: regovar.remoteSamplesList.length == 0
+
+                    Text
+                    {
+                        text: qsTr("No sample complient with the reference ") + regovar.newFilteringAnalysis.refName + qsTr(" on the server Regovar.\nTo import new samples from files click on the button below.")
+                        font.pixelSize: Regovar.theme.font.size.header
+                        color: Regovar.theme.primaryColor.back.normal
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        wrapMode: Text.WordWrap
+                    }
+                    Text
+                    {
+                        anchors.left: parent.left
+                        anchors.bottom : parent.bottom
+                        anchors.leftMargin:Math.max(0, remoteSwitchButton.width / 2 - width/2)
+                        text: ""
+                        font.family: Regovar.theme.icons.name
+                        font.pixelSize: 30
+                        color: Regovar.theme.primaryColor.back.normal
+
+                        NumberAnimation on anchors.bottomMargin
+                        {
+                            duration: 2000
+                            loops: Animation.Infinite
+                            from: 30
+                            to: 0
+                            easing.type: Easing.SineCurve
+                        }
+                    }
+                }
             }
 
             ButtonIcon
@@ -337,7 +366,7 @@ Dialog
                     wrapMode: "WordWrap"
                     elide: Text.ElideRight
 
-                    text: qsTr("Select the file(s) from which you want to import samples.\nYou can add file that are already uploaded on the regovar server or drop your (g)vcf file here to start the upload on the server.")
+                    text: qsTr("Select the vcf file(s) from which you want to import samples.\nYou can add file that are already uploaded on the regovar server or drop your (g)vcf file here to start the upload on the server.")
                     font.pixelSize: Regovar.theme.font.size.control
                     color: Regovar.theme.primaryColor.front.normal
                 }
@@ -364,18 +393,6 @@ Dialog
                     model: regovar.newPipelineAnalysis.inputsFilesList
 
 
-                    Rectangle
-                    {
-                        id: dropAreaFeedBack
-                        anchors.fill: parent;
-                        color: "#99ffffff"
-                        visible: false
-                        Text
-                        {
-                            anchors.centerIn: parent
-                            text: qsTr("Drop your (g)vcf files here !")
-                        }
-                    }
 
                     DropArea
                     {
@@ -399,7 +416,10 @@ Dialog
                             regovar.enqueueUploadFile(files);
                             dropAreaFeedBack.visible = false;
                         }
-                        onExited: dropAreaFeedBack.visible = false;
+                        onExited:
+                        {
+                            dropAreaFeedBack.visible = false;
+                        }
                     }
 
                     TableViewColumn
@@ -492,6 +512,77 @@ Dialog
                     }
                     TableViewColumn { title: "Source"; role: "sourceUI" }
                     TableViewColumn { title: "Comment"; role: "comment" }
+
+                    Rectangle
+                    {
+                        id: fileHelpPanel
+                        anchors.fill: parent
+
+                        color: "#aaffffff"
+
+                        visible: regovar.newPipelineAnalysis.inputsFilesList.length == 0
+
+                        Text
+                        {
+                            id: dropOkLabel
+                            text: qsTr("Drop your vcf file here, or click on the adjacent button to select vcf file already on the Regovar server.")
+                            font.pixelSize: Regovar.theme.font.size.header
+                            color: Regovar.theme.primaryColor.back.normal
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            wrapMode: Text.WordWrap
+                        }
+                        Text
+                        {
+                            id: dropKoLabel
+                            text: qsTr("Sorry, only vcf, gvcf, vcf.gz and gvcf.gz file are supported to import sample.")
+                            font.pixelSize: Regovar.theme.font.size.header
+                            color: Regovar.theme.primaryColor.back.normal
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            wrapMode: Text.WordWrap
+                        }
+                        Text
+                        {
+                            anchors.right: parent.right
+                            anchors.top : parent.top
+                            text: ""
+                            font.family: Regovar.theme.icons.name
+                            font.pixelSize: 30
+                            color: Regovar.theme.primaryColor.back.normal
+
+                            NumberAnimation on anchors.rightMargin
+                            {
+                                duration: 2000
+                                loops: Animation.Infinite
+                                from: 30
+                                to: 0
+                                easing.type: Easing.SineCurve
+                            }
+                        }
+                    }
+                    Rectangle
+                    {
+                        id: dropAreaFeedBack
+                        anchors.fill: parent;
+                        color: Regovar.theme.boxColor.back
+                        border.width: 1
+                        border.color: Regovar.theme.boxColor.border
+                        visible: false
+                        Text
+                        {
+                            anchors.centerIn: parent
+                            text: qsTr("Drop your (g)vcf files here !")
+                            font.pixelSize: Regovar.theme.font.size.header
+                            color: Regovar.theme.primaryColor.back.normal
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            wrapMode: Text.WordWrap
+                        }
+                    }
                 }
 
 
@@ -608,6 +699,24 @@ Dialog
         }
     }
 
+
+//    FileDialog
+//    {
+//        id: fileSelector
+//        title: "Please choose a file"
+//        folder: shortcuts.home
+//        onAccepted:
+//        {
+//            console.log("You chose: " + fileSelector.fileUrls)
+//            //regovar.newPipelineAnalysis.addInputs(files);
+//            Qt.quit()
+//        }
+//        onRejected:
+//        {
+//            console.log("Canceled")
+//            Qt.quit()
+//        }
+//    }
 
     SelectFilesDialog
     {

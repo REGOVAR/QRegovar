@@ -14,6 +14,13 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property QtObject model
+    onModelChanged:
+    {
+        if (model != undefined)
+        {
+            filesList.model = model.files;
+        }
+    }
 
 
 
@@ -87,7 +94,7 @@ Rectangle
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
-        model: model.files
+
 
         // Default delegate for all column
         itemDelegate: Item
