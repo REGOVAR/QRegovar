@@ -351,6 +351,8 @@ Rectangle
             }
         }
 
+
+
         Rectangle
         {
             anchors.topMargin: newButtonsRow.height
@@ -361,12 +363,12 @@ Rectangle
             Text
             {
                 anchors.fill: parent
-                anchors.topMargin: 100
                 wrapMode: Text.WordWrap
                 elide: Text.ElideRight
                 text: qsTr("You are not connected to the Regovar server.\nCheck your connection.")
                 color: Regovar.theme.primaryColor.back.normal
                 font.pixelSize: Regovar.theme.font.size.header
+                verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
             }
         }
@@ -378,6 +380,7 @@ Rectangle
             anchors.left: panel.left
             anchors.right: panel.right
             height: 100
+
         }
     }
 

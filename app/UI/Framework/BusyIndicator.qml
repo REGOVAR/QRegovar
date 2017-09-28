@@ -21,7 +21,7 @@ BusyIndicator
     property real trail: 0.6    // between 0 and 1
     property bool clockWise: true
 
-    property string color: Regovar.theme.primaryColor.back.normal
+    property string color: "transparent" // Regovar.theme.primaryColor.back.normal
     property string highlightColor: Regovar.theme.secondaryColor.back.light
     property string bgColor: Regovar.theme.boxColor.back
 
@@ -35,11 +35,13 @@ BusyIndicator
             visible: control.running
 
 
-            Repeater {
+            Repeater
+            {
                 id: repeat
                 anchors.centerIn: parent
                 model: style.lines
-                Rectangle {
+                Rectangle
+                {
                     property real factor: style.indicatorSize / 200
                     color: style.color
                     opacity: 0.7
