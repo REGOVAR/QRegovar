@@ -1,6 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
-//import QtWebView 1.1
+import QtWebView 1.1
 import "../../Regovar"
 import "../../Framework"
 
@@ -288,11 +288,11 @@ Item
         }
 
 
-//        WebView
-//        {
-//            Layout.fillHeight: true
-//            Layout.fillWidth: true
-//            url: "https://raw.githubusercontent.com/REGOVAR/Regovar/master/LICENSE"
-//        }
+        WebView
+        {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            url: "https://raw.githubusercontent.com/REGOVAR/Regovar/master/LICENSE"
+        }
     }
 }

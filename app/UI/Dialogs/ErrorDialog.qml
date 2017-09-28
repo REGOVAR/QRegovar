@@ -11,14 +11,15 @@ Dialog
     id: closeDialog
     title: qsTr("Error")
 
-    width: 300
-    height: 200
+    width: 600
+    height: 400
 
 
     modality: Qt.WindowModal
 
     property string errorCode
     property string errorMessage
+    property string errorTechnicalData
 
 
     contentItem: Rectangle
@@ -68,7 +69,7 @@ Dialog
             }
         }
 
-        Grid
+        GridLayout
         {
             anchors.left: parent.left
             anchors.right: parent.right
@@ -84,23 +85,83 @@ Dialog
 
             Text
             {
-                text: qsTr("Code :")
+                text: qsTr("Code")
                 font.weight: Font.Black
             }
             Text
             {
+                id: codeHelpLink
+                Layout.fillWidth: true
+                text: (errorPopup.errorCode) ? errorPopup.errorCode : "No code provided"
+                MouseArea
+                {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: true
+                    onEntered: codeHelpLink.color = Regovar.theme.secondaryColor.back.normal
+                    onExited: codeHelpLink.color = Regovar.theme.frontColor.normal
+                    onClicked: Qt.openUrlExternally(regovar.serverUrl.toString() + "/error/" + (codeHelpLink.errorCode ? codeHelpLink.errorCode : "index") + ".html");
+                }
+            }
+            Text
+            {
+                Layout.alignment: Qt.AlignTop
                 text: qsTr("Message")
                 font.weight: Font.Black
             }
-            Text
+            Rectangle
             {
-                text: errorPopup.errorCode
-            }
-            Text
-            {
+                id: messagePanel
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                text: errorPopup.errorMessage
+                Layout.minimumHeight: 4 * Regovar.theme.font.size.control
+                color: "transparent"
+
+                Column
+                {
+                    id: summaryPanel
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    TextArea
+                    {
+                        width: messagePanel.width
+                        text: errorPopup.errorMessage
+                        font.family: "monospace"
+                        readOnly: true
+                        frameVisible: false
+                        backgroundVisible: false
+                    }
+                    Text
+                    {
+                        text: qsTr("Get technical details ...")
+                        color: Regovar.theme.primaryColor.back.normal
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onEntered: parent.color = Regovar.theme.secondaryColor.back.normal
+                            onExited: parent.color = Regovar.theme.primaryColor.back.normal
+                            onClicked:
+                            {
+                                summaryPanel.visible = false;
+                                detailsPanel.visible = true;
+                            }
+                        }
+                    }
+                }
+
+                TextArea
+                {
+                    id: detailsPanel
+                    anchors.fill: parent
+                    visible: false
+                    text: errorPopup.errorMessage + "\n-----\n" + errorPopup.errorTechnicalData
+                    font.family: "monospace"
+                    readOnly: true
+                    frameVisible: false
+                    backgroundVisible: false
+                }
             }
         }
 
@@ -110,7 +171,7 @@ Dialog
             anchors.bottom: root.bottom
             anchors.horizontalCenter: root.horizontalCenter
             anchors.bottomMargin: 10
-
+            onClicked: closeDialog.close()
         }
 
     }

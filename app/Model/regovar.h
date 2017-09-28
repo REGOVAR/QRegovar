@@ -168,7 +168,7 @@ Q_SIGNALS:
     void remoteSamplesListChanged();
     void referencesChanged();
     void onClose();
-    void onError(QString errCode, QString message);
+    void errorOccured(QString errCode, QString message, QString techData);
     void projectCreationDone(bool success, int projectId);
     void analysisCreationDone(bool success, int analysisId);
     void subjectCreationDone(bool success, int subjectId);

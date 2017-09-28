@@ -61,13 +61,14 @@ ApplicationWindow
     Connections
     {
         target: regovar
-        onOnError:
+        onErrorOccured:
         {
             if (active)
             {
-                console.log("server error occured : [" + errCode + "] " + message);
+                console.log("server error occured : [" + errCode + "] " + message + "\n" + techData);
                 errorPopup.errorCode = errCode;
                 errorPopup.errorMessage = message;
+                errorPopup.errorTechnicalData = techData;
                 errorPopup.open();
             }
         }

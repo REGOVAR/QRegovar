@@ -23,6 +23,11 @@ Dialog
     width: 800
     height: 600
 
+    onVisibleChanged:
+    {
+        regovar.loadSampleBrowser(regovar.newFilteringAnalysis.refId);
+    }
+
 //    property alias localIndex: localFiles.currentIndex
 //    property alias localSelection: localFiles.selection
 //    property alias remoteSampleTreeModel: remoteSamples.model
@@ -138,7 +143,6 @@ Dialog
 
                 model: regovar.remoteSamplesList
                 selectionMode: SelectionMode.ExtendedSelection
-                Component.onCompleted: regovar.loadSampleBrowser(2);
                 property var statusIcons: ["m", "/", "n", "h"]
 
                 TableViewColumn { title: qsTr("Sample"); role: "name"; horizontalAlignment: Text.AlignLeft; }
@@ -157,8 +161,27 @@ Dialog
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.control
-                            text: remoteSamples.statusIcons[styleData.value.status]
                             font.family: Regovar.theme.icons.name
+                            text: remoteSamples.statusIcons[styleData.value.status]
+                            onTextChanged:
+                            {
+                                if (styleData.value.status == "loading")
+                                {
+                                    statusIconAnimation.pause();
+                                }
+                                else
+                                {
+                                    statusIconAnimation.start();
+                                }
+                            }
+                            NumberAnimation on rotation
+                            {
+                                id: statusIconAnimation
+                                duration: 1000
+                                loops: Animation.Infinite
+                                from: 0
+                                to: 360
+                            }
                         }
                         Text
                         {
@@ -660,7 +683,17 @@ Dialog
 
                 else if (rootFileView.visible)
                 {
+                    // import all file
+                    for(var idx=0; idx<regovar.newPipelineAnalysis.inputsFilesList.length; idx++)
+                    {
+                        var file = regovar.newPipelineAnalysis.inputsFilesList[idx];
+                        regovar.newFilteringAnalysis.addSamplesFromFile(file.id);
+                    }
 
+
+                    // sample/import/file
+                    // => answer create sample object into regovar.newFilteringAnalysis.samples
+                    //
 {"msg": "import_vcf_start", "data": {"samples": [{"id": 62, "name": "BIL_M_pere"}, {"id": 63, "name": "RIC_C_mere"}, {"id": 61, "name": "BIL_L"}], "file_id": "25"}}
                 }
 
@@ -734,8 +767,6 @@ Dialog
             {
                 regovar.newPipelineAnalysis.addInputFromWS(data);
             }
-
-            console.log ("WS [" + action + "] " + data);
         }
     }
 }

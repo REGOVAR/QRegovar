@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import QtQuick.Controls.Styles 1.4
 import "../Regovar"
 
 
@@ -9,3 +10,22 @@ Text
     font.family: Regovar.theme.font.familly
     color: enabled ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
 }
+
+//TextArea
+//{
+//    id: control
+//    font.pixelSize: Regovar.theme.font.size.content
+//    font.family: Regovar.theme.font.familly
+
+//    implicitHeight: Regovar.theme.font.size.content
+//    frameVisible: false
+//    backgroundVisible: false
+
+
+//    style: TextAreaStyle
+//    {
+//        textColor: enabled ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
+//        selectionColor: Regovar.theme.secondaryColor.back.light
+//        selectedTextColor: Regovar.theme.secondaryColor.front.light
+//    }
+//}

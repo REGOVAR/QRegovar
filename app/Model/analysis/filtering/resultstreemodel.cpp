@@ -208,8 +208,9 @@ void ResultsTreeModel::reset()
         }
         else
         {
-            qCritical() << Q_FUNC_INFO << "Unable to build results tree model (due to request error)";
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
         }
         setIsLoading(false);
         request->deleteLater();
@@ -253,8 +254,9 @@ void ResultsTreeModel::loadNext()
         }
         else
         {
-            qCritical() << Q_FUNC_INFO << "Unable to build results tree model (due to request error)";
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
         }
 
         // Notify view/model that update is finished

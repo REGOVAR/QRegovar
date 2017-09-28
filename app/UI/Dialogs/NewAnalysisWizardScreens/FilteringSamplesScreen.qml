@@ -182,8 +182,27 @@ GenericScreen
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.control
-                            text: samplesList.statusIcons[styleData.value.status]
                             font.family: Regovar.theme.icons.name
+                            text: samplesList.statusIcons[styleData.value.status]
+                            onTextChanged:
+                            {
+                                if (styleData.value.status == "loading")
+                                {
+                                    statusIconAnimation.pause();
+                                }
+                                else
+                                {
+                                    statusIconAnimation.start();
+                                }
+                            }
+                            NumberAnimation on rotation
+                            {
+                                id: statusIconAnimation
+                                duration: 1000
+                                loops: Animation.Infinite
+                                from: 0
+                                to: 360
+                            }
                         }
                         Text
                         {

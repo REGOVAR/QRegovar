@@ -19,6 +19,7 @@ QNetworkAccessManager* Request::netManager()
 //------------------------------------------------------------------------------------------------
 Request::Request(Verb verb, const QString& query, QHttpMultiPart* data, QObject* parent) : QObject(parent)
 {
+
     QNetworkRequest request = Request::makeRequest(query);
     mReply = nullptr;
     switch (verb)
@@ -138,12 +139,15 @@ void Request::received()
             QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
             mJson = doc.object();
             mSuccess = mJson["success"].toBool();
+            mJson.insert("query", reply->url().toString());
+            mJson.insert("reqError", "200 OK");
             emit responseReceived(mSuccess, mJson);
         }
         else
         {
             QString code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString();
             QString reason = reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+            mJson.insert("reqError", code + " " + reason);
             qWarning() << "ERROR" << code << reason << mReplyError;
             mJson = QJsonObject();
             if (code == "502")

@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Layouts 1.3
-//import QtWebView 1.0
+import QtWebView 1.0
 //import QtWebKit 3.0
 import "../../Regovar"
 import "../../Framework"
@@ -40,16 +40,16 @@ Rectangle
     }
 
 
-//    WebView
-//    {
-//        anchors.top : header.bottom
-//        anchors.left: root.left
-//        anchors.right: root.right
-//        anchors.bottom: root.bottom
-//        anchors.margins: 10
+    WebView
+    {
+        anchors.top : header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.bottom: root.bottom
+        anchors.margins: 10
 
-//        url: "http://regovar.readthedocs.io/fr/latest/Guide%20utilisateur/01.%20Bienvenue/"
-//    }
+        url: "http://regovar.readthedocs.io/fr/latest/Guide%20utilisateur/01.%20Bienvenue/"
+    }
 
 
 

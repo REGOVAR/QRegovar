@@ -3,6 +3,7 @@
 #include <QQuickItem>
 #include <QQmlComponent>
 #include <QAbstractSocket>
+#include <QSysInfo>
 #include "regovar.h"
 #include "request.h"
 
@@ -74,7 +75,36 @@ void Regovar::onWebsocketReceived(QString message)
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
     QJsonObject obj = doc.object();
     if (obj["action"].toString() != "hello") qDebug() << "Websocket" << message;
-    emit websocketMessageReceived(obj["action"].toString(), obj["data"].toObject());
+    QString action = obj["action"].toString();
+    QJsonObject data = obj["data"].toObject();
+
+    if (action == "import_vcf_processing")
+    {
+        double progressValue = data["progress"].toDouble();
+        QString status = data["status"].toString();
+
+        foreach(QJsonValue json, data["samples"].toArray())
+        {
+            QJsonObject obj = json.toObject();
+            int sid = obj["id"].toInt();
+            foreach (QObject* o, mRemoteSamplesList)
+            {
+                Sample* sample = qobject_cast<Sample*>(o);
+                if (sample->id() == sid)
+                {
+                    sample->setStatus(status);
+                    QJsonObject statusInfo;
+                    statusInfo.insert("status", status);
+                    statusInfo.insert("label", sample->statusToLabel(sample->status(), progressValue));
+                    sample->setStatusUI(QVariant::fromValue(statusInfo));
+                    break;
+                }
+            }
+        }
+    }
+
+
+    emit websocketMessageReceived(action, data);
 }
 
 void Regovar::onWebsocketClosed()
@@ -167,7 +197,9 @@ void Regovar::loadWelcomData()
         }
         else
         {
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
         }
         req->deleteLater();
         setWelcomIsLoading(true);
@@ -290,7 +322,9 @@ void Regovar::openAnalysis(int id)
         }
         else
         {
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
         }
         req->deleteLater();
     });
@@ -363,7 +397,9 @@ void Regovar::loadFilesBrowser()
         }
         else
         {
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
         }
         req->deleteLater();
     });
@@ -386,7 +422,7 @@ void Regovar::filesEnqueued(QHash<QString,QString> mapping)
 
 void Regovar::loadSampleBrowser(int refId)
 {
-    Request* req = Request::get(QString("/sample/browserTree/%1").arg(2)); // refId));
+    Request* req = Request::get(QString("/sample/browserTree/%1").arg(refId));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)
@@ -407,7 +443,9 @@ void Regovar::loadSampleBrowser(int refId)
         }
         else
         {
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
         }
         req->deleteLater();
     });
@@ -440,14 +478,18 @@ void Regovar::newProject(QString name, QString comment)
                 }
                 else
                 {
-                    regovar->raiseError(json);
+                    QJsonObject jsonError = json;
+                    jsonError.insert("method", Q_FUNC_INFO);
+                    regovar->raiseError(jsonError);
                 }
                 req2->deleteLater();
             });
         }
         else
         {
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
         }
         req->deleteLater();
     });
@@ -466,7 +508,9 @@ void Regovar::openProject(int id)
         }
         else
         {
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
         }
         req->deleteLater();
     });
@@ -552,7 +596,9 @@ bool Regovar::newAnalysis(QString type)
             }
             else
             {
-                regovar->raiseError(json);
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
             }
             req->deleteLater();
         });
@@ -593,13 +639,26 @@ void Regovar::raiseError(QJsonObject json)
 {
     QString code = json["code"].toString();
     QString msg  = json["msg"].toString();
-    if (code.isEmpty() && msg.isEmpty())
+    QString cpuiBuild = QSysInfo::buildCpuArchitecture();
+
+    if (msg.isEmpty())
     {
-        code = "E00000?";
-        msg  = "Error not catched !!";
+        msg  = "Unmanaged error :s";
     }
     qDebug() << "ERROR Server side [" << code << "]" << msg;
-    emit onError(code, msg);
+
+    QString msgTech = "Method:       " + json["method"].toString() + "\n";
+    msgTech += "Query:        " + json["query"].toString() + "\n";
+    msgTech += "Net reply:    " + json["reqError"].toString() +  "\n";
+    msgTech += "Qt version:   " + QString(QT_VERSION_STR) + "\n";
+    msgTech += "Build CPU:    " + QSysInfo::buildCpuArchitecture() + "\n";
+    msgTech += "Current CPU:  " + QSysInfo::currentCpuArchitecture() + "\n";
+    msgTech += "Kernel:       " + QSysInfo::kernelType() + " " + QSysInfo::kernelVersion() +"\n";
+    msgTech += "OS:           " + QSysInfo::prettyProductName() + "\n";
+
+
+
+    emit errorOccured(code, msg, msgTech);
 }
 
 
@@ -624,7 +683,9 @@ void Regovar::search(QString query)
         }
         else
         {
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
         }
         req->deleteLater();
         setSearchInProgress(false);

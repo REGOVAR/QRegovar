@@ -55,7 +55,7 @@ void RemoteSampleTreeModel::reset()
     setIsLoading(true);
 
     Request* request = Request::get(QString("/sample/browserTree/%1").arg(mFilteringAnalysis->refId()));
-    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+    connect(request, &Request::responseReceived, [this, request](bool success, QJsonObject json)
     {
         if (success)
         {

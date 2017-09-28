@@ -153,7 +153,9 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
         }
         else
         {
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
             emit loadingStatusChanged(mLoadingStatus, error);
             mLoadingStatus = error;
         }
@@ -337,7 +339,9 @@ void FilteringAnalysis::loadResults()
         }
         else
         {
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
             emit loadingStatusChanged(mLoadingStatus, error);
             mLoadingStatus = error;
         }
@@ -362,7 +366,9 @@ void FilteringAnalysis::getVariantInfo(QString variantId)
         }
         else
         {
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
         }
         req->deleteLater();
     });
@@ -393,7 +399,9 @@ void FilteringAnalysis::saveCurrentFilter(QString filterName, QString filterDesc
         }
         else
         {
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
         }
         req->deleteLater();
     });
@@ -454,7 +462,7 @@ void FilteringAnalysis::removeSamples(QList<QObject*> samples)
 
 void FilteringAnalysis::addSamplesFromFile(int fileId)
 {
-    Request* req = Request::get(QString("/sample/import/%1/%2").arg(QString(fileId), QString(mRefId)));
+    Request* req = Request::get(QString("/sample/import/%1/%2").arg(QString::number(fileId), QString::number(mRefId)));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)
@@ -479,7 +487,9 @@ void FilteringAnalysis::addSamplesFromFile(int fileId)
         }
         else
         {
-            regovar->raiseError(json);
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
             emit loadingStatusChanged(mLoadingStatus, error);
             mLoadingStatus = error;
         }
@@ -537,29 +547,7 @@ int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
 
 void FilteringAnalysis::onWebsocketMessageReceived(QString action, QJsonObject data)
 {
-    if (action == "import_vcf_processing")
-    {
-        double progressValue = data["progress"].toDouble();
-        QString status = data["status"].toString();
-
-        foreach(QJsonValue json, data["samples"].toArray())
-        {
-            QJsonObject obj = json.toObject();
-            int sid = obj["id"].toInt();
-            foreach (Sample* sample, mSamples)
-            {
-                if (sample->id() == sid)
-                {
-                    sample->setStatus(status);
-                    QJsonObject statusInfo;
-                    statusInfo.insert("status", status);
-                    statusInfo.insert("label", sample->statusToLabel(sample->status(), progressValue));
-                    sample->setStatusUI(QVariant::fromValue(statusInfo));
-                    break;
-                }
-            }
-        }
-    }
+    // update done in regovar on the global remote list
 }
 
 

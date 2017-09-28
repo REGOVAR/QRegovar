@@ -49,9 +49,6 @@ private:
     QNetworkReply::NetworkError mReplyError;
     QNetworkReply* mReply;
     QJsonObject mJson;
-
-
-
 };
 
 #endif // REQUEST_H
