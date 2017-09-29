@@ -1,92 +1,164 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.2
+import QtQuick.Dialogs 1.2
 import "../../../Regovar"
 
-Popup
+Dialog
 {
-    id: root
+    id: dialogBox
+    title: qsTr("External tools")
 
-
-    width: 200
-    height: rootLayout.height + 2
-
-    property string title: ""
-    property string varsomUrl: ""
-    property string marrvelUrl: ""
-
-    property string gene: ""
-
-    modal: Qt.NonModal
-    padding: 1
-    background: Rectangle
+    property var data
+    property var variantsTools
+    property var geneTools
+    onDataChanged:
     {
+        if (data)
+        {
+            title.text = "chr" + data["chr"] + ":" + data["pos"] + " " + data["ref"] + ">" + data["alt"];
+            variantsTools = data["online_tools_variant"];
+            geneTools = data["online_tools_gene"];
+            geneTitle.text = data["genename"];
+
+            if (geneTitle.text)
+                geneHeader.visible = true;
+            else
+                geneHeader.visible = false;
+
+        }
+    }
+
+    contentItem: Rectangle
+    {
+        id: root
+
         color: Regovar.theme.backgroundColor.main
         border.width: 1
         border.color: Regovar.theme.boxColor.border
-    }
+
+
+        width: 200
+        height: rootLayout.height + 2
 
 
 
-    Column
-    {
-        id: rootLayout
 
-        Rectangle
+
+
+
+        Column
         {
-            id: header
-            width: root.width - 2
-            height: Regovar.theme.font.boxSize.header
-            color: Regovar.theme.primaryColor.back.normal
+            id: rootLayout
 
-            Row
+            Rectangle
             {
-                anchors.fill: parent
+                id: header
+                width: root.width - 2
+                height: Regovar.theme.font.boxSize.header
+                color: Regovar.theme.primaryColor.back.normal
 
-                Text
+                Row
                 {
-                    text: "j"
-                    width: Regovar.theme.font.boxSize.header
-                    height: Regovar.theme.font.boxSize.header
+                    anchors.fill: parent
 
-                    font.family: Regovar.theme.icons.name
-                    color: Regovar.theme.primaryColor.front.normal
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
+                    Text
+                    {
+                        text: "j"
+                        width: Regovar.theme.font.boxSize.header
+                        height: Regovar.theme.font.boxSize.header
+
+                        font.family: Regovar.theme.icons.name
+                        color: Regovar.theme.primaryColor.front.normal
+                        font.pixelSize: Regovar.theme.font.size.header
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                    Text
+                    {
+                        id: title
+                        height: Regovar.theme.font.boxSize.header
+                        color: Regovar.theme.primaryColor.front.normal
+                        font.pixelSize: Regovar.theme.font.size.header
+                        verticalAlignment: Text.AlignVCenter
+                    }
                 }
-                Text
+
+                Rectangle
                 {
-                    text: root.title
-                    height: Regovar.theme.font.boxSize.header
-                    color: Regovar.theme.primaryColor.front.normal
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
+                    height: 1
+                    width: root.width
+                    anchors.bottom: header.bottom
+                    color: Regovar.theme.primaryColor.back.dark
+                }
+            }
+
+            Repeater
+            {
+                model: variantsTools
+
+                ResultContextMenuAction
+                {
+                    url: modelData.url
+                    iconText: "_"
+                    label: modelData.name
+                    width: root.width - 2
                 }
             }
 
             Rectangle
             {
-                height: 1
-                width: root.width
-                anchors.bottom: header.bottom
-                color: Regovar.theme.primaryColor.back.dark
+                id: geneHeader
+                width: root.width - 2
+                height: Regovar.theme.font.boxSize.header
+                color: Regovar.theme.primaryColor.back.normal
+
+                Row
+                {
+                    anchors.fill: parent
+
+                    Text
+                    {
+                        text: "j"
+                        width: Regovar.theme.font.boxSize.header
+                        height: Regovar.theme.font.boxSize.header
+
+                        font.family: Regovar.theme.icons.name
+                        color: Regovar.theme.primaryColor.front.normal
+                        font.pixelSize: Regovar.theme.font.size.header
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                    Text
+                    {
+                        id: geneTitle
+                        height: Regovar.theme.font.boxSize.header
+                        color: Regovar.theme.primaryColor.front.normal
+                        font.pixelSize: Regovar.theme.font.size.header
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+
+                Rectangle
+                {
+                    height: 1
+                    width: root.width
+                    anchors.bottom: header.bottom
+                    color: Regovar.theme.primaryColor.back.dark
+                }
             }
-        }
 
-        ResultContextMenuAction
-        {
-            url: root.varsomUrl
-            iconText: "_"
-            label: "Varsome"
-            width: root.width - 2
-        }
+            Repeater
+            {
+                model: geneTools
 
-        ResultContextMenuAction
-        {
-            url: root.marrvelUrl
-            iconText: "_"
-            label: "Marrvel"
-            width: root.width - 2
+                ResultContextMenuAction
+                {
+                    url: modelData.url
+                    iconText: "_"
+                    label: modelData.name
+                    width: root.width - 2
+                }
+            }
         }
     }
 }

@@ -101,6 +101,8 @@ Rectangle
 
             acceptedButtons: Qt.RightButton
             onClicked: resultsTree.openResultContextMenu(mouse.x, mouse.y + 24) // compense header's margin
+
+            drag.target: resultContextMenu
         }
 
 
