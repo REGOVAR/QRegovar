@@ -165,13 +165,13 @@ Dialog
                             text: remoteSamples.statusIcons[styleData.value.status]
                             onTextChanged:
                             {
-                                if (styleData.value.status == "loading")
+                                if (styleData.value.status == 1) // 1 = Loading
                                 {
-                                    statusIconAnimation.pause();
+                                    statusIconAnimation.start();
                                 }
                                 else
                                 {
-                                    statusIconAnimation.start();
+                                    statusIconAnimation.stop();
                                 }
                             }
                             NumberAnimation on rotation
@@ -252,10 +252,8 @@ Dialog
                         {
                             anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
                             anchors.rightMargin: 5
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
                             anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.control
                             text: styleData.value.filename

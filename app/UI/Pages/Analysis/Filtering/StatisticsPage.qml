@@ -47,6 +47,7 @@ Rectangle
         text: qsTr("Statistics about your variants and quality scores from DepthOfCoverage.")
     }
 
+
     Text
     {
        text: "Statistics & Quality"

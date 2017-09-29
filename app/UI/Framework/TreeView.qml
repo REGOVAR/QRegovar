@@ -14,6 +14,8 @@ TreeView
     property var currentItem
     property int rowHeight: Regovar.theme.font.boxSize.control
 
+    signal headerResized(var header, var newSize)
+    signal headerMoved(var header, var newPosition)
 
     style: TreeViewStyle
     {
@@ -43,6 +45,17 @@ TreeView
             border.width: 0
 
             border.color: Regovar.theme.boxColor.border
+
+            property int position: styleData.column
+            onPositionChanged:
+            {
+                console.log("TreeViewHeader \""+ styleData.value +"\" Position Changed : " + position)
+            }
+
+            onWidthChanged:
+            {
+                console.log("TreeViewHeader \""+ styleData.value +"\" Resized : " + width)
+            }
 
 
             LinearGradient
