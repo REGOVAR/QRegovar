@@ -186,13 +186,13 @@ GenericScreen
                             text: samplesList.statusIcons[styleData.value.status]
                             onTextChanged:
                             {
-                                if (styleData.value.status == "loading")
+                                if (styleData.value.status == 1) // 1 = Loading
                                 {
-                                    statusIconAnimation.pause();
+                                    statusIconAnimation.start();
                                 }
                                 else
                                 {
-                                    statusIconAnimation.start();
+                                    statusIconAnimation.stop();
                                 }
                             }
                             NumberAnimation on rotation
@@ -240,10 +240,8 @@ GenericScreen
                         {
                             anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
                             anchors.rightMargin: 5
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
                             anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.control
                             text: styleData.value.filename
@@ -325,13 +323,7 @@ GenericScreen
                     Layout.fillWidth: true
                     enabled: trioActivated.checked
                     textRole: 'name'
-                    onCurrentIndexChanged:
-                    {
-                        if (currentIndex != regovar.selectedReference)
-                        {
-                            checkReady();
-                        }
-                    }
+                    onCurrentIndexChanged: checkReady();
                     delegate: ItemDelegate
                     {
                         width: childSample.width
@@ -352,7 +344,7 @@ GenericScreen
                     id: childIndex
                     enabled: trioActivated.checked
                     text: qsTr("Index")
-                    checked: false
+                    checked: true
                 }
                 Text { text: "Sex"; enabled: trioActivated.checked }
                 ComboBox
@@ -370,13 +362,7 @@ GenericScreen
                     model: regovar.newFilteringAnalysis.samples
                     textRole: 'name'
                     Layout.fillWidth: true
-                    onCurrentIndexChanged:
-                    {
-                        if (currentIndex != regovar.selectedReference)
-                        {
-                            checkReady();
-                        }
-                    }
+                    onCurrentIndexChanged: checkReady();
                     delegate: ItemDelegate
                     {
                         width: motherSample.width
@@ -397,7 +383,7 @@ GenericScreen
                     id: motherIndex
                     enabled: trioActivated.checked
                     text: qsTr("Index")
-                    checked: true
+                    checked: false
                 }
                 Text { text: ""; Layout.columnSpan: 2 }
 
@@ -409,13 +395,7 @@ GenericScreen
                     model: regovar.newFilteringAnalysis.samples
                     textRole: 'name'
                     Layout.fillWidth: true
-                    onCurrentIndexChanged:
-                    {
-                        if (currentIndex != regovar.selectedReference)
-                        {
-                            checkReady();
-                        }
-                    }
+                    onCurrentIndexChanged: checkReady();
                     delegate: ItemDelegate
                     {
                         width: fatherSample.width
@@ -436,7 +416,7 @@ GenericScreen
                     id: fatherIndex
                     enabled: trioActivated.checked
                     text: qsTr("Index")
-                    checked: true
+                    checked: false
                 }
                 Text { text: ""; Layout.columnSpan: 2 }
             }

@@ -134,6 +134,15 @@ Rectangle
                 onClicked: newSubjectDialog.open()
                 enabled: regovar.connectionStatus == 0
             }
+
+            TextEdit
+            {
+                textFormat: Text.RichText
+                readOnly: true
+                selectByMouse: true
+                selectByKeyboard: true
+                text: Regovar.formatSequence("ACCGGTTATTA")
+            }
         }
 
         ScrollView

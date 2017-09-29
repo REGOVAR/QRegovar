@@ -18,6 +18,9 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
             this, SLOT(asynchLoadingCoordination(LoadingStatus,LoadingStatus)));
     connect(regovar, SIGNAL(websocketMessageReceived(QString,QJsonObject)),
             this, SLOT(onWebsocketMessageReceived(QString,QJsonObject)));
+
+
+    setIsLoading(true);
 }
 
 
@@ -328,7 +331,9 @@ void FilteringAnalysis::loadResults()
             if (mResults->fromJson(json["data"].toObject()))
             {
                 emit loadingStatusChanged(mLoadingStatus, ready);
+
                 mLoadingStatus = ready;
+                setIsLoading(false);
             }
             else
             {

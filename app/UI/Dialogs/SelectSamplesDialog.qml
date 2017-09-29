@@ -491,8 +491,27 @@ Dialog
                                 verticalAlignment: Text.AlignVCenter
                                 horizontalAlignment: styleData.textAlignment
                                 font.pixelSize: Regovar.theme.font.size.control
-                                text: styleData.value.status == 0 ? "/" : styleData.value.status == 3 ? "l" : "n"
                                 font.family: Regovar.theme.icons.name
+                                text: remoteSamples.statusIcons[styleData.value.status]
+                                onTextChanged:
+                                {
+                                    if (styleData.value.status == 1) // 1 = Loading
+                                    {
+                                        statusIconAnimation2.start();
+                                    }
+                                    else
+                                    {
+                                        statusIconAnimation2.stop();
+                                    }
+                                }
+                                NumberAnimation on rotation
+                                {
+                                    id: statusIconAnimation2
+                                    duration: 1000
+                                    loops: Animation.Infinite
+                                    from: 0
+                                    to: 360
+                                }
                             }
                             Text
                             {

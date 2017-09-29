@@ -31,7 +31,7 @@ QuickFilterBox
         // send final combination to the model to update the filter
         var tm = model.quickfilters.transmissionFilter;
         tm.setFilter("dom", modeDom.checked);
-        tm.setFilter("rec_hom", modeRec.checked);
+        tm.setFilter("rec_hom", modeHtz.checked);
         tm.setFilter("rec_htzcomp", modeHtzComp.checked);
         tm.setFilter("denovo", segDen.checked);
         tm.setFilter("inherited", segInh.checked);

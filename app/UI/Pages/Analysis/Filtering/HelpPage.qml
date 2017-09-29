@@ -26,12 +26,20 @@ Rectangle
 
         Text
         {
-            id: nameLabel
             anchors.fill: header
             anchors.margins: 10
-            font.pixelSize: 22
-            color: Regovar.theme.frontColor.normal
-            verticalAlignment: Text.AlignVCenter
+            text: model.name
+            font.pixelSize: 20
+            font.weight: Font.Black
+        }
+
+        ConnectionStatus
+        {
+            anchors.top: header.top
+            anchors.right: header.right
+            anchors.bottom: header.bottom
+            anchors.margins: 5
+            anchors.rightMargin: 10
         }
     }
 

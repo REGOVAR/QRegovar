@@ -40,6 +40,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY quickfiltersChanged)
     //Q_PROPERTY(RemoteSampleTreeModel* remoteSamples READ remoteSamples NOTIFY remoteSamplesChanged)
     // "Shortcuts properties" for QML
+    // Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
     Q_PROPERTY(QStringList selectedAnnotationsDB READ selectedAnnotationsDB NOTIFY selectedAnnotationsDBChanged)
 
@@ -87,6 +88,7 @@ public:
     QList<QObject*> samples4qml();
     QStringList resultColumns();
     QStringList selectedAnnotationsDB();
+    inline bool isLoading() const { return mIsLoading; }
 
     // Setters
     Q_INVOKABLE inline void setFilter(QString filter) { mFilter = filter; emit filterChanged(); }
@@ -97,6 +99,7 @@ public:
     Q_INVOKABLE void setTrioChild(Sample* child) { mTrioChild=child; emit trioChildChanged(); }
     Q_INVOKABLE void setTrioMother(Sample* mother) { mTrioMother=mother; emit trioMotherChanged(); }
     Q_INVOKABLE void setTrioFather(Sample* father) { mTrioFather=father; emit trioFatherChanged(); }
+    Q_INVOKABLE void setIsLoading(bool flag) { mIsLoading=flag; emit isLoadingChanged(); }
 
     // Methods
     bool fromJson(QJsonObject json);
@@ -140,6 +143,7 @@ Q_SIGNALS:
     void trioChildChanged();
     void trioMotherChanged();
     void trioFatherChanged();
+    void isLoadingChanged();
 
 public Q_SLOTS:
     //! method use to "chain" asynch request for the init of the analysis
@@ -177,6 +181,7 @@ private:
     int mResultsTotal;
     QVariantList mFilters;
     QList<int> mSamplesIds; // = mSamples, but use as shortcuts to check quickly by sample id
+    bool mIsLoading;
 
 
     // Methods

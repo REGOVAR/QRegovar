@@ -105,10 +105,10 @@ QtObject
 
     property QtObject filtering: QtObject
     {
-        property color seqA: "#80d6ff"
-        property color seqC: "#0077c2"
-        property color seqG: "#80d6ff"
-        property color seqT: "#0077c2"
+        property color seqA: "#3264C8"
+        property color seqC: "#C85050"
+        property color seqG: "#64C878"
+        property color seqT: "#E6A03C"
         property color filterAND: "#3770cc"
         property color filterOR: "#37cc77"
         property color filterXOR: "#cc3737"

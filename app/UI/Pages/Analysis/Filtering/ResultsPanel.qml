@@ -37,17 +37,26 @@ Rectangle
         height: 50
         color: Regovar.theme.backgroundColor.alt
 
+
         Text
         {
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
-            anchors.right: parent.right
+            anchors.bottom: header.bottom
+            anchors.top: header.top
+            anchors.left: header.left
             anchors.margins: 10
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignRight
 
             font.pixelSize: Regovar.theme.font.size.header
-            text: ( root.model != null) ?  root.model.results.total + " " + ((root.model.results.total > 1) ? qsTr("results") : qsTr("result")) : ""
+            text: ( root.model != null) ?  Regovar.formatBigNumber(root.model.results.total) + " " + ((root.model.results.total > 1) ? qsTr("results") : qsTr("result")) : ""
+        }
+        ConnectionStatus
+        {
+            anchors.top: header.top
+            anchors.right: header.right
+            anchors.bottom: header.bottom
+            anchors.margins: 5
+            anchors.rightMargin: 10
         }
 
     }
@@ -126,7 +135,7 @@ Rectangle
                         elide: Text.ElideRight
                         font.family: "monospace"
                         horizontalAlignment: Text.AlignRight
-                        text: styleData.value.value ? styleData.value.value : "-"
+                        text: styleData.value.value ? Regovar.formatBigNumber(styleData.value.value) : "-"
                     }
                 }
             }
@@ -141,17 +150,22 @@ Rectangle
                 width: 100
                 delegate: Item
                 {
-                    Text
+                    TextEdit
                     {
                         anchors.leftMargin: 5
                         anchors.rightMargin: 5
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
                         font.pixelSize: Regovar.theme.font.size.control
-                        elide: Text.ElideRight
+
+
+                        textFormat: Text.RichText
+                        readOnly: true
+                        selectByMouse: true
+                        selectByKeyboard: true
 
                         font.family: "monospace"
-                        text: styleData.value.value ? styleData.value.value : "-"
+                        text: styleData.value.value ? Regovar.formatSequence(styleData.value.value) : "-"
                     }
                 }
             }
@@ -166,14 +180,15 @@ Rectangle
                 width: 30
                 delegate: Item
                 {
-                    Text
+                    TextEdit
                     {
                         anchors.leftMargin: 5
                         anchors.rightMargin: 5
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
                         font.pixelSize: Regovar.theme.font.size.control
-                        elide: Text.ElideRight
+                        textFormat: Text.RichText
+                        readOnly: true
 
                         font.family: Regovar.theme.icons.name
                         horizontalAlignment: Text.AlignHCenter
@@ -354,6 +369,7 @@ Rectangle
 
         }
 
+
         function openResultContextMenu(x, y)
         {
             // 0- retrieve row index
@@ -490,4 +506,27 @@ Rectangle
             }
         }
     }
+
+
+    Rectangle
+    {
+        id: busyIndicator
+        anchors.fill: rightPanel
+        anchors.margins: 10
+        anchors.topMargin: 60
+
+        color: "#aaffffff"
+        visible: !regovar.newFilteringAnalysis.isLoading
+
+        MouseArea
+        {
+            anchors.fill: parent
+        }
+
+        BusyIndicator
+        {
+            anchors.centerIn: parent
+        }
+    }
+
 }

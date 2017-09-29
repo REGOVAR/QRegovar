@@ -92,11 +92,13 @@
         <file>Pages/Project/FilesPage.qml</file>
         <file>Pages/Project/SubjectsPage.qml</file>
         <file>Pages/Project/SummaryPage.qml</file>
-        <file>Pages/Settings/InterfacePage.qml</file>
+        <file>Pages/Settings/AdminStatisticsPage.qml</file>
+        <file>Pages/Settings/AdminUsersPage.qml</file>
+        <file>Pages/Settings/AdminPipesPage.qml</file>
+        <file>Pages/Settings/AdminServerPage.qml</file>
+        <file>Pages/Settings/ApplicationPage.qml</file>
         <file>Pages/Settings/PanelsPage.qml</file>
-        <file>Pages/Settings/PipesPage.qml</file>
         <file>Pages/Settings/ProfilePage.qml</file>
-        <file>Pages/Settings/ServerPage.qml</file>
         <file>Pages/Subject/AnalysesPage.qml</file>
         <file>Pages/Subject/CharacteristicsPage.qml</file>
         <file>Pages/Subject/FilesPage.qml</file>

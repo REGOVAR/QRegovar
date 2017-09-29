@@ -56,16 +56,33 @@ QString TransmissionQuickFilter::getFilter()
     {
         if (mActiveFilters[fid])
         {
-            // TODO manage Rec filter (hom OR htzcomp)
-
-            filter << mFilters[fid];
+            if (fid == "rec_hom" || fid == "rec_htzcomp")
+            {
+                recFilter << mFilters[fid];
+            }
+            else
+            {
+                filter << mFilters[fid];
+            }
         }
     }
 
-    if (filter.count() > 1)
-        return QString("[\"AND\", [%1]]").arg(filter.join(","));
+
+
+    QString resSubFilter = "";
+    if (recFilter.count() == 1)
+        resSubFilter = QString(", %1").arg(recFilter[0]);
+    else if (recFilter.count() > 1)
+        resSubFilter = QString(", [\"OR\", [%1]]").arg(recFilter.join(","));
+
+
+    QString resFilter = "";
+    if (filter.count() > 1 || (filter.count() == 1 && recFilter.count() > 0))
+        return QString("%1%2").arg(filter.join(","), resSubFilter);
     else if (filter.count() == 1)
         return filter[0];
+    else if (filter.count() == 0 && recFilter.count() > 0)
+        return resSubFilter.mid(2);
     return "";
 }
 

@@ -42,10 +42,10 @@ QtObject
         model:  [
             { "icon": "a", "label": qsTr("Welcome"),      "page": "WelcomPage.qml", "sublevel": [], "subindex": -1},
             { "icon": "z", "label": qsTr("Search"),       "page": "Browse/SearchPage.qml", "sublevel": [], "subindex": -1},
-            { "icon": "c", "label": qsTr("Project"),      "page": "", "sublevel": [
+            { "icon": "c", "label": qsTr("Projects"),      "page": "", "sublevel": [
                 { "icon": "c", "label": qsTr("Browser"),   "page": "Browse/ProjectsPage.qml", "sublevel": [], "subindex": -1, "projectId": -1}
                 ], "subindex": 0},
-            { "icon": "b", "label": qsTr("Subject"),    "page": "", "sublevel": [
+            { "icon": "b", "label": qsTr("Subjects"),    "page": "", "sublevel": [
                 { "icon": "z", "label": qsTr("Browser"), "page": "Browse/SubjectsPage.qml", "sublevel": [], "subindex": -1, "subjectId": -1},
                 { "icon": "b", "label": "Michel Dupont","page": "", "sublevel": [
                     { "label": qsTr("Summary"),    "page": "Subject/SummaryPage.qml", "sublevel": []},
@@ -56,18 +56,21 @@ QtObject
                 ], "subindex": 0},
             ], "subindex": 0},
             { "icon": "d", "label": qsTr("Settings"),      "page": "",   "sublevel": [
-                { "icon": "q", "label": qsTr("Panel"),     "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "L", "label": qsTr("Pipeline"),  "page": "Settings/PipesPage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "b", "label": qsTr("My profile"),"page": "Settings/ProfilePage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "7", "label": qsTr("Server"),    "page": "Settings/ServerPage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "}", "label": qsTr("Interface"), "page": "Settings/InterfacePage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "b", "label": qsTr("My profile"),    "page": "Settings/ProfilePage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "I", "label": qsTr("Application"),   "page": "Settings/ApplicationPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "q", "label": qsTr("Panels"),     "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "d", "label": qsTr("Administration"), "page": "", "sublevel": [
+                    { "icon": "^", "label": qsTr("Statistics"), "page": "Settings/AdminStatisticsPage.qml", "sublevel": [], "subindex": -1},
+                    { "icon": "@", "label": qsTr("Users"),      "page": "Settings/AdminUsersPage.qml", "sublevel": [], "subindex": -1},
+                    { "icon": "L", "label": qsTr("Pipelines"),   "page": "Settings/AdminPipesPage.qml", "sublevel": [], "subindex": -1},
+                    { "icon": "B", "label": qsTr("Databases"),  "page": "Settings/AdminServerPage.qml", "sublevel": [], "subindex": -1},
+                    ], "subindex": 0},
                 ], "subindex": 0},
             { "icon": "e", "label": qsTr("Help"),           "page": "", "sublevel": [
                 { "icon": "e", "label": qsTr("User guide"), "page": "Help/UserGuidePage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "f", "label": qsTr("About"),      "page": "Help/AboutPage.qml", "sublevel": [], "subindex": -1}
                 ], "subindex": 0},
-            { "icon": "h", "label": qsTr("Close"),        "page": "@close",      "sublevel": [], "subindex": -1}//,
-            //{ "icon": "~", "label": qsTr("DEBUG"),        "page": "Analysis/Filtering/FilteringPage.qml",      "sublevel": [], "subindex": -1}
+            { "icon": "h", "label": qsTr("Close"),        "page": "@close",      "sublevel": [], "subindex": -1}
         ]
     }
 
@@ -101,5 +104,34 @@ QtObject
                    ], "subindex": 0});
             }
         }
+    }
+
+    // TOOLS
+    function formatBigNumber(value)
+    {
+        var n = value.toString();
+        var p = n.indexOf('.');
+        n = n.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, function($0, i)
+        {
+            return p<0 || i<p ? ($0+' ') : $0;
+        });
+        return n;
+    }
+
+
+    property var seqColorMapCss : ({
+        'A':'<span style="color:'+ theme.filtering.seqA +'">A</span>',
+        'C':'<span style="color:'+ theme.filtering.seqC +'">C</span>',
+        'G':'<span style="color:'+ theme.filtering.seqG +'">G</span>',
+        'T':'<span style="color:'+ theme.filtering.seqT +'">T</span>'})
+
+    function formatSequence(seq)
+    {
+        var html = "";
+        for (var i=0; i<seq.length; i++)
+        {
+            html += seqColorMapCss[seq[i]];
+        }
+        return html;
     }
 } 
