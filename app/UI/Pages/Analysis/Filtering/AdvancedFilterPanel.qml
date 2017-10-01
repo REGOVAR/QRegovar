@@ -7,6 +7,7 @@ import org.regovar 1.0
 import "../../../Regovar"
 import "../../../Framework"
 import "AdvancedFilter"
+import "../../../Dialogs"
 
 Rectangle
 {
@@ -14,6 +15,14 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property FilteringAnalysis model
+    Connections
+    {
+        target: model
+        onAddNewFilterCondition:
+        {
+            addNewCondition(conditionJson);
+        }
+    }
 
     ColumnLayout
     {
@@ -100,6 +109,27 @@ Rectangle
             {
                 model.emitDisplayFilterSavingFormPopup();
             }
+        }
+    }
+
+    property string newCondLogicalGroupUuid: ""
+    FilterNewConditionDialog
+    {
+        id: filterNewCondPopup;
+        model: root.model
+        onAddNewCondition:
+        {
+            advancedFilterEditor.addNewCondition(newCondLogicalGroupUuid, conditionJson);
+        }
+    }
+    Connections
+    {
+        target: model
+        onDisplayFilterNewCondPopup:
+        {
+            newCondLogicalGroupUuid = conditionUid;
+            console.log("Saved UUID : " + newCondLogicalGroupUuid);
+            filterNewCondPopup.open();
         }
     }
 }

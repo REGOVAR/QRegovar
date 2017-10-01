@@ -50,9 +50,7 @@
         <file>Pages/Analysis/Filtering/AdvancedFilter/FilterFormField.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilter/FilterFormLogical.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilter/FilterFormSet.qml</file>
-        <file>Pages/Analysis/Filtering/AdvancedFilter/GenericBlock.b.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilter/GenericBlock.qml</file>
-        <file>Pages/Analysis/Filtering/AdvancedFilter/LogicalBlock.b.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilter/LogicalBlock.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilter/SetBlock.b.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilter/SetBlock.qml</file>

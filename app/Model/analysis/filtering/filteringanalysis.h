@@ -106,7 +106,7 @@ public:
     Q_INVOKABLE inline FieldColumnInfos* getColumnInfo(QString uid) { return mAnnotations.contains(uid) ? mAnnotations[uid] : nullptr; }
     Q_INVOKABLE void getVariantInfo(QString variantId);
     Q_INVOKABLE inline void emitDisplayFilterSavingFormPopup() { emit displayFilterSavingFormPopup(); }
-    Q_INVOKABLE inline void emitDisplayFilterNewCondPopup(QJsonArray) { emit displayFilterNewCondPopup(); }
+    Q_INVOKABLE inline void emitDisplayFilterNewCondPopup(QString conditionUid) { emit displayFilterNewCondPopup(conditionUid); }
     Q_INVOKABLE inline void emitSelectedAnnotationsDBChanged() { emit selectedAnnotationsDBChanged(); }
     Q_INVOKABLE void saveCurrentFilter(QString filterName, QString filterDescription);
     Q_INVOKABLE void loadFilter(QJsonObject filter);
@@ -136,7 +136,7 @@ Q_SIGNALS:
     void resultsTotalChanged();
     void onContextualVariantInformationReady(QJsonObject json);
     void displayFilterSavingFormPopup();
-    void displayFilterNewCondPopup();
+    void displayFilterNewCondPopup(QString conditionUid);
     void selectedAnnotationsDBChanged();
     void refChanged();
     void isTrioChanged();
@@ -144,6 +144,7 @@ Q_SIGNALS:
     void trioMotherChanged();
     void trioFatherChanged();
     void isLoadingChanged();
+
 
 public Q_SLOTS:
     //! method use to "chain" asynch request for the init of the analysis

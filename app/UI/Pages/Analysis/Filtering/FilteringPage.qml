@@ -88,14 +88,7 @@ Rectangle
         }
     }
 
-    FilterNewConditionDialog { id: filterNewCondPopup; model: root.model }
-    Connections
-    {
-        target: model
-        onDisplayFilterNewCondPopup:
-        {
-            filterNewCondPopup.open();
-        }
-    }
+
+
 
 }

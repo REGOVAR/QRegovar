@@ -18,7 +18,7 @@ Dialog
     height: 500
     property FilteringAnalysis model
 
-
+    signal addNewCondition(var conditionJson)
 
 
 
@@ -138,6 +138,13 @@ Dialog
             Button
             {
                 text: qsTr("Add filter")
+                onClicked:
+                {
+                    var json = {"type": "logical", "operator": "OR"};
+                    // {"type": "field", "field": "92a9da3488b1127623c4e3ac7b6f67e2", "operator": ">", "value": True}
+                    // {"type": "set", "test" : "variant", "operator":"IN", "set": "sp_5"}
+                    addNewCondition(json);
+                }
 
             }
             Button

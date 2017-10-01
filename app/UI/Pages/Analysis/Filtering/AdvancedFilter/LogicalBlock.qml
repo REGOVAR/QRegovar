@@ -21,11 +21,15 @@ Rectangle
 
 
     property string logicalColor: Regovar.theme.filtering.filterAND
+    property string uuid: ""
 
     onModelChanged: updateView()
     onAnalysisChanged: updateView()
-    Component.onCompleted: updateView()
-
+    Component.onCompleted:
+    {
+        root.uuid = regovar.generateUuid().toString();
+        updateView();
+    }
 
     function updateView()
     {
@@ -53,6 +57,11 @@ Rectangle
         console.log("resize height : " + root.height);
     }
 
+    function addNewCondition(logicalBlockUuid, conditionJson)
+    {
+
+        console.log("LogicalBlock.addNewCondition : " + logicalBlockUuid + " " + conditionJson);
+    }
 
 
     Rectangle
@@ -274,7 +283,7 @@ Rectangle
             hoverEnabled: true
             onEntered: addConditionButton.isHover = true
             onExited: addConditionButton.isHover = false
-            onClicked: analysis.emitDisplayFilterNewCondPopup(root.model)
+            onClicked: analysis.emitDisplayFilterNewCondPopup(root.uuid)
         }
     }
 }

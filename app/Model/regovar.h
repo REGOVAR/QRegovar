@@ -131,6 +131,7 @@ public:
     Q_INVOKABLE void loadWelcomData();
     Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void loadSampleBrowser(int refId);
+    Q_INVOKABLE inline QUuid generateUuid() { return QUuid::createUuid(); }
     void initFlatProjectList();
     void initFlatProjectListRecursive(QJsonArray data, QString prefix);
 
