@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
+import org.regovar 1.0
 
 import "../../../../Regovar"
 import "../../../../Framework"
@@ -29,6 +30,7 @@ Rectangle
         }
         ComboBox
         {
+            id: testSelector
             Layout.fillWidth: true
             model: [qsTr("Variant"), qsTr("Site")]
         }
@@ -39,6 +41,7 @@ Rectangle
         }
         ComboBox
         {
+            id: operatorSelector
             Layout.fillWidth: true
             model: [qsTr("IN"), qsTr("NOT IN")]
         }
@@ -49,6 +52,7 @@ Rectangle
         }
         ComboBox
         {
+            id: valueSelector
             Layout.fillWidth: true
             editable: true
             model: ["Toto", "Tata", "Tota", "ToTu", "Tato", "Tutu", "Tuta", "tuto"]
@@ -86,5 +90,12 @@ Rectangle
         anchors.bottom: root.bottom
         anchors.top: root.top
         color: Regovar.theme.boxColor.border
+    }
+
+    function getFilter()
+    {
+        var field = fieldSelector.selectedItem;
+
+        return [operatorSelector.model[operatorSelector.currentIndex], testSelector.model[testSelector.currentIndex], ["sample", 1]];
     }
 }

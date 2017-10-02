@@ -15,24 +15,22 @@ Rectangle
     color: "transparent"
 
     property FilteringAnalysis analysis
+    property AdvancedFilterModel model
     property bool isChecked: true
-    property var model
-    property var opMapping: {"<":"<", "<=": "≤", "==": "=", ">=": "≥", ">": ">", "!=": "≠"}
-    property var opMappingR: {"<":"<", "≤": "<=", "=": "==", "≥": ">=", ">": ">", "≠": "!="}
 
-    onModelChanged: updateView()
-    Component.onCompleted: updateView()
-    onAnalysisChanged: updateView()
+//    onModelChanged: updateView()
+//    Component.onCompleted: updateView()
+//    onAnalysisChanged: updateView()
 
-    function updateView()
-    {
-        if (model !== undefined && analysis !== null)
-        {
-            operator.text = opMapping[model[0]] ;
-            leftOp.text = analysis.getColumnInfo(model[1][1]).annotation.name;
-            rightOp.text = model[2][1];
-        }
-    }
+//    function updateView()
+//    {
+//        if (model !== undefined && analysis !== null)
+//        {
+//            operator.text = opMapping[model[0]] ;
+//            leftOp.text = analysis.getColumnInfo(model[1][1]).annotation.name;
+//            rightOp.text = model[2][1];
+//        }
+//    }
 
     Rectangle
     {
@@ -48,7 +46,7 @@ Rectangle
             Text
             {
                 id: leftOp
-                text: "-"
+                text: model.leftOp
                 height: Regovar.theme.font.boxSize.control
                 verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.control
@@ -57,7 +55,7 @@ Rectangle
             Text
             {
                 id: operator
-                text: "?"
+                text: model.op
                 height: Regovar.theme.font.boxSize.control
                 verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.control
@@ -66,7 +64,7 @@ Rectangle
             Text
             {
                 id: rightOp
-                text: "-"
+                text: model.rightOp
                 height: Regovar.theme.font.boxSize.control
                 verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.control

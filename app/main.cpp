@@ -32,6 +32,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<Reference>("org.regovar", 1, 0, "Reference");
     qmlRegisterType<FieldColumnInfos>("org.regovar", 1, 0, "FieldColumnInfos");
     qmlRegisterType<QuickFilterField>("org.regovar", 1, 0, "QuickFilterField");
+    qmlRegisterType<AdvancedFilterModel>("org.regovar", 1, 0, "AdvancedFilterModel");
+
     qmlRegisterType<Project>("org.regovar", 1, 0, "Project");
 
 

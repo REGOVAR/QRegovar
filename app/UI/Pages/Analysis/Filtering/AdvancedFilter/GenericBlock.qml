@@ -11,26 +11,30 @@ Rectangle
     id: root
 
     property FilteringAnalysis analysis
+    property AdvancedFilterModel model
     property bool isChecked
-    property var model
     property var component
 
     color: "transparent"
 
     onModelChanged:
     {
-        var operator = model[0];
-        if (operator === "AND" || operator === "OR")
+        if (model)
         {
-            component = createBlock("LogicalBlock.qml", model);
-        }
-        else if  (operator === "IN" || operator === "NOTIN")
-        {
-            component = createBlock("SetBlock.qml", model);
-        }
-        else
-        {
-            component = createBlock("FieldBlock.qml", model);
+            console.log("model = " + model);
+            console.log("type  = " + model.type);
+            if (model.type === 0)
+            {
+                component = createBlock("LogicalBlock.qml", model);
+            }
+            else if (model.type === 2)
+            {
+                component = createBlock("SetBlock.qml", model);
+            }
+            else
+            {
+                component = createBlock("FieldBlock.qml", model);
+            }
         }
     }
 

@@ -18,6 +18,7 @@ Dialog
 
     property alias filterName: nameField.text
     property alias filterDescription: descriptionField.text
+    property bool quickfilter: true
 
 
 
@@ -146,7 +147,7 @@ Dialog
 
                     onClicked:
                     {
-                        model.saveCurrentFilter(filterSavingFormPopup.filterName, filterSavingFormPopup.filterDescription);
+                        model.saveCurrentFilter(filterSavingFormPopup.quickfilter, filterSavingFormPopup.filterName, filterSavingFormPopup.filterDescription);
                         filterSavingFormPopup.close();
                     }
                 }

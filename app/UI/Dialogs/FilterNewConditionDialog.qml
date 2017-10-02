@@ -21,6 +21,16 @@ Dialog
     signal addNewCondition(var conditionJson)
 
 
+    onVisibleChanged:
+    {
+        if (visible)
+        {
+            tabView.currentIndex = 0;
+            model.newConditionModel.type = AdvancedFilterModel.LogicalBlock;
+        }
+    }
+
+
 
     contentItem: Rectangle
     {
@@ -91,6 +101,7 @@ Dialog
 
         TabView
         {
+            id: tabView
             anchors.top: header.bottom
             anchors.left: parent.left
             anchors.right: parent.right
@@ -140,12 +151,10 @@ Dialog
                 text: qsTr("Add filter")
                 onClicked:
                 {
-                    var json = {"type": "logical", "operator": "OR"};
-                    // {"type": "field", "field": "92a9da3488b1127623c4e3ac7b6f67e2", "operator": ">", "value": True}
-                    // {"type": "set", "test" : "variant", "operator":"IN", "set": "sp_5"}
-                    addNewCondition(json);
+                    console.log("retrieve model.toJson")
+                    tabView.forceUpdateModel();
+                    addNewCondition(model.newConditionModel.toJson());
                 }
-
             }
             Button
             {

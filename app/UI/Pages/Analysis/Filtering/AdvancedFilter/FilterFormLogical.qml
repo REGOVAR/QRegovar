@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
+import org.regovar 1.0
 
 import "../../../../Regovar"
 import "../../../../Framework"
@@ -10,7 +11,14 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property alias logicalCondition: andCond.checked
+    property FilteringAnalysis model
+    onZChanged:
+    {
+        if (z == 100)
+        {
+            updateModel();
+        }
+    }
 
 
     ColumnLayout
@@ -39,15 +47,15 @@ Rectangle
             {
                 id: andCond
                 text: qsTr("AND")
-                checked: true
-                onCheckedChanged: orCond.checked = !checked
+                checked: !orCond.checked
+                onCheckedChanged: updateModel()
             }
             CheckBox
             {
                 id: orCond
                 text: qsTr("OR")
-                checked: false
-                onCheckedChanged: andCond.checked = !checked
+                checked: !andCond.checked
+                onCheckedChanged: updateModel()
             }
         }
 
@@ -83,5 +91,14 @@ Rectangle
         anchors.bottom: root.bottom
         anchors.top: root.top
         color: Regovar.theme.boxColor.border
+    }
+
+    function updateModel()
+    {
+        if (model)
+        {
+            model.newConditionModel.type =  AdvancedFilterModel.LogicalBlock;
+            model.newConditionModel.opIndex = andCond.checked ? 0 : 1;
+        }
     }
 }

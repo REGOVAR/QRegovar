@@ -10,7 +10,9 @@
 #include "Model/sample/sample.h"
 #include "fieldcolumninfos.h"
 #include "reference.h"
+#include "advancedfilters/advancedfiltermodel.h"
 
+class AdvancedFilterModel;
 class ResultsTreeModel;
 class RemoteSampleTreeModel;
 
@@ -22,11 +24,9 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(int refId READ refId NOTIFY refChanged)
     Q_PROPERTY(QString refName READ refName NOTIFY refChanged)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
-    Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterChanged)
-    Q_PROPERTY(QJsonArray filterJson READ filterJson NOTIFY filterJsonChanged)
+    Q_PROPERTY(QJsonArray filterJson READ filterJson NOTIFY filterChanged)
     Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsChanged)
-    Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged)
-    Q_PROPERTY(QVariantList filters READ filters NOTIFY filtersChanged)
+    Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged) // TODO : shall be results.total
     Q_PROPERTY(QList<QObject*> samples READ samples4qml NOTIFY samplesChanged)
     Q_PROPERTY(bool isTrio READ isTrio WRITE setIsTrio NOTIFY isTrioChanged)
     Q_PROPERTY(Sample* child READ trioChild WRITE setTrioChild NOTIFY trioChildChanged)
@@ -37,8 +37,11 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QList<QObject*> annotationsFlatList READ annotationsFlatList NOTIFY annotationsFlatListChanged)
     Q_PROPERTY(QList<QObject*> allAnnotations READ allAnnotations NOTIFY allAnnotationsChanged)
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsChanged)
-    Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY quickfiltersChanged)
-    //Q_PROPERTY(RemoteSampleTreeModel* remoteSamples READ remoteSamples NOTIFY remoteSamplesChanged)
+    Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY filterChanged)
+    Q_PROPERTY(AdvancedFilterModel* advancedfilter READ advancedfilter NOTIFY filterChanged)
+    Q_PROPERTY(QVariantList savedFilters READ savedFilters NOTIFY filterChanged)
+    // New/Edit ConditionDialog
+    Q_PROPERTY(AdvancedFilterModel* newConditionModel READ newConditionModel NOTIFY newConditionModelChanged)
     // "Shortcuts properties" for QML
     // Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
@@ -50,11 +53,11 @@ class FilteringAnalysis : public Analysis
 public:
     enum LoadingStatus
     {
-        empty,
-        loadingAnnotations,
+        Empty,
+        LoadingAnnotations,
         LoadingResults,
-        ready,
-        error
+        Ready,
+        Error
     };
 
     // Constructor
@@ -67,11 +70,10 @@ public:
     // Analysis properties
     inline QString refName() { return mRefName; }
     inline QString status() { return mStatus; }
-    inline QString filter() { return mFilter; }
     inline QJsonArray filterJson() { return mFilterJson; }
     inline QStringList fields() { return mFields; }
     inline int resultsTotal() { return mResultsTotal; }
-    inline QVariantList filters() { return mFilters; }
+    inline QVariantList savedFilters() { return mSavedFilters; }
     inline QList<Sample*> samples() { return mSamples; }
     inline bool isTrio() const { return mIsTrio; }
     inline Sample* trioChild() const { return mTrioChild; }
@@ -83,6 +85,8 @@ public:
     inline QList<QObject*> allAnnotations() { return mAllAnnotations; }
     inline ResultsTreeModel* results() { return mResults; }
     inline QuickFilterModel* quickfilters() { return mQuickFilters; }
+    inline AdvancedFilterModel* advancedfilter() { return mAdvancedFilter; }
+    inline AdvancedFilterModel* newConditionModel() { return mNewConditionModel; }
     inline RemoteSampleTreeModel* remoteSamples() { return mRemoteSampleTreeModel; }
     // "Shortcuts properties" for QML
     QList<QObject*> samples4qml();
@@ -91,8 +95,7 @@ public:
     inline bool isLoading() const { return mIsLoading; }
 
     // Setters
-    Q_INVOKABLE inline void setFilter(QString filter) { mFilter = filter; emit filterChanged(); }
-    Q_INVOKABLE inline void setFilterJson(QJsonArray filterJson) { mFilterJson = filterJson; emit filterJsonChanged(); }
+    Q_INVOKABLE inline void setFilterJson(QJsonArray filterJson) { mFilterJson = filterJson; emit filterChanged(); }
     Q_INVOKABLE int setField(QString uid, bool isDisplayed, int order=-1);
     Q_INVOKABLE void setReference(Reference* ref, bool continueInit=false);
     Q_INVOKABLE void setIsTrio(bool flag) { mIsTrio=flag; emit isTrioChanged(); }
@@ -108,12 +111,15 @@ public:
     Q_INVOKABLE inline void emitDisplayFilterSavingFormPopup() { emit displayFilterSavingFormPopup(); }
     Q_INVOKABLE inline void emitDisplayFilterNewCondPopup(QString conditionUid) { emit displayFilterNewCondPopup(conditionUid); }
     Q_INVOKABLE inline void emitSelectedAnnotationsDBChanged() { emit selectedAnnotationsDBChanged(); }
-    Q_INVOKABLE void saveCurrentFilter(QString filterName, QString filterDescription);
-    Q_INVOKABLE void loadFilter(QJsonObject filter);
+    Q_INVOKABLE void saveCurrentFilter(bool quickFilter, QString filterName, QString filterDescription);
     Q_INVOKABLE void loadFilter(QString filter);
+    Q_INVOKABLE void loadFilter(QJsonObject filter);
+    Q_INVOKABLE void loadFilter(QJsonArray filter);
     Q_INVOKABLE void addSamples(QList<QObject*> samples);
     Q_INVOKABLE void removeSamples(QList<QObject*> samples);
     Q_INVOKABLE void addSamplesFromFile(int fileId);
+
+    void raiseNewInternalLoadingStatus(LoadingStatus newStatus);
 
 
 Q_SIGNALS:
@@ -124,11 +130,8 @@ Q_SIGNALS:
     void annotationsFlatListChanged();
     void allAnnotationsChanged();
     void filterChanged();
-    void filterJsonChanged();
-    void filtersChanged();
     void fieldsChanged();
     void resultsChanged();
-    void quickfiltersChanged();
     void remoteSamplesChanged();
     void samplesChanged();
     void sampleColumnDisplayedUpdated();
@@ -144,6 +147,7 @@ Q_SIGNALS:
     void trioMotherChanged();
     void trioFatherChanged();
     void isLoadingChanged();
+    void newConditionModelChanged();
 
 
 public Q_SLOTS:
@@ -157,7 +161,6 @@ private:
     int mRefId;
     QString mRefName;
     QStringList mFields;
-    QString mFilter;
     QJsonArray mFilterJson;
     QList<Sample*> mSamples;
     bool mSampleColumnDisplayed;
@@ -166,6 +169,8 @@ private:
     LoadingStatus mLoadingStatus; // internal (UI) status used to track and coordinates asynchrone initialisation of the analysis
     ResultsTreeModel* mResults;
     QuickFilterModel* mQuickFilters;
+    AdvancedFilterModel* mAdvancedFilter;
+    AdvancedFilterModel* mNewConditionModel;
 
     QHash<QString, FieldColumnInfos*> mAnnotations;
     QList<QObject*> mAnnotationsFlatList;
@@ -180,7 +185,7 @@ private:
     Sample* mTrioMother;
     Sample* mTrioFather;
     int mResultsTotal;
-    QVariantList mFilters;
+    QVariantList mSavedFilters;
     QList<int> mSamplesIds; // = mSamples, but use as shortcuts to check quickly by sample id
     bool mIsLoading;
 

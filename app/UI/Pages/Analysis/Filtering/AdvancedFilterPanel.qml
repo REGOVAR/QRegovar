@@ -15,12 +15,12 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property FilteringAnalysis model
-    Connections
+    onModelChanged:
     {
-        target: model
-        onAddNewFilterCondition:
+        if (model)
         {
-            addNewCondition(conditionJson);
+            advancedFilterEditor.analysis = model;
+            advancedFilterEditor.model = model.advancedfilter;
         }
     }
 
@@ -70,9 +70,6 @@ Rectangle
             LogicalBlock
             {
                 id:advancedFilterEditor
-                model: root.model.filterJson
-                analysis : root.model
-
                 x: 5
                 y: 5
                 width: root.width - 10
@@ -95,9 +92,7 @@ Rectangle
             iconText: "x"
             onClicked:
             {
-
-                model.loadFilter(model.quickfilters.getFilter());
-                model.results.reset();
+                model.results.applyFilter(model.advancedfilter.toJson());
             }
         }
         ButtonWelcom
@@ -119,7 +114,9 @@ Rectangle
         model: root.model
         onAddNewCondition:
         {
-            advancedFilterEditor.addNewCondition(newCondLogicalGroupUuid, conditionJson);
+            console.log("AddNewCond from UUID : " + newCondLogicalGroupUuid + " " + conditionJson);
+            advancedFilterEditor.update()
+            advancedFilterEditor.model.addCondition(newCondLogicalGroupUuid, conditionJson);
         }
     }
     Connections

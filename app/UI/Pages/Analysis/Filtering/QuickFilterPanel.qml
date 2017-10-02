@@ -85,8 +85,7 @@ Rectangle
             iconText: "x"
             onClicked:
             {
-                model.setFilter(model.quickfilters.getFilter());
-                model.results.reset();
+                model.results.applyFilter(model.quickfilters.toJson());
             }
         }
         ButtonWelcom

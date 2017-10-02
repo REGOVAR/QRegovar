@@ -155,13 +155,12 @@ bool ResultsTreeModel::fromJson(QJsonObject)
 
 
 //! Reset the Treemodel with data for the current filter set in the FilteringAnalysis
-void ResultsTreeModel::reset()
+void ResultsTreeModel::applyFilter(QJsonArray filter)
 {
     setIsLoading(true);
 
-    QJsonDocument filter = QJsonDocument::fromJson(mFilteringAnalysis->filter().toUtf8());
     QJsonObject body;
-    body.insert("filter", filter.array());
+    body.insert("filter", filter);
     body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
 
     Request* request = Request::post(QString("/analysis/%1/filtering").arg(mAnalysisId), QJsonDocument(body).toJson());
@@ -183,9 +182,8 @@ void ResultsTreeModel::reset()
             else
             {
                 // Get total number of result
-                QJsonDocument filter = QJsonDocument::fromJson(mFilteringAnalysis->filter().toUtf8());
                 QJsonObject body;
-                body.insert("filter", filter.array());
+                body.insert("filter", mFilteringAnalysis->advancedfilter()->toJson());
                 body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
 
                 Request* request = Request::post(QString("/analysis/%1/filtering/count").arg(mAnalysisId), QJsonDocument(body).toJson());
@@ -236,9 +234,8 @@ void ResultsTreeModel::loadNext()
     setIsLoading(true);
 
     // Request the server to retrieve new entries
-    QJsonDocument filter = QJsonDocument::fromJson(mFilteringAnalysis->filter().toUtf8());
     QJsonObject body;
-    body.insert("filter", filter.array());
+    body.insert("filter", mFilteringAnalysis->advancedfilter()->toJson());
     body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
     body.insert("limit", QJsonValue::fromVariant(QVariant(mPagination)));
     body.insert("offset", QJsonValue::fromVariant(QVariant(mLoaded)));

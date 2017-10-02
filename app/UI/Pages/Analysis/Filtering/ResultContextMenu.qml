@@ -142,7 +142,7 @@ Dialog
                 {
                     height: 1
                     width: root.width
-                    anchors.bottom: header.bottom
+                    anchors.bottom: geneHeader.bottom
                     color: Regovar.theme.primaryColor.back.dark
                 }
             }

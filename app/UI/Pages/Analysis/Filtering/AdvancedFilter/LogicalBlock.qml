@@ -13,32 +13,18 @@ Rectangle
     color: "transparent"
 
     property FilteringAnalysis analysis
+    property AdvancedFilterModel model
+
     property bool isChecked: true
-    property var model
-    property var subItems
     property bool isExpand: true
     onIsExpandChanged: resize()
 
+    Component.onCompleted: resize()
+
 
     property string logicalColor: Regovar.theme.filtering.filterAND
-    property string uuid: ""
 
-    onModelChanged: updateView()
-    onAnalysisChanged: updateView()
-    Component.onCompleted:
-    {
-        root.uuid = regovar.generateUuid().toString();
-        updateView();
-    }
 
-    function updateView()
-    {
-        if (model != null && analysis != null)
-        {
-            root.subItems = model[1];
-            operator.currentIndex = model[0] === "AND" ? 0 : 1;
-        }
-    }
 
 
     function fullSize()
@@ -57,12 +43,6 @@ Rectangle
         console.log("resize height : " + root.height);
     }
 
-    function addNewCondition(logicalBlockUuid, conditionJson)
-    {
-
-        console.log("LogicalBlock.addNewCondition : " + logicalBlockUuid + " " + conditionJson);
-    }
-
 
     Rectangle
     {
@@ -79,7 +59,8 @@ Rectangle
             anchors.top: parent.top
             anchors.left: parent.left
             enabled: root.isChecked
-            model: ["AND", "OR"]
+            model: (root.model) ? root.model.opList : []
+            currentIndex: (root.model) ? root.model.opIndex : 0
             color: root.isChecked ? root.logicalColor : Regovar.theme.frontColor.disable
             onCurrentIndexChanged:
             {
@@ -136,7 +117,7 @@ Rectangle
         Repeater
         {
             id: repeater
-            model:root.subItems
+            model: (root.model) ? root.model.subConditions : []
 
 
             Rectangle
@@ -283,7 +264,7 @@ Rectangle
             hoverEnabled: true
             onEntered: addConditionButton.isHover = true
             onExited: addConditionButton.isHover = false
-            onClicked: analysis.emitDisplayFilterNewCondPopup(root.uuid)
+            onClicked: analysis.emitDisplayFilterNewCondPopup(model.qmlId)
         }
     }
 }

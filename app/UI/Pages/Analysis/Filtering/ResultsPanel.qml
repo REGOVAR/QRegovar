@@ -423,7 +423,7 @@ Rectangle
                 var uid = columns[idx];
                 resultsTree.insertField(uid, idx);
             }
-            root.model.results.reset();
+            //root.model.results.reset();
         }
 
 

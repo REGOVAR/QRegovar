@@ -35,8 +35,8 @@ public:
 
 
     // Methods
-    //! Reset the Treemodel with data for the current filter set in the FilteringAnalysis
-    Q_INVOKABLE void reset();
+    //! Force the Treemodel to reload data according to the provided filter
+    Q_INVOKABLE void applyFilter(QJsonArray filter);
     //! To use when new columns have been added, to add info in the model without reseting it
     Q_INVOKABLE void reload();
     //! Load next result according to the mResultsPagination value (default is 100)

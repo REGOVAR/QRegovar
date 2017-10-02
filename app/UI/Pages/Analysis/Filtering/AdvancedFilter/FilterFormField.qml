@@ -17,7 +17,13 @@ Rectangle
         if (model)
         {
             fieldSelector.model = model.annotationsFlatList;
-
+        }
+    }
+    onZChanged:
+    {
+        if (z == 100)
+        {
+            updateModel();
         }
     }
 
@@ -60,23 +66,26 @@ Rectangle
 
         Text
         {
+            id: operatorLabel
             text: qsTr("Operator")
         }
         ComboBox
         {
             id: operatorSelector
             Layout.fillWidth: true
-            model: ["<", ">", "=", "!="]
+            currentIndex: 0
         }
 
         Text
         {
+            id: valueLabel
             text: qsTr("Value")
         }
         TextField
         {
             id: fieldStringInput
             Layout.fillWidth: true
+            text: (model) ? model.newConditionModel.fieldValue : "-"
         }
         // fieldRealInput
         // fieldIntInput
@@ -124,10 +133,25 @@ Rectangle
         if (item)
         {
             fieldDescription.text = item.description;
+            model.newConditionModel.fieldUid = item.uid;
+            operatorSelector.model = model.newConditionModel.opList;
+            operatorSelector.currentIndex = 0;
+            fieldStringInput.text = "";
+            // TODO : hidde/display element according to the type of field
         }
         else
         {
             fieldDescription.text = "-";
+        }
+    }
+
+    function updateModel()
+    {
+        if (model)
+        {
+            model.newConditionModel.type = AdvancedFilterModel.FieldBlock;
+            model.newConditionModel.opIndex = operatorSelector.currentIndex;
+            model.newConditionModel.fieldValue = fieldStringInput.text;
         }
     }
 }

@@ -37,7 +37,8 @@ HEADERS += \
     Model/analysis/filtering/remotesampletreeitem.h \
     Model/analysis/filtering/remotesampletreemodel.h \
     Model/analysis/pipeline/pipelineanalysis.h \
-    Model/analysis/filtering/reference.h
+    Model/analysis/filtering/reference.h \
+    Model/analysis/filtering/advancedfilters/advancedfiltermodel.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -72,7 +73,8 @@ SOURCES += main.cpp \
     Model/analysis/filtering/remotesampletreeitem.cpp \
     Model/analysis/filtering/remotesampletreemodel.cpp \
     Model/analysis/pipeline/pipelineanalysis.cpp \
-    Model/analysis/filtering/reference.cpp
+    Model/analysis/filtering/reference.cpp \
+    Model/analysis/filtering/advancedfilters/advancedfiltermodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

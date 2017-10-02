@@ -27,7 +27,7 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: model.name
+            //text: model.name
             font.pixelSize: 20
             font.weight: Font.Black
         }
@@ -90,7 +90,7 @@ Rectangle
             Layout.fillWidth: true
             enabled: editionMode
             placeholderText: qsTr("Name of the analysis")
-            text: model.name
+            //text: model.name
             onTextChanged: if (model.name != text) model.name = text
         }
 
@@ -130,8 +130,8 @@ Rectangle
             Layout.fillWidth: true
             enabled: editionMode
             height: 3 * Regovar.theme.font.size.control
-            text: model.comment
-            onTextChanged: if (model.comment != text) model.comment = text
+            //text: model.comment
+            //onTextChanged: if (model.comment != text) model.comment = text
         }
 
 
@@ -176,7 +176,7 @@ Rectangle
         {
             Layout.fillWidth: true
             height: Regovar.theme.font.size.header
-            text: model.status
+            //text: model.status
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.control
             font.family: Regovar.theme.font.familly
@@ -217,7 +217,7 @@ Rectangle
         {
             Layout.fillWidth: true
             height: Regovar.theme.font.size.header
-            text: model.refName
+            //text: model.refName
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.control
             font.family: Regovar.theme.font.familly
@@ -242,7 +242,7 @@ Rectangle
 
             Repeater
             {
-                model: model.samples
+                //model: model.samples
 
                 Row
                 {
@@ -301,7 +301,7 @@ Rectangle
 
             Repeater
             {
-                model: model.selectedAnnotationsDB
+                //model: model.selectedAnnotationsDB
 
                 Text
                 {

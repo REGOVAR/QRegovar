@@ -11,6 +11,7 @@ Item
 
     property var tabsModel
     property var tabSharedModel
+    property alias currentIndex: tabsPanel.currentIndex
 
 
     Rectangle
@@ -221,5 +222,11 @@ Item
                 previousIndex = newIdx;
             }
         }
+    }
+
+    // TODO / FIXME : workaround to force a refresh before a validation in Dialog FilerNewCondition.
+    function forceUpdateModel()
+    {
+        menuPageMapping[tabsPanel.currentIndex].updateModel();
     }
 }

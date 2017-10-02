@@ -11,7 +11,9 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
     mResults = new ResultsTreeModel(this);
     mAnnotationsTreeModel = new AnnotationsTreeModel(this);
     mQuickFilters = new QuickFilterModel(this);
-    mLoadingStatus = empty;
+    mAdvancedFilter = new AdvancedFilterModel(this);
+    mNewConditionModel = new AdvancedFilterModel(this);
+    mLoadingStatus = Empty;
 
 
     connect(this, SIGNAL(loadingStatusChanged(LoadingStatus,LoadingStatus)),
@@ -33,6 +35,16 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     setType("Dynamic filtering analysis");
     setLastUpdate(QDateTime::fromString(json["update_date"].toString(), Qt::ISODate));
     mStatus = json["status"].toString();
+
+    // Getting ref
+    Reference* ref = regovar->referencesFromId(json["reference_id"].toInt());
+    if (ref == nullptr)
+    {
+        qDebug() << "Reference unknow !";
+        return false;
+    }
+    mResults->initAnalysisData(mId);
+    mQuickFilters->init(ref->id(), mId);
 
     // Parse settings
     QJsonObject settings = json["settings"].toObject();
@@ -67,12 +79,12 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
 
 
     // Retrieve saved filters
-    mFilters.clear();
+    mSavedFilters.clear();
     foreach (const QJsonValue filterdata, json["filters"].toArray())
     {
-        mFilters.append(filterdata.toObject());
+        mSavedFilters.append(filterdata.toObject());
     }
-    emit filtersChanged();
+    emit filterChanged();
 
     // Retrieve fields
     foreach (const QJsonValue field, json["fields"].toArray())
@@ -82,46 +94,39 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
         qDebug() << " - " << uid;
     }
 
-    // Retrieve filter
-    setFilterJson(json["filter"].toArray());
-    QJsonDocument doc;
-    doc.setArray(mFilterJson);
-    setFilter(QString(doc.toJson(QJsonDocument::Indented)));
-    // init UI according to filter
-    // mQuickFilters->loadFilter(mFilterJson);
 
-
-
-
-    mResults->initAnalysisData(mId);
-    mQuickFilters->init(mRefId, mId);
 
     // Loading of an analysis required several asynch steps
-    // 1 : need to load alls annotations available accdording to the referencial
-    // 2 : prepare quick filter (they need to check that they are complient with available annotations
-    // 3 : set filter with the last applied filter
-    // 4 :
+    // 1 : need to retrieve all complient annotations DB (need it when creating new analysis)
+    // 2 : next init model with all available annotation's fields and setup GUI model to display only selected annotations
+    // 3 : prepare quick filter (they need to check that they are complient with available annotations
+    // 4 : set filter with the last applied filter
     // 5 : load results
     // Chaining of loading step is done thanks to signals (see asynchLoading slot)
-    Reference* ref = regovar->referencesFromId(json["reference_id"].toInt());
-    if (ref == nullptr) return false;
-    setReference(ref, true);
 
+    // The "true" loading of the filter must be done only after that annotation* informations have been loaded
+    // so for the init, we just save json filter, without loading/signal
+    mFilterJson = json["filter"].toArray();
+
+    // Set the ref and start the next asynch loading step
+    setReference(ref, true);
 
     return true;
 }
 
 
+//! Set the reference for the analysis, and load all available annotations available for this ref (async)
 void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
 {
     if (ref->id() == mRefId) return;
+
 
     // Set current ref
     mRefId = ref->id();
     mRefName = ref->name();
     emit refChanged();
 
-    // Load complient annotations DB
+    // STEP 1 : Load all available complient annotations DB
     Request* req = Request::get(QString("/annotation/%1").arg(mRefId));
     connect(req, &Request::responseReceived, [this, req, continueInit](bool success, const QJsonObject& json)
     {
@@ -147,20 +152,15 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
                 }
             }
 
-            // continue by loading results
-            if (continueInit)
-            {
-                emit loadingStatusChanged(mLoadingStatus, loadingAnnotations);
-                mLoadingStatus = loadingAnnotations;
-            }
+            // continue by loading annotation's fields of selected DB
+            if (continueInit) raiseNewInternalLoadingStatus(LoadingAnnotations);
         }
         else
         {
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
-            emit loadingStatusChanged(mLoadingStatus, error);
-            mLoadingStatus = error;
+            raiseNewInternalLoadingStatus(Error);
         }
         emit allAnnotationsChanged();
         emit selectedAnnotationsDBChanged();
@@ -175,7 +175,7 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
 
 void FilteringAnalysis::asynchLoadingCoordination(LoadingStatus oldSatus, LoadingStatus newStatus)
 {
-    if (newStatus == loadingAnnotations)
+    if (newStatus == LoadingAnnotations)
     {
         loadAnnotations();
     }
@@ -227,18 +227,17 @@ void FilteringAnalysis::loadAnnotations()
     }
 
     // prepare quick filter (they need to check that they are complient with available annotations
-    //CRASH SOUS WINDOWS ? MAIS PAS SOUS LINUX... mQuickFilters->checkAnnotationsDB(mAllAnnotations);
-
+    // TODO : CRASH SOUS WINDOWS ? MAIS PAS SOUS LINUX...
+    mQuickFilters->checkAnnotationsDB(mAllAnnotations);
 
     // set filter with the last applied filter
-
+    loadFilter(mFilterJson);
 
     // Init columns displayed in the results table
     refreshDisplayedAnnotationColumns();
 
     // Load results(asynch)
-    emit loadingStatusChanged(mLoadingStatus, LoadingResults);
-    mLoadingStatus = LoadingResults;
+    raiseNewInternalLoadingStatus(LoadingResults);
 }
 
 void FilteringAnalysis::refreshDisplayedAnnotationColumns()
@@ -319,8 +318,9 @@ QStringList FilteringAnalysis::selectedAnnotationsDB()
 void FilteringAnalysis::loadResults()
 {
     QJsonObject body;
-    QJsonDocument filter = QJsonDocument::fromJson(mFilter.toUtf8());
-    body.insert("filter", filter.array());
+    //QJsonDocument filter = QJsonDocument::fromJson(mAdvancedFilter.toJson());
+
+    body.insert("filter", mAdvancedFilter->toJson());
     body.insert("fields", QJsonArray::fromStringList(mFields));
 
     Request* req = Request::post(QString("/analysis/%1/filtering").arg(mId), QJsonDocument(body).toJson());
@@ -330,16 +330,13 @@ void FilteringAnalysis::loadResults()
         {
             if (mResults->fromJson(json["data"].toObject()))
             {
-                emit loadingStatusChanged(mLoadingStatus, ready);
-
-                mLoadingStatus = ready;
+                raiseNewInternalLoadingStatus(Ready);
                 setIsLoading(false);
             }
             else
             {
                 qDebug() << "Filtering analysis init : Failed to load result";
-                emit loadingStatusChanged(mLoadingStatus, error);
-                mLoadingStatus = error;
+                raiseNewInternalLoadingStatus(Error);
             }
         }
         else
@@ -347,14 +344,17 @@ void FilteringAnalysis::loadResults()
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
-            emit loadingStatusChanged(mLoadingStatus, error);
-            mLoadingStatus = error;
+            raiseNewInternalLoadingStatus(Error);
         }
         req->deleteLater();
     });
 }
 
-
+void FilteringAnalysis::raiseNewInternalLoadingStatus(LoadingStatus newStatus)
+{
+    emit loadingStatusChanged(mLoadingStatus, newStatus);
+    mLoadingStatus = newStatus;
+}
 
 
 void FilteringAnalysis::getVariantInfo(QString variantId)
@@ -383,11 +383,21 @@ void FilteringAnalysis::getVariantInfo(QString variantId)
 
 
 
-void FilteringAnalysis::saveCurrentFilter(QString filterName, QString filterDescription)
+void FilteringAnalysis::saveCurrentFilter(bool quickFilter, QString filterName, QString filterDescription)
 {
+    QJsonArray filter;
+    if (quickFilter)
+    {
+        QJsonDocument f = QJsonDocument::fromJson(mQuickFilters->getFilter().toUtf8());
+        filter = f.array();
+    }
+    else
+    {
+        filter = mAdvancedFilter->toJson();
+    }
+
     QJsonObject body;
-    QJsonDocument filter = QJsonDocument::fromJson(mFilter.toUtf8());
-    body.insert("filter", filter.array());
+    body.insert("filter", filter);
     body.insert("name", filterName);
     if (!filterDescription.isEmpty())
     {
@@ -417,24 +427,17 @@ void FilteringAnalysis::saveCurrentFilter(QString filterName, QString filterDesc
 void FilteringAnalysis::loadFilter(QString filter)
 {
     QJsonDocument doc = QJsonDocument::fromJson(filter.toUtf8());
-    setFilter(filter);
-    setFilterJson(doc.array());
-
-    // TODO : Abandonned ? as quickfilter are too limitated to load every filters possibilities
-    // init UI according to filter
-    // mQuickFilters->loadFilter(mFilterJson);
+    loadFilter(doc.array());
 }
 void FilteringAnalysis::loadFilter(QJsonObject filter)
 {
-    // Retrieve filter
-    setFilterJson(filter["filter"].toArray());
-    QJsonDocument doc;
-    doc.setArray(mFilterJson);
-    setFilter(QString(doc.toJson(QJsonDocument::Indented)));
-
-    // TODO : Abandonned ? as quickfilter are too limitated to load every filters possibilities
-    // init UI according to filter
-    // mQuickFilters->loadFilter(mFilterJson);
+    loadFilter(filter["filter"].toArray());
+}
+void FilteringAnalysis::loadFilter(QJsonArray filter)
+{
+    // mQuickFilters->loadFilter(filter);
+    mAdvancedFilter->loadJson(filter);
+    setFilterJson(filter);
 }
 
 void FilteringAnalysis::addSamples(QList<QObject*> samples)
@@ -495,8 +498,7 @@ void FilteringAnalysis::addSamplesFromFile(int fileId)
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
-            emit loadingStatusChanged(mLoadingStatus, error);
-            mLoadingStatus = error;
+            raiseNewInternalLoadingStatus(Error);
         }
         req->deleteLater();
     });
