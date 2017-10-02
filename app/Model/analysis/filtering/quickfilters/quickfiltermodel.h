@@ -47,7 +47,7 @@ public:
 
     // Methods
     Q_INVOKABLE QString getFilter();
-    Q_INVOKABLE QString checkAnnotationsDB(QList<QObject*> dbs);
+    Q_INVOKABLE void checkAnnotationsDB(QList<QObject*> dbs);
     void loadFilter(QJsonArray filter);
 
 Q_SIGNALS:

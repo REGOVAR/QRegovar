@@ -40,3 +40,9 @@ CMakeLists.txt.user
 
 QRegovar-build/
 *.stash
+
+
+# Visual
+.vs/
+*.user
+*.vcxproj*

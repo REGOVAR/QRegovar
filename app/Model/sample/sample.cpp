@@ -53,6 +53,7 @@ bool Sample::fromJson(QJsonObject json)
     setStatusUI(QVariant::fromValue(statusInfo));
 
     setSourceUI(source->filenameUI());
+	return true;
 }
 
 

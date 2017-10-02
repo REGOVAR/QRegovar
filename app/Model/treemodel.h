@@ -97,7 +97,6 @@ public:
 
 
 protected:
-    void setupModelData(const QStringList &lines, TreeItem *parent);
 
     TreeItem* mRootItem;
 };

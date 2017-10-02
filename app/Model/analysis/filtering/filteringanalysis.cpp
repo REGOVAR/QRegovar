@@ -228,7 +228,7 @@ void FilteringAnalysis::loadAnnotations()
 
     // prepare quick filter (they need to check that they are complient with available annotations
     // TODO : CRASH SOUS WINDOWS ? MAIS PAS SOUS LINUX...
-    mQuickFilters->checkAnnotationsDB(mAllAnnotations);
+    // mQuickFilters->checkAnnotationsDB(mAllAnnotations);
 
     // set filter with the last applied filter
     loadFilter(mFilterJson);

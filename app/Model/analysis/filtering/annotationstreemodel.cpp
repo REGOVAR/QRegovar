@@ -105,7 +105,6 @@ void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent, QSt
                     QJsonObject a = json.toObject();
 
                     QString uid = a["uid"].toString();
-                    QString dbUid = a["dbuid"].toString();
                     QString name = a["name"].toString();
                     QString description = a["description"].toString();
                     QString type = a["type"].toString();

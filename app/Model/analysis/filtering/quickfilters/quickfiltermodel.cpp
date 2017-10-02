@@ -14,7 +14,7 @@ QuickFilterModel::QuickFilterModel(QObject *parent) : QObject(parent)
 {
 }
 
-void QuickFilterModel::init(int refId, int analysisId)
+void QuickFilterModel::init(int refId, int)
 {
     mQuickFilters.clear();
     // Load filter according to the refID, analysisId
@@ -50,7 +50,7 @@ QString QuickFilterModel::getFilter()
     return request;
 }
 
-QString QuickFilterModel::checkAnnotationsDB(QList<QObject*> dbs)
+void QuickFilterModel::checkAnnotationsDB(QList<QObject*> dbs)
 {
     mQuickFilters[TransmissionFilter]->checkAnnotationsDB(dbs);
     mQuickFilters[QualityFilter]->checkAnnotationsDB(dbs);

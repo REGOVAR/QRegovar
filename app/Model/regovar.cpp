@@ -122,7 +122,7 @@ void Regovar::onWebsocketError(QAbstractSocket::SocketError err)
     }
 }
 
-void Regovar::onWebsocketStateChanged(QAbstractSocket::SocketState state)
+void Regovar::onWebsocketStateChanged(QAbstractSocket::SocketState)
 {
     // qDebug() << "WS state" << state;
 }
@@ -607,6 +607,7 @@ bool Regovar::newAnalysis(QString type)
     {
 
     }
+	return true;
 }
 void Regovar::newSubject(QJsonObject data)
 {

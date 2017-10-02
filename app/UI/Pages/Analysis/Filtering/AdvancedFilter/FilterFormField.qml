@@ -150,6 +150,8 @@ Rectangle
         if (model)
         {
             model.newConditionModel.type = AdvancedFilterModel.FieldBlock;
+			// force reload of the field informations
+
             model.newConditionModel.opIndex = operatorSelector.currentIndex;
             model.newConditionModel.fieldValue = fieldStringInput.text;
         }

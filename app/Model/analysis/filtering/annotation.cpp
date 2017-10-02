@@ -60,13 +60,13 @@ AnnotationDB::AnnotationDB(QString uid, QString name, QString description, QStri
     foreach (const QJsonValue data, fields)
     {
         QJsonObject a = data.toObject();
-        QString uid = a["uid"].toString();
+        QString fuid = a["uid"].toString();
         QString dbUid = a["dbuid"].toString();
-        QString name = a["name"].toString();
-        QString description = a["description"].toString();
+        QString fname = a["name"].toString();
+        QString fdesc = a["description"].toString();
         QString type = a["type"].toString();
         QJsonObject meta = a["meta"].toObject();
-        Annotation* annot = new Annotation(this, uid, dbUid, name, description, type, meta, mVersion, mName);
+        Annotation* annot = new Annotation(this, fuid, dbUid, fname, fdesc, type, meta, mVersion, mName);
 
         mFields.append(annot);
     }

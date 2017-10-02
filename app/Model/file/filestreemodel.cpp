@@ -141,7 +141,7 @@ QString FilesTreeModel::humanSize(qint64 nbytes)
 
     auto i=0;
     double bytes = nbytes;
-    while( bytes >= 1024 and i < suffixes.count() -1 )
+    while( bytes >= 1024 && i < suffixes.count() -1 )
     {
         bytes /= 1024. ;
         i += 1;

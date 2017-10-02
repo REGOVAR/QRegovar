@@ -404,7 +404,7 @@ QString TusUploader::base64Encode(QString string)
 void TusUploader::uploadError(QNetworkReply::NetworkError)
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-    TusUploadItem* item = mRequestHash[reply];
+    // TusUploadItem* item = mRequestHash[reply];
 
     qDebug() << "ERROR" << reply;
 
