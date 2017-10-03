@@ -68,6 +68,8 @@ public:
     Q_INVOKABLE virtual QJsonArray toJson();
     Q_INVOKABLE void addCondition(QJsonArray json);
     Q_INVOKABLE void addCondition(QString qmlId, QJsonArray json);
+    Q_INVOKABLE void removeCondition();
+    Q_INVOKABLE void removeCondition(QString qmlId);
     Q_INVOKABLE inline QString opRegovarToFriend(QString op) { return mOperatorMap.value(op); }
 
 

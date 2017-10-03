@@ -74,12 +74,31 @@ void AdvancedFilterModel::addCondition(QString qmlId, QJsonArray json)
         }
     }
 }
-
 void AdvancedFilterModel::addCondition(QJsonArray json)
 {
     mSubConditions.append(new AdvancedFilterModel(json, mAnalysis));
     emit filterChanged();
 }
+
+void AdvancedFilterModel::removeCondition()
+{
+    mAnalysis->advancedfilter()->removeCondition(mQmlId);
+}
+void AdvancedFilterModel::removeCondition(QString qmlId)
+{
+    foreach (QObject* o, mSubConditions)
+    {
+        AdvancedFilterModel* cond = qobject_cast<AdvancedFilterModel*>(o);
+        if (cond->qmlId() == qmlId)
+        {
+            mSubConditions.removeOne(o);
+            emit filterChanged();
+            return;
+        }
+        cond->removeCondition(qmlId);
+    }
+}
+
 
 void AdvancedFilterModel::loadJson(QJsonArray filterJson)
 {
@@ -116,7 +135,7 @@ void AdvancedFilterModel::loadJson(QJsonArray filterJson)
 
 
         setField(fieldJson[1].toString());
-        if (mField->type() == "int")
+        if (mField->type() == "int" || mField->type() == "sample_array")
         {
             mRightOp = QVariant(valueJson[1].toInt());
         }
@@ -269,7 +288,7 @@ void NewAdvancedFilterModel::loadJson(QJsonArray filterJson)
         }
 
         setField(fieldJson[1].toString());
-        if (mField->type() == "int")
+        if (mField->type() == "int" || mField->type() == "sample_array")
         {
             mFieldValue = QVariant(valueJson[1].toInt());
         }
@@ -372,7 +391,7 @@ void NewAdvancedFilterModel::setField(QString fieldUid)
         mField = info->annotation();
         mLeftOp = mField->name();
 
-        if (mField->type() == "int" || mField->type() == "float")
+        if (mField->type() == "int" || mField->type() == "float" || mField->type() == "sample_array")
         {
             mOpFieldList.clear();
             mOpFieldList.append(mOpNumberList);

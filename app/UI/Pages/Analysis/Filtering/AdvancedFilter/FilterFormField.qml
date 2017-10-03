@@ -63,17 +63,29 @@ Rectangle
             wrapMode: Text.WordWrap
             color: Regovar.theme.primaryColor.back.normal
             Layout.fillWidth: true
+            visible: false
+        }
+
+        Rectangle
+        {
+            id: helpPanel
+
+            color: "red"
+            height: 100
+            Layout.fillWidth: true
         }
 
         Text
         {
             id: operatorLabel
             text: qsTr("Operator")
+            visible: false
         }
         ComboBox
         {
             id: operatorSelector
             Layout.fillWidth: true
+            visible: false
 
         }
 
@@ -81,37 +93,14 @@ Rectangle
         {
             id: valueLabel
             text: qsTr("Value")
+            visible: false
 
         }
+
         TextField
         {
-            id: fieldStringInput
+            id: fieldInput
             Layout.fillWidth: true
-            text: "-"
-            visible: false
-        }
-        TextField
-        {
-            id: fieldIntInput
-            Layout.fillWidth: true
-            text: "-"
-            inputMethodHints: Qt.ImhDigitsOnly
-            visible: false
-        }
-        TextField
-        {
-            id: fieldRealInput
-            Layout.fillWidth: true
-            text: "-"
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            visible: false
-        }
-        TextField
-        {
-            id: fieldSequenceInput
-            Layout.fillWidth: true
-            text: "-"
-            inputMethodHints: Qt.ImhUppercaseOnly
             visible: false
         }
         Switch
@@ -119,6 +108,7 @@ Rectangle
             id: fieldBoolInput
             checked: true
             text: checked ? qsTr("Yes") : qsTr("No")
+            visible: false
         }
 
 
@@ -129,6 +119,8 @@ Rectangle
             Layout.fillWidth: true
         }
     }
+
+
 
 
     Rectangle
@@ -165,34 +157,13 @@ Rectangle
         {
             fieldDescription.text = item.description;
             model.newConditionModel.setField(item.uid);
-            operatorSelector.model = model.newConditionModel.opFieldList
+            operatorSelector.model = model.newConditionModel.opFieldList;
             operatorSelector.currentIndex = model.newConditionModel.opFieldIndex;
-            if (model.newConditionModel.fieldType == "int")
-            {
-                displayInputControl(fieldIntInput);
-            }
-            else if (model.newConditionModel.fieldType == "float")
-            {
-                displayInputControl(fieldRealInput);
-            }
-            else if (model.newConditionModel.fieldType == "bool")
-            {
-                displayInputControl(fieldBoolInput);
-            }
-            else if (model.newConditionModel.fieldType == "sequence")
-            {
-                displayInputControl(fieldSequenceInput);
-            }
-            else
-            {
-                displayInputControl(fieldStringInput);
-            }
-
-            // TODO : hidde/display element according to the type of field
+            displayInputControl(model.newConditionModel.fieldType);
         }
         else
         {
-            fieldDescription.text = "-";
+            displayInputControl("");
         }
     }
 
@@ -202,51 +173,59 @@ Rectangle
         {
             model.newConditionModel.type = AdvancedFilterModel.FieldBlock;
             model.newConditionModel.opFieldIndex = operatorSelector.currentIndex;
+
+            console.log("updateModel");
+            console.log(" > opIdx = " + model.newConditionModel.opFieldIndex);
+            console.log(" > " + model.newConditionModel.fieldType);
             if (model.newConditionModel.fieldType == "int")
             {
-                model.newConditionModel.fieldValue = parseInt(fieldStringInput.text, 10);
+                console.log(" > (int)" + fieldInput.text);
+                model.newConditionModel.fieldValue = parseInt(fieldInput.text, 10);
             }
             else if (model.newConditionModel.fieldType == "float")
             {
-                model.newConditionModel.fieldValue = parseFloat(fieldStringInput.text);
+                console.log(" > (float)" + fieldInput.text);
+                model.newConditionModel.fieldValue = parseFloat(fieldInput.text, 10);
             }
             else if (model.newConditionModel.fieldType == "bool")
             {
+                console.log(" > (bool)" + fieldBoolInput.checked);
                 model.newConditionModel.fieldValue = fieldBoolInput.checked;
-            }
-            else if (model.newConditionModel.fieldType == "sequence")
-            {
-                model.newConditionModel.fieldValue = fieldSequenceInput.text;
             }
             else
             {
-                model.newConditionModel.fieldValue = fieldStringInput.text;
+                console.log(" > (str)" + fieldInput.text);
+                model.newConditionModel.fieldValue = fieldInput.text;
             }
         }
     }
 
-    function displayInputControl(control)
+    function displayInputControl(type)
     {
+        helpPanel.visible = false;
+        fieldDescription.visible = false;
+        operatorLabel.visible = false;
+        operatorSelector.visible = false;
+        valueLabel.visible = false;
+        fieldInput.visible = false;
         fieldBoolInput.visible = false;
-        fieldSequenceInput.visible = false;
-        fieldRealInput.visible = false;
-        fieldIntInput.visible = false;
-        fieldStringInput.visible = false;
 
-        control.visible = true;
-
-        if (control === fieldBoolInput)
+        if (type == "")
         {
-            operatorLabel.visible = false;
-            operatorSelector.visible = false;
-            valueLabel.visible = false;
+            helpPanel.visible = true;
+        }
+        else if (type == "bool")
+        {
+            fieldDescription.visible = true;
+            fieldBoolInput.visible = true;
         }
         else
         {
+            fieldDescription.visible = true;
             operatorLabel.visible = true;
             operatorSelector.visible = true;
             valueLabel.visible = true;
+            fieldInput.visible = true;
         }
     }
-
 }
