@@ -14,12 +14,13 @@ Rectangle
 
     property FilteringAnalysis analysis
     property AdvancedFilterModel model
-
-    property bool isChecked: true
     property bool isExpand: true
     onIsExpandChanged: resize()
-
     Component.onCompleted: resize()
+
+    // We don't use default qml enabled property to keep MouseArea available even when the
+    // control is disabled
+    property bool isEnabled: true
 
 
     property string logicalColor: Regovar.theme.filtering.filterAND
@@ -53,15 +54,18 @@ Rectangle
         anchors.right: root.right
         color: "transparent"
 
+
+
+
         ComboBox
         {
             id: operator
             anchors.top: parent.top
             anchors.left: parent.left
-            enabled: root.isChecked
-            model: (root.model) ? root.model.opList : []
-            currentIndex: (root.model) ? root.model.opIndex : 0
-            color: root.isChecked ? root.logicalColor : Regovar.theme.frontColor.disable
+            enabled: root.isEnabled
+            model: (root.model) ? root.model.opLogicalList : []
+            currentIndex: (root.model) ? root.model.rightOp : 0
+            color: root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
             onCurrentIndexChanged:
             {
                 root.logicalColor = currentIndex == 0 ? Regovar.theme.filtering.filterAND : Regovar.theme.filtering.filterOR;
@@ -70,23 +74,54 @@ Rectangle
 
         }
 
-        Text
+        Row
         {
             anchors.top: parent.top
             anchors.right: parent.right
-            text: "|"
-            height: Regovar.theme.font.boxSize.header
-            width: Regovar.theme.font.boxSize.header
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: Regovar.theme.font.size.header
-            // color: loadFilterButton.mouseHover ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
-            font.family: Regovar.theme.icons.name
 
-            MouseArea
+            Text
             {
-                anchors.fill: parent
-                onClicked: isExpand = !isExpand
+                text:  "|"  // "["
+                height: Regovar.theme.font.boxSize.header
+                width: Regovar.theme.font.boxSize.control
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.pixelSize: Regovar.theme.font.size.header
+                color: Regovar.theme.primaryColor.back.normal
+                font.family: Regovar.theme.icons.name
+                rotation: (isExpand) ? 180 : 0
+
+                Behavior on rotation {  NumberAnimation { duration: 200 } }
+
+                MouseArea
+                {
+                    anchors.fill: parent
+                    onClicked: isExpand = !isExpand
+                    hoverEnabled: true
+                    onEntered: parent.color = Regovar.theme.secondaryColor.back.normal
+                    onExited: parent.color = Regovar.theme.primaryColor.back.normal
+
+                }
+            }
+            Text
+            {
+                text: "h"
+                height: Regovar.theme.font.boxSize.header
+                width: Regovar.theme.font.boxSize.control
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.pixelSize: Regovar.theme.font.size.header
+                color: Regovar.theme.primaryColor.back.normal
+                font.family: Regovar.theme.icons.name
+
+                MouseArea
+                {
+                    anchors.fill: parent
+                    onClicked: root.model.removeCondition()
+                    hoverEnabled: true
+                    onEntered: parent.color = Regovar.theme.frontColor.danger
+                    onExited: parent.color = Regovar.theme.primaryColor.back.normal
+                }
             }
         }
     }
@@ -101,7 +136,7 @@ Rectangle
         anchors.leftMargin: Regovar.theme.font.boxSize.control / 2
         height: subItemsList.height
         width: 1
-        color: root.isChecked ? root.logicalColor : Regovar.theme.frontColor.disable
+        color: root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
     }
 
     Column
@@ -154,7 +189,7 @@ Rectangle
                         font.family: Regovar.theme.icons.name
                         font.pixelSize: Regovar.theme.font.size.control
 
-                        color: root.isChecked ? root.logicalColor : Regovar.theme.frontColor.disable
+                        color: root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
                     }
                     Text
                     {
@@ -166,7 +201,7 @@ Rectangle
                         horizontalAlignment: Text.AlignHCenter
                         font.pixelSize: Regovar.theme.font.size.content
 
-                        color: root.logicalColor
+                        color: root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
                     }
                     MouseArea
                     {
@@ -183,7 +218,7 @@ Rectangle
                     anchors.left: parent.left
                     anchors.leftMargin: 5 + Regovar.theme.font.boxSize.control
                     width: root.width - 5 - Regovar.theme.font.boxSize.control
-                    isChecked: logicalSubItem.isChecked
+                    isEnabled: logicalSubItem.isChecked && root.isEnabled
 
                     onHeightChanged: { parent.height = height; console.log("z height=" + height + " total="+fullSize()); resize(); }
                 }
@@ -212,7 +247,7 @@ Rectangle
             anchors.leftMargin: Regovar.theme.font.boxSize.control / 2
             width: 1
             height: parent.height/2
-            color: root.isChecked ? root.logicalColor : Regovar.theme.frontColor.disable
+            color: root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
         }
 
         Rectangle
@@ -233,13 +268,13 @@ Rectangle
 
                 color: addConditionButton.isHover ? Regovar.theme.secondaryColor.back.light : Regovar.theme.backgroundColor.main
                 border.width: 1
-                border.color: root.isChecked ? root.logicalColor : Regovar.theme.frontColor.disable
+                border.color: root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
             }
             Text
             {
                 anchors.centerIn: parent
                 text:  "µ"
-                color: addConditionButton.isHover ? Regovar.theme.secondaryColor.back.dark : root.isChecked ? root.logicalColor : Regovar.theme.frontColor.disable
+                color: addConditionButton.isHover ? Regovar.theme.secondaryColor.back.dark : root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
                 font.family: Regovar.theme.icons.name
                 font.pixelSize: Regovar.theme.font.size.control
             }

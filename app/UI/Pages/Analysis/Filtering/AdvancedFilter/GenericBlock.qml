@@ -12,8 +12,9 @@ Rectangle
 
     property FilteringAnalysis analysis
     property AdvancedFilterModel model
-    property bool isChecked
-    property var component
+    property bool isEnabled
+    onIsEnabledChanged: if (component) { component.isEnabled = isEnabled; }
+    property var component: false
 
     color: "transparent"
 
@@ -57,7 +58,7 @@ Rectangle
             if (elmt.hasOwnProperty("model"))
             {
                 elmt.model = Qt.binding(function() { return root.model; });
-                elmt.isChecked = Qt.binding(function() { return root.isChecked; });
+                elmt.isEnabled = Qt.binding(function() { return root.isEnabled; });
             }
         }
         else if (comp.status == Component.Error)

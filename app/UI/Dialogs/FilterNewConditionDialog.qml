@@ -26,7 +26,7 @@ Dialog
         if (visible)
         {
             tabView.currentIndex = 0;
-            model.newConditionModel.type = AdvancedFilterModel.LogicalBlock;
+            model.newConditionModel.clear();
         }
     }
 
@@ -162,7 +162,5 @@ Dialog
                 onClicked: filterSavingFormPopup.close()
             }
         }
-
-
     }
 }

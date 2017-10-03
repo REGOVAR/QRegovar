@@ -13,6 +13,7 @@
 #include "advancedfilters/advancedfiltermodel.h"
 
 class AdvancedFilterModel;
+class NewAdvancedFilterModel;
 class ResultsTreeModel;
 class RemoteSampleTreeModel;
 
@@ -41,7 +42,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(AdvancedFilterModel* advancedfilter READ advancedfilter NOTIFY filterChanged)
     Q_PROPERTY(QVariantList savedFilters READ savedFilters NOTIFY filterChanged)
     // New/Edit ConditionDialog
-    Q_PROPERTY(AdvancedFilterModel* newConditionModel READ newConditionModel NOTIFY newConditionModelChanged)
+    Q_PROPERTY(NewAdvancedFilterModel* newConditionModel READ newConditionModel NOTIFY newConditionModelChanged)
     // "Shortcuts properties" for QML
     // Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
@@ -86,7 +87,7 @@ public:
     inline ResultsTreeModel* results() { return mResults; }
     inline QuickFilterModel* quickfilters() { return mQuickFilters; }
     inline AdvancedFilterModel* advancedfilter() { return mAdvancedFilter; }
-    inline AdvancedFilterModel* newConditionModel() { return mNewConditionModel; }
+    inline NewAdvancedFilterModel* newConditionModel() { return mNewConditionModel; }
     inline RemoteSampleTreeModel* remoteSamples() { return mRemoteSampleTreeModel; }
     // "Shortcuts properties" for QML
     QList<QObject*> samples4qml();
@@ -170,7 +171,7 @@ private:
     ResultsTreeModel* mResults;
     QuickFilterModel* mQuickFilters;
     AdvancedFilterModel* mAdvancedFilter;
-    AdvancedFilterModel* mNewConditionModel;
+    NewAdvancedFilterModel* mNewConditionModel;
 
     QHash<QString, FieldColumnInfos*> mAnnotations;
     QList<QObject*> mAnnotationsFlatList;

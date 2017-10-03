@@ -20,7 +20,6 @@ Rectangle
         }
     }
 
-
     ColumnLayout
     {
         anchors.fill: parent
@@ -47,15 +46,15 @@ Rectangle
             {
                 id: andCond
                 text: qsTr("AND")
-                checked: !orCond.checked
-                onCheckedChanged: updateModel()
+                checked: true
+                onCheckedChanged: orCond.checked = !checked
             }
             CheckBox
             {
                 id: orCond
                 text: qsTr("OR")
-                checked: !andCond.checked
-                onCheckedChanged: updateModel()
+                checked: false
+                onCheckedChanged: andCond.checked = !checked
             }
         }
 
@@ -98,7 +97,7 @@ Rectangle
         if (model)
         {
             model.newConditionModel.type =  AdvancedFilterModel.LogicalBlock;
-            model.newConditionModel.opIndex = andCond.checked ? 0 : 1;
+            model.newConditionModel.opLogicalIndex = andCond.checked ? 0 : 1;
         }
     }
 }

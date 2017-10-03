@@ -12,7 +12,7 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
     mAnnotationsTreeModel = new AnnotationsTreeModel(this);
     mQuickFilters = new QuickFilterModel(this);
     mAdvancedFilter = new AdvancedFilterModel(this);
-    mNewConditionModel = new AdvancedFilterModel(this);
+    mNewConditionModel = new NewAdvancedFilterModel(this);
     mLoadingStatus = Empty;
 
 

@@ -62,6 +62,7 @@ Rectangle
             font.pixelSize: Regovar.theme.font.size.content
             wrapMode: Text.WordWrap
             color: Regovar.theme.primaryColor.back.normal
+            Layout.fillWidth: true
         }
 
         Text
@@ -73,23 +74,53 @@ Rectangle
         {
             id: operatorSelector
             Layout.fillWidth: true
-            currentIndex: 0
+
         }
 
         Text
         {
             id: valueLabel
             text: qsTr("Value")
+
         }
         TextField
         {
             id: fieldStringInput
             Layout.fillWidth: true
-            text: (model) ? model.newConditionModel.fieldValue : "-"
+            text: "-"
+            visible: false
         }
-        // fieldRealInput
-        // fieldIntInput
-        // fieldEnumInput
+        TextField
+        {
+            id: fieldIntInput
+            Layout.fillWidth: true
+            text: "-"
+            inputMethodHints: Qt.ImhDigitsOnly
+            visible: false
+        }
+        TextField
+        {
+            id: fieldRealInput
+            Layout.fillWidth: true
+            text: "-"
+            inputMethodHints: Qt.ImhFormattedNumbersOnly
+            visible: false
+        }
+        TextField
+        {
+            id: fieldSequenceInput
+            Layout.fillWidth: true
+            text: "-"
+            inputMethodHints: Qt.ImhUppercaseOnly
+            visible: false
+        }
+        Switch
+        {
+            id: fieldBoolInput
+            checked: true
+            text: checked ? qsTr("Yes") : qsTr("No")
+        }
+
 
         Rectangle
         {
@@ -133,10 +164,30 @@ Rectangle
         if (item)
         {
             fieldDescription.text = item.description;
-            model.newConditionModel.fieldUid = item.uid;
-            operatorSelector.model = model.newConditionModel.opList;
-            operatorSelector.currentIndex = 0;
-            fieldStringInput.text = "";
+            model.newConditionModel.setField(item.uid);
+            operatorSelector.model = model.newConditionModel.opFieldList
+            operatorSelector.currentIndex = model.newConditionModel.opFieldIndex;
+            if (model.newConditionModel.fieldType == "int")
+            {
+                displayInputControl(fieldIntInput);
+            }
+            else if (model.newConditionModel.fieldType == "float")
+            {
+                displayInputControl(fieldRealInput);
+            }
+            else if (model.newConditionModel.fieldType == "bool")
+            {
+                displayInputControl(fieldBoolInput);
+            }
+            else if (model.newConditionModel.fieldType == "sequence")
+            {
+                displayInputControl(fieldSequenceInput);
+            }
+            else
+            {
+                displayInputControl(fieldStringInput);
+            }
+
             // TODO : hidde/display element according to the type of field
         }
         else
@@ -150,10 +201,52 @@ Rectangle
         if (model)
         {
             model.newConditionModel.type = AdvancedFilterModel.FieldBlock;
-			// force reload of the field informations
-
-            model.newConditionModel.opIndex = operatorSelector.currentIndex;
-            model.newConditionModel.fieldValue = fieldStringInput.text;
+            model.newConditionModel.opFieldIndex = operatorSelector.currentIndex;
+            if (model.newConditionModel.fieldType == "int")
+            {
+                model.newConditionModel.fieldValue = parseInt(fieldStringInput.text, 10);
+            }
+            else if (model.newConditionModel.fieldType == "float")
+            {
+                model.newConditionModel.fieldValue = parseFloat(fieldStringInput.text);
+            }
+            else if (model.newConditionModel.fieldType == "bool")
+            {
+                model.newConditionModel.fieldValue = fieldBoolInput.checked;
+            }
+            else if (model.newConditionModel.fieldType == "sequence")
+            {
+                model.newConditionModel.fieldValue = fieldSequenceInput.text;
+            }
+            else
+            {
+                model.newConditionModel.fieldValue = fieldStringInput.text;
+            }
         }
     }
+
+    function displayInputControl(control)
+    {
+        fieldBoolInput.visible = false;
+        fieldSequenceInput.visible = false;
+        fieldRealInput.visible = false;
+        fieldIntInput.visible = false;
+        fieldStringInput.visible = false;
+
+        control.visible = true;
+
+        if (control === fieldBoolInput)
+        {
+            operatorLabel.visible = false;
+            operatorSelector.visible = false;
+            valueLabel.visible = false;
+        }
+        else
+        {
+            operatorLabel.visible = true;
+            operatorSelector.visible = true;
+            valueLabel.visible = true;
+        }
+    }
+
 }
