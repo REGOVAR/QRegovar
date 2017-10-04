@@ -1,0 +1,47 @@
+import QtQuick 2.7
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 1.4
+import "../../Regovar"
+import "../../Framework"
+
+Item
+{
+    id: root
+
+    Rectangle
+    {
+        anchors.centerIn: parent
+
+        width: 300
+        height: info.height + 20
+        border.width: 1
+        border.color: Regovar.theme.boxColor.border
+        color: Regovar.theme.boxColor.back
+
+        Image
+        {
+            id: logo
+            anchors.top : parent.top
+            anchors.left: parent.left
+            anchors.margins: 10
+            width: 80
+            height: 80
+
+            source: "qrc:/logo.png"
+        }
+
+        Column
+        {
+            id: info
+            anchors.top: parent.top
+            anchors.left: logo.right
+            anchors.right: parent.right
+            anchors.margins: 10
+
+
+        }
+
+    }
+
+
+}

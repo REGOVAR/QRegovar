@@ -12,6 +12,46 @@
 #include "sample/sample.h"
 
 
+
+
+RegovarConfig::RegovarConfig(QObject* parent) : QObject(parent)
+{
+
+}
+
+
+void RegovarConfig::fromJson(QJsonObject json)
+{
+    mServerVersion = json["version"].toString();
+    mWebsite = json["website"].toString();
+    if (VERSION_BUILD == 0)
+    {
+        mClientVersion= QString("%1.%2.dev").arg(VERSION_MAJOR).arg(VERSION_MINOR);
+    }
+    else
+    {
+        mClientVersion= QString("%1.%2.%3").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_BUILD);
+    }
+
+    emit configChanged();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Regovar* Regovar::mInstance = Q_NULLPTR;
 Regovar* Regovar::i()
 {
@@ -36,6 +76,7 @@ void Regovar::init()
 
     // Init models
     // mUser = new UserModel(); //1, "Olivier", "Gueudelot");
+    mConfig = new RegovarConfig();
     mProjectsTreeView = new ProjectsTreeModel();
     mUploader = new TusUploader();
     mNewPipelineAnalysis = new PipelineAnalysis();
@@ -177,6 +218,7 @@ void Regovar::loadWelcomData()
         if (success)
         {
             QJsonObject data = json["data"].toObject();
+            mConfig->fromJson(data);
             mLastAnalyses = data["last_analyses"].toArray();
             emit lastAnalysesChanged();
             mLastEvents = data["last_events"].toArray();

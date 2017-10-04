@@ -2,6 +2,16 @@ QT += qml quick widgets websockets
 
 CONFIG += c++11
 
+#Application version
+VERSION_MAJOR = 0
+VERSION_MINOR = 2
+VERSION_BUILD = 0
+DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR"\
+       "VERSION_MINOR=$$VERSION_MINOR"\
+       "VERSION_BUILD=$$VERSION_BUILD"
+
+
+
 
 
 HEADERS += \
