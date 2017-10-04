@@ -33,6 +33,21 @@ void RegovarConfig::fromJson(QJsonObject json)
         mClientVersion= QString("%1.%2.%3").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_BUILD);
     }
 
+    // get license text
+    QFile mFile(":/license.html");
+    if(mFile.open(QFile::ReadOnly | QFile::Text))
+    {
+        QTextStream in(&mFile);
+        mLicense = in.readAll();
+        mFile.close();
+    }
+    else
+    {
+        mLicense = tr("Unable to open license file");
+    }
+
+
+
     emit configChanged();
 }
 

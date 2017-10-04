@@ -23,6 +23,7 @@ class RegovarConfig: public QObject
     Q_PROPERTY(QString serverVersion READ serverVersion NOTIFY configChanged)
     Q_PROPERTY(QString clientVersion READ clientVersion NOTIFY configChanged)
     Q_PROPERTY(QString website READ website NOTIFY configChanged)
+    Q_PROPERTY(QString license READ license  NOTIFY configChanged)
 
 public:
     explicit RegovarConfig(QObject *parent = nullptr);
@@ -30,6 +31,7 @@ public:
     inline QString serverVersion() { return mServerVersion; }
     inline QString clientVersion() { return mClientVersion; }
     inline QString website() { return mWebsite; }
+    inline QString license() { return mLicense; }
     // Setters
     void fromJson(QJsonObject json);
 Q_SIGNALS:
@@ -39,6 +41,7 @@ private:
     QString mServerVersion;
     QString mClientVersion;
     QString mWebsite;
+    QString mLicense;
 };
 
 

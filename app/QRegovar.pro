@@ -130,3 +130,6 @@ RESOURCES += \
     Assets/qrc.qrc \
     UI/qml.qrc
 
+DISTFILES += \
+    Assets/license.html
+

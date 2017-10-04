@@ -1,6 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
-import QtWebView 1.1
+import QtQuick.Controls 1.4
 import "../../Regovar"
 import "../../Framework"
 
@@ -286,13 +286,49 @@ Item
                 }
             }
         }
-
-
-        WebView
+        Rectangle
         {
-            Layout.fillHeight: true
+            height: 1
             Layout.fillWidth: true
-            url: "https://raw.githubusercontent.com/REGOVAR/Regovar/master/LICENSE"
+            color: Regovar.theme.primaryColor.back.normal
         }
+
+        ScrollView
+        {
+             id: scrollView
+
+             Layout.fillHeight: true
+             Layout.fillWidth: true
+
+             clip: true
+
+             function ensureVisible(r)
+             {
+                 if (contentX >= r.x)
+                     contentX = r.x;
+                 else if (contentX+width <= r.x+r.width)
+                     contentX = r.x+r.width-width;
+                 if (contentY >= r.y)
+                     contentY = r.y;
+                 else if (contentY+height <= r.y+r.height)
+                     contentY = r.y+r.height-height;
+             }
+
+
+             TextEdit
+             {
+                 id: edit
+                 width: scrollView.viewport.width
+                 text: regovar.config.license
+                 font.pixelSize: Regovar.theme.font.size.control
+                 color: Regovar.theme.frontColor.normal
+                 readOnly: true
+                 selectByMouse: true
+                 selectByKeyboard: true
+                 wrapMode: TextEdit.Wrap
+                 onCursorRectangleChanged: scrollView.ensureVisible(cursorRectangle)
+             }
+         }
+
     }
 }
