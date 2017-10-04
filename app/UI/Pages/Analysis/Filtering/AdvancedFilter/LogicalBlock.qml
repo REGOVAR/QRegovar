@@ -185,7 +185,7 @@ Rectangle
                     Text
                     {
                         anchors.centerIn: parent
-                        text: "²"
+                        text: "À"
                         font.family: Regovar.theme.icons.name
                         font.pixelSize: Regovar.theme.font.size.control
 

@@ -96,17 +96,11 @@ Rectangle
                 }
             }
         }
-
-        Row
+        Button
         {
             anchors.right: parent.right
-            spacing: 10
-
-            Button
-            {
-                text: qsTr("Load")
-                onClicked: root.loadFilter(filterList.model[filterList.currentIndex])
-            }
+            text: qsTr("Load")
+            onClicked: root.loadFilter(filterList.model[filterList.currentIndex])
         }
     }
     function loadFilter(filter)

@@ -311,7 +311,7 @@ Dialog
                 anchors.left: rootRemoteView.left
                 anchors.margins: 10
 
-                icon: "µ"
+                icon: "à"
                 text: qsTr("Import sample from file")
                 onClicked:
                 {

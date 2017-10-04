@@ -156,7 +156,17 @@ Dialog
                 {
                     console.log("retrieve model.toJson")
                     tabView.forceUpdateModel();
-                    addNewCondition(model.newConditionModel.toJson());
+                    var json = model.newConditionModel.toJson();
+                    if (json)
+                    {
+                        addNewCondition(model.newConditionModel.toJson());
+                    }
+                    else
+                    {
+                        // Todo display error
+                    }
+
+
                 }
             }
             Button

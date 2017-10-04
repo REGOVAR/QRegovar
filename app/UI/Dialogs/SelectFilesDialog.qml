@@ -4,6 +4,7 @@ import QtQuick.Controls 2.2
 import QtQml.Models 2.2
 import QtQuick.Dialogs 1.2
 import org.regovar 1.0
+import QtGraphicalEffects 1.0
 
 import "../Regovar"
 import "../Framework"
@@ -40,22 +41,72 @@ Dialog
             id: rootRemoteView
             anchors.fill: root
 
-            Text
+            Rectangle
             {
-                id: remoteLabel
+                id: remoteHeader
                 anchors.top : rootRemoteView.top
                 anchors.left: rootRemoteView.left
                 anchors.right: rootRemoteView.right
-                anchors.margins: 10
+                height: 100
 
-                text: qsTr("Select files already on Regovar server")
-                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.primaryColor.back.normal
+
+                Image
+                {
+                    id: remoteIcon
+                    anchors.top : parent.top
+                    anchors.left: parent.left
+                    anchors.margins: 10
+                    width: 80
+                    height: 80
+
+                    source: "qrc:/logo.png"
+
+                    ColorOverlay
+                    {
+                        anchors.fill: parent
+                        color: Regovar.theme.primaryColor.front.normal
+                        source: remoteIcon
+                    }
+                }
+
+                Text
+                {
+                    anchors.top : parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.topMargin: 10
+                    anchors.leftMargin: 100
+
+
+                    text: qsTr("Regovar files")
+                    font.pixelSize: Regovar.theme.font.size.title
+                    font.bold: true
+                    color: Regovar.theme.primaryColor.front.normal
+                    elide: Text.ElideRight
+                }
+                Text
+                {
+                    anchors.top : parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.margins: 10
+                    anchors.topMargin: 15 + Regovar.theme.font.size.title
+                    anchors.leftMargin: 100
+                    wrapMode: "WordWrap"
+                    elide: Text.ElideRight
+
+                    text: qsTr("You can select files that are already on the server.\nYou can also import new files by uploading them from your computer.")
+                    font.pixelSize: Regovar.theme.font.size.control
+                    color: Regovar.theme.primaryColor.front.normal
+                }
             }
 
             TextField
             {
                 id: remoteFilterField
-                anchors.top : remoteLabel.bottom
+                anchors.top : remoteHeader.bottom
                 anchors.left: rootRemoteView.left
                 anchors.right: rootRemoteView.right
                 anchors.margins: 10
@@ -149,14 +200,15 @@ Dialog
                 Component.onCompleted: regovar.loadFilesBrowser()
             }
 
-            Button
+            ButtonIcon
             {
                 id: remoteSwitchButton
                 anchors.bottom : rootRemoteView.bottom
                 anchors.left: rootRemoteView.left
                 anchors.margins: 10
 
-                text: qsTr("+ Upload local files")
+                icon: "à"
+                text: qsTr("Upload local files")
                 onClicked:
                 {
                     rootRemoteView.visible = false;
@@ -182,17 +234,65 @@ Dialog
             }
 
 
-
-            Text
+            Rectangle
             {
                 id: localLabel
                 anchors.top : rootLocalView.top
                 anchors.left: rootLocalView.left
                 anchors.right: rootLocalView.right
-                anchors.margins: 10
+                height: 100
 
-                text: qsTr("Select files on your computer. Selected files will be uploaded on the Regovar server.")
-                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.primaryColor.back.normal
+
+                Text
+                {
+                    anchors.top : parent.top
+                    anchors.left: parent.left
+                    anchors.margins: 10
+                    width: 80
+                    height: 80
+
+                    text: "1"
+                    font.pixelSize: 80
+                    font.family: Regovar.theme.icons.name
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+
+                    color: Regovar.theme.primaryColor.front.normal
+                    elide: Text.ElideRight
+                }
+
+                Text
+                {
+                    anchors.top : parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.topMargin: 10
+                    anchors.leftMargin: 100
+
+
+                    text: qsTr("Local files")
+                    font.pixelSize: Regovar.theme.font.size.title
+                    font.bold: true
+                    color: Regovar.theme.primaryColor.front.normal
+                    elide: Text.ElideRight
+                }
+                Text
+                {
+                    anchors.top : parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.margins: 10
+                    anchors.topMargin: 15 + Regovar.theme.font.size.title
+                    anchors.leftMargin: 100
+                    wrapMode: "WordWrap"
+                    elide: Text.ElideRight
+
+                    text: qsTr("Select files on your computer. Selected files will be uploaded on the Regovar server.")
+                    font.pixelSize: Regovar.theme.font.size.control
+                    color: Regovar.theme.primaryColor.front.normal
+                }
             }
 
             TextField
@@ -258,14 +358,15 @@ Dialog
             }
 
 
-            Button
+            ButtonIcon
             {
                 id: localSwitchButton
                 anchors.bottom : rootLocalView.bottom
                 anchors.left: rootLocalView.left
                 anchors.margins: 10
 
-                text: qsTr("< Back to remote files")
+                icon: "]"
+                text: qsTr("Back to remote files")
                 onClicked:
                 {
                     rootLocalView.visible = false;
