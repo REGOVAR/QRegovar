@@ -104,12 +104,6 @@ Rectangle
 
             Button
             {
-                text: qsTr("Cancel")
-                onClicked: root.visible = false
-            }
-
-            Button
-            {
                 text: qsTr("Load")
                 onClicked: root.loadFilter(filterList.model[filterList.currentIndex])
             }

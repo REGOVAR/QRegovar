@@ -18,6 +18,8 @@ class Project : public QObject
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
     Q_PROPERTY(FilesTreeModel* files READ files NOTIFY dataChanged)
     Q_PROPERTY(QString fullPath READ fullPath NOTIFY dataChanged)
+    Q_PROPERTY(QList<QObject*> analyses READ analyses NOTIFY dataChanged)
+    Q_PROPERTY(QList<QObject*> events READ events NOTIFY dataChanged)
 
 
 public:
@@ -38,13 +40,17 @@ public:
     inline QString comment() { return mComment; }
     inline FilesTreeModel* files() { return mFiles; }
     inline QString fullPath() { return mFullPath; }
+    inline QList<QObject*> analyses() { return mAnalyses; }
+    inline QList<QObject*> events() { return mEvents; }
 
     // Setters
     void setParent(Project* parent);
     inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
     inline void setName(QString name) { mName = name; emit dataChanged(); }
 
-
+    // Methods
+    void buildAnalysis(QJsonObject json);
+    void buildEvent(QJsonObject json);
 
 //public Q_SLOTS:
 
@@ -72,8 +78,8 @@ private:
     // mUserRights
     // mindicators
     // mJobs
-    // mAnalyses
-    // mEvents
+    QList<QObject*> mAnalyses;
+    QList<QObject*> mEvents;
 
     // Methods
     inline void setUpdateDate(QDateTime date) { mUpdateDate = date; emit dataChanged(); }

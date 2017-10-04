@@ -86,7 +86,7 @@ ApplicationWindow
     }
 
 
-    function buildPages(model)
+    function buildPages(model, sharedModel)
     {
         for (var idx in model)
         {
@@ -99,6 +99,11 @@ ApplicationWindow
                     {
                         var elmt = comp.createObject(stack, {"visible": false});
                         model[idx].qml = elmt;
+                        if (sharedModel)
+                        {
+                            elmt.model = sharedModel;
+                        }
+
                         console.log ("load Pages/" + model[idx].page)
                     }
                     else if (comp.status == Component.Error)
@@ -113,7 +118,7 @@ ApplicationWindow
 
                 if (model[idx]["sublevel"].length > 0)
                 {
-                    buildPages(model[idx]["sublevel"]);
+                    buildPages(model[idx]["sublevel"], sharedModel);
                 }
             }
         }
@@ -137,7 +142,7 @@ ApplicationWindow
         if (menuModel !== undefined)
         {
             var pages = {};
-            buildPages(menuModel.model);
+            buildPages(menuModel.model, null);
             openPage();
         }
     }

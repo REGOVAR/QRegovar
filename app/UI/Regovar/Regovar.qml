@@ -74,6 +74,8 @@ QtObject
         ]
     }
 
+    // This variable is used temporary during the creation of the project menu to share the model between the menu component and the qml pages
+    property QtObject currentopeningProject
 
     function reloadProjectsOpenEntries()
     {
@@ -95,8 +97,8 @@ QtObject
             if (itemFound === false)
             {
                 // Add project to the menu
-                var project = regovar.projectsOpen[i];
-                menuModel.model[2]["sublevel"] = menuModel.model[2]["sublevel"].concat({ "icon": "6", "label": project.name, "projectId": project.id, "page": "", "sublevel": [
+                currentopeningProject = regovar.projectsOpen[i];
+                menuModel.model[2]["sublevel"] = menuModel.model[2]["sublevel"].concat({ "icon": "6", "label": currentopeningProject.name, "projectId": currentopeningProject.id, "page": "", "sublevel": [
                   { "label": qsTr("Summary"),       "page": "Project/SummaryPage.qml", "sublevel": []},
                   { "label": qsTr("Analyses"),      "page": "Project/AnalysesPage.qml", "sublevel": []},
                   { "label": qsTr("Subjects"),      "page": "Project/SubjectsPage.qml", "sublevel": []},

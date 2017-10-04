@@ -31,7 +31,7 @@ GenericWindow
         {
             console.log ("ReloadMenu");
             Regovar.reloadProjectsOpenEntries();
-            buildPages(menuModel.model[2]["sublevel"]);
+            buildPages(menuModel.model[2]["sublevel"], Regovar.currentopeningProject);
             // select currentEntry
             Regovar.menuModel.selectedIndex=[2, regovar.projectsOpen.length,0];
         }

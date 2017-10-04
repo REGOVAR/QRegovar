@@ -37,30 +37,30 @@ Rectangle
 
             tabsModel: ListModel
             {
-//                ListElement
-//                {
-//                    //title: qsTr("Quick filters")
-//                    icon: "2"
-//                    source: "../Pages/Analysis/Filtering/QuickFilterPanel.qml"
-//                }
+                ListElement
+                {
+                    //title: qsTr("Quick filters")
+                    icon: "2"
+                    source: "../Pages/Analysis/Filtering/QuickFilterPanel.qml"
+                }
                 ListElement
                 {
                     //title: qsTr("Advanced filters")
                     icon: "3"
                     source: "../Pages/Analysis/Filtering/AdvancedFilterPanel.qml"
                 }
-//                ListElement
-//                {
-//                    //title: qsTr("Annotations")
-//                    icon: "o"
-//                    source: "../Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml"
-//                }
-//                ListElement
-//                {
-//                    //title: qsTr("Quick filters")
-//                    icon: "D"
-//                    source: "../Pages/Analysis/Filtering/FavoritesPanel.qml"
-//                }
+                ListElement
+                {
+                    //title: qsTr("Annotations")
+                    icon: "o"
+                    source: "../Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml"
+                }
+                ListElement
+                {
+                    //title: qsTr("Quick filters")
+                    icon: "D"
+                    source: "../Pages/Analysis/Filtering/FavoritesPanel.qml"
+                }
             }
         }
 

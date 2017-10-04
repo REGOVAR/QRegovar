@@ -32,7 +32,7 @@ Rectangle
             font.family: Regovar.theme.font.familly
             color: Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: model.name
+            text: (model) ? model.name : "?"
         }
         ConnectionStatus
         {
@@ -96,7 +96,7 @@ Rectangle
             Layout.fillWidth: true
             enabled: editionMode
             placeholderText: qsTr("Name of the project")
-            text: model.name
+            text: (model) ? model.name : ""
         }
 
         Column
@@ -134,7 +134,7 @@ Rectangle
         {
             Layout.fillWidth: true
             enabled: editionMode
-            text: model.comment
+            text: (model) ? model.comment : ""
         }
 
 
@@ -159,17 +159,17 @@ Rectangle
             id: events
             Layout.fillHeight: true
             Layout.fillWidth: true
-
+            model: (root.model) ? root.model.events : []
 
             TableViewColumn
             {
                 title: "Date"
-                role: "filenameUI"
+                role: "date"
             }
             TableViewColumn
             {
                 title: "Event"
-                role: "filenameUI"
+                role: "eventUI"
             }
         }
 

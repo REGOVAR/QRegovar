@@ -1,5 +1,7 @@
 #include "project.h"
 
+#include "Model/analysis/filtering/filteringanalysis.h"
+
 Project::Project(QObject* parent) : QObject(parent), mIsFolder(false), mIsSandbox(false)
 {
     mFiles = new FilesTreeModel();
@@ -34,14 +36,31 @@ bool Project::fromJson(QJsonObject json)
     mIsFolder = json["is_folder"].toBool();
     mComment = json["comment"].toString();
     mName = json["name"].toString();
-
     mFiles->fromJson(json["files"].toArray());
+
+    // Analyses
+    foreach (QJsonValue jsonVal, json["analyses"].toArray())
+    {
+        FilteringAnalysis* analysis = new FilteringAnalysis();
+        analysis->fromJson(jsonVal.toObject());
+        mAnalyses.append(analysis);
+    }
+
+    // Events
+//    foreach (QJsonValue jsonVal, json["events"].toArray())
+//    {
+//        mEvents.append("Salut");
+//    }
+
+
 
 
     emit dataChanged();
 
     return true;
 }
+
+
 
 
 
