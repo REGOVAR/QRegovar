@@ -6,7 +6,7 @@ Button
 {
     id: control
     text: "Button"
-    property string iconText: "µ"
+    property string iconText: "à"
     //width: 3 * Regovar.theme.font.boxSize.title + textElmt.width
     height: Regovar.theme.font.boxSize.title
 

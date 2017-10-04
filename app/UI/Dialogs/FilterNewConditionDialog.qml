@@ -118,16 +118,19 @@ Dialog
             {
                 ListElement
                 {
+                    enabled: true
                     title: qsTr("Logical")
                     source: "../Pages/Analysis/Filtering/AdvancedFilter/FilterFormLogical.qml"
                 }
                 ListElement
                 {
+                    enabled: true
                     title: qsTr("Field")
                     source: "../Pages/Analysis/Filtering/AdvancedFilter/FilterFormField.qml"
                 }
                 ListElement
                 {
+                    enabled: false
                     title: qsTr("Set")
                     source: "../Pages/Analysis/Filtering/AdvancedFilter/FilterFormSet.qml"
                 }

@@ -57,6 +57,7 @@ Item
                 property bool hasIcon: model.icon !== undefined && model.icon !== null && model.icon !== ""
                 property bool hasLabel: model.title !== undefined && model.title !== null && model.title !== ""
                 property bool isSelected: tabsPanel.currentIndex == index
+                enabled: (model.enabled !== undefined) ? model.enabled : true
 
                 Rectangle
                 {

@@ -273,7 +273,7 @@ Rectangle
             Text
             {
                 anchors.centerIn: parent
-                text:  "µ"
+                text:  "à"
                 color: addConditionButton.isHover ? Regovar.theme.secondaryColor.back.dark : root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
                 font.family: Regovar.theme.icons.name
                 font.pixelSize: Regovar.theme.font.size.control

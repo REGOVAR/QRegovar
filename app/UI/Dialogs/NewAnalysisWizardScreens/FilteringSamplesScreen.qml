@@ -275,7 +275,7 @@ GenericScreen
                     {
                         anchors.right: parent.right
                         anchors.top : parent.top
-                        text: ""
+                        text: "ä"
                         font.family: Regovar.theme.icons.name
                         font.pixelSize: 30
                         color: Regovar.theme.primaryColor.back.normal
