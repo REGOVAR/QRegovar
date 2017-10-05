@@ -15,15 +15,6 @@ QtObject
      *  The "True" model of the application is done in C++, see /Model/Regovar singleton
      *  accessible in the QML by the id "regovar"
      */
-//    // Reload some value from Settings
-//    Settings
-//    {
-//        property string themeUsed: "RegovarLight" // initial default value
-//    }
-//    Component.onDestruction:
-//    {
-//        settings.themeUsed = uiModel.themeUsed // store value choose by the user to restore it next time
-//    }
 
 
     //! Collection of sub windows

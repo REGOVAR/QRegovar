@@ -56,6 +56,7 @@ Rectangle
         text: qsTr("Regovar application settings. Note that your settings are saved on this computer only. You will need to restart the application to apply your settings.")
     }
 
+
     GridLayout
     {
         anchors.top : header.bottom
@@ -65,59 +66,78 @@ Rectangle
         anchors.margins: 10
         anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
 
-        columns: 2
-        rows:10
+        columns: 3
+        rows: 10
         columnSpacing: 30
         rowSpacing: 20
 
-        // Server URL
-        Text
+
+        // ===== Connection Section =====
+        Row
         {
-            text: qsTr("Server")
-            font.pixelSize: Regovar.theme.font.size.control
-            font.bold: true
-            color: Regovar.theme.primaryColor.back.normal
-            Layout.alignment: Qt.AlignTop
-            height: Regovar.theme.font.boxSize.control
-            verticalAlignment: Text.AlignVCenter
+            Layout.fillWidth: true
+            Layout.columnSpan: 3
+            height: Regovar.theme.font.boxSize.title
+
+            Text
+            {
+                width: Regovar.theme.font.boxSize.title
+                height: Regovar.theme.font.boxSize.title
+                text: "è"
+
+                font.family: Regovar.theme.icons.name
+                font.pixelSize: Regovar.theme.font.size.title
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                color: Regovar.theme.primaryColor.back.normal
+            }
+            Text
+            {
+                height: Regovar.theme.font.boxSize.title
+
+                elide: Text.ElideRight
+                text: qsTr("Connection")
+                font.bold: true
+                font.pixelSize: Regovar.theme.font.size.header
+                verticalAlignment: Text.AlignVCenter
+                color: Regovar.theme.primaryColor.back.normal
+            }
         }
+
+
+        // Server URL
+        Row
+        {
+            Rectangle
+            {
+                width: Regovar.theme.font.boxSize.title
+                height: Regovar.theme.font.boxSize.title
+                color: "transparent"
+            }
+            Text
+            {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Server")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.primaryColor.back.normal
+                height: Regovar.theme.font.boxSize.control
+                verticalAlignment: Text.AlignVCenter
+            }
+
+        }
+
         Column
         {
             Layout.fillWidth: true
             spacing: 5
 
-            RowLayout
+
+            TextField
             {
+                id: regovarUrl
                 width: parent.width
-
-                TextField
-                {
-                    id: regovarUrl
-                    Layout.fillWidth: true
-                    placeholderText: qsTr("http://regovar.local-site.com")
-                    text: regovar.serverUrl
-                }
-                ButtonIcon
-                {
-                    id: testConnectionButton
-                    text: qsTr("Test connection !")
-                    icon: "x"
-                    onClicked:
-                    {
-                        icon = "/";
-                        regovar.testConnection(regovarUrl.text, proxyUrl.text);
-                    }
-                }
-                Connections
-                {
-                    target: regovar
-                    onTestConnectionEnd:
-                    {
-                        testConnectionButton.icon = "x";
-
-                    }
-                }
-
+                placeholderText: qsTr("http://regovar.local-site.com")
+                text: regovar.serverUrl
             }
             Text
             {
@@ -128,19 +148,77 @@ Rectangle
                 color: Regovar.theme.primaryColor.back.normal
                 wrapMode: Text.WordWrap
             }
+        }
 
+        // Connection test panel
+        Rectangle
+        {
+            Layout.rowSpan: 2
+            color: Regovar.theme.boxColor.back
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            width: testConnectionButton.width + 20
+            Layout.fillHeight: true
+
+            ColumnLayout
+            {
+                anchors.fill: parent
+                anchors.margins: 10
+                ButtonIcon
+                {
+                    id: testConnectionButton
+                    text: qsTr("Test connection !")
+                    icon: "x"
+                    onClicked:
+                    {
+                        icon = "/";
+                        regovar.testConnection(regovarUrl.text, proxyUrl.text);
+                    }
+                    Connections
+                    {
+                        target: regovar
+                        onTestConnectionEnd:
+                        {
+                            testConnectionButton.icon = "x";
+
+                        }
+                    }
+                }
+                Rectangle
+                {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: trye
+                    color: "transparent"
+                    Text
+                    {
+                        anchors.centerIn: parent
+                        id: name
+                        text: "n"
+                        font.family: Regovar.theme.icons.name
+                        font.pixelSize: 30
+                    }
+                }
+            }
         }
 
         // Proxy URL
-        Text
+        Row
         {
-            text: qsTr("Proxy")
-            font.pixelSize: Regovar.theme.font.size.control
-            font.bold: true
-            color: Regovar.theme.primaryColor.back.normal
-            Layout.alignment: Qt.AlignTop
-            height: Regovar.theme.font.boxSize.control
-            verticalAlignment: Text.AlignVCenter
+            Rectangle
+            {
+                width: Regovar.theme.font.boxSize.title
+                height: Regovar.theme.font.boxSize.title
+                color: "transparent"
+            }
+            Text
+            {
+                text: qsTr("Proxy")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.primaryColor.back.normal
+                Layout.alignment: Qt.AlignTop
+                height: Regovar.theme.font.boxSize.control
+                verticalAlignment: Text.AlignVCenter
+            }
         }
         Column
         {
@@ -163,16 +241,60 @@ Rectangle
             }
         }
 
-        // Language
-        Text
+
+
+        // ===== Interface Section =====
+        Row
         {
-            text: qsTr("Language")
-            font.pixelSize: Regovar.theme.font.size.control
-            font.bold: true
-            color: Regovar.theme.primaryColor.back.normal
-            Layout.alignment: Qt.AlignTop
-            height: Regovar.theme.font.boxSize.control
-            verticalAlignment: Text.AlignVCenter
+            Layout.fillWidth: true
+            Layout.columnSpan: 3
+            height: Regovar.theme.font.boxSize.title
+
+            Text
+            {
+                width: Regovar.theme.font.boxSize.title
+                height: Regovar.theme.font.boxSize.title
+                text: "}"
+
+                font.family: Regovar.theme.icons.name
+                font.pixelSize: Regovar.theme.font.size.title
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                color: Regovar.theme.primaryColor.back.normal
+            }
+            Text
+            {
+                height: Regovar.theme.font.boxSize.title
+
+                elide: Text.ElideRight
+                text: qsTr("Interface")
+                font.bold: true
+                font.pixelSize: Regovar.theme.font.size.header
+                verticalAlignment: Text.AlignVCenter
+                color: Regovar.theme.primaryColor.back.normal
+            }
+        }
+
+
+
+        // Language
+        Row
+        {
+            Rectangle
+            {
+                width: Regovar.theme.font.boxSize.title
+                height: Regovar.theme.font.boxSize.title
+                color: "transparent"
+            }
+            Text
+            {
+                text: qsTr("Language")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.primaryColor.back.normal
+                Layout.alignment: Qt.AlignTop
+                height: Regovar.theme.font.boxSize.control
+                verticalAlignment: Text.AlignVCenter
+            }
         }
         Column
         {
@@ -196,16 +318,34 @@ Rectangle
             }
         }
 
-        // Theme
-        Text
+        // Interface test panel
+        Rectangle
         {
-            text: qsTr("Theme")
-            font.pixelSize: Regovar.theme.font.size.control
-            font.bold: true
-            color: Regovar.theme.primaryColor.back.normal
-            Layout.alignment: Qt.AlignTop
-            height: Regovar.theme.font.boxSize.control
-            verticalAlignment: Text.AlignVCenter
+            Layout.rowSpan: 4
+            color: Regovar.theme.boxColor.back
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            width: testConnectionButton.width + 20
+        }
+
+        // Theme
+        Row
+        {
+            Rectangle
+            {
+                width: Regovar.theme.font.boxSize.title
+                height: Regovar.theme.font.boxSize.title
+                color: "transparent"
+            }
+            Text
+            {
+                text: qsTr("Theme")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.primaryColor.back.normal
+                Layout.alignment: Qt.AlignTop
+                height: Regovar.theme.font.boxSize.control
+                verticalAlignment: Text.AlignVCenter
+            }
         }
         Column
         {
@@ -230,15 +370,23 @@ Rectangle
         }
 
         // Font size
-        Text
+        Row
         {
-            text: qsTr("Font size")
-            font.pixelSize: Regovar.theme.font.size.control
-            font.bold: true
-            color: Regovar.theme.primaryColor.back.normal
-            Layout.alignment: Qt.AlignTop
-            height: Regovar.theme.font.boxSize.control
-            verticalAlignment: Text.AlignVCenter
+            Rectangle
+            {
+                width: Regovar.theme.font.boxSize.title
+                height: Regovar.theme.font.boxSize.title
+                color: "transparent"
+            }
+            Text
+            {
+                text: qsTr("Font size")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.primaryColor.back.normal
+                Layout.alignment: Qt.AlignTop
+                height: Regovar.theme.font.boxSize.control
+                verticalAlignment: Text.AlignVCenter
+            }
         }
         Column
         {
@@ -283,37 +431,46 @@ Rectangle
         }
 
         // Help
-        Text
+        Row
         {
-            text: qsTr("Help boxes")
-            font.pixelSize: Regovar.theme.font.size.control
-            font.bold: true
-            color: Regovar.theme.primaryColor.back.normal
-            Layout.alignment: Qt.AlignTop
-            height: Regovar.theme.font.boxSize.control
-            verticalAlignment: Text.AlignVCenter
-        }
-        Column
-        {
-            Layout.fillWidth: true
-            spacing: 5
-
-            CheckBox
+            Rectangle
             {
-                text: qsTr("Display help boxes")
-                checked: Regovar.helpInfoBoxDisplayed
-                onCheckedChanged: Regovar.helpInfoBoxDisplayed = checked
+                width: Regovar.theme.font.boxSize.title
+                height: Regovar.theme.font.boxSize.title
+                color: "transparent"
             }
             Text
             {
-                width: parent.width
-                text: qsTr("Display or hide help and informations boxes in the application.")
-                font.pixelSize: Regovar.theme.font.size.content
-                font.italic: true
+                text: qsTr("Help boxes")
+                font.pixelSize: Regovar.theme.font.size.control
                 color: Regovar.theme.primaryColor.back.normal
-                wrapMode: Text.WordWrap
+                Layout.alignment: Qt.AlignTop
+                height: Regovar.theme.font.boxSize.control
+                verticalAlignment: Text.AlignVCenter
             }
         }
+        Column
+        {
+                    Layout.fillWidth: true
+                    spacing: 5
+
+                    CheckBox
+                    {
+                        text: qsTr("Display help boxes")
+                        checked: Regovar.helpInfoBoxDisplayed
+                        onCheckedChanged: Regovar.helpInfoBoxDisplayed = checked
+                    }
+                    Text
+                    {
+                        width: parent.width
+                        text: qsTr("Display or hide help and informations boxes in the application.")
+                        font.pixelSize: Regovar.theme.font.size.content
+                        font.italic: true
+                        color: Regovar.theme.primaryColor.back.normal
+                        wrapMode: Text.WordWrap
+                    }
+                }
+
 
         Rectangle
         {
