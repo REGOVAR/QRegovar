@@ -17,16 +17,6 @@ QualityQuickFilter::QualityQuickFilter(int) : QuickFilterBlockInterface()
     mOperators.append("≠");
 
     mDepth = new QuickFilterField("401b1e5614706ec81bf83e24958f01e5", tr("Depth"), mOperators, "≥", 30);
-    mDepth->setIsActive(false);
-    mFilter = "[\"%2\", [\"field\", \"%1\"], [\"value\", %3]]";
-
-    mOpMapping.clear();
-    mOpMapping.insert("<", "<");
-    mOpMapping.insert("≤", "<=");
-    mOpMapping.insert("=", "==");
-    mOpMapping.insert("≥", ">=");
-    mOpMapping.insert(">", ">");
-    mOpMapping.insert("≠", "!=");
 }
 
 

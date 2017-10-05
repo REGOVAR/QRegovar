@@ -43,39 +43,50 @@ bool TransmissionQuickFilter::isVisible()
 QJsonArray TransmissionQuickFilter::toJson()
 {
     QJsonArray filter;
-//    QJsonArray recFilter;
-//    foreach(QString fid, mActiveFilters.keys())
-//    {
-//        if (mActiveFilters[fid])
-//        {
-//            if (fid == "rec_hom" || fid == "rec_htzcomp")
-//            {
-//                recFilter.append();
-//                recFilter << mFilters[fid].toJson();
-//            }
-//            else
-//            {
-//                filter << mFilters[fid];
-//            }
-//        }
-//    }
+    QJsonArray recFilter;
+    foreach(QuickFilterField* f, mFilters.values())
+    {
+        if (f->isActive())
+        {
+            if (f->fuid() == "rec_hom" || f->fuid() == "rec_htzcomp")
+            {
+                recFilter.append(f->toJson());
+            }
+            else
+            {
+                filter.append(f->toJson());
+            }
+        }
+    }
 
 
 
-//    QString resSubFilter = "";
-//    if (recFilter.count() == 1)
-//        resSubFilter = QString(", %1").arg(recFilter[0]);
-//    else if (recFilter.count() > 1)
-//        resSubFilter = QString(", [\"OR\", [%1]]").arg(recFilter.join(","));
+    QJsonArray recFilter2;
+    if (recFilter.count() == 1)
+    {
+        recFilter2 = recFilter[0].toArray();
+    }
+    else if (recFilter.count() > 1)
+    {
+        recFilter2.append("OR");
+        recFilter2.append(recFilter);
+    }
 
 
-//    QString resFilter = "";
-//    if (filter.count() > 1 || (filter.count() == 1 && recFilter.count() > 0))
-//        return QString("%1%2").arg(filter.join(","), resSubFilter);
-//    else if (filter.count() == 1)
-//        return filter[0];
-//    else if (filter.count() == 0 && recFilter.count() > 0)
-//        return resSubFilter.mid(2);
+
+    if (filter.count() > 1 || (filter.count() == 1 && recFilter.count() > 0))
+    {
+        filter.append(recFilter2);
+        return filter;
+    }
+    else if (filter.count() == 1)
+    {
+        return filter[0].toArray();
+    }
+    else if (filter.count() == 0 && recFilter.count() > 0)
+    {
+        return recFilter2;
+    }
     return filter;
 }
 
