@@ -203,7 +203,7 @@ Item
             }
             Text
             {
-                text: regovar.config.release["title"]
+                text: regovar.config.release["success"] ? regovar.config.release["title"] : ""
                 font.pixelSize: Regovar.theme.font.size.control
                 color: Regovar.theme.frontColor.normal
             }
@@ -216,7 +216,7 @@ Item
             }
             Text
             {
-                text: regovar.config.release["due_on"]
+                text: regovar.config.release["success"] ? regovar.config.release["due_on"] : ""
                 font.pixelSize: Regovar.theme.font.size.control
                 color: Regovar.theme.frontColor.normal
             }
@@ -238,7 +238,7 @@ Item
                 {
                     x: 1
                     y: 1
-                    width: regovar.config.release["progress"] * 148
+                    width: (regovar.config.release["success"] ?  regovar.config.release["progress"] : 0) * 148
                     height: Regovar.theme.font.size.control - 4
                     color: Regovar.theme.secondaryColor.back.normal
                 }
@@ -253,11 +253,12 @@ Item
             Text
             {
                 id: nextlink
-                text: qsTr("See on Github")
+                text: regovar.config.release["success"] ? qsTr("See on Github") : ""
                 font.pixelSize: Regovar.theme.font.size.control
                 color: Regovar.theme.frontColor.normal
                 MouseArea
                 {
+                    enabled: regovar.config.release["success"]
                     anchors.fill: parent
                     cursorShape: "PointingHandCursor"
                     onClicked: Qt.openUrlExternally(regovar.config.release["html_url"])

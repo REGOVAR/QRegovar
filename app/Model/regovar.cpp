@@ -294,9 +294,10 @@ void Regovar::loadGithubData()
             if (data.isEmpty())
             {
                 data.insert("success", false);
+                data.insert("html_url", "https://github.com/REGOVAR/QRegovar/milestones");
                 mConfig->setRelease(data);
             }
-
+            emit configChanged();
             req->deleteLater();
         });
     }
@@ -304,7 +305,9 @@ void Regovar::loadGithubData()
     {
         QJsonObject data;
         data.insert("success", false);
+        data.insert("html_url", "https://github.com/REGOVAR/QRegovar/milestones");
         mConfig->setRelease(data);
+        emit configChanged();
     }
 }
 

@@ -62,7 +62,7 @@ class Regovar : public QObject
 
     Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlChanged)
     Q_PROPERTY(ServerStatus connectionStatus READ connectionStatus WRITE setConnectionStatus NOTIFY connectionStatusChanged)
-    Q_PROPERTY(RegovarInfo* config READ config)
+    Q_PROPERTY(RegovarInfo* config READ config NOTIFY configChanged)
     // Welcom
     Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
@@ -222,6 +222,7 @@ Q_SIGNALS:
     void selectedReferenceChanged();
     void selectedProjectChanged();
     void connectionStatusChanged();
+    void configChanged();
 
 private:
     Regovar();
