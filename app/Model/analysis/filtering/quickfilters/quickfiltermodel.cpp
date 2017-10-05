@@ -30,24 +30,24 @@ void QuickFilterModel::init(int refId, int)
 
 
 
-QString QuickFilterModel::getFilter()
+QJsonArray QuickFilterModel::toJson()
 {
-    QStringList filters;
+    QJsonArray result;
+    QJsonArray filters;
+    result.append("AND");
     foreach (QuickFilterBlockInterface* filter, mQuickFilters.values())
     {
         if (filter->isVisible())
         {
-            QString f = filter->getFilter();
+            QJsonArray f = filter->toJson();
             if (!f.isEmpty())
             {
-                filters << f;
+                filters.append(f);
             }
         }
     }
-
-    QString request = QString("[\"AND\",[%1]]").arg(filters.join(","));
-    qDebug() << "Quick filter generated : " << request;
-    return request;
+    result.append(filters);
+    return result;
 }
 
 void QuickFilterModel::checkAnnotationsDB(QList<QObject*> dbs)
@@ -64,7 +64,7 @@ void QuickFilterModel::loadFilter(QJsonArray json)
 {
     foreach (QuickFilterBlockInterface* filter, mQuickFilters.values())
     {
-        filter->loadFilter(json);
+        filter->loadJson(json);
     }
 }
 

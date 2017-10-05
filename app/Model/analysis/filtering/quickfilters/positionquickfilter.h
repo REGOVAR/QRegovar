@@ -20,11 +20,11 @@ public:
     explicit PositionQuickFilter(int analysisId);
 
     Q_INVOKABLE bool isVisible();
-    Q_INVOKABLE QString getFilter();
+    Q_INVOKABLE QJsonArray toJson();
     Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant());
     Q_INVOKABLE void clear();
     Q_INVOKABLE void checkAnnotationsDB(QList<QObject*> dbs);
-    bool loadFilter(QJsonArray filter);
+    bool loadJson(QJsonArray filter);
 
     inline QuickFilterField* exonic() { return mFields[0]; }
     inline QuickFilterField* intronic() { return mFields[1]; }

@@ -23,6 +23,7 @@ public:
     ~QuickFilterField();
 
     Q_INVOKABLE void clear();
+    Q_INVOKABLE QJsonArray toJson();
 
     // Getters
     inline QString label() { return mLabel; }
@@ -39,6 +40,7 @@ public:
     inline void setValue(QVariant value) { if (value != mValue) { mValue = value; emit valueChanged(); }}
     inline void setIsActive(bool isActive) { if (isActive != mIsActive) { mIsActive = isActive; emit isActiveChanged(); }}
     inline void setIsDisplayed(bool isDisplayed) { if (isDisplayed != mIsDisplayed) { mIsDisplayed = isDisplayed; emit isDisplayedChanged(); }}
+
 
 Q_SIGNALS:
     void labelChanged();
@@ -58,6 +60,9 @@ private:
     bool mIsActive;
     bool mDefaultIsActive;
     bool mIsDisplayed;
+
+    static QHash<QString, QString> mOpMapping;
+    static QHash<QString, QString> initOpMapping();
 };
 
 
@@ -76,7 +81,7 @@ public:
     //! Indicates if this filter shall be displayed in the UI (by example some filter are only for "Trio analysis")
     Q_INVOKABLE virtual bool isVisible() = 0;
     //! Return the filter query as Json string that will be concatened with other quickFilters
-    Q_INVOKABLE virtual QString getFilter() = 0;
+    Q_INVOKABLE virtual QJsonArray toJson() = 0;
     //! Generic method to set value of the filter thanks to the UI.
     Q_INVOKABLE virtual void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant()) = 0;
     //! Reset the filter
@@ -84,7 +89,7 @@ public:
     //!
     Q_INVOKABLE virtual void checkAnnotationsDB(QList<QObject*> dbs) = 0;
     //! Init the filter with the provided json formated filter (load from server)
-    virtual bool loadFilter(QJsonArray filter) = 0;
+    virtual bool loadJson(QJsonArray filter) = 0;
 
 
 

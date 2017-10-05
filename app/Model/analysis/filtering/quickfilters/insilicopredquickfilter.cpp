@@ -28,22 +28,10 @@ bool InSilicoPredQuickFilter::isVisible()
 }
 
 
-QString InSilicoPredQuickFilter::getFilter()
+QJsonArray InSilicoPredQuickFilter::toJson()
 {
-    QStringList filter;
-    foreach (QuickFilterField* field, mFields)
-    {
-        if (field->isActive())
-        {
-            filter << mFilter.arg(field->fuid(), field->op(), field->value().toString());
-        }
-    }
-
-    if (filter.count() > 1)
-        return QString("[\"OR\", [%1]]").arg(filter.join(","));
-    else if (filter.count() == 1)
-        return filter[0];
-    return "";
+    QJsonArray result;
+    return result;
 }
 
 
@@ -80,7 +68,7 @@ void InSilicoPredQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 }
 
 
-bool InSilicoPredQuickFilter::loadFilter(QJsonArray filter)
+bool InSilicoPredQuickFilter::loadJson(QJsonArray filter)
 {
     // TODO or not TODO ?
     return false;

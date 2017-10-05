@@ -22,22 +22,10 @@ bool PositionQuickFilter::isVisible()
 }
 
 
-QString PositionQuickFilter::getFilter()
+QJsonArray PositionQuickFilter::toJson()
 {
-    QStringList filter;
-    foreach (QuickFilterField* field, mFields)
-    {
-        if (field->isActive())
-        {
-            filter << mFilter.arg(field->fuid(), field->op(), field->value().toString());
-        }
-    }
-
-    if (filter.count() > 1)
-        return QString("[\"OR\", [%1]]").arg(filter.join(","));
-    else if (filter.count() == 1)
-        return filter[0];
-    return "";
+    QJsonArray result;
+    return result;
 }
 
 
@@ -77,7 +65,7 @@ void PositionQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 
 
 
-bool PositionQuickFilter::loadFilter(QJsonArray filter)
+bool PositionQuickFilter::loadJson(QJsonArray filter)
 {
     // TODO or not TODO ?
     return false;

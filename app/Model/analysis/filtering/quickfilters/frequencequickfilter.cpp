@@ -26,6 +26,8 @@ FrequenceQuickFilter::FrequenceQuickFilter(int) : QuickFilterBlockInterface()
     // TODO : Retrieve list of available annotations according to the analysisId
     //      : And then retrieve via regexp fields_uid for dbnsfp
 
+
+
     // List of fields uid
     mFields = QList<QuickFilterField*>();
     mFields << new QuickFilterField("9416b5d08c79ca159bd8f77679ad9045", "1000G All", mOperators, "≤", 0.01);
@@ -54,22 +56,27 @@ bool FrequenceQuickFilter::isVisible()
 }
 
 
-QString FrequenceQuickFilter::getFilter()
+QJsonArray FrequenceQuickFilter::toJson()
 {
-    QStringList filter;
+    QJsonArray filters;
     foreach (QuickFilterField* field, mFields)
     {
         if (field->isActive())
         {
-            filter << mFilter.arg(field->fuid(), mOpMapping[field->op()], field->value().toString());
+            filters.append(field->toJson());
         }
     }
 
-    if (filter.count() > 1)
-        return QString("[\"AND\", [%1]]").arg(filter.join(","));
-    else if (filter.count() == 1)
-        return filter[0];
-    return "";
+    if (filters.count() > 1)
+    {
+        QJsonArray result;
+        result.append("AND");
+        result.append(filters);
+        return result;
+    }
+    else if (filters.count() == 1)
+        return filters[0].toArray();
+    return filters;
 }
 
 
@@ -106,7 +113,7 @@ void FrequenceQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 }
 
 
-bool FrequenceQuickFilter::loadFilter(QJsonArray filter)
+bool FrequenceQuickFilter::loadJson(QJsonArray filter)
 {
     // TODO or not TODO ?
     return false;

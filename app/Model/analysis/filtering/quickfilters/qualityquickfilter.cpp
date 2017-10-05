@@ -37,13 +37,13 @@ bool QualityQuickFilter::isVisible()
 }
 
 
-QString QualityQuickFilter::getFilter()
+QJsonArray QualityQuickFilter::toJson()
 {
     if (mDepth->isActive())
     {
-        return mFilter.arg(mDepth->fuid(), mOpMapping[mDepth->op()], mDepth->value().toString());
+        return mDepth->toJson();
     }
-    return "";
+    return QJsonArray();
 }
 
 
@@ -65,7 +65,7 @@ void QualityQuickFilter::checkAnnotationsDB(QList<QObject*>)
 }
 
 
-bool QualityQuickFilter::loadFilter(QJsonArray filter)
+bool QualityQuickFilter::loadJson(QJsonArray filter)
 {
     // TODO or not TODO ?
     return false;

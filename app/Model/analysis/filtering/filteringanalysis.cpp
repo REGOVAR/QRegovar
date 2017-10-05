@@ -388,8 +388,8 @@ void FilteringAnalysis::saveCurrentFilter(bool quickFilter, QString filterName, 
     QJsonArray filter;
     if (quickFilter)
     {
-        QJsonDocument f = QJsonDocument::fromJson(mQuickFilters->getFilter().toUtf8());
-        filter = f.array();
+        //QJsonDocument f = QJsonDocument::fromJson(QString::toUtf8());
+        filter = mQuickFilters->toJson();
     }
     else
     {

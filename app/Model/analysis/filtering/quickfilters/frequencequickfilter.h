@@ -28,11 +28,11 @@ public:
     explicit FrequenceQuickFilter(int analysisId);
 
     Q_INVOKABLE bool isVisible();
-    Q_INVOKABLE QString getFilter();
+    Q_INVOKABLE QJsonArray toJson() override;
     Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant());
     Q_INVOKABLE void clear();
     Q_INVOKABLE void checkAnnotationsDB(QList<QObject*> dbs);
-    bool loadFilter(QJsonArray filter);
+    bool loadJson(QJsonArray filter);
 
     inline QuickFilterField* _1000GAll() { return mFields[0]; }
     inline QuickFilterField* _1000GAfr() { return mFields[1]; }
