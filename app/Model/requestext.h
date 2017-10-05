@@ -1,5 +1,8 @@
-#ifndef REQUEST_H
-#define REQUEST_H
+#ifndef REQUESTEXT_H
+#define REQUESTEXT_H
+
+
+
 #include <QObject>
 #include <QtNetwork>
 #include <QJsonObject>
@@ -7,23 +10,23 @@
 
 
 
-class Request : public QObject
+class RequestExt : public QObject
 {
     Q_OBJECT
 public:
     enum Verb { Get, Post, Put, Del, Patch, Head};
     Q_ENUM(Verb)
-    Request(Verb verb, const QString& query, QHttpMultiPart* data=nullptr, QObject* parent=0);
-    Request(Verb verb, const QString& query, const QByteArray& data, QObject* parent=0);
+    RequestExt(Verb verb, const QString& query, QHttpMultiPart* data=nullptr, QObject* parent=0);
+    RequestExt(Verb verb, const QString& query, const QByteArray& data, QObject* parent=0);
     static QNetworkAccessManager* netManager();
     // Factories
-    static Request* get_url(const QString& query) ;
-    static Request* get(const QString& query) ;
-    static Request* post(const QString& query, QHttpMultiPart* data=nullptr);
-    static Request* post(const QString& query, const QByteArray& data);
-    static Request* put(const QString& query,  QHttpMultiPart* data=nullptr);
-    static Request* put(const QString& query,  const QByteArray& data);
-    static Request* del(const QString& query);
+    static RequestExt* get_url(const QString& query) ;
+    static RequestExt* get(const QString& query) ;
+    static RequestExt* post(const QString& query, QHttpMultiPart* data=nullptr);
+    static RequestExt* post(const QString& query, const QByteArray& data);
+    static RequestExt* put(const QString& query,  QHttpMultiPart* data=nullptr);
+    static RequestExt* put(const QString& query,  const QByteArray& data);
+    static RequestExt* del(const QString& query);
     // static Request* patch(const QString query,const QByteArray& data = QByteArray());
     // static Request* head(const QString query);
     static QNetworkRequest makeRequest(const QString& resource) ;
@@ -37,7 +40,7 @@ public:
 
 
 Q_SIGNALS :
-    void responseReceived(bool success, const QJsonObject& json);
+    void responseReceived(const QJsonObject& json);
 
 protected Q_SLOTS:
     void received();
@@ -52,4 +55,4 @@ private:
     QJsonObject mJson;
 };
 
-#endif // REQUEST_H
+#endif // REQUESTEXT_H

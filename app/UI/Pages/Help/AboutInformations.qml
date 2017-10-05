@@ -108,6 +108,95 @@ Item
                     selectByKeyboard: true
                 }
             }
+
+
+            Rectangle
+            {
+                width: 50
+                height: 1
+                color: Regovar.theme.primaryColor.back.normal
+            }
+
+            Text
+            {
+                text: qsTr("Next planned release")
+                font.pixelSize: Regovar.theme.font.size.control
+                font.bold: true
+                color: Regovar.theme.primaryColor.back.normal
+            }
+            Grid
+            {
+                columns: 2
+                rows: 4
+                rowSpacing: 5
+                columnSpacing: 10
+
+                Text
+                {
+                    text: qsTr("Name:")
+                    font.pixelSize: Regovar.theme.font.size.control
+                    color: Regovar.theme.frontColor.normal
+                }
+                Text
+                {
+                    text: regovar.config.release["title"]
+                    font.pixelSize: Regovar.theme.font.size.control
+                    color: Regovar.theme.frontColor.normal
+                }
+                Text
+                {
+                    text: qsTr("Due on:")
+                    font.pixelSize: Regovar.theme.font.size.control
+                    color: Regovar.theme.frontColor.normal
+                }
+                Text
+                {
+                    text: regovar.config.release["due_on"]
+                    font.pixelSize: Regovar.theme.font.size.control
+                    color: Regovar.theme.frontColor.normal
+                }
+                Text
+                {
+                    text: qsTr("Progress:")
+                    font.pixelSize: Regovar.theme.font.size.control
+                    color: Regovar.theme.frontColor.normal
+                }
+                Rectangle
+                {
+                    width: 150
+                    height: Regovar.theme.font.boxSize.control
+                    color: Regovar.theme.backgroundColor.main
+                    border.width: 1
+                    border.color: Regovar.theme.boxColor.border
+                    Rectangle
+                    {
+                        x: 1
+                        y: 1
+                        width: regovar.config.release["progress"] * 148
+                        height: Regovar.theme.font.boxSize.control - 2
+                        color: Regovar.theme.frontColor.normal
+                    }
+                }
+                Text
+                {
+                    text: qsTr("Details:")
+                    font.pixelSize: Regovar.theme.font.size.control
+                    color: Regovar.theme.frontColor.normal
+                }
+                Text
+                {
+                    text: qsTr("See on Github")
+                    font.pixelSize: Regovar.theme.font.size.control
+                    color: Regovar.theme.frontColor.normal
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        cursorShape: "PointingHandCursor"
+                        onClicked: Qt.openUrlExternally(regovar.config.release["html_url"])
+                    }
+                }
+            }
+
         }
     }
 }

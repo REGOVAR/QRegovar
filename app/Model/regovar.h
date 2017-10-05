@@ -17,22 +17,28 @@
 #endif
 
 
-class RegovarConfig: public QObject
+class RegovarInfo: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString serverVersion READ serverVersion NOTIFY configChanged)
     Q_PROPERTY(QString clientVersion READ clientVersion NOTIFY configChanged)
     Q_PROPERTY(QString website READ website NOTIFY configChanged)
     Q_PROPERTY(QString license READ license  NOTIFY configChanged)
+    Q_PROPERTY(QJsonObject release READ release  NOTIFY configChanged)
+    Q_PROPERTY(QList<QObject*> issues READ issues  NOTIFY configChanged)
 
 public:
-    explicit RegovarConfig(QObject *parent = nullptr);
+    explicit RegovarInfo(QObject *parent = nullptr);
     // Getters
     inline QString serverVersion() { return mServerVersion; }
     inline QString clientVersion() { return mClientVersion; }
     inline QString website() { return mWebsite; }
     inline QString license() { return mLicense; }
+    inline QJsonObject release() { return mRelease; }
+    inline QList<QObject*> issues() { return mIssues; }
     // Setters
+    inline void setRelease(QJsonObject release) { mRelease = release; emit configChanged(); }
+    // Methods
     void fromJson(QJsonObject json);
 Q_SIGNALS:
     void configChanged();
@@ -42,6 +48,8 @@ private:
     QString mClientVersion;
     QString mWebsite;
     QString mLicense;
+    QJsonObject mRelease;
+    QList<QObject*> mIssues;
 };
 
 
@@ -57,7 +65,7 @@ class Regovar : public QObject
 
     Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlChanged)
     Q_PROPERTY(ServerStatus connectionStatus READ connectionStatus WRITE setConnectionStatus NOTIFY connectionStatusChanged)
-    Q_PROPERTY(RegovarConfig* config READ config)
+    Q_PROPERTY(RegovarInfo* config READ config)
     // Welcom
     Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
@@ -106,7 +114,7 @@ public:
     // Accessors
     inline ServerStatus connectionStatus() { return mConnectionStatus; }
     inline QUrl& serverUrl() { return mApiRootUrl; }
-    inline RegovarConfig* config() const { return mConfig; }
+    inline RegovarInfo* config() const { return mConfig; }
     //--
     inline QString searchRequest() { return mSearchRequest; }
     inline QJsonObject searchResult() const { return mSearchResult; }
@@ -159,6 +167,7 @@ public:
     Reference* referencesFromId(int id);
 
     Q_INVOKABLE void loadWelcomData();
+    Q_INVOKABLE void loadGithubData();
     Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void loadSampleBrowser(int refId);
     Q_INVOKABLE inline QUuid generateUuid() { return QUuid::createUuid(); }
@@ -228,7 +237,7 @@ private:
     //! Server connection status
     ServerStatus mConnectionStatus;
     //! The config retrieved from the server
-    RegovarConfig* mConfig;
+    RegovarInfo* mConfig;
     //! The current user of the application
     // UserModel * mUser;
     //! Search request and results

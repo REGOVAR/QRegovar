@@ -6,6 +6,7 @@
 #include <QSysInfo>
 #include "regovar.h"
 #include "request.h"
+#include "requestext.h"
 
 #include "Model/file/file.h"
 #include "Model/analysis/filtering/reference.h"
@@ -14,13 +15,13 @@
 
 
 
-RegovarConfig::RegovarConfig(QObject* parent) : QObject(parent)
+RegovarInfo::RegovarInfo(QObject* parent) : QObject(parent)
 {
 
 }
 
 
-void RegovarConfig::fromJson(QJsonObject json)
+void RegovarInfo::fromJson(QJsonObject json)
 {
     mServerVersion = json["version"].toString();
     mWebsite = json["website"].toString();
@@ -91,7 +92,7 @@ void Regovar::init()
 
     // Init models
     // mUser = new UserModel(); //1, "Olivier", "Gueudelot");
-    mConfig = new RegovarConfig();
+    mConfig = new RegovarInfo();
     mProjectsTreeView = new ProjectsTreeModel();
     mUploader = new TusUploader();
     mNewPipelineAnalysis = new PipelineAnalysis();
@@ -115,6 +116,8 @@ void Regovar::init()
     initFlatProjectList();
     mProjectsTreeView->refresh();
 
+
+    loadGithubData();
     loadWelcomData();
 }
 
@@ -261,6 +264,32 @@ void Regovar::loadWelcomData()
         req->deleteLater();
         setWelcomIsLoading(true);
     });
+}
+
+void Regovar::loadGithubData()
+{
+    //if (QSslSocket::supportsSsl())
+    {
+        RequestExt* req = RequestExt::get(QString("https://api.github.com/repos/REGOVAR/QRegovar/milestones"));
+        connect(req, &RequestExt::responseReceived, [this, req](const QJsonValue& json)
+        {
+            mConfig->setRelease(QJsonObject());
+            foreach (QJsonValue val, json.toArray())
+            {
+                QJsonObject data = val.toObject();
+                if (data["state"].toString() == "open")
+                {
+                    if (mConfig->release().isEmpty() || mConfig->release()["due_on"].toString() > data["due_on"].toString())
+                    {
+                        double progress = data["closed_issues"].toDouble() / (data["open_issues"].toDouble() + data["closed_issues"].toDouble());
+                        data.insert("progress", progress);
+                        mConfig->setRelease(data);
+                    }
+                }
+            }
+            req->deleteLater();
+        });
+    }
 }
 
 

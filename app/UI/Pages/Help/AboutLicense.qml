@@ -305,7 +305,7 @@ Item
              TextEdit
              {
                  id: edit
-                 width: scrollView.viewport.width
+                 width: scrollView.width - 30
                  text: regovar.config.license
                  font.pixelSize: Regovar.theme.font.size.control
                  color: Regovar.theme.frontColor.normal

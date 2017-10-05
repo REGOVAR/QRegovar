@@ -48,7 +48,8 @@ HEADERS += \
     Model/analysis/filtering/remotesampletreemodel.h \
     Model/analysis/pipeline/pipelineanalysis.h \
     Model/analysis/filtering/reference.h \
-    Model/analysis/filtering/advancedfilters/advancedfiltermodel.h
+    Model/analysis/filtering/advancedfilters/advancedfiltermodel.h \
+    Model/requestext.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -84,7 +85,8 @@ SOURCES += main.cpp \
     Model/analysis/filtering/remotesampletreemodel.cpp \
     Model/analysis/pipeline/pipelineanalysis.cpp \
     Model/analysis/filtering/reference.cpp \
-    Model/analysis/filtering/advancedfilters/advancedfiltermodel.cpp
+    Model/analysis/filtering/advancedfilters/advancedfiltermodel.cpp \
+    Model/requestext.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -111,20 +113,22 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 
-#win32 {
-#    COPY_FROM_PATH=$$shell_path($$PWD/UI)
-#    COPY_TO_PATH=$$shell_path($$OUT_PWD/UI)
+#win32
+#{
+#    COPY_FROM_PATH=$$shell_path($$PWD/libs/win)
+#    COPY_TO_PATH=$$shell_path($$OUT_PWD)
+#    copydata.commands = $(COPY_DIR) $$COPY_FROM_PATH $$COPY_TO_PATH
+#    first.depends = $(first) copydata
+#    export(first.depends)
+#    export(copydata.commands)
+#    QMAKE_EXTRA_TARGETS += first copydata
 #}
 #else {
 #    COPY_FROM_PATH=$$PWD/UI/
 #    COPY_TO_PATH=$$OUT_PWD/UI/
 #}
 
-#copydata.commands = $(COPY_DIR) $$COPY_FROM_PATH $$COPY_TO_PATH
-#first.depends = $(first) copydata
-#export(first.depends)
-#export(copydata.commands)
-#QMAKE_EXTRA_TARGETS += first copydata
+
 
 RESOURCES += \
     Assets/qrc.qrc \
