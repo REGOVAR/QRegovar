@@ -160,45 +160,57 @@ Rectangle
             width: testConnectionButton.width + 20
             Layout.fillHeight: true
 
-            ColumnLayout
-            {
-                anchors.fill: parent
-                anchors.margins: 10
-                ButtonIcon
-                {
-                    id: testConnectionButton
-                    text: qsTr("Test connection !")
-                    icon: "x"
-                    onClicked:
-                    {
-                        icon = "/";
-                        regovar.testConnection(regovarUrl.text, proxyUrl.text);
-                    }
-                    Connections
-                    {
-                        target: regovar
-                        onTestConnectionEnd:
-                        {
-                            testConnectionButton.icon = "x";
 
-                        }
-                    }
-                }
-                Rectangle
+            ButtonIcon
+            {
+                id: testConnectionButton
+                x:10
+                y:10
+                text: qsTr("Test connection !")
+                icon: "x"
+                onClicked:
                 {
-                    Layout.fillHeight: true
-                    Layout.fillWidth: trye
-                    color: "transparent"
-                    Text
+                    testConnectionButton.enabled = false;
+                    testConnectionIcon.text = "/";
+                    regovar.testConnection(regovarUrl.text, proxyUrl.text);
+                }
+                Connections
+                {
+                    target: regovar
+                    onTestConnectionEnd:
                     {
-                        anchors.centerIn: parent
-                        id: name
-                        text: "n"
-                        font.family: Regovar.theme.icons.name
-                        font.pixelSize: 30
+                        testConnectionIcon.text = "n";
+                        testConnectionButton.enabled = true;
+
                     }
                 }
             }
+            Text
+            {
+                id: testConnectionIcon
+                anchors.top: testConnectionButton.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: testConnectionLabel.top
+                wrapMode: Text.WordWrap
+                text: "n"
+                verticalAlignment: Text.AlignVCenter
+                font.family: Regovar.theme.icons.name
+                font.pixelSize: 30
+                color: Regovar.theme.primaryColor.back.normal
+            }
+            Text
+            {
+                id: testConnectionLabel
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                wrapMode: Text.WordWrap
+                text: qsTr("Connection settings are OK")
+                font.pixelSize: Regovar.theme.font.size.content
+                color: Regovar.theme.primaryColor.back.normal
+                horizontalAlignment: Text.AlignHCenter
+            }
+
         }
 
         // Proxy URL
@@ -326,6 +338,26 @@ Rectangle
             border.width: 1
             border.color: Regovar.theme.boxColor.border
             width: testConnectionButton.width + 20
+            Layout.fillHeight: true
+
+            ButtonIcon
+            {
+                x:10
+                y:10
+                text: qsTr("Apply settings")
+                icon: "n"
+            }
+            Text
+            {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                wrapMode: Text.WordWrap
+                text: qsTr("Todo : preview of interface setting before validation")
+                font.pixelSize: Regovar.theme.font.size.content
+                color: Regovar.theme.primaryColor.back.normal
+                horizontalAlignment: Text.AlignHCenter
+            }
         }
 
         // Theme
