@@ -12,7 +12,7 @@ Item
     {
         anchors.centerIn: parent
 
-        width: longText.width + 110
+        width: 500
         height: info.height + 20
         border.width: 1
         border.color: Regovar.theme.boxColor.border
@@ -30,44 +30,84 @@ Item
             source: "qrc:/logo.png"
         }
 
-        Column
+        GridLayout
         {
             id: info
             anchors.top: parent.top
             anchors.left: logo.right
             anchors.right: parent.right
             anchors.margins: 10
-            spacing: 10
+            anchors.leftMargin: 20
+
+            columns: 2
+            rows: 14
+            rowSpacing: 5
+            columnSpacing: 10
 
             Text
             {
                 text: qsTr("Regovar")
                 font.pixelSize: Regovar.theme.font.size.title
                 font.bold: true
-                color: Regovar.theme.frontColor.normal
-            }
-            Text
-            {
-                text: qsTr("Server version") + " : " + regovar.config.serverVersion
-                font.pixelSize: Regovar.theme.font.size.control
-                color: Regovar.theme.frontColor.normal
-            }
-            Text
-            {
-                text: qsTr("Client version") + " : " + regovar.config.clientVersion
-                font.pixelSize: Regovar.theme.font.size.control
-                color: Regovar.theme.frontColor.normal
-            }
-            Rectangle
-            {
-                width: 50
-                height: 1
                 color: Regovar.theme.primaryColor.back.normal
+                Layout.columnSpan: 2
+            }
+
+
+            Text
+            {
+                text: qsTr("Server version:")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
+            }
+            Text
+            {
+                text: regovar.config.serverVersion
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
             }
 
             Text
             {
-                text: qsTr("Website") + " : http://regovar.org"
+                text: qsTr("Client version:")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
+            }
+            Text
+            {
+                text: regovar.config.clientVersion
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
+            }
+
+
+            Rectangle
+            {
+                color: "transparent"
+                Layout.columnSpan: 2
+                height: 15
+                width: 50
+                Rectangle
+                {
+                    width: 50
+                    height: 1
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: Regovar.theme.primaryColor.back.normal
+                }
+            }
+
+
+
+            Text
+            {
+                text: qsTr("Website:")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
+            }
+            Text
+            {
+                id: regolink
+                text: "http://regovar.org"
                 font.pixelSize: Regovar.theme.font.size.control
                 color: Regovar.theme.frontColor.normal
                 MouseArea
@@ -75,12 +115,22 @@ Item
                     anchors.fill: parent
                     cursorShape: "PointingHandCursor"
                     onClicked: Qt.openUrlExternally("http://regovar.org")
+                    hoverEnabled: true
+                    onEntered: regolink.color = Regovar.theme.secondaryColor.back.normal
+                    onExited:  regolink.color = Regovar.theme.frontColor.normal
                 }
+            }
+
+            Text
+            {
+                text: qsTr("Github:")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
             }
             Text
             {
-                id: longText
-                text: qsTr("Github") + " : https://github.com/REGOVAR/Regovar"
+                id: gitlink
+                text: "https://github.com/REGOVAR/Regovar"
                 font.pixelSize: Regovar.theme.font.size.control
                 color: Regovar.theme.frontColor.normal
                 MouseArea
@@ -88,33 +138,41 @@ Item
                     anchors.fill: parent
                     cursorShape: "PointingHandCursor"
                     onClicked: Qt.openUrlExternally("https://github.com/REGOVAR/Regovar")
-                }
-            }
-            Row
-            {
-                Text
-                {
-                    text: qsTr("Contact email") + " : "
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: Regovar.theme.frontColor.normal
-                }
-                TextEdit
-                {
-                    text: "dev@regovar.org"
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: Regovar.theme.frontColor.normal
-                    readOnly: true
-                    selectByMouse: true
-                    selectByKeyboard: true
+                    hoverEnabled: true
+                    onEntered: gitlink.color = Regovar.theme.secondaryColor.back.normal
+                    onExited:  gitlink.color = Regovar.theme.frontColor.normal
                 }
             }
 
+            Text
+            {
+                text: qsTr("Contact email") + " : "
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
+            }
+            TextEdit
+            {
+                text: "dev@regovar.org"
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
+                readOnly: true
+                selectByMouse: true
+                selectByKeyboard: true
+            }
 
             Rectangle
             {
+                color: "transparent"
+                Layout.columnSpan: 2
+                height: 15
                 width: 50
-                height: 1
-                color: Regovar.theme.primaryColor.back.normal
+                Rectangle
+                {
+                    width: 50
+                    height: 1
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: Regovar.theme.primaryColor.back.normal
+                }
             }
 
             Text
@@ -123,77 +181,89 @@ Item
                 font.pixelSize: Regovar.theme.font.size.control
                 font.bold: true
                 color: Regovar.theme.primaryColor.back.normal
+                Layout.columnSpan: 2
             }
-            Grid
-            {
-                columns: 2
-                rows: 4
-                rowSpacing: 5
-                columnSpacing: 10
 
-                Text
-                {
-                    text: qsTr("Name:")
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: Regovar.theme.frontColor.normal
-                }
-                Text
-                {
-                    text: regovar.config.release["title"]
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: Regovar.theme.frontColor.normal
-                }
-                Text
-                {
-                    text: qsTr("Due on:")
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: Regovar.theme.frontColor.normal
-                }
-                Text
-                {
-                    text: regovar.config.release["due_on"]
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: Regovar.theme.frontColor.normal
-                }
-                Text
-                {
-                    text: qsTr("Progress:")
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: Regovar.theme.frontColor.normal
-                }
+            Text
+            {
+                text: !regovar.config.release["success"] ? qsTr("Not able to retrieve information.") : ""
+                font.italic: true
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.disable
+                Layout.columnSpan: 2
+                visible: !regovar.config.release["success"]
+            }
+
+
+            Text
+            {
+                text: qsTr("Name:")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
+            }
+            Text
+            {
+                text: regovar.config.release["title"]
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
+            }
+
+            Text
+            {
+                text: qsTr("Due on:")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
+            }
+            Text
+            {
+                text: regovar.config.release["due_on"]
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
+            }
+
+            Text
+            {
+                text: qsTr("Progress:")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
+            }
+            Rectangle
+            {
+                width: 150
+                height: Regovar.theme.font.size.control
+                color: Regovar.theme.backgroundColor.main
+                border.width: 1
+                border.color: Regovar.theme.boxColor.border
                 Rectangle
                 {
-                    width: 150
-                    height: Regovar.theme.font.boxSize.control
-                    color: Regovar.theme.backgroundColor.main
-                    border.width: 1
-                    border.color: Regovar.theme.boxColor.border
-                    Rectangle
-                    {
-                        x: 1
-                        y: 1
-                        width: regovar.config.release["progress"] * 148
-                        height: Regovar.theme.font.boxSize.control - 2
-                        color: Regovar.theme.frontColor.normal
-                    }
+                    x: 1
+                    y: 1
+                    width: regovar.config.release["progress"] * 148
+                    height: Regovar.theme.font.size.control - 4
+                    color: Regovar.theme.secondaryColor.back.normal
                 }
-                Text
+            }
+
+            Text
+            {
+                text: qsTr("Details:")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
+            }
+            Text
+            {
+                id: nextlink
+                text: qsTr("See on Github")
+                font.pixelSize: Regovar.theme.font.size.control
+                color: Regovar.theme.frontColor.normal
+                MouseArea
                 {
-                    text: qsTr("Details:")
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: Regovar.theme.frontColor.normal
-                }
-                Text
-                {
-                    text: qsTr("See on Github")
-                    font.pixelSize: Regovar.theme.font.size.control
-                    color: Regovar.theme.frontColor.normal
-                    MouseArea
-                    {
-                        anchors.fill: parent
-                        cursorShape: "PointingHandCursor"
-                        onClicked: Qt.openUrlExternally(regovar.config.release["html_url"])
-                    }
+                    anchors.fill: parent
+                    cursorShape: "PointingHandCursor"
+                    onClicked: Qt.openUrlExternally(regovar.config.release["html_url"])
+                    hoverEnabled: true
+                    onEntered: nextlink.color = Regovar.theme.secondaryColor.back.normal
+                    onExited:  nextlink.color = Regovar.theme.frontColor.normal
                 }
             }
 

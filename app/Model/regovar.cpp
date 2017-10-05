@@ -268,27 +268,43 @@ void Regovar::loadWelcomData()
 
 void Regovar::loadGithubData()
 {
-    //if (QSslSocket::supportsSsl())
+    if (QSslSocket::supportsSsl())
     {
         RequestExt* req = RequestExt::get(QString("https://api.github.com/repos/REGOVAR/QRegovar/milestones"));
         connect(req, &RequestExt::responseReceived, [this, req](const QJsonValue& json)
         {
             mConfig->setRelease(QJsonObject());
+            QJsonArray datas = json.toArray();
+            QJsonObject data;
             foreach (QJsonValue val, json.toArray())
             {
-                QJsonObject data = val.toObject();
+                data = val.toObject();
                 if (data["state"].toString() == "open")
                 {
                     if (mConfig->release().isEmpty() || mConfig->release()["due_on"].toString() > data["due_on"].toString())
                     {
                         double progress = data["closed_issues"].toDouble() / (data["open_issues"].toDouble() + data["closed_issues"].toDouble());
                         data.insert("progress", progress);
+                        data.insert("success", true);
                         mConfig->setRelease(data);
                     }
                 }
             }
+
+            if (data.isEmpty())
+            {
+                data.insert("success", false);
+                mConfig->setRelease(data);
+            }
+
             req->deleteLater();
         });
+    }
+    else
+    {
+        QJsonObject data;
+        data.insert("success", false);
+        mConfig->setRelease(data);
     }
 }
 

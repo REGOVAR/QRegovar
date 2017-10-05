@@ -25,7 +25,6 @@ class RegovarInfo: public QObject
     Q_PROPERTY(QString website READ website NOTIFY configChanged)
     Q_PROPERTY(QString license READ license  NOTIFY configChanged)
     Q_PROPERTY(QJsonObject release READ release  NOTIFY configChanged)
-    Q_PROPERTY(QList<QObject*> issues READ issues  NOTIFY configChanged)
 
 public:
     explicit RegovarInfo(QObject *parent = nullptr);
@@ -35,7 +34,6 @@ public:
     inline QString website() { return mWebsite; }
     inline QString license() { return mLicense; }
     inline QJsonObject release() { return mRelease; }
-    inline QList<QObject*> issues() { return mIssues; }
     // Setters
     inline void setRelease(QJsonObject release) { mRelease = release; emit configChanged(); }
     // Methods
@@ -49,7 +47,6 @@ private:
     QString mWebsite;
     QString mLicense;
     QJsonObject mRelease;
-    QList<QObject*> mIssues;
 };
 
 
