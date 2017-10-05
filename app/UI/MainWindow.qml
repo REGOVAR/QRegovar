@@ -17,10 +17,25 @@ GenericWindow
 
     Settings
     {
+        id: settings
         property alias x: root.x
         property alias y: root.y
         property alias width: root.width
         property alias height: root.height
+
+        property int themeId: 0
+        property real fontSizeCoeff: 1.0
+    }
+    Component.onCompleted:
+    {
+        Regovar.theme.themeId = settings.themeId
+        Regovar.theme.fontSizeCoeff = settings.fontSizeCoeff
+    }
+    Component.onDestruction:
+    {
+        // store value choose by the user to restore it next time
+        settings.themeId = Regovar.theme.themeId
+        settings.fontSizeCoeff = Regovar.theme.fontSizeCoeff
     }
 
 

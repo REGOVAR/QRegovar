@@ -3,13 +3,7 @@
     "description": "I can still see you.",
     "font": 
     {
-        "familly": "Sans",
-        "size": 
-        {
-            "header":  16,
-            "control": 12,
-            "content": 11
-         }
+        "familly": "Sans"
     },
     "primaryColor":
     {
@@ -44,6 +38,8 @@
     "boxColor": 
     {
         "back":        "#757575",
+        "header1":     "#fcfcfd",
+        "header2":     "#e7e7e7",
         "front":       "#000000",
         "placeholder": "#494949",
         "border":      "#616161",
@@ -61,5 +57,22 @@
         "success" : "#6cc788",
         "warning" : "#f77a99",
         "danger" :  "#f44455"
+    },
+
+    "logo":
+    {
+        "color1":   "#80d6ff",
+        "color2":   "#0077c2"
+    },
+
+    "filtering":
+    {
+        "seqA":      "#3264C8",
+        "seqC":      "#C85050",
+        "seqG":      "#64C878",
+        "seqT":      "#E6A03C",
+        "filterAND": "#3770cc",
+        "filterOR":  "#37cc77",
+        "filterXOR": "#cc3737"
     }
 }

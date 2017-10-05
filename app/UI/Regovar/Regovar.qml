@@ -15,7 +15,6 @@ QtObject
      *  The "True" model of the application is done in C++, see /Model/Regovar singleton
      *  accessible in the QML by the id "regovar"
      */
-
 //    // Reload some value from Settings
 //    Settings
 //    {

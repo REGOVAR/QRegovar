@@ -52,6 +52,7 @@ TextField
             text: control.iconLeft
             visible: false
             font.family: Regovar.theme.icons.name
+            font.pixelSize: Regovar.theme.font.size.control
             color: iconLeftColor
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
@@ -66,6 +67,7 @@ TextField
             text: control.iconRight
             visible: false
             font.family: Regovar.theme.icons.name
+            font.pixelSize: Regovar.theme.font.size.control
             color: iconRightColor
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter

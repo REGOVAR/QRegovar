@@ -5,12 +5,14 @@
 #include <QNetworkReply>
 #include <QAuthenticator>
 #include <QQmlApplicationEngine>
+#include <QtWebSockets/QtWebSockets>
+
 #include "project/projectstreemodel.h"
 #include "project/project.h"
 #include "file/tusuploader.h"
 #include "analysis/filtering/filteringanalysis.h"
-#include <QtWebSockets/QtWebSockets>
 #include "Model/analysis/pipeline/pipelineanalysis.h"
+#include "user.h"
 
 #ifndef regovar
 #define regovar (Regovar::i())
@@ -64,6 +66,7 @@ class Regovar : public QObject
     Q_PROPERTY(ServerStatus connectionStatus READ connectionStatus WRITE setConnectionStatus NOTIFY connectionStatusChanged)
     Q_PROPERTY(RegovarInfo* config READ config NOTIFY configChanged)
     // Welcom
+    Q_PROPERTY(User* user READ user NOTIFY userChanged)
     Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
@@ -113,6 +116,7 @@ public:
     inline QUrl& serverUrl() { return mApiRootUrl; }
     inline RegovarInfo* config() const { return mConfig; }
     //--
+    inline User* user() const { return mUser; }
     inline QString searchRequest() { return mSearchRequest; }
     inline QJsonObject searchResult() const { return mSearchResult; }
     inline bool searchInProgress() const { return mSearchInProgress; }
@@ -133,8 +137,6 @@ public:
     inline QList<QObject*> remoteSamplesList() const { return mRemoteSamplesList; }
     inline PipelineAnalysis* newPipelineAnalysis() const { return mNewPipelineAnalysis; }
     inline FilteringAnalysis* newFilteringAnalysis() const { return mNewFilteringAnalysis; }
-    //--
-    //inline UserModel* currentUser() const { return mUser; }
 
     // Setters
     inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlChanged(); }
@@ -173,8 +175,8 @@ public:
 
 
 public Q_SLOTS:
-//    void login(QString& login, QString& password);
-//    void logout();
+    void login(QString& login, QString& password);
+    void logout();
     void onAuthenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
 
     void refreshProjectsTreeView();
@@ -193,6 +195,7 @@ public Q_SLOTS:
 
 signals:
 Q_SIGNALS:
+    void userChanged();
     void loginSuccess();
     void loginFailed();
     void logoutSuccess();
@@ -237,7 +240,7 @@ private:
     //! The config retrieved from the server
     RegovarInfo* mConfig;
     //! The current user of the application
-    // UserModel * mUser;
+    User* mUser;
     //! Search request and results
     QString mSearchRequest;
     QJsonObject mSearchResult;

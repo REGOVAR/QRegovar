@@ -1,13 +1,17 @@
 import QtQuick 2.7
 import QtQuick.Window 2.3
+import Qt.labs.settings 1.0
 
 QtObject
 {
     id: styleRoot
 
-    property string themeId: "RegovarLightTheme"
-    onThemeIdChanged: loadStyle()
-    Component.onCompleted: loadStyle()
+
+
+
+    property int themeId: 0
+    onThemeIdChanged: loadTheme()
+    Component.onCompleted: loadTheme()
 
 
 
@@ -16,6 +20,7 @@ QtObject
     property string description: "The official light theme of the Regovar client"
 
     property FontLoader icons: FontLoader { source: "../Icons.ttf" }
+    property real fontSizeCoeff: 1.0
 
     property QtObject font: QtObject
     {
@@ -23,17 +28,17 @@ QtObject
 
         property QtObject size: QtObject
         {
-            property int title : 5 * Screen.pixelDensity
-            property int header : 4 * Screen.pixelDensity
-            property int control : 3 * Screen.pixelDensity
-            property int content : 2.5 * Screen.pixelDensity
+            property real title : 5.0 * Screen.pixelDensity * fontSizeCoeff
+            property real header : 4.0 * Screen.pixelDensity * fontSizeCoeff
+            property real control : 3.0 * Screen.pixelDensity * fontSizeCoeff
+            property real content : 2.5 * Screen.pixelDensity * fontSizeCoeff
         }
         property QtObject boxSize: QtObject
         {
-            property int title : 5 * Screen.pixelDensity * 2
-            property int header : 4 * Screen.pixelDensity * 2
-            property int control : 3 * Screen.pixelDensity * 2
-            property int content : 2.5 * Screen.pixelDensity * 2
+            property real title : 5.0 * Screen.pixelDensity * 2 * fontSizeCoeff
+            property real header : 4.0 * Screen.pixelDensity * 2 * fontSizeCoeff
+            property real control : 3.0 * Screen.pixelDensity * 2 * fontSizeCoeff
+            property real content : 2.5 * Screen.pixelDensity * 2 * fontSizeCoeff
          }
     }
 
@@ -117,6 +122,17 @@ QtObject
 
 
 
+    onFontSizeCoeffChanged:
+    {
+        // TODO / FIXME : why only font.size.title is auto updated onchanged ?
+        // need to reset manually other value...
+        font.size.header = 4.0 * Screen.pixelDensity * fontSizeCoeff;
+        font.size.control = 3.0 * Screen.pixelDensity * fontSizeCoeff;
+        font.size.content = 2.5 * Screen.pixelDensity * fontSizeCoeff;
+    }
+
+
+
 
 
     function addTransparency(color, opacity)
@@ -139,10 +155,12 @@ QtObject
     }
 
 
-    function loadStyle()
+
+    function loadTheme()
     {
         var xhr = new XMLHttpRequest;
-        var path = Qt.resolvedUrl(".") + "Themes/" + styleRoot.themeId + ".js";
+        var themes = ["RegovarLightTheme.js", "RegovarDarkTheme.js", "HalloweenTheme.js"];
+        var path = Qt.resolvedUrl(".") + "Themes/" + themes[styleRoot.themeId];
         console.log("Loading theme " + styleRoot.themeId + " : " + path);
         xhr.open("GET", path);
         xhr.onreadystatechange = function()
@@ -155,9 +173,6 @@ QtObject
                 styleRoot.description = themeData.description;
 
                 styleRoot.font.familly = themeData.font.familly;
-                styleRoot.font.size.header = themeData.font.size.header;
-                styleRoot.font.size.control = themeData.font.size.control;
-                styleRoot.font.size.content = themeData.font.size.content;
 
                 styleRoot.primaryColor.back.light = themeData.primaryColor.back.light;
                 styleRoot.primaryColor.back.normal = themeData.primaryColor.back.normal;
@@ -174,6 +189,8 @@ QtObject
                 styleRoot.secondaryColor.front.dark = themeData.secondaryColor.front.dark;
 
                 styleRoot.boxColor.back = themeData.boxColor.back;
+                styleRoot.boxColor.header1 = themeData.boxColor.header1;
+                styleRoot.boxColor.header2 = themeData.boxColor.header2;
                 styleRoot.boxColor.front = themeData.boxColor.front;
                 styleRoot.boxColor.placeholder = themeData.boxColor.placeholder;
                 styleRoot.boxColor.border = themeData.boxColor.border;
@@ -188,6 +205,16 @@ QtObject
                 styleRoot.frontColor.warning = themeData.frontColor.warning;
                 styleRoot.frontColor.danger = themeData.frontColor.danger;
 
+                styleRoot.logo.color1 = themeData.logo.color1;
+                styleRoot.logo.color2 = themeData.logo.color2;
+
+                styleRoot.filtering.seqA = themeData.filtering.seqA;
+                styleRoot.filtering.seqC = themeData.filtering.seqC;
+                styleRoot.filtering.seqG = themeData.filtering.seqG;
+                styleRoot.filtering.seqT = themeData.filtering.seqT;
+                styleRoot.filtering.filterAND = themeData.filtering.filterAND;
+                styleRoot.filtering.filterOR = themeData.filtering.filterOR;
+                styleRoot.filtering.filterXOR = themeData.filtering.filterXOR;
             }
         }
         xhr.send();

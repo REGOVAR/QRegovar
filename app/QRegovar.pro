@@ -49,7 +49,8 @@ HEADERS += \
     Model/analysis/pipeline/pipelineanalysis.h \
     Model/analysis/filtering/reference.h \
     Model/analysis/filtering/advancedfilters/advancedfiltermodel.h \
-    Model/requestext.h
+    Model/requestext.h \
+    Model/user.h
 
 SOURCES += main.cpp \
     Model/treeitem.cpp \
@@ -86,7 +87,8 @@ SOURCES += main.cpp \
     Model/analysis/pipeline/pipelineanalysis.cpp \
     Model/analysis/filtering/reference.cpp \
     Model/analysis/filtering/advancedfilters/advancedfiltermodel.cpp \
-    Model/requestext.cpp
+    Model/requestext.cpp \
+    Model/user.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

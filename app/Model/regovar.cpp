@@ -91,7 +91,7 @@ void Regovar::init()
 
 
     // Init models
-    // mUser = new UserModel(); //1, "Olivier", "Gueudelot");
+    mUser = new User(1, "Olivier", "Gueudelot");
     mConfig = new RegovarInfo();
     mProjectsTreeView = new ProjectsTreeModel();
     mUploader = new TusUploader();
@@ -805,7 +805,7 @@ void Regovar::search(QString query)
 
 
 
-/*
+
 void Regovar::login(QString& login, QString& password)
 {
     // Do nothing if user already connected
@@ -865,21 +865,21 @@ void Regovar::logout()
         });
     }
 }
-*/
+
 
 
 void Regovar::onAuthenticationRequired(QNetworkReply* request, QAuthenticator* authenticator)
 {
     // Basic authentication requested by the server.
     // Try authentication using current user credentials
-//    if (authenticator->password() != currentUser()->password() || authenticator->user() != currentUser()->login())
-//    {
-//        authenticator->setUser(currentUser()->login());
-//        authenticator->setPassword(currentUser()->password());
-//    }
-//    else
-//    {
-//        request->error();
-//    }
+    if (authenticator->password() != user()->password() || authenticator->user() != user()->login())
+    {
+        authenticator->setUser(user()->login());
+        authenticator->setPassword(user()->password());
+    }
+    else
+    {
+        request->error();
+    }
 }
 

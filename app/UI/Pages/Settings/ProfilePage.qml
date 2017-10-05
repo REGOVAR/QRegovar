@@ -63,7 +63,7 @@ Rectangle
         anchors.right: root.right
         anchors.bottom: root.bottom
         anchors.margins: 10
-        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 10 : 10
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
 
 
         color: "transparent"
