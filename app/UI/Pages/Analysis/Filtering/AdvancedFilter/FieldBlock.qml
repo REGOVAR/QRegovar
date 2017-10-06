@@ -31,43 +31,20 @@ Rectangle
         color: "transparent"
 
 
-        Row
+
+
+        Text
         {
             anchors.left: parent.left
             anchors.right: controls.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-
-            spacing: 5
-
-
-            Text
-            {
-                id: leftOp
-                text: model.leftOp
-                height: Regovar.theme.font.boxSize.control
-                verticalAlignment: Text.AlignVCenter
-                font.pixelSize: Regovar.theme.font.size.control
-                color: root.textColor
-            }
-            Text
-            {
-                id: operator
-                text: model.opRegovarToFriend(model.op)
-                height: Regovar.theme.font.boxSize.control
-                verticalAlignment: Text.AlignVCenter
-                font.pixelSize: Regovar.theme.font.size.control
-                color: root.textColor
-            }
-            Text
-            {
-                id: rightOp
-                text: model.rightOp
-                height: Regovar.theme.font.boxSize.control
-                verticalAlignment: Text.AlignVCenter
-                font.pixelSize: Regovar.theme.font.size.control
-                color: root.textColor
-            }
+            text: model.leftOp + " " + model.opRegovarToFriend(model.op) + " " + model.rightOp
+            height: Regovar.theme.font.boxSize.control
+            verticalAlignment: Text.AlignVCenter
+            font.pixelSize: Regovar.theme.font.size.control
+            color: root.textColor
+            elide: Text.ElideRight
         }
 
 
@@ -85,15 +62,16 @@ Rectangle
             anchors.top: parent.top
             anchors.right: parent.right
             visible: root.mouseHover
+            //width: root.mouseHover ? 2*Regovar.theme.font.boxSize.control : 0
 
             Text
             {
                 text: "A"
-                height: Regovar.theme.font.boxSize.header
+                height: Regovar.theme.font.boxSize.control
                 width: Regovar.theme.font.boxSize.control
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: Regovar.theme.font.size.header
+                font.pixelSize: Regovar.theme.font.size.control
                 color: Regovar.theme.primaryColor.back.normal
                 font.family: Regovar.theme.icons.name
 
@@ -119,11 +97,11 @@ Rectangle
             Text
             {
                 text: "h"
-                height: Regovar.theme.font.boxSize.header
+                height: Regovar.theme.font.boxSize.control
                 width: Regovar.theme.font.boxSize.control
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: Regovar.theme.font.size.header
+                font.pixelSize: Regovar.theme.font.size.control
                 color: Regovar.theme.primaryColor.back.normal
                 font.family: Regovar.theme.icons.name
 
