@@ -1,6 +1,8 @@
 #include "transmissionquickfilter.h"
 #include <QJsonArray>
 
+#include "quickfilterblockinterface.h"
+
 // This quick filter is using several of precomputed regovar's annotations
 // These annotations are done and use same fuid for all analaysis/ref
 // fuid mapping
@@ -48,7 +50,8 @@ QJsonArray TransmissionQuickFilter::toJson()
     {
         if (f->isActive())
         {
-            if (f->fuid() == "rec_hom" || f->fuid() == "rec_htzcomp")
+            // test if f == "rec_hom" || "rec_htzcomp"
+            if (f->fuid() == "b0fab8b285474229afbbc13fac198dfe" || f->fuid() == "8cb83d0127aa912f2d290139d298e082")
             {
                 recFilter.append(f->toJson());
             }
@@ -59,35 +62,22 @@ QJsonArray TransmissionQuickFilter::toJson()
         }
     }
 
-
-
-    QJsonArray recFilter2;
     if (recFilter.count() == 1)
     {
-        recFilter2 = recFilter[0].toArray();
+        filter.append(recFilter[0]);
     }
     else if (recFilter.count() > 1)
     {
+        QJsonArray recFilter2;
         recFilter2.append("OR");
         recFilter2.append(recFilter);
-    }
-
-
-
-    if (filter.count() > 1 || (filter.count() == 1 && recFilter.count() > 0))
-    {
         filter.append(recFilter2);
-        return filter;
     }
-    else if (filter.count() == 1)
-    {
-        return filter[0].toArray();
-    }
-    else if (filter.count() == 0 && recFilter.count() > 0)
-    {
-        return recFilter2;
-    }
-    return filter;
+
+    QJsonArray result;
+    result.append("AND");
+    result.append(filter);
+    return result;
 }
 
 

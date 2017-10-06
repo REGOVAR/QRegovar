@@ -36,7 +36,7 @@ public:
 
     // Setters
     inline void setLabel(QString label) { if (label != mLabel) { mLabel= label;  emit labelChanged(); }}
-    inline void setOp(QString op) { if (op != mOperator) { mOperator = op;  emit opChanged(); }}
+    void setOp(QString op);
     inline void setValue(QVariant value) { if (value != mValue) { mValue = value; emit valueChanged(); }}
     inline void setIsActive(bool isActive) { if (isActive != mIsActive) { mIsActive = isActive; emit isActiveChanged(); }}
     inline void setIsDisplayed(bool isDisplayed) { if (isDisplayed != mIsDisplayed) { mIsDisplayed = isDisplayed; emit isDisplayedChanged(); }}

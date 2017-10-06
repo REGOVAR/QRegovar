@@ -81,11 +81,27 @@ QJsonArray QuickFilterField::toJson()
     opRight.append(mValue.toString());
 
     QJsonArray result;
-    result.append(mOpMapping[mOperator]);
+    result.append(mOperator);
     result.append(opLeft);
     result.append(opRight);
     return result;
 }
+
+
+
+void QuickFilterField::setOp(QString op)
+{
+    if (mOpMapping.contains(op))
+    {
+        op = mOpMapping[op];
+    }
+    if (op != mOperator)
+    {
+        mOperator = op;
+        emit opChanged();
+    }
+}
+
 
 
 

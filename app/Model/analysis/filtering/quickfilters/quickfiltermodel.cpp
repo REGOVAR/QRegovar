@@ -42,7 +42,17 @@ QJsonArray QuickFilterModel::toJson()
             QJsonArray f = filter->toJson();
             if (!f.isEmpty())
             {
-                filters.append(f);
+                if (f[0].toString() == "AND")
+                {
+                    foreach (QJsonValue val, f[1].toArray())
+                    {
+                        filters.append(val.toArray());
+                    }
+                }
+                else
+                {
+                    filters.append(f);
+                }
             }
         }
     }

@@ -5,9 +5,6 @@
 
 QualityQuickFilter::QualityQuickFilter(int) : QuickFilterBlockInterface()
 {
-    // TODO : Retrieve list of available annotations according to the analysisId
-    //      : And then retrieve via regexp fields_uid for dbnsfp
-
     mOperators.clear();
     mOperators.append("<");
     mOperators.append("≤");
@@ -16,7 +13,7 @@ QualityQuickFilter::QualityQuickFilter(int) : QuickFilterBlockInterface()
     mOperators.append(">");
     mOperators.append("≠");
 
-    mDepth = new QuickFilterField("401b1e5614706ec81bf83e24958f01e5", tr("Depth"), mOperators, "≥", 30);
+    mDepth = new QuickFilterField("401b1e5614706ec81bf83e24958f01e5", tr("Depth"), mOperators, "==", 30);
 }
 
 
