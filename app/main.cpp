@@ -15,8 +15,9 @@
 
 int main(int argc, char *argv[])
 {
-    //QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QGuiApplication app(argc, argv);
+    //QGuiApplication app(argc, argv);
+    QApplication app(argc, argv); // use it to allow QtChart module use with QML
+
     app.setApplicationName("Regovar");
     app.setOrganizationName("Regovar");
     app.setOrganizationDomain("regovar.org");

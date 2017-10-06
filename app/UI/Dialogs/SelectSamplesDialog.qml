@@ -287,7 +287,7 @@ Dialog
                         anchors.left: parent.left
                         anchors.bottom : parent.bottom
                         anchors.leftMargin:Math.max(0, remoteSwitchButton.width / 2 - width/2)
-                        text: ""
+                        text: "â"
                         font.family: Regovar.theme.icons.name
                         font.pixelSize: 30
                         color: Regovar.theme.primaryColor.back.normal
@@ -426,6 +426,11 @@ Dialog
                                 dropAreaFeedBack.visible = true;
                                 drag.accept (Qt.CopyAction);
                             }
+                            else
+                            {
+                                dropOkLabel.visible = false;
+                                dropKoLabel.visible = true;
+                            }
                         }
                         onDropped:
                         {
@@ -440,6 +445,8 @@ Dialog
                         onExited:
                         {
                             dropAreaFeedBack.visible = false;
+                            dropOkLabel.visible = true;
+                            dropKoLabel.visible = false;
                         }
                     }
 
@@ -564,19 +571,7 @@ Dialog
 
                         Text
                         {
-                            id: dropOkLabel
                             text: qsTr("Drop your vcf file here, or click on the adjacent button to select vcf file already on the Regovar server.")
-                            font.pixelSize: Regovar.theme.font.size.header
-                            color: Regovar.theme.primaryColor.back.normal
-                            anchors.fill: parent
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            wrapMode: Text.WordWrap
-                        }
-                        Text
-                        {
-                            id: dropKoLabel
-                            text: qsTr("Sorry, only vcf, gvcf, vcf.gz and gvcf.gz file are supported to import sample.")
                             font.pixelSize: Regovar.theme.font.size.header
                             color: Regovar.theme.primaryColor.back.normal
                             anchors.fill: parent
@@ -588,7 +583,7 @@ Dialog
                         {
                             anchors.right: parent.right
                             anchors.top : parent.top
-                            text: ""
+                            text: "ä"
                             font.family: Regovar.theme.icons.name
                             font.pixelSize: 30
                             color: Regovar.theme.primaryColor.back.normal
@@ -613,6 +608,7 @@ Dialog
                         visible: false
                         Text
                         {
+                            id: dropOkLabel
                             anchors.centerIn: parent
                             text: qsTr("Drop your (g)vcf files here !")
                             font.pixelSize: Regovar.theme.font.size.header
@@ -621,6 +617,18 @@ Dialog
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
                             wrapMode: Text.WordWrap
+                        }
+                        Text
+                        {
+                            id: dropKoLabel
+                            text: qsTr("Sorry, only vcf, gvcf, vcf.gz and gvcf.gz file are supported to import sample.")
+                            font.pixelSize: Regovar.theme.font.size.header
+                            color: Regovar.theme.primaryColor.back.normal
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            wrapMode: Text.WordWrap
+                            visible: false
                         }
                     }
                 }
