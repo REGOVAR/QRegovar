@@ -102,6 +102,7 @@ void AdvancedFilterModel::removeCondition(QString qmlId)
 
 void AdvancedFilterModel::loadJson(QJsonArray filterJson)
 {
+    mSubConditions.clear();
     setOp(filterJson[0].toString());
     if (mOp == "AND" || mOp == "OR")
     {

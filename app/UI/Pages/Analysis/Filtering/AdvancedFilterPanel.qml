@@ -23,6 +23,14 @@ Rectangle
             advancedFilterEditor.model = model.advancedfilter;
         }
     }
+    onZChanged:
+    {
+        if (model && model.advancedfilter.forceRefresh)
+        {
+            advancedFilterEditor.update();
+            model.advancedfilter.forceRefresh = false;
+        }
+    }
 
     ColumnLayout
     {

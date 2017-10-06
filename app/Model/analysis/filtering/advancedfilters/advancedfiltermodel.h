@@ -24,6 +24,7 @@ class AdvancedFilterModel : public QObject
 
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(bool collapsed READ collapsed WRITE setCollapsed NOTIFY collapsedChanged)
+    Q_PROPERTY(bool forceRefresh READ forceRefresh WRITE setForceRefresh NOTIFY forceRefreshChanged)
 
 
 
@@ -52,6 +53,7 @@ public:
 
     inline bool enabled() const { return mEnabled; }
     inline bool collapsed() const { return mCollapsed; }
+    inline bool forceRefresh() const { return mForceRefresh; }
 
     // Setters
     inline void setType(ConditionType type) { mType = type; emit filterChanged(); }
@@ -60,6 +62,7 @@ public:
     inline void setOp(QString op) { mOp = op; emit filterChanged(); }
     inline void setEnabled(bool flag) { mEnabled = flag; emit enabledChanged(); }
     inline void setCollapsed(bool flag) { mCollapsed = flag; emit collapsedChanged(); }
+    inline void setForceRefresh(bool flag) { mForceRefresh = flag; emit forceRefreshChanged(); }
 
 
     // Methods
@@ -77,6 +80,7 @@ Q_SIGNALS:
     void filterChanged();
     void enabledChanged();
     void collapsedChanged();
+    void forceRefreshChanged();
 
 protected:
     QString mQmlId;
@@ -86,6 +90,7 @@ protected:
     QString mOp;
     bool mEnabled;
     bool mCollapsed;
+    bool mForceRefresh;
     QList<QObject*> mSubConditions;
 
     Annotation* mField;

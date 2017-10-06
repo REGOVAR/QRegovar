@@ -12,7 +12,7 @@ import "../../../../Framework"
 QuickFilterBox
 {
     id: root
-    title : qsTr("Allelic frequency")
+    title : qsTr("Population frequency")
     isExpanded: false
 
 
@@ -28,7 +28,6 @@ QuickFilterBox
         var _1000g = (!_100GAll.checked && !_100GAfr.checked && !_100GAmr.checked && !_100GAsn.checked && !_100GEur.checked);
         var exac  = (!exacAll.checked && !exacAdj.checked && !exacAfr.checked && !exacAmr.checked && !exacEas.checked && !exacFin.checked && !exacNfe.checked && !exacSas.checked);
         frqAll.checked = _1000g && exac
-        // TODO : send final combination to the model to update the filter
     }
 
     onModelChanged:
