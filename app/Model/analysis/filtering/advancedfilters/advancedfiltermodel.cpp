@@ -6,22 +6,22 @@ QStringList AdvancedFilterModel::mOpNumberList  = QStringList() << QString("<") 
 QStringList AdvancedFilterModel::mOpStringList  = QStringList() << QString("=") << QString("≠") << QString(tr("Contains")) << QString(tr("Not contains"));
 QStringList AdvancedFilterModel::mOpSetList     = QStringList() << QString(tr("In")) << QString(tr("Not in"));
 QStringList AdvancedFilterModel::mOpEnumList    = QStringList() << QString("=") << QString("≠");
-QStringList AdvancedFilterModel::mOpLogicalList = QStringList() << QString("AND") << QString("OR");
+QStringList AdvancedFilterModel::mOpLogicalList = QStringList() << tr("AND") << tr("OR");
 QHash<QString, QString> AdvancedFilterModel::mOperatorMap = AdvancedFilterModel::initOperatorMap();
 QHash<QString, QString> AdvancedFilterModel::initOperatorMap()
 {
-    // Mapping between "Regovar engine operators" and "friendly user operators"
+    // Mapping between "friendly user operators" and "Regovar engine operators"
     QHash<QString, QString> map;
     map.insert("<",  "<");
-    map.insert("<=", "≤");
+    map.insert("≤", "<=");
     map.insert(">",  ">");
-    map.insert(">=", "≥");
-    map.insert("==", "=");
-    map.insert("!=", "≠");
-    map.insert("IN", "∈");
-    map.insert("NOTIN", "∉");
-    map.insert("~", tr("Contains"));
-    map.insert("!~", tr("Not contains"));
+    map.insert("≥", ">=");
+    map.insert("=", "==");
+    map.insert("≠", "!=");
+    map.insert("∈", "IN");
+    map.insert("∉", "NOTIN");
+    map.insert(tr("Contains"), "~");
+    map.insert(tr("Not contains"), "!~");
     map.insert("AND", tr("AND"));
     map.insert("OR", tr("OR"));
 
@@ -107,7 +107,7 @@ void AdvancedFilterModel::loadJson(QJsonArray filterJson)
     if (mOp == "AND" || mOp == "OR")
     {
         setType(LogicalBlock);
-        setRightOp(mOpLogicalList.indexOf(opRegovarToFriend(mOp)));
+        setRightOp(mOpLogicalList.indexOf(mOperatorMap[mOp]));
 
         QJsonArray sub = filterJson[1].toArray();
         for (int idx=0; idx<sub.count(); idx++)
@@ -135,31 +135,37 @@ void AdvancedFilterModel::loadJson(QJsonArray filterJson)
         }
 
 
-        setField(fieldJson[1].toString());
-        if (mField->type() == "int" || mField->type() == "sample_array")
+        if (setField(fieldJson[1].toString()))
         {
-            mRightOp = QVariant(valueJson[1].toInt());
+            if (mField->type() == "int" || mField->type() == "sample_array")
+            {
+                mRightOp = QVariant(valueJson[1].toInt());
+            }
+            else if (mField->type() == "string" || mField->type() == "sequence")
+            {
+                mRightOp = QVariant(valueJson[1].toString());
+            }
+            else if (mField->type() == "float")
+            {
+                mRightOp = QVariant(valueJson[1].toDouble());
+            }
+            else if (mField->type() == "enum")
+            {
+                mRightOp = QVariant(valueJson[1].toDouble());
+            }
+            else if (mField->type() == "bool")
+            {
+                mRightOp = QVariant(valueJson[1].toBool());
+            }
+            else if (mField->type() == "list")
+            {
+                // TODO: not well managed
+                mRightOp = QVariant(valueJson[1].toString());
+            }
         }
-        else if (mField->type() == "string" || mField->type() == "sequence")
+        else
         {
-            mRightOp = QVariant(valueJson[1].toString());
-        }
-        else if (mField->type() == "float")
-        {
-            mRightOp = QVariant(valueJson[1].toDouble());
-        }
-        else if (mField->type() == "enum")
-        {
-            mRightOp = QVariant(valueJson[1].toDouble());
-        }
-        else if (mField->type() == "bool")
-        {
-            mRightOp = QVariant(valueJson[1].toBool());
-        }
-        else if (mField->type() == "list")
-        {
-            // TODO: not well managed
-            mRightOp = QVariant(valueJson[1].toString());
+            qDebug() << "ERROR field unknow, not able to create filter field condition";
         }
     }
 
@@ -217,7 +223,7 @@ QJsonArray AdvancedFilterModel::toJson()
 
 
 
-void AdvancedFilterModel::setField(QString fieldUid)
+bool AdvancedFilterModel::setField(QString fieldUid)
 {
     FieldColumnInfos* info =  mAnalysis->getColumnInfo(fieldUid);
     if (info != nullptr)
@@ -228,8 +234,10 @@ void AdvancedFilterModel::setField(QString fieldUid)
     else
     {
         qDebug() << "ERROR : unknow field id";
+        return false;
     }
     emit filterChanged();
+    return true;
 }
 
 
@@ -351,7 +359,7 @@ QJsonArray NewAdvancedFilterModel::toJson()
             }
             else
             {
-                result.append(opFriendToRegovar(mOpFieldList[mOpFieldIndex]));
+                result.append(opIndexToRegovar(mOpFieldIndex));
             }
 
             result.append(field);
@@ -359,16 +367,8 @@ QJsonArray NewAdvancedFilterModel::toJson()
         }
     }
 
-
     return result;
 }
-
-
-
-
-
-
-
 
 
 
@@ -384,7 +384,7 @@ void NewAdvancedFilterModel::clear()
     emit filterChanged();
 }
 
-void NewAdvancedFilterModel::setField(QString fieldUid)
+bool NewAdvancedFilterModel::setField(QString fieldUid)
 {
     FieldColumnInfos* info =  mAnalysis->getColumnInfo(fieldUid);
     if (info != nullptr)
@@ -428,44 +428,49 @@ void NewAdvancedFilterModel::setField(QString fieldUid)
     else
     {
         qDebug() << "ERROR : unknow field id";
+        return false;
     }
     emit filterChanged();
+    return true;
 }
 
 int NewAdvancedFilterModel::opRegovarToIndex(QString op)
 {
+    if (mOperatorMap.values().contains(op))
+        op = mOperatorMap.key(op);
+    else
+        qDebug() << "WARNING : filter field operator not reconized :" << op;
+
     if (mType == LogicalBlock)
     {
-        if (mOperatorMap.contains(op))
-        {
-            return mOpLogicalList.indexOf(mOperatorMap.value(op));
-        }
+        return mOpLogicalList.indexOf(op);
     }
     else
     {
-        if (mOperatorMap.contains(op))
-        {
-            return mOpFieldList.indexOf(mOperatorMap.value(op));
-        }
+        return mOpFieldList.indexOf(op);
     }
     return -1;
 }
 
 QString NewAdvancedFilterModel::opIndexToRegovar(int op)
 {
+    QString opS;
     if (mType == LogicalBlock)
     {
         if (op>=0 && op<mOpLogicalList.count())
         {
-            return mOperatorMap.key(mOpLogicalList[op]);
+            opS = mOpLogicalList[op];
         }
     }
     else
     {
         if (op>=0 && op<mOpFieldList.count())
         {
-            return mOperatorMap.key(mOpFieldList[op]);
+            opS = mOpFieldList[op];
         }
     }
-    return "?";
+
+    if (mOperatorMap.contains(opS))  return mOperatorMap[opS];
+    qDebug() << "WARNING : return unknow filter field operator :" << opS;
+    return opS;
 }

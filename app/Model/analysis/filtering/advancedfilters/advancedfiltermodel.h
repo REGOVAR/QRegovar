@@ -66,7 +66,7 @@ public:
 
 
     // Methods
-    virtual void setField(QString fieldUid);
+    virtual bool setField(QString fieldUid);
     Q_INVOKABLE virtual void loadJson(QJsonArray filterJson);
     Q_INVOKABLE virtual QJsonArray toJson();
     Q_INVOKABLE void addCondition(QJsonArray json);
@@ -155,7 +155,7 @@ public:
 
     // Methods
     Q_INVOKABLE void clear();
-    Q_INVOKABLE void setField(QString fieldUid) override;
+    Q_INVOKABLE bool setField(QString fieldUid) override;
     Q_INVOKABLE void loadJson(QJsonArray filterJson) override;
     Q_INVOKABLE QJsonArray toJson() override;
     inline QString opFriendToRegovar(QString op) { return mOperatorMap.key(op); }
