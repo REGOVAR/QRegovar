@@ -79,7 +79,7 @@ Rectangle
             text: qsTr("Name*")
             font.bold: true
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -119,7 +119,7 @@ Rectangle
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
             text: qsTr("Comment")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -129,7 +129,7 @@ Rectangle
             id: commentField
             Layout.fillWidth: true
             enabled: editionMode
-            height: 3 * Regovar.theme.font.size.control
+            height: 3 * Regovar.theme.font.size.normal
             //text: model.comment
             //onTextChanged: if (model.comment != text) model.comment = text
         }
@@ -139,7 +139,7 @@ Rectangle
         {
             text: qsTr("Priority")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -167,7 +167,7 @@ Rectangle
         {
             text: qsTr("Status")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -178,7 +178,7 @@ Rectangle
             height: Regovar.theme.font.size.header
             //text: model.status
             color: Regovar.theme.frontColor.normal
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
         }
@@ -187,7 +187,7 @@ Rectangle
         {
             text: qsTr("Type")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -198,7 +198,7 @@ Rectangle
             height: Regovar.theme.font.size.header
             text: "Filtering Trio"
             color: Regovar.theme.frontColor.normal
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
         }
@@ -208,7 +208,7 @@ Rectangle
         {
             text: qsTr("Referencial")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -219,7 +219,7 @@ Rectangle
             height: Regovar.theme.font.size.header
             //text: model.refName
             color: Regovar.theme.frontColor.normal
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
         }
@@ -231,7 +231,7 @@ Rectangle
             Layout.alignment: Qt.AlignTop
             text: qsTr("Samples")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -249,15 +249,15 @@ Rectangle
                     Text
                     {
                         verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: Regovar.theme.font.size.control
-                        width: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        width: Regovar.theme.font.size.normal
                         text: modelData.subjectUI.sex == "M" ? "9" :modelData.subjectUI.sex == "F" ? "<" : ""
                         font.family: Regovar.theme.icons.name
                         color: Regovar.theme.frontColor.normal
                     }
                     Text
                     {
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         text: modelData.subjectUI.lastname + " " + modelData.subjectUI.firstname + " (" + modelData.subjectUI.age + ")"
                         elide: Text.ElideRight
                         color: Regovar.theme.frontColor.normal
@@ -265,8 +265,8 @@ Rectangle
 
                     Text
                     {
-                        width: Regovar.theme.font.boxSize.control
-                        font.pixelSize: Regovar.theme.font.size.control
+                        width: Regovar.theme.font.boxSize.normal
+                        font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.icons.name
                         color: Regovar.theme.frontColor.normal
                         verticalAlignment: Text.AlignVCenter
@@ -275,7 +275,7 @@ Rectangle
                     }
                     Text
                     {
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.frontColor.normal
                         verticalAlignment: Text.AlignVCenter
                         font.family: "monospace"
@@ -290,7 +290,7 @@ Rectangle
             Layout.alignment: Qt.AlignTop
             text: qsTr("Annotations")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -305,7 +305,7 @@ Rectangle
 
                 Text
                 {
-                    font.pixelSize: Regovar.theme.font.size.control
+                    font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.frontColor.normal
                     verticalAlignment: Text.AlignVCenter
                     text: modelData
@@ -328,7 +328,7 @@ Rectangle
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
             text: qsTr("Events")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35

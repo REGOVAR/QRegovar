@@ -6,7 +6,7 @@ import "../Regovar"
 Text
 {
     id: control
-    font.pixelSize: Regovar.theme.font.size.content
+    font.pixelSize: Regovar.theme.font.size.small
     font.family: Regovar.theme.font.familly
     color: enabled ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
 }
@@ -14,10 +14,10 @@ Text
 //TextArea
 //{
 //    id: control
-//    font.pixelSize: Regovar.theme.font.size.content
+//    font.pixelSize: Regovar.theme.font.size.small
 //    font.family: Regovar.theme.font.familly
 
-//    implicitHeight: Regovar.theme.font.size.content
+//    implicitHeight: Regovar.theme.font.size.small
 //    frameVisible: false
 //    backgroundVisible: false
 

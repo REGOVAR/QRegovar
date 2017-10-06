@@ -63,7 +63,7 @@ Rectangle
             text: qsTr("Identifier*")
             font.bold: true
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -104,7 +104,7 @@ Rectangle
         {
             text: qsTr("Firstname")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -121,7 +121,7 @@ Rectangle
         {
             text: qsTr("Lastname")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -138,7 +138,7 @@ Rectangle
         {
             text: qsTr("Date of birth")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -155,7 +155,7 @@ Rectangle
         {
             text: qsTr("Family number")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -172,7 +172,7 @@ Rectangle
         {
             text: qsTr("Priority")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -190,7 +190,7 @@ Rectangle
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
             text: qsTr("Comment")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -200,7 +200,7 @@ Rectangle
             id: commentField
             Layout.fillWidth: true
             enabled: editionMode
-            height: 3 * Regovar.theme.font.size.control
+            height: 3 * Regovar.theme.font.size.normal
             text: "Comment about the subject"
         }
 
@@ -210,7 +210,7 @@ Rectangle
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
             text: qsTr("Events")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35

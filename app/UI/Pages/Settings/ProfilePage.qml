@@ -119,9 +119,9 @@ Rectangle
             {
                 Layout.alignment: Qt.AlignTop
                 text: qsTr("Password")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
             }
         }
@@ -150,7 +150,7 @@ Rectangle
             {
                 width: parent.width
                 text: qsTr("Set a new password by typing it 2 times with the 2 text fields above.")
-                font.pixelSize: Regovar.theme.font.size.content
+                font.pixelSize: Regovar.theme.font.size.small
                 font.italic: true
                 color: Regovar.theme.primaryColor.back.normal
                 wrapMode: Text.WordWrap
@@ -213,7 +213,7 @@ Rectangle
                 anchors.bottom: parent.bottom
                 wrapMode: Text.WordWrap
                 text: qsTr("Password complexity : OK")
-                font.pixelSize: Regovar.theme.font.size.content
+                font.pixelSize: Regovar.theme.font.size.small
                 color: Regovar.theme.primaryColor.back.normal
                 horizontalAlignment: Text.AlignHCenter
             }
@@ -243,7 +243,7 @@ Rectangle
             {
                 width: parent.width
                 text: qsTr("To confirm your new password you have to type also your current password. Then you have to click on the opposite validate button.")
-                font.pixelSize: Regovar.theme.font.size.content
+                font.pixelSize: Regovar.theme.font.size.small
                 font.italic: true
                 color: Regovar.theme.primaryColor.back.normal
                 wrapMode: Text.WordWrap
@@ -291,16 +291,16 @@ Rectangle
             Rectangle
             {
                 width: Regovar.theme.font.boxSize.title
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 color: "transparent"
             }
             Text
             {
                 text: qsTr("Lastname")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
                 Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
             }
         }
@@ -335,16 +335,16 @@ Rectangle
             Rectangle
             {
                 width: Regovar.theme.font.boxSize.title
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 color: "transparent"
             }
             Text
             {
                 text: qsTr("Firstname")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
                 Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
             }
         }
@@ -361,16 +361,16 @@ Rectangle
             Rectangle
             {
                 width: Regovar.theme.font.boxSize.title
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 color: "transparent"
             }
             Text
             {
                 text: qsTr("Email")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
                 Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
             }
         }
@@ -387,16 +387,16 @@ Rectangle
             Rectangle
             {
                 width: Regovar.theme.font.boxSize.title
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 color: "transparent"
             }
             Text
             {
                 text: qsTr("Location")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
                 Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
             }
         }
@@ -413,16 +413,16 @@ Rectangle
             Rectangle
             {
                 width: Regovar.theme.font.boxSize.title
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 color: "transparent"
             }
             Text
             {
                 text: qsTr("Function")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
                 Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
             }
         }

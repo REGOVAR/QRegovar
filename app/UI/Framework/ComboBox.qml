@@ -13,7 +13,7 @@ ComboBox
     delegate: ItemDelegate
     {
         width: control.width
-        height: Regovar.theme.font.boxSize.control
+        height: Regovar.theme.font.boxSize.normal
         contentItem: Text
         {
             text: modelData
@@ -29,8 +29,8 @@ ComboBox
     {
         anchors.right: control.right
         text: "["
-        width: Regovar.theme.font.boxSize.control
-        height: Regovar.theme.font.boxSize.control
+        width: Regovar.theme.font.boxSize.normal
+        height: Regovar.theme.font.boxSize.normal
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         font.family: Regovar.theme.icons.name
@@ -52,7 +52,7 @@ ComboBox
     background: Rectangle
     {
         implicitWidth: 60
-        implicitHeight: Regovar.theme.font.boxSize.control
+        implicitHeight: Regovar.theme.font.boxSize.normal
         color: enabled ? Regovar.theme.boxColor.back : "transparent"
         border.color: !enabled ? Regovar.theme.frontColor.disable : control.pressed ? Regovar.theme.secondaryColor.back.light : control.color
         border.width: 1

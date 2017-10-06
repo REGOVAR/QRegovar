@@ -54,7 +54,7 @@ QuickFilterBox
             anchors.leftMargin: 5
 
             elide: Text.ElideRight
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: Regovar.theme.primaryColor.back.dark
             text: qsTr("Mode")
         }
@@ -212,7 +212,7 @@ QuickFilterBox
             anchors.leftMargin: 5
 
             elide: Text.ElideRight
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: Regovar.theme.primaryColor.back.dark
             text: qsTr("Segregation")
         }
@@ -303,7 +303,7 @@ QuickFilterBox
             anchors.leftMargin: 5
 
             elide: Text.ElideRight
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: Regovar.theme.primaryColor.back.dark
             text: qsTr("Localisation")
         }

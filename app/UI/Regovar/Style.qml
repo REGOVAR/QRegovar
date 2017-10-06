@@ -30,15 +30,15 @@ QtObject
         {
             property real title : 5.0 * Screen.pixelDensity * fontSizeCoeff
             property real header : 4.0 * Screen.pixelDensity * fontSizeCoeff
-            property real control : 3.0 * Screen.pixelDensity * fontSizeCoeff
-            property real content : 2.5 * Screen.pixelDensity * fontSizeCoeff
+            property real normal : 3.0 * Screen.pixelDensity * fontSizeCoeff
+            property real small : 2.5 * Screen.pixelDensity * fontSizeCoeff
         }
         property QtObject boxSize: QtObject
         {
             property real title : 5.0 * Screen.pixelDensity * 2 * fontSizeCoeff
             property real header : 4.0 * Screen.pixelDensity * 2 * fontSizeCoeff
-            property real control : 3.0 * Screen.pixelDensity * 2 * fontSizeCoeff
-            property real content : 2.5 * Screen.pixelDensity * 2 * fontSizeCoeff
+            property real normal : 3.0 * Screen.pixelDensity * 2 * fontSizeCoeff
+            property real small : 2.5 * Screen.pixelDensity * 2 * fontSizeCoeff
          }
     }
 

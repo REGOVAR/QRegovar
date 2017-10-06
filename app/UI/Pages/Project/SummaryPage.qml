@@ -85,7 +85,7 @@ Rectangle
             text: qsTr("Name*")
             font.bold: true
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
@@ -125,7 +125,7 @@ Rectangle
             text: qsTr("Comment")
             Layout.alignment: Qt.AlignTop
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 45
@@ -144,7 +144,7 @@ Rectangle
             Layout.alignment: Qt.AlignTop
             text: qsTr("Events")
             color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 45

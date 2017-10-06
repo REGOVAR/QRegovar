@@ -62,7 +62,7 @@ Item
             anchors.fill: parent
             text: root.label
             color: (isHover) ? Regovar.theme.secondaryColor.front.normal  : Regovar.theme.primaryColor.front.light
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter

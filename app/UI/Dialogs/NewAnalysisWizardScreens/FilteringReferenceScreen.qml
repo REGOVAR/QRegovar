@@ -30,7 +30,7 @@ GenericScreen
         anchors.right: parent.right
         text: qsTr("Choose which genome reference must be used for this analysis.")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
     }
 
@@ -61,7 +61,7 @@ GenericScreen
                     Layout.minimumWidth: root.labelColWidth
                     text: qsTr("Reference")
                     color: Regovar.theme.frontColor.normal
-                    font.pixelSize: Regovar.theme.font.size.control
+                    font.pixelSize: Regovar.theme.font.size.normal
                     font.family: Regovar.theme.font.familly
                     verticalAlignment: Text.AlignVCenter
                     Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -85,7 +85,7 @@ GenericScreen
                     delegate: ItemDelegate
                     {
                         width: refField.width
-                        height: Regovar.theme.font.boxSize.control
+                        height: Regovar.theme.font.boxSize.normal
                         contentItem: Text
                         {
                             text: modelData.name

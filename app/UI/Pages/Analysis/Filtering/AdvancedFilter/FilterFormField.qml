@@ -58,8 +58,8 @@ Rectangle
         {
             id: fieldDescription
             text: "-"
-            Layout.minimumHeight: 2 * Regovar.theme.font.size.content
-            font.pixelSize: Regovar.theme.font.size.content
+            Layout.minimumHeight: 2 * Regovar.theme.font.size.small
+            font.pixelSize: Regovar.theme.font.size.small
             wrapMode: Text.WordWrap
             color: Regovar.theme.primaryColor.back.normal
             Layout.fillWidth: true

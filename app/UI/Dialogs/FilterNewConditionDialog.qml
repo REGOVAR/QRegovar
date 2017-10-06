@@ -94,7 +94,7 @@ Dialog
                 elide: Text.ElideRight
 
                 text: qsTr("Choose the type of condition you want to add and then configure it.")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.front.normal
             }
         }
@@ -145,7 +145,7 @@ Dialog
             anchors.right: parent.right
             anchors.margins: 10
 
-            height: Regovar.theme.font.boxSize.control
+            height: Regovar.theme.font.boxSize.normal
             spacing: 10
             layoutDirection: Qt.RightToLeft
 

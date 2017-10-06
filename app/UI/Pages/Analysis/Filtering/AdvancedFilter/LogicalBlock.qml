@@ -48,7 +48,7 @@ Rectangle
     Rectangle
     {
         id: header
-        height: Regovar.theme.font.boxSize.control
+        height: Regovar.theme.font.boxSize.normal
         anchors.top: root.top
         anchors.left: root.left
         anchors.right: root.right
@@ -83,7 +83,7 @@ Rectangle
             {
                 text:  "|"  // "["
                 height: Regovar.theme.font.boxSize.header
-                width: Regovar.theme.font.boxSize.control
+                width: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: Regovar.theme.font.size.header
@@ -107,7 +107,7 @@ Rectangle
             {
                 text: "h"
                 height: Regovar.theme.font.boxSize.header
-                width: Regovar.theme.font.boxSize.control
+                width: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: Regovar.theme.font.size.header
@@ -133,7 +133,7 @@ Rectangle
         visible: isExpand
         anchors.top : header.bottom
         anchors.left: parent.left
-        anchors.leftMargin: Regovar.theme.font.boxSize.control / 2
+        anchors.leftMargin: Regovar.theme.font.boxSize.normal / 2
         height: subItemsList.height
         width: 1
         color: root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
@@ -159,7 +159,7 @@ Rectangle
             {
                 anchors.left: parent.left
                 anchors.right: parent.right
-                height: Regovar.theme.font.boxSize.control // This default size is overrided when the child GenericBlock height changed
+                height: Regovar.theme.font.boxSize.normal // This default size is overrided when the child GenericBlock height changed
                 color: "transparent"
 
                 id: logicalSubItem
@@ -167,8 +167,8 @@ Rectangle
 
                 Rectangle
                 {
-                    height: Regovar.theme.font.boxSize.control
-                    width: Regovar.theme.font.boxSize.control
+                    height: Regovar.theme.font.boxSize.normal
+                    width: Regovar.theme.font.boxSize.normal
                     anchors.left: parent.left
                     anchors.top: parent.top
                     color: "transparent"
@@ -178,7 +178,7 @@ Rectangle
                         anchors.centerIn: parent
                         text: "r"
                         font.family: Regovar.theme.icons.name
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
 
                         color: Regovar.theme.backgroundColor.main
                     }
@@ -187,7 +187,7 @@ Rectangle
                         anchors.centerIn: parent
                         text: "À"
                         font.family: Regovar.theme.icons.name
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
 
                         color: root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
                     }
@@ -199,7 +199,7 @@ Rectangle
                         font.family: Regovar.theme.icons.name
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.pixelSize: Regovar.theme.font.size.content
+                        font.pixelSize: Regovar.theme.font.size.small
 
                         color: root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
                     }
@@ -216,8 +216,8 @@ Rectangle
                     model: modelData
                     anchors.top: parent.top
                     anchors.left: parent.left
-                    anchors.leftMargin: 5 + Regovar.theme.font.boxSize.control
-                    width: root.width - 5 - Regovar.theme.font.boxSize.control
+                    anchors.leftMargin: 5 + Regovar.theme.font.boxSize.normal
+                    width: root.width - 5 - Regovar.theme.font.boxSize.normal
                     isEnabled: logicalSubItem.isChecked && root.isEnabled
 
                     onHeightChanged: { parent.height = height; console.log("z height=" + height + " total="+fullSize()); resize(); }
@@ -233,7 +233,7 @@ Rectangle
         id: addConditionButton
         property bool isHover: false
 
-        height: Regovar.theme.font.boxSize.control
+        height: Regovar.theme.font.boxSize.normal
         anchors.bottom: root.bottom
         anchors.left: root.left
         anchors.right: root.right
@@ -244,7 +244,7 @@ Rectangle
         {
             anchors.top : parent.top
             anchors.left: parent.left
-            anchors.leftMargin: Regovar.theme.font.boxSize.control / 2
+            anchors.leftMargin: Regovar.theme.font.boxSize.normal / 2
             width: 1
             height: parent.height/2
             color: root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
@@ -255,15 +255,15 @@ Rectangle
             color: "transparent"
             anchors.top : parent.top
             anchors.left: parent.left
-            height: Regovar.theme.font.boxSize.control
-            width: Regovar.theme.font.boxSize.control
+            height: Regovar.theme.font.boxSize.normal
+            width: Regovar.theme.font.boxSize.normal
 
             Rectangle
             {
                 anchors.centerIn: parent
 
-                height: Regovar.theme.font.boxSize.control * 0.75
-                width: Regovar.theme.font.boxSize.control * 0.75
+                height: Regovar.theme.font.boxSize.normal * 0.75
+                width: Regovar.theme.font.boxSize.normal * 0.75
                 radius: width * 0.5
 
                 color: addConditionButton.isHover ? Regovar.theme.secondaryColor.back.light : Regovar.theme.backgroundColor.main
@@ -276,7 +276,7 @@ Rectangle
                 text:  "à"
                 color: addConditionButton.isHover ? Regovar.theme.secondaryColor.back.dark : root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
                 font.family: Regovar.theme.icons.name
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
             }
         }
 
@@ -284,13 +284,13 @@ Rectangle
         {
             anchors.top : parent.top
             anchors.left: parent.left
-            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
-            height: Regovar.theme.font.boxSize.control
+            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+            height: Regovar.theme.font.boxSize.normal
             text:  "Add condition"
             color: addConditionButton.isHover ? Regovar.theme.secondaryColor.back.dark : Regovar.theme.frontColor.disable
 
             verticalAlignment: Text.AlignVCenter
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
         }
 
         MouseArea

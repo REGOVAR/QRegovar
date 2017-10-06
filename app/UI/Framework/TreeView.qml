@@ -12,7 +12,7 @@ TreeView
 
 
     property var currentItem
-    property int rowHeight: Regovar.theme.font.boxSize.control
+    property int rowHeight: Regovar.theme.font.boxSize.normal
 
     signal headerResized(var header, var newSize)
     signal headerMoved(var header, var newPosition)
@@ -104,7 +104,7 @@ TreeView
                 anchors.fill: parent
                 anchors.leftMargin: 5
                 anchors.rightMargin: 5
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.familly
                 color: Regovar.theme.frontColor.normal
                 horizontalAlignment: styleData.textAlignment
@@ -118,7 +118,7 @@ TreeView
         {
             anchors.leftMargin: 5
 
-            font.pixelSize: 16 // Regovar.theme.font.size.control
+            font.pixelSize: 16 // Regovar.theme.font.size.normal
             text: styleData.isExpanded ? "{" : "["
             font.family: Regovar.theme.icons.name
         }
@@ -134,7 +134,7 @@ TreeView
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: styleData.textAlignment
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             text: (styleData.value !== undefined && styleData.value !== null) ? styleData.value : "" // + " (" + styleData.row + "," + styleData.column + ")"
             elide: Text.ElideRight
         }

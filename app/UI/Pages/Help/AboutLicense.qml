@@ -307,7 +307,7 @@ Item
                  id: edit
                  width: scrollView.width - 30
                  text: regovar.config.license
-                 font.pixelSize: Regovar.theme.font.size.control
+                 font.pixelSize: Regovar.theme.font.size.normal
                  color: Regovar.theme.frontColor.normal
                  readOnly: true
                  selectByMouse: true

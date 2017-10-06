@@ -5,7 +5,7 @@ import "../Regovar"
 ItemDelegate
 {
     id: item
-    height: Regovar.theme.font.boxSize.control
+    height: Regovar.theme.font.boxSize.normal
     width: parent.width
 
     property var combobox

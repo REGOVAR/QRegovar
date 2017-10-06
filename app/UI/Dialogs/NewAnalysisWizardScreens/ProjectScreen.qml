@@ -27,7 +27,7 @@ GenericScreen
         anchors.right: parent.right
         text: qsTr("Select the project where you want to do the analysis. Project is like a folder, it' allow you to organize your analyzes and find them more easily afterwards.\nYou can create a new project if you need.")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
     }
 
@@ -58,7 +58,7 @@ GenericScreen
                     Layout.minimumWidth: root.labelColWidth
                     text: qsTr("Project")
                     color: Regovar.theme.frontColor.normal
-                    font.pixelSize: Regovar.theme.font.size.control
+                    font.pixelSize: Regovar.theme.font.size.normal
                     font.family: Regovar.theme.font.familly
                     verticalAlignment: Text.AlignVCenter
                     Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -82,7 +82,7 @@ GenericScreen
                     Layout.minimumWidth: root.labelColWidth
                     text: qsTr("Referencial")
                     color: Regovar.theme.frontColor.normal
-                    font.pixelSize: Regovar.theme.font.size.control
+                    font.pixelSize: Regovar.theme.font.size.normal
                     font.family: Regovar.theme.font.familly
                     verticalAlignment: Text.AlignVCenter
                     Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)

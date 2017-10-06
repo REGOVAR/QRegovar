@@ -10,8 +10,8 @@ Rectangle
 {
     id: root
     width: parent.width
-    height: Regovar.theme.font.boxSize.control
-    implicitHeight: Regovar.theme.font.boxSize.control
+    height: Regovar.theme.font.boxSize.normal
+    implicitHeight: Regovar.theme.font.boxSize.normal
 
     color: "transparent"
 
@@ -33,7 +33,7 @@ Rectangle
     {
         id: header
         width: parent.width
-        height: Regovar.theme.font.boxSize.control
+        height: Regovar.theme.font.boxSize.normal
         anchors.top: root.top
         anchors.left: root.left
         anchors.right: root.right
@@ -48,19 +48,19 @@ Rectangle
             Text
             {
                 text: (root.leftOp !== null) ? root.leftOp[1] : ""
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: root.isChecked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
             }
             Text
             {
                 text: root.operator
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: root.isChecked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
             }
             Text
             {
                 text: (root.rightOp !== null) ? root.rightOp[1] : ""
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: root.isChecked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
             }
         }

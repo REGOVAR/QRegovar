@@ -20,7 +20,7 @@ GridLayout
     {
         id: userLabel
         Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         font.family: Regovar.theme.font.familly
         color: Regovar.theme.primaryColor.back.dark
         text: userFullName
@@ -29,7 +29,7 @@ GridLayout
     {
         id: userIcon
         Layout.alignment: Qt.AlignVCenter
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         font.family: Regovar.theme.icons.name
         color: Regovar.theme.primaryColor.back.dark
         text: "b"
@@ -38,7 +38,7 @@ GridLayout
     {
         id: serverLabel
         Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-        font.pixelSize: Regovar.theme.font.size.content
+        font.pixelSize: Regovar.theme.font.size.small
         font.family: Regovar.theme.font.familly
         color: Regovar.theme.primaryColor.back.dark
 
@@ -48,7 +48,7 @@ GridLayout
     {
         id: serverIcon
         Layout.alignment: Qt.AlignVCenter
-        font.pixelSize: Regovar.theme.font.size.content
+        font.pixelSize: Regovar.theme.font.size.small
         font.family: Regovar.theme.icons.name
         color: Regovar.theme.primaryColor.back.dark
         text: "F"

@@ -57,26 +57,26 @@ Item
             Text
             {
                 text: qsTr("Server version:")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
             Text
             {
                 text: regovar.config.serverVersion
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
 
             Text
             {
                 text: qsTr("Client version:")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
             Text
             {
                 text: regovar.config.clientVersion
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
 
@@ -101,14 +101,14 @@ Item
             Text
             {
                 text: qsTr("Website:")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
             Text
             {
                 id: regolink
                 text: "http://regovar.org"
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
                 MouseArea
                 {
@@ -124,14 +124,14 @@ Item
             Text
             {
                 text: qsTr("Github:")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
             Text
             {
                 id: gitlink
                 text: "https://github.com/REGOVAR/Regovar"
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
                 MouseArea
                 {
@@ -147,13 +147,13 @@ Item
             Text
             {
                 text: qsTr("Contact email") + " : "
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
             TextEdit
             {
                 text: "dev@regovar.org"
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
                 readOnly: true
                 selectByMouse: true
@@ -178,7 +178,7 @@ Item
             Text
             {
                 text: qsTr("Next planned release")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 font.bold: true
                 color: Regovar.theme.primaryColor.back.normal
                 Layout.columnSpan: 2
@@ -188,7 +188,7 @@ Item
             {
                 text: !regovar.config.release["success"] ? qsTr("Not able to retrieve information.") : ""
                 font.italic: true
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.disable
                 Layout.columnSpan: 2
                 visible: !regovar.config.release["success"]
@@ -198,39 +198,39 @@ Item
             Text
             {
                 text: qsTr("Name:")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
             Text
             {
                 text: regovar.config.release["success"] ? regovar.config.release["title"] : ""
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
 
             Text
             {
                 text: qsTr("Due on:")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
             Text
             {
                 text: regovar.config.release["success"] ? regovar.config.release["due_on"] : ""
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
 
             Text
             {
                 text: qsTr("Progress:")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
             Rectangle
             {
                 width: 150
-                height: Regovar.theme.font.size.control
+                height: Regovar.theme.font.size.normal
                 color: Regovar.theme.backgroundColor.main
                 border.width: 1
                 border.color: Regovar.theme.boxColor.border
@@ -239,7 +239,7 @@ Item
                     x: 1
                     y: 1
                     width: (regovar.config.release["success"] ?  regovar.config.release["progress"] : 0) * 148
-                    height: Regovar.theme.font.size.control - 4
+                    height: Regovar.theme.font.size.normal - 4
                     color: Regovar.theme.secondaryColor.back.normal
                 }
             }
@@ -247,14 +247,14 @@ Item
             Text
             {
                 text: qsTr("Details:")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
             Text
             {
                 id: nextlink
                 text: regovar.config.release["success"] ? qsTr("See on Github") : ""
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
                 MouseArea
                 {

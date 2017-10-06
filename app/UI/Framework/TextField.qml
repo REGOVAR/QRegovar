@@ -7,7 +7,7 @@ TextField
 {
     id: control
     placeholderText: qsTr("Enter description")
-    font.pixelSize: Regovar.theme.font.size.control
+    font.pixelSize: Regovar.theme.font.size.normal
     font.family: Regovar.theme.font.familly
     color: Regovar.theme.frontColor.normal
     selectByMouse :true
@@ -22,7 +22,7 @@ TextField
         if (iconLeft)
         {
             iconLeftText.visible = true
-            control.leftPadding = Regovar.theme.font.size.control
+            control.leftPadding = Regovar.theme.font.size.normal
         }
     }
     onIconRightChanged:
@@ -30,14 +30,14 @@ TextField
         if (iconRight)
         {
             iconRightText.visible = true
-            control.rightPadding = Regovar.theme.font.size.control
+            control.rightPadding = Regovar.theme.font.size.normal
         }
     }
 
     background: Rectangle
     {
         implicitWidth: 200
-        implicitHeight: Regovar.theme.font.boxSize.control
+        implicitHeight: Regovar.theme.font.boxSize.normal
         border.width: enabled ? 1 : 0
         border.color: control.focus ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.boxColor.border
         color: enabled ? Regovar.theme.boxColor.back : "transparent"
@@ -45,14 +45,14 @@ TextField
         Text
         {
             id:  iconLeftText
-            height: Regovar.theme.font.boxSize.control
-            width: Regovar.theme.font.boxSize.control
+            height: Regovar.theme.font.boxSize.normal
+            width: Regovar.theme.font.boxSize.normal
             anchors.top: parent.top
             anchors.left: parent.left
             text: control.iconLeft
             visible: false
             font.family: Regovar.theme.icons.name
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: iconLeftColor
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
@@ -60,14 +60,14 @@ TextField
         Text
         {
             id:  iconRightText
-            height: Regovar.theme.font.boxSize.control
-            width: Regovar.theme.font.boxSize.control
+            height: Regovar.theme.font.boxSize.normal
+            width: Regovar.theme.font.boxSize.normal
             anchors.top: parent.top
             anchors.right: parent.right
             text: control.iconRight
             visible: false
             font.family: Regovar.theme.icons.name
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: iconRightColor
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter

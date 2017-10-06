@@ -27,7 +27,7 @@ GenericScreen
         anchors.right: parent.right
         text: qsTr("You're almost done! Choose a name and select the project you want to save your analysis to. Below is a summary of the configuration of the analysis.\nIf all is good. press the \"Launch\" button. The Regovar server will prepare your data, and you will then be able to dynamically filter the variants.")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
     }
 
@@ -46,7 +46,7 @@ GenericScreen
             Layout.minimumWidth: root.labelColWidth
             text: qsTr("Project")
             color: Regovar.theme.frontColor.normal
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -70,7 +70,7 @@ GenericScreen
             delegate: ItemDelegate
             {
                 width: projectField.width
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 contentItem: Text
                 {
                     text: modelData.fullPath
@@ -100,7 +100,7 @@ GenericScreen
             Layout.minimumWidth: root.labelColWidth
             text: qsTr("Name")
             color: Regovar.theme.frontColor.normal
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -135,7 +135,7 @@ GenericScreen
         anchors.topMargin: 10
         text: qsTr("Analysis summary")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         //color: Regovar.theme.primaryColor.back.normal
     }
 
@@ -147,7 +147,7 @@ GenericScreen
         anchors.right: parent.right
         anchors.bottom: parent.bottom
 
-        anchors.topMargin: Regovar.theme.font.size.control + 15
+        anchors.topMargin: Regovar.theme.font.size.normal + 15
 
 
         color: Regovar.theme.boxColor.back
@@ -177,7 +177,7 @@ GenericScreen
                         Layout.minimumWidth: root.labelColWidth
                         text: qsTr("Type")
                         color: Regovar.theme.frontColor.disable
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.font.familly
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
@@ -189,7 +189,7 @@ GenericScreen
                         height: Regovar.theme.font.size.header
                         text: "Filtering "
                         color: Regovar.theme.frontColor.disable
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.font.familly
                         verticalAlignment: Text.AlignVCenter
                     }
@@ -205,7 +205,7 @@ GenericScreen
                         Layout.minimumWidth: root.labelColWidth
                         text: qsTr("Referencial")
                         color: Regovar.theme.frontColor.disable
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.font.familly
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
@@ -217,7 +217,7 @@ GenericScreen
                         height: Regovar.theme.font.size.header
                         text: regovar.newFilteringAnalysis.refName
                         color: Regovar.theme.frontColor.disable
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.font.familly
                         verticalAlignment: Text.AlignVCenter
                     }
@@ -234,7 +234,7 @@ GenericScreen
                         Layout.minimumWidth: root.labelColWidth
                         text: qsTr("Samples")
                         color: Regovar.theme.frontColor.disable
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.font.familly
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
@@ -253,15 +253,15 @@ GenericScreen
                                 Text
                                 {
                                     verticalAlignment: Text.AlignVCenter
-                                    font.pixelSize: Regovar.theme.font.size.control
-                                    width: Regovar.theme.font.size.control
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    width: Regovar.theme.font.size.normal
                                     text: modelData.subjectUI.sex == "M" ? "9" :modelData.subjectUI.sex == "F" ? "<" : ""
                                     font.family: Regovar.theme.icons.name
                                     color: Regovar.theme.frontColor.disable
                                 }
                                 Text
                                 {
-                                    font.pixelSize: Regovar.theme.font.size.control
+                                    font.pixelSize: Regovar.theme.font.size.normal
                                     text: modelData.subjectUI.lastname + " " + modelData.subjectUI.firstname + " (" + modelData.subjectUI.age + ")"
                                     elide: Text.ElideRight
                                     color: Regovar.theme.frontColor.disable
@@ -269,8 +269,8 @@ GenericScreen
 
                                 Text
                                 {
-                                    width: Regovar.theme.font.boxSize.control
-                                    font.pixelSize: Regovar.theme.font.size.control
+                                    width: Regovar.theme.font.boxSize.normal
+                                    font.pixelSize: Regovar.theme.font.size.normal
                                     font.family: Regovar.theme.icons.name
                                     color: Regovar.theme.frontColor.disable
                                     verticalAlignment: Text.AlignVCenter
@@ -279,7 +279,7 @@ GenericScreen
                                 }
                                 Text
                                 {
-                                    font.pixelSize: Regovar.theme.font.size.control
+                                    font.pixelSize: Regovar.theme.font.size.normal
                                     color: Regovar.theme.frontColor.disable
                                     verticalAlignment: Text.AlignVCenter
                                     font.family: "monospace"
@@ -303,7 +303,7 @@ GenericScreen
                         Layout.minimumWidth: root.labelColWidth
                         text: qsTr("Annotations")
                         color: Regovar.theme.frontColor.disable
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.font.familly
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
@@ -319,7 +319,7 @@ GenericScreen
 
                             Text
                             {
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 color: Regovar.theme.frontColor.disable
                                 verticalAlignment: Text.AlignVCenter
                                 text: modelData

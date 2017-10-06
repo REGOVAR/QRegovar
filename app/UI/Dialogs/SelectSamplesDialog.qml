@@ -117,7 +117,7 @@ Dialog
                     elide: Text.ElideRight
 
                     text: qsTr("You can select samples that are already on the server.\nYou can also import new samples by uploading a (g)vcf file.")
-                    font.pixelSize: Regovar.theme.font.size.control
+                    font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.front.normal
                 }
             }
@@ -160,7 +160,7 @@ Dialog
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             font.family: Regovar.theme.icons.name
                             text: remoteSamples.statusIcons[styleData.value.status]
                             onTextChanged:
@@ -185,13 +185,13 @@ Dialog
                         }
                         Text
                         {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
                             anchors.rightMargin: 5
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.label
                             elide: Text.ElideRight
                         }
@@ -211,19 +211,19 @@ Dialog
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.sex == "M" ? "9" : styleData.value.sex == "F" ? "<" : ""
                             font.family: Regovar.theme.icons.name
                         }
                         Text
                         {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
                             anchors.rightMargin: 5
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.lastname + " " + styleData.value.firstname + "(" + styleData.value.age + ")"
                             elide: Text.ElideRight
                         }
@@ -244,18 +244,18 @@ Dialog
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.icon
                             font.family: Regovar.theme.icons.name
                         }
                         Text
                         {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
                             anchors.rightMargin: 5
                             anchors.fill: parent
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.filename
                             elide: Text.ElideRight
                         }
@@ -388,7 +388,7 @@ Dialog
                     elide: Text.ElideRight
 
                     text: qsTr("Select the vcf file(s) from which you want to import samples.\nYou can add file that are already uploaded on the regovar server or drop your (g)vcf file here to start the upload on the server.")
-                    font.pixelSize: Regovar.theme.font.size.control
+                    font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.front.normal
                 }
             }
@@ -457,20 +457,20 @@ Dialog
                                 anchors.verticalCenter: parent.verticalCenter
                                 verticalAlignment: Text.AlignVCenter
                                 horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 text: styleData.value.icon
                                 font.family: Regovar.theme.icons.name
                             }
                             Text
                             {
-                                anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                                anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
                                 anchors.rightMargin: 5
                                 anchors.left: parent.left
                                 anchors.right: parent.right
                                 verticalAlignment: Text.AlignVCenter
                                 anchors.fill: parent
                                 horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 text: styleData.value.filename
                                 elide: Text.ElideRight
                             }
@@ -490,7 +490,7 @@ Dialog
                                 anchors.verticalCenter: parent.verticalCenter
                                 verticalAlignment: Text.AlignVCenter
                                 horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.icons.name
                                 text: remoteSamples.statusIcons[styleData.value.status]
                                 onTextChanged:
@@ -515,13 +515,13 @@ Dialog
                             }
                             Text
                             {
-                                anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                                anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
                                 anchors.rightMargin: 5
                                 anchors.left: parent.left
                                 anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
                                 horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 text: styleData.value.label
                                 elide: Text.ElideRight
                             }
@@ -543,7 +543,7 @@ Dialog
                                 anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
                                 horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 text:styleData.value.toLocaleDateString()
                                 elide: Text.ElideRight
                             }

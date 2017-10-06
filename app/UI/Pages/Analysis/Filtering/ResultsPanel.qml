@@ -88,7 +88,7 @@ Rectangle
                 anchors.leftMargin: 5
                 anchors.fill: parent
                 verticalAlignment: Text.AlignVCenter
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 elide: Text.ElideRight
                 text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
             }
@@ -126,7 +126,7 @@ Rectangle
                         anchors.rightMargin: 5
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         elide: Text.ElideRight
                         font.family: "monospace"
                         horizontalAlignment: Text.AlignRight
@@ -151,7 +151,7 @@ Rectangle
                         anchors.rightMargin: 5
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
 
 
                         textFormat: Text.RichText
@@ -181,7 +181,7 @@ Rectangle
                         anchors.rightMargin: 5
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         textFormat: Text.RichText
                         readOnly: true
 

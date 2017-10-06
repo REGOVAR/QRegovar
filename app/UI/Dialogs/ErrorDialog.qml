@@ -114,7 +114,7 @@ Dialog
                 id: messagePanel
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Layout.minimumHeight: 4 * Regovar.theme.font.size.control
+                Layout.minimumHeight: 4 * Regovar.theme.font.size.normal
                 color: "transparent"
 
                 Column

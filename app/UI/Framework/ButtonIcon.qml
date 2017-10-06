@@ -13,7 +13,7 @@ Button
         if (icon != null && icon != undefined && icon != "")
         {
             iconText.visible = true
-            iconText.width = Regovar.theme.font.boxSize.control
+            iconText.width = regovar.theme.font.boxSize.normal
         }
     }
 
@@ -24,7 +24,7 @@ Button
         {
             id: iconText
             text: icon
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.icons.name
             font.bold: false
             color: Regovar.theme.secondaryColor.front.normal
@@ -38,7 +38,7 @@ Button
         {
             text: control.text
             height: 24
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             font.bold: false
             color: Regovar.theme.secondaryColor.front.normal

@@ -7,7 +7,7 @@ TextField
 {
     id: control
     placeholderText: qsTr("Enter description")
-    font.pixelSize: Regovar.theme.font.size.control
+    font.pixelSize: Regovar.theme.font.size.normal
     font.family: "monospace"
     color: Regovar.theme.frontColor.normal
 
@@ -16,7 +16,7 @@ TextField
     background: Rectangle
     {
         implicitWidth: 200
-        implicitHeight: Regovar.theme.font.size.control * 2
+        implicitHeight: Regovar.theme.font.size.normal * 2
         color: "transparent"
 
         Rectangle

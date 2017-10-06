@@ -8,7 +8,7 @@ import "../Regovar"
 //    text: subMenuModel.get(index).label
 //    height: header.height
 //    verticalAlignment: Text.AlignVCenter
-//    font.pixelSize: Regovar.theme.font.size.control
+//    font.pixelSize: Regovar.theme.font.size.normal
 //}
 
 Rectangle
@@ -60,7 +60,7 @@ Rectangle
         anchors.leftMargin: 50
         text: subMenuModel.get(index).label
         verticalAlignment: Text.AlignVCenter
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
     }
     MouseArea
     {

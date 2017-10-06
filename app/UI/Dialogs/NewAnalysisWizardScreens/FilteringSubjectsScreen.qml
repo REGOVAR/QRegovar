@@ -20,7 +20,7 @@ GenericScreen
         anchors.right: parent.right
         text:  qsTr("This step is optional.\nYou can link samples to subjects. It will be easier to retrieve their samples and analyses later.")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
     }
 
@@ -28,7 +28,7 @@ GenericScreen
     {
         anchors.centerIn: parent
         text: qsTr("TODO")
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.frontColor.normal
     }
 
@@ -44,7 +44,7 @@ GenericScreen
 //        Text
 //        {
 //            text: qsTr("Selected samples")
-//            font.pixelSize: Regovar.theme.font.size.control
+//            font.pixelSize: Regovar.theme.font.size.normal
 //            color: Regovar.theme.frontColor.normal
 //        }
 
@@ -102,7 +102,7 @@ GenericScreen
 //                        anchors.verticalCenter: parent.verticalCenter
 //                        verticalAlignment: Text.AlignVCenter
 //                        horizontalAlignment: styleData.textAlignment
-//                        font.pixelSize: Regovar.theme.font.size.control
+//                        font.pixelSize: Regovar.theme.font.size.normal
 //                        text: "z"
 //                        font.family: Regovar.theme.icons.name
 //                    }

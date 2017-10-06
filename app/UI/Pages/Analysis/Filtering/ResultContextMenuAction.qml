@@ -26,7 +26,7 @@ Rectangle
 
             font.family: Regovar.theme.icons.name
             color: Regovar.theme.frontColor.normal
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
         }
@@ -36,7 +36,7 @@ Rectangle
             font.family: "monospace"
             height: Regovar.theme.font.boxSize.header
             color: Regovar.theme.frontColor.normal
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             verticalAlignment: Text.AlignVCenter
         }
     }

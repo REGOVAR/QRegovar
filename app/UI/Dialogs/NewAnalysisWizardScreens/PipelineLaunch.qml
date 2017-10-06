@@ -23,7 +23,7 @@ GenericScreen
         anchors.right: parent.right
         text: qsTr("You're almost done! Choose a name and select the project you want to save your analysis to. Below is a summary of the configuration of the analysis.\nIf all is good. press the \"Launch\" button. The Regovar server will prepare your data, and you will then be able to dynamically filter the variants.")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
     }
 
@@ -42,7 +42,7 @@ GenericScreen
             Layout.minimumWidth: root.labelColWidth
             text: qsTr("Project")
             color: Regovar.theme.frontColor.normal
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -71,7 +71,7 @@ GenericScreen
             Layout.minimumWidth: root.labelColWidth
             text: qsTr("Name")
             color: Regovar.theme.frontColor.normal
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -98,7 +98,7 @@ GenericScreen
         anchors.topMargin: 10
         text: qsTr("Analysis summary")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         //color: Regovar.theme.primaryColor.back.normal
     }
 
@@ -110,7 +110,7 @@ GenericScreen
         anchors.right: parent.right
         anchors.bottom: parent.bottom
 
-        anchors.topMargin: Regovar.theme.font.size.control + 15
+        anchors.topMargin: Regovar.theme.font.size.normal + 15
 
 
         color: Regovar.theme.boxColor.back
@@ -140,7 +140,7 @@ GenericScreen
                         Layout.minimumWidth: root.labelColWidth
                         text: qsTr("Type")
                         color: Regovar.theme.frontColor.disable
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.font.familly
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
@@ -152,7 +152,7 @@ GenericScreen
                         height: Regovar.theme.font.size.header
                         text: "Hugodims pipeline v1.0"
                         color: Regovar.theme.frontColor.disable
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.font.familly
                         verticalAlignment: Text.AlignVCenter
                     }
@@ -169,7 +169,7 @@ GenericScreen
                         Layout.minimumWidth: root.labelColWidth
                         text: qsTr("Inputs")
                         color: Regovar.theme.frontColor.disable
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.font.familly
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
@@ -183,8 +183,8 @@ GenericScreen
 
                             Text
                             {
-                                width: Regovar.theme.font.boxSize.control
-                                font.pixelSize: Regovar.theme.font.size.control
+                                width: Regovar.theme.font.boxSize.normal
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.icons.name
                                 color: Regovar.theme.frontColor.disable
                                 verticalAlignment: Text.AlignVCenter
@@ -193,7 +193,7 @@ GenericScreen
 
                             Text
                             {
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 color: Regovar.theme.frontColor.disable
                                 verticalAlignment: Text.AlignVCenter
                                 text: "mybam.bam"
@@ -213,7 +213,7 @@ GenericScreen
                         Layout.minimumWidth: root.labelColWidth
                         text: qsTr("Configuration")
                         color: Regovar.theme.frontColor.disable
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.font.familly
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
@@ -222,7 +222,7 @@ GenericScreen
                     Text
                     {
                         Layout.fillWidth: true
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.frontColor.disable
                         verticalAlignment: Text.AlignVCenter
                         text: "-"

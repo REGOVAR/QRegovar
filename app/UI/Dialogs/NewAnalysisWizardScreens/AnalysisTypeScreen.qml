@@ -84,7 +84,7 @@ Rectangle
 
         text: qsTr("Select above what you want to do.")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.dark
         horizontalAlignment: Text.AlignHCenter
     }

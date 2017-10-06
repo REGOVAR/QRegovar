@@ -9,8 +9,8 @@ import "../../../../Regovar"
 Rectangle
 {
     id: root
-    height: Regovar.theme.font.boxSize.control
-    implicitHeight: Regovar.theme.font.boxSize.control
+    height: Regovar.theme.font.boxSize.normal
+    implicitHeight: Regovar.theme.font.boxSize.normal
     color: "transparent"
 
     property FilteringAnalysis analysis
@@ -40,9 +40,9 @@ Rectangle
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             text: model.leftOp + " " + model.opRegovarToFriend(model.op) + " " + model.rightOp
-            height: Regovar.theme.font.boxSize.control
+            height: Regovar.theme.font.boxSize.normal
             verticalAlignment: Text.AlignVCenter
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: root.textColor
             elide: Text.ElideRight
         }
@@ -62,16 +62,16 @@ Rectangle
             anchors.top: parent.top
             anchors.right: parent.right
             visible: root.mouseHover
-            //width: root.mouseHover ? 2*Regovar.theme.font.boxSize.control : 0
+            //width: root.mouseHover ? 2*Regovar.theme.font.boxSize.normal : 0
 
             Text
             {
                 text: "A"
-                height: Regovar.theme.font.boxSize.control
-                width: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
+                width: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
                 font.family: Regovar.theme.icons.name
 
@@ -97,11 +97,11 @@ Rectangle
             Text
             {
                 text: "h"
-                height: Regovar.theme.font.boxSize.control
-                width: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
+                width: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
                 font.family: Regovar.theme.icons.name
 

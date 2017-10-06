@@ -6,7 +6,7 @@ import "../Regovar"
 
 TextArea
 {
-    implicitHeight: 3 * Regovar.theme.font.boxSize.control
+    implicitHeight: 3 * Regovar.theme.font.boxSize.normal
     style: TextAreaStyle
     {
         textColor: enabled ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable

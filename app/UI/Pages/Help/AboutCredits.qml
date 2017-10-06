@@ -27,7 +27,7 @@ Item
         TextEdit
         {
             text: "Anne-Sophie DENOMME-PICHON, David GOUDEGENE,  Jérémie ROQUET, June SALLOU, Olivier GUEUDELOT, Sacha SCHUTZ"
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: Regovar.theme.frontColor.normal
             readOnly: true
             selectByMouse: true
@@ -62,25 +62,25 @@ Item
         Text
         {
             text: "Ubuntu 16"
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: Regovar.theme.frontColor.normal
         }
         Text
         {
             text: "Python 3.5"
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: Regovar.theme.frontColor.normal
         }
         Text
         {
             text: "PostgresSQL 9.5"
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: Regovar.theme.frontColor.normal
         }
         Text
         {
             text: "Qt 5.9"
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: Regovar.theme.frontColor.normal
         }
 

@@ -11,7 +11,7 @@ TableView
 
     alternatingRowColors: true
 
-    property int rowHeight: Regovar.theme.font.boxSize.control
+    property int rowHeight: Regovar.theme.font.boxSize.normal
 
     style: TableViewStyle
     {
@@ -97,7 +97,7 @@ TableView
             anchors.fill: parent
             anchors.leftMargin: 5
             anchors.rightMargin: 5
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             color: Regovar.theme.frontColor.normal
             horizontalAlignment: styleData.textAlignment
@@ -119,7 +119,7 @@ TableView
 //            anchors.fill: parent
 //            verticalAlignment: Text.AlignVCenter
 //            horizontalAlignment: styleData.textAlignment
-//            font.pixelSize: Regovar.theme.font.size.control
+//            font.pixelSize: Regovar.theme.font.size.normal
 //            text: (styleData.value !== undefined && styleData.value !== null) ? styleData.value : "" // + " (" + styleData.row + "," + styleData.column + ")"
 //            elide: Text.ElideRight
 //        }

@@ -102,7 +102,7 @@ Dialog
                 anchors.margins: 5
                 text:  qsTr("New analysis") + " :" // (root.menuModel !== undefined) ? qsTr("Step") + " " + (menuSelectedIndex + 1) + "/" + root.menuModel.length : ""
                 color: Regovar.theme.primaryColor.front.dark
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.familly
                 verticalAlignment: Text.AlignVCenter
                 height: Regovar.theme.font.boxSize.title
@@ -138,11 +138,11 @@ Dialog
                             Text
                             {
                                 height: Regovar.theme.font.boxSize.header
-                                width: Regovar.theme.font.boxSize.control
+                                width: Regovar.theme.font.boxSize.normal
 
                                 text: (index+1) + "."
                                 verticalAlignment: Text.AlignVCenter
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
 
                                 color: menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light : menuSelectedIndex > index ? Regovar.theme.primaryColor.front.dark : Regovar.theme.primaryColor.back.light
                             }
@@ -151,7 +151,7 @@ Dialog
                                 height: Regovar.theme.font.boxSize.header
                                 text: modelData["title"]
                                 color: menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light : menuSelectedIndex > index ? Regovar.theme.primaryColor.front.dark : Regovar.theme.primaryColor.back.light
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.font.familly
                                 verticalAlignment: Text.AlignVCenter
                             }
@@ -176,7 +176,7 @@ Dialog
             anchors.left: naviguationPanel.right
             anchors.right: parent.right
             anchors.margins: 10
-            height: Regovar.theme.font.boxSize.control
+            height: Regovar.theme.font.boxSize.normal
             color: "transparent"
 
             Button

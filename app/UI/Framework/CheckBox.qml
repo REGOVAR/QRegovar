@@ -10,7 +10,7 @@ CheckBox
     checked: true
 
 
-    font.pixelSize: Regovar.theme.font.size.control
+    font.pixelSize: Regovar.theme.font.size.normal
 
     FontLoader
     {
@@ -20,8 +20,8 @@ CheckBox
 
     indicator: Rectangle
     {
-        implicitWidth: Regovar.theme.font.size.control + 4
-        implicitHeight: Regovar.theme.font.size.control + 4
+        implicitWidth: Regovar.theme.font.size.normal + 4
+        implicitHeight: Regovar.theme.font.size.normal + 4
         x: control.leftPadding
         y: parent.height / 2 - height / 2
         radius: 2
@@ -33,7 +33,7 @@ CheckBox
             text:"n"
             anchors.centerIn: parent
             color: "white"
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: iconFont.name
             visible: control.checked ? true : false
         }

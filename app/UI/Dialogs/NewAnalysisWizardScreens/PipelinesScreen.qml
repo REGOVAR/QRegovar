@@ -21,7 +21,7 @@ GenericScreen
         anchors.right: parent.right
         text: qsTr("Choose which pipeline to use to do your analysis among the list below.")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
     }
 
@@ -32,7 +32,7 @@ GenericScreen
         anchors.topMargin: 30
         anchors.left: parent.left
         text: qsTr("Pipelines availables")
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.frontColor.normal
     }
 
@@ -68,26 +68,26 @@ GenericScreen
                     delegate: Rectangle
                     {
                         width: inputsList.width
-                        height: Regovar.theme.font.boxSize.control
+                        height: Regovar.theme.font.boxSize.normal
                         color: index % 2 == 0 ? Regovar.theme.backgroundColor.main : "transparent"
 
                         Row
                         {
                             Text
                             {
-                                height: Regovar.theme.font.boxSize.control
-                                width: Regovar.theme.font.boxSize.content
+                                height: Regovar.theme.font.boxSize.normal
+                                width: Regovar.theme.font.boxSize.small
                                 text: index < 2 ? "D" : ""
                                 font.family: Regovar.theme.icons.name
-                                font.pixelSize: Regovar.theme.font.size.content
+                                font.pixelSize: Regovar.theme.font.size.small
                                 verticalAlignment: Text.AlignVCenter
                                 horizontalAlignment: Text.AlignHCenter
                             }
                             Text
                             {
                                 text: modelData.title
-                                height: Regovar.theme.font.boxSize.control
-                                font.pixelSize: Regovar.theme.font.size.content
+                                height: Regovar.theme.font.boxSize.normal
+                                font.pixelSize: Regovar.theme.font.size.small
                                 verticalAlignment: Text.AlignVCenter
                             }
                         }
@@ -174,7 +174,7 @@ GenericScreen
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
                     text: "No description available"
-                    font.pixelSize: Regovar.theme.font.size.content
+                    font.pixelSize: Regovar.theme.font.size.small
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     color: Regovar.theme.frontColor.disable

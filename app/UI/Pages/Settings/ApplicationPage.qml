@@ -118,9 +118,9 @@ Rectangle
             {
                 Layout.alignment: Qt.AlignTop
                 text: qsTr("Server")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
             }
 
@@ -143,7 +143,7 @@ Rectangle
             {
                 width: parent.width
                 text: qsTr("The url to access to the Regovar server. If you change it, test the connection with the button \"Test connection\".")
-                font.pixelSize: Regovar.theme.font.size.content
+                font.pixelSize: Regovar.theme.font.size.small
                 font.italic: true
                 color: Regovar.theme.primaryColor.back.normal
                 wrapMode: Text.WordWrap
@@ -206,7 +206,7 @@ Rectangle
                 anchors.bottom: parent.bottom
                 wrapMode: Text.WordWrap
                 text: qsTr("Connection settings are OK")
-                font.pixelSize: Regovar.theme.font.size.content
+                font.pixelSize: Regovar.theme.font.size.small
                 color: Regovar.theme.primaryColor.back.normal
                 horizontalAlignment: Text.AlignHCenter
             }
@@ -225,10 +225,10 @@ Rectangle
             Text
             {
                 text: qsTr("Proxy")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
                 Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
             }
         }
@@ -246,7 +246,7 @@ Rectangle
             {
                 width: parent.width
                 text: qsTr("The url to the proxy. If you change it, test the connection with the button \"Test connection\".")
-                font.pixelSize: Regovar.theme.font.size.content
+                font.pixelSize: Regovar.theme.font.size.small
                 font.italic: true
                 color: Regovar.theme.primaryColor.back.normal
                 wrapMode: Text.WordWrap
@@ -301,10 +301,10 @@ Rectangle
             Text
             {
                 text: qsTr("Language")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
                 Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
             }
         }
@@ -323,7 +323,7 @@ Rectangle
             {
                 width: parent.width
                 text: qsTr("Select the language of the Regovar application.")
-                font.pixelSize: Regovar.theme.font.size.content
+                font.pixelSize: Regovar.theme.font.size.small
                 font.italic: true
                 color: Regovar.theme.primaryColor.back.normal
                 wrapMode: Text.WordWrap
@@ -354,7 +354,7 @@ Rectangle
                 anchors.bottom: parent.bottom
                 wrapMode: Text.WordWrap
                 text: qsTr("Todo : preview of interface setting before validation")
-                font.pixelSize: Regovar.theme.font.size.content
+                font.pixelSize: Regovar.theme.font.size.small
                 color: Regovar.theme.primaryColor.back.normal
                 horizontalAlignment: Text.AlignHCenter
             }
@@ -372,10 +372,10 @@ Rectangle
             Text
             {
                 text: qsTr("Theme")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
                 Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
             }
         }
@@ -394,7 +394,7 @@ Rectangle
             {
                 width: parent.width
                 text: qsTr("Select the color theme of the Regovar application.")
-                font.pixelSize: Regovar.theme.font.size.content
+                font.pixelSize: Regovar.theme.font.size.small
                 font.italic: true
                 color: Regovar.theme.primaryColor.back.normal
                 wrapMode: Text.WordWrap
@@ -413,10 +413,10 @@ Rectangle
             Text
             {
                 text: qsTr("Font size")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
                 Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
             }
         }
@@ -429,7 +429,7 @@ Rectangle
             {
                 color: "transparent"
                 width: 200
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
 
                 Rectangle
                 {
@@ -455,7 +455,7 @@ Rectangle
             {
                 width: parent.width
                 text: qsTr("Adapt the size of the text to the size and resolution of your screen.")
-                font.pixelSize: Regovar.theme.font.size.content
+                font.pixelSize: Regovar.theme.font.size.small
                 font.italic: true
                 color: Regovar.theme.primaryColor.back.normal
                 wrapMode: Text.WordWrap
@@ -474,10 +474,10 @@ Rectangle
             Text
             {
                 text: qsTr("Help boxes")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
                 Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.control
+                height: Regovar.theme.font.boxSize.normal
                 verticalAlignment: Text.AlignVCenter
             }
         }
@@ -496,7 +496,7 @@ Rectangle
                     {
                         width: parent.width
                         text: qsTr("Display or hide help and informations boxes in the application.")
-                        font.pixelSize: Regovar.theme.font.size.content
+                        font.pixelSize: Regovar.theme.font.size.small
                         font.italic: true
                         color: Regovar.theme.primaryColor.back.normal
                         wrapMode: Text.WordWrap

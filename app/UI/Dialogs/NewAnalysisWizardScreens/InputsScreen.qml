@@ -22,7 +22,7 @@ GenericScreen
         anchors.right: parent.right
         text: qsTr("Select the file(s) you want to analyse. You can select files that are already available on the server, or upload your own files.")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
     }
 
@@ -38,7 +38,7 @@ GenericScreen
         Text
         {
             text: qsTr("Selected files")
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: Regovar.theme.frontColor.normal
         }
         RowLayout
@@ -110,20 +110,20 @@ GenericScreen
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.icon
                             font.family: Regovar.theme.icons.name
                         }
                         Text
                         {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
                             anchors.rightMargin: 5
                             anchors.left: parent.left
                             anchors.right: parent.right
                             verticalAlignment: Text.AlignVCenter
                             anchors.fill: parent
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.filename
                             elide: Text.ElideRight
                         }
@@ -143,19 +143,19 @@ GenericScreen
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.status == 0 ? "/" : styleData.value.status == 3 ? "l" : "n"
                             font.family: Regovar.theme.icons.name
                         }
                         Text
                         {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
                             anchors.rightMargin: 5
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.label
                             elide: Text.ElideRight
                         }
@@ -177,7 +177,7 @@ GenericScreen
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text:styleData.value.toLocaleDateString()
                             elide: Text.ElideRight
                         }

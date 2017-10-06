@@ -15,21 +15,21 @@ Rectangle
     property bool isHover: false
     signal clicked()
 
-    height: Regovar.theme.font.boxSize.control
+    height: Regovar.theme.font.boxSize.normal
     color: "transparent"
     Row
     {
         anchors.fill: parent
         Rectangle
         {
-            width: Regovar.theme.font.boxSize.control
-            height: Regovar.theme.font.boxSize.control
+            width: Regovar.theme.font.boxSize.normal
+            height: Regovar.theme.font.boxSize.normal
             color: "transparent"
         }
         Text
         {
             width: dateColWidth
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.disable
             verticalAlignment: Text.AlignVCenter
             text: date
@@ -37,14 +37,14 @@ Rectangle
         }
         Rectangle
         {
-            width: Regovar.theme.font.boxSize.control
-            height: Regovar.theme.font.boxSize.control
+            width: Regovar.theme.font.boxSize.normal
+            height: Regovar.theme.font.boxSize.normal
             color: "transparent"
         }
         Text
         {
-            width: Regovar.theme.font.boxSize.control
-            font.pixelSize: Regovar.theme.font.size.control
+            width: Regovar.theme.font.boxSize.normal
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
@@ -53,7 +53,7 @@ Rectangle
 
         Text
         {
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter

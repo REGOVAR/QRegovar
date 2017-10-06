@@ -156,7 +156,7 @@ Rectangle
                 Rectangle
                 {
                     color: "transparent"
-                    // Layout.minimumHeight: 3*Regovar.theme.font.boxSize.control
+                    // Layout.minimumHeight: 3*Regovar.theme.font.boxSize.normal
                     width: scrollViewArea.width
 
                     SplitView

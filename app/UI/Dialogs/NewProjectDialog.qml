@@ -45,7 +45,7 @@ Dialog
 
             text: qsTr("Creating a new project will allow you to organize your analyses and find them more easily afterwards.\nTo create a project, the name is mandatory.")
             wrapMode: Text.WordWrap
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: Regovar.theme.frontColor.normal
         }
 
@@ -68,7 +68,7 @@ Dialog
             {
                 text: qsTr("Name*")
                 color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.familly
                 verticalAlignment: Text.AlignVCenter
                 height: 35
@@ -86,7 +86,7 @@ Dialog
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 text: qsTr("Comment")
                 color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.familly
                 verticalAlignment: Text.AlignVCenter
                 height: 35
@@ -106,7 +106,7 @@ Dialog
             anchors.right: parent.right
             anchors.margins: 10
 
-            height: Regovar.theme.font.boxSize.control
+            height: Regovar.theme.font.boxSize.normal
             spacing: 10
 
             Button

@@ -130,7 +130,7 @@ Rectangle
                         anchors.leftMargin: 5
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         text: styleData.value
                         elide: Text.ElideRight
                     }

@@ -98,7 +98,7 @@ Dialog
                     elide: Text.ElideRight
 
                     text: qsTr("You can select files that are already on the server.\nYou can also import new files by uploading them from your computer.")
-                    font.pixelSize: Regovar.theme.font.size.control
+                    font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.front.normal
                 }
             }
@@ -140,20 +140,20 @@ Dialog
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.icon
                             font.family: Regovar.theme.icons.name
                         }
                         Text
                         {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
                             anchors.rightMargin: 5
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.fill: parent
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.filename
                             elide: Text.ElideRight
                         }
@@ -173,19 +173,19 @@ Dialog
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.status == 0 ? "/" : styleData.value.status == 3 ? "l" : "n"
                             font.family: Regovar.theme.icons.name
                         }
                         Text
                         {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
                             anchors.rightMargin: 5
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.label
                             elide: Text.ElideRight
                         }
@@ -290,7 +290,7 @@ Dialog
                     elide: Text.ElideRight
 
                     text: qsTr("Select files on your computer. Selected files will be uploaded on the Regovar server.")
-                    font.pixelSize: Regovar.theme.font.size.control
+                    font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.front.normal
                 }
             }

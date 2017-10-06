@@ -43,7 +43,7 @@ Rectangle
         anchors.right: root.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        width: Regovar.theme.font.boxSize.control
+        width: Regovar.theme.font.boxSize.normal
 
         color: "transparent" // Regovar.theme.boxColor.back
 //        border.width: 1
@@ -103,7 +103,7 @@ Rectangle
             {
                 id: delegateItem
                 visible: model.modelData.visible
-                height: (visible) ? Regovar.theme.font.boxSize.control : 0
+                height: (visible) ? Regovar.theme.font.boxSize.normal : 0
                 width: proposalsList.width
                 clip: true
                 //color: model.modelData.trueIndex % 2 == 0 ? Regovar.theme.backgroundColor.main : Regovar.theme.boxColor.back

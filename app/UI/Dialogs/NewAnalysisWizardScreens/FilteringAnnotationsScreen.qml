@@ -38,7 +38,7 @@ GenericScreen
                    "Note :\n - Default annotations databases complient with selected samples are in bold.\n" +
                    " - Quick filters need VEP and dbNSFP databases to work; Otherwise some filters will be disabled.")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
     }
 
@@ -57,7 +57,7 @@ GenericScreen
         Text
         {
             text: qsTr("Selected annotations databases")
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
             color: Regovar.theme.frontColor.normal
         }
         TableView

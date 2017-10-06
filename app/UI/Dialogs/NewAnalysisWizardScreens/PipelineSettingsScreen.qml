@@ -27,7 +27,7 @@ GenericScreen
         anchors.right: parent.right
         text: qsTr("Hugodims pipeline parameters.")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
     }
     Text
@@ -40,7 +40,7 @@ GenericScreen
         anchors.topMargin: 30
         text: qsTr("No parameters for this pipeline.")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
         font.italic: true
     }
@@ -71,7 +71,7 @@ GenericScreen
 //                    Layout.minimumWidth: root.labelColWidth
 //                    text: qsTr("Name")
 //                    color: Regovar.theme.frontColor.normal
-//                    font.pixelSize: Regovar.theme.font.size.control
+//                    font.pixelSize: Regovar.theme.font.size.normal
 //                    font.family: Regovar.theme.font.familly
 //                    verticalAlignment: Text.AlignVCenter
 //                    Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -95,7 +95,7 @@ GenericScreen
 //                    Layout.minimumWidth: root.labelColWidth
 //                    text: qsTr("Project")
 //                    color: Regovar.theme.frontColor.normal
-//                    font.pixelSize: Regovar.theme.font.size.control
+//                    font.pixelSize: Regovar.theme.font.size.normal
 //                    font.family: Regovar.theme.font.familly
 //                    verticalAlignment: Text.AlignVCenter
 //                    Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -120,7 +120,7 @@ GenericScreen
 //                    Layout.minimumWidth: root.labelColWidth
 //                    text: qsTr("Comment")
 //                    color: Regovar.theme.frontColor.normal
-//                    font.pixelSize: Regovar.theme.font.size.control
+//                    font.pixelSize: Regovar.theme.font.size.normal
 //                    font.family: Regovar.theme.font.familly
 //                    verticalAlignment: Text.AlignVCenter
 //                    Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)

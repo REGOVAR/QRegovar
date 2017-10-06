@@ -141,9 +141,9 @@ Rectangle
                     Text
                     {
                         text: "" + projectsResult.count + " " + (projectsResult.count > 1 ? qsTr("Projects") : qsTr("Project"))
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.dark
-                        height: Regovar.theme.font.boxSize.control
+                        height: Regovar.theme.font.boxSize.normal
                     }
 
 
@@ -173,9 +173,9 @@ Rectangle
                     Text
                     {
                         text: "" + analysessResult.count + " " + (analysessResult.count > 1 ? qsTr("Analyses") : qsTr("Analysis"))
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.dark
-                        height: Regovar.theme.font.boxSize.control
+                        height: Regovar.theme.font.boxSize.normal
                     }
 
                     Repeater
@@ -206,9 +206,9 @@ Rectangle
                     {
                         width: scrollarea.viewport.width
                         text: "" + subjectsResult.count + " " + subjectsResult.count > 1 ? qsTr("Subjects") : qsTr("Subject")
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.dark
-                        height: Regovar.theme.font.boxSize.control
+                        height: Regovar.theme.font.boxSize.normal
                     }
                     Repeater
                     {
@@ -219,8 +219,8 @@ Rectangle
                             {
                                 Text
                                 {
-                                    width: Regovar.theme.font.boxSize.control
-                                    font.pixelSize: Regovar.theme.font.size.control
+                                    width: Regovar.theme.font.boxSize.normal
+                                    font.pixelSize: Regovar.theme.font.size.normal
                                     font.family: Regovar.theme.icons.name
                                     color: Regovar.theme.frontColor.normal
                                     verticalAlignment: Text.AlignVCenter
@@ -228,7 +228,7 @@ Rectangle
                                 }
                                 Text
                                 {
-                                    font.pixelSize: Regovar.theme.font.size.control
+                                    font.pixelSize: Regovar.theme.font.size.normal
                                     font.family: Regovar.theme.font.familly
                                     color: Regovar.theme.frontColor.normal
                                     verticalAlignment: Text.AlignVCenter
@@ -250,9 +250,9 @@ Rectangle
                     Text
                     {
                         text: "" + samplesResult.count + " " + (samplesResult.count > 1 ? qsTr("Samples") : qsTr("Sample"))
-                        font.pixelSize: Regovar.theme.font.size.control
+                        font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.dark
-                        height: Regovar.theme.font.boxSize.control
+                        height: Regovar.theme.font.boxSize.normal
                     }
 
                     Repeater
@@ -289,8 +289,8 @@ Rectangle
                         {
                             Text
                             {
-                                width: Regovar.theme.font.boxSize.control
-                                font.pixelSize: Regovar.theme.font.size.control
+                                width: Regovar.theme.font.boxSize.normal
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.icons.name
                                 color: Regovar.theme.frontColor.normal
                                 verticalAlignment: Text.AlignVCenter
@@ -298,7 +298,7 @@ Rectangle
                             }
                             Text
                             {
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.font.familly
                                 color: Regovar.theme.frontColor.normal
                                 verticalAlignment: Text.AlignVCenter
@@ -328,8 +328,8 @@ Rectangle
                         {
                             Text
                             {
-                                width: Regovar.theme.font.boxSize.control
-                                font.pixelSize: Regovar.theme.font.size.control
+                                width: Regovar.theme.font.boxSize.normal
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.icons.name
                                 color: Regovar.theme.frontColor.normal
                                 verticalAlignment: Text.AlignVCenter
@@ -337,7 +337,7 @@ Rectangle
                             }
                             Text
                             {
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.font.familly
                                 color: Regovar.theme.frontColor.normal
                                 verticalAlignment: Text.AlignVCenter
@@ -367,8 +367,8 @@ Rectangle
                         {
                             Text
                             {
-                                width: Regovar.theme.font.boxSize.control
-                                font.pixelSize: Regovar.theme.font.size.control
+                                width: Regovar.theme.font.boxSize.normal
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.icons.name
                                 color: Regovar.theme.frontColor.normal
                                 verticalAlignment: Text.AlignVCenter
@@ -376,7 +376,7 @@ Rectangle
                             }
                             Text
                             {
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.font.familly
                                 color: Regovar.theme.frontColor.normal
                                 verticalAlignment: Text.AlignVCenter
@@ -406,8 +406,8 @@ Rectangle
                         {
                             Text
                             {
-                                width: Regovar.theme.font.boxSize.control
-                                font.pixelSize: Regovar.theme.font.size.control
+                                width: Regovar.theme.font.boxSize.normal
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.icons.name
                                 color: Regovar.theme.frontColor.normal
                                 verticalAlignment: Text.AlignVCenter
@@ -415,7 +415,7 @@ Rectangle
                             }
                             Text
                             {
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.font.familly
                                 color: Regovar.theme.frontColor.normal
                                 verticalAlignment: Text.AlignVCenter
@@ -445,8 +445,8 @@ Rectangle
                         {
                             Text
                             {
-                                width: Regovar.theme.font.boxSize.control
-                                font.pixelSize: Regovar.theme.font.size.control
+                                width: Regovar.theme.font.boxSize.normal
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.icons.name
                                 color: Regovar.theme.frontColor.normal
                                 verticalAlignment: Text.AlignVCenter
@@ -454,7 +454,7 @@ Rectangle
                             }
                             Text
                             {
-                                font.pixelSize: Regovar.theme.font.size.control
+                                font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.font.familly
                                 color: Regovar.theme.frontColor.normal
                                 verticalAlignment: Text.AlignVCenter

@@ -95,7 +95,7 @@ GenericScreen
         anchors.right: parent.right
         text:  qsTr("Select the sample(s) you want to analyse.")
         wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.control
+        font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
     }
 
@@ -118,7 +118,7 @@ GenericScreen
             Text
             {
                 text: qsTr("Selected samples")
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
             }
 
@@ -148,19 +148,19 @@ GenericScreen
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.sex == "M" ? "9" : styleData.value.sex == "F" ? "<" : ""
                             font.family: Regovar.theme.icons.name
                         }
                         Text
                         {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
                             anchors.rightMargin: 5
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.lastname + " " + styleData.value.firstname + " (" + styleData.value.age + ")"
                             elide: Text.ElideRight
                         }
@@ -181,7 +181,7 @@ GenericScreen
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             font.family: Regovar.theme.icons.name
                             text: samplesList.statusIcons[styleData.value.status]
                             onTextChanged:
@@ -206,13 +206,13 @@ GenericScreen
                         }
                         Text
                         {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
                             anchors.rightMargin: 5
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.label
                             elide: Text.ElideRight
                         }
@@ -232,18 +232,18 @@ GenericScreen
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.icon
                             font.family: Regovar.theme.icons.name
                         }
                         Text
                         {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.control + 5
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
                             anchors.rightMargin: 5
                             anchors.fill: parent
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.control
+                            font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.filename
                             elide: Text.ElideRight
                         }
@@ -327,7 +327,7 @@ GenericScreen
                     delegate: ItemDelegate
                     {
                         width: childSample.width
-                        height: Regovar.theme.font.boxSize.control
+                        height: Regovar.theme.font.boxSize.normal
                         contentItem: Text
                         {
                             text: modelData.name
@@ -366,7 +366,7 @@ GenericScreen
                     delegate: ItemDelegate
                     {
                         width: motherSample.width
-                        height: Regovar.theme.font.boxSize.control
+                        height: Regovar.theme.font.boxSize.normal
                         contentItem: Text
                         {
                             text: modelData.name
@@ -399,7 +399,7 @@ GenericScreen
                     delegate: ItemDelegate
                     {
                         width: fatherSample.width
-                        height: Regovar.theme.font.boxSize.control
+                        height: Regovar.theme.font.boxSize.normal
                         contentItem: Text
                         {
                             text: modelData.name

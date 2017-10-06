@@ -33,10 +33,10 @@ Dialog
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
-            height: Regovar.theme.font.boxSize.control
+            height: Regovar.theme.font.boxSize.normal
 
             text: qsTr("Create new subject. ")
-            font.pixelSize: Regovar.theme.font.size.control
+            font.pixelSize: Regovar.theme.font.size.normal
 
 
         }
@@ -61,7 +61,7 @@ Dialog
                 text: qsTr("Identifier*")
                 font.bold: true
                 color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.familly
                 verticalAlignment: Text.AlignVCenter
                 height: 35
@@ -77,7 +77,7 @@ Dialog
             {
                 text: qsTr("Firstname")
                 color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.familly
                 verticalAlignment: Text.AlignVCenter
                 height: 35
@@ -92,7 +92,7 @@ Dialog
             {
                 text: qsTr("Lastname")
                 color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.familly
                 verticalAlignment: Text.AlignVCenter
                 height: 35
@@ -107,7 +107,7 @@ Dialog
             {
                 text: qsTr("Date of birth")
                 color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.familly
                 verticalAlignment: Text.AlignVCenter
                 height: 35
@@ -122,7 +122,7 @@ Dialog
             {
                 text: qsTr("Family number")
                 color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.familly
                 verticalAlignment: Text.AlignVCenter
                 height: 35
@@ -139,7 +139,7 @@ Dialog
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 text: qsTr("Comment")
                 color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.control
+                font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.familly
                 verticalAlignment: Text.AlignVCenter
                 height: 35
@@ -149,7 +149,7 @@ Dialog
                 id: commentField
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                height: 3 * Regovar.theme.font.size.control
+                height: 3 * Regovar.theme.font.size.normal
             }
         }
 
@@ -160,7 +160,7 @@ Dialog
             anchors.right: parent.right
             anchors.margins: 10
 
-            height: Regovar.theme.font.boxSize.control
+            height: Regovar.theme.font.boxSize.normal
             spacing: 10
 
             Button
