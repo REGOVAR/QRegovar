@@ -170,39 +170,41 @@ void ResultsTreeModel::applyFilter(QJsonArray filter)
         {
             beginResetModel();
             clear();
+
+            QJsonObject data = json["data"].toObject();
             setLoaded(0);
-            setTotal(0);
-            setupModelData(json["data"].toArray(), mRootItem);
+            setTotal(data["wt_total_variants"].toInt()); // , data["wt_total_results"].toInt()
+            setupModelData(data["results"].toArray(), mRootItem);
             qDebug() << Q_FUNC_INFO << "Results TreeViewModel reset." << mLoaded << "results loaded";
-            if (mLoaded < mPagination)
-            {
-                setTotal(mLoaded);
-                endResetModel();
-            }
-            else
-            {
-                // Get total number of result
-                QJsonObject body;
-                body.insert("filter", mFilteringAnalysis->advancedfilter()->toJson());
-                body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
+//            if (mLoaded < mPagination)
+//            {
+//                setTotal(mLoaded);
+//                endResetModel();
+//            }
+//            else
+//            {
+//                // Get total number of result
+//                QJsonObject body;
+//                body.insert("filter", mFilteringAnalysis->advancedfilter()->toJson());
+//                body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
 
-                Request* request = Request::post(QString("/analysis/%1/filtering/count").arg(mAnalysisId), QJsonDocument(body).toJson());
-                connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
-                {
-                    if (success)
-                    {
-                        setTotal(json["data"].toInt());
-                        qDebug() <<mTotal << "results total";
-                    }
-                    else
-                    {
-                        qDebug() << "fail to get total results";
-                    }
+//                Request* request = Request::post(QString("/analysis/%1/filtering/count").arg(mAnalysisId), QJsonDocument(body).toJson());
+//                connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+//                {
+//                    if (success)
+//                    {
+//                        setTotal(json["data"].toInt());
+//                        qDebug() <<mTotal << "results total";
+//                    }
+//                    else
+//                    {
+//                        qDebug() << "fail to get total results";
+//                    }
 
-                    endResetModel();
-                    request->deleteLater();
-                });
-            }
+//                    endResetModel();
+//                    request->deleteLater();
+//                });
+//            }
         }
         else
         {
@@ -240,28 +242,28 @@ void ResultsTreeModel::loadNext()
     body.insert("limit", QJsonValue::fromVariant(QVariant(mPagination)));
     body.insert("offset", QJsonValue::fromVariant(QVariant(mLoaded)));
 
-    Request* request = Request::post(QString("/analysis/%1/filtering").arg(mAnalysisId), QJsonDocument(body).toJson());
-    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            setupModelData(json["data"].toArray(), mRootItem);
+//    Request* request = Request::post(QString("/analysis/%1/filtering").arg(mAnalysisId), QJsonDocument(body).toJson());
+//    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+//    {
+//        if (success)
+//        {
+//            setupModelData(json["data"].toArray(), mRootItem);
 
-            qDebug() << Q_FUNC_INFO << "Results TreeViewModel load next." << mLoaded << "results loaded";
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
+//            qDebug() << Q_FUNC_INFO << "Results TreeViewModel load next." << mLoaded << "results loaded";
+//        }
+//        else
+//        {
+//            QJsonObject jsonError = json;
+//            jsonError.insert("method", Q_FUNC_INFO);
+//            regovar->raiseError(jsonError);
+//        }
 
-        // Notify view/model that update is finished
-        endInsertRows();
-        setIsLoading(false);
+//        // Notify view/model that update is finished
+//        endInsertRows();
+//        setIsLoading(false);
 
-        request->deleteLater();
-    });
+//        request->deleteLater();
+//    });
 }
 
 

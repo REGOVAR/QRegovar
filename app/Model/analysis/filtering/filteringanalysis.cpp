@@ -328,7 +328,11 @@ void FilteringAnalysis::loadResults()
     {
         if (success)
         {
-            if (mResults->fromJson(json["data"].toObject()))
+            QJsonObject data = json["data"].toObject();
+
+            // OLIVIER !!! IN PROGRESS
+            // data["wt_total_variants"].toInt()
+            if (true) //mResults->loadResults(data))
             {
                 raiseNewInternalLoadingStatus(Ready);
                 setIsLoading(false);

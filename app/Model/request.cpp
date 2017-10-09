@@ -147,9 +147,10 @@ void Request::received()
         {
             QString code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString();
             QString reason = reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
-            mJson.insert("reqError", code + " " + reason);
-            qWarning() << "ERROR" << code << reason << mReplyError;
             mJson = QJsonObject();
+            mJson.insert("reqError", code + " " + reason);
+            mJson.insert("query", reply->url().toString());
+            qWarning() << "ERROR" << code << reason << mReplyError;
             if (code == "502")
             {
                 regovar->setConnectionStatus(Regovar::ServerStatus::unreachable);
