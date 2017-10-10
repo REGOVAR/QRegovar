@@ -21,7 +21,13 @@ QuickFilterBox
     {
         // Mode
         posAll.checked = (!posExo.checked && !posIntro.checked && !posUtr.checked && !posInter.checked);
-        // TODO : send final combination to the model to update the filter
+
+        // send final combination to the model to update the filter
+        var pf = model.quickfilters.positionFilter;
+        pf.exonic.isActive = posExo.checked;
+        pf.intronic.isActive = posIntro.checked;
+        pf.utr.isActive = posUtr.checked;
+        pf.intergenic.isActive = posInter.checked;
     }
 
     content: Column

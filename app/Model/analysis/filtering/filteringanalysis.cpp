@@ -23,6 +23,8 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 
 
     setIsLoading(true);
+
+
 }
 
 
@@ -227,7 +229,7 @@ void FilteringAnalysis::loadAnnotations()
 
     // prepare quick filter (they need to check that they are complient with available annotations
     // TODO : CRASH SOUS WINDOWS ? MAIS PAS SOUS LINUX...
-    // mQuickFilters->checkAnnotationsDB(mAllAnnotations);
+    mQuickFilters->checkAnnotationsDB(mAllAnnotations);
 
     // set filter with the last applied filter
     loadFilter(mFilterJson);
@@ -531,6 +533,56 @@ void FilteringAnalysis::onWebsocketMessageReceived(QString action, QJsonObject d
 
 
 
+void FilteringAnalysis::saveHeaderPosition(QString header, int newPosition)
+{
+    if (header.isEmpty()) return;
+
+    // TODO : convert HMI position to real field position (as HMI add "non field columns" like "_sample" or "_rowHead")
+    // -1 for '_rowHead' which is always the first column
+    newPosition = newPosition-1;
+
+    // Retrieve fuids complient with provided header title
+    foreach(FieldColumnInfos* info, mAnnotations.values())
+    {
+        if (info && info->annotation() && info->annotation()->name() == header)
+        {
+            if (mFields.indexOf(info->annotation()->uid()) >= 0 )
+            {
+                mFields.move(mFields.indexOf(info->annotation()->uid()), newPosition);
+            }
+        }
+    }
+}
+
+void FilteringAnalysis::saveHeaderWidth(QString header, double newSize)
+{
+    if (header.isEmpty()) return;
+
+    // Retrieve fuids complient with provided header title
+    foreach(FieldColumnInfos* info, mAnnotations.values())
+    {
+        if (info && info->annotation() && info->annotation()->name() == header)
+        {
+            info->setWidth(newSize);
+        }
+    }
+}
 
 
+//void FilteringAnalysis::saveSettings()
+//{
+//    QSettings settings;
+//    settings.beginWriteArray("FilteringHeadersSizes");
+//    int idx=0;
+//    foreach (QString fuid, mAnnotations.keys())
+//    {
+//        FieldColumnInfos* info = mAnnotations[fuid];
 
+//        settings.setArrayIndex(idx);
+//        settings.setValue("uid", fuid);
+//        settings.setValue("width", info->width());
+//        settings.setValue("position", info->displayOrder());
+//        idx++;
+//    }
+//    settings.endArray();
+//}

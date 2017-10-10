@@ -32,9 +32,7 @@ void QuickFilterModel::init(int refId, int)
 
 QJsonArray QuickFilterModel::toJson()
 {
-    QJsonArray result;
     QJsonArray filters;
-    result.append("AND");
     foreach (QuickFilterBlockInterface* filter, mQuickFilters.values())
     {
         if (filter->isVisible())
@@ -56,6 +54,8 @@ QJsonArray QuickFilterModel::toJson()
             }
         }
     }
+    QJsonArray result;
+    result.append("AND");
     result.append(filters);
     return result;
 }

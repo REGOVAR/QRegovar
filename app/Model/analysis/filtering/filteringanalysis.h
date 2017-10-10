@@ -25,9 +25,9 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(int refId READ refId NOTIFY refChanged)
     Q_PROPERTY(QString refName READ refName NOTIFY refChanged)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
-    Q_PROPERTY(QJsonArray filterJson READ filterJson NOTIFY filterChanged)
-    Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsChanged)
-    Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged) // TODO : shall be results.total
+    Q_PROPERTY(QJsonArray filterJson READ filterJson NOTIFY filterChanged)      // Filter json formated shared with server
+    Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsChanged)             // List of fields UID shared with Server to retrieve information about variant/trx
+    Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged)   // TODO : shall be results.total
     Q_PROPERTY(QList<QObject*> samples READ samples4qml NOTIFY samplesChanged)
     Q_PROPERTY(bool isTrio READ isTrio WRITE setIsTrio NOTIFY isTrioChanged)
     Q_PROPERTY(Sample* child READ trioChild WRITE setTrioChild NOTIFY trioChildChanged)
@@ -90,7 +90,7 @@ public:
     inline NewAdvancedFilterModel* newConditionModel() { return mNewConditionModel; }
     inline RemoteSampleTreeModel* remoteSamples() { return mRemoteSampleTreeModel; }
     // "Shortcuts properties" for QML
-    QList<QObject*> samples4qml();
+    QList<QObject*> samples4qml();      // convert QList<Sample*> to QList<QObject*>
     QStringList resultColumns();
     QStringList selectedAnnotationsDB();
     inline bool isLoading() const { return mIsLoading; }
@@ -119,6 +119,8 @@ public:
     Q_INVOKABLE void addSamples(QList<QObject*> samples);
     Q_INVOKABLE void removeSamples(QList<QObject*> samples);
     Q_INVOKABLE void addSamplesFromFile(int fileId);
+    Q_INVOKABLE void saveHeaderPosition(QString header, int newPosition);
+    Q_INVOKABLE void saveHeaderWidth(QString header, double newSize);
 
     void raiseNewInternalLoadingStatus(LoadingStatus newStatus);
 

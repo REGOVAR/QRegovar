@@ -27,9 +27,10 @@ public:
     bool loadJson(QJsonArray filter);
 
     inline QuickFilterField* exonic() { return mFields[0]; }
-    inline QuickFilterField* intronic() { return mFields[1]; }
-    inline QuickFilterField* utr() { return mFields[2]; }
-    inline QuickFilterField* intergenic() { return mFields[3]; }
+    inline QuickFilterField* intronic() { return mFields[3]; }
+    inline QuickFilterField* utr() { return mFields[4]; }
+    inline QuickFilterField* intergenic() { return mFields[6]; }
+    void init(QString fuid);
 
 private:
     QList<QuickFilterField*> mFields;

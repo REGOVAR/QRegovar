@@ -47,15 +47,8 @@ TreeView
             border.color: Regovar.theme.boxColor.border
 
             property int position: styleData.column
-            onPositionChanged:
-            {
-                console.log("TreeViewHeader \""+ styleData.value +"\" Position Changed : " + position)
-            }
-
-            onWidthChanged:
-            {
-                console.log("TreeViewHeader \""+ styleData.value +"\" Resized : " + width)
-            }
+//            onPositionChanged: headerMoved(styleData.value, position)
+//            onWidthChanged: headerResized(styleData.value, width)
 
 
             LinearGradient

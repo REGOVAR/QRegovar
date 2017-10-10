@@ -78,7 +78,8 @@ Rectangle
         signal checked(string uid, bool isChecked)
         onChecked: console.log(uid, isChecked);
 
-
+        onHeaderMoved: root.model.saveHeaderPosition(header, newPosition)
+        onHeaderResized: root.model.saveHeaderWidth(header, newSize)
 
         // Default delegate for all column
         itemDelegate: Item
