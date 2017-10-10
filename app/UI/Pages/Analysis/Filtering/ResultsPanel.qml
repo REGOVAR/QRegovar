@@ -242,7 +242,7 @@ Rectangle
                         Repeater
                         {
 
-                            model: styleData.value.values
+                            model: resultsTree.mapToList(styleData.value)
 
 
 
@@ -251,8 +251,8 @@ Rectangle
                                 width: 12
                                 height: 12
                                 border.width: 1
-                                border.color: (modelData == "") ? "transparent" : Regovar.theme.primaryColor.back.dark
-                                color: (modelData == "") ? "transparent" : Regovar.theme.boxColor.back
+                                border.color: (model.value == "") ? "transparent" : Regovar.theme.primaryColor.back.dark
+                                color: (model.value == "") ? "transparent" : Regovar.theme.boxColor.back
 
 
 
@@ -261,21 +261,21 @@ Rectangle
                                     anchors.fill: parent
                                     anchors.margins: 1
                                     anchors.rightMargin: 6
-                                    color: (modelData == 1 || modelData == 3) ? Regovar.theme.primaryColor.back.dark : "transparent"
+                                    color: (model.value == 1 || model.value == 3) ? Regovar.theme.primaryColor.back.dark : "transparent"
                                 }
                                 Rectangle
                                 {
                                     anchors.fill: parent
                                     anchors.margins: 1
                                     anchors.leftMargin: 6
-                                    color: (modelData == 0) ? "transparent" : ((modelData == 3) ? Regovar.theme.primaryColor.back.light : Regovar.theme.primaryColor.back.dark)
+                                    color: (model.value == 0) ? "transparent" : ((model.value == 3) ? Regovar.theme.primaryColor.back.light : Regovar.theme.primaryColor.back.dark)
                                 }
                                 Text
                                 {
                                     text : "?"
                                     font.pixelSize: 10
                                     anchors.centerIn: parent
-                                    visible: modelData == ""
+                                    visible: model.value == ""
                                 }
                             }
                         }
@@ -302,14 +302,14 @@ Rectangle
                         Repeater
                         {
 
-                            model: styleData.value.values
+                            model: resultsTree.mapToList(styleData.value)
 
 
                             Text
                             {
                                 height: 12
                                 font.pixelSize: 12
-                                text: modelData
+                                text: model.value
                             }
                         }
                     }
@@ -351,6 +351,12 @@ Rectangle
             }
         }
 
+        Component
+        {
+            id: listModel
+            ListModel { }
+        }
+
 
         onModelChanged:
         {
@@ -364,6 +370,20 @@ Rectangle
 
         }
 
+        function mapToList(json)
+        {
+            var newModel = listModel.createObject(resultsTree);
+
+            var l = root.model.samples.length;
+            // /!\ It's important to respect the same order as in the root.model.samples list.
+            for (var idx=0; idx<l; idx++)
+            {
+                var sid = root.model.samples[idx].id;
+                newModel.append({ "id": sid, "value" : json[sid]});
+            }
+
+            return newModel;
+        }
 
         function openResultContextMenu(x, y)
         {
@@ -452,6 +472,11 @@ Rectangle
 
         function insertField(uid, position, forceRefresh)
         {
+            if (root.model == undefined || root.model == null)
+            {
+                return;
+            }
+
             console.log("trying to insert field : " + uid + " at " + position);
             var col;
             var info = root.model.getColumnInfo(uid);

@@ -193,7 +193,7 @@ private:
 
     // Methods
     void loadAnnotations();
-    void loadResults();
+    void initResults();
     void refreshDisplayedAnnotationColumns();
 
 

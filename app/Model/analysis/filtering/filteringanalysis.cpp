@@ -43,7 +43,6 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
         qDebug() << "Reference unknow !";
         return false;
     }
-    mResults->initAnalysisData(mId);
     mQuickFilters->init(ref->id(), mId);
 
     // Parse settings
@@ -181,7 +180,7 @@ void FilteringAnalysis::asynchLoadingCoordination(LoadingStatus oldSatus, Loadin
     }
     else if (newStatus == LoadingResults)
     {
-        loadResults();
+        initResults();
     }
     else
     {
@@ -315,8 +314,9 @@ QStringList FilteringAnalysis::selectedAnnotationsDB()
 }
 
 
-void FilteringAnalysis::loadResults()
+void FilteringAnalysis::initResults()
 {
+    mResults->initAnalysisData(mId);
     mResults->applyFilter(mAdvancedFilter->toJson());
     raiseNewInternalLoadingStatus(Ready);
     setIsLoading(false);

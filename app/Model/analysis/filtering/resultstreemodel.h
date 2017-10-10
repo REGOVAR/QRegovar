@@ -2,6 +2,7 @@
 #define RESULTSTREEMODEL_H
 
 #include "Model/treemodel.h"
+#include "Model/treeitem.h"
 #include "filteringanalysis.h"
 #include "annotation.h"
 
@@ -21,7 +22,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
     bool canFetchMore(const QModelIndex &parent) const override;
     void fetchMore(const QModelIndex& parent) override;
-//    bool hasChildren(const QModelIndex &parent) const Q_DECL_OVERRIDE;
+    bool hasChildren(const QModelIndex &parent) const override;
 
     // Getters
     inline bool isLoading() { return mIsLoading; }
@@ -43,11 +44,9 @@ public:
     Q_INVOKABLE void loadNext();
 
 
-    QVariant newResultsTreeViewItem(Annotation* annot, QString uid, const QJsonValue &value);
-    void setupModelData(QJsonArray data, TreeItem *parent);
-    void loadAnalysisData();
     void initAnalysisData(int analysisId);
-    bool fromJson(QJsonObject json, bool clearBefore=true);
+    void setupModelData(QJsonArray data, TreeItem *parent);
+    TreeItem* newResultsTreeViewItem(const QJsonObject& rowData);
 
 
 Q_SIGNALS:
@@ -62,6 +61,7 @@ private:
     int mTotal;
     int mLoaded;
     int mPagination;
+    QHash<int, QByteArray> mRoles;
 };
 
 #endif // RESULTSTREEMODEL_H

@@ -97,7 +97,9 @@ QModelIndex TreeModel::parent(const QModelIndex &index) const
         return QModelIndex();
 
     //return createIndex(parentItem->childNumber(), 0, parentItem);
-    return createIndex(parentItem->row(), 0, parentItem);
+    if (parentItem)
+        return createIndex(parentItem->row(), 0, parentItem);
+    return QModelIndex();
 }
 //---------------------------------------------------------------------------
 

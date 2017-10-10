@@ -20,13 +20,25 @@ ResultsTreeModel::ResultsTreeModel(FilteringAnalysis* parent) : TreeModel(parent
 
 void ResultsTreeModel::initAnalysisData(int analysisId)
 {
+    qDebug() << "Init results tree model of filtering analysis" << analysisId << ":";
     mAnalysisId = analysisId;
+    mRoles = roleNames();
+
+    // With QML TreeView, the rootItem must know all column's roles to allow correct display for
+    // other rows. So that's why we create columns for all existings roles.
+    QHash<int, QVariant> rootData;
+    foreach (int roleId, mRoles.keys())
+    {
+        rootData.insert(roleId, QString(mRoles[roleId]));
+    }
+    mRootItem = new TreeItem(rootData);
 
     beginResetModel();
     clear();
     setTotal(0);
     setLoaded(0);
     endResetModel();
+    setIsLoading(false);
 }
 
 
@@ -54,14 +66,14 @@ bool ResultsTreeModel::canFetchMore(const QModelIndex& parent) const
 {
     // Don't use fetch mechanism to populate treeview roots items
     // Lazy loading managed by ourself (see how loadNext() is called by QML)
-//    if (parent == QModelIndex())
-//        return false;
+    if (!parent.isValid() || parent == QModelIndex())
+        return false;
 
     // for other item, check if variant result pointed by the index have trx
-//    TreeItem* item = getItem(parent);
-//    return false; //item->virtualChildCount() > 0;
-
-    return (mLoaded < mTotal);
+    TreeItem* item = getItem(parent);
+    if (item)
+        return item->virtualChildCount() > 0;
+    return false;
 }
 
 
@@ -69,15 +81,46 @@ void ResultsTreeModel::fetchMore(const QModelIndex& parent)
 {
     // Don't use fetch mechanism to populate treeview roots items
     // Lazy loading managed by ourself (see how loadNext() is called by QML)
-//    if (parent == QModelIndex())
-//        return ;
+    if (parent == QModelIndex())
+        return;
 
 
-//    TreeItem* item = getItem(parent);
-//    QVariant itemId = item->data(Qt::UserRole + 1);
-    loadNext();
+    QJsonObject body;
+    body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
+
+    TreeItem* item = getItem(parent);
+    QString itemId = item->data(Qt::UserRole + 1).toString();
+    Request* request = Request::post(QString("/analysis/%1/filtering/%2").arg(mAnalysisId).arg(itemId), QJsonDocument(body).toJson());
+    connect(request, &Request::responseReceived, [this, request, parent, item](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            beginInsertRows(parent, 0, item->virtualChildCount()-1);
+
+            QJsonObject data = json["data"].toObject();
+            setLoaded(0);
+            setupModelData(data["results"].toArray(), item);
+            endInsertRows();
+            qDebug() << Q_FUNC_INFO << "Results TreeViewModel insert trx.";
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        setIsLoading(false);
+        request->deleteLater();
+    });
 }
 
+bool ResultsTreeModel::hasChildren(const QModelIndex &parent) const
+{
+    TreeItem* item = getItem(parent);
+    if(item)
+        return item->virtualChildCount() > 0;
+    return false;
+}
 
 //void ResultsTreeModel::fetchMore(const QModelIndex &parent)
 //{
@@ -134,29 +177,6 @@ void ResultsTreeModel::fetchMore(const QModelIndex& parent)
 
 
 
-bool ResultsTreeModel::fromJson(QJsonObject json, bool clearBefore)
-{
-    qDebug() << "Init results tree model of filtering analysis" << mAnalysisId << ":";
-
-    // With QML TreeView, the rootItem must know all column's roles to allow correct display for
-    // other rows. So that's why we create columns for all existings roles.
-    QHash<int, QVariant> rootData;
-    QHash<int, QByteArray> roles = roleNames();
-    foreach (int roleId, roles.keys())
-    {
-        rootData.insert(roleId, QString(roles[roleId]));
-    }
-    mRootItem = new TreeItem(rootData);
-
-
-    setIsLoading(true);
-
-
-    return true;
-}
-
-
-
 
 //! Reset the Treemodel with data for the current filter set in the FilteringAnalysis
 void ResultsTreeModel::applyFilter(QJsonArray filter)
@@ -181,35 +201,6 @@ void ResultsTreeModel::applyFilter(QJsonArray filter)
             setupModelData(data["results"].toArray(), mRootItem);
             endResetModel();
             qDebug() << Q_FUNC_INFO << "Results TreeViewModel reset." << mLoaded << "results loaded";
-//            if (mLoaded < mPagination)
-//            {
-//                setTotal(mLoaded);
-//                endResetModel();
-//            }
-//            else
-//            {
-//                // Get total number of result
-//                QJsonObject body;
-//                body.insert("filter", mFilteringAnalysis->advancedfilter()->toJson());
-//                body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
-
-//                Request* request = Request::post(QString("/analysis/%1/filtering/count").arg(mAnalysisId), QJsonDocument(body).toJson());
-//                connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
-//                {
-//                    if (success)
-//                    {
-//                        setTotal(json["data"].toInt());
-//                        qDebug() <<mTotal << "results total";
-//                    }
-//                    else
-//                    {
-//                        qDebug() << "fail to get total results";
-//                    }
-
-//                    endResetModel();
-//                    request->deleteLater();
-//                });
-//            }
         }
         else
         {
@@ -233,19 +224,19 @@ void ResultsTreeModel::reload()
 void ResultsTreeModel::loadNext()
 {
     // Find how many entries to load
-    int remainder = mTotal - mLoaded;
-    int itemsToFetch = qMin(mPagination, remainder);
+//    int remainder = mTotal - mLoaded;
+//    int itemsToFetch = qMin(mPagination, remainder);
 
-    // Notify view/model that we are loading new data
-    beginInsertRows(QModelIndex(), mLoaded, mLoaded+itemsToFetch-1);
-    setIsLoading(true);
+//    // Notify view/model that we are loading new data
+//    beginInsertRows(QModelIndex(), mLoaded, mLoaded+itemsToFetch-1);
+//    setIsLoading(true);
 
-    // Request the server to retrieve new entries
-    QJsonObject body;
-    body.insert("filter", mFilteringAnalysis->advancedfilter()->toJson());
-    body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
-    body.insert("limit", QJsonValue::fromVariant(QVariant(mPagination)));
-    body.insert("offset", QJsonValue::fromVariant(QVariant(mLoaded)));
+//    // Request the server to retrieve new entries
+//    QJsonObject body;
+//    body.insert("filter", mFilteringAnalysis->advancedfilter()->toJson());
+//    body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
+//    body.insert("limit", QJsonValue::fromVariant(QVariant(mPagination)));
+//    body.insert("offset", QJsonValue::fromVariant(QVariant(mLoaded)));
 
 //    Request* request = Request::post(QString("/analysis/%1/filtering").arg(mAnalysisId), QJsonDocument(body).toJson());
 //    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
@@ -279,64 +270,49 @@ void ResultsTreeModel::loadNext()
 
 
 //! Create treeview item with provided data, according to the type of the annotation
-QVariant ResultsTreeModel::newResultsTreeViewItem(Annotation* annot, QString uid, const QJsonValue &value)
+TreeItem* ResultsTreeModel::newResultsTreeViewItem(const QJsonObject& rowData)
 {
+    QString rowId = rowData["id"].toString();
+    QHash<int, QVariant> columnData;
+    int childCount = 0;
 
-    if (annot != nullptr && annot->type() == "sample_array")
+
+
+    // add columns info to the item
+    columnData.insert(mRoles.key("id"), QVariant(rowId));
+    foreach (QString fuid, mFilteringAnalysis->fields())
     {
-        QJsonObject meta = annot->meta();
-        ResultsTreeItem4SampleArray *t = new ResultsTreeItem4SampleArray(mFilteringAnalysis);
-        t->setUid(uid);
-        t->setType(meta["type"].toString());
-
-        QJsonObject data = value.toObject();
-
-
-
-        foreach (QString sampleId, data.keys())
+        if (fuid == "8e05e925d0ce1cb5ece5b0bcb97fa820")
         {
-            int a = sampleId.toInt();
-            QVariant b = data[sampleId].toVariant();
-            t->samplesValues()->insert(a, b);
+
         }
-        t->refreshDisplayedValues();
-        QVariant v;
-        v.setValue(t);
-        return v;
+        columnData.insert(mRoles.key(fuid.toUtf8()), rowData[fuid].toVariant());
+    }
+
+    ResultsTreeItem* result = new ResultsTreeItem(mFilteringAnalysis);
+    result->setUid(rowId);
+    result->setData(columnData);
+
+    if (rowId.contains("_"))
+    {
+        qDebug() << "TRX ROW DETECTED :" << rowId;
     }
     else
     {
-        ResultsTreeItem *t = new ResultsTreeItem(mFilteringAnalysis);
-        t->setValue(value.toVariant());
-        t->setUid(uid);
-        QVariant v;
-        v.setValue(t);
-        return v;
+        result->setVirtualChildCount(rowData["trx_count"].toInt());
     }
+
+    return result;
 }
 
 
 void ResultsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 {
-    QHash<int, QByteArray> roles = roleNames();
     int loaded = 0;
     foreach(const QJsonValue json, data)
     {
-        QJsonObject r = json.toObject();
-        QString id = r["id"].toString();
-        QHash<int, QVariant> columnData;
-
-        columnData.insert(roles.key("id"), QVariant(id));
-
-        foreach (QString uid, mFilteringAnalysis->fields())
-        {
-            Annotation* annot = mFilteringAnalysis->annotations()->getAnnotation(uid);
-            columnData.insert(roles.key(uid.toUtf8()), newResultsTreeViewItem(annot, id, r[uid]));
-        }
-        // qDebug() << "Load variant : " << id;
-
         // Create treeview item with column's data and parent item
-        TreeItem* item = new TreeItem(columnData, parent);
+        TreeItem* item = newResultsTreeViewItem(json.toObject());
         parent->appendChild(item);
         ++loaded;
     }
