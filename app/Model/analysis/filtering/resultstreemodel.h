@@ -47,7 +47,7 @@ public:
     void setupModelData(QJsonArray data, TreeItem *parent);
     void loadAnalysisData();
     void initAnalysisData(int analysisId);
-    bool fromJson(QJsonObject json);
+    bool fromJson(QJsonObject json, bool clearBefore=true);
 
 
 Q_SIGNALS:

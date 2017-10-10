@@ -90,7 +90,7 @@ Rectangle
                 verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.normal
                 elide: Text.ElideRight
-                text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
+                text: (styleData.value == undefined || styleData.value == null) ? "-"  : styleData.value
             }
         }
 
@@ -130,7 +130,7 @@ Rectangle
                         elide: Text.ElideRight
                         font.family: "monospace"
                         horizontalAlignment: Text.AlignRight
-                        text: styleData.value.value ? Regovar.formatBigNumber(styleData.value.value) : "-"
+                        text: styleData.value ? Regovar.formatBigNumber(styleData.value) : "-"
                     }
                 }
             }
@@ -160,7 +160,7 @@ Rectangle
                         selectByKeyboard: true
 
                         font.family: "monospace"
-                        text: styleData.value.value ? Regovar.formatSequence(styleData.value.value) : "-"
+                        text: styleData.value ? Regovar.formatSequence(styleData.value) : "-"
                     }
                 }
             }
@@ -187,8 +187,8 @@ Rectangle
 
                         font.family: Regovar.theme.icons.name
                         horizontalAlignment: Text.AlignHCenter
-                        text: (styleData.value.value) ? "n" : "h"
-                        color: (styleData.value.value) ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.lighter(Regovar.theme.frontColor.normal )
+                        text: (styleData.value) ? "n" : "h"
+                        color: (styleData.value) ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.lighter(Regovar.theme.frontColor.normal )
                     }
                 }
             }

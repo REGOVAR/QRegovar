@@ -317,41 +317,9 @@ QStringList FilteringAnalysis::selectedAnnotationsDB()
 
 void FilteringAnalysis::loadResults()
 {
-    QJsonObject body;
-    //QJsonDocument filter = QJsonDocument::fromJson(mAdvancedFilter.toJson());
-
-    body.insert("filter", mAdvancedFilter->toJson());
-    body.insert("fields", QJsonArray::fromStringList(mFields));
-
-    Request* req = Request::post(QString("/analysis/%1/filtering").arg(mId), QJsonDocument(body).toJson());
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            QJsonObject data = json["data"].toObject();
-
-            // OLIVIER !!! IN PROGRESS
-            // data["wt_total_variants"].toInt()
-            if (true) //mResults->loadResults(data))
-            {
-                raiseNewInternalLoadingStatus(Ready);
-                setIsLoading(false);
-            }
-            else
-            {
-                qDebug() << "Filtering analysis init : Failed to load result";
-                raiseNewInternalLoadingStatus(Error);
-            }
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-            raiseNewInternalLoadingStatus(Error);
-        }
-        req->deleteLater();
-    });
+    mResults->applyFilter(mAdvancedFilter->toJson());
+    raiseNewInternalLoadingStatus(Ready);
+    setIsLoading(false);
 }
 
 void FilteringAnalysis::raiseNewInternalLoadingStatus(LoadingStatus newStatus)

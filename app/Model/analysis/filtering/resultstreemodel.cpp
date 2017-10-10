@@ -134,7 +134,7 @@ void ResultsTreeModel::fetchMore(const QModelIndex& parent)
 
 
 
-bool ResultsTreeModel::fromJson(QJsonObject)
+bool ResultsTreeModel::fromJson(QJsonObject json, bool clearBefore)
 {
     qDebug() << "Init results tree model of filtering analysis" << mAnalysisId << ":";
 
@@ -147,6 +147,10 @@ bool ResultsTreeModel::fromJson(QJsonObject)
         rootData.insert(roleId, QString(roles[roleId]));
     }
     mRootItem = new TreeItem(rootData);
+
+
+    setIsLoading(true);
+
 
     return true;
 }
@@ -175,6 +179,7 @@ void ResultsTreeModel::applyFilter(QJsonArray filter)
             setLoaded(0);
             setTotal(data["wt_total_variants"].toInt()); // , data["wt_total_results"].toInt()
             setupModelData(data["results"].toArray(), mRootItem);
+            endResetModel();
             qDebug() << Q_FUNC_INFO << "Results TreeViewModel reset." << mLoaded << "results loaded";
 //            if (mLoaded < mPagination)
 //            {
@@ -321,7 +326,7 @@ void ResultsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
         QString id = r["id"].toString();
         QHash<int, QVariant> columnData;
 
-        columnData.insert(roles.key("id"), newResultsTreeViewItem(nullptr, id, QJsonValue(id)));
+        columnData.insert(roles.key("id"), QVariant(id));
 
         foreach (QString uid, mFilteringAnalysis->fields())
         {
