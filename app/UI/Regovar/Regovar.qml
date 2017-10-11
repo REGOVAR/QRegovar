@@ -30,14 +30,14 @@ QtObject
     property MenuModel menuModel: MenuModel
     {
         model:  [
-            { "icon": "a", "label": qsTr("Welcome"),      "page": "WelcomPage.qml", "sublevel": [], "subindex": -1},
-            { "icon": "z", "label": qsTr("Search"),       "page": "Browse/SearchPage.qml", "sublevel": [], "subindex": -1},
-            { "icon": "c", "label": qsTr("Projects"),      "page": "", "sublevel": [
-                { "icon": "c", "label": qsTr("Browser"),   "page": "Browse/ProjectsPage.qml", "sublevel": [], "subindex": -1, "projectId": -1}
+            { "icon": "a", "label": qsTr("Welcome"),     "page": "WelcomPage.qml", "sublevel": [], "subindex": -1},
+            { "icon": "z", "label": qsTr("Search"),      "page": "Browse/SearchPage.qml", "sublevel": [], "subindex": -1},
+            { "icon": "c", "label": qsTr("Projects"),    "page": "", "sublevel": [
+                { "icon": "c", "label": qsTr("Browser"), "page": "Browse/ProjectsPage.qml", "sublevel": [], "subindex": -1, "projectId": -1}
                 ], "subindex": 0},
             { "icon": "b", "label": qsTr("Subjects"),    "page": "", "sublevel": [
                 { "icon": "z", "label": qsTr("Browser"), "page": "Browse/SubjectsPage.qml", "sublevel": [], "subindex": -1, "subjectId": -1},
-                { "icon": "b", "label": "Michel Dupont","page": "", "sublevel": [
+                { "icon": "b", "label": "Michel Dupont", "page": "", "sublevel": [
                     { "label": qsTr("Summary"),    "page": "Subject/SummaryPage.qml", "sublevel": []},
                     { "label": qsTr("Phenotype"),  "page": "Subject/PhenotypesPage.qml", "sublevel": []},
                     { "label": qsTr("Samples"),    "page": "Subject/SamplesPage.qml", "sublevel": []},
@@ -45,15 +45,15 @@ QtObject
                     { "label": qsTr("Files"),      "page": "Subject/FilesPage.qml", "sublevel": []},
                 ], "subindex": 0},
             ], "subindex": 0},
-            { "icon": "d", "label": qsTr("Settings"),      "page": "",   "sublevel": [
-                { "icon": "b", "label": qsTr("My profile"),    "page": "Settings/ProfilePage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "I", "label": qsTr("Application"),   "page": "Settings/ApplicationPage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "q", "label": qsTr("Panels"),     "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
+            { "icon": "d", "label": qsTr("Settings"),        "page": "",   "sublevel": [
+                { "icon": "b", "label": qsTr("My profile"),  "page": "Settings/ProfilePage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "I", "label": qsTr("Application"), "page": "Settings/ApplicationPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "q", "label": qsTr("Panels"),      "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "d", "label": qsTr("Administration"), "page": "", "sublevel": [
-                    { "icon": "^", "label": qsTr("Statistics"), "page": "Settings/AdminStatisticsPage.qml", "sublevel": [], "subindex": -1},
-                    { "icon": "@", "label": qsTr("Users"),      "page": "Settings/AdminUsersPage.qml", "sublevel": [], "subindex": -1},
-                    { "icon": "L", "label": qsTr("Pipelines"),   "page": "Settings/AdminPipesPage.qml", "sublevel": [], "subindex": -1},
-                    { "icon": "B", "label": qsTr("Databases"),  "page": "Settings/AdminServerPage.qml", "sublevel": [], "subindex": -1},
+                    { "icon": "", "label": qsTr("Server"),    "page": "Settings/AdminServerPage.qml", "sublevel": [], "subindex": -1},
+                    { "icon": "", "label": qsTr("Users"),     "page": "Settings/AdminUsersPage.qml", "sublevel": [], "subindex": -1},
+                    { "icon": "", "label": qsTr("Pipelines"), "page": "Settings/AdminPipesPage.qml", "sublevel": [], "subindex": -1},
+                    { "icon": "", "label": qsTr("Databases"), "page": "Settings/AdminStatisticsPage.qml", "sublevel": [], "subindex": -1},
                     ], "subindex": 0},
                 ], "subindex": 0},
             { "icon": "e", "label": qsTr("Help"),           "page": "", "sublevel": [
@@ -89,10 +89,10 @@ QtObject
                 // Add project to the menu
                 currentopeningProject = regovar.projectsOpen[i];
                 menuModel.model[2]["sublevel"] = menuModel.model[2]["sublevel"].concat({ "icon": "6", "label": currentopeningProject.name, "projectId": currentopeningProject.id, "page": "", "sublevel": [
-                  { "label": qsTr("Summary"),       "page": "Project/SummaryPage.qml", "sublevel": []},
-                  { "label": qsTr("Analyses"),      "page": "Project/AnalysesPage.qml", "sublevel": []},
-                  { "label": qsTr("Subjects"),      "page": "Project/SubjectsPage.qml", "sublevel": []},
-                  { "label": qsTr("Files"),         "page": "Project/FilesPage.qml", "sublevel": []},
+                  { "label": qsTr("Summary"),  "page": "Project/SummaryPage.qml", "sublevel": []},
+                  { "label": qsTr("Analyses"), "page": "Project/AnalysesPage.qml", "sublevel": []},
+                  { "label": qsTr("Subjects"), "page": "Project/SubjectsPage.qml", "sublevel": []},
+                  { "label": qsTr("Files"),    "page": "Project/FilesPage.qml", "sublevel": []},
                    ], "subindex": 0});
             }
         }

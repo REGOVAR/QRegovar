@@ -12,21 +12,21 @@ void PositionQuickFilter::init(QString fuid)
     QStringList ops;
     ops << "=";
     // Exonic
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "coding_sequence_variant");
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "missense_variant", true);
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "stop_gained", true);
+    mFields << new QuickFilterField(fuid, "", ops, "==", "coding_sequence_variant");
+    mFields << new QuickFilterField(fuid, "", ops, "==", "missense_variant", true);
+    mFields << new QuickFilterField(fuid, "", ops, "==", "stop_gained", true);
 
     // Intronic
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "intron_variant");
+    mFields << new QuickFilterField(fuid, "", ops, "==", "intron_variant");
 
     // UTR
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "5_prime_UTR_variant");
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "3_prime_UTR_variant", true);
+    mFields << new QuickFilterField(fuid, "", ops, "==", "5_prime_UTR_variant");
+    mFields << new QuickFilterField(fuid, "", ops, "==", "3_prime_UTR_variant", true);
 
     // Intergenic
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "intergenic_variant");
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "upstream_gene_variant", true);
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "downstream_gene_variant", true);
+    mFields << new QuickFilterField(fuid, "", ops, "==", "intergenic_variant");
+    mFields << new QuickFilterField(fuid, "", ops, "==", "upstream_gene_variant", true);
+    mFields << new QuickFilterField(fuid, "", ops, "==", "downstream_gene_variant", true);
 
  // vep consequence not used : (check also with TypeQuickFilter)
     // transcript_ablation

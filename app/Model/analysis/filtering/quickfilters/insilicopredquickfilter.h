@@ -22,6 +22,7 @@ public:
     Q_INVOKABLE void clear();
     Q_INVOKABLE void checkAnnotationsDB(QList<QObject*> dbs);
     bool loadJson(QJsonArray filter);
+    void init(QString siftUid, QString polyUid, QString caddUid);
 
 
     inline QuickFilterField* sift() { return mFields[0]; }
@@ -31,7 +32,7 @@ public:
 
 private:
     QList<QuickFilterField*> mFields;
-    QString mFilter;
+    QStringList mOperators;
     bool mIsVisible;
 };
 

@@ -40,7 +40,6 @@ Rectangle
         }
     }
 
-
     Image
     {
         id: logo

@@ -116,5 +116,6 @@
         <file>Framework/AutoCompleteTextField.qml</file>
         <file>Framework/ButtonIcon.qml</file>
         <file>Framework/Slider.qml</file>
+        <file>Charts/CircularGauge.qml</file>
     </qresource>
 </RCC>

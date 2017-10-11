@@ -6,7 +6,7 @@ import "../Regovar"
 Text
 {
     id: control
-    font.pixelSize: Regovar.theme.font.size.small
+    font.pixelSize: Regovar.theme.font.size.normal
     font.family: Regovar.theme.font.familly
     color: enabled ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
 }

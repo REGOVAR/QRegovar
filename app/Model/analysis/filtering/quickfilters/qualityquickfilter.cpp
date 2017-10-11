@@ -49,6 +49,7 @@ void QualityQuickFilter::clear()
 
 void QualityQuickFilter::checkAnnotationsDB(QList<QObject*>)
 {
+    //  always available as usign only precomputed field DP
 }
 
 

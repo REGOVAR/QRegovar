@@ -12,22 +12,22 @@ void TypeQuickFilter::init(QString fuid)
     QStringList ops;
     ops << "=";
     // Missence
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "missense_variant");
+    mFields << new QuickFilterField(fuid, "", ops, "==", "missense_variant");
 
     // Nonsence
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "stop_gained");
+    mFields << new QuickFilterField(fuid, "", ops, "==", "stop_gained");
 
     // Splicing
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "splice_acceptor_variant");
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "splice_donor_variant", true);
+    mFields << new QuickFilterField(fuid, "", ops, "==", "splice_acceptor_variant");
+    mFields << new QuickFilterField(fuid, "", ops, "==", "splice_donor_variant", true);
 
     // Indel
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "frameshift_variant");
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "inframe_insertion", true);
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "inframe_deletion", true);
+    mFields << new QuickFilterField(fuid, "", ops, "==", "frameshift_variant");
+    mFields << new QuickFilterField(fuid, "", ops, "==", "inframe_insertion", true);
+    mFields << new QuickFilterField(fuid, "", ops, "==", "inframe_deletion", true);
 
     // Synonymous
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "synonymous_variant");
+    mFields << new QuickFilterField(fuid, "", ops, "==", "synonymous_variant");
 }
 
 

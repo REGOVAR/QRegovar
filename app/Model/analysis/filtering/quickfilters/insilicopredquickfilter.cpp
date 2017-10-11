@@ -5,9 +5,7 @@
 
 InSilicoPredQuickFilter::InSilicoPredQuickFilter(int) : QuickFilterBlockInterface()
 {
-
-    // TODO : Retrieve list of available annotations according to the analysisId
-    //      : And then retrieve via regexp fields_uid for dbnsfp
+    mIsVisible = false;
 
     // List of fields uid
 //    mFields = QList<QuickFilterField*>();
@@ -15,8 +13,35 @@ InSilicoPredQuickFilter::InSilicoPredQuickFilter(int) : QuickFilterBlockInterfac
 //    mFields << new QuickFilterField("150a41806541fd1c09be22cb1c92b03b", "==", "Benin");   // polyphen (VEP)
 //    mFields << new QuickFilterField("89b35362318e2992c3f05f0042889830", ">", 15);         // cadd (dbNSFP)
 
-    mFilter = "[\"%2\", [\"field\", \"%1\"], [\"value\", %3]]";
-    mIsVisible = false;
+}
+
+void InSilicoPredQuickFilter::init(QString siftUid, QString polyUid, QString caddUid)
+{
+    mOperators.clear();
+    mOperators.append("<");
+    mOperators.append("≤");
+    mOperators.append("=");
+    mOperators.append("≥");
+    mOperators.append(">");
+    mOperators.append("≠");
+
+    // Missence
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "missense_variant");
+
+    // Nonsence
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "stop_gained");
+
+    // Splicing
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "splice_acceptor_variant");
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "splice_donor_variant", true);
+
+    // Indel
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "frameshift_variant");
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "inframe_insertion", true);
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "inframe_deletion", true);
+
+    // Synonymous
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "synonymous_variant");
 }
 
 
@@ -51,6 +76,11 @@ void InSilicoPredQuickFilter::clear()
 
 void InSilicoPredQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 {
+    QString siftUid = "";
+    QString polyUid = "";
+    QString caddUid = "";
+
+
     mIsVisible = false;
     foreach (QObject* o, dbs)
     {
@@ -59,12 +89,25 @@ void InSilicoPredQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
         {
             if (db->name().toLower() == "vep")
             {
-                // TODO set mapping according to keys !
-                mIsVisible = true;
-                return;
+                foreach (Annotation* annot, db->fields())
+                {
+                    if (annot && annot->name().toLower() == "sift_pred")
+                    {
+                        siftUid = annot->uid();
+                        mIsVisible = true;
+                    }
+                    if (annot && annot->name().toLower() == "polyphen_pred")
+                    {
+                        polyUid = annot->uid();
+                        mIsVisible = true;
+                    }
+                    // TODO: retrieve CADD
+                }
             }
         }
     }
+
+    init(siftUid, polyUid, caddUid);
 }
 
 
