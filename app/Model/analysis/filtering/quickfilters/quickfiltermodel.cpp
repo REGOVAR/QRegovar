@@ -54,6 +54,14 @@ QJsonArray QuickFilterModel::toJson()
             }
         }
     }
+
+    if (filters.count() == 1 && filters[0].isArray())
+    {
+        QJsonArray oneFilter = filters[0].toArray();
+        if (oneFilter[0] == "AND" || oneFilter[0] == "OR")
+            return oneFilter;
+    }
+
     QJsonArray result;
     result.append("AND");
     result.append(filters);

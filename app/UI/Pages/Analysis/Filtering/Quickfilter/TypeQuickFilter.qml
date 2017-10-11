@@ -19,8 +19,15 @@ QuickFilterBox
     function checkFinal()
     {
         // Mode
-        typAll.checked = (!typMis.checked && !typStp.checked && !typSpl.checked);
-        // TODO : send final combination to the model to update the filter
+        typAll.checked = (!typMis.checked && !typStp.checked && !typSpl.checked && !typInd.checked && !typSyn.checked);
+
+        // send final combination to the model to update the filter
+        var tf = model.quickfilters.typeFilter;
+        tf.missense.isActive = typMis.checked;
+        tf.nonsense.isActive = typStp.checked;
+        tf.splicing.isActive = typSpl.checked;
+        tf.indel.isActive = typInd.checked;
+        tf.synonymous.isActive = typSyn.checked;
     }
 
     content: Column
@@ -86,7 +93,6 @@ QuickFilterBox
                         internalUiUpdate = false;
                     }
                 }
-
             }
         }
         RowLayout
@@ -113,7 +119,6 @@ QuickFilterBox
                         internalUiUpdate = false;
                     }
                 }
-
             }
         }
         RowLayout
@@ -140,7 +145,58 @@ QuickFilterBox
                         internalUiUpdate = false;
                     }
                 }
-
+            }
+        }
+        RowLayout
+        {
+            width: content.width
+            CheckBox
+            {
+                id: typInd
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("Indel")
+                checked: false
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            typAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
+            }
+        }
+        RowLayout
+        {
+            width: content.width
+            CheckBox
+            {
+                id: typSyn
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("Synonymous")
+                checked: false
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            typAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
             }
         }
     }

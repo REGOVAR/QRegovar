@@ -25,16 +25,15 @@ public:
     Q_INVOKABLE void clear();
     Q_INVOKABLE void checkAnnotationsDB(QList<QObject*> dbs);
     bool loadJson(QJsonArray filter);
+    void init(QString fuid);
 
     inline QuickFilterField* exonic() { return mFields[0]; }
     inline QuickFilterField* intronic() { return mFields[3]; }
     inline QuickFilterField* utr() { return mFields[4]; }
     inline QuickFilterField* intergenic() { return mFields[6]; }
-    void init(QString fuid);
 
 private:
     QList<QuickFilterField*> mFields;
-    QString mFilter;
     bool mIsVisible;
 };
 

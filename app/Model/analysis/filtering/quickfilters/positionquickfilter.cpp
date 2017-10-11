@@ -12,21 +12,21 @@ void PositionQuickFilter::init(QString fuid)
     QStringList ops;
     ops << "=";
     // Exonic
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", tr("CodingSeq"), ops, "==", "coding_sequence_variant");
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", tr("CodingSeq"), ops, "==", "missense_variant", true);
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", tr("CodingSeq"), ops, "==", "stop_gained", true);
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "coding_sequence_variant");
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "missense_variant", true);
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "stop_gained", true);
 
     // Intronic
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", tr("CodingSeq"), ops, "==", "intron_variant");
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "intron_variant");
 
     // UTR
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", tr("CodingSeq"), ops, "==", "5_prime_UTR_variant");
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", tr("CodingSeq"), ops, "==", "3_prime_UTR_variant", true);
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "5_prime_UTR_variant");
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "3_prime_UTR_variant", true);
 
     // Intergenic
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", tr("CodingSeq"), ops, "==", "intergenic_variant");
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", tr("CodingSeq"), ops, "==", "upstream_gene_variant", true);
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", tr("CodingSeq"), ops, "==", "downstream_gene_variant", true);
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "intergenic_variant");
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "upstream_gene_variant", true);
+    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", ops, "==", "downstream_gene_variant", true);
 
  // vep consequence not used : (check also with TypeQuickFilter)
     // transcript_ablation
@@ -53,58 +53,51 @@ void PositionQuickFilter::init(QString fuid)
 
 bool PositionQuickFilter::isVisible()
 {
-    // This filter is always availble in the UI
     return true;
 }
 
 
 QJsonArray PositionQuickFilter::toJson()
 {
-    QJsonArray result;
-
+    QJsonArray conditions;
     // Exonic
     if (mFields[0]->isActive())
     {
-        QJsonArray exonicConditions;
-        exonicConditions.append(mFields[0]->toJson());
-        exonicConditions.append(mFields[1]->toJson());
-        exonicConditions.append(mFields[2]->toJson());
-        QJsonArray exonicFilter;
-        exonicFilter.append("OR");
-        exonicFilter.append(exonicConditions);
-        result.append(exonicFilter);
+        conditions.append(mFields[0]->toJson());
+        conditions.append(mFields[1]->toJson());
+        conditions.append(mFields[2]->toJson());
     }
     // Intronic
     if (mFields[3]->isActive())
     {
-        result.append(mFields[3]->toJson());
+        conditions.append(mFields[3]->toJson());
     }
     // UTR
     if (mFields[4]->isActive())
     {
-        QJsonArray utrConditions;
-        utrConditions.append(mFields[4]->toJson());
-        utrConditions.append(mFields[5]->toJson());
-        QJsonArray utrFilter;
-        utrFilter.append("OR");
-        utrFilter.append(utrConditions);
-        result.append(utrFilter);
+        conditions.append(mFields[4]->toJson());
+        conditions.append(mFields[5]->toJson());
     }
     // Intergenic
     if (mFields[6]->isActive())
     {
-        QJsonArray interConditions;
-        interConditions.append(mFields[6]->toJson());
-        interConditions.append(mFields[7]->toJson());
-        interConditions.append(mFields[8]->toJson());
-        QJsonArray interFilter;
-        interFilter.append("OR");
-        interFilter.append(interConditions);
-        result.append(interFilter);
+        conditions.append(mFields[6]->toJson());
+        conditions.append(mFields[7]->toJson());
+        conditions.append(mFields[8]->toJson());
     }
 
-    if (result.count() == 1)
-        return result[0].toArray();
+    if (conditions.count() == 0)
+    {
+        return conditions;
+    }
+    if (conditions.count() == 1)
+    {
+        return conditions[0].toArray();
+    }
+
+    QJsonArray result;
+    result.append("OR");
+    result.append(conditions);
     return result;
 }
 

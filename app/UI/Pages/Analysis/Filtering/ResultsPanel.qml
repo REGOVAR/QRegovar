@@ -91,7 +91,7 @@ Rectangle
                 verticalAlignment: Text.AlignVCenter
                 font.pixelSize: Regovar.theme.font.size.normal
                 elide: Text.ElideRight
-                text: (styleData.value == undefined || styleData.value == null) ? "-"  : styleData.value
+                text: styleData.value ? styleData.value : "-"
             }
         }
 
@@ -132,6 +132,30 @@ Rectangle
                         font.family: "monospace"
                         horizontalAlignment: Text.AlignRight
                         text: styleData.value ? Regovar.formatBigNumber(styleData.value) : "-"
+                    }
+                }
+            }
+        }
+
+        // List formating
+        Component
+        {
+            id: columnComponent_list
+            TableViewColumn
+            {
+                width: 100
+                delegate: Item
+                {
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.rightMargin: 5
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        elide: Text.ElideRight
+                        horizontalAlignment: Text.AlignLeft
+                        text: styleData.value ? resultsTree.listToVal(styleData.value) : "-"
                     }
                 }
             }
@@ -386,6 +410,16 @@ Rectangle
             return newModel;
         }
 
+        function listToVal(json)
+        {
+            var result = "";
+            for (var idx=0; idx<json.length; idx++)
+            {
+                result += ", " + json[idx];
+            }
+            return result.substring(2, result.length);
+        }
+
         function openResultContextMenu(x, y)
         {
             // 0- retrieve row index
@@ -512,6 +546,8 @@ Rectangle
                         col = columnComponent_bool.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
                     else if (annot.type == "sequence")
                         col = columnComponent_sequence.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+                    else if (annot.type == "list")
+                        col = columnComponent_list.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
                     else
                         col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
                 }
