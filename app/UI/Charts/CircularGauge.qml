@@ -14,7 +14,7 @@ Rectangle
 
     property real danger: 90
     property alias value: gauge.value
-    property string valueLabel: gauge.value + "%"
+    property string valueLabel: Regovar.round(gauge.value, 1) + "%"
     property var needleColor: Regovar.theme.boxColor.border
 
     CircularGauge

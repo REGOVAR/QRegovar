@@ -50,7 +50,8 @@ HEADERS += \
     Model/project/projectstreemodel.h \
     Model/sample/sample.h \
     Model/regovar.h \
-    Model/user.h
+    Model/user.h \
+    Model/admin.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -88,7 +89,8 @@ SOURCES += main.cpp \
     Model/project/projectstreemodel.cpp \
     Model/sample/sample.cpp \
     Model/regovar.cpp \
-    Model/user.cpp
+    Model/user.cpp \
+    Model/admin.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

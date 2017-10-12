@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<AdvancedFilterModel>("org.regovar", 1, 0, "AdvancedFilterModel");
     qmlRegisterType<User>("org.regovar", 1, 0, "User");
     qmlRegisterType<Project>("org.regovar", 1, 0, "Project");
+    qmlRegisterType<AdminTableInfo>("org.regovar", 1, 0, "AdminTableInfo");
 
 
 

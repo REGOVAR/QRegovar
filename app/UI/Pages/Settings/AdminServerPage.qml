@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import QtQml 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import "../../Regovar"
@@ -12,6 +13,32 @@ Rectangle
 
 
     property QtObject model
+
+    property var serverData: regovar.admin.serverStatus
+    onServerDataChanged: updateStatus();
+
+    onVisibleChanged:
+    {
+        if (visible)
+        {
+            regovar.admin.getServerStatus();
+        }
+        else
+        {
+            autoRefreshCheckbox.checked = false;
+        }
+    }
+
+    Timer
+    {
+        id: autoRefreshTimer
+        interval: 1000 // 1s
+        repeat: true
+        running: false
+
+        onTriggered: regovar.admin.getServerStatus(); // TODO replace by regovar.admin.refreshServerStatus();
+    }
+
 
     Rectangle
     {
@@ -69,18 +96,23 @@ Rectangle
         anchors.margins: 10
         anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
 
-        spacing: 20
+        spacing: 5
 
 
         // ===== Monitoring Section =====
-        Row
+
+        Rectangle
         {
-            height: Regovar.theme.font.boxSize.header
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.title
+            color: "transparent"
 
             Text
             {
                 width: Regovar.theme.font.boxSize.header
                 height: Regovar.theme.font.boxSize.header
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
                 text: ":"
 
                 font.family: Regovar.theme.icons.name
@@ -91,6 +123,9 @@ Rectangle
             }
             Text
             {
+                anchors.left: parent.left
+                anchors.leftMargin: Regovar.theme.font.boxSize.header
+                anchors.verticalCenter: parent.verticalCenter
                 height: Regovar.theme.font.boxSize.header
 
                 elide: Text.ElideRight
@@ -100,6 +135,26 @@ Rectangle
                 verticalAlignment: Text.AlignVCenter
                 color: Regovar.theme.primaryColor.back.normal
             }
+
+
+            CheckBox
+            {
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+
+                id: autoRefreshCheckbox
+                checked: autoRefreshTimer.running
+                onCheckedChanged: autoRefreshTimer.running = checked
+                text: ""
+            }
+            Text
+            {
+                anchors.right: autoRefreshCheckbox.left
+                anchors.verticalCenter: parent.verticalCenter
+
+                text: qsTr("Auto refresh status")
+            }
+
         }
 
         Row
@@ -129,12 +184,19 @@ Rectangle
 
                 CircularGauge
                 {
+                    id: cpuGauge
                     x: 10
                     y: 30
                     width: 180
                     height: 180
 
-                    value: 42.5
+                    Behavior on value
+                    {
+                        NumberAnimation
+                        {
+                            duration : 100
+                        }
+                    }
                 }
 
                 GridLayout
@@ -167,8 +229,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: cpuCore
                         Layout.alignment: Qt.AlignRight
-                        text: "8"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -184,8 +247,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: cpuVirtual
                         Layout.alignment: Qt.AlignRight
-                        text: "8"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -201,8 +265,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: cpuFreq
                         Layout.alignment: Qt.AlignRight
-                        text: "8"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -223,17 +288,20 @@ Rectangle
 
                 CircularGauge
                 {
+                    id: ramGauge
                     x: 10
                     y: 30
                     width: 180
                     height: 180
 
-                    value: 100
-
-                   // needleColor: Regovar.theme.primaryColor.back.normal
+                    Behavior on value
+                    {
+                        NumberAnimation
+                        {
+                            duration : 500
+                        }
+                    }
                 }
-
-
 
                 GridLayout
                 {
@@ -265,8 +333,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: ramTotal
                         Layout.alignment: Qt.AlignRight
-                        text: "32 Go"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -282,8 +351,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: ramUsed
                         Layout.alignment: Qt.AlignRight
-                        text: "(62%) 28.5 Go"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -299,8 +369,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: ramBuffer
                         Layout.alignment: Qt.AlignRight
-                        text: "(12%) 7.8 Go"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -316,13 +387,23 @@ Rectangle
                     }
                     Text
                     {
+                        id: ramCached
                         Layout.alignment: Qt.AlignRight
-                        text: "(5.5%) 5.1 Go"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
                         verticalAlignment: Text.AlignVCenter
                     }
+
+                    Rectangle
+                    {
+                        Layout.columnSpan: 2
+                        height: 1
+                        width: parent.width
+                        color: Regovar.theme.primaryColor.back.normal
+                    }
+
                     Text
                     {
                         Layout.columnSpan: 2
@@ -342,8 +423,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: swpTotal
                         Layout.alignment: Qt.AlignRight
-                        text: "32 Go"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -359,8 +441,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: swpUsed
                         Layout.alignment: Qt.AlignRight
-                        text: "(62%) 28.5 Go"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -381,13 +464,20 @@ Rectangle
 
                 CircularGauge
                 {
+                    id: dskGauge
                     x: 10
                     y: 30
                     width: 180
                     height: 180
-
                     danger: 85
-                    value: 89.4
+
+                    Behavior on value
+                    {
+                        NumberAnimation
+                        {
+                            duration : 500
+                        }
+                    }
                 }
 
                 GridLayout
@@ -420,8 +510,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: dskTotal
                         Layout.alignment: Qt.AlignRight
-                        text: "8 To"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -437,8 +528,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: dskUsed
                         Layout.alignment: Qt.AlignRight
-                        text: "(55%) 4.2 To"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -463,8 +555,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: dskFile
                         Layout.alignment: Qt.AlignRight
-                        text: "46 Go"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -481,8 +574,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: dskTmp
                         Layout.alignment: Qt.AlignRight
-                        text: "46 Go"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -499,8 +593,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: dskCache
                         Layout.alignment: Qt.AlignRight
-                        text: "46 Go"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -517,8 +612,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: dskDB
                         Layout.alignment: Qt.AlignRight
-                        text: "46 Go"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -535,8 +631,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: dskPipe
                         Layout.alignment: Qt.AlignRight
-                        text: "46 Go"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -553,8 +650,9 @@ Rectangle
                     }
                     Text
                     {
+                        id: dskJobs
                         Layout.alignment: Qt.AlignRight
-                        text: "46 Go"
+                        text: "-"
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -568,7 +666,7 @@ Rectangle
         // ===== Database Section =====
         Row
         {
-            height: Regovar.theme.font.boxSize.header
+            height: Regovar.theme.font.boxSize.Title
 
             Text
             {
@@ -727,35 +825,91 @@ Rectangle
                 }
             }
 
-            TreeView
+            TableView
             {
+                id: tablesTableView
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                sortIndicatorVisible: true
 
                 TableViewColumn
                 {
                     role: "section"
-                    title: "Section"
+                    title: qsTr("Section")
+                    width: 100
                 }
                 TableViewColumn
                 {
-                    role: "name"
-                    title: "Table"
+                    role: "table"
+                    title: qsTr("Table")
                 }
                 TableViewColumn
                 {
-                    role: "rowscount"
-                    title: "Rows estimation"
+                    role: "count"
+                    title: qsTr("Rows estimation")
+                    width: 150
+                    delegate: Item
+                    {
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.rightMargin: 5
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            elide: Text.ElideRight
+                            font.family: "monospace"
+                            horizontalAlignment: Text.AlignRight
+                            text: styleData.value ? Regovar.formatBigNumber(styleData.value) : "-"
+                        }
+                    }
                 }
                 TableViewColumn
                 {
                     role: "size"
-                    title: "Data Size"
+                    title: qsTr("Data Size")
+                    width: 100
+                    delegate: Item
+                    {
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.rightMargin: 5
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            elide: Text.ElideRight
+                            font.family: "monospace"
+                            horizontalAlignment: Text.AlignRight
+                            text: styleData.value ? regovar.sizeToHumanReadable(styleData.value) : "-"
+                        }
+                    }
                 }
                 TableViewColumn
                 {
-                    role: "ext_size"
-                    title: "Real Size"
+                    role: "realSize"
+                    title: qsTr("Real Size")
+                    width: 100
+                    delegate: Item
+                    {
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.rightMargin: 5
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            elide: Text.ElideRight
+                            font.family: "monospace"
+                            horizontalAlignment: Text.AlignRight
+                            text: styleData.value ? regovar.sizeToHumanReadable(styleData.value) : "-"
+                        }
+                    }
+                }
+                TableViewColumn
+                {
+                    role: "description"
+                    title: qsTr("Description")
                 }
             }
         }
@@ -766,7 +920,7 @@ Rectangle
         // ===== Process Section =====
         Row
         {
-            height: Regovar.theme.font.boxSize.header
+            height: Regovar.theme.font.boxSize.Title
 
             Text
             {
@@ -792,5 +946,34 @@ Rectangle
                 color: Regovar.theme.primaryColor.back.normal
             }
         }
+    }
+
+
+    function updateStatus()
+    {
+        cpuGauge.value = serverData["cpu"]["usage"];
+        cpuCore.text = serverData["cpu"]["count"];
+        cpuVirtual.text = serverData["cpu"]["virtual"];
+        cpuFreq.text = Regovar.round(serverData["cpu"]["freq"]/1000,1) + " GHz";
+
+        ramGauge.value = serverData["ram"]["percent"];
+        ramTotal.text  = regovar.sizeToHumanReadable(serverData["ram"]["total"]);
+        ramBuffer.text = regovar.sizeToHumanReadable(serverData["ram"]["buffers"]);
+        ramCached.text = regovar.sizeToHumanReadable(serverData["ram"]["cached"]);
+        ramUsed.text   = regovar.sizeToHumanReadable(serverData["ram"]["used"]);
+        swpTotal.text  = regovar.sizeToHumanReadable(serverData["swap"]["total"]);
+        swpUsed.text   = regovar.sizeToHumanReadable(serverData["swap"]["used"]);
+
+        dskGauge.value = serverData["disk"]["overall"]["percent"];
+        dskTotal.text  = regovar.sizeToHumanReadable(serverData["disk"]["overall"]["total"]);
+        dskUsed.text   = regovar.sizeToHumanReadable(serverData["disk"]["overall"]["used"]);
+        dskFile.text   = regovar.sizeToHumanReadable(serverData["disk"]["files"]);
+        dskTmp.text    = regovar.sizeToHumanReadable(serverData["disk"]["temp"]);
+        dskCache.text  = regovar.sizeToHumanReadable(serverData["disk"]["cache"]);
+        dskDB.text     = regovar.sizeToHumanReadable(serverData["disk"]["ext_db"]);
+        dskPipe.text   = regovar.sizeToHumanReadable(serverData["disk"]["pipelines"]);
+        dskJobs.text   = regovar.sizeToHumanReadable(serverData["disk"]["jobs"]);
+
+        tablesTableView.model = regovar.admin.tables;
     }
 }

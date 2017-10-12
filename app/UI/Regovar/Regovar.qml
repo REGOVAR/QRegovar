@@ -126,4 +126,26 @@ QtObject
         }
         return html;
     }
+
+    function round(number, length)
+    {
+        if (number)
+        {
+            var coeff = Math.pow(10,length);
+            var rounded = Math.round(number * coeff) / coeff;
+            rounded = rounded.toString()
+            while (rounded.endsWith("0"))
+            {
+                rounded = rounded.substr(0,rounded.length-1);
+            }
+            if (rounded.endsWith("."))
+            {
+                rounded = rounded.substr(0,rounded.length-1);
+            }
+            return rounded;
+        }
+        return 0;
+    }
+
+
 } 

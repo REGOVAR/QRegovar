@@ -92,6 +92,7 @@ void Regovar::init()
     // Init models
     mUser = new User(1, "Olivier", "Gueudelot");
     mConfig = new RegovarInfo();
+    mAdmin = new Admin();
     mProjectsTreeView = new ProjectsTreeModel();
     mUploader = new TusUploader();
     mNewPipelineAnalysis = new PipelineAnalysis();
@@ -882,3 +883,40 @@ void Regovar::onAuthenticationRequired(QNetworkReply* request, QAuthenticator* a
     }
 }
 
+
+
+QString Regovar::sizeToHumanReadable(qint64 size, qint64 uploadOffset)
+{
+    QStringList suffixes = {"o", "Ko", "Mo", "Go", "To", "Po"};
+    QString uploadString = "";
+
+    if (size == 0) return "0 o";
+    if (uploadOffset >=0)
+    {
+        if (uploadOffset < size)
+        {
+            float i = 0;
+            double s = uploadOffset;
+            while (s >= 1024 && i < suffixes.count()-1)
+            {
+                s /= 1024.;
+                i += 1;
+            }
+            uploadString = QString::number( s, 'f', 2 ) + " / ";
+        }
+    }
+
+
+    float i = 0;
+    double s = size;
+    while (s >= 1024 && i < suffixes.count()-1)
+    {
+        s /= 1024.;
+        i += 1;
+    }
+    QString sizeString = QString::number( s, 'f', 2 );
+
+
+
+    return QString("%1%2 %3").arg(uploadString, sizeString, suffixes[i]);
+}

@@ -13,6 +13,7 @@
 #include "analysis/filtering/filteringanalysis.h"
 #include "Model/analysis/pipeline/pipelineanalysis.h"
 #include "user.h"
+#include "admin.h"
 
 #ifndef regovar
 #define regovar (Regovar::i())
@@ -40,6 +41,7 @@ public:
     inline void setRelease(QJsonObject release) { mRelease = release; emit configChanged(); }
     // Methods
     void fromJson(QJsonObject json);
+
 Q_SIGNALS:
     void configChanged();
 
@@ -65,6 +67,7 @@ class Regovar : public QObject
     Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlChanged)
     Q_PROPERTY(ServerStatus connectionStatus READ connectionStatus WRITE setConnectionStatus NOTIFY connectionStatusChanged)
     Q_PROPERTY(RegovarInfo* config READ config NOTIFY configChanged)
+    Q_PROPERTY(Admin* admin READ admin NOTIFY adminChanged)
     // Welcom
     Q_PROPERTY(User* user READ user NOTIFY userChanged)
     Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
@@ -111,10 +114,11 @@ public:
     void readSettings();
     void writeSettings();
 
-    // Accessors
+    // Getters
     inline ServerStatus connectionStatus() { return mConnectionStatus; }
     inline QUrl& serverUrl() { return mApiRootUrl; }
     inline RegovarInfo* config() const { return mConfig; }
+    inline Admin* admin() { return mAdmin; }
     //--
     inline User* user() const { return mUser; }
     inline QString searchRequest() { return mSearchRequest; }
@@ -170,6 +174,7 @@ public:
     Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void loadSampleBrowser(int refId);
     Q_INVOKABLE inline QUuid generateUuid() { return QUuid::createUuid(); }
+    Q_INVOKABLE QString sizeToHumanReadable(qint64 size, qint64 uploadOffset=-1);
     void initFlatProjectList();
     void initFlatProjectListRecursive(QJsonArray data, QString prefix);
 
@@ -226,6 +231,7 @@ Q_SIGNALS:
     void selectedProjectChanged();
     void connectionStatusChanged();
     void configChanged();
+    void adminChanged();
 
 private:
     Regovar();
@@ -241,6 +247,8 @@ private:
     RegovarInfo* mConfig;
     //! The current user of the application
     User* mUser;
+    //! Admin operation wrapper
+    Admin* mAdmin;
     //! Search request and results
     QString mSearchRequest;
     QJsonObject mSearchResult;

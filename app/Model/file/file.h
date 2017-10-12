@@ -79,7 +79,6 @@ public:
     // Methods
     QString extensionToIco(QString ext);
     QString statusToLabel(FileStatus status, qint64 size, qint64 uploadOffset);
-    QString sizeToHumanReadable(qint64 size, qint64 uploadOffset);
 
 
 //public Q_SLOTS:
