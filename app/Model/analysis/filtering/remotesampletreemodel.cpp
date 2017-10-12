@@ -2,7 +2,7 @@
 #include <QtNetwork>
 #include "remotesampletreemodel.h"
 #include "remotesampletreeitem.h"
-#include "Model/request.h"
+#include "Model/framework/request.h"
 #include "Model/regovar.h"
 
 

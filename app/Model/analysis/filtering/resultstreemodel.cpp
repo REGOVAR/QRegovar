@@ -2,7 +2,7 @@
 #include <QtNetwork>
 #include "resultstreemodel.h"
 #include "resultstreeitem.h"
-#include "Model/request.h"
+#include "Model/framework/request.h"
 #include "Model/regovar.h"
 
 

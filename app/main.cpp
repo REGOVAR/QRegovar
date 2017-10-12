@@ -4,8 +4,8 @@
 #include <QtQml>
 
 #include "Model/regovar.h" // include regovar singleton which wrap all models and is the interface with the server
-#include "Model/treemodel.h"
-#include "Model/treeitem.h"
+#include "Model/framework/treemodel.h"
+#include "Model/framework/treeitem.h"
 #include "Model/project/project.h"
 #include "Model/file/filesystemmodel.cpp"
 #include "Model/analysis/filtering/filteringanalysis.h"

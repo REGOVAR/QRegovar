@@ -1,7 +1,7 @@
 #ifndef RESULTSTREEITEM_H
 #define RESULTSTREEITEM_H
 
-#include "Model/treeitem.h"
+#include "Model/framework/treeitem.h"
 #include "Model/analysis/filtering/filteringanalysis.h"
 
 //! Generic TreeItem

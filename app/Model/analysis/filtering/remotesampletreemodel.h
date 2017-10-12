@@ -1,7 +1,7 @@
 #ifndef REMOTESAMPLETREEMODEL_H
 #define REMOTESAMPLETREEMODEL_H
 
-#include "Model/treemodel.h"
+#include "Model/framework/treemodel.h"
 #include "filteringanalysis.h"
 
 class FilteringAnalysis;

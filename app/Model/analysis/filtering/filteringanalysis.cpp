@@ -1,6 +1,6 @@
 #include "filteringanalysis.h"
 
-#include "Model/request.h"
+#include "Model/framework/request.h"
 #include "Model/regovar.h"
 #include "annotation.h"
 
@@ -484,6 +484,12 @@ void FilteringAnalysis::addSamplesFromFile(int fileId)
 int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
 {
     Annotation* annot = mAnnotationsTreeModel->getAnnotation(uid);
+
+    if (annot == nullptr)
+    {
+        qDebug() << "TODO : on check db : need to check/uncheck all fields";
+        return -1;
+    }
 
     if (isDisplayed)
     {

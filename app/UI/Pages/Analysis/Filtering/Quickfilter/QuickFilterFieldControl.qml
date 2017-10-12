@@ -49,7 +49,7 @@ RowLayout
         id: fieldOperator
         onCurrentTextChanged:
         {
-            if (root.model != null)
+            if (root.model)
             {
                 root.model.op = currentText;
                 if (!initializing) fieldCheck.checked = true;

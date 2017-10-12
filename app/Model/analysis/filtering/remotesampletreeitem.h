@@ -1,7 +1,7 @@
 #ifndef REMOTESAMPLETREEITEM_H
 #define REMOTESAMPLETREEITEM_H
 
-#include "Model/treeitem.h"
+#include "Model/framework/treeitem.h"
 #include "Model/analysis/filtering/filteringanalysis.h"
 
 

@@ -1,8 +1,8 @@
 #ifndef RESULTSTREEMODEL_H
 #define RESULTSTREEMODEL_H
 
-#include "Model/treemodel.h"
-#include "Model/treeitem.h"
+#include "Model/framework/treemodel.h"
+#include "Model/framework/treeitem.h"
 #include "filteringanalysis.h"
 #include "annotation.h"
 

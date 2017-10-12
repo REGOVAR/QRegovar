@@ -1,7 +1,7 @@
 #include <QDebug>
 #include "projectstreemodel.h"
 #include "projectstreeitem.h"
-#include "Model/request.h"
+#include "Model/framework/request.h"
 
 
 

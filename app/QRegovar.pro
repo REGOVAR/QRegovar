@@ -15,11 +15,13 @@ DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR"\
 
 
 HEADERS += \
-    Model/treeitem.h \
-    Model/treemodel.h \
-    Model/request.h \
-    Model/file/filesystemmodel.h \
-    Model/file/tusuploader.h \
+    Model/framework/treeitem.h \
+    Model/framework/treemodel.h \
+    Model/framework/request.h \
+    Model/framework/requestext.h \
+    Model/analysis/analysis.h \
+    Model/analysis/pipeline/pipelineanalysis.h \
+    Model/analysis/filtering/filteringanalysis.h \
     Model/analysis/filtering/quickfilters/quickfiltermodel.h \
     Model/analysis/filtering/quickfilters/transmissionquickfilter.h \
     Model/analysis/filtering/quickfilters/quickfilterblockinterface.h \
@@ -28,16 +30,6 @@ HEADERS += \
     Model/analysis/filtering/annotationstreemodel.h \
     Model/analysis/filtering/resultstreeitem.h \
     Model/analysis/filtering/resultstreemodel.h \
-    Model/file/file.h \
-    Model/file/filestreeitem.h \
-    Model/file/filestreemodel.h \
-    Model/project/project.h \
-    Model/project/projectstreeitem.h \
-    Model/project/projectstreemodel.h \
-    Model/regovar.h \
-    Model/analysis/analysis.h \
-    Model/analysis/filtering/filteringanalysis.h \
-    Model/sample/sample.h \
     Model/analysis/filtering/quickfilters/qualityquickfilter.h \
     Model/analysis/filtering/quickfilters/positionquickfilter.h \
     Model/analysis/filtering/quickfilters/typequickfilter.h \
@@ -46,18 +38,28 @@ HEADERS += \
     Model/analysis/filtering/fieldcolumninfos.h \
     Model/analysis/filtering/remotesampletreeitem.h \
     Model/analysis/filtering/remotesampletreemodel.h \
-    Model/analysis/pipeline/pipelineanalysis.h \
     Model/analysis/filtering/reference.h \
     Model/analysis/filtering/advancedfilters/advancedfiltermodel.h \
-    Model/requestext.h \
+    Model/file/file.h \
+    Model/file/filestreeitem.h \
+    Model/file/filestreemodel.h \
+    Model/file/filesystemmodel.h \
+    Model/file/tusuploader.h \
+    Model/project/project.h \
+    Model/project/projectstreeitem.h \
+    Model/project/projectstreemodel.h \
+    Model/sample/sample.h \
+    Model/regovar.h \
     Model/user.h
 
 SOURCES += main.cpp \
-    Model/treeitem.cpp \
-    Model/treemodel.cpp \
-    Model/request.cpp \
-    Model/file/filesystemmodel.cpp \
-    Model/file/tusuploader.cpp \
+    Model/framework/treeitem.cpp \
+    Model/framework/treemodel.cpp \
+    Model/framework/request.cpp \
+    Model/framework/requestext.cpp \
+    Model/analysis/analysis.cpp \
+    Model/analysis/pipeline/pipelineanalysis.cpp \
+    Model/analysis/filtering/filteringanalysis.cpp \
     Model/analysis/filtering/quickfilters/quickfiltermodel.cpp \
     Model/analysis/filtering/quickfilters/transmissionquickfilter.cpp \
     Model/analysis/filtering/quickfilters/quickfilterblockinterface.cpp \
@@ -66,16 +68,6 @@ SOURCES += main.cpp \
     Model/analysis/filtering/annotationstreemodel.cpp \
     Model/analysis/filtering/resultstreeitem.cpp \
     Model/analysis/filtering/resultstreemodel.cpp \
-    Model/file/file.cpp \
-    Model/file/filestreeitem.cpp \
-    Model/file/filestreemodel.cpp \
-    Model/project/project.cpp \
-    Model/project/projectstreeitem.cpp \
-    Model/project/projectstreemodel.cpp \
-    Model/regovar.cpp \
-    Model/analysis/analysis.cpp \
-    Model/analysis/filtering/filteringanalysis.cpp \
-    Model/sample/sample.cpp \
     Model/analysis/filtering/quickfilters/qualityquickfilter.cpp \
     Model/analysis/filtering/quickfilters/positionquickfilter.cpp \
     Model/analysis/filtering/quickfilters/typequickfilter.cpp \
@@ -84,10 +76,18 @@ SOURCES += main.cpp \
     Model/analysis/filtering/fieldcolumninfos.cpp \
     Model/analysis/filtering/remotesampletreeitem.cpp \
     Model/analysis/filtering/remotesampletreemodel.cpp \
-    Model/analysis/pipeline/pipelineanalysis.cpp \
     Model/analysis/filtering/reference.cpp \
     Model/analysis/filtering/advancedfilters/advancedfiltermodel.cpp \
-    Model/requestext.cpp \
+    Model/file/file.cpp \
+    Model/file/filestreeitem.cpp \
+    Model/file/filestreemodel.cpp \
+    Model/file/filesystemmodel.cpp \
+    Model/file/tusuploader.cpp \
+    Model/project/project.cpp \
+    Model/project/projectstreeitem.cpp \
+    Model/project/projectstreemodel.cpp \
+    Model/sample/sample.cpp \
+    Model/regovar.cpp \
     Model/user.cpp
 
 

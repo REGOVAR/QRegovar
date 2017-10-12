@@ -334,7 +334,7 @@ Rectangle
                             {
                                 height: 12
                                 font.pixelSize: 12
-                                text: model.value
+                                text: (model) ? model.value : "-"
                             }
                         }
                     }
@@ -368,7 +368,7 @@ Rectangle
                                 verticalAlignment: Text.AlignVCenter
                                 text : modelData.name
                                 font.pixelSize: 10
-                                color: "grey"
+                                color: Regovar.theme.frontColor.disable
                             }
                         }
                     }

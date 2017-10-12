@@ -13,194 +13,159 @@ QuickFilterBox
 {
     title : qsTr("In silico prediction")
     isExpanded: false
-
     property bool internalUiUpdate: false
 
 
     function checkFinal()
     {
-//        // Mode
-//        predAll.checked = (!predSift.checked && !predPoly.checked && !predCadd.checked);
-//        // TODO : send final combination to the model to update the filter
+        // Mode
+        predAll.checked = (!predSift.checked && !predPoly.checked && !predCadd.checked);
+        // send final combination to the model to update the filter
+        var pf = model.quickfilters.inSilicoPredFilter;
+        pf.sift.isActive = predSift.checked;
+        pf.polyphen.isActive = predPoly.checked;
+        pf.cadd.isActive = predCadd.checked;
     }
 
-    content: Column
+    content: Row
     {
-        id: content
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
 
+        // FIXME : Qt BUG, margin value not take in account when panel resized by the Splitter
+        Rectangle { width:30; height: 10; color: "transparent"; }
 
-
-
-        RowLayout
+        GridLayout
         {
-            width: content.width
+            id: content
+            width: parent.width-60
+            rows: 4
+            columns: 3
+            columnSpacing: 10
+
+
+
             CheckBox
             {
-                id: modeAll
-                anchors.left: parent.left
-                anchors.leftMargin: 25
+                Layout.columnSpan: 3
+                id: predAll
                 text: qsTr("All")
                 checked: true
                 onCheckedChanged:
                 {
-//                    if (!internalUiUpdate)
-//                    {
-//                        // Update other checkboxes
-//                        internalUiUpdate = true;
-//                        if (checked)
-//                        {
-//                            modeDom.checked = false;
-//                            modeRec.checked = false;
-//                            modeHtz.checked = false;
-//                            modeHtzComp.checked = false;
-//                        }
-
-//                        checkFinal();
-//                        internalUiUpdate = false;
-//                    }
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            predSift.checked = false;
+                            predPoly.checked = false;
+                            predCadd.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
                 }
             }
-        }
 
-        RowLayout
-        {
-            width: content.width
-            spacing: 10
 
             CheckBox
             {
                 id: predSift
-                anchors.left: parent.left
-                anchors.leftMargin: 25
                 text: qsTr("SIFT")
+                checked: false
                 onCheckedChanged:
                 {
-//                    if (!internalUiUpdate)
-//                    {
-//                        // Update other checkboxes
-//                        internalUiUpdate = true;
-//                        if (checked)
-//                        {
-//                            predAll.checked = false;
-//                        }
-//                        checkFinal();
-//                        internalUiUpdate = false;
-//                    }
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            predAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
                 }
             }
-
-            // FIXME : Weird bug, need to add free space otherwise ComboBox is hover the CheckBox
-            Rectangle{ height: root.height; width: 10; color: "transparent"; }
-
             ComboBox
             {
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
-                model: [ "Tolerated", "Damaging"] // [ "<", "<=", "==", ">=", ">", "!=" ]
-                //currentText: model.quickfilters.qualityFilter.op
+                model: [ qsTr("Tolerated"), qsTr("Deleterious")]
+                onCurrentTextChanged: if (root.model) predSift.checked = true
             }
 
-            // FIXME : Qt BUG, margin value not take in account when control resize by the Splitter
-            Rectangle{ height: root.height; width: 20; color: "transparent"; } // add 10+20px to the right (free space for scrollbar)
-        }
-        RowLayout
-        {
-            width: content.width
-            spacing: 10
+
             CheckBox
             {
                 id: predPoly
-                anchors.left: parent.left
-                anchors.leftMargin: 25
                 text: qsTr("Polyphen")
+                checked: false
                 onCheckedChanged:
                 {
-//                    if (!internalUiUpdate)
-//                    {
-//                        // Update other checkboxes
-//                        internalUiUpdate = true;
-//                        if (checked)
-//                        {
-//                            predAll.checked = false;
-//                        }
-//                        checkFinal();
-//                        internalUiUpdate = false;
-//                    }
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            predAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
                 }
             }
-
-            // FIXME : Weird bug, need to add free space otherwise ComboBox is hover the CheckBox
-            Rectangle{ height: root.height; width: 10; color: "transparent"; }
-
             ComboBox
             {
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
-                model: [ "Benign", "Possibly Damaging", "Probably Damaging" ] // [ "<", "<=", "==", ">=", ">", "!=" ]
-                //currentText: model.quickfilters.qualityFilter.op
+                model: [ "Benign", "Possibly Damaging", "Probably Damaging", "Damaging", "Unknow" ]
+                onCurrentTextChanged: if (root.model) predPoly.checked = true
             }
-
-            // FIXME : Qt BUG, margin value not take in account when control resize by the Splitter
-            Rectangle{ height: root.height; width: 20; color: "transparent"; } // add 10+20px to the right (free space for scrollbar)
-        }
-
-        RowLayout
-        {
-            width: content.width
-            spacing: 10
-
-
-            property bool initializing: false
-            property alias checkBox: fieldCheck
-            property alias checked: fieldCheck.checked
 
 
             CheckBox
             {
-                id: fieldCheck
-                anchors.left: parent.left
-                anchors.leftMargin: 25
-                width: 150
+                id: predCadd
                 text: "CADD"
-            }
-            //Binding { target: model; property: "isActive"; value: fieldCheck.checked; }
-
-
-            // FIXME : Weird bug, need to add free space otherwise ComboBox is hover the CheckBox
-            Rectangle{ height: root.height; width: 10; color: "transparent"; }
-
-
-            ComboBox
-            {
-                id: fieldOperator
-                model: [ "<", "≤", "=", "≥", ">", "≠" ]
-                currentIndex: 3
-                onCurrentTextChanged:
+                checked: false
+                onCheckedChanged:
                 {
-                    if (root.model != null)
+                    if (!internalUiUpdate)
                     {
-                        root.model.op = currentText;
-                        if (!initializing) fieldCheck.checked = true;
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            predAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
                     }
                 }
-
             }
-
+            ComboBox
+            {
+                id: caddOperator
+                model: [ "<", "≤", "=", "≥", ">", "≠" ]
+                currentIndex: 3
+                onCurrentTextChanged: if (root.model) predCadd.checked = true
+            }
             TextFieldForm
             {
-                id: fieldValue
+                id: caddValue
                 Layout.fillWidth: true
-
-                //onTextEdited: fieldCheck.checked = true
-                onTextChanged: fieldCheck.checked = true
+                onTextEdited: predCadd.checked = true
+                onTextChanged:predCadd.checked = true
                 text: "10"
             }
-            //Binding { target: model; property: "value"; value: fieldValue.text; }
-
-
-            // FIXME : Qt BUG, margin value not take in account when control resize by the Splitter
-            Rectangle{ height: root.height; width: 20; color: "transparent"; } // add 10+20px to the right (free space for scrollbar)
         }
+        // FIXME : Qt BUG, margin value not take in account when panel resized by the Splitter
+        Rectangle { width:20; height: 10; color: "transparent"; }
     }
 }

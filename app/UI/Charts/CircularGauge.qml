@@ -15,6 +15,7 @@ Rectangle
     property real danger: 90
     property alias value: gauge.value
     property string valueLabel: gauge.value + "%"
+    property var needleColor: Regovar.theme.boxColor.border
 
     CircularGauge
     {
@@ -40,7 +41,6 @@ Rectangle
 
             minorTickmark: Rectangle
             {
-                visible: styleData.value < 80
                 implicitWidth: outerRadius * 0.01
                 antialiasing: true
                 implicitHeight: outerRadius * 0.03
@@ -59,14 +59,52 @@ Rectangle
 
 
             // The indicator component
-            needle: Rectangle
+//            needle: Rectangle
+//            {
+//                //y: outerRadius * 0.15
+//                implicitWidth: 2 // outerRadius * 0.03
+//                implicitHeight: outerRadius * 0.7
+//                antialiasing: true
+//                color: Regovar.theme.boxColor.back
+//            }
+            needle: Canvas
             {
-                //y: outerRadius * 0.15
-                implicitWidth: 2 // outerRadius * 0.03
+                id: needleControl
+                // canvas size
+                implicitWidth: outerRadius * 0.3 // outerRadius * 0.03
                 implicitHeight: outerRadius * 0.7
-                antialiasing: true
-                color: Regovar.theme.boxColor.back
+                // handler to override for drawing
+                onPaint:
+                {
+                    var w=needleControl.width
+                    var h=needleControl.height
+
+                    // get context to draw with
+                    var ctx = getContext("2d")
+                    // setup the stroke
+                    ctx.lineWidth = 1
+                    ctx.strokeStyle = root.needleColor
+                    // setup the fill
+                    ctx.fillStyle = root.needleColor
+                    // begin a new path to draw
+                    ctx.beginPath()
+                    // top-left start point
+                    ctx.moveTo(0,h)
+                    // upper line
+                    ctx.lineTo(w,h)
+                    // right line
+                    ctx.lineTo(w/2,0)
+                    // bottom line
+                    ctx.lineTo(0,h)
+                    // left line through path closing
+                    ctx.closePath()
+                    // fill using fill style
+                    ctx.fill()
+                    // stroke using line width and stroke style
+                    ctx.stroke()
+                }
             }
+
             foreground: Item
             {
                 Rectangle
@@ -74,7 +112,7 @@ Rectangle
                     width: 75 // outerRadius * 0.2
                     height: width
                     radius: width / 2
-                    color: Regovar.theme.boxColor.border
+                    color: root.needleColor
                     anchors.centerIn: parent
 
                     Rectangle

@@ -13,7 +13,7 @@ Button
         if (icon != null && icon != undefined && icon != "")
         {
             iconText.visible = true
-            iconText.width = regovar.theme.font.boxSize.normal
+            iconText.width = Regovar.theme.font.boxSize.normal
         }
     }
 

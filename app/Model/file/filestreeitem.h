@@ -1,7 +1,7 @@
 #ifndef FILESTREEITEM_H
 #define FILESTREEITEM_H
 
-#include "Model/treeitem.h"
+#include "Model/framework/treeitem.h"
 
 class FilesTreeItem : public QObject
 {

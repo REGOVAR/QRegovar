@@ -1,5 +1,5 @@
 #include "user.h"
-#include "request.h"
+#include "framework/request.h"
 
 User::User(QObject* parent) : QObject(parent)
 {

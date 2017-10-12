@@ -1,7 +1,7 @@
 #ifndef ANNOTATIONSTREEITEM_H
 #define ANNOTATIONSTREEITEM_H
 
-#include "Model/treeitem.h"
+#include "Model/framework/treeitem.h"
 
 class AnnotationsTreeItem : public QObject
 {

@@ -3,7 +3,7 @@
 #include <QFileInfo>
 #include <QTimer>
 #include <QBuffer>
-#include "Model/request.h"
+#include "Model/framework/request.h"
 
 
 

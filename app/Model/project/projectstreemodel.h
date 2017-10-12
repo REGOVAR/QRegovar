@@ -1,7 +1,7 @@
 #ifndef PROJECTSTREEMODEL_H
 #define PROJECTSTREEMODEL_H
 
-#include "Model/treemodel.h"
+#include "Model/framework/treemodel.h"
 
 class ProjectsTreeModel : public TreeModel
 {

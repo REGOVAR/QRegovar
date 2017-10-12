@@ -229,6 +229,8 @@ Rectangle
                     height: 180
 
                     value: 100
+
+                   // needleColor: Regovar.theme.primaryColor.back.normal
                 }
 
 

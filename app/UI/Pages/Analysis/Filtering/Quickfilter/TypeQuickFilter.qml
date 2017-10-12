@@ -20,7 +20,6 @@ QuickFilterBox
     {
         // Mode
         typAll.checked = (!typMis.checked && !typStp.checked && !typSpl.checked && !typInd.checked && !typSyn.checked);
-
         // send final combination to the model to update the filter
         var tf = model.quickfilters.typeFilter;
         tf.missense.isActive = typMis.checked;
@@ -60,6 +59,8 @@ QuickFilterBox
                             typMis.checked = false;
                             typStp.checked = false;
                             typSpl.checked = false;
+                            typInd.checked = false;
+                            typSyn.checked = false;
                         }
 
                         checkFinal();

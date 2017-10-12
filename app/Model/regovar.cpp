@@ -5,11 +5,10 @@
 #include <QAbstractSocket>
 #include <QSysInfo>
 #include "regovar.h"
-#include "request.h"
-#include "requestext.h"
-
-#include "Model/file/file.h"
-#include "Model/analysis/filtering/reference.h"
+#include "framework/request.h"
+#include "framework/requestext.h"
+#include "file/file.h"
+#include "analysis/filtering/reference.h"
 #include "sample/sample.h"
 
 

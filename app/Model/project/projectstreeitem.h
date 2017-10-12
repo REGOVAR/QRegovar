@@ -1,7 +1,7 @@
 #ifndef PROJECTSTREEITEM_H
 #define PROJECTSTREEITEM_H
 
-#include "Model/treeitem.h"
+#include "Model/framework/treeitem.h"
 
 class ProjectsTreeItem : public QObject
 {

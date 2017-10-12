@@ -1,7 +1,7 @@
 #ifndef FILESTREEMODEL_H
 #define FILESTREEMODEL_H
 
-#include "Model/treemodel.h"
+#include "Model/framework/treemodel.h"
 
 class FilesTreeModel : public TreeModel
 {
