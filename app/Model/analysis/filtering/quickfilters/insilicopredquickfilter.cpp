@@ -25,23 +25,18 @@ void InSilicoPredQuickFilter::init(QString siftUid, QString polyUid, QString cad
     mOperators.append(">");
     mOperators.append("≠");
 
-    // Missence
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "missense_variant");
+    // Sift
+    mFields << new QuickFilterField(siftUid, "", mOperators, "==", "tolerated");
+    mFields[0]->setIsDisplayed(!siftUid.isEmpty());
 
-    // Nonsence
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "stop_gained");
 
-    // Splicing
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "splice_acceptor_variant");
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "splice_donor_variant", true);
+    // Polyphen
+    mFields << new QuickFilterField(polyUid, "", mOperators, "==", "benign");
+    mFields[1]->setIsDisplayed(!polyUid.isEmpty());
 
-    // Indel
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "frameshift_variant");
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "inframe_insertion", true);
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "inframe_deletion", true);
-
-    // Synonymous
-    mFields << new QuickFilterField("583f8236779ca1e9a67282e5f949d658", "", mOperators, "==", "synonymous_variant");
+    // CADD
+    mFields << new QuickFilterField(caddUid, "", mOperators, ">", 15);
+    mFields[2]->setIsDisplayed(!caddUid.isEmpty());
 }
 
 
@@ -108,6 +103,7 @@ void InSilicoPredQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
     }
 
     init(siftUid, polyUid, caddUid);
+    mIsVisible = siftUid.isEmpty() || polyUid.isEmpty() || caddUid.isEmpty();
 }
 
 

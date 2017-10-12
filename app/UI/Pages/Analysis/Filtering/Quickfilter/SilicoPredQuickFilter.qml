@@ -27,6 +27,17 @@ QuickFilterBox
         pf.cadd.isActive = predCadd.checked;
     }
 
+    onModelChanged:
+    {
+        if (model)
+        {
+            var m = model.quickfilters.inSilicoPredFilter;
+            predSift.enabled = m.sift.isDisplayed;
+            predPoly.enabled = m.polyphen.isDisplayed;
+            predCadd.enabled = m.cadd.isDisplayed;
+        }
+    }
+
     content: Row
     {
         anchors.top: parent.top
@@ -93,6 +104,7 @@ QuickFilterBox
             }
             ComboBox
             {
+                enabled: predSift.enabled
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
                 model: [ qsTr("Tolerated"), qsTr("Deleterious")]
@@ -122,6 +134,7 @@ QuickFilterBox
             }
             ComboBox
             {
+                enabled: predPoly.enabled
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
                 model: [ "Benign", "Possibly Damaging", "Probably Damaging", "Damaging", "Unknow" ]
@@ -152,6 +165,7 @@ QuickFilterBox
             ComboBox
             {
                 id: caddOperator
+                enabled: predCadd.enabled
                 model: [ "<", "≤", "=", "≥", ">", "≠" ]
                 currentIndex: 3
                 onCurrentTextChanged: if (root.model) predCadd.checked = true
@@ -159,6 +173,7 @@ QuickFilterBox
             TextFieldForm
             {
                 id: caddValue
+                enabled: predCadd.enabled
                 Layout.fillWidth: true
                 onTextEdited: predCadd.checked = true
                 onTextChanged:predCadd.checked = true

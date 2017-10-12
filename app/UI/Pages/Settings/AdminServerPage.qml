@@ -494,7 +494,7 @@ Rectangle
                     {
                         Layout.columnSpan: 2
                         elide: Text.ElideRight
-                        text: qsTr("DISK")
+                        text: qsTr("STORAGE")
                         font.bold: true
                         font.pixelSize: Regovar.theme.font.size.header
                         color: Regovar.theme.primaryColor.back.normal
@@ -701,114 +701,110 @@ Rectangle
 
 
             // ===== Database overview
-            Rectangle
+            Column
             {
-                Layout.minimumWidth: 300
+                spacing: 10
+                width: 300
                 Layout.fillHeight: true
-                border.width: 1
-                border.color: Regovar.theme.boxColor.border
-                color: Regovar.theme.boxColor.back
 
-                GridLayout
+                Rectangle
                 {
-                    x: 5
-                    y: 5
-                    width: parent.width - 10
-                    columns: 2
-                    rows: 5
-                    rowSpacing: 5
-                    columnSpacing: 5
+                    width: 300
+                    height: databaseResumeLayout.height + 10
+                    border.width: 1
+                    border.color: Regovar.theme.boxColor.border
+                    color: Regovar.theme.boxColor.back
 
-                    Text
+                    Column
                     {
-                        text: qsTr("Total size")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                    Text
-                    {
-                        Layout.alignment: Qt.AlignRight
-                        text: "8 Go"
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                    Text
-                    {
-                        text: qsTr("Hg19 size")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                    Text
-                    {
-                        Layout.alignment: Qt.AlignRight
-                        text: "4 Go"
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                    Text
-                    {
-                        text: qsTr("Hg38 size")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                    Text
-                    {
-                        Layout.alignment: Qt.AlignRight
-                        text: "1 Go"
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                    Text
-                    {
-                        text: qsTr("Regovar")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                    Text
-                    {
-                        Layout.alignment: Qt.AlignRight
-                        text: "675 Mo"
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
+                        id: databaseResumeLayout
+                        x: 5
+                        y: 5
+                        width: parent.width - 10
 
-                    Rectangle
-                    {
-                        Layout.columnSpan: 2
-                        height: 1
-                        width: parent.width
-                    }
 
-                    Text
-                    {
-                        Layout.columnSpan: 2
-                        text: qsTr("Clear working table:")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
+                        Rectangle
+                        {
+                            width: databaseResumeLayout.width
+                            height: Regovar.theme.font.boxSize.normal
+                            Text
+                            {
+                                anchors.left: parent.left
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: qsTr("Total size")
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                color: Regovar.theme.primaryColor.back.normal
+                                height: Regovar.theme.font.boxSize.normal
+                                verticalAlignment: Text.AlignVCenter
+                                font.bold: true
+                            }
+                            Text
+                            {
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                                id: databaseResumeTotalSize
+                                Layout.alignment: Qt.AlignRight
+                                text: "-"
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                color: Regovar.theme.primaryColor.back.normal
+                                height: Regovar.theme.font.boxSize.normal
+                                verticalAlignment: Text.AlignVCenter
+                                font.bold: true
+                            }
+                        }
+
+
+
+                        Repeater
+                        {
+                            id: databaseResumeRepeater
+
+
+                            Rectangle
+                            {
+                                width: databaseResumeLayout.width
+                                height: Regovar.theme.font.boxSize.normal
+                                Text
+                                {
+                                    anchors.left: parent.left
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    text: " - " + modelData.section
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    color: Regovar.theme.primaryColor.back.normal
+                                    height: Regovar.theme.font.boxSize.normal
+                                    verticalAlignment: Text.AlignVCenter
+                                }
+                                Text
+                                {
+                                    anchors.right: parent.right
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    text:  modelData.size
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    color: Regovar.theme.primaryColor.back.normal
+                                    height: Regovar.theme.font.boxSize.normal
+                                    verticalAlignment: Text.AlignVCenter
+                                }
+                            }
+                        }
                     }
-                    ComboBox
-                    {
-                        Layout.fillWidth: true
-                        model: ["wt_1 : Trio BIL_L-2017.09.29", "wt_1 : Trio BIL_L-2017.09.29", "wt_1 : Trio BIL_L-2017.09.29"]
-                    }
+                }
+
+                Text
+                {
+                    text: qsTr("Clear working table:")
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    color: Regovar.theme.primaryColor.back.normal
+                    height: Regovar.theme.font.boxSize.normal
+                    verticalAlignment: Text.AlignVCenter
+                }
+                ComboBox
+                {
+                    id: databaseWorkingTables
+                    width: 300
+                }
+                Row
+                {
+                    spacing: 10
                     Button
                     {
                         text: qsTr("Clear")
@@ -824,6 +820,7 @@ Rectangle
                     }
                 }
             }
+
 
             TableView
             {
@@ -913,39 +910,6 @@ Rectangle
                 }
             }
         }
-
-
-
-
-        // ===== Process Section =====
-        Row
-        {
-            height: Regovar.theme.font.boxSize.Title
-
-            Text
-            {
-                width: Regovar.theme.font.boxSize.header
-                height: Regovar.theme.font.boxSize.header
-                text: "7"
-
-                font.family: Regovar.theme.icons.name
-                font.pixelSize: Regovar.theme.font.size.title
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                color: Regovar.theme.primaryColor.back.normal
-            }
-            Text
-            {
-                height: Regovar.theme.font.boxSize.header
-
-                elide: Text.ElideRight
-                text: qsTr("Process")
-                font.bold: true
-                font.pixelSize: Regovar.theme.font.size.header
-                verticalAlignment: Text.AlignVCenter
-                color: Regovar.theme.primaryColor.back.normal
-            }
-        }
     }
 
 
@@ -975,5 +939,8 @@ Rectangle
         dskJobs.text   = regovar.sizeToHumanReadable(serverData["disk"]["jobs"]);
 
         tablesTableView.model = regovar.admin.tables;
+        databaseResumeTotalSize.text = regovar.sizeToHumanReadable(regovar.admin.tablesTotalSize);
+        databaseResumeRepeater.model = regovar.admin.tablesSizes;
+        databaseWorkingTables.model = regovar.admin.wtTables;
     }
 }

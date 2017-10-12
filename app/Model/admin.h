@@ -64,6 +64,9 @@ class Admin : public QObject
     Q_PROPERTY(bool serverStatusAutoRefresh READ serverStatusAutoRefresh WRITE setServerStatusAutoRefresh NOTIFY serverStatusAutoRefreshChanged)
     Q_PROPERTY(QJsonObject serverStatus READ serverStatus NOTIFY serverStatusChanged)
     Q_PROPERTY(QList<QObject*> tables READ tables NOTIFY tablesChanged)
+    Q_PROPERTY(int tablesTotalSize READ tablesTotalSize NOTIFY tablesChanged)
+    Q_PROPERTY(QVariantList tablesSizes READ tablesSizes NOTIFY tablesChanged)
+    Q_PROPERTY(QVariantList wtTables READ wtTables NOTIFY tablesChanged)
 
 public:
     explicit Admin(QObject* parent = nullptr);
@@ -72,6 +75,9 @@ public:
     inline bool serverStatusAutoRefresh() { return mServerStatusAutoRefresh; }
     inline QJsonObject serverStatus() { return mServerStatus; }
     inline QList<QObject*> tables() { return mTables; }
+    inline int tablesTotalSize() { return mTablesTotalSize; }
+    inline QVariantList  tablesSizes() { return mSectionsSizes; }
+    inline QVariantList  wtTables() { return mWtTables; }
     // Setters
     inline void setServerStatusAutoRefresh(bool flag) { mServerStatusAutoRefresh=flag; emit serverStatusAutoRefreshChanged(); }
     inline void setServerStatus(QJsonObject json) { mServerStatus=json; emit serverStatusChanged(); }
@@ -89,6 +95,9 @@ private:
     bool mServerStatusAutoRefresh;
     QJsonObject mServerStatus;
     QList<QObject*> mTables;
+    int mTablesTotalSize;
+    QVariantList  mSectionsSizes;
+    QVariantList  mWtTables;
 };
 
 
