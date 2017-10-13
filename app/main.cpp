@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Project>("org.regovar", 1, 0, "Project");
     qmlRegisterType<AdminTableInfo>("org.regovar", 1, 0, "AdminTableInfo");
 
-
+    qDebug() << "SSL Protocol" <<QSsl::SslOptions();
 
 
     QQmlApplicationEngine engine;

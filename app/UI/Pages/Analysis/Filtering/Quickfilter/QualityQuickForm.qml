@@ -15,6 +15,11 @@ QuickFilterBox
     title : qsTr("Quality")
     isExpanded: false
 
+    function reset()
+    {
+        depth.checked = false;
+    }
+
     onModelChanged:
     {
         depth.model = model.quickfilters.qualityFilter.depth;

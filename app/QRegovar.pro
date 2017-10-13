@@ -1,4 +1,4 @@
-QT += qml quick widgets websockets charts
+QT += qml quick widgets websockets charts network
 
 CONFIG += c++11
 

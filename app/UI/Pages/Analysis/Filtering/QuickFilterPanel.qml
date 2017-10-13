@@ -14,6 +14,22 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property FilteringAnalysis model
+    onModelChanged:
+    {
+        // We set manually the model to be able to call *after* the reset of the control
+        // otherwise with binding, this order may not be respect, and init of UI is not good.
+        console.log("reset all")
+        for (var i = 0; i < container.children.length; ++i)
+        {
+            var item = container.children[i];
+            if (item.objectName == "qf")
+            {
+                item.model = model;
+                console.log("reset qf")
+                item.reset();
+            }
+        }
+    }
 
     ColumnLayout
     {
@@ -59,14 +75,15 @@ Rectangle
 
             Column
             {
+                id: container
                 Rectangle { width: root.width; height: 5; color: "transparent" }
-                TransmissionQuickForm { width: root.width; model: root.model; }
-                QualityQuickForm { width: root.width; model: root.model; }
-                PositionQuickFilter { width: root.width; model: root.model; }
-                TypeQuickFilter { width: root.width; model: root.model; }
-                FrequenceQuickFilter { width: root.width; model: root.model; }
-                SilicoPredQuickFilter { width: root.width; model: root.model; }
-                PanelQuickForm { width: root.width; model: root.model; }
+                TransmissionQuickForm { objectName: "qf"; width: root.width; }
+                QualityQuickForm { objectName: "qf"; width: root.width; }
+                PositionQuickFilter { objectName: "qf"; width: root.width; }
+                TypeQuickFilter { objectName: "qf"; width: root.width; }
+                FrequenceQuickFilter { objectName: "qf"; width: root.width; }
+                SilicoPredQuickFilter { objectName: "qf"; width: root.width; }
+                PanelQuickForm { objectName: "qf"; width: root.width; }
             }
         }
 

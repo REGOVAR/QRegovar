@@ -16,6 +16,7 @@ RowLayout
     property bool initializing: false
     property alias checkBox: fieldCheck
     property alias checked: fieldCheck.checked
+    property real indentation: 25
     property real labelWidth: 50;
     onLabelWidthChanged:
     {
@@ -40,7 +41,7 @@ RowLayout
     {
         id: fieldCheck
         anchors.left: parent.left
-        anchors.leftMargin: 25
+        anchors.leftMargin: root.indentation
         onWidthChanged: root.labelWidth = width;
     }
     Binding { target: model; property: "isActive"; value: fieldCheck.checked; }

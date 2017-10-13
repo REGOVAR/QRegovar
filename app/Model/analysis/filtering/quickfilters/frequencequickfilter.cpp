@@ -7,11 +7,13 @@
 FrequenceQuickFilter::FrequenceQuickFilter(int) : QuickFilterBlockInterface()
 {
     mIsVisible = false;
+    m1000GAll = nullptr;
+    mExacAll = nullptr;
 }
 
 
 
-void FrequenceQuickFilter::init(QStringList _1000g, QStringList exac)
+void FrequenceQuickFilter::init(QString _1000gUid, QString exacUid, QStringList _1000g, QStringList exac)
 {
     mOperators.clear();
     mOperators.append("<");
@@ -23,11 +25,19 @@ void FrequenceQuickFilter::init(QStringList _1000g, QStringList exac)
 
 
     // 1000G
+    if (!_1000gUid.isEmpty())
+    {
+        m1000GAll = new QuickFilterField(_1000gUid, tr("1000G MAF"), mOperators, "<=", "0.01");
+    }
     foreach (QString fuid, _1000g)
     {
         m1000GFields << new QuickFilterField(fuid, mFieldsNames[fuid], mOperators, "<=", "0.01");
     }
     // Exac
+    if (!_1000gUid.isEmpty())
+    {
+        mExacAll = new QuickFilterField(exacUid, tr("ExAC MAF"), mOperators, "<=", "0.01");
+    }
     foreach (QString fuid, exac)
     {
         mExacFields << new QuickFilterField(fuid, mFieldsNames[fuid], mOperators, "<=", "0.01");
@@ -97,9 +107,11 @@ void FrequenceQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
     QStringList _1000gFuids;
     QStringList exacFuids;
     QStringList _1000gLabels;
-    // 1000G fields to retrieved (and also to display in this order: gmaf first)
-    _1000gLabels << "gmaf" << "aa_maf" << "afr_maf" << "amr_maf" << "asn_maf" << "ea_maf" << "eas_maf" << "eur_maf" << "sas_maf";
-    _1000gFuids  << "" << "" << "" << "" << "" << "" << "" << "" << "";
+    QString _1000GUid;
+    QString exacUid;
+    // 1000G fields to retrieved (sorted alphanum)
+    _1000gLabels << "aa_maf" << "afr_maf" << "amr_maf" << "asn_maf" << "ea_maf" << "eas_maf" << "eur_maf" << "sas_maf";
+    for(int i=0; i<_1000gLabels.count(); i++) { _1000gFuids  << ""; }
 
     mIsVisible = false;
     // Retrieve fuid for 1000G and Exac
@@ -114,15 +126,28 @@ void FrequenceQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
                 {
                     if (annot)
                     {
-                        if (_1000gLabels.contains(annot->name().toLower()))
+                        if (annot->name().toLower() == "gmaf")
+                        {
+                            _1000GUid = annot->uid();
+                            mIsVisible = true;
+                        }
+                        else if (annot->name().toLower() == "exac_maf")
+                        {
+                            exacUid = annot->uid();
+                            mIsVisible = true;
+                        }
+
+                        else if (_1000gLabels.contains(annot->name().toLower()))
                         {
                             _1000gFuids[_1000gLabels.indexOf(annot->name().toLower())] = annot->uid();
                             mFieldsNames.insert(annot->uid(), annot->name());
+                            mIsVisible = true;
                         }
                         else if (annot->name().toLower().startsWith("exac_"))
                         {
                             exacFuids.append(annot->uid());
                             mFieldsNames.insert(annot->uid(), annot->name());
+                            mIsVisible = true;
                         }
                     }
                 }
@@ -144,9 +169,8 @@ void FrequenceQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
         }
     }
 
-    // Set visibility of the quick filter and continue init by creating fields
-    mIsVisible = _1000gFuids.count() > 0 || exacFuids.count() > 0;
-    init(_1000gFuids, exacFuids);
+
+    init(_1000GUid, exacUid, _1000gFuids, exacFuids);
 }
 
 

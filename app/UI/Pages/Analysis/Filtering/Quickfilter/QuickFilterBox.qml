@@ -15,6 +15,11 @@ Rectangle
 //    border.color: Regovar.theme.boxColor.border
     height: isExpanded ? content.height + header.height + 1: header.height +1
 
+    function reset()
+    {
+        console.log("TODO : override the reset method plz");
+    }
+
     property FilteringAnalysis model
     property real maxHeight: content.height + 30
     property string title
