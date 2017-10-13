@@ -3,31 +3,15 @@ Developer Guide
 
 
 
-Bonnes pratiques
-================
-Pour éviter les problèmes avec les includes:
- * toujours faire tout les `#include <common.lib>` avant les `#include "custom.lib"`
- * Noms réservés : 2 `#define` on été créé pour accéder aux singletons : `regovar` et `app`. Par conséquent, il ne faut pas nommer vos class, variables, méthodes avec ces noms là, car ça causera des erreurs (parfois bien tordues) à la compilation
+# Compiler QT
+Pour que Qt puisse utiliser correctement certaine librairie, comme openSSL, il peut être nécessaire de compiler soit-même QT.
+## Linux :
+* Download last [sources](https://www1.qt.io/download-open-source/?hsCtaTracking=f977210e-de67-475f-a32b-65cec207fd03%7Cd62710cd-e1db-46aa-8d4d-2f1c1ffdacea#section-2) of Qt framework
+* Unzip 
+* `./configure -debug -opensource -ssl -openssl-linked -proprietary-codecs -printing-and-pdf`
+* `make`
+* 
 
-
-
-Solution organisation
-=====================
-Salut
- 
-
-
-Architecture
-============
-
-Comment va ?
-
-
-Model
-=====
-
-bien...
-      
 
 
 
