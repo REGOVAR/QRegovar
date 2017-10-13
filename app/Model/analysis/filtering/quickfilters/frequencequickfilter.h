@@ -10,19 +10,8 @@
 class FrequenceQuickFilter : public QuickFilterBlockInterface
 {
     Q_OBJECT
-    Q_PROPERTY(QuickFilterField* _1000GAll READ _1000GAll)
-    Q_PROPERTY(QuickFilterField* _1000GAfr READ _1000GAfr)
-    Q_PROPERTY(QuickFilterField* _1000GAmr READ _1000GAmr)
-    Q_PROPERTY(QuickFilterField* _1000GAsn READ _1000GAsn)
-    Q_PROPERTY(QuickFilterField* _1000GEur READ _1000GEur)
-    Q_PROPERTY(QuickFilterField* exacAll READ exacAll)
-    Q_PROPERTY(QuickFilterField* exacAfr READ exacAfr)
-    Q_PROPERTY(QuickFilterField* exacAmr READ exacAmr)
-    Q_PROPERTY(QuickFilterField* exacAdj READ exacAdj)
-    Q_PROPERTY(QuickFilterField* exacEas READ exacEas)
-    Q_PROPERTY(QuickFilterField* exacFin READ exacFin)
-    Q_PROPERTY(QuickFilterField* exacNfe READ exacNfe)
-    Q_PROPERTY(QuickFilterField* exacSas READ exacSas)
+    Q_PROPERTY(QList<QObject*> _1000G READ _1000G)
+    Q_PROPERTY(QList<QObject*> exac READ exac)
 
 public:
     explicit FrequenceQuickFilter(int analysisId);
@@ -34,28 +23,21 @@ public:
     Q_INVOKABLE void checkAnnotationsDB(QList<QObject*> dbs);
     bool loadJson(QJsonArray filter);
 
-    inline QuickFilterField* _1000GAll() { return mFields[0]; }
-    inline QuickFilterField* _1000GAfr() { return mFields[1]; }
-    inline QuickFilterField* _1000GAmr() { return mFields[2]; }
-    inline QuickFilterField* _1000GAsn() { return mFields[3]; }
-    inline QuickFilterField* _1000GEur() { return mFields[4]; }
-    inline QuickFilterField* exacAll() { return mFields[5]; }
-    inline QuickFilterField* exacAfr() { return mFields[6]; }
-    inline QuickFilterField* exacAmr() { return mFields[7]; }
-    inline QuickFilterField* exacAdj() { return mFields[8]; }
-    inline QuickFilterField* exacEas() { return mFields[9]; }
-    inline QuickFilterField* exacFin() { return mFields[10]; }
-    inline QuickFilterField* exacNfe() { return mFields[11]; }
-    inline QuickFilterField* exacSas() { return mFields[12]; }
+    inline QList<QObject*> _1000G() { return m1000GFields; }
+    inline QList<QObject*> exac() { return mExacFields; }
+    void init(QStringList _1000g, QStringList exac);
 
 
 private:
-    QList<QuickFilterField*> mFields;
+    QList<QObject*> m1000GFields;
+    QList<QObject*> mExacFields;
     QString mFilter;
     QStringList mOperators;
     QHash<QString, QString> mOpMapping;
 
     bool mIsVisible;
+
+    QHash<QString,QString> mFieldsNames;
 };
 
 #endif // FREQUENCEQUICKFILTER_H

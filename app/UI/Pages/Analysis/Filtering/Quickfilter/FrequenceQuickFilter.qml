@@ -20,178 +20,84 @@ QuickFilterBox
 
 
     property bool internalUiUpdate: false
+    property real labelWidth: 50
+    onLabelWidthChanged: console.log("labelWidth = " + labelWidth)
 
 
     function checkFinal()
     {
-        // Mode
-        var _1000g = (!_100GAll.checked && !_100GAfr.checked && !_100GAmr.checked && !_100GAsn.checked && !_100GEur.checked);
-        var exac  = (!exacAll.checked && !exacAdj.checked && !exacAfr.checked && !exacAmr.checked && !exacEas.checked && !exacFin.checked && !exacNfe.checked && !exacSas.checked);
-        frqAll.checked = _1000g && exac
+//        // Mode
+//        var _1000g = (!_100GAll.checked && !_100GAfr.checked && !_100GAmr.checked && !_100GAsn.checked && !_100GEur.checked);
+//        var exac  = (!exacAll.checked && !exacAdj.checked && !exacAfr.checked && !exacAmr.checked && !exacEas.checked && !exacFin.checked && !exacNfe.checked && !exacSas.checked);
+//        frqAll.checked = _1000g && exac
     }
 
     onModelChanged:
     {
-        _100GAll.model = model.quickfilters.frequenceFilter._1000GAll;
-        _100GAfr.model = model.quickfilters.frequenceFilter._1000GAfr;
-        _100GAmr.model = model.quickfilters.frequenceFilter._1000GAmr;
-        _100GAsn.model = model.quickfilters.frequenceFilter._1000GAsn;
-        _100GEur.model = model.quickfilters.frequenceFilter._1000GEur;
+        //        _100GAll.model = model.quickfilters.frequenceFilter._1000GAll;
+        //        _100GAfr.model = model.quickfilters.frequenceFilter._1000GAfr;
+        //        _100GAmr.model = model.quickfilters.frequenceFilter._1000GAmr;
+        //        _100GAsn.model = model.quickfilters.frequenceFilter._1000GAsn;
+        //        _100GEur.model = model.quickfilters.frequenceFilter._1000GEur;
 
-        exacAll.model = model.quickfilters.frequenceFilter.exacAll;
-        exacAfr.model = model.quickfilters.frequenceFilter.exacAfr;
-        exacAmr.model = model.quickfilters.frequenceFilter.exacAmr;
-        exacAdj.model = model.quickfilters.frequenceFilter.exacAdj;
-        exacEas.model = model.quickfilters.frequenceFilter.exacEas;
-        exacFin.model = model.quickfilters.frequenceFilter.exacFin;
-        exacNfe.model = model.quickfilters.frequenceFilter.exacNfe;
-        exacSas.model = model.quickfilters.frequenceFilter.exacSas;
+        //        exacAll.model = model.quickfilters.frequenceFilter.exacAll;
+        //        exacAfr.model = model.quickfilters.frequenceFilter.exacAfr;
+        //        exacAmr.model = model.quickfilters.frequenceFilter.exacAmr;
+        //        exacAdj.model = model.quickfilters.frequenceFilter.exacAdj;
+        //        exacEas.model = model.quickfilters.frequenceFilter.exacEas;
+        //        exacFin.model = model.quickfilters.frequenceFilter.exacFin;
+        //        exacNfe.model = model.quickfilters.frequenceFilter.exacNfe;
+        //        exacSas.model = model.quickfilters.frequenceFilter.exacSas;
 
-        root.enabled = model.quickfilters.frequenceFilter.isVisible();
+        if (model)
+        {
+            root.enabled = model.quickfilters.frequenceFilter.isVisible();
+            gRepeater.model = model.quickfilters.frequenceFilter._1000G;
+            exacRepeater.model = model.quickfilters.frequenceFilter.exac;
+        }
     }
 
-    content: ColumnLayout
+    content: Column
     {
         id: content
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.rightMargin: 30
 
 
         // All
-        RowLayout
+        CheckBox
         {
-            Layout.columnSpan: 5
+            id: frqAll
+            anchors.left: parent.left
+            anchors.leftMargin: 25
             width: content.width
-            CheckBox
+            text: qsTr("All")
+            checked: true
+            onCheckedChanged:
             {
-                id: frqAll
-                anchors.left: parent.left
-                anchors.leftMargin: 25
-                text: qsTr("All")
-                checked: true
-                onCheckedChanged:
+                if (!internalUiUpdate)
                 {
-                    if (!internalUiUpdate)
+                    // Update other checkboxes
+                    internalUiUpdate = true;
+                    if (checked)
                     {
-                        // Update other checkboxes
-                        internalUiUpdate = true;
-                        if (checked)
-                        {
-                            _100GAll.checked = false;
-                            _100GAfr.checked = false;
-                            _100GAmr.checked = false;
-                            _100GAsn.checked = false;
-                            _100GEur.checked = false;
+//                        _100GAll.checked = false;
+//                        _100GAfr.checked = false;
+//                        _100GAmr.checked = false;
+//                        _100GAsn.checked = false;
+//                        _100GEur.checked = false;
 
-                            exacAll.checked = false;
-                            exacAfr.checked = false;
-                            exacAmr.checked = false;
-                            exacAdj.checked = false;
-                            exacEas.checked = false;
-                            exacFin.checked = false;
-                            exacNfe.checked = false;
-                            exacSas.checked = false;
-                        }
+//                        exacAll.checked = false;
+//                        exacAfr.checked = false;
+//                        exacAmr.checked = false;
+//                        exacAdj.checked = false;
+//                        exacEas.checked = false;
+//                        exacFin.checked = false;
+//                        exacNfe.checked = false;
+//                        exacSas.checked = false;
+                    }
 
-                        checkFinal();
-                        internalUiUpdate = false;
-                    }
-                }
-            }
-        }
-
-        // 1000 G ALL
-        QuickFilterFieldControl
-        {
-            id: _100GAll
-            checkBox.onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
-        }
-        // 1000 G AFR
-        QuickFilterFieldControl
-        {
-            id: _100GAfr
-            checkBox.onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
-        }
-        // 1000 G AMR
-        QuickFilterFieldControl
-        {
-            id: _100GAmr
-            checkBox.onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
-        }
-        // 1000 G ASN
-        QuickFilterFieldControl
-        {
-            id: _100GAsn
-            checkBox.onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
-        }
-        // 1000 G EUR
-        QuickFilterFieldControl
-        {
-            id: _100GEur
-            checkBox.onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
                     checkFinal();
                     internalUiUpdate = false;
                 }
@@ -199,156 +105,63 @@ QuickFilterBox
         }
 
 
-        // Exac All
-        QuickFilterFieldControl
+        // 1000 G
+        Text
         {
-            id: exacAll
-            checkBox.onCheckedChanged:
+            anchors.left: parent.left
+            anchors.leftMargin: 5
+
+            elide: Text.ElideRight
+            font.pixelSize: Regovar.theme.font.size.normal
+            color: Regovar.theme.primaryColor.back.dark
+            text: qsTr("1000 G")
+        }
+        Repeater
+        {
+            id: gRepeater
+
+            QuickFilterFieldControl
             {
-                if (!internalUiUpdate)
+                id: gItem
+                width: content.width
+                model: modelData
+                onLabelWidthChanged:
                 {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
+                    root.labelWidth = Math.max(labelWidth, root.labelWidth);
+                    labelWidth = root.labelWidth;
                 }
+                Binding { target: gItem; property: "labelWidth"; value: root.labelWidth; }
             }
         }
-        // Exac AFR
-        QuickFilterFieldControl
+
+
+
+        // Exac
+        Text
         {
-            id: exacAfr
-            checkBox.onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
+            anchors.left: parent.left
+            anchors.leftMargin: 5
+
+            elide: Text.ElideRight
+            font.pixelSize: Regovar.theme.font.size.normal
+            color: Regovar.theme.primaryColor.back.dark
+            text: qsTr("Exac")
         }
-        // Exac AMR
-        QuickFilterFieldControl
+        Repeater
         {
-            id: exacAmr
-            checkBox.onCheckedChanged:
+            id: exacRepeater
+
+            QuickFilterFieldControl
             {
-                if (!internalUiUpdate)
+                id: exacItem
+                width: content.width
+                model: modelData
+                onLabelWidthChanged:
                 {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
+                    root.labelWidth = Math.max(labelWidth, root.labelWidth);
+                    labelWidth = root.labelWidth;
                 }
-            }
-        }
-        // Exac Adj
-        QuickFilterFieldControl
-        {
-            id: exacAdj
-            checkBox.onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
-        }
-        // Exac EAS
-        QuickFilterFieldControl
-        {
-            id: exacEas
-            checkBox.onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
-        }
-        // Exac FIN
-        QuickFilterFieldControl
-        {
-            id: exacFin
-            checkBox.onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
-        }
-        // Exac NFE
-        QuickFilterFieldControl
-        {
-            id: exacNfe
-            checkBox.onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
-            }
-        }
-        // Exac SAS
-        QuickFilterFieldControl
-        {
-            id: exacSas
-            checkBox.onCheckedChanged:
-            {
-                if (!internalUiUpdate)
-                {
-                    // Update other checkboxes
-                    internalUiUpdate = true;
-                    if (checked)
-                    {
-                        frqAll.checked = false;
-                    }
-                    checkFinal();
-                    internalUiUpdate = false;
-                }
+                Binding { target: exacItem; property: "labelWidth"; value: root.labelWidth; }
             }
         }
     }

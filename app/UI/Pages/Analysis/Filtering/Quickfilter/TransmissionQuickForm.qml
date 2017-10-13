@@ -17,6 +17,11 @@ QuickFilterBox
 
     property bool internalUiUpdate: false
 
+    onModelChanged:
+    {
+        root.enabled = model.quickfilters.transmissionFilter.isVisible();
+    }
+
 
     function checkFinal()
     {

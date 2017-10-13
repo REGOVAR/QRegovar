@@ -15,6 +15,10 @@ QuickFilterBox
     isExpanded: false
     property bool internalUiUpdate: false
 
+    onModelChanged:
+    {
+        root.enabled = model.quickfilters.typeFilter.isVisible();
+    }
 
     function checkFinal()
     {

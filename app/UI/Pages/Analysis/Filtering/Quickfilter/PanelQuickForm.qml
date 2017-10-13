@@ -18,6 +18,11 @@ QuickFilterBox
     property bool internalUiUpdate: false
 
 
+    onModelChanged:
+    {
+        //root.enabled = model.quickfilters.panelFilter.isVisible();
+    }
+
     function checkFinal()
     {
 //        // Mode

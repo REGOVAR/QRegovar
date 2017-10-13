@@ -16,6 +16,12 @@ RowLayout
     property bool initializing: false
     property alias checkBox: fieldCheck
     property alias checked: fieldCheck.checked
+    property real labelWidth: 50;
+    onLabelWidthChanged:
+    {
+        fieldCheck.Layout.minimumWidth = labelWidth;
+        //console.log(" > " + fieldCheck.width);
+    }
 
 
     onModelChanged:
@@ -35,7 +41,7 @@ RowLayout
         id: fieldCheck
         anchors.left: parent.left
         anchors.leftMargin: 25
-        width: 150
+        onWidthChanged: root.labelWidth = width;
     }
     Binding { target: model; property: "isActive"; value: fieldCheck.checked; }
 

@@ -6,14 +6,9 @@
 InSilicoPredQuickFilter::InSilicoPredQuickFilter(int) : QuickFilterBlockInterface()
 {
     mIsVisible = false;
-
-    // List of fields uid
-//    mFields = QList<QuickFilterField*>();
-//    mFields << new QuickFilterField("60b0b4839b6d5695f93667b7204de187", "==", "Benin");   // sift (VEP)
-//    mFields << new QuickFilterField("150a41806541fd1c09be22cb1c92b03b", "==", "Benin");   // polyphen (VEP)
-//    mFields << new QuickFilterField("89b35362318e2992c3f05f0042889830", ">", 15);         // cadd (dbNSFP)
-
 }
+
+
 
 void InSilicoPredQuickFilter::init(QString siftUid, QString polyUid, QString caddUid)
 {
@@ -127,7 +122,7 @@ void InSilicoPredQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
                         siftUid = annot->uid();
                         mIsVisible = true;
                     }
-                    if (annot && annot->name().toLower() == "polyphen_pred")
+                    else if (annot && annot->name().toLower() == "polyphen_pred")
                     {
                         polyUid = annot->uid();
                         mIsVisible = true;

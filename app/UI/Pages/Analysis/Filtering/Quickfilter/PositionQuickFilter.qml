@@ -16,7 +16,6 @@ QuickFilterBox
 
     property bool internalUiUpdate: false
 
-
     function checkFinal()
     {
         // Mode

@@ -37,6 +37,8 @@ QuickFilterBox
             predSift.enabled = m.sift.isDisplayed;
             predPoly.enabled = m.polyphen.isDisplayed;
             predCadd.enabled = m.cadd.isDisplayed;
+
+            root.enabled = model.quickfilters.inSilicoPredFilter.isVisible();
         }
     }
 

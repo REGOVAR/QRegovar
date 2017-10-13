@@ -112,7 +112,7 @@ TreeView
             anchors.leftMargin: 5
 
             font.pixelSize: 16 // Regovar.theme.font.size.normal
-            text: styleData.isExpanded ? "{" : "["
+            text: styleData.isExpanded ? "[" : "{"
             font.family: Regovar.theme.icons.name
         }
     }
