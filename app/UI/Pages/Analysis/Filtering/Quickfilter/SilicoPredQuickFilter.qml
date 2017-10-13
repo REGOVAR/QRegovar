@@ -25,6 +25,8 @@ QuickFilterBox
         pf.sift.isActive = predSift.checked;
         pf.polyphen.isActive = predPoly.checked;
         pf.cadd.isActive = predCadd.checked;
+
+
     }
 
     onModelChanged:
@@ -107,8 +109,15 @@ QuickFilterBox
                 enabled: predSift.enabled
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
-                model: [ qsTr("Tolerated"), qsTr("Deleterious")]
-                onCurrentTextChanged: if (root.model) predSift.checked = true
+                model: ["tolerated", "deleterious"]
+                onCurrentTextChanged:
+                {
+                    if (root.model)
+                    {
+                        predSift.checked = true;
+                        root.model.quickfilters.inSilicoPredFilter.sift.value = currentText;
+                    }
+                }
             }
 
 
@@ -137,8 +146,15 @@ QuickFilterBox
                 enabled: predPoly.enabled
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
-                model: [ "Benign", "Possibly Damaging", "Probably Damaging", "Damaging", "Unknow" ]
-                onCurrentTextChanged: if (root.model) predPoly.checked = true
+                model: ["benign", "possibly_damaging", "probably_damaging", "damaging", "unknown"]
+                onCurrentTextChanged:
+                {
+                    if (root.model)
+                    {
+                        predPoly.checked = true;
+                        root.model.quickfilters.inSilicoPredFilter.polyphen.value = currentText;
+                    }
+                }
             }
 
 
@@ -166,9 +182,16 @@ QuickFilterBox
             {
                 id: caddOperator
                 enabled: predCadd.enabled
-                model: [ "<", "≤", "=", "≥", ">", "≠" ]
                 currentIndex: 3
-                onCurrentTextChanged: if (root.model) predCadd.checked = true
+                model: [ "<", "≤", "=", "≥", ">", "≠" ]
+                onCurrentTextChanged:
+                {
+                    if (root.model)
+                    {
+                        predCadd.checked = true;
+                        root.model.quickfilters.inSilicoPredFilter.cadd.op = currentText;
+                    }
+                }
             }
             TextFieldForm
             {
@@ -176,7 +199,11 @@ QuickFilterBox
                 enabled: predCadd.enabled
                 Layout.fillWidth: true
                 onTextEdited: predCadd.checked = true
-                onTextChanged:predCadd.checked = true
+                onTextChanged:
+                {
+                    predCadd.checked = true;
+                    root.model.quickfilters.inSilicoPredFilter.cadd.value = text;
+                }
                 text: "10"
             }
         }

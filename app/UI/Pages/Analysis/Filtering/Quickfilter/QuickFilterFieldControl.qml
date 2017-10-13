@@ -63,7 +63,7 @@ RowLayout
         id: fieldValue
         Layout.fillWidth: true
 
-        //onTextEdited: fieldCheck.checked = true
+        onTextEdited: fieldCheck.checked = true
         onTextChanged: fieldCheck.checked = true
     }
     Binding { target: model; property: "value"; value: fieldValue.text; }

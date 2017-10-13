@@ -28,15 +28,18 @@ void InSilicoPredQuickFilter::init(QString siftUid, QString polyUid, QString cad
     // Sift
     mFields << new QuickFilterField(siftUid, "", mOperators, "==", "tolerated");
     mFields[0]->setIsDisplayed(!siftUid.isEmpty());
+    mFields[0]->setIsActive(false);
 
 
     // Polyphen
     mFields << new QuickFilterField(polyUid, "", mOperators, "==", "benign");
     mFields[1]->setIsDisplayed(!polyUid.isEmpty());
+    mFields[1]->setIsActive(false);
 
     // CADD
     mFields << new QuickFilterField(caddUid, "", mOperators, ">", 15);
     mFields[2]->setIsDisplayed(!caddUid.isEmpty());
+    mFields[2]->setIsActive(false);
 }
 
 
@@ -50,7 +53,40 @@ bool InSilicoPredQuickFilter::isVisible()
 
 QJsonArray InSilicoPredQuickFilter::toJson()
 {
+    QJsonArray conditions;
+    // Sift
+    if (mFields[0]->isActive())
+    {
+        QuickFilterField* field = mFields[0];
+        QString old = field->value().toString();
+        conditions.append(field->toJson());
+        field->setValue(old + "_low_confidence");
+        conditions.append(field->toJson());
+        field->setValue(old);
+    }
+    // Polyphen
+    if (mFields[1]->isActive())
+    {
+        conditions.append(mFields[1]->toJson());
+    }
+    // CADD
+    if (mFields[2]->isActive())
+    {
+        conditions.append(mFields[2]->toJson());
+    }
+
+    if (conditions.count() == 0)
+    {
+        return conditions;
+    }
+    if (conditions.count() == 1)
+    {
+        return conditions[0].toArray();
+    }
+
     QJsonArray result;
+    result.append("OR");
+    result.append(conditions);
     return result;
 }
 
