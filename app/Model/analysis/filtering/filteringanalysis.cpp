@@ -357,21 +357,15 @@ void FilteringAnalysis::getVariantInfo(QString variantId)
 
 
 
-void FilteringAnalysis::saveCurrentFilter(bool quickFilter, QString filterName, QString filterDescription)
+void FilteringAnalysis::saveCurrentFilter(QString filterName, QString filterDescription)
 {
     QJsonArray filter;
-    if (quickFilter)
-    {
-        //QJsonDocument f = QJsonDocument::fromJson(QString::toUtf8());
-        filter = mQuickFilters->toJson();
-    }
-    else
-    {
-        filter = mAdvancedFilter->toJson();
-    }
+
+    filter = mAdvancedFilter->toJson();
 
     QJsonObject body;
     body.insert("filter", filter);
+    body.insert("current_filter", true);
     body.insert("name", filterName);
     if (!filterDescription.isEmpty())
     {

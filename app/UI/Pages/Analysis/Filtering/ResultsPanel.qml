@@ -39,17 +39,36 @@ Rectangle
         color: Regovar.theme.backgroundColor.alt
 
 
-        Text
+        RowLayout
         {
             anchors.bottom: header.bottom
             anchors.top: header.top
             anchors.left: header.left
             anchors.margins: 10
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignRight
+            spacing: 5
 
-            font.pixelSize: Regovar.theme.font.size.header
-            text: ( root.model != null) ?  Regovar.formatBigNumber(root.model.results.total) + " " + ((root.model.results.total > 1) ? qsTr("results") : qsTr("result")) : ""
+            SaveFilterButton
+            {
+                Layout.fillWidth: true
+//                text: qsTr("Current filter")
+//                iconText: "5"
+                text: qsTr("My custom filter")
+                iconText: "D"
+                height: header.height - 20
+                onClicked:
+                {
+                    model.emitDisplayFilterSavingFormPopup();
+                }
+            }
+
+            Text
+            {
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignRight
+
+                font.pixelSize: Regovar.theme.font.size.header
+                text: ( root.model != null) ? ": " + Regovar.formatBigNumber(root.model.results.total) + " " + ((root.model.results.total > 1) ? qsTr("variants") : qsTr("variant")) : ""
+            }
         }
         ConnectionStatus
         {
@@ -62,17 +81,57 @@ Rectangle
 
     }
 
+    // Help information on this page
+    Box
+    {
+        id: helpInfoBox
+        anchors.top : header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.margins: 10
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        mainColor: Regovar.theme.frontColor.success
+        icon: "k"
+        text: qsTr("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tristique eu lorem sit amet viverra. Vivamus vitae fringilla nibh. Mauris tempor neque eu mauris tristique consequat. Curabitur dui enim, tempor ut quam vel, sagittis tempus diam. Praesent eu erat ante.")
+    }
 
 
+    RowLayout
+    {
+        id: controlPanel
+        anchors.top : header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.margins: 10
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
+
+        spacing: 10
+
+        TextField
+        {
+            Layout.fillWidth: true
+            iconLeft: "z"
+            placeholderText: qsTr("Search by position chr1:422566 or by genes names...")
+        }
+        ComboBox
+        {
+            model: ["Group By", "Gene Name"]
+        }
+
+    }
 
 
 
     TreeView
     {
         id: resultsTree
-        anchors.fill: rightPanel
+        anchors.top: controlPanel.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.bottom: root.bottom
         anchors.margins: 10
-        anchors.topMargin: 60
 
 
         signal checked(string uid, bool isChecked)
@@ -327,7 +386,7 @@ Rectangle
                         Repeater
                         {
 
-                            model: resultsTree.mapToList(styleData.value)
+                            model: styleData.value ? resultsTree.mapToList(styleData.value) : null
 
 
                             Text

@@ -8,7 +8,7 @@
 class Sample : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int id READ id)
+    Q_PROPERTY(int id READ id NOTIFY idChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(QString nickname READ nickname WRITE setNickname NOTIFY nicknameChanged)
     Q_PROPERTY(bool isMosaic READ isMosaic WRITE setIsMosaic NOTIFY isMosaicChanged)
@@ -89,6 +89,7 @@ Q_SIGNALS:
     void statusChanged();
     void sexChanged();
     void isIndexChanged();
+    void idChanged(); // never raised, but avoid QML binding warning log about "non-NOTIFIYable properties"
 
 public Q_SLOTS:
 

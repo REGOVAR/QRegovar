@@ -112,7 +112,7 @@ public:
     Q_INVOKABLE inline void emitDisplayFilterSavingFormPopup() { emit displayFilterSavingFormPopup(); }
     Q_INVOKABLE inline void emitDisplayFilterNewCondPopup(QString conditionUid) { emit displayFilterNewCondPopup(conditionUid); }
     Q_INVOKABLE inline void emitSelectedAnnotationsDBChanged() { emit selectedAnnotationsDBChanged(); }
-    Q_INVOKABLE void saveCurrentFilter(bool quickFilter, QString filterName, QString filterDescription);
+    Q_INVOKABLE void saveCurrentFilter(QString filterName, QString filterDescription);
     Q_INVOKABLE void loadFilter(QString filter);
     Q_INVOKABLE void loadFilter(QJsonObject filter);
     Q_INVOKABLE void loadFilter(QJsonArray filter);

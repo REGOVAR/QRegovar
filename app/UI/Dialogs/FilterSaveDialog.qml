@@ -13,144 +13,158 @@ Dialog
 
     title: qsTr("Save your filter")
 
-    width: 300
-    height: 200
+    width: 500
+    height: 300
 
     property alias filterName: nameField.text
     property alias filterDescription: descriptionField.text
-    property bool quickfilter: true
 
 
 
 
     contentItem: Rectangle
     {
-        anchors.fill : parent
+        id: root
         color: Regovar.theme.backgroundColor.main
+
 
         Rectangle
         {
             id: header
-            color: Regovar.theme.primaryColor.back.dark
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            height: 50
+            anchors.top : root.top
+            anchors.left: root.left
+            anchors.right: root.right
+            height: 100
 
-            Row
+            color: Regovar.theme.primaryColor.back.normal
+
+
+            Text
             {
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
+                id: headerIcon
+                anchors.top : parent.top
                 anchors.left: parent.left
+                anchors.margins: 10
+                width: 80
+                height: 80
 
-                Text
-                {
-                    text: "5"
-                    color: Regovar.theme.primaryColor.front.dark
-                    font.family: Regovar.theme.icons.name
-                    font.weight: Font.Black
-                    font.pixelSize: Regovar.theme.font.size.header
-                    width: 50
-                    height: 50
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment:  Text.AlignHCenter
-                }
+                text: "5"
+                color: Regovar.theme.primaryColor.front.dark
+                font.family: Regovar.theme.icons.name
+                font.weight: Font.Black
+                font.pixelSize: 80
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment:  Text.AlignHCenter
+            }
 
-                Text
-                {
-                    text: qsTr("Save your filter")
-                    color: Regovar.theme.primaryColor.front.dark
-                    font.family: "Sans"
-                    font.weight: Font.Black
-                    font.pixelSize: Regovar.theme.font.size.header
-                    height: 50
-                    verticalAlignment: Text.AlignVCenter
-                }
+
+            Text
+            {
+                anchors.top : parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.topMargin: 10
+                anchors.leftMargin: 100
+
+
+                text: qsTr("Save your filter")
+                font.pixelSize: Regovar.theme.font.size.title
+                font.bold: true
+                color: Regovar.theme.primaryColor.front.normal
+                elide: Text.ElideRight
+            }
+            Text
+            {
+                anchors.top : parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.margins: 10
+                anchors.topMargin: 15 + Regovar.theme.font.size.title
+                anchors.leftMargin: 100
+                wrapMode: "WordWrap"
+                elide: Text.ElideRight
+
+                text: qsTr("Give a name and an optional description to your current filter will allow you to retrieve it and reload it quickly thanks to the left panel \"saved filters\".")
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.primaryColor.front.normal
             }
         }
 
-        ColumnLayout
+
+        GridLayout
         {
-            anchors.left: parent.left
-            anchors.right: parent.right
             anchors.top: header.bottom
+            anchors.left: root.left
+            anchors.right: root.right
+            anchors.bottom: okButton.top
+            anchors.margins: 10
+
+            columns: 2
+            rows:2
+            columnSpacing: 30
+            rowSpacing: 10
+
+            Text
+            {
+                text: qsTr("Name*")
+                font.weight: Font.Black
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height:  Regovar.theme.font.boxSize.normal
+            }
+            TextField
+            {
+                id: nameField
+                Layout.fillWidth: true
+                placeholderText: qsTr("Name of your filter (mandatory)")
+            }
+            Text
+            {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Description")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height: Regovar.theme.font.boxSize.normal
+            }
+            TextArea
+            {
+                id: descriptionField
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
+        }
+
+
+        Button
+        {
+            id: okButton
+            anchors.right: parent.right
             anchors.bottom: parent.bottom
             anchors.margins: 10
 
-
-            Grid
+            text: qsTr("Save")
+            onClicked:
             {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-
-                columns: 2
-                rows:2
-                columnSpacing: 30
-                rowSpacing: 10
-
-                Text
-                {
-                    text: qsTr("Name*")
-                    font.weight: Font.Black
-                    color: Regovar.theme.primaryColor.back.dark
-                    font.pixelSize: Regovar.theme.font.size.header
-                    font.family: Regovar.theme.font.familly
-                    verticalAlignment: Text.AlignVCenter
-                    height: 35
-                }
-                TextField
-                {
-                    id: nameField
-                    Layout.fillWidth: true
-                    placeholderText: qsTr("Name of your filter (mandatory)")
-                }
-                Text
-                {
-                    text: qsTr("Description")
-                    color: Regovar.theme.primaryColor.back.dark
-                    font.pixelSize: Regovar.theme.font.size.header
-                    font.family: Regovar.theme.font.familly
-                    verticalAlignment: Text.AlignVCenter
-                    height: 35
-                }
-                TextArea
-                {
-                    id: descriptionField
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                }
+                model.saveCurrentFilter(filterSavingFormPopup.filterName, filterSavingFormPopup.filterDescription);
+                filterSavingFormPopup.close();
             }
+        }
+        Button
+        {
+            id: cancelButton
+            anchors.right: okButton.left
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
 
-            Row
+            text: qsTr("Cancel")
+            onClicked:
             {
-                spacing: 10
-                anchors.right: parent.right
-                height: cancelButton.height
-                width: cancelButton.width + 10 + okButton.width
-
-
-                Button
-                {
-                    id: cancelButton
-                    text: qsTr("Cancel")
-
-                    onClicked:
-                    {
-                        filterSavingFormPopup.close();
-                    }
-                }
-
-                Button
-                {
-                    id: okButton
-                    text: qsTr("Save")
-
-                    onClicked:
-                    {
-                        model.saveCurrentFilter(filterSavingFormPopup.quickfilter, filterSavingFormPopup.filterName, filterSavingFormPopup.filterDescription);
-                        filterSavingFormPopup.close();
-                    }
-                }
+                filterSavingFormPopup.close();
             }
         }
     }

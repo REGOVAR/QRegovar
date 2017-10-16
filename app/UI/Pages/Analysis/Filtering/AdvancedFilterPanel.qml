@@ -93,24 +93,28 @@ Rectangle
         }
 
 
-        ButtonWelcom
+        ColumnLayout
         {
-            Layout.fillWidth: true
-            text: qsTr("Apply current filter")
-            iconText: "x"
-            onClicked:
+            width: root.width - 20
+
+            spacing: 10
+            Button
             {
-                model.results.applyFilter(model.advancedfilter.toJson());
+                Layout.fillWidth: true
+                text: qsTr("Apply filter")
+                onClicked:
+                {
+                    model.results.applyFilter(model.advancedfilter.toJson());
+                }
             }
-        }
-        ButtonWelcom
-        {
-            Layout.fillWidth: true
-            text: qsTr("Save current filter")
-            iconText: "5"
-            onClicked:
+            Button
             {
-                model.emitDisplayFilterSavingFormPopup();
+                Layout.fillWidth: true
+                text: qsTr("Clear filter")
+                onClicked:
+                {
+                    model.emitDisplayFilterSavingFormPopup();
+                }
             }
         }
     }
