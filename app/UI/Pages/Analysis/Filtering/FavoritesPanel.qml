@@ -17,7 +17,7 @@ Rectangle
     property FilteringAnalysis model
     onModelChanged:
     {
-        filterList.model = model.filters;
+        //filterList.model = model.filters;
     }
 
     ColumnLayout
@@ -37,6 +37,7 @@ Rectangle
 
         Rectangle
         {
+            id: filterPanel
             Layout.fillHeight: true
             Layout.fillWidth: true
 
@@ -52,11 +53,13 @@ Rectangle
                 clip:true
                 ScrollBar.vertical: ScrollBar { }
 
+                model: [1,5,6,7,1,3]
+
+
                 delegate: Rectangle
                 {
                     id: filterItemRoot
-                    anchors.left: parent.left
-                    anchors.right: parent.right
+                    width: filterList.width
                     height: 25
                     color: (filterList.currentIndex == index) ? Regovar.theme.secondaryColor.back.light : currentColor
 
@@ -70,29 +73,29 @@ Rectangle
                         anchors.bottom: parent.bottom
                         anchors.left: parent.left
                         anchors.right: filterItemCount.left
-                        text: model.modelData.name
+                        text: "Name " + modelData //+ modelData.name
                     }
-                    Text
-                    {
-                        id: filterItemCount
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        anchors.right: parent.right
-                        text: (model.modelData.total_variants == null) ? "?" : model.modelData.total_variants
-                    }
+//                    Text
+//                    {
+//                        id: filterItemCount
+//                        anchors.top: parent.top
+//                        anchors.bottom: parent.bottom
+//                        anchors.right: parent.right
+//                        text: "1 256" // (modelData.total_variants == null) ? "?" : modelData.total_variants
+//                    }
 
-                    MouseArea
-                    {
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onEntered: filterItemRoot.currentColor = Regovar.theme.secondaryColor.back.normal
-                        onExited: filterItemRoot.currentColor = (index % 2 == 0) ? "transparent" : Regovar.theme.backgroundColor.main
-                        cursorShape: Qt.PointingHandCursor
+//                    MouseArea
+//                    {
+//                        anchors.fill: parent
+//                        hoverEnabled: true
+//                        onEntered: filterItemRoot.currentColor = Regovar.theme.secondaryColor.back.normal
+//                        onExited: filterItemRoot.currentColor = (index % 2 == 0) ? "transparent" : Regovar.theme.backgroundColor.main
+//                        cursorShape: Qt.PointingHandCursor
 
-                        onClicked: filterList.currentIndex = index
+//                        //onClicked: filterList.currentIndex = index
 
-                        onDoubleClicked: root.loadFilter(model.modelData)
-                    }
+//                        // onDoubleClicked: root.loadFilter(model.modelData)
+//                    }
                 }
             }
         }
@@ -100,7 +103,7 @@ Rectangle
         {
             anchors.right: parent.right
             text: qsTr("Load")
-            onClicked: root.loadFilter(filterList.model[filterList.currentIndex])
+            //onClicked: root.loadFilter(filterList.model[filterList.currentIndex])
         }
     }
     function loadFilter(filter)

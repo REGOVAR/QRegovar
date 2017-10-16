@@ -388,6 +388,8 @@ void FilteringAnalysis::saveCurrentFilter(QString filterName, QString filterDesc
         }
         req->deleteLater();
     });
+
+
 }
 
 

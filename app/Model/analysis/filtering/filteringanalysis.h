@@ -29,6 +29,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsChanged)             // List of fields UID shared with Server to retrieve information about variant/trx
     Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged)   // TODO : shall be results.total
     Q_PROPERTY(QList<QObject*> samples READ samples4qml NOTIFY samplesChanged)
+    Q_PROPERTY(QList<QObject*> filters READ filters NOTIFY filtersChanged)
     Q_PROPERTY(bool isTrio READ isTrio WRITE setIsTrio NOTIFY isTrioChanged)
     Q_PROPERTY(Sample* child READ trioChild WRITE setTrioChild NOTIFY trioChildChanged)
     Q_PROPERTY(Sample* mother READ trioMother WRITE setTrioMother NOTIFY trioMotherChanged)
@@ -76,6 +77,7 @@ public:
     inline int resultsTotal() { return mResultsTotal; }
     inline QVariantList savedFilters() { return mSavedFilters; }
     inline QList<Sample*> samples() { return mSamples; }
+    inline QList<QObject*> filters() { return mFilters; }
     inline bool isTrio() const { return mIsTrio; }
     inline Sample* trioChild() const { return mTrioChild; }
     inline Sample* trioMother() const { return mTrioMother; }
@@ -151,6 +153,7 @@ Q_SIGNALS:
     void trioFatherChanged();
     void isLoadingChanged();
     void newConditionModelChanged();
+    void filtersChanged();
 
 
 public Q_SLOTS:
@@ -166,6 +169,7 @@ private:
     QStringList mFields;
     QJsonArray mFilterJson;
     QList<Sample*> mSamples;
+    QList<QObject*> mFilters;
     bool mSampleColumnDisplayed;
 
     QString mStatus; // status of the analysis (server side)
