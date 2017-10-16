@@ -56,23 +56,42 @@ bool FrequenceQuickFilter::isVisible()
 QJsonArray FrequenceQuickFilter::toJson()
 {
     QJsonArray filters;
-//    foreach (QuickFilterField* field, mFields)
-//    {
-//        if (field->isActive())
-//        {
-//            filters.append(field->toJson());
-//        }
-//    }
 
-//    if (filters.count() > 1)
-//    {
-//        QJsonArray result;
-//        result.append("AND");
-//        result.append(filters);
-//        return result;
-//    }
-//    else if (filters.count() == 1)
-//        return filters[0].toArray();
+    if (m1000GAll->isActive())
+    {
+        filters.append(m1000GAll->toJson());
+    }
+    if (mExacAll->isActive())
+    {
+        filters.append(mExacAll->toJson());
+    }
+
+    foreach (QObject* o, m1000GFields)
+    {
+        QuickFilterField* field = qobject_cast<QuickFilterField*>(o);
+        if (field->isActive())
+        {
+            filters.append(field->toJson());
+        }
+    }
+    foreach (QObject* o, mExacFields)
+    {
+        QuickFilterField* field = qobject_cast<QuickFilterField*>(o);
+        if (field->isActive())
+        {
+            filters.append(field->toJson());
+        }
+    }
+
+    if (filters.count() > 1)
+    {
+        QJsonArray result;
+        result.append("AND");
+        result.append(filters);
+        return result;
+    }
+    else if (filters.count() == 1)
+        return filters[0].toArray();
     return filters;
 }
 
