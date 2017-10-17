@@ -107,15 +107,6 @@ Rectangle
                     model.results.applyFilter(model.advancedfilter.toJson());
                 }
             }
-            Button
-            {
-                Layout.fillWidth: true
-                text: qsTr("Clear filter")
-                onClicked:
-                {
-                    model.emitDisplayFilterSavingFormPopup();
-                }
-            }
         }
     }
 
@@ -127,8 +118,11 @@ Rectangle
         onAddNewCondition:
         {
             console.log("AddNewCond from UUID : " + newCondLogicalGroupUuid + " " + conditionJson);
+            // Update filter
             advancedFilterEditor.update()
             advancedFilterEditor.model.addCondition(newCondLogicalGroupUuid, conditionJson);
+            // Update Title
+            root.model.currentFilterName = "";
         }
     }
     Connections

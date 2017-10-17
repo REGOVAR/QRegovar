@@ -3,6 +3,7 @@
 #include "Model/framework/request.h"
 #include "Model/regovar.h"
 #include "annotation.h"
+#include "savedfilter.h"
 
 FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 {
@@ -80,10 +81,10 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
 
 
     // Retrieve saved filters
-    mSavedFilters.clear();
+    mFilters.clear();
     foreach (const QJsonValue filterdata, json["filters"].toArray())
     {
-        mSavedFilters.append(filterdata.toObject());
+        mFilters.append(new SavedFilter(filterdata.toObject()));
     }
     emit filterChanged();
 

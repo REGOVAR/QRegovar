@@ -52,8 +52,8 @@ Rectangle
                 Layout.fillWidth: true
 //                text: qsTr("Current filter")
 //                iconText: "5"
-                text: qsTr("My custom filter")
-                iconText: "D"
+                text: model.currentFilterName ? model.currentFilterName : qsTr("New filter")
+                iconText: model.currentFilterName ? "D" : "5"
                 height: header.height - 20
                 onClicked:
                 {

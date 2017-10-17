@@ -41,13 +41,13 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsChanged)
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY filterChanged)
     Q_PROPERTY(AdvancedFilterModel* advancedfilter READ advancedfilter NOTIFY filterChanged)
-    Q_PROPERTY(QVariantList savedFilters READ savedFilters NOTIFY filterChanged)
     // New/Edit ConditionDialog
     Q_PROPERTY(NewAdvancedFilterModel* newConditionModel READ newConditionModel NOTIFY newConditionModelChanged)
     // "Shortcuts properties" for QML
     // Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
     Q_PROPERTY(QStringList selectedAnnotationsDB READ selectedAnnotationsDB NOTIFY selectedAnnotationsDBChanged)
+    Q_PROPERTY(QString currentFilterName READ currentFilterName WRITE setCurrentFilterName NOTIFY currentFilterNameChanged)
 
 
 
@@ -75,7 +75,6 @@ public:
     inline QJsonArray filterJson() { return mFilterJson; }
     inline QStringList fields() { return mFields; }
     inline int resultsTotal() { return mResultsTotal; }
-    inline QVariantList savedFilters() { return mSavedFilters; }
     inline QList<Sample*> samples() { return mSamples; }
     inline QList<QObject*> filters() { return mFilters; }
     inline bool isTrio() const { return mIsTrio; }
@@ -96,16 +95,18 @@ public:
     QStringList resultColumns();
     QStringList selectedAnnotationsDB();
     inline bool isLoading() const { return mIsLoading; }
+    inline QString currentFilterName() const { return mCurrentFilterName; }
 
     // Setters
     Q_INVOKABLE inline void setFilterJson(QJsonArray filterJson) { mFilterJson = filterJson; emit filterChanged(); }
+    Q_INVOKABLE inline void setIsTrio(bool flag) { mIsTrio=flag; emit isTrioChanged(); }
+    Q_INVOKABLE inline void setTrioChild(Sample* child) { mTrioChild=child; emit trioChildChanged(); }
+    Q_INVOKABLE inline void setTrioMother(Sample* mother) { mTrioMother=mother; emit trioMotherChanged(); }
+    Q_INVOKABLE inline void setTrioFather(Sample* father) { mTrioFather=father; emit trioFatherChanged(); }
+    Q_INVOKABLE inline void setIsLoading(bool flag) { mIsLoading=flag; emit isLoadingChanged(); }
+    Q_INVOKABLE inline void setCurrentFilterName(QString name) { mCurrentFilterName=name; emit currentFilterNameChanged(); }
     Q_INVOKABLE int setField(QString uid, bool isDisplayed, int order=-1);
     Q_INVOKABLE void setReference(Reference* ref, bool continueInit=false);
-    Q_INVOKABLE void setIsTrio(bool flag) { mIsTrio=flag; emit isTrioChanged(); }
-    Q_INVOKABLE void setTrioChild(Sample* child) { mTrioChild=child; emit trioChildChanged(); }
-    Q_INVOKABLE void setTrioMother(Sample* mother) { mTrioMother=mother; emit trioMotherChanged(); }
-    Q_INVOKABLE void setTrioFather(Sample* father) { mTrioFather=father; emit trioFatherChanged(); }
-    Q_INVOKABLE void setIsLoading(bool flag) { mIsLoading=flag; emit isLoadingChanged(); }
 
     // Methods
     bool fromJson(QJsonObject json);
@@ -154,6 +155,7 @@ Q_SIGNALS:
     void isLoadingChanged();
     void newConditionModelChanged();
     void filtersChanged();
+    void currentFilterNameChanged();
 
 
 public Q_SLOTS:
@@ -192,9 +194,9 @@ private:
     Sample* mTrioMother;
     Sample* mTrioFather;
     int mResultsTotal;
-    QVariantList mSavedFilters;
     QList<int> mSamplesIds; // = mSamples, but use as shortcuts to check quickly by sample id
     bool mIsLoading;
+    QString mCurrentFilterName;
 
 
     // Methods

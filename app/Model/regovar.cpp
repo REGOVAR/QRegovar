@@ -24,6 +24,7 @@ void RegovarInfo::fromJson(QJsonObject json)
 {
     mServerVersion = json["version"].toString();
     mWebsite = json["website"].toString();
+
     if (VERSION_BUILD == 0)
     {
         mClientVersion= QString("%1.%2.dev").arg(VERSION_MAJOR).arg(VERSION_MINOR);

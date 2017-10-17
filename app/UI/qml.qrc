@@ -118,5 +118,6 @@
         <file>Framework/Slider.qml</file>
         <file>Charts/CircularGauge.qml</file>
         <file>Pages/Analysis/Filtering/SaveFilterButton.qml</file>
+        <file>Framework/ButtonTab.qml</file>
     </qresource>
 </RCC>
