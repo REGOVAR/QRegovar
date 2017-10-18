@@ -461,8 +461,8 @@ void FilteringAnalysis::editFilter(int filterId, QString filterName, QString fil
             if (!found)
             {
                 mFilters.append(new SavedFilter(json["data"].toObject()));
+                setCurrentFilterName(filterName);
             }
-            setCurrentFilterName(filterName);
             emit filtersChanged();
         }
         else
