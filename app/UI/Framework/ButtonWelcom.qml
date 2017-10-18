@@ -47,7 +47,7 @@ Button
     {
         anchors.fill: control
         color : control.hovered ? Regovar.theme.secondaryColor.back.normal : ( control.down ? Regovar.theme.secondaryColor.back.dark: "transparent")
-
+        radius: 2
         Behavior on color
         {
             ColorAnimation

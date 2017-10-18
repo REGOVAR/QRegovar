@@ -18,7 +18,8 @@ Dialog
 
     property alias filterName: nameField.text
     property alias filterDescription: descriptionField.text
-
+    property int filterId: -1
+    property bool saveAdvancedFilter: true
 
 
 
@@ -150,7 +151,7 @@ Dialog
             text: qsTr("Save")
             onClicked:
             {
-                model.saveCurrentFilter(filterSavingFormPopup.filterName, filterSavingFormPopup.filterDescription);
+                model.editFilter(filterId, filterSavingFormPopup.filterName, filterSavingFormPopup.filterDescription, saveAdvancedFilter);
                 filterSavingFormPopup.close();
             }
         }

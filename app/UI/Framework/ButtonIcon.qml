@@ -54,7 +54,7 @@ Button
         implicitWidth: 100
         implicitHeight: 24
         color : !control.enabled ? Regovar.theme.boxColor.disabled : ( control.down ? Regovar.theme.secondaryColor.back.dark: Regovar.theme.secondaryColor.back.normal)
-
+        radius: 2
         Behavior on color
         {
             ColorAnimation

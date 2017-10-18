@@ -51,11 +51,12 @@ ComboBox
 
     background: Rectangle
     {
-        implicitWidth: 60
+        implicitWidth: 40
         implicitHeight: Regovar.theme.font.boxSize.normal
         color: enabled ? Regovar.theme.boxColor.back : "transparent"
         border.color: !enabled ? Regovar.theme.frontColor.disable : control.pressed ? Regovar.theme.secondaryColor.back.light : control.color
         border.width: 1
+        radius: 2
     }
 
     popup: Popup

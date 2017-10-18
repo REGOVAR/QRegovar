@@ -293,6 +293,21 @@ Rectangle
     }
 
 
+    // DIALOGS
+    FilterSaveDialog { id: filterSavingFormPopup }
+    Connections
+    {
+        target: model
+        onDisplayFilterSavingFormPopup:
+        {
+            filterSavingFormPopup.saveAdvancedFilter = true;
+            filterSavingFormPopup.filterId = -1;
+            filterSavingFormPopup.filterName = "";
+            filterSavingFormPopup.filterDescription = "";
+            filterSavingFormPopup.open();
+        }
+    }
+
     QuestionDialog
     {
         id: deleteConfirmDialog
@@ -325,8 +340,11 @@ Rectangle
     }
     function editFilter(filter)
     {
-        console.log("Edit filter " + filter.name + "(" + filter.id + ")");
-        //root.model.loadFilter(filter);
+        filterSavingFormPopup.filterId = filter.id;
+        filterSavingFormPopup.filterName = filter.name;
+        filterSavingFormPopup.filterDescription = filter.description;
+        filterSavingFormPopup.saveAdvancedFilter = false;
+        filterSavingFormPopup.open();
     }
 
     property int filterToDelete

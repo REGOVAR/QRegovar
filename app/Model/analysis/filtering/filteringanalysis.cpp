@@ -365,54 +365,24 @@ void FilteringAnalysis::getVariantInfo(QString variantId)
 // ------------------------------------------------------------------------------------------------
 // Saved Filter
 
-
-void FilteringAnalysis::saveCurrentFilter(QString filterName, QString filterDescription)
-{
-    QJsonArray filter;
-
-    filter = mAdvancedFilter->toJson();
-
-    QJsonObject body;
-    body.insert("filter", filter);
-    body.insert("current_filter", true);
-    body.insert("name", filterName);
-    if (!filterDescription.isEmpty())
-    {
-        body.insert("description", filterDescription);
-    }
-
-    Request* req = Request::post(QString("/analysis/%1/filter").arg(mId), QJsonDocument(body).toJson());
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            mFilters.append(new SavedFilter(json["data"].toObject()));
-            emit filtersChanged();
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
-}
 void FilteringAnalysis::loadFilter(QString filter)
 {
     QJsonDocument doc = QJsonDocument::fromJson(filter.toUtf8());
     loadFilter(doc.array());
 }
+
 void FilteringAnalysis::loadFilter(QJsonObject filter)
 {
     loadFilter(filter["filter"].toArray());
 }
+
 void FilteringAnalysis::loadFilter(QJsonArray filter)
 {
     // mQuickFilters->loadFilter(filter);
     mAdvancedFilter->loadJson(filter);
     setFilterJson(filter);
 }
+
 void FilteringAnalysis::deleteFilter(int filterId)
 {
     Request* req = Request::del(QString("/analysis/%1/filter/%2").arg(mId).arg(filterId));
@@ -441,27 +411,41 @@ void FilteringAnalysis::deleteFilter(int filterId)
         req->deleteLater();
     });
 }
-void FilteringAnalysis::editFilter(SavedFilter* filter)
+
+void FilteringAnalysis::editFilter(int filterId, QString filterName, QString filterDescription, bool saveAdvancedFilter)
 {
     QJsonObject body;
-    body.insert("name", filter->name());
-    body.insert("description", filter->description());
-    body.insert("filter", filter->filter());
+    body.insert("name", filterName);
+    if (!filterDescription.isEmpty())
+    {
+        body.insert("description", filterDescription);
+    }
+    if (saveAdvancedFilter)
+    {
+        QJsonArray filter;
+        filter = mAdvancedFilter->toJson();
+        body.insert("filter", filter);
+    }
 
+    Request* req;
+    if (filterId != -1)
+    {
+        body.insert("id", filterId);
+        req = Request::put(QString("/analysis/%1/filter/%2").arg(mId).arg(filterId), QJsonDocument(body).toJson());
+    }
+    else
+    {
+        req = Request::post(QString("/analysis/%1/filter").arg(mId), QJsonDocument(body).toJson());
+    }
 
-    Request* req = Request::put(QString("/analysis/%1/filter/%2").arg(mId).arg(filter->id()), QJsonDocument(body).toJson());
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    connect(req, &Request::responseReceived, [this, req, filterName](bool success, const QJsonObject& json)
     {
         if (success)
-        {
-
-            emit filtersChanged();
-        }
-        else
         {
             // Update model with filter data from the server
             QJsonObject jsonData = json["data"].toObject();
             int id = jsonData["id"].toInt();
+            bool found = false;
             foreach (QObject* o, mFilters)
             {
                 SavedFilter* filter = qobject_cast<SavedFilter*>(o);
@@ -469,9 +453,20 @@ void FilteringAnalysis::editFilter(SavedFilter* filter)
                 {
                     filter->fromJson(jsonData);
                     emit filtersChanged();
+                    found = true;
                     break;
                 }
             }
+            // New filter ?
+            if (!found)
+            {
+                mFilters.append(new SavedFilter(json["data"].toObject()));
+            }
+            setCurrentFilterName(filterName);
+            emit filtersChanged();
+        }
+        else
+        {
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);

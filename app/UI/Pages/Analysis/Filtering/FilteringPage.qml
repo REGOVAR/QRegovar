@@ -75,18 +75,6 @@ Rectangle
 
 
 
-    // DIALOGS
-    FilterSaveDialog { id: filterSavingFormPopup }
-    Connections
-    {
-        target: model
-        onDisplayFilterSavingFormPopup:
-        {
-            filterSavingFormPopup.filterName = "";
-            filterSavingFormPopup.filterDescription = "";
-            filterSavingFormPopup.open();
-        }
-    }
 
 
 
