@@ -12,11 +12,12 @@ Dialog
     modality: Qt.WindowModal
 
 
-    width: 400
-    height: 200
 
-    property string text
-    property string icon
+    width: 300
+    height: 150
+
+    property alias text: questionLabel.text
+    property alias icon: questionIcon.text
     signal yes()
     signal no()
 
@@ -29,7 +30,7 @@ Dialog
 
         RowLayout
         {
-            anchors.top: root.bottom
+            anchors.top: root.top
             anchors.left: root.left
             anchors.right: root.right
             anchors.bottom: okButton.top
@@ -39,21 +40,22 @@ Dialog
 
             Text
             {
-                text: questionDialog.icon
+                id: questionIcon
+                Layout.fillHeight: true
+                width:  100
+                text: "i"
                 color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.title
+                font.pixelSize: 50
                 font.family: Regovar.theme.icons.name
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                height:  Regovar.theme.font.boxSize.title
-                width:  Regovar.theme.font.boxSize.title
             }
             Text
             {
+                id: questionLabel
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                Layout.alignment: Qt.AlignTop
-                text: questionDialog.text
+                text: "Your text..."
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.familly
@@ -75,6 +77,20 @@ Dialog
 
             Button
             {
+                id: noButton
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.margins: 10
+
+                text: qsTr("No")
+                onClicked:
+                {
+                    questionDialog.no();
+                    questionDialog.close();
+                }
+            }
+            Button
+            {
                 id: yesButton
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -86,20 +102,6 @@ Dialog
                     questionDialog.yes();
                     questionDialog.close();
 
-                }
-            }
-            Button
-            {
-                id: noButton
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.margins: 10
-
-                text: qsTr("No")
-                onClicked:
-                {
-                    questionDialog.no();
-                    questionDialog.close();
                 }
             }
         }

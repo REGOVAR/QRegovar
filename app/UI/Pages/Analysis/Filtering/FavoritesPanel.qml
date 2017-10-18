@@ -297,7 +297,8 @@ Rectangle
     {
         id: deleteConfirmDialog
         title: qsTr("Filter deletion")
-        onYes: model.deleteFilter(filterToDelete)
+        onYes: { model.deleteFilter(filterToDelete); filterToDelete = -1 }
+        onNo: filterToDelete = -1
     }
 
 
@@ -335,7 +336,7 @@ Rectangle
         txt = txt.replace("{}", filter.name);
         root.filterToDelete = filter.id;
 
-        deleteConfirmDialog.open();
         deleteConfirmDialog.text = txt;
+        deleteConfirmDialog.open();
     }
 }
