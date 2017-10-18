@@ -37,13 +37,11 @@ Rectangle
         anchors.fill: parent
         spacing: 0
 
-
         Rectangle
         {
             height: Regovar.theme.font.size.header + 20 // 20 = 2*10 to add spacing top+bottom
             Layout.fillWidth: true
             color: Regovar.theme.backgroundColor.main
-
 
             Text
             {
@@ -68,7 +66,6 @@ Rectangle
             }
         }
 
-
         ScrollView
         {
             Layout.fillHeight: true
@@ -84,7 +81,6 @@ Rectangle
             }
         }
 
-
         Rectangle
         {
             Layout.fillWidth: true
@@ -92,16 +88,20 @@ Rectangle
             color: Regovar.theme.primaryColor.back.light
         }
 
-
-        ColumnLayout
+        Rectangle
         {
-            width: root.width - 20
+            Layout.fillWidth: true
+            height: applyButton.height + 20
+            color: "transparent"
 
-            spacing: 10
-            Button
+            ButtonIcon
             {
-                Layout.fillWidth: true
+                id: applyButton
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.margins: 10
                 text: qsTr("Apply filter")
+                icon: "x"
                 onClicked:
                 {
                     model.results.applyFilter(model.advancedfilter.toJson());

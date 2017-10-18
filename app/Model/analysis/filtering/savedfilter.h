@@ -11,7 +11,7 @@ class SavedFilter : public QObject
     Q_PROPERTY(QString description READ description WRITE setDescription NOTIFY dataChanged)
     Q_PROPERTY(QJsonArray filter READ filter WRITE setFilter NOTIFY dataChanged)
     Q_PROPERTY(int count READ count WRITE setCount NOTIFY dataChanged)
-    Q_PROPERTY(double progress READ count WRITE setProgress NOTIFY dataChanged)
+    Q_PROPERTY(double progress READ progress WRITE setProgress NOTIFY dataChanged)
 
 
 public:

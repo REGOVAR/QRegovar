@@ -10,6 +10,7 @@
 #include "Model/sample/sample.h"
 #include "fieldcolumninfos.h"
 #include "reference.h"
+#include "savedfilter.h"
 #include "advancedfilters/advancedfiltermodel.h"
 
 class AdvancedFilterModel;
@@ -119,6 +120,8 @@ public:
     Q_INVOKABLE void loadFilter(QString filter);
     Q_INVOKABLE void loadFilter(QJsonObject filter);
     Q_INVOKABLE void loadFilter(QJsonArray filter);
+    Q_INVOKABLE void deleteFilter(int filterId);
+    Q_INVOKABLE void editFilter(SavedFilter* filter);
     Q_INVOKABLE void addSamples(QList<QObject*> samples);
     Q_INVOKABLE void removeSamples(QList<QObject*> samples);
     Q_INVOKABLE void addSamplesFromFile(int fileId);

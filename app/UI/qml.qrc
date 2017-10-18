@@ -119,5 +119,6 @@
         <file>Charts/CircularGauge.qml</file>
         <file>Pages/Analysis/Filtering/SaveFilterButton.qml</file>
         <file>Framework/ButtonTab.qml</file>
+        <file>Dialogs/QuestionDialog.qml</file>
     </qresource>
 </RCC>

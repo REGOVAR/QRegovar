@@ -25,9 +25,9 @@ public:
     void init(QString siftUid, QString polyUid, QString caddUid);
 
 
-    inline QuickFilterField* sift() { return mFields[0]; }
-    inline QuickFilterField* polyphen() { return mFields[1]; }
-    inline QuickFilterField* cadd() { return mFields[2]; }
+    inline QuickFilterField* sift() { return mFields.count() > 0 ? mFields[0] : nullptr; }
+    inline QuickFilterField* polyphen() { return mFields.count() > 1 ? mFields[1] : nullptr; }
+    inline QuickFilterField* cadd() { return mFields.count() > 2 ? mFields[2] : nullptr; }
 
 
 private:

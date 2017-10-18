@@ -3,7 +3,6 @@
 #include "Model/framework/request.h"
 #include "Model/regovar.h"
 #include "annotation.h"
-#include "savedfilter.h"
 
 FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 {
@@ -358,6 +357,15 @@ void FilteringAnalysis::getVariantInfo(QString variantId)
 
 
 
+
+
+
+
+
+// ------------------------------------------------------------------------------------------------
+// Saved Filter
+
+
 void FilteringAnalysis::saveCurrentFilter(QString filterName, QString filterDescription)
 {
     QJsonArray filter;
@@ -378,8 +386,8 @@ void FilteringAnalysis::saveCurrentFilter(QString filterName, QString filterDesc
     {
         if (success)
         {
-            // TODO : refresh list of filter in the view
-            qDebug() << "Filter saved !";
+            mFilters.append(new SavedFilter(json["data"].toObject()));
+            emit filtersChanged();
         }
         else
         {
@@ -389,12 +397,7 @@ void FilteringAnalysis::saveCurrentFilter(QString filterName, QString filterDesc
         }
         req->deleteLater();
     });
-
-
 }
-
-
-
 void FilteringAnalysis::loadFilter(QString filter)
 {
     QJsonDocument doc = QJsonDocument::fromJson(filter.toUtf8());
@@ -410,6 +413,80 @@ void FilteringAnalysis::loadFilter(QJsonArray filter)
     mAdvancedFilter->loadJson(filter);
     setFilterJson(filter);
 }
+void FilteringAnalysis::deleteFilter(int filterId)
+{
+    Request* req = Request::del(QString("/analysis/%1/filter/%2").arg(mId).arg(filterId));
+    connect(req, &Request::responseReceived, [this, req, filterId](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            // Update model by removing the saved filter
+            foreach (QObject* o, mFilters)
+            {
+                SavedFilter* filter = qobject_cast<SavedFilter*>(o);
+                if (filter->id() == filterId)
+                {
+                    mFilters.removeAll(filter);
+                    emit filtersChanged();
+                    break;
+                }
+            }
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
+void FilteringAnalysis::editFilter(SavedFilter* filter)
+{
+    QJsonObject body;
+    body.insert("name", filter->name());
+    body.insert("description", filter->description());
+    body.insert("filter", filter->filter());
+
+
+    Request* req = Request::put(QString("/analysis/%1/filter/%2").arg(mId).arg(filter->id()), QJsonDocument(body).toJson());
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+
+            emit filtersChanged();
+        }
+        else
+        {
+            // Update model with filter data from the server
+            QJsonObject jsonData = json["data"].toObject();
+            int id = jsonData["id"].toInt();
+            foreach (QObject* o, mFilters)
+            {
+                SavedFilter* filter = qobject_cast<SavedFilter*>(o);
+                if (filter->id() == id)
+                {
+                    filter->fromJson(jsonData);
+                    emit filtersChanged();
+                    break;
+                }
+            }
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
+
+
+
+
+
+
+// ------------------------------------------------------------------------------------------------
+// Samples
 
 void FilteringAnalysis::addSamples(QList<QObject*> samples)
 {
@@ -476,6 +553,14 @@ void FilteringAnalysis::addSamplesFromFile(int fileId)
 }
 
 
+
+
+
+
+
+// ------------------------------------------------------------------------------------------------
+// Result
+
 //! Add or remove a field to the display result and update or set the order
 //! Return the order of the field in the grid
 int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
@@ -525,17 +610,6 @@ int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
     return order;
 }
 
-
-
-
-
-void FilteringAnalysis::onWebsocketMessageReceived(QString action, QJsonObject data)
-{
-    // update done in regovar on the global remote list
-}
-
-
-
 void FilteringAnalysis::saveHeaderPosition(QString header, int newPosition)
 {
     if (header.isEmpty()) return;
@@ -570,6 +644,64 @@ void FilteringAnalysis::saveHeaderWidth(QString header, double newSize)
         }
     }
 }
+
+
+
+
+
+// ------------------------------------------------------------------------------------------------
+// Misc
+
+
+void FilteringAnalysis::onWebsocketMessageReceived(QString action, QJsonObject data)
+{
+    // update done in regovar on the global remote list
+
+    // Check that we are concerned by the message
+    int analysisId = data["analysis_id"].toInt();
+    if (analysisId != mId) return;
+
+    if (action == "wt_update")
+    {
+        // get data to update
+        double progress = data["progress"].toDouble();
+        QString column = data["column"].toString();
+        int colId = column.split("_")[1].toInt();
+
+        if (column.startsWith("filter_"))
+        {
+            // update saved filter progress
+            foreach (QObject* o, mFilters)
+            {
+                SavedFilter* filter = qobject_cast<SavedFilter*>(o);
+                if (filter->id() == colId)
+                {
+                    filter->setProgress(progress);
+                    emit filtersChanged();
+                    break;
+                }
+            }
+        }
+    }
+    else if (action == "filter_update")
+    {
+        // get data to update
+        int filterId = data["id"].toInt();
+
+        // update saved filter progress
+        foreach (QObject* o, mFilters)
+        {
+            SavedFilter* filter = qobject_cast<SavedFilter*>(o);
+            if (filter->id() == filterId)
+            {
+                filter->fromJson(data);
+                break;
+            }
+        }
+
+    }
+}
+
 
 
 //void FilteringAnalysis::saveSettings()

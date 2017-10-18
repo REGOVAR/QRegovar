@@ -21,80 +21,103 @@ Rectangle
     ColumnLayout
     {
         anchors.fill: parent
-        anchors.margins: 10
+        anchors.margins: 0
 
-        Text
+        Rectangle
         {
-            text: qsTr("Displayed columns")
-            font.pixelSize: Regovar.theme.font.size.header
-            color: Regovar.theme.primaryColor.back.dark
-        }
-
-        TreeView
-        {
-            id: annotationsSelector
-            // model: root.model.annotations
+            height: Regovar.theme.font.size.header + 20 // 20 = 2*10 to add spacing top+bottom
             Layout.fillWidth: true
-            Layout.fillHeight: true
+            color: Regovar.theme.backgroundColor.main
 
-
-            signal checked(string uid, bool isChecked)
-            onChecked: root.model.setField(uid, isChecked);
-
-            // Default delegate for all column
-            itemDelegate: Item
+            Text
             {
-                Text
-                {
-                    anchors.leftMargin: 5
-                    anchors.fill: parent
-                    verticalAlignment: Text.AlignVCenter
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
-                    elide: Text.ElideRight
-                }
+                id: textHeader
+                anchors.fill: parent
+                anchors.margins: 10
+
+                text: qsTr("Displayed columns")
+                verticalAlignment: Text.AlignVCenter
+                font.pixelSize: Regovar.theme.font.size.header
+                color: Regovar.theme.primaryColor.back.dark
+                elide: Text.ElideRight
             }
 
-            TableViewColumn
+            Rectangle
             {
-                role: "name"
-                title: "Name"
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 1
+                color: Regovar.theme.primaryColor.back.light
+            }
+        }
 
-                delegate: Item
+        Rectangle
+        {
+            color: "transparent"
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            TreeView
+            {
+                id: annotationsSelector
+                anchors.fill: parent
+                anchors.margins: 10
+                anchors.topMargin: 5
+
+
+                signal checked(string uid, bool isChecked)
+                onChecked: root.model.setField(uid, isChecked);
+
+                // Default delegate for all column
+                itemDelegate: Item
                 {
-                    CheckBox
+                    Text
                     {
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
-                        checked: styleData.value.checked
-                        text: (styleData.value == undefined || styleData.value.value == undefined) ? "-"  : styleData.value.value
-                        onClicked:
+                        anchors.leftMargin: 5
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
+                        elide: Text.ElideRight
+                    }
+                }
+
+                TableViewColumn
+                {
+                    role: "name"
+                    title: "Name"
+
+                    delegate: Item
+                    {
+                        CheckBox
                         {
-                            var test = styleData.value
-                            annotationsSelector.checked(styleData.value.uid, checked);
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            checked: styleData.value.checked
+                            text: (styleData.value == undefined || styleData.value.value == undefined) ? "-"  : styleData.value.value
+                            onClicked:
+                            {
+                                var test = styleData.value
+                                annotationsSelector.checked(styleData.value.uid, checked);
+                            }
                         }
                     }
                 }
-            }
 
-            TableViewColumn
-            {
-                role: "description"
-                title: "Description"
-                width: 250
-                delegate: Text
+                TableViewColumn
                 {
-                    text: (styleData.value == undefined || styleData.value.value == undefined) ? "-"  : styleData.value.value
-                    elide: Text.ElideRight
+                    role: "description"
+                    title: "Description"
+                    width: 250
+                    delegate: Text
+                    {
+                        text: (styleData.value == undefined || styleData.value.value == undefined) ? "-"  : styleData.value.value
+                        elide: Text.ElideRight
+                    }
                 }
             }
-        }
-
-        TextField
-        {
-            Layout.fillWidth: true
-            placeholderText: qsTr("Search annotation...")
         }
     }
 }

@@ -10,7 +10,9 @@ Button
     onWidthChanged: bg.width = width
 
 
-    property var baseColor: Regovar.theme.secondaryColor.back.normal
+    property var baseColor: Regovar.theme.boxColor.back
+    property var borderColor: Regovar.theme.boxColor.border
+    property var textColor: Regovar.theme.primaryColor.back.dark
 
     contentItem: Text
     {
@@ -20,6 +22,7 @@ Button
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
+        color: control.textColor
     }
 
 
@@ -30,6 +33,8 @@ Button
         color : !enabled ? Regovar.theme.boxColor.disabled : down ? Regovar.theme.secondaryColor.back.dark: hovered?Regovar.theme.secondaryColor.back.light : baseColor
 
         radius: 2
+        border.width: 1
+        border.color: control.borderColor
 
         Behavior on color
         {

@@ -34,7 +34,7 @@ Rectangle
     ColumnLayout
     {
         anchors.fill: parent
-
+        spacing: 0
 
         Rectangle
         {
@@ -65,8 +65,6 @@ Rectangle
             }
         }
 
-
-
         ScrollView
         {
             Layout.fillHeight: true
@@ -94,27 +92,26 @@ Rectangle
             color: Regovar.theme.primaryColor.back.light
         }
 
+        Rectangle
+        {
+            Layout.fillWidth: true
+            height: applyButton.height + 20
+            color: "transparent"
 
-        ButtonWelcom
-        {
-            Layout.fillWidth: true
-            text: qsTr("Apply current filter")
-            iconText: "x"
-            onClicked:
+            ButtonIcon
             {
-                model.results.applyFilter(model.quickfilters.toJson());
-                model.advancedfilter.forceRefresh = true;
-                model.advancedfilter.loadJson(model.quickfilters.toJson());
-            }
-        }
-        ButtonWelcom
-        {
-            Layout.fillWidth: true
-            text: qsTr("Save current filter")
-            iconText: "5"
-            onClicked:
-            {
-                model.emitDisplayFilterSavingFormPopup();
+                id: applyButton
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.margins: 10
+                text: qsTr("Apply filter")
+                icon: "x"
+                onClicked:
+                {
+                    model.results.applyFilter(model.quickfilters.toJson());
+                    model.advancedfilter.forceRefresh = true;
+                    model.advancedfilter.loadJson(model.quickfilters.toJson());
+                }
             }
         }
     }

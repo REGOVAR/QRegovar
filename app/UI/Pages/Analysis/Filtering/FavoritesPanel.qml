@@ -6,6 +6,7 @@ import org.regovar 1.0
 
 import "../../../Regovar"
 import "../../../Framework"
+import "../../../Dialogs"
 
 
 Rectangle
@@ -17,24 +18,45 @@ Rectangle
     property FilteringAnalysis model
     onModelChanged:
     {
-        filterList.model = model.filters;
+        filterList.model = Qt.binding(function() { return model.filters;});
     }
+
+
 
     property int currentFilterId: -1
 
     ColumnLayout
     {
         anchors.fill: parent
-        anchors.margins: 10
+        spacing: 0
 
-        Text
+        Rectangle
         {
-            text: qsTr("Saved filter")
-            height: Regovar.theme.font.boxSize.header
-            verticalAlignment: Text.AlignVCenter
-            font.pixelSize: Regovar.theme.font.size.header
-            color: Regovar.theme.primaryColor.back.dark
-            elide: Text.ElideRight
+            height: Regovar.theme.font.size.header + 20 // 20 = 2*10 to add spacing top+bottom
+            Layout.fillWidth: true
+            color: Regovar.theme.backgroundColor.main
+
+            Text
+            {
+                id: textHeader
+                anchors.fill: parent
+                anchors.margins: 10
+
+                text: qsTr("Saved filter")
+                verticalAlignment: Text.AlignVCenter
+                font.pixelSize: Regovar.theme.font.size.header
+                color: Regovar.theme.primaryColor.back.dark
+                elide: Text.ElideRight
+            }
+
+            Rectangle
+            {
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 1
+                color: Regovar.theme.primaryColor.back.light
+            }
         }
 
         ScrollView
@@ -46,7 +68,9 @@ Rectangle
 
             Column
             {
-                width: filterPanel.width
+                x: 10
+                y: 5
+                width: filterPanel.width - 20
                 spacing: 5
 
 
@@ -59,7 +83,7 @@ Rectangle
                     Rectangle
                     {
                         id: filterItemRoot
-                        width: filterPanel.width
+                        width: filterPanel.width - 20
                         height: filterItemContent.height
                         color: "transparent"
                         property bool hovered: false
@@ -90,15 +114,14 @@ Rectangle
                             anchors.bottomMargin: 5
 
                             id: filterItemControl
-                            width: filterPanel.width
+                            width: filterItemRoot.width - 2 // -2 to avoid outstrip border
                             height: Regovar.theme.font.boxSize.normal
                             spacing: 0
 
                             ButtonTab
                             {
                                 height: Regovar.theme.font.boxSize.normal
-                                Layout.minimumWidth: filterPanel.width/4
-                                baseColor: Regovar.theme.backgroundColor.alt
+                                Layout.minimumWidth: filterItemControl.width/4
                                 text: "n"
                                 font.family: Regovar.theme.icons.name
                                 ToolTip.text: "Display variants"
@@ -108,8 +131,7 @@ Rectangle
                             ButtonTab
                             {
                                 height: Regovar.theme.font.boxSize.normal
-                                Layout.minimumWidth: filterPanel.width/4
-                                baseColor: Regovar.theme.backgroundColor.alt
+                                Layout.minimumWidth: filterItemControl.width/4
                                 text: "3"
                                 font.family: Regovar.theme.icons.name
                                 ToolTip.text: "Load original filter conditions"
@@ -119,8 +141,7 @@ Rectangle
                             ButtonTab
                             {
                                 height: Regovar.theme.font.boxSize.normal
-                                Layout.minimumWidth: filterPanel.width/4
-                                baseColor: Regovar.theme.backgroundColor.alt
+                                Layout.minimumWidth: filterItemControl.width/4
                                 text: "A"
                                 font.family: Regovar.theme.icons.name
                                 ToolTip.text: "Edit filter name or description"
@@ -130,8 +151,7 @@ Rectangle
                             ButtonTab
                             {
                                 height: Regovar.theme.font.boxSize.normal
-                                Layout.minimumWidth: filterPanel.width/4
-                                baseColor: Regovar.theme.backgroundColor.alt
+                                Layout.minimumWidth: filterItemControl.width/4
                                 text: "="
                                 font.family: Regovar.theme.icons.name
                                 ToolTip.text: "Delete filter"
@@ -143,9 +163,9 @@ Rectangle
                         Rectangle
                         {
                             id: filterItemContent
-                            width: filterPanel.width
+                            width: filterItemRoot.width
                             height: 2 * Regovar.theme.font.boxSize.normal
-                            color: hovered ? Regovar.theme.secondaryColor.back.light : Regovar.theme.backgroundColor.alt
+                            color: hovered ? Regovar.theme.secondaryColor.back.light : Regovar.theme.boxColor.back
                             radius: 2
 
                             border.width: 1
@@ -155,7 +175,7 @@ Rectangle
                             {
                                 anchors.fill: parent
                                 anchors.margins: 5
-                                columns: 2
+                                columns: 3
                                 rows:1
                                 columnSpacing: 5
                                 rowSpacing: 0
@@ -172,9 +192,48 @@ Rectangle
                                 Text
                                 {
                                     id: filterItemCount
-                                    text: modelData.count
+                                    text: modelData.progress == 1 ? modelData.count : ""
                                     color: Regovar.theme.primaryColor.back.dark
                                     font.family: "monospace"
+                                }
+
+                                Rectangle
+                                {
+                                    Layout.rowSpan: 2
+                                    Layout.fillHeight: true
+                                    visible: modelData.progress != 1
+                                    width: progressLabel.width + 10
+                                    color: "transparent"
+                                    clip: true
+
+                                    Text
+                                    {
+                                        id: progressIcon
+                                        anchors.right: parent.right
+                                        anchors.top: parent.top
+                                        font.pixelSize: Regovar.theme.font.size.header
+                                        font.family: Regovar.theme.icons.name
+                                        text: "/"
+                                        NumberAnimation on rotation
+                                        {
+                                            duration: 1000
+                                            loops: Animation.Infinite
+                                            from: 0
+                                            to: 360
+                                        }
+                                    }
+                                    Text
+                                    {
+                                        id: progressLabel
+                                        anchors.right: parent.right
+                                        anchors.bottom: parent.bottom
+                                        anchors.bottomMargin: 2
+
+                                        text: qsTr("Saving") + " (" + (modelData.progress * 100) + "%)"
+                                        font.pixelSize: Regovar.theme.font.size.small
+                                        color: Regovar.theme.primaryColor.back.normal
+                                        elide: Text.ElideRight
+                                    }
                                 }
 
                                 Text
@@ -192,11 +251,11 @@ Rectangle
                             {
                                 anchors.fill: parent
                                 hoverEnabled: true
+                                enabled: modelData.progress == 1
                                 onEntered: filterItemRoot.hovered = true
-                                onExited: filterItemRoot.hovered = false
-                                // cursorShape: Qt.PointingHandCursor
+                                onExited:  filterItemRoot.hovered = false
 
-                                onClicked:  root.currentFilterId = root.currentFilterId == modelData.id ? -1 : modelData.id
+                                onClicked: root.currentFilterId = root.currentFilterId == modelData.id ? -1 : modelData.id
                                 onDoubleClicked: { root.loadFilter(modelData); root.currentFilterId = -1;}
                             }
                         }
@@ -206,13 +265,42 @@ Rectangle
                 }
             }
         }
-        Button
+
+        Rectangle
         {
-            anchors.right: parent.right
-            text: qsTr("Import")
-            enabled: false
+            Layout.fillWidth: true
+            height: 1
+            color: Regovar.theme.primaryColor.back.light
+        }
+
+        Rectangle
+        {
+            Layout.fillWidth: true
+            height: applyButton.height + 20
+            color: "transparent"
+
+            ButtonIcon
+            {
+                id: applyButton
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.margins: 10
+                text: qsTr("Import filter")
+                icon: "é"
+                enabled: false
+            }
         }
     }
+
+
+    QuestionDialog
+    {
+        id: deleteConfirmDialog
+        title: qsTr("Filter deletion")
+        onYes: model.deleteFilter(filterToDelete)
+    }
+
+
     function loadResult(filter)
     {
         console.log("Load result " + filter.name + "(" + filter.id + ")");
@@ -236,12 +324,18 @@ Rectangle
     }
     function editFilter(filter)
     {
-        console.log("Load filter " + filter.name + "(" + filter.id + ")");
+        console.log("Edit filter " + filter.name + "(" + filter.id + ")");
         //root.model.loadFilter(filter);
     }
+
+    property int filterToDelete
     function deleteFilter(filter)
     {
-        console.log("Load filter " + filter.name + "(" + filter.id + ")");
-        //root.model.loadFilter(filter);
+        var txt = qsTr("Do you confirm the deletion of the \"{}\" filter ?");
+        txt = txt.replace("{}", filter.name);
+        root.filterToDelete = filter.id;
+
+        deleteConfirmDialog.open();
+        deleteConfirmDialog.text = txt;
     }
 }
