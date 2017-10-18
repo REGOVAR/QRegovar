@@ -280,8 +280,7 @@ void NewAdvancedFilterModel::loadJson(QJsonArray filterJson)
     else if (mOp == "IN" || mOp == "NOTIN")
     {
         setType(SetBlock);
-        setLeftOp(filterJson[1].toString());
-        setRightOp(filterJson[2].toString());
+        setRightOp(filterJson[1].toString());
     }
     else
     {

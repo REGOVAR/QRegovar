@@ -9,59 +9,120 @@ import "../../../../Regovar"
 Rectangle
 {
     id: root
-    width: parent.width
     height: Regovar.theme.font.boxSize.normal
     implicitHeight: Regovar.theme.font.boxSize.normal
-
     color: "transparent"
 
     property FilteringAnalysis analysis
-    property bool isChecked: true
-    property var model
-    property var operator
-    property var leftOp
-    property var rightOp
+    property AdvancedFilterModel model
 
-    onModelChanged:
-    {
-        root.operator = model[0];
-        root.leftOp = model[1];
-        root.rightOp = model[2];
-    }
+    // We don't use default qml enabled property to keep MouseArea available even when the
+    // control is disabled
+    property bool isEnabled: true
+    onIsEnabledChanged: textColor = (root.isEnabled) ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable;
+
+    property var textColor: Regovar.theme.frontColor.normal
+
+    property bool mouseHover: false
 
     Rectangle
     {
-        id: header
-        width: parent.width
-        height: Regovar.theme.font.boxSize.normal
-        anchors.top: root.top
-        anchors.left: root.left
-        anchors.right: root.right
-        anchors.margins: 5
+        anchors.fill: parent
+        color: "transparent"
+
+
+
+
+        Text
+        {
+            anchors.left: parent.left
+            anchors.right: controls.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            text: "variant " + model.opRegovarToFriend(model.op) + " " + model.rightOp
+            height: Regovar.theme.font.boxSize.normal
+            verticalAlignment: Text.AlignVCenter
+            font.pixelSize: Regovar.theme.font.size.normal
+            color: root.textColor
+            elide: Text.ElideRight
+        }
+
+
+        MouseArea
+        {
+            anchors.fill: parent
+            hoverEnabled: true
+            onEntered: root.mouseHover = true
+            onExited: root.mouseHover = false
+        }
 
         Row
         {
-            anchors.fill: parent
-            spacing: 5
-
+            id: controls
+            anchors.top: parent.top
+            anchors.right: parent.right
+            visible: root.mouseHover
+            //width: root.mouseHover ? 2*Regovar.theme.font.boxSize.normal : 0
 
             Text
             {
-                text: (root.leftOp !== null) ? root.leftOp[1] : ""
+                text: "A"
+                height: Regovar.theme.font.boxSize.normal
+                width: Regovar.theme.font.boxSize.normal
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: Regovar.theme.font.size.normal
-                color: root.isChecked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
+                color: Regovar.theme.primaryColor.back.normal
+                font.family: Regovar.theme.icons.name
+
+                MouseArea
+                {
+                    anchors.fill: parent
+                    onClicked: root.model.editCondition()
+                    hoverEnabled: true
+                    onEntered:
+                    {
+                        root.mouseHover = true;
+                        root.textColor = Regovar.theme.secondaryColor.back.normal;
+                        parent.color = Regovar.theme.secondaryColor.back.normal;
+                    }
+                    onExited:
+                    {
+                        root.mouseHover = false;
+                        root.textColor = (root.isEnabled) ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable;
+                        parent.color = Regovar.theme.primaryColor.back.normal;
+                    }
+                }
             }
             Text
             {
-                text: root.operator
+                text: "h"
+                height: Regovar.theme.font.boxSize.normal
+                width: Regovar.theme.font.boxSize.normal
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: Regovar.theme.font.size.normal
-                color: root.isChecked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
-            }
-            Text
-            {
-                text: (root.rightOp !== null) ? root.rightOp[1] : ""
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: root.isChecked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
+                color: Regovar.theme.primaryColor.back.normal
+                font.family: Regovar.theme.icons.name
+
+                MouseArea
+                {
+                    anchors.fill: parent
+                    onClicked: root.model.removeCondition()
+                    hoverEnabled: true
+                    onEntered:
+                    {
+                        root.mouseHover = true;
+                        root.textColor = Regovar.theme.frontColor.danger;
+                        parent.color =  Regovar.theme.frontColor.danger;
+                    }
+                    onExited:
+                    {
+                        root.mouseHover = false;
+                        root.textColor = (root.isEnabled) ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable;
+                        parent.color = Regovar.theme.primaryColor.back.normal;
+                    }
+                }
             }
         }
     }
