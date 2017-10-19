@@ -5,29 +5,33 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+#include "set.h"
 #include "Model/analysis/filtering/annotation.h"
+#include "Model/analysis/filtering/advancedfilters/set.h"
 #include "Model/regovar.h"
 
-
+class Set;
 
 class AdvancedFilterModel : public QObject
 {
     Q_OBJECT
 
+    // Generic
     Q_PROPERTY(QString qmlId READ qmlId)
     Q_PROPERTY(FilteringAnalysis* analysis READ analysis)
     Q_PROPERTY(ConditionType type READ type WRITE setType NOTIFY filterChanged)
-    Q_PROPERTY(QVariant leftOp READ leftOp WRITE setLeftOp NOTIFY filterChanged)
-    Q_PROPERTY(QVariant rightOp READ rightOp WRITE setRightOp NOTIFY filterChanged)
     Q_PROPERTY(QString op READ op WRITE setOp NOTIFY filterChanged)
+    // Logical block specific
     Q_PROPERTY(QList<QObject*> subConditions READ subConditions NOTIFY filterChanged)
-    Q_PROPERTY(QStringList opLogicalList READ opLogicalList NOTIFY filterChanged)
-
+    // Field block specific
+    Q_PROPERTY(Annotation* field READ field WRITE setField NOTIFY filterChanged)
+    Q_PROPERTY(QVariant value READ value WRITE setValue NOTIFY filterChanged)
+    // Set block specific
+    Q_PROPERTY(Set* set READ set WRITE setSet NOTIFY filterChanged)
+    // UI
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(bool collapsed READ collapsed WRITE setCollapsed NOTIFY collapsedChanged)
-    Q_PROPERTY(bool forceRefresh READ forceRefresh WRITE setForceRefresh NOTIFY forceRefreshChanged)
-
-
+    Q_PROPERTY(QStringList opList READ opList NOTIFY filterChanged)
 
 public:
     enum ConditionType
@@ -47,28 +51,27 @@ public:
     inline QString qmlId() const { return mQmlId; }
     inline FilteringAnalysis* analysis() const { return mAnalysis; }
     inline ConditionType type() const { return mType; }
-    inline QVariant leftOp() const { return mLeftOp; }
-    inline QVariant rightOp() const { return mRightOp; }
     inline QString op() const { return mOp; }
     inline QList<QObject*> subConditions() const { return mSubConditions; }
-    inline QStringList opLogicalList() const { return mOpLogicalList; }
-
+    inline Annotation* field() const { return mField; }
+    inline QVariant value() const { return mFieldValue; }
+    inline Set* set() const { return mSet; }
     inline bool enabled() const { return mEnabled; }
     inline bool collapsed() const { return mCollapsed; }
-    inline bool forceRefresh() const { return mForceRefresh; }
+    inline QStringList opList() const { return mOpList; }
 
     // Setters
-    inline void setType(ConditionType type) { mType = type; emit filterChanged(); }
-    inline void setLeftOp(QVariant op) { mLeftOp = op; emit filterChanged(); }
-    inline void setRightOp(QVariant op) { mRightOp = op; emit filterChanged(); }
-    inline void setOp(QString op) { mOp = op; emit filterChanged(); }
-    inline void setEnabled(bool flag) { mEnabled = flag; emit enabledChanged(); }
-    inline void setCollapsed(bool flag) { mCollapsed = flag; emit collapsedChanged(); }
-    inline void setForceRefresh(bool flag) { mForceRefresh = flag; emit forceRefreshChanged(); }
+    inline virtual void setType(ConditionType type) { mType = type; updateOpList(); emit filterChanged(); }
+    inline virtual void setOp(QString op) { mOp = op; emit filterChanged(); }
+    inline virtual void setField(Annotation* field) { mField = field; updateOpList(); emit filterChanged(); }
+    inline virtual void setValue(QVariant value) { mFieldValue = value; emit filterChanged(); }
+    inline virtual void setSet(Set* set) { mSet = set; emit filterChanged(); }
+    inline virtual void setEnabled(bool flag) { mEnabled = flag; emit enabledChanged(); }
+    inline virtual void setCollapsed(bool flag) { mCollapsed = flag; emit collapsedChanged(); }
 
 
     // Methods
-    virtual bool setField(QString fieldUid);
+    Q_INVOKABLE virtual void clear();
     Q_INVOKABLE virtual void loadJson(QJsonArray filterJson);
     Q_INVOKABLE virtual QJsonArray toJson();
     Q_INVOKABLE void addCondition(QJsonArray json);
@@ -76,28 +79,26 @@ public:
     Q_INVOKABLE void removeCondition();
     Q_INVOKABLE void removeCondition(QString qmlId);
     Q_INVOKABLE inline QString opRegovarToFriend(QString op) { return mOperatorMap.key(op); }
-
+    Q_INVOKABLE inline QString opFriendToRegovar(QString op) { return mOperatorMap.value(op); }
+    void updateOpList();
 
 Q_SIGNALS:
     void filterChanged();
     void enabledChanged();
     void collapsedChanged();
-    void forceRefreshChanged();
 
 protected:
     QString mQmlId;
+    FilteringAnalysis* mAnalysis;
     ConditionType mType;
-    QVariant mLeftOp;
-    QVariant mRightOp;
     QString mOp;
+    Annotation* mField;
+    QVariant mFieldValue;
+    Set* mSet;
     bool mEnabled;
     bool mCollapsed;
-    bool mForceRefresh;
     QList<QObject*> mSubConditions;
-
-    Annotation* mField;
-    FilteringAnalysis* mAnalysis;
-
+    QStringList mOpList;
 
     static QStringList mOpNumberList;
     static QStringList mOpStringList;
@@ -116,21 +117,13 @@ class NewAdvancedFilterModel: public AdvancedFilterModel
 {
     Q_OBJECT
 
-    // Logical block
-    Q_PROPERTY(int opLogicalIndex READ opLogicalIndex WRITE setOpLogicalIndex NOTIFY filterChanged)
+
 
     // Field block
     Q_PROPERTY(QString fieldType READ fieldType NOTIFY filterChanged)
-    Q_PROPERTY(QStringList opFieldList READ opFieldList NOTIFY filterChanged)
-    Q_PROPERTY(int opFieldIndex READ opFieldIndex WRITE setOpFieldIndex NOTIFY filterChanged)
-    Q_PROPERTY(QVariant fieldValue READ fieldValue WRITE setFieldValue NOTIFY filterChanged)
     Q_PROPERTY(QStringList fieldValueList READ fieldValueList NOTIFY filterChanged)
-    Q_PROPERTY(int valueIndex READ valueIndex WRITE setValueIndex NOTIFY filterChanged)
 
-    // Set block
-//    Q_PROPERTY(QString setTest READ setTest WRITE setSetTest NOTIFY setTestChanged)
-//    Q_PROPERTY(QStringList opSetList READ opSetList NOTIFY filterChanged)
-//    Q_PROPERTY(QStringList enumList READ enumList NOTIFY filterChanged)
+
 
 
 public:
@@ -140,40 +133,22 @@ public:
     explicit NewAdvancedFilterModel(QJsonArray filterJson, FilteringAnalysis* parent);
 
     // Getters
-    inline int opLogicalIndex() const { return mOpLogicalIndex; }
     inline QString fieldType() const { return (mField != nullptr) ? mField->type() : ""; }
-    inline QStringList opFieldList() const { return mOpFieldList; }
-    inline int opFieldIndex() const { return mOpFieldIndex; }
-    inline QVariant fieldValue() const { return mFieldValue; }
     inline QStringList fieldValueList() const { return mValueList; }
-    inline int valueIndex() const { return mValueIndex; }
-
-
-    // Setters
-    inline void setOpLogicalIndex(int opIdx) { mOpLogicalIndex = opIdx; emit filterChanged(); }
-    inline void setOpFieldIndex(int opIdx) { mOpFieldIndex = opIdx; emit filterChanged(); }
-    inline void setFieldValue(QVariant val) { mFieldValue = val; emit filterChanged(); }
-    inline void setValueIndex(int opIdx) { mValueIndex = opIdx; emit filterChanged(); }
 
     // Methods
-    Q_INVOKABLE void clear();
-    Q_INVOKABLE bool setField(QString fieldUid) override;
-    Q_INVOKABLE void loadJson(QJsonArray filterJson) override;
-    Q_INVOKABLE QJsonArray toJson() override;
-    inline QString opFriendToRegovar(QString op) { return mOperatorMap.key(op); }
-    int opRegovarToIndex(QString op);
-    QString opIndexToRegovar(int op);
+    Q_INVOKABLE inline void emitResetWizard() { emit resetWizard(); }
+    Q_INVOKABLE void clear() override;
+//    int opRegovarToIndex(QString op);
+//    QString opIndexToRegovar(int op);
+
 
 Q_SIGNALS:
     void filterChanged();
+    void resetWizard();
 
 protected:
-    QStringList mOpFieldList;
     QStringList mValueList;
-    int mOpLogicalIndex;
-    int mOpFieldIndex;
-    int mValueIndex;
-    QVariant mFieldValue;
 
 
 };

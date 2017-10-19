@@ -17,16 +17,21 @@ Rectangle
         if (model)
         {
             fieldSelector.model = model.annotationsFlatList;
+            model.newConditionModel.resetWizard.connect(function()
+            {
+                fieldSelector.selectedItem = null;
+                fieldSelector.text = "";
+                updateFilterControls();
+            });
         }
     }
     onZChanged:
     {
         if (z == 100)
         {
-            updateModel();
+            updateModelFromView();
         }
     }
-
 
 
     ColumnLayout
@@ -180,15 +185,23 @@ Rectangle
 
 
 
+
     function updateFilterControls()
     {
         var item = fieldSelector.selectedItem;
         if (item)
         {
+            model.newConditionModel.field = item;
             fieldDescription.text = item.description;
-            model.newConditionModel.setField(item.uid);
-            operatorSelector.model = model.newConditionModel.opFieldList;
-            operatorSelector.currentIndex = model.newConditionModel.opFieldIndex;
+            var opModel = [];
+            for (var i=0; i<model.newConditionModel.opList.length; i++)
+            {
+                var rego = model.newConditionModel.opList[i];
+                var frnd = model.newConditionModel.opRegovarToFriend(rego);
+                opModel = opModel.concat(frnd);
+            }
+            operatorSelector.model = opModel;
+            operatorSelector.currentIndex = 0;
             displayInputControl(model.newConditionModel.fieldType);
         }
         else
@@ -196,40 +209,6 @@ Rectangle
             displayInputControl("");
         }
     }
-
-    function updateModel()
-    {
-        if (model)
-        {
-            model.newConditionModel.type = AdvancedFilterModel.FieldBlock;
-            model.newConditionModel.opFieldIndex = operatorSelector.currentIndex;
-
-            console.log("updateModel");
-            console.log(" > opIdx = " + model.newConditionModel.opFieldIndex);
-            console.log(" > " + model.newConditionModel.fieldType);
-            if (model.newConditionModel.fieldType == "int")
-            {
-                console.log(" > (int)" + fieldInput.text);
-                model.newConditionModel.fieldValue = parseInt(fieldInput.text, 10);
-            }
-            else if (model.newConditionModel.fieldType == "float")
-            {
-                console.log(" > (float)" + fieldInput.text);
-                model.newConditionModel.fieldValue = parseFloat(fieldInput.text, 10);
-            }
-            else if (model.newConditionModel.fieldType == "bool")
-            {
-                console.log(" > (bool)" + fieldBoolInput.checked);
-                model.newConditionModel.fieldValue = fieldBoolInput.checked;
-            }
-            else
-            {
-                console.log(" > (str)" + fieldInput.text);
-                model.newConditionModel.fieldValue = fieldInput.text;
-            }
-        }
-    }
-
     function displayInputControl(type)
     {
         helpPanel.visible = false;
@@ -258,4 +237,33 @@ Rectangle
             fieldInput.visible = true;
         }
     }
+
+    function updateModelFromView()
+    {
+        if (model)
+        {
+            model.newConditionModel.type = AdvancedFilterModel.FieldBlock;
+            model.newConditionModel.field = fieldSelector.selectedItem;
+            model.newConditionModel.op = model.newConditionModel.opList[operatorSelector.currentIndex];
+
+            if (model.newConditionModel.field.type == "int")
+            {
+                model.newConditionModel.value = parseInt(fieldInput.text, 10);
+            }
+            else if (model.newConditionModel.field.type == "float")
+            {
+                model.newConditionModel.fieldValue = parseFloat(fieldInput.text, 10);
+            }
+            else if (model.newConditionModel.field.type == "bool")
+            {
+                model.newConditionModel.value = fieldBoolInput.checked;
+            }
+            else
+            {
+                model.newConditionModel.value = fieldInput.text;
+            }
+        }
+    }
+
+
 }

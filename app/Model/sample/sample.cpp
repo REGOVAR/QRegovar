@@ -38,7 +38,7 @@ bool Sample::fromJson(QJsonObject json)
     QJsonObject nameInfo;
     nameInfo.insert("name", mName);
     nameInfo.insert("nickname", mNickname);
-    setStatusUI(QVariant::fromValue(nameInfo));
+    setNameUI(QVariant::fromValue(nameInfo));
 
     QJsonObject subjectInfo;
     subjectInfo.insert("firstname", "Michel"); // todo

@@ -12,11 +12,19 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property FilteringAnalysis model
+    onModelChanged:
+    {
+        model.newConditionModel.resetWizard.connect(function()
+        {
+            andCond.checked = true;
+        });
+    }
+
     onZChanged:
     {
         if (z == 100)
         {
-            updateModel();
+            updateModelFromView();
         }
     }
 
@@ -48,6 +56,7 @@ Rectangle
                 text: qsTr("AND")
                 checked: true
                 onCheckedChanged: orCond.checked = !checked
+                width: 100
             }
             CheckBox
             {
@@ -55,6 +64,7 @@ Rectangle
                 text: qsTr("OR")
                 checked: false
                 onCheckedChanged: andCond.checked = !checked
+                width: 100
             }
         }
 
@@ -92,12 +102,12 @@ Rectangle
         color: Regovar.theme.boxColor.border
     }
 
-    function updateModel()
+    function updateModelFromView()
     {
         if (model)
         {
             model.newConditionModel.type =  AdvancedFilterModel.LogicalBlock;
-            model.newConditionModel.opLogicalIndex = andCond.checked ? 0 : 1;
+            model.newConditionModel.op = andCond.checked ? "AND" : "OR";
         }
     }
 }

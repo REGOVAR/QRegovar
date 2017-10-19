@@ -320,7 +320,7 @@ Rectangle
     function loadResult(filter)
     {
         console.log("Load result " + filter.name + "(" + filter.id + ")");
-        var sf = ["AND", [["IN", ["filter", filter.id]]]];
+        var sf = ["AND", [["IN", ["filter", "" + filter.id ]]]];
         // Update advance filter tree with saved filter
         root.model.loadFilter(sf);
         // Get Results

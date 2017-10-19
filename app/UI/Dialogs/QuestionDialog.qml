@@ -33,7 +33,7 @@ Dialog
             anchors.top: root.top
             anchors.left: root.left
             anchors.right: root.right
-            anchors.bottom: yesButton.top
+            anchors.bottom: controlButtons.top
             anchors.margins: 10
 
             spacing: 10
@@ -68,6 +68,7 @@ Dialog
 
         Rectangle
         {
+            id: controlButtons
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
             anchors.margins: 10

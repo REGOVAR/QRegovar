@@ -52,7 +52,8 @@ HEADERS += \
     Model/regovar.h \
     Model/user.h \
     Model/admin.h \
-    Model/analysis/filtering/savedfilter.h
+    Model/analysis/filtering/savedfilter.h \
+    Model/analysis/filtering/advancedfilters/set.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -92,7 +93,8 @@ SOURCES += main.cpp \
     Model/regovar.cpp \
     Model/user.cpp \
     Model/admin.cpp \
-    Model/analysis/filtering/savedfilter.cpp
+    Model/analysis/filtering/savedfilter.cpp \
+    Model/analysis/filtering/advancedfilters/set.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

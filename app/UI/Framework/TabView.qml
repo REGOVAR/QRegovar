@@ -227,6 +227,6 @@ Item
     // TODO / FIXME : workaround to force a refresh before a validation in Dialog FilerNewCondition.
     function forceUpdateModel()
     {
-        menuPageMapping[tabsPanel.currentIndex].updateModel();
+        menuPageMapping[tabsPanel.currentIndex].updateModelFromView();
     }
 }

@@ -126,7 +126,7 @@ Dialog
                 }
                 ListElement
                 {
-                    enabled: false
+                    enabled: true
                     title: qsTr("Set")
                     source: "../Pages/Analysis/Filtering/AdvancedFilter/FilterFormSet.qml"
                 }

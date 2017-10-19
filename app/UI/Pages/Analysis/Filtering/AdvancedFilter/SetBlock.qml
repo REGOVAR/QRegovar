@@ -22,9 +22,31 @@ Rectangle
     onIsEnabledChanged: textColor = (root.isEnabled) ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable;
 
     property var textColor: Regovar.theme.frontColor.normal
-
     property bool mouseHover: false
+    property string toolTip
 
+    onModelChanged: updateViewFromModel()
+    function updateViewFromModel()
+    {
+        if (model)
+        {
+            label.text = "Variant " + model.opRegovarToFriend(model.op) + " " + model.set.label;
+            root.toolTip = "Variants " + (model.op == "IN" ? "in " : "not in ");
+            if (model.set.type == "sample")
+            {
+                root.toolTip += "sample \"" + model.set.label + "\"";
+            }
+            else if (model.set.type == "filter")
+            {
+                root.toolTip += "the filter \"" + model.set.label + "\"";
+            }
+            // todo, sample attribute, panels
+        }
+    }
+
+    ToolTip.text: root.toolTip
+    ToolTip.visible: root.toolTip && root.mouseHover && root.textColor === Regovar.theme.frontColor.normal
+    ToolTip.delay: 500
 
     Rectangle
     {
@@ -36,11 +58,11 @@ Rectangle
 
         Text
         {
+            id: label
             anchors.left: parent.left
             anchors.right: controls.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            text: "Variant " + model.opRegovarToFriend(model.op) + " " + model.rightOp
             height: Regovar.theme.font.boxSize.normal
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Regovar.theme.font.size.normal

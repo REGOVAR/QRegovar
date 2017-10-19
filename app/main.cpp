@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<FieldColumnInfos>("org.regovar", 1, 0, "FieldColumnInfos");
     qmlRegisterType<QuickFilterField>("org.regovar", 1, 0, "QuickFilterField");
     qmlRegisterType<AdvancedFilterModel>("org.regovar", 1, 0, "AdvancedFilterModel");
+    qmlRegisterType<Set>("org.regovar", 1, 0, "Set");
     qmlRegisterType<User>("org.regovar", 1, 0, "User");
     qmlRegisterType<Project>("org.regovar", 1, 0, "Project");
     qmlRegisterType<AdminTableInfo>("org.regovar", 1, 0, "AdminTableInfo");

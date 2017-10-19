@@ -11,6 +11,7 @@ Rectangle
     implicitHeight: textField.implicitHeight
     color: "blue"
 
+    property alias text: textField.text
     property alias placeholderText: textField.placeholderText
     property int proposalContextWidth: 100
     property var model

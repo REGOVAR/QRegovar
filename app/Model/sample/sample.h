@@ -43,7 +43,7 @@ public:
     // Getters
     inline int id() { return mId; }
     inline QString name() { return mName; }
-    inline QString nickname() { return mNickname; }
+    inline QString nickname() { return mNickname.isEmpty() ? mName : mNickname; }
     inline QString comment() { return mComment; }
     inline SampleStatus status() { return mStatus; }
     inline bool isMosaic() { return mIsMosaic; }
@@ -57,7 +57,7 @@ public:
     inline QString sex() { return mSex; }
 
     // Setters
-    inline void setName(QString name) { mName = name; emit nameChanged(); }
+    inline void setName(QString name) { mName = name; emit nameChanged(); emit nicknameChanged(); }
     inline void setNickname(QString nickname) { mNickname = nickname; emit nicknameChanged(); }
     inline void setIsMosaic(bool flag) { mIsMosaic = flag; emit isMosaicChanged(); }
     inline void setComment(QString comment) { mComment = comment; emit commentChanged(); }

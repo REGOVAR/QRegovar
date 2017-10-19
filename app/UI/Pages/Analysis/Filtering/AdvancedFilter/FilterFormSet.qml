@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import org.regovar 1.0
 
@@ -10,6 +11,37 @@ Rectangle
 {
     id: root
     color: Regovar.theme.backgroundColor.main
+    property var iconMap: ({"sample": "4", "filter": "D", "attr": ";", "panel": "q"})
+    property FilteringAnalysis model
+    onModelChanged:
+    {
+        if (model)
+        {
+            model.newConditionModel.type = AdvancedFilterModel.SetBlock;
+            var opModel = [];
+            for (var i=0; i<model.newConditionModel.opList.length; i++)
+            {
+                var rego = model.newConditionModel.opList[i];
+                var frnd = model.newConditionModel.opRegovarToFriend(rego);
+                opModel = opModel.concat(frnd + " (" + (rego == "IN" ? qsTr("in the set") : qsTr("not in the set")) + ")");
+            }
+            operatorSelector.model = opModel;
+            setSelector.model = model.sets;
+
+            model.newConditionModel.resetWizard.connect(function()
+            {
+                operatorSelector.currentIndex = 0;
+                setSelector.currentIndex = 0;
+            });
+        }
+    }
+    onZChanged:
+    {
+        if (z == 100)
+        {
+            updateModelFromView();
+        }
+    }
 
     ColumnLayout
     {
@@ -24,38 +56,85 @@ Rectangle
             wrapMode: Text.WordWrap
         }
 
-        Text
-        {
-            text: qsTr("Test")
-        }
-        ComboBox
-        {
-            id: testSelector
-            Layout.fillWidth: true
-            model: [qsTr("Variant"), qsTr("Site")]
-        }
 
         Text
         {
-            text: qsTr("Operator")
+            text: qsTr("Test for variants")
         }
         ComboBox
         {
             id: operatorSelector
             Layout.fillWidth: true
-            model: [qsTr("IN"), qsTr("NOT IN")]
         }
 
         Text
         {
-            text: qsTr("Value")
+            text: qsTr("Set")
         }
         ComboBox
         {
-            id: valueSelector
+            id: setSelector
             Layout.fillWidth: true
             editable: true
-            model: ["Toto", "Tata", "Tota", "ToTu", "Tato", "Tutu", "Tuta", "tuto"]
+
+
+            delegate: ItemDelegate
+            {
+                x: 1
+                width: setSelector.width-2
+                height: Regovar.theme.font.boxSize.normal
+                contentItem: RowLayout
+                {
+                    anchors.fill: parent
+                    spacing: 5
+                    Text
+                    {
+                        text: root.iconMap[modelData.type]
+                        font.family: Regovar.theme.icons.name
+                        color: Regovar.theme.boxColor.front
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        width: Regovar.theme.font.boxSize.normal
+                        height: Regovar.theme.font.boxSize.normal
+                    }
+                    Text
+                    {
+                        Layout.fillWidth: true
+                        text: modelData.label
+                        color: Regovar.theme.boxColor.front
+                        elide: Text.ElideRight
+                        verticalAlignment: Text.AlignVCenter
+                        height: Regovar.theme.font.boxSize.normal
+                    }
+                }
+                highlighted: setSelector.highlightedIndex === index
+            }
+            contentItem: RowLayout
+            {
+                anchors.fill: parent
+                anchors.leftMargin: 5
+                anchors.rightMargin: setSelector.indicator.width + setSelector.spacing
+                spacing: 5
+                Text
+                {
+                    text: root.iconMap[setSelector.model[setSelector.currentIndex].type]
+                    font.family: Regovar.theme.icons.name
+                    color: Regovar.theme.boxColor.front
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    width: Regovar.theme.font.boxSize.normal
+                    height: Regovar.theme.font.boxSize.normal
+                }
+                Text
+                {
+                    Layout.fillWidth: true
+                    text: setSelector.model[setSelector.currentIndex].label
+                    color: Regovar.theme.boxColor.front
+                    elide: Text.ElideRight
+                    verticalAlignment: Text.AlignVCenter
+                    height: Regovar.theme.font.boxSize.normal
+                }
+            }
         }
 
         Rectangle
@@ -92,10 +171,14 @@ Rectangle
         color: Regovar.theme.boxColor.border
     }
 
-    function getFilter()
-    {
-        var field = fieldSelector.selectedItem;
 
-        return [operatorSelector.model[operatorSelector.currentIndex], testSelector.model[testSelector.currentIndex], ["sample", 1]];
+    function updateModelFromView()
+    {
+        if (model)
+        {
+            model.newConditionModel.type = AdvancedFilterModel.SetBlock;
+            model.newConditionModel.set = setSelector.model[setSelector.currentIndex];
+            model.newConditionModel.op = model.newConditionModel.opList[operatorSelector.currentIndex];
+        }
     }
 }

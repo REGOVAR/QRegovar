@@ -22,8 +22,24 @@ Rectangle
     onIsEnabledChanged: textColor = (root.isEnabled) ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable;
 
     property var textColor: Regovar.theme.frontColor.normal
-
     property bool mouseHover: false
+    property string toolTip
+
+    onModelChanged: updateViewFromModel()
+    function updateViewFromModel()
+    {
+        if (model)
+        {
+            label.text = model.field.name + " " + model.opRegovarToFriend(model.op) + " " + model.value;
+            root.toolTip = model.field.name + ": " + model.field.description;
+        }
+    }
+
+    ToolTip.text: root.toolTip
+    ToolTip.visible: root.toolTip && root.mouseHover && root.textColor === Regovar.theme.frontColor.normal
+    ToolTip.delay: 500
+
+
 
     Rectangle
     {
@@ -35,11 +51,11 @@ Rectangle
 
         Text
         {
+            id: label
             anchors.left: parent.left
             anchors.right: controls.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            text: model.leftOp + " " + model.opRegovarToFriend(model.op) + " " + model.rightOp
             height: Regovar.theme.font.boxSize.normal
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Regovar.theme.font.size.normal

@@ -124,6 +124,8 @@ Rectangle
             // Update Title
             root.model.currentFilterName = "";
         }
+
+        onVisibleChanged: root.model.newConditionModel.emitResetWizard();
     }
     Connections
     {

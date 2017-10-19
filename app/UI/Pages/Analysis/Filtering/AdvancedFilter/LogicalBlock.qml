@@ -13,7 +13,7 @@ Rectangle
     color: "transparent"
 
     property FilteringAnalysis analysis
-    property AdvancedFilterModel model
+    property AdvancedFilterModel model    
     property bool isExpand: true
     onIsExpandChanged: resize()
     Component.onCompleted: resize()
@@ -27,7 +27,29 @@ Rectangle
     property string logicalColor: Regovar.theme.filtering.filterAND
 
 
+    onModelChanged: updateViewFromModel()
 
+
+    function updateViewFromModel()
+    {
+        if (model)
+        {
+            // store index because update of the combo model will change the currentIndex and so the current model value
+            var op = model.opList.indexOf(model.op);
+            // update combo model
+            operator.model = model.opList;
+            // restore model current op
+            operator.currentIndex = op;
+        }
+    }
+
+    function updateModelFromView()
+    {
+        if (model && operator.model != -1) // check combobox model to avoid wrong indexChanged due to QML init
+        {
+            model.op = model.opList[operator.currentIndex];
+        }
+    }
 
     function fullSize()
     {
@@ -64,11 +86,10 @@ Rectangle
             anchors.top: parent.top
             anchors.left: parent.left
             enabled: root.isEnabled
-            model: (root.model) ? root.model.opLogicalList : []
-            currentIndex: (root.model) ? root.model.rightOp : 0
             color: root.isEnabled ? root.logicalColor : Regovar.theme.frontColor.disable
             onCurrentIndexChanged:
             {
+                updateModelFromView();
                 root.logicalColor = currentIndex == 0 ? Regovar.theme.filtering.filterAND : Regovar.theme.filtering.filterOR;
             }
 

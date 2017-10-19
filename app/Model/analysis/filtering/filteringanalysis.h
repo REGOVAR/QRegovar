@@ -12,9 +12,11 @@
 #include "reference.h"
 #include "savedfilter.h"
 #include "advancedfilters/advancedfiltermodel.h"
+#include "advancedfilters/set.h"
 
 class AdvancedFilterModel;
 class NewAdvancedFilterModel;
+class Set;
 class ResultsTreeModel;
 class RemoteSampleTreeModel;
 
@@ -49,6 +51,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
     Q_PROPERTY(QStringList selectedAnnotationsDB READ selectedAnnotationsDB NOTIFY selectedAnnotationsDBChanged)
     Q_PROPERTY(QString currentFilterName READ currentFilterName WRITE setCurrentFilterName NOTIFY currentFilterNameChanged)
+    Q_PROPERTY(QList<QObject*> sets READ sets NOTIFY setsChanged)
 
 
 
@@ -97,6 +100,7 @@ public:
     QStringList selectedAnnotationsDB();
     inline bool isLoading() const { return mIsLoading; }
     inline QString currentFilterName() const { return mCurrentFilterName; }
+    QList<QObject*> sets() const { return mSets; } // concat filters, samples, samples attributes and panel in one list
 
     // Setters
     Q_INVOKABLE inline void setFilterJson(QJsonArray filterJson) { mFilterJson = filterJson; emit filterChanged(); }
@@ -128,9 +132,12 @@ public:
     Q_INVOKABLE void addSamplesFromFile(int fileId);
     Q_INVOKABLE void saveHeaderPosition(QString header, int newPosition);
     Q_INVOKABLE void saveHeaderWidth(QString header, double newSize);
+    Q_INVOKABLE Set* getSetById(QString type, QString id);
+    Q_INVOKABLE Sample* getSampleById(int id);
+
 
     void raiseNewInternalLoadingStatus(LoadingStatus newStatus);
-
+    void resetSets();
 
 Q_SIGNALS:
     void isLoading();
@@ -161,6 +168,7 @@ Q_SIGNALS:
     void newConditionModelChanged();
     void filtersChanged();
     void currentFilterNameChanged();
+    void setsChanged();
 
 
 public Q_SLOTS:
@@ -202,6 +210,7 @@ private:
     QList<int> mSamplesIds; // = mSamples, but use as shortcuts to check quickly by sample id
     bool mIsLoading;
     QString mCurrentFilterName;
+    QList<QObject*> mSets;
 
 
     // Methods

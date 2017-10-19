@@ -95,6 +95,8 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
         qDebug() << " - " << uid;
     }
 
+    // Once samples, attributes, filters and panels have been retrieved, create unique list of sets
+    resetSets();
 
 
     // Loading of an analysis required several asynch steps
@@ -316,6 +318,8 @@ QStringList FilteringAnalysis::selectedAnnotationsDB()
 }
 
 
+
+
 void FilteringAnalysis::initResults()
 {
     mResults->initAnalysisData(mId);
@@ -357,6 +361,46 @@ void FilteringAnalysis::getVariantInfo(QString variantId)
 
 
 
+// ------------------------------------------------------------------------------------------------
+// Sets
+
+void FilteringAnalysis::resetSets()
+{
+    mSets.clear();
+    // add samples first
+    foreach (Sample* sample, mSamples)
+    {
+        mSets.append(new Set(QString("sample"), QString::number(sample->id()), this));
+    }
+
+    // add sample's attributes
+    // Todo
+
+    // add filters
+    foreach (QObject* o, mFilters)
+    {
+        SavedFilter* filter = qobject_cast<SavedFilter*>(o);
+        mSets.append(new Set("filter", QString::number(filter->id()), this));
+    }
+
+    // add panels
+    // Todo
+
+    emit setsChanged();
+}
+
+Set* FilteringAnalysis::getSetById(QString type, QString id)
+{
+    foreach (QObject* o, mSets)
+    {
+        Set* set = qobject_cast<Set*>(o);
+        if (set->type() == type && set->id() == id)
+        {
+            return set;
+        }
+    }
+    return nullptr;
+}
 
 
 
@@ -393,6 +437,7 @@ void FilteringAnalysis::deleteFilter(int filterId)
             // Removing the saved filter
             SavedFilter* filter = getSavedFilter(filterId);
             mFilters.removeAll(filter);
+            resetSets();
             emit filtersChanged();
         }
         else
@@ -452,6 +497,7 @@ void FilteringAnalysis::editFilter(int filterId, QString filterName, QString fil
                 mFilters.append(new SavedFilter(json["data"].toObject()));
                 setCurrentFilterName(filterName);
             }
+            resetSets();
             emit filtersChanged();
         }
         else
@@ -476,6 +522,7 @@ SavedFilter* FilteringAnalysis::getSavedFilter(int id)
     }
     return nullptr;
 }
+
 
 
 
@@ -547,6 +594,18 @@ void FilteringAnalysis::addSamplesFromFile(int fileId)
     });
 }
 
+Sample* FilteringAnalysis::getSampleById(int id)
+{
+    foreach (QObject* o, mSamples)
+    {
+        Sample* sample = qobject_cast<Sample*>(o);
+        if (sample->id() == id)
+        {
+            return sample;
+        }
+    }
+    return nullptr;
+}
 
 
 

@@ -6,13 +6,14 @@ import "../Regovar"
 ComboBox
 {
     id: control
-    model: ["First", "Second", "Third"]
+    model: -1 // DO NOT CHANGE DEFAULT VALUE AS IT'S USED TO KNOW WHEN COMBO BOX MODEL IS SET
 
     property var color: Regovar.theme.boxColor.border
 
     delegate: ItemDelegate
     {
-        width: control.width
+        x: 1
+        width: control.width -2
         height: Regovar.theme.font.boxSize.normal
         contentItem: Text
         {
