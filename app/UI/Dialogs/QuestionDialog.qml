@@ -33,7 +33,7 @@ Dialog
             anchors.top: root.top
             anchors.left: root.left
             anchors.right: root.right
-            anchors.bottom: okButton.top
+            anchors.bottom: yesButton.top
             anchors.margins: 10
 
             spacing: 10

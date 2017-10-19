@@ -390,17 +390,10 @@ void FilteringAnalysis::deleteFilter(int filterId)
     {
         if (success)
         {
-            // Update model by removing the saved filter
-            foreach (QObject* o, mFilters)
-            {
-                SavedFilter* filter = qobject_cast<SavedFilter*>(o);
-                if (filter->id() == filterId)
-                {
-                    mFilters.removeAll(filter);
-                    emit filtersChanged();
-                    break;
-                }
-            }
+            // Removing the saved filter
+            SavedFilter* filter = getSavedFilter(filterId);
+            mFilters.removeAll(filter);
+            emit filtersChanged();
         }
         else
         {
@@ -445,21 +438,17 @@ void FilteringAnalysis::editFilter(int filterId, QString filterName, QString fil
             // Update model with filter data from the server
             QJsonObject jsonData = json["data"].toObject();
             int id = jsonData["id"].toInt();
-            bool found = false;
-            foreach (QObject* o, mFilters)
+
+            SavedFilter* filter = getSavedFilter(id);
+            if (filter != nullptr)
             {
-                SavedFilter* filter = qobject_cast<SavedFilter*>(o);
-                if (filter->id() == id)
-                {
-                    filter->fromJson(jsonData);
-                    emit filtersChanged();
-                    found = true;
-                    break;
-                }
+                // Edit
+                filter->fromJson(jsonData);
+                emit filtersChanged();
             }
-            // New filter ?
-            if (!found)
+            else
             {
+                // New filter
                 mFilters.append(new SavedFilter(json["data"].toObject()));
                 setCurrentFilterName(filterName);
             }
@@ -475,7 +464,18 @@ void FilteringAnalysis::editFilter(int filterId, QString filterName, QString fil
     });
 }
 
-
+SavedFilter* FilteringAnalysis::getSavedFilter(int id)
+{
+    foreach (QObject* o, mFilters)
+    {
+        SavedFilter* filter = qobject_cast<SavedFilter*>(o);
+        if (filter->id() == id)
+        {
+            return filter;
+        }
+    }
+    return nullptr;
+}
 
 
 

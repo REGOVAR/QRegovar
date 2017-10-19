@@ -15,8 +15,9 @@ class AdvancedFilterModel : public QObject
     Q_OBJECT
 
     Q_PROPERTY(QString qmlId READ qmlId)
+    Q_PROPERTY(FilteringAnalysis* analysis READ analysis)
     Q_PROPERTY(ConditionType type READ type WRITE setType NOTIFY filterChanged)
-    Q_PROPERTY(QString leftOp READ leftOp WRITE setLeftOp NOTIFY filterChanged)
+    Q_PROPERTY(QVariant leftOp READ leftOp WRITE setLeftOp NOTIFY filterChanged)
     Q_PROPERTY(QVariant rightOp READ rightOp WRITE setRightOp NOTIFY filterChanged)
     Q_PROPERTY(QString op READ op WRITE setOp NOTIFY filterChanged)
     Q_PROPERTY(QList<QObject*> subConditions READ subConditions NOTIFY filterChanged)
@@ -44,8 +45,9 @@ public:
 
     // Getters
     inline QString qmlId() const { return mQmlId; }
+    inline FilteringAnalysis* analysis() const { return mAnalysis; }
     inline ConditionType type() const { return mType; }
-    inline QString leftOp() const { return mLeftOp; }
+    inline QVariant leftOp() const { return mLeftOp; }
     inline QVariant rightOp() const { return mRightOp; }
     inline QString op() const { return mOp; }
     inline QList<QObject*> subConditions() const { return mSubConditions; }
@@ -57,7 +59,7 @@ public:
 
     // Setters
     inline void setType(ConditionType type) { mType = type; emit filterChanged(); }
-    inline void setLeftOp(QString op) { mLeftOp = op; emit filterChanged(); }
+    inline void setLeftOp(QVariant op) { mLeftOp = op; emit filterChanged(); }
     inline void setRightOp(QVariant op) { mRightOp = op; emit filterChanged(); }
     inline void setOp(QString op) { mOp = op; emit filterChanged(); }
     inline void setEnabled(bool flag) { mEnabled = flag; emit enabledChanged(); }
@@ -73,7 +75,7 @@ public:
     Q_INVOKABLE void addCondition(QString qmlId, QJsonArray json);
     Q_INVOKABLE void removeCondition();
     Q_INVOKABLE void removeCondition(QString qmlId);
-    Q_INVOKABLE inline QString opRegovarToFriend(QString op) { return mOperatorMap.value(op); }
+    Q_INVOKABLE inline QString opRegovarToFriend(QString op) { return mOperatorMap.key(op); }
 
 
 Q_SIGNALS:
@@ -85,7 +87,7 @@ Q_SIGNALS:
 protected:
     QString mQmlId;
     ConditionType mType;
-    QString mLeftOp;
+    QVariant mLeftOp;
     QVariant mRightOp;
     QString mOp;
     bool mEnabled;

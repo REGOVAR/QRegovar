@@ -116,11 +116,13 @@ public:
     Q_INVOKABLE inline void emitDisplayFilterSavingFormPopup() { emit displayFilterSavingFormPopup(); }
     Q_INVOKABLE inline void emitDisplayFilterNewCondPopup(QString conditionUid) { emit displayFilterNewCondPopup(conditionUid); }
     Q_INVOKABLE inline void emitSelectedAnnotationsDBChanged() { emit selectedAnnotationsDBChanged(); }
+    Q_INVOKABLE inline void emitDisplayClearFilterPopup() { emit displayClearFilterPopup(); }
     Q_INVOKABLE void editFilter(int filterId, QString filterName, QString filterDescription, bool saveAdvancedFilter);
     Q_INVOKABLE void loadFilter(QString filter);
     Q_INVOKABLE void loadFilter(QJsonObject filter);
     Q_INVOKABLE void loadFilter(QJsonArray filter);
     Q_INVOKABLE void deleteFilter(int filterId);
+    Q_INVOKABLE SavedFilter* getSavedFilter(int id);
     Q_INVOKABLE void addSamples(QList<QObject*> samples);
     Q_INVOKABLE void removeSamples(QList<QObject*> samples);
     Q_INVOKABLE void addSamplesFromFile(int fileId);
@@ -148,6 +150,7 @@ Q_SIGNALS:
     void onContextualVariantInformationReady(QJsonObject json);
     void displayFilterSavingFormPopup();
     void displayFilterNewCondPopup(QString conditionUid);
+    void displayClearFilterPopup();
     void selectedAnnotationsDBChanged();
     void refChanged();
     void isTrioChanged();

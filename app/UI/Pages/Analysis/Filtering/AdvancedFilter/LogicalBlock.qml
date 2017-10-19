@@ -22,6 +22,7 @@ Rectangle
     // control is disabled
     property bool isEnabled: true
 
+    property bool isFirst: false
 
     property string logicalColor: Regovar.theme.filtering.filterAND
 
@@ -90,6 +91,7 @@ Rectangle
                 color: Regovar.theme.primaryColor.back.normal
                 font.family: Regovar.theme.icons.name
                 rotation: (isExpand) ? 180 : 0
+                visible: !isFirst
 
                 Behavior on rotation {  NumberAnimation { duration: 200 } }
 
@@ -100,6 +102,7 @@ Rectangle
                     hoverEnabled: true
                     onEntered: parent.color = Regovar.theme.secondaryColor.back.normal
                     onExited: parent.color = Regovar.theme.primaryColor.back.normal
+                    enabled: !isFirst
 
                 }
             }
@@ -114,10 +117,14 @@ Rectangle
                 color: Regovar.theme.primaryColor.back.normal
                 font.family: Regovar.theme.icons.name
 
+                ToolTip.text: isFirst ? qsTr("Clear filter") : qsTr("Remove group condition")
+                ToolTip.delay: 1000
+                ToolTip.visible: color == Regovar.theme.frontColor.danger
+
                 MouseArea
                 {
                     anchors.fill: parent
-                    onClicked: root.model.removeCondition()
+                    onClicked: isFirst ? root.model.analysis.emitDisplayClearFilterPopup()  : root.model.removeCondition()
                     hoverEnabled: true
                     onEntered: parent.color = Regovar.theme.frontColor.danger
                     onExited: parent.color = Regovar.theme.primaryColor.back.normal

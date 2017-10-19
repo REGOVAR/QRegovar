@@ -133,5 +133,4 @@ void RemoteSampleTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
             subjectItem->appendChild(sampleItem);
         }
     }
-    qDebug() << "Remote sample tree model ready :";
 }

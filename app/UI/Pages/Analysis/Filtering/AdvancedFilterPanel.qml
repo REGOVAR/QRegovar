@@ -78,6 +78,7 @@ Rectangle
                 x: 5
                 y: 5
                 width: root.width - 10
+                isFirst: true
             }
         }
 
@@ -117,7 +118,6 @@ Rectangle
         model: root.model
         onAddNewCondition:
         {
-            console.log("AddNewCond from UUID : " + newCondLogicalGroupUuid + " " + conditionJson);
             // Update filter
             advancedFilterEditor.update()
             advancedFilterEditor.model.addCondition(newCondLogicalGroupUuid, conditionJson);
@@ -131,8 +131,30 @@ Rectangle
         onDisplayFilterNewCondPopup:
         {
             newCondLogicalGroupUuid = conditionUid;
-            console.log("Saved UUID : " + newCondLogicalGroupUuid);
             filterNewCondPopup.open();
+        }
+    }
+
+    QuestionDialog
+    {
+        id: clearFilterPopup
+        title: qsTr("Clear filter confiration")
+        text: qsTr("Do you wants to clear all filter's conditions ?")
+        onYes:
+        {
+            // Update filter
+            model.loadFilter(["AND", []]);
+            advancedFilterEditor.update();
+            // Update Title
+            root.model.currentFilterName = "";
+        }
+    }
+    Connections
+    {
+        target: model
+        onDisplayClearFilterPopup:
+        {
+            clearFilterPopup.open();
         }
     }
 }

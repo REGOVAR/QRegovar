@@ -100,6 +100,8 @@ void AdvancedFilterModel::removeCondition(QString qmlId)
 }
 
 
+
+
 void AdvancedFilterModel::loadJson(QJsonArray filterJson)
 {
     mSubConditions.clear();
@@ -118,8 +120,42 @@ void AdvancedFilterModel::loadJson(QJsonArray filterJson)
     else if (mOp == "IN" || mOp == "NOTIN")
     {
         setType(SetBlock);
-        setLeftOp(filterJson[1].toString());
-        setRightOp(filterJson[2].toString());
+        QJsonArray set = filterJson[1].toArray();
+
+        // keep json filter in the unused leftOp
+        QJsonValue e1 = QJsonValue(set);
+        QVariant e2 = QVariant::fromValue(e1);
+        setLeftOp(e2);
+
+        // set rightOp with enduser label to display
+        if (set[0].toString() == "filter")
+        {
+            SavedFilter* filter = mAnalysis->getSavedFilter(set[1].toInt());
+            if (filter != nullptr)
+            {
+                setRightOp(filter->name());
+            }
+            else
+            {
+                qDebug() << "ERROR : condition on a filter that no more exists";
+            }
+        }
+        else if (set[0].toString() == "attr")
+        {
+            qDebug() << "TODO : attr";
+        }
+        else if (set[0].toString() == "sample")
+        {
+            qDebug() << "TODO : sample";
+        }
+        else if (set[0].toString() == "panel")
+        {
+            qDebug() << "TODO : panel";
+        }
+        else
+        {
+            qDebug () << "ERROR : Unknow set filter type";
+        }
     }
     else
     {
@@ -165,7 +201,7 @@ void AdvancedFilterModel::loadJson(QJsonArray filterJson)
         }
         else
         {
-            qDebug() << "ERROR field unknow, not able to create filter field condition";
+            qDebug() << "ERROR : Unknow field type, not able to create filter field condition";
         }
     }
 
@@ -201,15 +237,7 @@ QJsonArray AdvancedFilterModel::toJson()
     }
     else if (mType == SetBlock)
     {
-        QJsonArray field;
-        field.append("field");
-        field.append(mField->uid());
-        QJsonArray value;
-        value.append("value");
-        value.append(QJsonValue::fromVariant(mRightOp));
-
-        result.append(mLeftOp);
-        result.append(value);
+        result.append(QJsonValue::fromVariant(mLeftOp).toArray());
     }
 
 

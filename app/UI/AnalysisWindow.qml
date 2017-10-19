@@ -133,7 +133,6 @@ ApplicationWindow
                     var elmt = comp.createObject(stack, {"visible": false});
                     var uid = baseIndex+idx
                     pages[uid] = elmt;
-                    console.log ("load " + uid + " : Pages/" + model[idx].page)
                 }
                 else if (comp.status == Component.Error)
                 {

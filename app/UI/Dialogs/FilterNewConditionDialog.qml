@@ -109,10 +109,6 @@ Dialog
             anchors.margins: 10
 
             tabSharedModel: root.model
-            onTabSharedModelChanged:
-            {
-                console.log("===> FilteringPage setting up the shared model of the tabView with its model");
-            }
 
             tabsModel: ListModel
             {

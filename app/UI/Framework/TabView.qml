@@ -183,7 +183,6 @@ Item
             for (var idx=0; idx<tabsModel.count; idx++)
             {
                 var model = tabsModel.get(idx);
-                console.log ("> Tab n°" + idx + " : " + model.title + " " + model.source);
                 var comp = Qt.createComponent(model.source);
                 if (comp.status == Component.Ready)
                 {

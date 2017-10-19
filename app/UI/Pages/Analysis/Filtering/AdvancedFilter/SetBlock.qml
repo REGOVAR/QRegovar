@@ -25,6 +25,7 @@ Rectangle
 
     property bool mouseHover: false
 
+
     Rectangle
     {
         anchors.fill: parent
@@ -39,7 +40,7 @@ Rectangle
             anchors.right: controls.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            text: "variant " + model.opRegovarToFriend(model.op) + " " + model.rightOp
+            text: "Variant " + model.opRegovarToFriend(model.op) + " " + model.rightOp
             height: Regovar.theme.font.boxSize.normal
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Regovar.theme.font.size.normal
