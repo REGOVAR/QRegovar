@@ -11,6 +11,7 @@
 #include "Model/analysis/filtering/filteringanalysis.h"
 #include "Model/analysis/pipeline/pipelineanalysis.h"
 #include "Model/analysis/filtering/reference.h"
+#include "Model/sample/attribute.h"
 
 
 int main(int argc, char *argv[])

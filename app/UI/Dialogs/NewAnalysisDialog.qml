@@ -72,6 +72,7 @@ Dialog
                         { "title" : qsTr("Analysis type")},
                         { "title" : qsTr("Reference"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringReferenceScreen.qml"},
                         { "title" : qsTr("Samples"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSamplesScreen.qml"},
+                        { "title" : qsTr("Samples attributes"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringAttributesScreen.qml"},
                         { "title" : qsTr("Subjects associations"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSubjectsScreen.qml"},
                         { "title" : qsTr("Annotations"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringAnnotationsScreen.qml"},
                         { "title" : qsTr("Launch"), "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}

@@ -13,6 +13,7 @@
 #include "savedfilter.h"
 #include "advancedfilters/advancedfiltermodel.h"
 #include "advancedfilters/set.h"
+#include "Model/sample/attribute.h"
 
 class AdvancedFilterModel;
 class NewAdvancedFilterModel;
@@ -33,6 +34,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged)   // TODO : shall be results.total
     Q_PROPERTY(QList<QObject*> samples READ samples4qml NOTIFY samplesChanged)
     Q_PROPERTY(QList<QObject*> filters READ filters NOTIFY filtersChanged)
+    Q_PROPERTY(QList<QObject*> attributes READ attributes NOTIFY attributesChanged)
     Q_PROPERTY(bool isTrio READ isTrio WRITE setIsTrio NOTIFY isTrioChanged)
     Q_PROPERTY(Sample* child READ trioChild WRITE setTrioChild NOTIFY trioChildChanged)
     Q_PROPERTY(Sample* mother READ trioMother WRITE setTrioMother NOTIFY trioMotherChanged)
@@ -81,6 +83,7 @@ public:
     inline int resultsTotal() { return mResultsTotal; }
     inline QList<Sample*> samples() { return mSamples; }
     inline QList<QObject*> filters() { return mFilters; }
+    inline QList<QObject*> attributes() { return mAttributes; }
     inline bool isTrio() const { return mIsTrio; }
     inline Sample* trioChild() const { return mTrioChild; }
     inline Sample* trioMother() const { return mTrioMother; }
@@ -126,7 +129,9 @@ public:
     Q_INVOKABLE void loadFilter(QJsonObject filter);
     Q_INVOKABLE void loadFilter(QJsonArray filter);
     Q_INVOKABLE void deleteFilter(int filterId);
-    Q_INVOKABLE SavedFilter* getSavedFilter(int id);
+    Q_INVOKABLE void saveAttribute(QString name, QStringList values);
+    Q_INVOKABLE void deleteAttribute(QString name);
+    Q_INVOKABLE SavedFilter* getSavedFilterById(int id);
     Q_INVOKABLE void addSamples(QList<QObject*> samples);
     Q_INVOKABLE void removeSamples(QList<QObject*> samples);
     Q_INVOKABLE void addSamplesFromFile(int fileId);
@@ -134,6 +139,7 @@ public:
     Q_INVOKABLE void saveHeaderWidth(QString header, double newSize);
     Q_INVOKABLE Set* getSetById(QString type, QString id);
     Q_INVOKABLE Sample* getSampleById(int id);
+
 
 
     void raiseNewInternalLoadingStatus(LoadingStatus newStatus);
@@ -167,6 +173,7 @@ Q_SIGNALS:
     void isLoadingChanged();
     void newConditionModelChanged();
     void filtersChanged();
+    void attributesChanged();
     void currentFilterNameChanged();
     void setsChanged();
 
@@ -185,6 +192,7 @@ private:
     QJsonArray mFilterJson;
     QList<Sample*> mSamples;
     QList<QObject*> mFilters;
+    QList<QObject*> mAttributes;
     bool mSampleColumnDisplayed;
 
     QString mStatus; // status of the analysis (server side)

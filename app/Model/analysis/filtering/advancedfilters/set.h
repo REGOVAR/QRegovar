@@ -7,18 +7,17 @@
 class Set : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(FilteringAnalysis* analysis READ analysis NOTIFY setChanged)
+    //Q_PROPERTY(FilteringAnalysis* analysis READ analysis NOTIFY setChanged)
     Q_PROPERTY(QString type READ type WRITE setType NOTIFY setChanged)
     Q_PROPERTY(QString id READ id WRITE setId NOTIFY setChanged)
     Q_PROPERTY(QString label READ label NOTIFY setChanged)
 
 public:
     explicit Set(QObject* parent = nullptr);
-    explicit Set(QJsonArray json, FilteringAnalysis* parent = nullptr);
-    explicit Set(QString type, QString id, FilteringAnalysis* parent = nullptr);
+    explicit Set(QString type, QString id, QString label);
 
     // Getters
-    inline FilteringAnalysis* analysis() const { return mAnalysis; }
+    //inline FilteringAnalysis* analysis() const { return mAnalysis; }
     inline QString type() const { return mType; }
     inline QString id() const { return mId; }
     inline QString label() const { return mLabel; }
@@ -27,7 +26,7 @@ public:
     inline void setId(QString id) { mId = id; emit setChanged(); }
 
     // Methods
-    Q_INVOKABLE virtual void loadJson(QJsonArray filterJson);
+    //Q_INVOKABLE virtual void loadJson(QJsonArray filterJson);
     Q_INVOKABLE virtual QJsonArray toJson();
 
 
@@ -35,7 +34,6 @@ Q_SIGNALS:
     void setChanged();
 
 private:
-    FilteringAnalysis* mAnalysis;
     QString mType;
     QString mId;
     QString mLabel;

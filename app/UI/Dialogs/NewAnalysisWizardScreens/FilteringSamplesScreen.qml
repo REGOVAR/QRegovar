@@ -164,7 +164,6 @@ GenericScreen
                             text: styleData.value.lastname + " " + styleData.value.firstname + " (" + styleData.value.age + ")"
                             elide: Text.ElideRight
                         }
-
                     }
                 }
                 TableViewColumn

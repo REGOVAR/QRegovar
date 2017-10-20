@@ -21,6 +21,8 @@ HEADERS += \
     Model/framework/requestext.h \
     Model/analysis/analysis.h \
     Model/analysis/pipeline/pipelineanalysis.h \
+    Model/analysis/filtering/advancedfilters/advancedfiltermodel.h \
+    Model/analysis/filtering/advancedfilters/set.h \
     Model/analysis/filtering/filteringanalysis.h \
     Model/analysis/filtering/quickfilters/quickfiltermodel.h \
     Model/analysis/filtering/quickfilters/transmissionquickfilter.h \
@@ -39,7 +41,7 @@ HEADERS += \
     Model/analysis/filtering/remotesampletreeitem.h \
     Model/analysis/filtering/remotesampletreemodel.h \
     Model/analysis/filtering/reference.h \
-    Model/analysis/filtering/advancedfilters/advancedfiltermodel.h \
+    Model/analysis/filtering/savedfilter.h \
     Model/file/file.h \
     Model/file/filestreeitem.h \
     Model/file/filestreemodel.h \
@@ -48,12 +50,11 @@ HEADERS += \
     Model/project/project.h \
     Model/project/projectstreeitem.h \
     Model/project/projectstreemodel.h \
+    Model/sample/attribute.h \
     Model/sample/sample.h \
-    Model/regovar.h \
-    Model/user.h \
     Model/admin.h \
-    Model/analysis/filtering/savedfilter.h \
-    Model/analysis/filtering/advancedfilters/set.h
+    Model/regovar.h \
+    Model/user.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -63,6 +64,8 @@ SOURCES += main.cpp \
     Model/analysis/analysis.cpp \
     Model/analysis/pipeline/pipelineanalysis.cpp \
     Model/analysis/filtering/filteringanalysis.cpp \
+    Model/analysis/filtering/advancedfilters/advancedfiltermodel.cpp \
+    Model/analysis/filtering/advancedfilters/set.cpp \
     Model/analysis/filtering/quickfilters/quickfiltermodel.cpp \
     Model/analysis/filtering/quickfilters/transmissionquickfilter.cpp \
     Model/analysis/filtering/quickfilters/quickfilterblockinterface.cpp \
@@ -80,7 +83,7 @@ SOURCES += main.cpp \
     Model/analysis/filtering/remotesampletreeitem.cpp \
     Model/analysis/filtering/remotesampletreemodel.cpp \
     Model/analysis/filtering/reference.cpp \
-    Model/analysis/filtering/advancedfilters/advancedfiltermodel.cpp \
+    Model/analysis/filtering/savedfilter.cpp \
     Model/file/file.cpp \
     Model/file/filestreeitem.cpp \
     Model/file/filestreemodel.cpp \
@@ -89,12 +92,11 @@ SOURCES += main.cpp \
     Model/project/project.cpp \
     Model/project/projectstreeitem.cpp \
     Model/project/projectstreemodel.cpp \
+    Model/sample/attribute.cpp \
     Model/sample/sample.cpp \
-    Model/regovar.cpp \
-    Model/user.cpp \
     Model/admin.cpp \
-    Model/analysis/filtering/savedfilter.cpp \
-    Model/analysis/filtering/advancedfilters/set.cpp
+    Model/regovar.cpp \
+    Model/user.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

@@ -85,7 +85,15 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     {
         mFilters.append(new SavedFilter(filterdata.toObject()));
     }
-    emit filterChanged();
+    emit filtersChanged();
+
+    // Retrieve samples attributes
+    mAttributes.clear();
+    foreach (const QJsonValue attributedata, json["attributes"].toArray())
+    {
+        mAttributes.append(new Attribute(attributedata.toObject()));
+    }
+    emit attributesChanged();
 
     // Retrieve fields
     foreach (const QJsonValue field, json["fields"].toArray())
@@ -370,17 +378,25 @@ void FilteringAnalysis::resetSets()
     // add samples first
     foreach (Sample* sample, mSamples)
     {
-        mSets.append(new Set(QString("sample"), QString::number(sample->id()), this));
+        mSets.append(new Set(QString("sample"), QString::number(sample->id()), sample->nickname()));
     }
 
     // add sample's attributes
-    // Todo
+    foreach (QObject* o, mAttributes)
+    {
+        Attribute* attribute = qobject_cast<Attribute*>(o);
+        foreach (QString attrValue, attribute->getMapping().keys())
+        {
+            QString label = attribute->name() + QString(": ") + attrValue;
+            mSets.append(new Set(QString("attr"), attribute->getMapping()[attrValue], label));
+        }
+    }
 
     // add filters
     foreach (QObject* o, mFilters)
     {
         SavedFilter* filter = qobject_cast<SavedFilter*>(o);
-        mSets.append(new Set("filter", QString::number(filter->id()), this));
+        mSets.append(new Set("filter", QString::number(filter->id()), filter->name()));
     }
 
     // add panels
@@ -435,7 +451,7 @@ void FilteringAnalysis::deleteFilter(int filterId)
         if (success)
         {
             // Removing the saved filter
-            SavedFilter* filter = getSavedFilter(filterId);
+            SavedFilter* filter = getSavedFilterById(filterId);
             mFilters.removeAll(filter);
             resetSets();
             emit filtersChanged();
@@ -484,7 +500,7 @@ void FilteringAnalysis::editFilter(int filterId, QString filterName, QString fil
             QJsonObject jsonData = json["data"].toObject();
             int id = jsonData["id"].toInt();
 
-            SavedFilter* filter = getSavedFilter(id);
+            SavedFilter* filter = getSavedFilterById(id);
             if (filter != nullptr)
             {
                 // Edit
@@ -510,7 +526,7 @@ void FilteringAnalysis::editFilter(int filterId, QString filterName, QString fil
     });
 }
 
-SavedFilter* FilteringAnalysis::getSavedFilter(int id)
+SavedFilter* FilteringAnalysis::getSavedFilterById(int id)
 {
     foreach (QObject* o, mFilters)
     {
@@ -609,6 +625,29 @@ Sample* FilteringAnalysis::getSampleById(int id)
 
 
 
+
+
+
+
+// ------------------------------------------------------------------------------------------------
+// Samples Attributes
+
+void FilteringAnalysis::saveAttribute(QString name, QStringList values)
+{
+    Attribute* attr = new Attribute(name);
+    int idx = 0;
+    foreach (Sample* sample, mSamples)
+    {
+        attr->setValue(sample->id(), values[idx]);
+        idx++;
+    }
+    mAttributes.append(attr);
+}
+
+void FilteringAnalysis::deleteAttribute(QString name)
+{
+    qDebug() << "TODO : delete attributes";
+}
 
 
 

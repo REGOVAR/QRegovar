@@ -11,14 +11,35 @@ TableView
 
     alternatingRowColors: true
 
+    property int navMode: 1 // 0=None, 1=Row, 2=Col, 3=Cell
+
     property int rowHeight: Regovar.theme.font.boxSize.normal
+
+    property int currentColumn: 0
+    property int selectedColumn: 0
+
+    Keys.onRightPressed:
+        if (currentColumn < root.columnCount - 1)
+            currentColumn++;
+
+    Keys.onLeftPressed:
+        if (currentColumn > 0)
+            currentColumn--;
+    Keys.onUpPressed:
+        if (currentRow < root.currentRow - 1)
+            currentRow++;
+
+    Keys.onDownPressed:
+        if (currentRow > 0)
+            currentRow--;
+
 
     style: TableViewStyle
     {
         activateItemOnSingleClick: true
         backgroundColor: Regovar.theme.backgroundColor.main
         alternateBackgroundColor: Regovar.theme.backgroundColor.alt
-        highlightedTextColor: Regovar.theme.secondaryColor.front.light
+        //highlightedTextColor: Regovar.theme.secondaryColor.front.light
         textColor: Regovar.theme.frontColor.normal
         frame: Rectangle
         {
@@ -28,19 +49,66 @@ TableView
         }
     }
 
+    function getBgColor(row, column, alt)
+    {
+        if (root.navMode == 0) return "transparent";
 
+        // Hovered
+        if (root.navMode == 1 && row == root.currentRow)
+            return Regovar.theme.secondaryColor.back.light;
+
+        // Selected
+        if (root.navMode == 1 && root.selection.contains(row))
+            return Regovar.theme.secondaryColor.back.normal;
+
+        return alt ? Regovar.theme.boxColor.back : Regovar.theme.backgroundColor.main
+    }
+
+    // Default delegate for all column
+    itemDelegate: Item
+    {
+        id: tableItem
+        property bool selected: styleData.row === root.currentRow && styleData.column === currentColumn
+        property bool hovered: false
+
+
+        Text
+        {
+            anchors.leftMargin: 5
+            anchors.rightMargin: 5
+            anchors.fill: parent
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: styleData.textAlignment
+            font.pixelSize: Regovar.theme.font.size.normal
+            text: (styleData.value !== undefined && styleData.value !== null) ? styleData.value : "" // + " (" + styleData.row + "," + styleData.column + ")"
+            elide: Text.ElideRight
+        }
+
+        MouseArea
+        {
+            anchors.fill: parent
+            propagateComposedEvents: true
+            hoverEnabled: true
+            onEntered: update(true)
+            onExited: update(false)
+            onClicked: root.forceActiveFocus();
+
+            function update(hover)
+            {
+                tableItem.hovered = hover;
+                root.currentColumn = styleData.column;
+                root.currentRow = styleData.row;
+            }
+        }
+    }
 
     rowDelegate: Rectangle
     {
         height: root.rowHeight
-        color:  styleData.hasActiveFocus ? Regovar.theme.secondaryColor.back.normal :
-                (
-                    styleData.selected ? Regovar.theme.secondaryColor.back.light :
-                    (
-                        styleData.alternate ? Regovar.theme.boxColor.back : Regovar.theme.backgroundColor.main
-                    )
-                )
+        color:  root.enabled ? getBgColor(styleData.row, styleData.column, styleData.alternate) : "transparent"
     }
+
+
 
     headerDelegate: Rectangle
     {
@@ -108,20 +176,4 @@ TableView
     }
 
 
-
-//    // Default delegate for all column
-//    itemDelegate: Item
-//    {
-//        Text
-//        {
-//            anchors.leftMargin: 5
-//            anchors.rightMargin: 5
-//            anchors.fill: parent
-//            verticalAlignment: Text.AlignVCenter
-//            horizontalAlignment: styleData.textAlignment
-//            font.pixelSize: Regovar.theme.font.size.normal
-//            text: (styleData.value !== undefined && styleData.value !== null) ? styleData.value : "" // + " (" + styleData.row + "," + styleData.column + ")"
-//            elide: Text.ElideRight
-//        }
-//    }
 }
