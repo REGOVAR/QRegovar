@@ -123,5 +123,6 @@
         <file>Dialogs/NewAnalysisWizardScreens/FilteringAttributesScreen.qml</file>
         <file>Framework/TableViewItem.qml</file>
         <file>Dialogs/NewAttributeDialog.qml</file>
+        <file>Dialogs/DialogHeader.qml</file>
     </qresource>
 </RCC>

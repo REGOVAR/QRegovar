@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.3
 
 import "../../Regovar"
 import "../../Framework"
+import "../../Dialogs"
 
 
 Rectangle
@@ -12,83 +13,40 @@ Rectangle
 
     signal selected(var choice)
 
-    Text
+    DialogHeader
     {
         id: startScreenTip
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: 10
 
-        text: qsTr("Select which kind of analysis you want to perform.")
-        wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.header
-        color: Regovar.theme.primaryColor.back.dark
-        horizontalAlignment: Text.AlignHCenter
+        iconText: "I"
+        title: qsTr("New analysis")
+        text: qsTr("Select first which kind of analysis you want to perform.\n  - Pipeline : run a bioinformatic pipeline to analyse one or several files\n  - Variants filtering : load your samples' data into the Regovar database and then dynamically filter the variants thanks to the friendly interface")
+
     }
 
     RowLayout
     {
-        anchors.top: parent.top
+        anchors.top: startScreenTip.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: 50
 
         AnalysisTypeButtom
         {
             Layout.alignment : Qt.AlignHCenter
             label : qsTr("Pipeline")
-            description: qsTr("Run a pipeline to analyse one or several files.")
             source: "qrc:/pipelineIcon.jpg"
             onClicked: selected(1);
-            onIsHoverChanged:
-            {
-                if (isHover)
-                {
-                    helpBox.text = description;
-                }
-                else
-                {
-                    helpBox.text = "";
-                }
-            }
         }
         AnalysisTypeButtom
         {
             Layout.alignment : Qt.AlignHCenter
             label : qsTr("Variants filtering")
-            description: qsTr("Load your samples' data into the Regovar database and then dynamically filter the variants thanks to the friendly interface.")
             source: "qrc:/filteringIcon.png"
             onClicked: selected(2);
-            onIsHoverChanged:
-            {
-                if (isHover)
-                {
-                    helpBox.text = description;
-                }
-                else
-                {
-                    helpBox.text = "";
-                }
-            }
         }
     }
-    Text
-    {
-        id: helpBox
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: 10
-
-        text: qsTr("Select above what you want to do.")
-        wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.normal
-        color: Regovar.theme.primaryColor.back.dark
-        horizontalAlignment: Text.AlignHCenter
-    }
-
-
 
 }

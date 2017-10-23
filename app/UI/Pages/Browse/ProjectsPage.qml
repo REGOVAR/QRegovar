@@ -85,7 +85,7 @@ Rectangle
         {
             id: newProject
             text: qsTr("New Project")
-             onClicked: { newProjectDialog.reset(); newProjectDialog.open(); }
+             onClicked: newProjectDialog.open()
         }
 //        Button
 //        {

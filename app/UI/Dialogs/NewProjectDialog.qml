@@ -13,8 +13,8 @@ Dialog
 
     title: qsTr("Create new project")
 
-    width: 800
-    height: 600
+    width: 500
+    height: 400
 
 
     Connections
@@ -35,18 +35,15 @@ Dialog
 
 
 
-        Text
+        DialogHeader
         {
             id: header
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.margins: 10
-
+            iconText: "c"
+            title: qsTr("New project")
             text: qsTr("Creating a new project will allow you to organize your analyses and find them more easily afterwards.\nTo create a project, the name is mandatory.")
-            wrapMode: Text.WordWrap
-            font.pixelSize: Regovar.theme.font.size.normal
-            color: Regovar.theme.frontColor.normal
         }
 
 
@@ -118,12 +115,13 @@ Dialog
             Button
             {
                 text: qsTr("Create")
+                enabled: nameField.text.trim() != ""
                 onClicked:
                 {
                     if (nameField.text.trim() != "")
                     {
                         loadingIndicator.visible = true;
-                        regovar.newProject(nameField.text, commentField.text);
+                        regovar.newProject(nameField.text.trim(), commentField.text);
                     }
                 }
             }
@@ -143,6 +141,7 @@ Dialog
         }
     }
 
+    onVisibleChanged: reset()
     function reset()
     {
         nameField.text = "";

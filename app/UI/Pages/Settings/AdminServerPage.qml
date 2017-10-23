@@ -2,6 +2,7 @@ import QtQuick 2.7
 import QtQml 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
+import QtCharts 2.0
 import "../../Regovar"
 import "../../Framework"
 import "../../Charts"
@@ -707,6 +708,35 @@ Rectangle
                 width: 300
                 Layout.fillHeight: true
 
+
+
+
+                ChartView
+                {
+                    height: 200
+                    width: parent.width
+                    antialiasing: true
+                    animationOptions: ChartView.AllAnimations
+                    backgroundColor: Regovar.theme.backgroundColor.main // Regovar.theme.boxColor.back
+                    legend.visible: false
+                    margins.top: 0
+                    margins.bottom: 0
+                    margins.left: 0
+                    margins.right: 0
+
+
+                    PieSeries
+                    {
+
+                        id: pieSeries
+                        PieSlice { label: "3%"; value: 8.45; labelVisible: true; id: slice1; }
+                        PieSlice { label: "7%"; value: 218.77; labelVisible: true; id: slice2; }
+                        PieSlice { label: "37%"; value: 402.24; labelVisible: true; id: slice3; }
+                        PieSlice { label: "53%"; value: 681; labelVisible: true; id: slice4; }
+                    }
+                }
+
+
                 Rectangle
                 {
                     width: 300
@@ -784,23 +814,32 @@ Rectangle
                                     height: Regovar.theme.font.boxSize.normal
                                     verticalAlignment: Text.AlignVCenter
                                 }
+                                MouseArea
+                                {
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    onEntered: highlightChart(index, true)
+                                    onExited: highlightChart(index, false)
+                                }
+
+                                property var slices: [slice1, slice2, slice3, slice4]
+                                function highlightChart(index, hover)
+                                {
+                                    var slice = slices[index];
+                                    slice.exploded = hover;
+                                }
                             }
+
                         }
                     }
                 }
 
-                Text
-                {
-                    text: qsTr("Clear working table:")
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    color: Regovar.theme.primaryColor.back.normal
-                    height: Regovar.theme.font.boxSize.normal
-                    verticalAlignment: Text.AlignVCenter
-                }
                 ComboBox
                 {
                     id: databaseWorkingTables
                     width: 300
+
+                    model: [qsTr("Clear working table:")]
                 }
                 Row
                 {
@@ -808,15 +847,17 @@ Rectangle
                     Button
                     {
                         text: qsTr("Clear")
+                        enabled:  databaseWorkingTables.currentIndex > 0
                     }
                     Text
                     {
                         Layout.columnSpan: 2
-                        text: qsTr("Clear will free : 768.9 Mo")
+                        text: databaseWorkingTables.currentIndex > 0 ? qsTr("Clear will free : 768.9 Mo") : ""
                         font.pixelSize: Regovar.theme.font.size.small
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
                         verticalAlignment: Text.AlignVCenter
+
                     }
                 }
             }

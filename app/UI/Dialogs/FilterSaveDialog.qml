@@ -29,67 +29,15 @@ Dialog
         color: Regovar.theme.backgroundColor.main
 
 
-        Rectangle
+        DialogHeader
         {
             id: header
             anchors.top : root.top
             anchors.left: root.left
             anchors.right: root.right
-            height: 100
-
-            color: Regovar.theme.primaryColor.back.normal
-
-
-            Text
-            {
-                id: headerIcon
-                anchors.top : parent.top
-                anchors.left: parent.left
-                anchors.margins: 10
-                width: 80
-                height: 80
-
-                text: "5"
-                color: Regovar.theme.primaryColor.front.dark
-                font.family: Regovar.theme.icons.name
-                font.weight: Font.Black
-                font.pixelSize: 80
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment:  Text.AlignHCenter
-            }
-
-
-            Text
-            {
-                anchors.top : parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.topMargin: 10
-                anchors.leftMargin: 100
-
-
-                text: qsTr("Save your filter")
-                font.pixelSize: Regovar.theme.font.size.title
-                font.bold: true
-                color: Regovar.theme.primaryColor.front.normal
-                elide: Text.ElideRight
-            }
-            Text
-            {
-                anchors.top : parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                anchors.margins: 10
-                anchors.topMargin: 15 + Regovar.theme.font.size.title
-                anchors.leftMargin: 100
-                wrapMode: "WordWrap"
-                elide: Text.ElideRight
-
-                text: qsTr("Give a name and an optional description to your current filter will allow you to retrieve it and reload it quickly thanks to the left panel \"saved filters\".")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.primaryColor.front.normal
-            }
+            iconText: "5"
+            title: qsTr("Save your filter")
+            text: qsTr("Give a name and an optional description to your current filter will allow you to retrieve it and reload it quickly thanks to the left panel \"saved filters\".")
         }
 
 

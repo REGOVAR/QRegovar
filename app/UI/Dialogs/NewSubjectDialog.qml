@@ -26,19 +26,15 @@ Dialog
         color: Regovar.theme.backgroundColor.alt
 
 
-        Text
+        DialogHeader
         {
             id: header
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.margins: 10
-            height: Regovar.theme.font.boxSize.normal
-
-            text: qsTr("Create new subject. ")
-            font.pixelSize: Regovar.theme.font.size.normal
-
-
+            iconText: "b"
+            title: qsTr("New subject")
+            text: qsTr("Subject are useful for grouping samples, files, and all the information that concerns the same individual. It's also the only way to associate phenotypic data to your samples.\nTo create a subject, only the identifier is required.")
         }
 
         GridLayout
@@ -68,9 +64,9 @@ Dialog
             }
             TextField
             {
-                id: nameField
+                id: idField
                 Layout.fillWidth: true
-                placeholderText: qsTr("Unique anonymous identifier")
+                placeholderText: qsTr("Unique anonymous identifier for the subject")
             }
 
             Text
@@ -84,6 +80,7 @@ Dialog
             }
             TextField
             {
+                id: firstnameField
                 Layout.fillWidth: true
                 placeholderText: qsTr("Firstname of the subject")
             }
@@ -99,6 +96,7 @@ Dialog
             }
             TextField
             {
+                id: lastnameField
                 Layout.fillWidth: true
                 placeholderText: qsTr("Lastname of the subject")
             }
@@ -114,6 +112,7 @@ Dialog
             }
             TextField
             {
+                id: dateOfBirthField
                 Layout.fillWidth: true
                 placeholderText: qsTr("Date of birth of the subject")
             }
@@ -129,8 +128,9 @@ Dialog
             }
             TextField
             {
+                id: familyNumberField
                 Layout.fillWidth: true
-                placeholderText: qsTr("Familly number of the subject")
+                placeholderText: qsTr("Family number of the subject")
             }
 
 
@@ -166,13 +166,45 @@ Dialog
             Button
             {
                 text: qsTr("Cancel")
+                onClicked: root.close()
             }
             Button
             {
                 text: qsTr("Create")
+                enabled: idField.text.trim() != ""
+                onClicked:
+                {
+                    if (idField.text.trim() != "")
+                    {
+                        loadingIndicator.visible = true;
+                        regovar.newSubject(idField.text.trim(), firstnameField.text, lastnameField.text, dateOfBirthField.text, familyNumberField.text, commentField.text);
+                    }
+                }
             }
         }
 
+        Rectangle
+        {
+            id: loadingIndicator
+            anchors.fill : parent
+            color: Regovar.theme.backgroundColor.alt
+            visible: false
 
+            BusyIndicator
+            {
+                anchors.centerIn: parent
+            }
+        }
+    }
+
+    onVisibleChanged: reset()
+    function reset()
+    {
+        idField.text = "";
+        firstnameField.text = "";
+        lastnameField.text = "";
+        dateOfBirthField.text = "";
+        familyNumberField.text = "";
+        commentField.text = "";
     }
 }

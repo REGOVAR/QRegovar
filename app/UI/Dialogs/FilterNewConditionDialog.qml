@@ -38,65 +38,15 @@ Dialog
         color: Regovar.theme.backgroundColor.alt
 
 
-        Rectangle
+        DialogHeader
         {
             id: header
             anchors.top : parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            height: 100
-
-            color: Regovar.theme.primaryColor.back.normal
-
-            Text
-            {
-                anchors.top : parent.top
-                anchors.left: parent.left
-                anchors.margins: 10
-                width: 80
-                height: 80
-
-                text: "3"
-                font.pixelSize: 80
-                font.family: Regovar.theme.icons.name
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-
-                color: Regovar.theme.primaryColor.front.normal
-                elide: Text.ElideRight
-            }
-
-            Text
-            {
-                anchors.top : parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.topMargin: 10
-                anchors.leftMargin: 100
-
-
-                text: qsTr("New filter condition")
-                font.pixelSize: Regovar.theme.font.size.title
-                font.bold: true
-                color: Regovar.theme.primaryColor.front.normal
-                elide: Text.ElideRight
-            }
-            Text
-            {
-                anchors.top : parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                anchors.margins: 10
-                anchors.topMargin: 15 + Regovar.theme.font.size.title
-                anchors.leftMargin: 100
-                wrapMode: "WordWrap"
-                elide: Text.ElideRight
-
-                text: qsTr("Choose the type of condition you want to add and then configure it.")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.primaryColor.front.normal
-            }
+            iconText: "3"
+            title: qsTr("New filter condition")
+            text: qsTr("Choose the type of condition you want to add and then configure it.")
         }
 
         TabView

@@ -9,13 +9,14 @@ Item
     property string description
     property bool isHover: false
     property alias source: logo.source
+    property int iconWidth: 300
     onIsHoverChanged: hover(isHover)
 
     signal clicked()
     signal hover(var isHover)
 
-    height: 200 + Regovar.theme.font.boxSize.header/2
-    width: 200
+    height: iconWidth + Regovar.theme.font.boxSize.header + 10
+    width: iconWidth
 
 
     Rectangle
@@ -23,8 +24,8 @@ Item
         id: box
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
-        width: 200
-        height: 200
+        width: iconWidth
+        height: iconWidth
         clip: true
 
         color: Regovar.theme.boxColor.back
@@ -36,14 +37,6 @@ Item
         {
             id: logo
             anchors.fill: parent
-
-//            ColorOverlay
-//            {
-//                anchors.fill: parent
-//                source: logo
-//                color: (isHover) ? Regovar.theme.secondaryColor.back.light : Regovar.theme.primaryColor.back.normal
-//            }
-
         }
 
     }
@@ -52,7 +45,7 @@ Item
         id: label
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        width: root.width-50
+        width: iconWidth-0.2*iconWidth
         height: Regovar.theme.font.boxSize.header
         radius: 2
 

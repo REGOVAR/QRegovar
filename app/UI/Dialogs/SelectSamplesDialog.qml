@@ -61,65 +61,16 @@ Dialog
             anchors.fill: root
 
 
-            Rectangle
+            DialogHeader
             {
                 id: remoteHeader
                 anchors.top : rootRemoteView.top
                 anchors.left: rootRemoteView.left
                 anchors.right: rootRemoteView.right
-                height: 100
 
-                color: Regovar.theme.primaryColor.back.normal
-
-                Text
-                {
-                    anchors.top : parent.top
-                    anchors.left: parent.left
-                    anchors.margins: 10
-                    width: 80
-                    height: 80
-
-                    text: "4"
-                    font.pixelSize: 80
-                    font.family: Regovar.theme.icons.name
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-
-                    color: Regovar.theme.primaryColor.front.normal
-                    elide: Text.ElideRight
-                }
-
-                Text
-                {
-                    anchors.top : parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.topMargin: 10
-                    anchors.leftMargin: 100
-
-
-                    text: qsTr("Regovar samples")
-                    font.pixelSize: Regovar.theme.font.size.title
-                    font.bold: true
-                    color: Regovar.theme.primaryColor.front.normal
-                    elide: Text.ElideRight
-                }
-                Text
-                {
-                    anchors.top : parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    anchors.margins: 10
-                    anchors.topMargin: 15 + Regovar.theme.font.size.title
-                    anchors.leftMargin: 100
-                    wrapMode: "WordWrap"
-                    elide: Text.ElideRight
-
-                    text: qsTr("You can select samples that are already on the server.\nYou can also import new samples by uploading a (g)vcf file.")
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    color: Regovar.theme.primaryColor.front.normal
-                }
+                iconText: "4"
+                title: qsTr("Regovar samples")
+                text:  qsTr("You can select samples that are already on the server.\nYou can also import new samples by uploading a (g)vcf file.")
             }
 
             TextField
@@ -331,66 +282,15 @@ Dialog
             visible: false
 
 
-            Rectangle
+            DialogHeader
             {
                 id: localHeader
                 anchors.top : rootFileView.top
                 anchors.left: rootFileView.left
                 anchors.right: rootFileView.right
-                height: 100
-
-                color: Regovar.theme.primaryColor.back.normal
-
-
-                Text
-                {
-                    anchors.top : parent.top
-                    anchors.left: parent.left
-                    anchors.margins: 10
-                    width: 80
-                    height: 80
-
-                    text: "1"
-                    font.pixelSize: 80
-                    font.family: Regovar.theme.icons.name
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-
-                    color: Regovar.theme.primaryColor.front.normal
-                    elide: Text.ElideRight
-                }
-
-                Text
-                {
-                    anchors.top : parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.topMargin: 10
-                    anchors.leftMargin: 100
-
-
-                    text: qsTr("Import samples from file")
-                    font.pixelSize: Regovar.theme.font.size.title
-                    font.bold: true
-                    color: Regovar.theme.primaryColor.front.normal
-                    elide: Text.ElideRight
-                }
-                Text
-                {
-                    anchors.top : parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    anchors.margins: 10
-                    anchors.topMargin: 15 + Regovar.theme.font.size.title
-                    anchors.leftMargin: 100
-                    wrapMode: "WordWrap"
-                    elide: Text.ElideRight
-
-                    text: qsTr("Select the vcf file(s) from which you want to import samples.\nYou can add file that are already uploaded on the regovar server or drop your (g)vcf file here to start the upload on the server.")
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    color: Regovar.theme.primaryColor.front.normal
-                }
+                iconText: "1"
+                title: qsTr("Import samples from file")
+                text: qsTr("Select the vcf file(s) from which you want to import samples.\nYou can add file that are already uploaded on the regovar server or drop your (g)vcf file here to start the upload on the server.")
             }
 
             RowLayout

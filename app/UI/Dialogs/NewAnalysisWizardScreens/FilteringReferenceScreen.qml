@@ -57,8 +57,9 @@ GenericScreen
 
                 Text
                 {
-                    height: Regovar.theme.font.size.header
+                    Layout.alignment: Qt.AlignTop
                     Layout.minimumWidth: root.labelColWidth
+                    height: Regovar.theme.font.size.header
                     text: qsTr("Reference")
                     color: Regovar.theme.frontColor.normal
                     font.pixelSize: Regovar.theme.font.size.normal
@@ -67,36 +68,35 @@ GenericScreen
                     Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
                     onTextChanged: checkReady();
                 }
-                ComboBox
+
+                Column
                 {
                     Layout.fillWidth: true
                     id: refField
-                    model: regovar.references
-                    textRole: 'name'
-                    currentIndex: regovar.selectedReference
-                    onCurrentIndexChanged:
+
+                    ExclusiveGroup
                     {
-                        if (currentIndex != regovar.selectedReference)
+                        id: referenceGroup
+                        onCurrentChanged:
                         {
-                            regovar.selectedReference = currentIndex;
-                            checkReady();
+                            if (current.objectName != regovar.selectedReference)
+                            {
+                                regovar.selectedReference = current.objectName;
+                                checkReady();
+                            }
                         }
                     }
-                    delegate: ItemDelegate
+
+                    Repeater
                     {
-                        width: refField.width
-                        height: Regovar.theme.font.boxSize.normal
-                        contentItem: Text
+                        model: regovar.references
+
+                        RadioButton
                         {
                             text: modelData.name
-                            color: enabled ? Regovar.theme.boxColor.front : Regovar.theme.frontColor.disable
-                            font: refField.font
-                            elide: Text.ElideRight
-                            verticalAlignment: Text.AlignVCenter
+                            exclusiveGroup: referenceGroup
+                            objectName: index
                         }
-
-
-                        highlighted: refField.highlightedIndex === index
                     }
                 }
             }

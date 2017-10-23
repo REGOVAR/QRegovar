@@ -124,7 +124,7 @@ Dialog
 
                         width: naviguationPanel.width
                         height: Regovar.theme.font.boxSize.header
-                        color: isHover ? Regovar.theme.secondaryColor.back.normal: "transparent"
+                        color: isSelected ? Regovar.theme.primaryColor.back.light: "transparent"
 
                         property bool isHover: false
                         property bool isSelected: index == menuSelectedIndex
@@ -144,14 +144,15 @@ Dialog
                                 text: (index+1) + "."
                                 verticalAlignment: Text.AlignVCenter
                                 font.pixelSize: Regovar.theme.font.size.normal
-
-                                color: menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light : menuSelectedIndex > index ? Regovar.theme.primaryColor.front.dark : Regovar.theme.primaryColor.back.light
+                                // menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light :
+                                color: menuSelectedIndex >= index ? Regovar.theme.primaryColor.front.dark : Regovar.theme.primaryColor.back.light
                             }
                             Text
                             {
                                 height: Regovar.theme.font.boxSize.header
                                 text: modelData["title"]
-                                color: menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light : menuSelectedIndex > index ? Regovar.theme.primaryColor.front.dark : Regovar.theme.primaryColor.back.light
+                                // menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light :
+                                color: menuSelectedIndex >= index ? Regovar.theme.primaryColor.front.dark : Regovar.theme.primaryColor.back.light
                                 font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.font.familly
                                 verticalAlignment: Text.AlignVCenter

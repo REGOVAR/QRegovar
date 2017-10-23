@@ -116,7 +116,7 @@ Rectangle
             {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New project")
-                onClicked: { newProjectDialog.reset(); newProjectDialog.open(); }
+                onClicked: newProjectDialog.open()
                 enabled: regovar.connectionStatus == 0
             }
             ButtonWelcom
