@@ -18,7 +18,6 @@ Dialog
     width: 500
     height: 300
 
-    onVisibleChanged: { nameField.text = ""; checkSave(); }
 
     property real labelColumnWidth: 0
 
@@ -135,12 +134,16 @@ Dialog
             onClicked:
             {
                 var values = [];
-                for (var i; i<scrollView.children.length; i++)
+                for (var i=0; i<rootLayout.children.length; i++)
                 {
-                    var comp = scrollView.children[i];
-                    if (comp.objectName === "sampleValueField")
+                    var row = rootLayout.children[i];
+                    for (var j=0; j<row.children.length; j++)
                     {
-                        values = values.concat(comp.text);
+                        var comp = row.children[j];
+                        if (comp.objectName === "sampleValueField")
+                        {
+                            values = values.concat(comp.text.trim());
+                        }
                     }
                 }
 
@@ -180,5 +183,23 @@ Dialog
             }
         }
         okButton.enabled = okName && okVal;
+    }
+
+    onVisibleChanged: { reset(); checkSave(); }
+    function reset()
+    {
+        nameField.text = "";
+        for (var i=0; i<rootLayout.children.length; i++)
+        {
+            var row = rootLayout.children[i];
+            for (var j=0; j<row.children.length; j++)
+            {
+                var comp = row.children[j];
+                if (comp.objectName === "sampleValueField")
+                {
+                    comp.text = "";
+                }
+            }
+        }
     }
 }

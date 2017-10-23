@@ -117,6 +117,7 @@ GenericScreen
 
             Text
             {
+                id: tableTitle
                 text: qsTr("Selected samples")
                 font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
@@ -426,7 +427,7 @@ GenericScreen
         {
             id: actionColumn
             anchors.top: parent.top
-            anchors.topMargin: header.height + 10
+            anchors.topMargin:  tableTitle.height + 10
             Layout.alignment: Qt.AlignTop
             spacing: 10
 

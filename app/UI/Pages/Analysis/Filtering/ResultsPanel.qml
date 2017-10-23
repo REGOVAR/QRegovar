@@ -544,26 +544,26 @@ Rectangle
         }
 
 
-        function removeField(uid)
-        {
-            console.log("trying to remove field : " + uid);
-            var annot = root.model.annotations.getAnnotation(uid);
-            console.log("  annot = " + annot);
-            var position, col;
-            for (var idx=0; idx< resultsTree.columnCount; idx++ )
-            {
-                col = resultsTree.getColumn(idx);
-                if (col.role === annot.uid)
-                {
-                    console.log("  remove column " + annot.name + " at " + (idx-2));
-                    // remove columb from UI
-                    resultsTree.removeColumn(idx);
-                    // Store fields state and position in the view model
-                    root.model.setField(uid, false, idx -2);
-                    break;
-                }
-            }
-        }
+//        function removeField(uid)
+//        {
+//            console.log("trying to remove field : " + uid);
+//            var annot = root.model.annotations.getAnnotation(uid);
+//            console.log("  annot = " + annot);
+//            var position, col;
+//            for (var idx=0; idx< resultsTree.columnCount; idx++ )
+//            {
+//                col = resultsTree.getColumn(idx);
+//                if (col.role === annot.uid)
+//                {
+//                    console.log("  remove column " + annot.name + " at " + (idx-2));
+//                    // remove columb from UI
+//                    resultsTree.removeColumn(idx);
+//                    // Store fields state and position in the view model
+//                    root.model.setField(uid, false, idx -2);
+//                    break;
+//                }
+//            }
+//        }
 
 
 

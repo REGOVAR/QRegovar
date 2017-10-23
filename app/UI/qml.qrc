@@ -121,8 +121,9 @@
         <file>Framework/ButtonTab.qml</file>
         <file>Dialogs/QuestionDialog.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/FilteringAttributesScreen.qml</file>
-        <file>Framework/TableViewItem.qml</file>
         <file>Dialogs/NewAttributeDialog.qml</file>
         <file>Dialogs/DialogHeader.qml</file>
+        <file>Framework/TableViewTextField.qml</file>
+        <file>Dialogs/DeleteAttributeDialog.qml</file>
     </qresource>
 </RCC>

@@ -238,7 +238,7 @@ Dialog
 
             Rectangle
             {
-                // To be sure to hide tabs that are not selected ( selectedTab.z = 100, otherTabs.z = 0)
+                // FIXME : To be sure to hide tabs that are not selected ( selectedTab.z = 100, otherTabs.z = 0) BUT Zorder not working :(... need to fin another solution)
                 anchors.fill: parent
                 color: Regovar.theme.backgroundColor.main
                 z: 99

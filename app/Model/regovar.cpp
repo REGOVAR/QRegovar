@@ -646,12 +646,14 @@ bool Regovar::newAnalysis(QString type)
 {
     if (type == "filtering")
     {
+        // Samples
         QJsonArray ids;
         foreach (Sample* s, mNewFilteringAnalysis->samples())
         {
             ids.append(QJsonValue(s->id()));
         }
 
+        // Settings
         QJsonObject settings;
         QJsonArray dbs;
         settings.insert("annotations_db", dbs);
@@ -672,6 +674,17 @@ bool Regovar::newAnalysis(QString type)
             settings.insert("trio", false);
         }
 
+        // Attributes
+        QJsonArray attributes;
+        if (mNewFilteringAnalysis->attributes().count() > 0)
+        {
+            foreach (QObject* o, mNewFilteringAnalysis->attributes())
+            {
+                Attribute* attr = qobject_cast<Attribute*>(o);
+                attributes.append(attr->toJson());
+            }
+        }
+
         QJsonObject body;
         Project* proj = qobject_cast<Project*>(mProjectsList[mSelectedProject]);
         body.insert("project_id", proj->id());
@@ -679,6 +692,7 @@ bool Regovar::newAnalysis(QString type)
         body.insert("name", mNewFilteringAnalysis->name());
         body.insert("samples_ids", ids);
         body.insert("settings", settings);
+        body.insert("attributes", attributes);
 
         Request* req = Request::post(QString("/analysis"), QJsonDocument(body).toJson());
         connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)

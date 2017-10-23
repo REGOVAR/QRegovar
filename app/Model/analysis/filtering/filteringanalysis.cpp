@@ -642,11 +642,20 @@ void FilteringAnalysis::saveAttribute(QString name, QStringList values)
         idx++;
     }
     mAttributes.append(attr);
+    emit attributesChanged();
 }
 
-void FilteringAnalysis::deleteAttribute(QString name)
+void FilteringAnalysis::deleteAttribute(QStringList names)
 {
-    qDebug() << "TODO : delete attributes";
+    for (int idx=mAttributes.count()-1; idx>=0; idx --)
+    {
+        Attribute* attr = qobject_cast<Attribute*>(mAttributes[idx]);
+        if (names.contains(attr->name()))
+        {
+            mAttributes.removeAt(idx);
+        }
+    }
+    emit attributesChanged();
 }
 
 

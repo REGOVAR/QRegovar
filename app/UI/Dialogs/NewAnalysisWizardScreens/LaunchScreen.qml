@@ -164,7 +164,7 @@ GenericScreen
             {
                 x: 5
                 y: 5
-                spacing: 5
+                spacing: 10
 
                 RowLayout
                 {
@@ -289,6 +289,44 @@ GenericScreen
 
                         }
 
+                    }
+                }
+                RowLayout
+                {
+                    width: scrollArea.viewport.width - 10
+                    spacing: 10
+
+                    visible: regovar.newFilteringAnalysis.attributes.length > 0
+
+                    Text
+                    {
+                        Layout.alignment: Qt.AlignTop
+                        height: Regovar.theme.font.size.header
+                        Layout.minimumWidth: root.labelColWidth
+                        text: qsTr("Samples attributes")
+                        color: Regovar.theme.frontColor.disable
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        font.family: Regovar.theme.font.familly
+                        font.bold: true
+                        verticalAlignment: Text.AlignVCenter
+                        Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
+                    }
+                    Column
+                    {
+                        Layout.fillWidth: true
+
+                        Repeater
+                        {
+                            model: regovar.newFilteringAnalysis.attributes
+
+                            Text
+                            {
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                color: Regovar.theme.frontColor.disable
+                                verticalAlignment: Text.AlignVCenter
+                                text: modelData.name
+                            }
+                        }
                     }
                 }
                 RowLayout

@@ -130,7 +130,7 @@ public:
     Q_INVOKABLE void loadFilter(QJsonArray filter);
     Q_INVOKABLE void deleteFilter(int filterId);
     Q_INVOKABLE void saveAttribute(QString name, QStringList values);
-    Q_INVOKABLE void deleteAttribute(QString name);
+    Q_INVOKABLE void deleteAttribute(QStringList names);
     Q_INVOKABLE SavedFilter* getSavedFilterById(int id);
     Q_INVOKABLE void addSamples(QList<QObject*> samples);
     Q_INVOKABLE void removeSamples(QList<QObject*> samples);

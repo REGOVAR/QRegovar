@@ -3,6 +3,7 @@
 
 #include <QtCore>
 #include "Model/file/file.h"
+#include "subject.h"
 
 
 class Sample : public QObject
@@ -102,7 +103,10 @@ private:
     QStringList mDefaultAnnotationsDbUid;
     File* mSource;
     SampleStatus mStatus;
+    Subject* mSubject;
 
+
+    // QML shortcuts
     QVariant mNameUI;
     QVariant mSubjectUI;
     QVariant mStatusUI;

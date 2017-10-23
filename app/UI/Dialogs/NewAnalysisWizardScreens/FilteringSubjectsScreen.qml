@@ -24,102 +24,112 @@ GenericScreen
         color: Regovar.theme.primaryColor.back.normal
     }
 
-    Text
+    RowLayout
     {
-        anchors.centerIn: parent
-        text: qsTr("TODO")
-        font.pixelSize: Regovar.theme.font.size.normal
-        color: Regovar.theme.frontColor.normal
+        anchors.top: header.bottom
+        anchors.topMargin: 30
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        spacing: 10
+
+
+        ColumnLayout
+        {
+            spacing: 10
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            Text
+            {
+                id: tableTitle
+                text: qsTr("Samples subjects")
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.frontColor.normal
+            }
+
+            TableView
+            {
+                id: samplesAttributesTable
+                clip: true
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                model: regovar.newFilteringAnalysis.samples
+
+                TableViewColumn { title: qsTr("Sample"); role: "name" }
+                TableViewColumn { title: qsTr("Identifier"); role: "identifier" }
+                TableViewColumn { title: qsTr("Firstname"); role: "firstname" }
+                TableViewColumn { title: qsTr("Lastname"); role: "lastname" }
+                TableViewColumn { title: qsTr("Sex"); role: "name" }
+                TableViewColumn { title: qsTr("Family Number"); role: "name" }
+                TableViewColumn { title: qsTr("Date of birth"); role: "name" }
+
+
+                Connections
+                {
+                    target: regovar.newFilteringAnalysis
+                    onAttributesChanged: samplesAttributesTable.refreshColumns()
+                }
+
+                // Special column to display sample's attribute
+                Component
+                {
+                    id: columnComponent_attribute
+
+                    TableViewColumn
+                    {
+                        width: 100
+                        property var attribute
+
+                        delegate: Item
+                        {
+                            TableViewTextField
+                            {
+                                id: textField
+                                anchors.fill: parent
+                                text: attribute.getValue(styleData.value.id)
+                                onTextEdited: attribute.setValue(styleData.value.id, text)
+                            }
+                        }
+                    }
+                }
+
+
+
+                function refreshColumns()
+                {
+                    // Remove old columns (except the first one with samples names
+                    var position, col;
+                    for (var idx=samplesAttributesTable.columnCount; idx> 1; idx-- )
+                    {
+                        col = samplesAttributesTable.getColumn(idx-1);
+                        if (col !== null)
+                        {
+                            // remove columb from UI
+                            samplesAttributesTable.removeColumn(idx-1);
+                        }
+                    }
+
+                    // Add columns
+                    for (idx=0; idx < regovar.newFilteringAnalysis.attributes.length; idx++)
+                    {
+                        var attribute = regovar.newFilteringAnalysis.attributes[idx];
+                        col = columnComponent_attribute.createObject(samplesAttributesTable, {"attribute": attribute, "title": attribute.name});
+                        samplesAttributesTable.insertColumn(idx+1, col);
+                    }
+                }
+            }
+        }
     }
 
-//    ColumnLayout
-//    {
-//        anchors.top: header.bottom
-//        anchors.topMargin: 30
-//        anchors.left: parent.left
-//        anchors.right: parent.right
-//        anchors.bottom: parent.bottom
-//        spacing: 10
+    NewAttributeDialog
+    {
+        id: newAttributeDialog
+    }
 
-//        Text
-//        {
-//            text: qsTr("Selected samples")
-//            font.pixelSize: Regovar.theme.font.size.normal
-//            color: Regovar.theme.frontColor.normal
-//        }
-
-//        TableView
-//        {
-//            id: samplesList
-//            clip: true
-//            Layout.fillWidth: true
-//            Layout.fillHeight: true
-
-//            model: ListModel
-//            {
-//                ListElement {
-//                    name: "Hp-4456223"
-//                    firstname: "Michel"
-//                    lastname: "DUPONT"
-//                    sex: "Male"
-//                    birthdate: "1954-06-12 (63y)"
-
-//                }
-//                ListElement {
-//                    name: "Hp-4177789"
-//                    firstname: "Micheline"
-//                    lastname: "DUPONT"
-//                    sex: "Female"
-//                    birthdate: "1960-02-02 (57y)"
-//                }
-//                ListElement {
-//                    name: "Hp-4177789"
-//                    firstname: "Michou"
-//                    lastname: "DUPONT"
-//                    sex: "Male"
-//                    birthdate: "1999-10-23 (18y)"
-//                }
-//            }
-
-
-
-//            TableViewColumn
-//            {
-//                title: qsTr("Name")
-//                role: "name"
-//                delegate: Item
-//                {
-//                    Text
-//                    {
-//                        anchors.fill: parent
-//                        anchors.verticalCenter: parent.verticalCenter
-//                        text: model.name
-//                    }
-//                    Text
-//                    {
-//                        anchors.rightMargin: 5
-//                        anchors.right: parent.right
-//                        anchors.verticalCenter: parent.verticalCenter
-//                        verticalAlignment: Text.AlignVCenter
-//                        horizontalAlignment: styleData.textAlignment
-//                        font.pixelSize: Regovar.theme.font.size.normal
-//                        text: "z"
-//                        font.family: Regovar.theme.icons.name
-//                    }
-//                }
-//            }
-//            TableViewColumn
-//            {
-//                title: qsTr("First name")
-//                role: "firstname"
-//            }
-//            TableViewColumn
-//            {
-//                title: qsTr("Last name")
-//                role: "lastname"
-//            }
-//            TableViewColumn { title: "Sex"; role: "sex" }
-//            TableViewColumn { title: "Date of birth"; role: "birthdate" }
-//        }
-//    }
+    DeleteAttributeDialog
+    {
+        id: remAttributeDialog
+    }
 }

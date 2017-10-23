@@ -24,14 +24,6 @@ GenericScreen
         color: Regovar.theme.primaryColor.back.normal
     }
 
-    Text
-    {
-        anchors.centerIn: parent
-        text: qsTr("TODO")
-        font.pixelSize: Regovar.theme.font.size.normal
-        color: Regovar.theme.frontColor.normal
-    }
-
     RowLayout
     {
         anchors.top: header.bottom
@@ -50,6 +42,7 @@ GenericScreen
 
             Text
             {
+                id: tableTitle
                 text: qsTr("Samples attributes")
                 font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
@@ -57,13 +50,12 @@ GenericScreen
 
             TableView
             {
-                id: samplesList
+                id: samplesAttributesTable
                 clip: true
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
                 model: regovar.newFilteringAnalysis.samples
-                selectionMode: SelectionMode.NoSelection
 
                 TableViewColumn { title: qsTr("Sample"); role: "name" }
 
@@ -71,36 +63,54 @@ GenericScreen
                 Connections
                 {
                     target: regovar.newFilteringAnalysis
-                    onAttributesChanged:
+                    onAttributesChanged: samplesAttributesTable.refreshColumns()
+                }                
+
+                // Special column to display sample's attribute
+                Component
+                {
+                    id: columnComponent_attribute
+
+                    TableViewColumn
                     {
-                        samplesList.addColumn()
+                        width: 100
+                        property var attribute
+
+                        delegate: Item
+                        {
+                            TableViewTextField
+                            {
+                                id: textField
+                                anchors.fill: parent
+                                text: attribute.getValue(styleData.value.id)
+                                onTextEdited: attribute.setValue(styleData.value.id, text)
+                            }
+                        }
                     }
                 }
 
-                TableViewColumn
+
+
+                function refreshColumns()
                 {
-                    title: qsTr("Sex")
-                    role: "sex"
-                    delegate: Item
+                    // Remove old columns (except the first one with samples names
+                    var position, col;
+                    for (var idx=samplesAttributesTable.columnCount; idx> 1; idx-- )
                     {
-                        TextFieldForm
+                        col = samplesAttributesTable.getColumn(idx-1);
+                        if (col !== null)
                         {
-                            anchors.fill: parent
-                            text: index
+                            // remove columb from UI
+                            samplesAttributesTable.removeColumn(idx-1);
                         }
                     }
-                }
-                TableViewColumn
-                {
-                    title: qsTr("Index")
-                    role: "index"
-                    delegate: Item
+
+                    // Add columns
+                    for (idx=0; idx < regovar.newFilteringAnalysis.attributes.length; idx++)
                     {
-                        TextFieldForm
-                        {
-                            anchors.fill: parent
-                            text: index
-                        }
+                        var attribute = regovar.newFilteringAnalysis.attributes[idx];
+                        col = columnComponent_attribute.createObject(samplesAttributesTable, {"attribute": attribute, "title": attribute.name});
+                        samplesAttributesTable.insertColumn(idx+1, col);
                     }
                 }
             }
@@ -110,7 +120,7 @@ GenericScreen
         {
             id: actionColumn
             anchors.top: parent.top
-            anchors.topMargin: header.height + 10
+            anchors.topMargin: tableTitle.height + 10
             Layout.alignment: Qt.AlignTop
             spacing: 10
 
@@ -125,7 +135,7 @@ GenericScreen
             {
                 id: addButton
                 text: qsTr("Add attribute")
-                onClicked: { newAttributeDialog.open(); }
+                onClicked: newAttributeDialog.open()
                 Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
             }
             Button
@@ -133,16 +143,7 @@ GenericScreen
                 id: remButton
                 text: qsTr("Remove attribute")
                 Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
-                onClicked:
-                {
-                    // Get list of objects to remove
-                    var attributes = []
-                    samplesList.selection.forEach( function(rowIndex)
-                    {
-                        attributes = attributes.concat(regovar.newFilteringAnalysis.samples[rowIndex]);
-                    });
-                    regovar.newFilteringAnalysis.removeAttribute(attributes);
-                }
+                onClicked: remAttributeDialog.open()
             }
         }
     }
@@ -152,4 +153,8 @@ GenericScreen
         id: newAttributeDialog
     }
 
+    DeleteAttributeDialog
+    {
+        id: remAttributeDialog
+    }
 }

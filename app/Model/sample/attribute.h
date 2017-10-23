@@ -29,7 +29,8 @@ public:
     inline void setName(QString n) { mName = n; emit attributeChanged(); }
 
     // Methods
-    Q_INVOKABLE inline void setValue(int sampleId, QString value) { mSamplesValues[sampleId] = value; emit attributeChanged(); }
+    Q_INVOKABLE inline QString getValue(int sampleId) { return mSamplesValues[sampleId]; }
+    Q_INVOKABLE inline void setValue(int sampleId, QString value) { mSamplesValues[sampleId] = value; }
     Q_INVOKABLE QJsonObject toJson();
     Q_INVOKABLE void fromJson(QJsonObject json);
 
