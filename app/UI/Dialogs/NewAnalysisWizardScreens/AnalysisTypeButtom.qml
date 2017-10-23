@@ -54,6 +54,7 @@ Item
         anchors.horizontalCenter: parent.horizontalCenter
         width: root.width-50
         height: Regovar.theme.font.boxSize.header
+        radius: 2
 
         color: (isHover) ? Regovar.theme.secondaryColor.back.normal  : Regovar.theme.primaryColor.back.light
 

@@ -40,7 +40,7 @@ Rectangle
             Layout.alignment : Qt.AlignHCenter
             label : qsTr("Pipeline")
             description: qsTr("Run a pipeline to analyse one or several files.")
-            // source: "qrc:/pipeline.gif"
+            source: "qrc:/pipelineIcon.jpg"
             onClicked: selected(1);
             onIsHoverChanged:
             {
@@ -59,7 +59,7 @@ Rectangle
             Layout.alignment : Qt.AlignHCenter
             label : qsTr("Variants filtering")
             description: qsTr("Load your samples' data into the Regovar database and then dynamically filter the variants thanks to the friendly interface.")
-            source: "qrc:/filteringIcon.jpg"
+            source: "qrc:/filteringIcon.png"
             onClicked: selected(2);
             onIsHoverChanged:
             {
