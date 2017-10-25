@@ -22,7 +22,7 @@ public:
     explicit ProjectsTreeModel();
     QHash<int, QByteArray> roleNames() const override;
 
-    void refresh();
+    void refresh(QJsonObject json);
     QVariant newProjectsTreeViewItem(int id, bool isAnalaysis, const QString &text);
     void setupModelData(QJsonArray data, TreeItem *parent);
     void setupModelAnalysisData(QJsonArray data, TreeItem *parent);

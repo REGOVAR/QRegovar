@@ -19,26 +19,11 @@ ProjectsTreeModel::ProjectsTreeModel() : TreeModel(0)
 
 
 
-void ProjectsTreeModel::refresh()
+void ProjectsTreeModel::refresh(QJsonObject json)
 {
-    setIsLoading(true);
-    Request* request = Request::get("/project/browserTree");
-    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            beginResetModel();
-            setupModelData(json["data"].toArray(), mRootItem);
-            endResetModel();
-            qDebug() << Q_FUNC_INFO << "Projects TreeViewModel refreshed";
-        }
-        else
-        {
-            qCritical() << Q_FUNC_INFO << "Unable to build projects tree model (due to request error)";
-        }
-        setIsLoading(false);
-        request->deleteLater();
-    });
+    beginResetModel();
+    setupModelData(json["data"].toArray(), mRootItem);
+    endResetModel();
 }
 
 

@@ -42,20 +42,20 @@ public:
     explicit Sample(int id, QString name, QString nickname, QObject *parent = nullptr);
 
     // Getters
-    inline int id() { return mId; }
-    inline QString name() { return mName; }
-    inline QString nickname() { return mNickname.isEmpty() ? mName : mNickname; }
-    inline QString comment() { return mComment; }
-    inline SampleStatus status() { return mStatus; }
-    inline bool isMosaic() { return mIsMosaic; }
-    inline File* source() { return mSource; }
-    inline QStringList defaultAnnotationsDbUid() { return mDefaultAnnotationsDbUid; }
-    inline QVariant nameUI() { return mNameUI; }
-    inline QVariant subjectUI() { return mSubjectUI; }
-    inline QVariant statusUI() { return mStatusUI; }
-    inline QVariant sourceUI() { return mSourceUI; }
-    inline bool isIndex() { return mIsIndex; }
-    inline QString sex() { return mSex; }
+    inline int id() const { return mId; }
+    inline QString name() const { return mName; }
+    inline QString nickname() const { return mNickname.isEmpty() ? mName : mNickname; }
+    inline QString comment() const { return mComment; }
+    inline SampleStatus status() const { return mStatus; }
+    inline bool isMosaic() const { return mIsMosaic; }
+    inline File* source() const { return mSource; }
+    inline QStringList defaultAnnotationsDbUid() const { return mDefaultAnnotationsDbUid; }
+    inline QVariant nameUI() const { return mNameUI; }
+    inline QVariant subjectUI() const { return mSubjectUI; }
+    inline QVariant statusUI() const { return mStatusUI; }
+    inline QVariant sourceUI() const { return mSourceUI; }
+    inline bool isIndex() const { return mIsIndex; }
+    inline QString sex() const { return mSex; }
 
     // Setters
     inline void setName(QString name) { mName = name; emit nameChanged(); emit nicknameChanged(); }

@@ -114,8 +114,9 @@ void Regovar::init()
 
 
     // Init sub models
-    initFlatProjectList();
-    mProjectsTreeView->refresh();
+    refreshProjectsLists();
+    refreshSubjectsList();
+
 
 
     loadGithubData();
@@ -313,7 +314,7 @@ void Regovar::loadGithubData()
 }
 
 
-void Regovar::initFlatProjectListRecursive(QJsonArray data, QString prefix)
+void Regovar::refreshFlatProjectsListRecursive(QJsonArray data, QString prefix)
 {
     foreach(const QJsonValue json, data)
     {
@@ -324,7 +325,7 @@ void Regovar::initFlatProjectListRecursive(QJsonArray data, QString prefix)
         // If folder, need to retrieve subitems recursively
         if (p["is_folder"].toBool())
         {
-            initFlatProjectListRecursive(p["children"].toArray(), prefix + name + "/");
+            refreshFlatProjectsListRecursive(p["children"].toArray(), prefix + name + "/");
         }
         else
         {
@@ -336,23 +337,51 @@ void Regovar::initFlatProjectListRecursive(QJsonArray data, QString prefix)
     }
 }
 
-void Regovar::initFlatProjectList()
+void Regovar::refreshProjectsLists()
 {
+    mProjectsTreeView->setIsLoading(true);
+
     Request* request = Request::get("/project/browserTree");
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
         if (success)
         {
+            mProjectsTreeView->refresh(json);
             mProjectsList.clear();
-            initFlatProjectListRecursive(json["data"].toArray(), "");
+            refreshFlatProjectsListRecursive(json["data"].toArray(), "");
         }
         else
         {
             qCritical() << Q_FUNC_INFO << "Unable to build projects tree model (due to request error)";
         }
+        mProjectsTreeView->setIsLoading(false);
         request->deleteLater();
     });
 }
+
+void Regovar::refreshSubjectsList()
+{
+    Request* request = Request::get("/subject");
+    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            mSubjects.clear();
+            QJsonArray data = json["data"].toArray();
+            foreach (QJsonValue subjectVal, data)
+            {
+                mSubjects.append(new Subject(subjectVal.toObject()));
+            }
+            emit subjectsChanged();
+        }
+        else
+        {
+            qCritical() << Q_FUNC_INFO << "Unable to build subjects list model (due to request error)";
+        }
+        request->deleteLater();
+    });
+}
+
 
 
 

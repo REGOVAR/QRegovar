@@ -81,6 +81,7 @@ class Regovar : public QObject
     // Browsers
     Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewChanged)
     Q_PROPERTY(QList<QObject*> projectsOpen READ projectsOpen NOTIFY projectsOpenChanged)
+    Q_PROPERTY(QList<QObject*> subjects READ subjects NOTIFY subjectsChanged)
     Q_PROPERTY(QVariantList subjetsOpen READ subjetsOpen NOTIFY subjetsOpenChanged)
 
     // New analysis wizard
@@ -131,6 +132,7 @@ public:
     //--
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
     inline QList<QObject*> projectsOpen() const { return mProjectsOpen; }
+    inline QList<QObject*> subjects() const { return mSubjects; }
     inline QVariantList subjetsOpen() const { return mSubjectsOpen; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
@@ -175,8 +177,10 @@ public:
     Q_INVOKABLE void loadSampleBrowser(int refId);
     Q_INVOKABLE inline QUuid generateUuid() { return QUuid::createUuid(); }
     Q_INVOKABLE QString sizeToHumanReadable(qint64 size, qint64 uploadOffset=-1);
-    void initFlatProjectList();
-    void initFlatProjectListRecursive(QJsonArray data, QString prefix);
+
+    void refreshProjectsLists();
+    void refreshFlatProjectsListRecursive(QJsonArray data, QString prefix);
+    void refreshSubjectsList();
 
 
 public Q_SLOTS:
@@ -232,6 +236,7 @@ Q_SIGNALS:
     void connectionStatusChanged();
     void configChanged();
     void adminChanged();
+    void subjectsChanged();
 
 private:
     Regovar();
@@ -276,6 +281,8 @@ private:
     QList<QObject*> mReferences;
     int mReferenceDefault;
     int mSelectedReference;
+    //! list of subjects
+    QList<QObject*> mSubjects;
     //! list of project/subject open
     QList<QObject*> mProjectsOpen;
     QVariantList mSubjectsOpen;
