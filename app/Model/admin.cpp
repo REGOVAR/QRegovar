@@ -36,32 +36,26 @@ void Admin::getServerStatus()
             mWtTables.clear();
             mTablesTotalSize = 0;
             QHash<QString, int> sectionsSizes;
-            QHash<QString, QJsonObject> wtData;
             foreach (QJsonValue value, data["database"].toArray())
             {
                 AdminTableInfo* info = new AdminTableInfo(value.toObject());
                 mTables.append(info);
                 mTablesTotalSize += info->realSize();
-                // compute total sizes by sections
-                if (info->table().startsWith("wt_"))
-                {
-                    QString wtname = info->table().mid(0, info->table().indexOf("_", 3));
-                    if (!wtData.contains(wtname))
-                    {
-                        QJsonObject data;
-                        data.insert("label", wtname);
-                        data.insert("size", 0);
-                        wtData.insert(wtname, data);
-                    }
-                    //wtData[wtname]["size"] = QJsonValue(QVariant::fromValue(wtData[wtname]["size"]).toInt() + info->size());
-                }
                 sectionsSizes[info->section()] += info->realSize();
+            }
+            foreach (QJsonValue value, data["database_tmp"].toArray())
+            {
+                QJsonObject wt = value.toObject();
+                wt.insert("hSize", regovar->sizeToHumanReadable(wt["size"].toInt()));
+                mWtTables.append(wt);
             }
             foreach (QString k, sectionsSizes.keys())
             {
                 QJsonObject json;
                 json.insert("section", k);
-                json.insert("size", regovar->sizeToHumanReadable(sectionsSizes[k]));
+                json.insert("size", sectionsSizes[k]);
+                json.insert("percent", QString::number(sectionsSizes[k] / ((float) mTablesTotalSize) * 100, 'f', 1) + "%");
+                json.insert("hSize", regovar->sizeToHumanReadable(sectionsSizes[k]));
                 if (k == "Regovar")
                 {
                     mSectionsSizes.insert(0, json);
@@ -90,4 +84,25 @@ void Admin::getServerStatus()
 
 void Admin::refreshServerStatus()
 {
+    // TODO
+}
+
+
+void Admin::clearWt(int analysisId)
+{
+    Request* req = Request::get(QString("/analysis/%1/clear_temps_data").arg(analysisId));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            getServerStatus(); // TODO : replace by refreshServerStatus()
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
 }

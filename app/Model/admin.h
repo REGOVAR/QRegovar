@@ -84,6 +84,7 @@ public:
     // Methods
     Q_INVOKABLE void getServerStatus();
     Q_INVOKABLE void refreshServerStatus();
+    Q_INVOKABLE void clearWt(int analysisId);
 
 
 

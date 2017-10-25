@@ -6,6 +6,7 @@ import QtCharts 2.0
 import "../../Regovar"
 import "../../Framework"
 import "../../Charts"
+import "../../Dialogs"
 
 Rectangle
 {
@@ -727,12 +728,8 @@ Rectangle
 
                     PieSeries
                     {
-
                         id: pieSeries
-                        PieSlice { label: "3%"; value: 8.45; labelVisible: true; id: slice1; }
-                        PieSlice { label: "7%"; value: 218.77; labelVisible: true; id: slice2; }
-                        PieSlice { label: "37%"; value: 402.24; labelVisible: true; id: slice3; }
-                        PieSlice { label: "53%"; value: 681; labelVisible: true; id: slice4; }
+                        property string hoveredSerie: ""
                     }
                 }
 
@@ -794,11 +791,14 @@ Rectangle
                             {
                                 width: databaseResumeLayout.width
                                 height: Regovar.theme.font.boxSize.normal
+                                property bool hovered: false
+                                color: !hovered ? "transparent" : Regovar.theme.secondaryColor.back.light
+
                                 Text
                                 {
                                     anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter
-                                    text: " - " + modelData.section
+                                    text: " - " + modelData.section + " (" + modelData.percent + ")"
                                     font.pixelSize: Regovar.theme.font.size.normal
                                     color: Regovar.theme.primaryColor.back.normal
                                     height: Regovar.theme.font.boxSize.normal
@@ -808,7 +808,7 @@ Rectangle
                                 {
                                     anchors.right: parent.right
                                     anchors.verticalCenter: parent.verticalCenter
-                                    text:  modelData.size
+                                    text:  modelData.hSize
                                     font.pixelSize: Regovar.theme.font.size.normal
                                     color: Regovar.theme.primaryColor.back.normal
                                     height: Regovar.theme.font.boxSize.normal
@@ -818,18 +818,10 @@ Rectangle
                                 {
                                     anchors.fill: parent
                                     hoverEnabled: true
-                                    onEntered: highlightChart(index, true)
-                                    onExited: highlightChart(index, false)
-                                }
-
-                                property var slices: [slice1, slice2, slice3, slice4]
-                                function highlightChart(index, hover)
-                                {
-                                    var slice = slices[index];
-                                    slice.exploded = hover;
+                                    onEntered: { root.highlightPieSection(index, true); parent.hovered = true; }
+                                    onExited: { root.highlightPieSection(index, false); parent.hovered = false; }
                                 }
                             }
-
                         }
                     }
                 }
@@ -839,7 +831,7 @@ Rectangle
                     id: databaseWorkingTables
                     width: 300
 
-                    model: [qsTr("Clear working table:")]
+                    property var wtModel: null
                 }
                 Row
                 {
@@ -848,11 +840,16 @@ Rectangle
                     {
                         text: qsTr("Clear")
                         enabled:  databaseWorkingTables.currentIndex > 0
+                        onClicked:
+                        {
+                            confirmClearDialog.wtId = databaseWorkingTables.wtModel[databaseWorkingTables.currentIndex-1]["id"];
+                            confirmClearDialog.open();
+                        }
                     }
                     Text
                     {
                         Layout.columnSpan: 2
-                        text: databaseWorkingTables.currentIndex > 0 ? qsTr("Clear will free : 768.9 Mo") : ""
+                        text: databaseWorkingTables.currentIndex > 0 ? qsTr("Clear will free : ")+ databaseWorkingTables.wtModel[databaseWorkingTables.currentIndex-1]["hSize"]: ""
                         font.pixelSize: Regovar.theme.font.size.small
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
@@ -954,6 +951,16 @@ Rectangle
     }
 
 
+    AdminConfirmWtClear
+    {
+        id: confirmClearDialog
+        onYes: regovar.admin.clearWt(wtId)
+    }
+
+
+
+
+
     function updateStatus()
     {
         cpuGauge.value = serverData["cpu"]["usage"];
@@ -982,6 +989,28 @@ Rectangle
         tablesTableView.model = regovar.admin.tables;
         databaseResumeTotalSize.text = regovar.sizeToHumanReadable(regovar.admin.tablesTotalSize);
         databaseResumeRepeater.model = regovar.admin.tablesSizes;
-        databaseWorkingTables.model = regovar.admin.wtTables;
+        // Populate Pie slices
+        pieSeries.clear()
+        for (var idx=0; idx<regovar.admin.tablesSizes.length; idx++)
+        {
+            pieSeries.append(regovar.admin.tablesSizes[idx].percent, regovar.admin.tablesSizes[idx].size);
+            var slice = pieSeries.at(idx);
+            slice.labelVisible = true;
+
+        }
+
+        // populate wt combo
+        var combolModel = [qsTr("Clear analysis tmp data:")];
+        for (var idx=0; idx<regovar.admin.wtTables.length; idx++)
+        {
+            combolModel = combolModel.concat("Analysis " + regovar.admin.wtTables[idx].id + ": " + regovar.admin.wtTables[idx].name);
+        }
+        databaseWorkingTables.model = combolModel;
+        databaseWorkingTables.wtModel = regovar.admin.wtTables;
+    }
+
+    function highlightPieSection(index, exploded)
+    {
+        pieSeries.at(index).exploded = exploded;
     }
 }
