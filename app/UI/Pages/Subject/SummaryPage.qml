@@ -11,13 +11,9 @@ Rectangle
 
     property bool editionMode: false
     property QtObject model
-    onModelChanged:
-    {
-        if (model != undefined)
-        {
-            nameLabel.text = model.name;
-        }
-    }
+    onModelChanged: updateViewFromModel(model)
+
+
 
 
     Rectangle
@@ -29,21 +25,35 @@ Rectangle
         height: 50
         color: Regovar.theme.backgroundColor.alt
 
-        Text
+        RowLayout
         {
-            id: nameLabel
-            anchors.top: header.top
-            anchors.left: header.left
-            anchors.bottom: header.bottom
+            anchors.fill: parent
             anchors.margins: 10
 
-            font.pixelSize: 22
-            font.family: Regovar.theme.font.familly
-            color: Regovar.theme.frontColor.normal
-            verticalAlignment: Text.AlignVCenter
-            text: "-"
+            Text
+            {
+                id: nameLabel
+                Layout.fillWidth: true
+
+                font.pixelSize: 22
+                font.family: Regovar.theme.font.familly
+                color: Regovar.theme.frontColor.normal
+                verticalAlignment: Text.AlignVCenter
+                text: "-"
+                elide: Text.ElideRight
+            }
+
+            ConnectionStatus
+            {
+                anchors.top: header.top
+                anchors.right: header.right
+                anchors.bottom: header.bottom
+                anchors.margins: 5
+                anchors.rightMargin: 10
+            }
         }
     }
+
     GridLayout
     {
         anchors.top : header.bottom
@@ -70,7 +80,7 @@ Rectangle
         }
         TextField
         {
-            id: nameField
+            id: idField
             Layout.fillWidth: true
             enabled: editionMode
             placeholderText: qsTr("Unique anonymous identifier")
@@ -87,13 +97,22 @@ Rectangle
             Button
             {
                 text: editionMode ? qsTr("Save") : qsTr("Edit")
-                onClicked:  editionMode = !editionMode
+                onClicked:
+                {
+                    editionMode = !editionMode;
+                    if (!editionMode)
+                    {
+                        // when click on save : update model
+                        updateModelFromView();
+                    }
+                }
             }
 
             Button
             {
                 visible: editionMode
                 text: qsTr("Cancel")
+                onClicked: { updateViewFromModel(model); editionMode = false; }
             }
         }
 
@@ -111,10 +130,11 @@ Rectangle
         }
         TextField
         {
+            id: firstnameField
             Layout.fillWidth: true
             enabled: editionMode
             placeholderText: qsTr("Firstname of the subject")
-            text: "Michel"
+            text: ""
         }
 
         Text
@@ -128,10 +148,11 @@ Rectangle
         }
         TextField
         {
+            id: lastnameField
             Layout.fillWidth: true
             enabled: editionMode
             placeholderText: qsTr("Lastname of the subject")
-            text: "DUPONT"
+            text: ""
         }
 
         Text
@@ -145,10 +166,11 @@ Rectangle
         }
         TextField
         {
+            id: dateOfBirthField
             Layout.fillWidth: true
             enabled: editionMode
-            placeholderText: qsTr("Date of birth of the subject")
-            text: "1956-03-17"
+            placeholderText: qsTr("YYYY-MM-DD")
+            text: ""
         }
 
         Text
@@ -162,10 +184,11 @@ Rectangle
         }
         TextField
         {
+            id: familyNumberField
             Layout.fillWidth: true
             enabled: editionMode
-            placeholderText: qsTr("Familly number of the subject")
-            text: "1254"
+            placeholderText: qsTr("Family number of the subject")
+            text: ""
         }
 
         Text
@@ -201,7 +224,7 @@ Rectangle
             Layout.fillWidth: true
             enabled: editionMode
             height: 3 * Regovar.theme.font.size.normal
-            text: "Comment about the subject"
+            text: ""
         }
 
 
@@ -220,6 +243,7 @@ Rectangle
 
         TreeView
         {
+            id: events
             Layout.fillWidth: true
             Layout.fillHeight: true
 
@@ -255,6 +279,35 @@ Rectangle
                 text: qsTr("Edit event")
             }
         }
+    }
 
+    function updateViewFromModel(model)
+    {
+        if (model)
+        {
+            nameLabel.text = model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname;
+            idField.text = model.identifier;
+            firstnameField.text = model.firstname;
+            lastnameField.text = model.lastname;
+            dateOfBirthField.text = model.dateOfBirth;
+            familyNumberField.text = model.familyNumber;
+            commentField.text = model.comment;
+        }
+    }
+
+    function updateModelFromView()
+    {
+        if (model)
+        {
+            var json={};
+            json["identifier"] = idField.text;
+            json["firstname"] = firstnameField.text;
+            json["lastname"] = lastnameField.text;
+            json["dateOfBirth"] = dateOfBirthField.text;
+            json["familyNumber"] = familyNumberField.text;
+            json["comment"] = commentField.text;
+
+            model.deleteLater()
+        }
     }
 }

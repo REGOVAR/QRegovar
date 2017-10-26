@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import QtQuick.Layouts 1.3
 
 import "../Regovar"
 
@@ -59,18 +60,19 @@ Rectangle
     ListModel { id: sublevelModel }
 
 
-    Row
+    RowLayout
     {
         anchors.top: root.top
         anchors.left: root.left
         anchors.right: root.right
         id: header
         height: 40
+        spacing: 0
 
         Text
         {
             id: icon
-            width: 50
+            Layout.minimumWidth: header.height
             height: header.height
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
@@ -80,23 +82,24 @@ Rectangle
         Text
         {
             id: label
+            Layout.fillWidth: true
             height: header.height
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Regovar.theme.font.size.header
+            elide: Text.ElideRight
         }
-    }
-    Text
-    {
-        id: subLevelIndicator
-        anchors.right: header.right
-        anchors.top: header.top
-        anchors.bottom: header.bottom
-        width: 50
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        font.family: Regovar.theme.icons.name
-        font.pixelSize: Regovar.theme.font.size.header
-        text: "{"
+        Text
+        {
+            id: subLevelIndicator
+            Layout.minimumWidth: header.height
+            height: header.height
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.family: Regovar.theme.icons.name
+            font.pixelSize: Regovar.theme.font.size.header
+            text: "{"
+        }
+
     }
 
     MouseArea

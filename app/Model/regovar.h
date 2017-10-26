@@ -12,6 +12,7 @@
 #include "file/tusuploader.h"
 #include "analysis/filtering/filteringanalysis.h"
 #include "Model/analysis/pipeline/pipelineanalysis.h"
+#include "subject/subjectsmanager.h"
 #include "user.h"
 #include "admin.h"
 
@@ -80,9 +81,9 @@ class Regovar : public QObject
 
     // Browsers
     Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewChanged)
-    Q_PROPERTY(QList<QObject*> subjects READ subjects NOTIFY subjectsChanged)
     Q_PROPERTY(QList<QObject*> projectsOpen READ projectsOpen NOTIFY projectsOpenChanged)
-    Q_PROPERTY(QList<QObject*> subjectsOpen READ subjectsOpen NOTIFY subjectsOpenChanged)
+
+    Q_PROPERTY(SubjectsManager* subjectsManager READ subjectsManager NOTIFY neverChanged)
 
     // New analysis wizard
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
@@ -132,8 +133,7 @@ public:
     //--
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
     inline QList<QObject*> projectsOpen() const { return mProjectsOpen; }
-    inline QList<QObject*> subjects() const { return mSubjects; }
-    inline QList<QObject*> subjectsOpen() const { return mSubjectsOpen; }
+    inline SubjectsManager* subjectsManager() const { return mSubjectsManager; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
     inline int selectedReference() const { return mSelectedReference; }
@@ -162,11 +162,7 @@ public:
     Q_INVOKABLE void openProject(QJsonObject json);
     void refreshProjectsLists();
     void refreshFlatProjectsListRecursive(QJsonArray data, QString prefix);
-    // Subject management
-    Q_INVOKABLE void newSubject(QString identifier, QString firstname, QString lastname, int sex, QString dateOfBirth, QString familyNumber, QString comment);
-    Q_INVOKABLE void openSubject(int id);
-    Q_INVOKABLE void openSubject(QJsonObject json);
-    void refreshSubjectsList();
+
     // Analysis management
     Q_INVOKABLE bool newAnalysis(QString type);
     Q_INVOKABLE void resetNewAnalysisWizardModels();
@@ -212,6 +208,10 @@ public Q_SLOTS:
 
 signals:
 Q_SIGNALS:
+    //! special signal used for QML property that never changed to avoid to declare to many useless signal
+    //! QML need that property declare a "changed" event for binding
+    void neverChanged();
+
     void userChanged();
     void loginSuccess();
     void loginFailed();
@@ -228,7 +228,6 @@ Q_SIGNALS:
     void errorOccured(QString errCode, QString message, QString techData);
     void projectCreationDone(bool success, int projectId);
     void analysisCreationDone(bool success, int analysisId);
-    void subjectCreationDone(bool success, int subjectId);
     void lastDataChanged();
     void subjectsOpenChanged();
     void projectsOpenChanged();
@@ -242,7 +241,6 @@ Q_SIGNALS:
     void connectionStatusChanged();
     void configChanged();
     void adminChanged();
-    void subjectsChanged();
 
 private:
     Regovar();
@@ -287,14 +285,14 @@ private:
     QList<QObject*> mReferences;
     int mReferenceDefault;
     int mSelectedReference;
-    //! list of subjects
-    QList<QObject*> mSubjects;
     //! list of project/subject open
     QList<QObject*> mProjectsOpen;
-    QList<QObject*> mSubjectsOpen;
     //! model to hold data when using form to create a new analysis
     PipelineAnalysis* mNewPipelineAnalysis;
     FilteringAnalysis* mNewFilteringAnalysis;
+
+
+    SubjectsManager* mSubjectsManager;
 
     //! We need ref to the QML engine to create/open new windows for Analysis
     QQmlApplicationEngine* mQmlEngine;

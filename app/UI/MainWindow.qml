@@ -51,18 +51,51 @@ GenericWindow
             Regovar.menuModel.selectedIndex=[2, regovar.projectsOpen.length,0];
         }
     }
+
     Connections
     {
-        target: regovar
-        onSubjectsOpenChanged:
+        target: regovar.subjectsManager
+        onSubjectsOpenListChanged:
         {
-            console.log ("ReloadMenu (subjects)");
-            Regovar.reloadSubjectsOpenEntries();
-            buildPages(menuModel.model[3]["sublevel"], Regovar.currentopeningSubject);
-            // select currentEntry
-            Regovar.menuModel.selectedIndex=[3, regovar.subjectsOpen.length,0];
+            console.log ("RefreshMenu (subjects)");
+            // Step 1 : update main menu entries
+            var entryModel = Regovar.refreshSubjectsEntries();
+            // Step 2 : Build pages for the new entry
+            if (entryModel)
+            {
+                buildPages(menuModel.model[3]["sublevel"], entryModel);
+            }
         }
     }
+    Connections
+    {
+        target: regovar.subjectsManager
+        onSubjectOpenChanged:
+        {
+            Regovar.menuModel.selectedIndex=[3, idx+1, 0];
+        }
+    }
+
+
+
+
+//    Connections
+//    {
+//        target: regovar.subjectsManager
+//        onSubjectCreationDone:
+//        {
+//            if (success)
+//            {
+//                console.log ("ReloadMenu (subjects)");
+//                // Step 1 : update main menu entries
+//                Regovar.refreshSubjectsMenu();
+//                // Step 2 : Build page for the entry
+//                buildPages(menuModel.model[3]["sublevel"], regovar.subjectsManager.subjectOpen);
+//                // Step 3 : Select currentEntry
+//                Regovar.menuModel.selectedIndex=[3, 0, 0]; // 0 because new entry always insert at first place in open list
+//            }
+//        }
+//    }
 
     Connections
     {
@@ -71,6 +104,12 @@ GenericWindow
         {
             //console.log ("WS [" + action + "] " + data);
         }
+    }
+
+    function openSubject(subjectId)
+    {
+        // ask main model to add subject model into open entries
+
     }
 
 

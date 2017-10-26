@@ -98,40 +98,29 @@ Rectangle
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
-        model: regovar.subjects
+        model: regovar.subjectsManager.subjectsList
 
-        // Default delegate for all column
-//        itemDelegate: Item
-//        {
-//            Text
-//            {
-//                anchors.leftMargin: 5
-//                anchors.fill: parent
-//                verticalAlignment: Text.AlignVCenter
-//                font.pixelSize: Regovar.theme.font.size.normal
-//                text: styleData.value
-//                elide: Text.ElideRight
-//            }
-//        }
 
         TableViewColumn
         {
             role: "identifier"
             title: "Identifier"
-            width: 400
         }
         TableViewColumn
         {
             role: "lastname"
             title: "Lastname"
-            width: 400
         }
         TableViewColumn
         {
             role: "firstname"
             title: "Firstname"
-            width: 400
         }
+//        TableViewColumn
+//        {
+//            role: "sex"
+//            title: "Sex"
+//        }
         TableViewColumn
         {
             role: "dateofbirth"
@@ -141,7 +130,6 @@ Rectangle
         {
             role: "comment"
             title: "Comment"
-            width: 400
         }
     }
 
@@ -150,13 +138,9 @@ Rectangle
     property var component
     property var name
 
-    /// Retrive model of the selected Subject in the treeview and set the Regovar.currentSubject with it.
+    /// Retrive model of the selected Subject in the tableview and ask model to open it
     function openSelectedSubject()
     {
-        var item = regovar.subjects[browser.currentRow];
-        if (item !== undefined)
-        {
-            regovar.openSubject(item.id);
-        }
+        regovar.subjectsManager.openSubject(browser.model[browser.currentRow].id);
     }
 }

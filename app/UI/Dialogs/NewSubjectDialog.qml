@@ -8,7 +8,7 @@ import "../Framework"
 
 Dialog
 {
-    id: filterSavingFormPopup
+    id: newSubjectPopup
     modality: Qt.WindowModal
 
     title: qsTr("Create new subject")
@@ -19,11 +19,11 @@ Dialog
 
     Connections
     {
-        target: regovar
+        target: regovar.subjectsManager
         onSubjectCreationDone:
         {
             loadingIndicator.visible = false;
-            if (success) root.close();
+            if (success) newSubjectPopup.close();
         }
     }
 
@@ -31,6 +31,7 @@ Dialog
 
     contentItem: Rectangle
     {
+        id: root
         anchors.fill : parent
         color: Regovar.theme.backgroundColor.alt
 
@@ -139,7 +140,7 @@ Dialog
             {
                 id: dateOfBirthField
                 Layout.fillWidth: true
-                placeholderText: qsTr("Date of birth of the subject")
+                placeholderText: qsTr("YYYY-MM-DD")
             }
 
             Text
@@ -191,18 +192,18 @@ Dialog
             Button
             {
                 text: qsTr("Cancel")
-                onClicked: root.close()
+                onClicked: newSubjectPopup.close()
             }
             Button
             {
                 text: qsTr("Create")
-                enabled: idField.text.trim() != ""
+                enabled: idField.text.trim() != "" && checkDate(dateOfBirthField.text)
                 onClicked:
                 {
                     if (idField.text.trim() != "")
                     {
                         loadingIndicator.visible = true;
-                        regovar.newSubject(idField.text.trim(), firstnameField.text, lastnameField.text, sexField.currentIndex, dateOfBirthField.text, familyNumberField.text, commentField.text);
+                        regovar.subjectsManager.newSubject(idField.text.trim(), firstnameField.text, lastnameField.text, sexField.currentIndex, dateOfBirthField.text, familyNumberField.text, commentField.text);
                     }
                 }
             }
@@ -232,5 +233,11 @@ Dialog
         dateOfBirthField.text = "";
         familyNumberField.text = "";
         commentField.text = "";
+    }
+
+    function checkDate(date)
+    {
+        date = date.trim();
+        return date === "" || /^([0-9]{4}\-[0-9]{2}\-[0-9]{2})$/.test(date);
     }
 }

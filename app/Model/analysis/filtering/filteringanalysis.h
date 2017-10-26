@@ -7,13 +7,13 @@
 #include "annotationstreemodel.h"
 #include "remotesampletreemodel.h"
 #include "quickfilters/quickfiltermodel.h"
-#include "Model/sample/sample.h"
+#include "Model/subject/sample.h"
+#include "Model/subject/attribute.h"
 #include "fieldcolumninfos.h"
 #include "reference.h"
 #include "savedfilter.h"
 #include "advancedfilters/advancedfiltermodel.h"
 #include "advancedfilters/set.h"
-#include "Model/sample/attribute.h"
 
 class AdvancedFilterModel;
 class NewAdvancedFilterModel;

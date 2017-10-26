@@ -1,6 +1,6 @@
 #include "remotesampletreeitem.h"
 #include "Model/regovar.h"
-#include "Model/sample/sample.h"
+#include "Model/subject/sample.h"
 
 // RemoteSampleTreeItem ----------------------------------------------
 

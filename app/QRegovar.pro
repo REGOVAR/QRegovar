@@ -50,12 +50,13 @@ HEADERS += \
     Model/project/project.h \
     Model/project/projectstreeitem.h \
     Model/project/projectstreemodel.h \
-    Model/sample/attribute.h \
-    Model/sample/sample.h \
+    Model/subject/attribute.h \
+    Model/subject/sample.h \
+    Model/subject/subject.h \
     Model/admin.h \
     Model/regovar.h \
     Model/user.h \
-    Model/sample/subject.h
+    Model/subject/subjectsmanager.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -93,12 +94,13 @@ SOURCES += main.cpp \
     Model/project/project.cpp \
     Model/project/projectstreeitem.cpp \
     Model/project/projectstreemodel.cpp \
-    Model/sample/attribute.cpp \
-    Model/sample/sample.cpp \
+    Model/subject/attribute.cpp \
+    Model/subject/sample.cpp \
+    Model/subject/subject.cpp \
     Model/admin.cpp \
     Model/regovar.cpp \
     Model/user.cpp \
-    Model/sample/subject.cpp
+    Model/subject/subjectsmanager.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

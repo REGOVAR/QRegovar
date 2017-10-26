@@ -64,6 +64,11 @@ QtObject
     function reloadProjectsOpenEntries()
     {
         // TODO : remove project that are no more open
+//        for (var i=0; i<regovar.projectsOpen.length; i++)
+//        {
+
+//            menuModel.model[2]["sublevel"] = [];
+//        }
 
         // Add new open project
         for (var i=0; i<regovar.projectsOpen.length; i++)
@@ -91,37 +96,72 @@ QtObject
             }
         }
     }
-    function reloadSubjectsOpenEntries()
+
+
+
+
+
+
+
+
+    function refreshSubjectsEntries()
     {
-        // TODO : remove subjects that are no more open
+        // /!\ Change must be done "one by one".
+        //     Multi add/remove not supported
+        var addMode = regovar.subjectsManager.subjectsOpenList.length > menuModel.model[3]["sublevel"].length-1; // -1 = don't tak ein account the "browser entry"
 
-        // Add new open subject
-        for (var i=0; i<regovar.subjectsOpen.length; i++)
+        if (addMode)
         {
-            var itemFound = false;
-            for (var j=0; j<menuModel.model[3]["sublevel"].length; j++)
-            {
+            var modelItem = regovar.subjectsManager.subjectOpen;
+            var menuEntry = { "icon": "b", "label": modelItem.firstname + " " + modelItem.lastname, "subjectId": modelItem.id, "page": "", "sublevel": [
+                { "label": qsTr("Summary"),    "page": "Subject/SummaryPage.qml", "sublevel": []},
+                { "label": qsTr("Phenotype"),  "page": "Subject/PhenotypesPage.qml", "sublevel": []},
+                { "label": qsTr("Samples"),    "page": "Subject/SamplesPage.qml", "sublevel": []},
+                { "label": qsTr("Analyses"),   "page": "Subject/AnalysesPage.qml", "sublevel": []},
+                { "label": qsTr("Files"),      "page": "Subject/FilesPage.qml", "sublevel": []},
+            ], "subindex": 0};
 
-                if (regovar.subjectsOpen[i].id == menuModel.model[3]["sublevel"][j].projectId)
+            if (menuModel.model[3]["sublevel"].length == 1)
+            {
+                menuModel.model[3]["sublevel"].splice(1, 0, menuEntry);
+                return modelItem;
+            }
+            else
+            {
+                for(var idx=0; idx<regovar.subjectsManager.subjectsOpenList.length; idx++)
                 {
-                    itemFound = menuModel.model[3]["sublevel"][j];
+                    if (modelItem.id != menuModel.model[3]["sublevel"][idx+1].subjectId)
+                    {
+                        // insert new entry here
+                        menuModel.model[3]["sublevel"].splice(idx+1, 0, menuEntry);
+                        return modelItem;
+                    }
                 }
             }
-
-            if (itemFound === false)
+        }
+        else
+        {
+            if (regovar.subjectsManager.subjectsOpenList.length == 0)
             {
-                // Add project to the menu
-                currentopeningSubject = regovar.subjectsOpen[i];
-                menuModel.model[3]["sublevel"] = menuModel.model[3]["sublevel"].concat({ "icon": "b", "label": currentopeningSubject.firstname + " " + currentopeningSubject.lastname, "subjectId": currentopeningSubject.id, "page": "", "sublevel": [
-                       { "label": qsTr("Summary"),    "page": "Subject/SummaryPage.qml", "sublevel": []},
-                       { "label": qsTr("Phenotype"),  "page": "Subject/PhenotypesPage.qml", "sublevel": []},
-                       { "label": qsTr("Samples"),    "page": "Subject/SamplesPage.qml", "sublevel": []},
-                       { "label": qsTr("Analyses"),   "page": "Subject/AnalysesPage.qml", "sublevel": []},
-                       { "label": qsTr("Files"),      "page": "Subject/FilesPage.qml", "sublevel": []},
-                   ], "subindex": 0});
+                menuModel.model[3]["sublevel"].splice(1, 0, menuEntry);
+                return null;
+            }
+            else
+            {
+                for(var idx=0; idx<regovar.subjectsManager.subjectsOpenList.length; idx++)
+                {
+                    if (modelItem.id != menuModel.model[3]["sublevel"][idx+1].subjectId)
+                    {
+                        // remove entry here
+                        menuModel.model[3]["sublevel"].splice(idx, 1);
+                        return null;
+                    }
+                }
             }
         }
     }
+
+
 
     // TOOLS
     function formatBigNumber(value)

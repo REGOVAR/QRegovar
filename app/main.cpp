@@ -11,7 +11,7 @@
 #include "Model/analysis/filtering/filteringanalysis.h"
 #include "Model/analysis/pipeline/pipelineanalysis.h"
 #include "Model/analysis/filtering/reference.h"
-#include "Model/sample/attribute.h"
+#include "Model/subject/attribute.h"
 
 
 int main(int argc, char *argv[])
@@ -30,7 +30,6 @@ int main(int argc, char *argv[])
     qmlRegisterType<Annotation>("org.regovar", 1, 0, "AnnotationModel");
     qmlRegisterType<FilteringAnalysis>("org.regovar", 1, 0, "FilteringAnalysis");
     qmlRegisterType<PipelineAnalysis>("org.regovar", 1, 0, "PipelineAnalysis");
-    qmlRegisterType<Sample>("org.regovar", 1, 0, "Sample");
     qmlRegisterType<Reference>("org.regovar", 1, 0, "Reference");
     qmlRegisterType<FieldColumnInfos>("org.regovar", 1, 0, "FieldColumnInfos");
     qmlRegisterType<QuickFilterField>("org.regovar", 1, 0, "QuickFilterField");
@@ -39,6 +38,10 @@ int main(int argc, char *argv[])
     qmlRegisterType<User>("org.regovar", 1, 0, "User");
     qmlRegisterType<Project>("org.regovar", 1, 0, "Project");
     qmlRegisterType<AdminTableInfo>("org.regovar", 1, 0, "AdminTableInfo");
+
+    qmlRegisterType<SubjectsManager>("org.regovar", 1, 0, "SubjectsManager");
+    qmlRegisterType<Subject>("org.regovar", 1, 0, "Subject");
+    qmlRegisterType<Sample>("org.regovar", 1, 0, "Sample");
 
 
 

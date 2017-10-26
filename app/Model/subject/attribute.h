@@ -4,7 +4,7 @@
 
 #include <QtCore>
 #include "Model/analysis/filtering/filteringanalysis.h"
-#include "Model/sample/sample.h"
+#include "Model/subject/sample.h"
 
 //! Sample attribute model
 class Attribute : public QObject

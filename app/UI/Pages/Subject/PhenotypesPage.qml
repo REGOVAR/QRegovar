@@ -11,7 +11,7 @@ Rectangle
     {
         if (model != undefined)
         {
-            nameLabel.text = model.name;
+            nameLabel.text = model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname;
         }
     }
 

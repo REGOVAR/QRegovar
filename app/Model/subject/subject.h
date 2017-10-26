@@ -14,7 +14,8 @@ class Subject : public QObject
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
     Q_PROPERTY(Sex sex READ sex WRITE setSex NOTIFY dataChanged)
     Q_PROPERTY(QDateTime dateOfBirth READ dateOfBirth WRITE setDateOfBirth NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime dateOfDeath READ dateOfDeath WRITE setDateOfDeath NOTIFY dataChanged)
+    // Q_PROPERTY(QDateTime dateOfDeath READ dateOfDeath WRITE setDateOfDeath NOTIFY dataChanged) // Not used
+    Q_PROPERTY(QString familyNumber READ familyNumber WRITE setFamilyNumber NOTIFY dataChanged)
     Q_PROPERTY(QDateTime updated READ updated NOTIFY dataChanged)
     Q_PROPERTY(QDateTime created READ created NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> samples READ samples NOTIFY dataChanged)
@@ -35,6 +36,7 @@ public:
 
     // Constructors
     explicit Subject(QObject *parent = nullptr);
+    explicit Subject(int id, QObject *parent = nullptr);
     explicit Subject(QJsonObject json, QObject *parent = nullptr);
 
     // Getters
@@ -43,6 +45,7 @@ public:
     inline QString firstname() const { return mFirstname; }
     inline QString lastname() const { return mLastname; }
     inline QString comment() const { return mComment; }
+    inline QString familyNumber() const { return mFamilyNumber; }
     inline Sex sex() const { return mSex; }
     inline QDateTime dateOfBirth() const { return mDateOfBirth; }
     inline QDateTime dateOfDeath() const { return mDateOfDeath; }
@@ -60,16 +63,24 @@ public:
     inline void setFirstname(QString val) { mFirstname = val; emit dataChanged(); }
     inline void setLastname(QString val) { mLastname = val; emit dataChanged(); }
     inline void setComment(QString val) { mComment = val; emit dataChanged(); }
+    inline void setFamilyNumber(QString val) { mFamilyNumber = val; emit dataChanged(); }
     inline void setSex(Sex val) { mSex = val; emit dataChanged(); }
     inline void setDateOfBirth(QDateTime val) { mDateOfBirth = val; emit dataChanged(); }
     inline void setDateOfDeath(QDateTime val) { mDateOfDeath = val; emit dataChanged(); }
 
     // Methods
+    //! Set model with provided json data
     Q_INVOKABLE bool fromJson(QJsonObject json);
-    QJsonObject toJson();
+    //! Export model data into json object
+    Q_INVOKABLE QJsonObject toJson();
+    //! Save subject information onto server
+    Q_INVOKABLE void save();
+    //! Load Subject information from server
+    Q_INVOKABLE void load();
+
 
 Q_SIGNALS:
-        void dataChanged();
+    void dataChanged();
 
 
 private:
@@ -78,6 +89,7 @@ private:
     QString mFirstname;
     QString mLastname;
     QString mComment;
+    QString mFamilyNumber;
     Sex mSex;
     QDateTime mDateOfBirth;
     QDateTime mDateOfDeath;
