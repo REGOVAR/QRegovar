@@ -9,9 +9,8 @@
         <file>a240 Subject Analyses.png</file>
         <file>a200 Subject Browser.png</file>
         <file>a310 Settings Panels.png</file>
-        <file>filteringIcon.jpg</file>
         <file>license.html</file>
-        <file>pipelineIcon.jpg</file>
         <file>filteringIcon.png</file>
+        <file>pipelineIcon.png</file>
     </qresource>
 </RCC>

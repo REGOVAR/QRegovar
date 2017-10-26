@@ -37,7 +37,7 @@ Rectangle
         {
             Layout.alignment : Qt.AlignHCenter
             label : qsTr("Pipeline")
-            source: "qrc:/pipelineIcon.jpg"
+            source: "qrc:/pipelineIcon.png"
             onClicked: selected(1);
         }
         AnalysisTypeButtom
