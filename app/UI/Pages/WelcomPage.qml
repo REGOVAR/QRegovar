@@ -41,25 +41,14 @@ Rectangle
     }
 
 
-//    Image
-//    {
-//        id: logo
-//        source: "qrc:/regovar.png"
-//        sourceSize.height: 125
-//        anchors.top: header.bottom
-//        anchors.topMargin: 50
-//        anchors.horizontalCenter: header.horizontalCenter
-//    }
-
-    Item
+    Image
     {
         id: logo
-        width: 300
-        height: 125
+        source: "qrc:/regovar.png"
+        sourceSize.height: 125
         anchors.top: header.bottom
         anchors.topMargin: 50
         anchors.horizontalCenter: header.horizontalCenter
-
         LinearGradient
         {
             anchors.fill: parent
@@ -70,9 +59,10 @@ Rectangle
                 GradientStop { position: 0.0; color: regovar.connectionStatus == 0 ? Regovar.theme.logo.color1 : Regovar.theme.frontColor.disable }
                 GradientStop { position: 1.0; color: regovar.connectionStatus == 0 ? Regovar.theme.logo.color2 : Regovar.theme.frontColor.disable }
             }
-            source: "qrc:/regovar.png"
+            source: logo
         }
     }
+
 
 
     TextField

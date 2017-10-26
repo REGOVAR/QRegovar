@@ -153,14 +153,10 @@ Rectangle
     /// Retrive model of the selected Subject in the treeview and set the Regovar.currentSubject with it.
     function openSelectedSubject()
     {
-
-        var item = regovar.SubjectsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
+        var item = regovar.subjects[browser.currentRow];
         if (item !== undefined)
         {
-            if (item.isAnalysis)
-                regovar.openAnalysis(item.id);
-            else
-                regovar.openSubject(item.id);
+            regovar.openSubject(item.id);
         }
     }
 }

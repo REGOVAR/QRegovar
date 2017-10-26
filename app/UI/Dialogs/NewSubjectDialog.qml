@@ -17,6 +17,15 @@ Dialog
     height: 500
 
 
+    Connections
+    {
+        target: regovar
+        onSubjectCreationDone:
+        {
+            loadingIndicator.visible = false;
+            if (success) root.close();
+        }
+    }
 
 
 
@@ -103,6 +112,22 @@ Dialog
 
             Text
             {
+                text: qsTr("Sex")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height: 35
+            }
+            ComboBox
+            {
+                id: sexField
+                Layout.fillWidth: true
+                model: [qsTr("Unknow"), qsTr("Male"), qsTr("Female")]
+            }
+
+            Text
+            {
                 text: qsTr("Date of birth")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
@@ -177,7 +202,7 @@ Dialog
                     if (idField.text.trim() != "")
                     {
                         loadingIndicator.visible = true;
-                        regovar.newSubject(idField.text.trim(), firstnameField.text, lastnameField.text, dateOfBirthField.text, familyNumberField.text, commentField.text);
+                        regovar.newSubject(idField.text.trim(), firstnameField.text, lastnameField.text, sexField.currentIndex, dateOfBirthField.text, familyNumberField.text, commentField.text);
                     }
                 }
             }
@@ -203,6 +228,7 @@ Dialog
         idField.text = "";
         firstnameField.text = "";
         lastnameField.text = "";
+        sexField.currentIndex = 0;
         dateOfBirthField.text = "";
         familyNumberField.text = "";
         commentField.text = "";

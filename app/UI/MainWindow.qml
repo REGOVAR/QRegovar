@@ -44,11 +44,23 @@ GenericWindow
         target: regovar
         onProjectsOpenChanged:
         {
-            console.log ("ReloadMenu");
+            console.log ("ReloadMenu (projects)");
             Regovar.reloadProjectsOpenEntries();
             buildPages(menuModel.model[2]["sublevel"], Regovar.currentopeningProject);
             // select currentEntry
             Regovar.menuModel.selectedIndex=[2, regovar.projectsOpen.length,0];
+        }
+    }
+    Connections
+    {
+        target: regovar
+        onSubjectsOpenChanged:
+        {
+            console.log ("ReloadMenu (subjects)");
+            Regovar.reloadSubjectsOpenEntries();
+            buildPages(menuModel.model[3]["sublevel"], Regovar.currentopeningSubject);
+            // select currentEntry
+            Regovar.menuModel.selectedIndex=[3, regovar.subjectsOpen.length,0];
         }
     }
 

@@ -10,6 +10,7 @@
 #include "file/file.h"
 #include "analysis/filtering/reference.h"
 #include "sample/sample.h"
+#include <QDateTime>
 
 
 
@@ -239,12 +240,32 @@ void Regovar::loadWelcomData()
         {
             QJsonObject data = json["data"].toObject();
             mConfig->fromJson(data);
-            mLastAnalyses = data["last_analyses"].toArray();
-            emit lastAnalysesChanged();
-            mLastEvents = data["last_events"].toArray();
-            emit lastEventChanged();
-            mLastSubjects = data["last_subjects"].toArray();
-            emit lastSubjectsChanged();
+
+            // Last analyses
+            foreach (QJsonValue val, data["last_analyses"].toArray())
+            {
+                QJsonObject item = val.toObject();
+                QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
+                item["update_date"] = date.toString("yyyy-MM-dd hh:mm");
+                mLastAnalyses.append(item);
+            }
+            // Last subjects
+            foreach (QJsonValue val, data["last_subjects"].toArray())
+            {
+                QJsonObject item = val.toObject();
+                QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
+                item["update_date"] = date.toString("yyyy-MM-dd hh:mm");
+                mLastSubjects.append(item);
+            }
+            // Last events
+            foreach (QJsonValue val, data["last_events"].toArray())
+            {
+                QJsonObject item = val.toObject();
+                QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
+                item["update_date"] = date.toString("yyyy-MM-dd hh:mm");
+                mLastSubjects.append(item);
+            }
+            emit lastDataChanged();
 
             // Get referencial available
             mReferenceDefault = data["default_reference_id"].toInt();
@@ -603,22 +624,11 @@ void Regovar::newProject(QString name, QString comment)
     {
         if (success)
         {
+            refreshProjectsLists();
             QJsonObject projectData = json["data"].toObject();
-            Request* req2 = Request::get(QString("/project/%1").arg(projectData["id"].toInt()));
-            connect(req2, &Request::responseReceived, [this, req2](bool success, const QJsonObject& json)
-            {
-                if (success)
-                {
-                    openProject(json);
-                }
-                else
-                {
-                    QJsonObject jsonError = json;
-                    jsonError.insert("method", Q_FUNC_INFO);
-                    regovar->raiseError(jsonError);
-                }
-                req2->deleteLater();
-            });
+            openProject(projectData["id"].toInt());
+            emit projectCreationDone(true, projectData["id"].toInt());
+
         }
         else
         {
@@ -628,7 +638,6 @@ void Regovar::newProject(QString name, QString comment)
         }
         req->deleteLater();
     });
-
 }
 
 
@@ -659,11 +668,7 @@ void Regovar::openProject(QJsonObject json)
     {
         // store project model
         mProjectsOpen.append(project);
-        qDebug() << Q_FUNC_INFO << "Project open !";
-
-        emit projectsTreeViewChanged();
         emit projectsOpenChanged();
-        emit projectCreationDone(true, mProjectsOpen.count() - 1);
     }
     else
     {
@@ -758,11 +763,79 @@ bool Regovar::newAnalysis(QString type)
     }
 	return true;
 }
-void Regovar::newSubject(QJsonObject data)
+
+
+
+
+
+// SUBJECT
+
+void Regovar::newSubject(QString identifier, QString firstname, QString lastname, int sex, QString dateOfBirth, QString familyNumber, QString comment)
 {
-    // TODO
-    emit subjectCreationDone(true, 1);
+    QJsonObject body;
+    body.insert("identifier", identifier);
+    body.insert("firstname", firstname);
+    body.insert("lastname", lastname);
+    body.insert("sex", sex == 1 ? "male" : sex == 2 ? "female" : "unknow");
+    body.insert("dateOfBirth", dateOfBirth);
+    body.insert("familyNumber", familyNumber);
+    body.insert("comment", comment);
+
+    Request* req = Request::post(QString("/subject"), QJsonDocument(body).toJson());
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            refreshSubjectsList();
+            QJsonObject subjectData = json["data"].toObject();
+            openSubject(subjectData["id"].toInt());
+            emit subjectCreationDone(true, subjectData["id"].toInt());
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
 }
+void Regovar::openSubject(int id)
+{
+    Request* req = Request::get(QString("/subject/%1").arg(id));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            openSubject(json);
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
+
+void Regovar::openSubject(QJsonObject json)
+{
+    Subject* subject = new Subject(regovar);
+
+    if (subject->fromJson(json["data"].toObject()))
+    {
+        mSubjectsOpen.append(subject);
+        emit subjectsOpenChanged();
+    }
+    else
+    {
+        qDebug() << Q_FUNC_INFO << "Failed to load project data.";
+    }
+}
+
+
+
 
 
 void Regovar::enqueueUploadFile(QStringList filesPaths)

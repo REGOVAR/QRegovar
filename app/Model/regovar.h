@@ -73,16 +73,16 @@ class Regovar : public QObject
     Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
-    Q_PROPERTY(QJsonArray lastAnalyses READ lastAnalyses NOTIFY lastAnalysesChanged)
-    Q_PROPERTY(QJsonArray lastEvent READ lastEvent NOTIFY lastEventChanged)
-    Q_PROPERTY(QJsonArray lastSubjects READ lastSubjects NOTIFY lastSubjectsChanged)
+    Q_PROPERTY(QJsonArray lastAnalyses READ lastAnalyses NOTIFY lastDataChanged)
+    Q_PROPERTY(QJsonArray lastEvent READ lastEvent NOTIFY lastDataChanged)
+    Q_PROPERTY(QJsonArray lastSubjects READ lastSubjects NOTIFY lastDataChanged)
     Q_PROPERTY(bool welcomIsLoading READ welcomIsLoading WRITE setWelcomIsLoading NOTIFY welcomIsLoadingChanged)
 
     // Browsers
     Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewChanged)
-    Q_PROPERTY(QList<QObject*> projectsOpen READ projectsOpen NOTIFY projectsOpenChanged)
     Q_PROPERTY(QList<QObject*> subjects READ subjects NOTIFY subjectsChanged)
-    Q_PROPERTY(QVariantList subjetsOpen READ subjetsOpen NOTIFY subjetsOpenChanged)
+    Q_PROPERTY(QList<QObject*> projectsOpen READ projectsOpen NOTIFY projectsOpenChanged)
+    Q_PROPERTY(QList<QObject*> subjectsOpen READ subjectsOpen NOTIFY subjectsOpenChanged)
 
     // New analysis wizard
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
@@ -133,7 +133,7 @@ public:
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
     inline QList<QObject*> projectsOpen() const { return mProjectsOpen; }
     inline QList<QObject*> subjects() const { return mSubjects; }
-    inline QVariantList subjetsOpen() const { return mSubjectsOpen; }
+    inline QList<QObject*> subjectsOpen() const { return mSubjectsOpen; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
     inline int selectedReference() const { return mSelectedReference; }
@@ -156,31 +156,39 @@ public:
     void setSelectedProject(int idx);
 
     // Methods
+    // Project management
     Q_INVOKABLE void newProject(QString name, QString comment);
-    Q_INVOKABLE bool newAnalysis(QString type);
-    Q_INVOKABLE void newSubject(QJsonObject data);
-    Q_INVOKABLE void enqueueUploadFile(QStringList filesPaths);
-    Q_INVOKABLE void raiseError(QJsonObject raiseError);
-    Q_INVOKABLE void close();
-    Q_INVOKABLE void disconnectUser();
-    Q_INVOKABLE void quit();
-    Q_INVOKABLE FilteringAnalysis* getAnalysisFromWindowId(int winId);
-    Q_INVOKABLE void search(QString query);
-    Q_INVOKABLE void resetNewAnalysisWizardModels();
-    Q_INVOKABLE void openProject(QJsonObject json);
     Q_INVOKABLE void openProject(int id);
+    Q_INVOKABLE void openProject(QJsonObject json);
+    void refreshProjectsLists();
+    void refreshFlatProjectsListRecursive(QJsonArray data, QString prefix);
+    // Subject management
+    Q_INVOKABLE void newSubject(QString identifier, QString firstname, QString lastname, int sex, QString dateOfBirth, QString familyNumber, QString comment);
+    Q_INVOKABLE void openSubject(int id);
+    Q_INVOKABLE void openSubject(QJsonObject json);
+    void refreshSubjectsList();
+    // Analysis management
+    Q_INVOKABLE bool newAnalysis(QString type);
+    Q_INVOKABLE void resetNewAnalysisWizardModels();
+    Q_INVOKABLE FilteringAnalysis* getAnalysisFromWindowId(int winId);
     Reference* referencesFromId(int id);
+    // File management
+    Q_INVOKABLE void enqueueUploadFile(QStringList filesPaths);
 
+    // Others
+    Q_INVOKABLE void search(QString query);
     Q_INVOKABLE void loadWelcomData();
     Q_INVOKABLE void loadGithubData();
     Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void loadSampleBrowser(int refId);
+    Q_INVOKABLE void close();
+    Q_INVOKABLE void disconnectUser();
+    Q_INVOKABLE void quit();
+    // Tools
     Q_INVOKABLE inline QUuid generateUuid() { return QUuid::createUuid(); }
     Q_INVOKABLE QString sizeToHumanReadable(qint64 size, qint64 uploadOffset=-1);
+    Q_INVOKABLE void raiseError(QJsonObject raiseError);
 
-    void refreshProjectsLists();
-    void refreshFlatProjectsListRecursive(QJsonArray data, QString prefix);
-    void refreshSubjectsList();
 
 
 public Q_SLOTS:
@@ -221,10 +229,8 @@ Q_SIGNALS:
     void projectCreationDone(bool success, int projectId);
     void analysisCreationDone(bool success, int analysisId);
     void subjectCreationDone(bool success, int subjectId);
-    void lastAnalysesChanged();
-    void lastEventChanged();
-    void lastSubjectsChanged();
-    void subjetsOpenChanged();
+    void lastDataChanged();
+    void subjectsOpenChanged();
     void projectsOpenChanged();
     void newPipelineAnalysisChanged();
     void newFilteringAnalysisChanged();
@@ -285,7 +291,7 @@ private:
     QList<QObject*> mSubjects;
     //! list of project/subject open
     QList<QObject*> mProjectsOpen;
-    QVariantList mSubjectsOpen;
+    QList<QObject*> mSubjectsOpen;
     //! model to hold data when using form to create a new analysis
     PipelineAnalysis* mNewPipelineAnalysis;
     FilteringAnalysis* mNewFilteringAnalysis;

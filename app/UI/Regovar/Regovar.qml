@@ -37,14 +37,7 @@ QtObject
                 ], "subindex": 0},
             { "icon": "b", "label": qsTr("Subjects"),    "page": "", "sublevel": [
                 { "icon": "z", "label": qsTr("Browser"), "page": "Browse/SubjectsPage.qml", "sublevel": [], "subindex": -1, "subjectId": -1},
-                { "icon": "b", "label": "Michel Dupont", "page": "", "sublevel": [
-                    { "label": qsTr("Summary"),    "page": "Subject/SummaryPage.qml", "sublevel": []},
-                    { "label": qsTr("Phenotype"),  "page": "Subject/PhenotypesPage.qml", "sublevel": []},
-                    { "label": qsTr("Samples"),    "page": "Subject/SamplesPage.qml", "sublevel": []},
-                    { "label": qsTr("Analyses"),   "page": "Subject/AnalysesPage.qml", "sublevel": []},
-                    { "label": qsTr("Files"),      "page": "Subject/FilesPage.qml", "sublevel": []},
                 ], "subindex": 0},
-            ], "subindex": 0},
             { "icon": "d", "label": qsTr("Settings"),        "page": "",   "sublevel": [
                 { "icon": "b", "label": qsTr("My profile"),  "page": "Settings/ProfilePage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "I", "label": qsTr("Application"), "page": "Settings/ApplicationPage.qml", "sublevel": [], "subindex": -1},
@@ -64,8 +57,9 @@ QtObject
         ]
     }
 
-    // This variable is used temporary during the creation of the project menu to share the model between the menu component and the qml pages
+    // This variable is used temporary during the creation of the project/subject menu to share the model between the menu component and the qml pages
     property QtObject currentopeningProject
+    property QtObject currentopeningSubject
 
     function reloadProjectsOpenEntries()
     {
@@ -93,6 +87,37 @@ QtObject
                   { "label": qsTr("Analyses"), "page": "Project/AnalysesPage.qml", "sublevel": []},
                   { "label": qsTr("Subjects"), "page": "Project/SubjectsPage.qml", "sublevel": []},
                   { "label": qsTr("Files"),    "page": "Project/FilesPage.qml", "sublevel": []},
+                   ], "subindex": 0});
+            }
+        }
+    }
+    function reloadSubjectsOpenEntries()
+    {
+        // TODO : remove subjects that are no more open
+
+        // Add new open subject
+        for (var i=0; i<regovar.subjectsOpen.length; i++)
+        {
+            var itemFound = false;
+            for (var j=0; j<menuModel.model[3]["sublevel"].length; j++)
+            {
+
+                if (regovar.subjectsOpen[i].id == menuModel.model[3]["sublevel"][j].projectId)
+                {
+                    itemFound = menuModel.model[3]["sublevel"][j];
+                }
+            }
+
+            if (itemFound === false)
+            {
+                // Add project to the menu
+                currentopeningSubject = regovar.subjectsOpen[i];
+                menuModel.model[3]["sublevel"] = menuModel.model[3]["sublevel"].concat({ "icon": "b", "label": currentopeningSubject.firstname + " " + currentopeningSubject.lastname, "subjectId": currentopeningSubject.id, "page": "", "sublevel": [
+                       { "label": qsTr("Summary"),    "page": "Subject/SummaryPage.qml", "sublevel": []},
+                       { "label": qsTr("Phenotype"),  "page": "Subject/PhenotypesPage.qml", "sublevel": []},
+                       { "label": qsTr("Samples"),    "page": "Subject/SamplesPage.qml", "sublevel": []},
+                       { "label": qsTr("Analyses"),   "page": "Subject/AnalysesPage.qml", "sublevel": []},
+                       { "label": qsTr("Files"),      "page": "Subject/FilesPage.qml", "sublevel": []},
                    ], "subindex": 0});
             }
         }
