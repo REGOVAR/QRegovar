@@ -121,6 +121,48 @@ GenericScreen
                 }
             }
         }
+
+        Column
+        {
+            id: actionColumn
+            anchors.top: parent.top
+            anchors.topMargin:  tableTitle.height + 10
+            Layout.alignment: Qt.AlignTop
+            spacing: 10
+
+            property real maxWidth: 0
+            onMaxWidthChanged:
+            {
+                addButton.width = maxWidth;
+                remButton.width = maxWidth;
+            }
+
+            Button
+            {
+                id: addButton
+                text: qsTr("Find subject")
+                onClicked: { sampleSelector.reset(); sampleSelector.open(); }
+                Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
+            }
+            Button
+            {
+                id: remButton
+                text: qsTr("New subject")
+                Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
+                onClicked:
+                {
+                    // Get list of objects to remove
+                    var samples= []
+                    samplesList.selection.forEach( function(rowIndex)
+                    {
+                        samples = samples.concat(regovar.newFilteringAnalysis.samples[rowIndex]);
+                    });
+                    regovar.newFilteringAnalysis.removeSamples(samples);
+                    trioActivated.checked = regovar.newFilteringAnalysis.samples.length == 3;
+                }
+            }
+        }
+
     }
 
     NewAttributeDialog

@@ -41,10 +41,10 @@ bool Sample::fromJson(QJsonObject json)
     setNameUI(QVariant::fromValue(nameInfo));
 
     QJsonObject subjectInfo;
-    subjectInfo.insert("firstname", "Michel"); // todo
-    subjectInfo.insert("lastname", "DUPONT");  // todo
-    subjectInfo.insert("age", "54y");          // todo
-    subjectInfo.insert("sex", "M");            // todo
+    subjectInfo.insert("firstname", ""); // todo
+    subjectInfo.insert("lastname", "");  // todo
+    subjectInfo.insert("age", "");       // todo
+    subjectInfo.insert("sex", "");       // todo
     setSubjectUI(QVariant::fromValue(subjectInfo));
 
     QJsonObject statusInfo;

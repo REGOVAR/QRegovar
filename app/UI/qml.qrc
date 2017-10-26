@@ -126,5 +126,6 @@
         <file>Framework/TableViewTextField.qml</file>
         <file>Dialogs/DeleteAttributeDialog.qml</file>
         <file>Dialogs/AdminConfirmWtClear.qml</file>
+        <file>Dialogs/SelectSubjectDialog.qml</file>
     </qresource>
 </RCC>

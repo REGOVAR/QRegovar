@@ -1,0 +1,699 @@
+import QtQuick 2.7
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 1.4
+import QtQuick.Dialogs 1.2
+import QtGraphicalEffects 1.0
+
+import "../Regovar"
+import "../Framework"
+
+
+
+
+
+
+
+
+Dialog
+{
+    id: sampleDialog
+    title: qsTr("Select subject")
+    standardButtons: Dialog.Ok | Dialog.Cancel
+
+    width: 800
+    height: 600
+
+    onVisibleChanged:
+    {
+        regovar.loadSampleBrowser(regovar.newFilteringAnalysis.refId);
+    }
+
+//    property alias localIndex: localFiles.currentIndex
+//    property alias localSelection: localFiles.selection
+//    property alias remoteSampleTreeModel: remoteSamples.model
+//    property alias remoteIndex: remoteSamples.currentIndex
+//    property alias remoteSelection: remoteSamples.selection
+
+
+    onAccepted:
+    {
+        // sample/import/file
+        // => answer create sample object into regovar.newFilteringAnalysis.samples
+        //
+        console.log("Ok clicked")
+    }
+    onRejected: console.log("Cancel clicked")
+
+    signal samplesSelected(var samples)
+
+
+
+    contentItem: Rectangle
+    {
+
+        id: root
+        color: Regovar.theme.backgroundColor.main
+        anchors.fill: parent
+
+        Rectangle
+        {
+            id: rootRemoteView
+            anchors.fill: root
+
+
+            DialogHeader
+            {
+                id: remoteHeader
+                anchors.top : rootRemoteView.top
+                anchors.left: rootRemoteView.left
+                anchors.right: rootRemoteView.right
+
+                iconText: "b"
+                title: qsTr("Subjects")
+                text:  qsTr("Below the list of subjects that are already registered on the Regovar server. You can filter the table view by .")
+            }
+
+            TextField
+            {
+                id: remoteFilterField
+                anchors.top : remoteHeader.bottom
+                anchors.left: rootRemoteView.left
+                anchors.right: rootRemoteView.right
+                anchors.margins: 10
+                placeholderText: qsTr("Search sample by identifiant or vcf filename, subject's name, date of birth, sex, comment, ...")
+            }
+
+            TableView
+            {
+                id: remoteSamples
+                anchors.top : remoteFilterField.bottom
+                anchors.left: rootRemoteView.left
+                anchors.right: rootRemoteView.right
+                anchors.bottom: remoteSwitchButton.top
+                anchors.margins: 10
+
+                model: regovar.remoteSamplesList
+                selectionMode: SelectionMode.ExtendedSelection
+                property var statusIcons: ["m", "/", "n", "h"]
+
+                TableViewColumn { title: qsTr("Sample"); role: "name"; horizontalAlignment: Text.AlignLeft; }
+                TableViewColumn
+                {
+                    title: "Status"
+                    role: "statusUI"
+                    delegate: Item
+                    {
+
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            font.family: Regovar.theme.icons.name
+                            text: remoteSamples.statusIcons[styleData.value.status]
+                            onTextChanged:
+                            {
+                                if (styleData.value.status == 1) // 1 = Loading
+                                {
+                                    statusIconAnimation.start();
+                                }
+                                else
+                                {
+                                    statusIconAnimation.stop();
+                                }
+                            }
+                            NumberAnimation on rotation
+                            {
+                                id: statusIconAnimation
+                                duration: 1000
+                                loops: Animation.Infinite
+                                from: 0
+                                to: 360
+                            }
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value.label
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
+                TableViewColumn
+                {
+                    title: qsTr("Subject")
+                    role: "subjectUI"
+                    delegate: Item
+                    {
+
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value.sex == "M" ? "9" : styleData.value.sex == "F" ? "<" : ""
+                            font.family: Regovar.theme.icons.name
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value.lastname + " " + styleData.value.firstname + "(" + styleData.value.age + ")"
+                            elide: Text.ElideRight
+                        }
+
+                    }
+                }
+                TableViewColumn
+                {
+                    title: qsTr("Source")
+                    role: "sourceUI"
+                    delegate: Item
+                    {
+
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value.icon
+                            font.family: Regovar.theme.icons.name
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                            anchors.rightMargin: 5
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value.filename
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
+                TableViewColumn { title: qsTr("Comment"); role: "comment" }
+
+                Rectangle
+                {
+                    id: sampleHelpPanel
+                    anchors.fill: parent
+
+                    color: "#aaffffff"
+
+                    visible: regovar.remoteSamplesList.length == 0
+
+                    Text
+                    {
+                        text: qsTr("No sample complient with the reference ") + regovar.newFilteringAnalysis.refName + qsTr(" on the server Regovar.\nTo import new samples from files click on the button below.")
+                        font.pixelSize: Regovar.theme.font.size.header
+                        color: Regovar.theme.primaryColor.back.normal
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        wrapMode: Text.WordWrap
+                    }
+                    Text
+                    {
+                        anchors.left: parent.left
+                        anchors.bottom : parent.bottom
+                        anchors.leftMargin:Math.max(0, remoteSwitchButton.width / 2 - width/2)
+                        text: "â"
+                        font.family: Regovar.theme.icons.name
+                        font.pixelSize: 30
+                        color: Regovar.theme.primaryColor.back.normal
+
+                        NumberAnimation on anchors.bottomMargin
+                        {
+                            duration: 2000
+                            loops: Animation.Infinite
+                            from: 30
+                            to: 0
+                            easing.type: Easing.SineCurve
+                        }
+                    }
+                }
+            }
+
+            ButtonIcon
+            {
+                id: remoteSwitchButton
+                anchors.bottom : rootRemoteView.bottom
+                anchors.left: rootRemoteView.left
+                anchors.margins: 10
+
+                icon: "à"
+                text: qsTr("Import sample from file")
+                onClicked:
+                {
+                    rootRemoteView.visible = false;
+                    rootFileView.visible = true;
+                }
+            }
+        }
+
+
+        Rectangle
+        {
+            id: rootFileView
+            color: Regovar.theme.backgroundColor.main
+
+            anchors.fill: root
+            visible: false
+
+
+            DialogHeader
+            {
+                id: localHeader
+                anchors.top : rootFileView.top
+                anchors.left: rootFileView.left
+                anchors.right: rootFileView.right
+                iconText: "1"
+                title: qsTr("Import samples from file")
+                text: qsTr("Select the vcf file(s) from which you want to import samples.\nYou can add file that are already uploaded on the regovar server or drop your (g)vcf file here to start the upload on the server.")
+            }
+
+            RowLayout
+            {
+                spacing: 10
+                anchors.top : localHeader.bottom
+                anchors.left: rootFileView.left
+                anchors.right: rootFileView.right
+                anchors.bottom: localSwitchButton.top
+                anchors.margins: 10
+
+
+
+                TableView
+                {
+                    id: inputsList
+                    clip: true
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    model: regovar.newPipelineAnalysis.inputsFilesList
+
+
+
+                    DropArea
+                    {
+                        id: dropArea;
+                        anchors.fill: parent;
+                        onEntered:
+                        {
+                            if (drag.hasUrls)
+                            {
+                                dropAreaFeedBack.visible = true;
+                                drag.accept (Qt.CopyAction);
+                            }
+                            else
+                            {
+                                dropOkLabel.visible = false;
+                                dropKoLabel.visible = true;
+                            }
+                        }
+                        onDropped:
+                        {
+                            var files= []
+                            for(var i=0; i<drop.urls.length; i++)
+                            {
+                                files = files.concat(drop.urls[i]);
+                            }
+                            regovar.enqueueUploadFile(files);
+                            dropAreaFeedBack.visible = false;
+                        }
+                        onExited:
+                        {
+                            dropAreaFeedBack.visible = false;
+                            dropOkLabel.visible = true;
+                            dropKoLabel.visible = false;
+                        }
+                    }
+
+                    TableViewColumn
+                    {
+                        title: "Name"
+                        role: "filenameUI"
+                        delegate: Item
+                        {
+
+                            Text
+                            {
+                                anchors.leftMargin: 5
+                                anchors.left: parent.left
+                                anchors.verticalCenter: parent.verticalCenter
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: styleData.textAlignment
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                text: styleData.value.icon
+                                font.family: Regovar.theme.icons.name
+                            }
+                            Text
+                            {
+                                anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                                anchors.rightMargin: 5
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                verticalAlignment: Text.AlignVCenter
+                                anchors.fill: parent
+                                horizontalAlignment: styleData.textAlignment
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                text: styleData.value.filename
+                                elide: Text.ElideRight
+                            }
+                        }
+                    }
+                    TableViewColumn
+                    {
+                        title: "Status"
+                        role: "statusUI"
+                        delegate: Item
+                        {
+
+                            Text
+                            {
+                                anchors.leftMargin: 5
+                                anchors.left: parent.left
+                                anchors.verticalCenter: parent.verticalCenter
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: styleData.textAlignment
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                font.family: Regovar.theme.icons.name
+                                text: remoteSamples.statusIcons[styleData.value.status]
+                                onTextChanged:
+                                {
+                                    if (styleData.value.status == 1) // 1 = Loading
+                                    {
+                                        statusIconAnimation2.start();
+                                    }
+                                    else
+                                    {
+                                        statusIconAnimation2.stop();
+                                    }
+                                }
+                                NumberAnimation on rotation
+                                {
+                                    id: statusIconAnimation2
+                                    duration: 1000
+                                    loops: Animation.Infinite
+                                    from: 0
+                                    to: 360
+                                }
+                            }
+                            Text
+                            {
+                                anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                                anchors.rightMargin: 5
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                                horizontalAlignment: styleData.textAlignment
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                text: styleData.value.label
+                                elide: Text.ElideRight
+                            }
+
+                        }
+                    }
+                    TableViewColumn { title: "Size"; role: "sizeUI"; horizontalAlignment: Text.AlignRight }
+                    TableViewColumn
+                    {
+                        title: "Date"
+                        role: "updateDate"
+                        delegate: Item
+                        {
+                            Text
+                            {
+                                anchors.leftMargin: 5
+                                anchors.rightMargin: 5
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                                horizontalAlignment: styleData.textAlignment
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                text:styleData.value.toLocaleDateString()
+                                elide: Text.ElideRight
+                            }
+
+                        }
+                    }
+                    TableViewColumn { title: "Source"; role: "sourceUI" }
+                    TableViewColumn { title: "Comment"; role: "comment" }
+
+                    Rectangle
+                    {
+                        id: fileHelpPanel
+                        anchors.fill: parent
+
+                        color: "#aaffffff"
+
+                        visible: regovar.newPipelineAnalysis.inputsFilesList.length == 0
+
+                        Text
+                        {
+                            text: qsTr("Drop your vcf file here, or click on the adjacent button to select vcf file already on the Regovar server.")
+                            font.pixelSize: Regovar.theme.font.size.header
+                            color: Regovar.theme.primaryColor.back.normal
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            wrapMode: Text.WordWrap
+                        }
+                        Text
+                        {
+                            anchors.right: parent.right
+                            anchors.top : parent.top
+                            text: "ä"
+                            font.family: Regovar.theme.icons.name
+                            font.pixelSize: 30
+                            color: Regovar.theme.primaryColor.back.normal
+
+                            NumberAnimation on anchors.rightMargin
+                            {
+                                duration: 2000
+                                loops: Animation.Infinite
+                                from: 30
+                                to: 0
+                                easing.type: Easing.SineCurve
+                            }
+                        }
+                    }
+                    Rectangle
+                    {
+                        id: dropAreaFeedBack
+                        anchors.fill: parent;
+                        color: Regovar.theme.boxColor.back
+                        border.width: 1
+                        border.color: Regovar.theme.boxColor.border
+                        visible: false
+                        Text
+                        {
+                            id: dropOkLabel
+                            anchors.centerIn: parent
+                            text: qsTr("Drop your (g)vcf files here !")
+                            font.pixelSize: Regovar.theme.font.size.header
+                            color: Regovar.theme.primaryColor.back.normal
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            wrapMode: Text.WordWrap
+                        }
+                        Text
+                        {
+                            id: dropKoLabel
+                            text: qsTr("Sorry, only vcf, gvcf, vcf.gz and gvcf.gz file are supported to import sample.")
+                            font.pixelSize: Regovar.theme.font.size.header
+                            color: Regovar.theme.primaryColor.back.normal
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            wrapMode: Text.WordWrap
+                            visible: false
+                        }
+                    }
+                }
+
+
+
+
+                Column
+                {
+                    Layout.alignment: Qt.AlignTop
+                    spacing: 10
+                    Button
+                    {
+                        id: addButton
+                        text: qsTr("Add file")
+                        onClicked: { fileSelector.reset(); fileSelector.open(); }
+                    }
+                    Button
+                    {
+                        id: remButton
+                        text: qsTr("Remove file")
+                        onClicked:
+                        {
+                            // Get list of objects to remove
+                            var files= []
+                            inputsList.selection.forEach( function(rowIndex)
+                            {
+                                files = files.concat(regovar.remoteFilesList[rowIndex]);
+                            });
+                            regovar.newPipelineAnalysis.removeInputs(files);
+                        }
+                    }
+                }
+            }
+
+
+
+
+            ButtonIcon
+            {
+                id: localSwitchButton
+                anchors.bottom : rootFileView.bottom
+                anchors.left: rootFileView.left
+                anchors.margins: 10
+
+                icon: "]"
+                text: qsTr("Back to remote samples")
+                onClicked:
+                {
+                    rootFileView.visible = false;
+                    rootRemoteView.visible = true;
+                }
+            }
+        }
+
+
+
+        Button
+        {
+            id: okButton
+            anchors.bottom : root.bottom
+            anchors.right: root.right
+            anchors.margins: 10
+
+            text: qsTr("Ok")
+            onClicked:
+            {
+                var samples=[];
+                if (rootRemoteView.visible)
+                {
+                    remoteSamples.selection.forEach( function(rowIndex)
+                    {
+                        samples = samples.concat(regovar.remoteSamplesList[rowIndex]);
+                    });
+                    samplesSelected(samples);
+                }
+
+                else if (rootFileView.visible)
+                {
+                    // import all file
+                    for(var idx=0; idx<regovar.newPipelineAnalysis.inputsFilesList.length; idx++)
+                    {
+                        var file = regovar.newPipelineAnalysis.inputsFilesList[idx];
+                        regovar.newFilteringAnalysis.addSamplesFromFile(file.id);
+                    }
+
+
+                    // sample/import/file
+                    // => answer create sample object into regovar.newFilteringAnalysis.samples
+                    //
+{"msg": "import_vcf_start", "data": {"samples": [{"id": 62, "name": "BIL_M_pere"}, {"id": 63, "name": "RIC_C_mere"}, {"id": 61, "name": "BIL_L"}], "file_id": "25"}}
+                }
+
+//                if (rootFileView.visible)
+//                {
+//                    // First retrieve local files url
+//                    for(var i=0; i<localFiles.selection.selectedIndexes.length; i++)
+//                    {
+//                        var idx = localFiles.selection.selectedIndexes[i];
+//                        var url = fileSystemModel.data(idx, FileSystemModel.UrlStringRole);
+//                        files = files.concat(url);
+//                    }
+
+//                    // Start tus upload for
+//                    console.log("Start upload of files : " + files);
+//                    regovar.enqueueUploadFile(files);
+
+//                    // Retrieve
+//                    // No need to send "fileSelected(files)" signal as the tus upload will auto add it to the inputsList
+//                    // TODO : find a better way to manage it to avoid multiuser problem and so on...
+//                }
+
+
+                sampleDialog.accept();
+            }
+        }
+
+        Button
+        {
+            id: cancelButton
+            anchors.bottom : root.bottom
+            anchors.right: okButton.left
+            anchors.margins: 10
+            text: qsTr("Cancel")
+            onClicked: sampleDialog.reject()
+        }
+    }
+
+
+//    FileDialog
+//    {
+//        id: fileSelector
+//        title: "Please choose a file"
+//        folder: shortcuts.home
+//        onAccepted:
+//        {
+//            console.log("You chose: " + fileSelector.fileUrls)
+//            //regovar.newPipelineAnalysis.addInputs(files);
+//            Qt.quit()
+//        }
+//        onRejected:
+//        {
+//            console.log("Canceled")
+//            Qt.quit()
+//        }
+//    }
+
+    SelectFilesDialog
+    {
+        id: fileSelector
+        onFileSelected: { regovar.newPipelineAnalysis.addInputs(files); }
+    }
+
+    Connections
+    {
+        target: regovar
+        onOnWebsocketMessageReceived:
+        {
+            // We assume that if a file is downloading, it's for us...
+            if (action == "file_upload")
+            {
+                regovar.newPipelineAnalysis.addInputFromWS(data);
+            }
+        }
+    }
+}
+
+
