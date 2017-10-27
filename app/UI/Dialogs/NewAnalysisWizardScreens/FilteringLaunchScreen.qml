@@ -250,23 +250,15 @@ GenericScreen
 
                             Row
                             {
-                                Text
-                                {
-                                    verticalAlignment: Text.AlignVCenter
-                                    font.pixelSize: Regovar.theme.font.size.normal
-                                    width: Regovar.theme.font.size.normal
-                                    text: modelData.subjectUI.sex == "M" ? "9" :modelData.subjectUI.sex == "F" ? "<" : ""
-                                    font.family: Regovar.theme.icons.name
-                                    color: Regovar.theme.frontColor.disable
-                                }
-                                Text
-                                {
-                                    font.pixelSize: Regovar.theme.font.size.normal
-                                    text: modelData.subjectUI.lastname + " " + modelData.subjectUI.firstname + " (" + modelData.subjectUI.age + ")"
-                                    elide: Text.ElideRight
-                                    color: Regovar.theme.frontColor.disable
-                                }
 
+                                Text
+                                {
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    color: Regovar.theme.frontColor.disable
+                                    verticalAlignment: Text.AlignVCenter
+                                    font.family: "monospace"
+                                    text: modelData.name
+                                }
                                 Text
                                 {
                                     width: Regovar.theme.font.boxSize.normal
@@ -276,19 +268,29 @@ GenericScreen
                                     verticalAlignment: Text.AlignVCenter
                                     horizontalAlignment: Text.AlignHCenter
                                     text: "{"
+                                    visible: modelData.subject != null
+                                }
+
+                                Text
+                                {
+                                    verticalAlignment: Text.AlignVCenter
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    width: Regovar.theme.font.size.normal
+                                    text: modelData.subject ? modelData.subject.subjectUI.sex : ""
+                                    font.family: Regovar.theme.icons.name
+                                    color: Regovar.theme.frontColor.disable
+                                    visible: modelData.subject != null
                                 }
                                 Text
                                 {
                                     font.pixelSize: Regovar.theme.font.size.normal
+                                    text: modelData.subject ? modelData.subject.subjectUI.name : "" + " (" + modelData.subject.subjectUI.age + ")"
+                                    elide: Text.ElideRight
                                     color: Regovar.theme.frontColor.disable
-                                    verticalAlignment: Text.AlignVCenter
-                                    font.family: "monospace"
-                                    text: modelData.name
+                                    visible: modelData.subject != null
                                 }
                             }
-
                         }
-
                     }
                 }
                 RowLayout

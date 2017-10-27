@@ -387,5 +387,6 @@ Rectangle
     NewAnalysisDialog { id: newAnalysisDialog }
 
     NewSubjectDialog { id: newSubjectDialog }
+
 }
 

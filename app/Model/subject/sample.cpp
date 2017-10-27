@@ -1,4 +1,6 @@
 #include "sample.h"
+#include "Model/regovar.h"
+#include "Model/framework/request.h"
 
 
 
@@ -6,6 +8,11 @@ Sample::Sample(QObject *parent) : QObject(parent)
 {
 }
 
+
+Sample::Sample(QJsonObject json, QObject* parent) : QObject(parent)
+{
+    fromJson(json);
+}
 
 void Sample::setStatus(QString status)
 {
@@ -33,28 +40,84 @@ bool Sample::fromJson(QJsonObject json)
     File* source = new File();
     source->fromJson(json["file"].toObject());
     setSource(source);
-    setSourceUI(source->name());
+    setSourceUI(source->filenameUI());
+
+    // Retrieve subject
+    int subjectId = json["subject_id"].toInt();
+    if (subjectId > 0)
+    {
+        mSubject = regovar->subjectsManager()->getOrCreateSubject(subjectId);
+    }
 
     QJsonObject nameInfo;
     nameInfo.insert("name", mName);
     nameInfo.insert("nickname", mNickname);
     setNameUI(QVariant::fromValue(nameInfo));
 
-    QJsonObject subjectInfo;
-    subjectInfo.insert("firstname", ""); // todo
-    subjectInfo.insert("lastname", "");  // todo
-    subjectInfo.insert("age", "");       // todo
-    subjectInfo.insert("sex", "");       // todo
-    setSubjectUI(QVariant::fromValue(subjectInfo));
-
     QJsonObject statusInfo;
     statusInfo.insert("status", mStatus);
     statusInfo.insert("label", statusToLabel(mStatus, json["loading_progress"].toDouble()));
     setStatusUI(QVariant::fromValue(statusInfo));
 
-    setSourceUI(source->filenameUI());
 	return true;
 }
+
+
+QJsonObject Sample::toJson()
+{
+    QJsonObject result;
+    // Simples data
+    result.insert("id", mId);
+    result.insert("name", mName);
+    result.insert("is_mosaic", mIsMosaic);
+    result.insert("comment", mComment);
+    return result;
+}
+
+
+
+void Sample::save()
+{
+    QJsonObject body = toJson();
+
+    Request* request = Request::put(QString("/sample/%1").arg(mId), QJsonDocument(body).toJson());
+    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            qDebug() << "Sample saved";
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        request->deleteLater();
+    });
+}
+
+
+
+void Sample::load()
+{
+    Request* req = Request::get(QString("/sample/%1").arg(mId));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            fromJson(json["data"].toObject());
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
+
 
 
 QString Sample::statusToLabel(SampleStatus status, double progress)

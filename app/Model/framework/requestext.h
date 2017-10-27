@@ -51,7 +51,7 @@ private:
     bool mLoading = false;
     bool mSuccess = false;
     QNetworkReply::NetworkError mReplyError;
-    QNetworkReply* mReply;
+    QNetworkReply* mReply = nullptr;
     QJsonObject mJson;
 };
 

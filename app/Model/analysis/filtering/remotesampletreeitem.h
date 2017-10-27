@@ -36,7 +36,7 @@ signals:
     void fileIdChanged();
 
 private:
-    FilteringAnalysis* mFilteringAnalysis;
+    FilteringAnalysis* mFilteringAnalysis = nullptr;
     QVariant mValue;
     int mSampleId;
     int mSubjectId;

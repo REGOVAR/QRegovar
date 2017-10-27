@@ -197,23 +197,23 @@ private:
 
     QString mStatus; // status of the analysis (server side)
     LoadingStatus mLoadingStatus; // internal (UI) status used to track and coordinates asynchrone initialisation of the analysis
-    ResultsTreeModel* mResults;
-    QuickFilterModel* mQuickFilters;
-    AdvancedFilterModel* mAdvancedFilter;
-    NewAdvancedFilterModel* mNewConditionModel;
+    ResultsTreeModel* mResults = nullptr;
+    QuickFilterModel* mQuickFilters = nullptr;
+    AdvancedFilterModel* mAdvancedFilter = nullptr;
+    NewAdvancedFilterModel* mNewConditionModel = nullptr;
 
     QHash<QString, FieldColumnInfos*> mAnnotations;
     QList<QObject*> mAnnotationsFlatList;
     QList<QObject*> mAllAnnotations;
-    AnnotationsTreeModel* mAnnotationsTreeModel;
-    RemoteSampleTreeModel* mRemoteSampleTreeModel;
+    AnnotationsTreeModel* mAnnotationsTreeModel = nullptr;
+    RemoteSampleTreeModel* mRemoteSampleTreeModel = nullptr;
     QList<FieldColumnInfos*> mDisplayedAnnotationColumns;
 
     bool mIsTrio;
     QStringList mAnnotationsDBUsed;
-    Sample* mTrioChild;
-    Sample* mTrioMother;
-    Sample* mTrioFather;
+    Sample* mTrioChild = nullptr;
+    Sample* mTrioMother = nullptr;
+    Sample* mTrioFather = nullptr;
     int mResultsTotal;
     QList<int> mSamplesIds; // = mSamples, but use as shortcuts to check quickly by sample id
     bool mIsLoading;

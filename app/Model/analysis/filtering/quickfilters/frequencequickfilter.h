@@ -33,8 +33,8 @@ public:
 
 
 private:
-    QuickFilterField* m1000GAll;
-    QuickFilterField* mExacAll;
+    QuickFilterField* m1000GAll = nullptr;
+    QuickFilterField* mExacAll = nullptr;
     QList<QObject*> m1000GFields;
     QList<QObject*> mExacFields;
     QString mFilter;

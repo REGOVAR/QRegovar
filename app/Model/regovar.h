@@ -253,11 +253,11 @@ private:
     //! Server connection status
     ServerStatus mConnectionStatus;
     //! The config retrieved from the server
-    RegovarInfo* mConfig;
+    RegovarInfo* mConfig = nullptr;
     //! The current user of the application
-    User* mUser;
+    User* mUser = nullptr;
     //! Admin operation wrapper
-    Admin* mAdmin;
+    Admin* mAdmin = nullptr;
     //! Search request and results
     QString mSearchRequest;
     QJsonObject mSearchResult;
@@ -265,7 +265,7 @@ private:
     bool mWelcomIsLoading = false;
 
     //! The model of the projects browser treeview
-    ProjectsTreeModel* mProjectsTreeView;
+    ProjectsTreeModel* mProjectsTreeView = nullptr;
     //! The flat list of project (use for project's combobox selection)
     QList<QObject*> mProjectsList;
     int mSelectedProject;
@@ -274,7 +274,7 @@ private:
     //! The model used to browse all samples available on the server
     QList<QObject*> mRemoteSamplesList;
     //! The uploader that manage TUS protocol (resumable upload)
-    TusUploader * mUploader;
+    TusUploader * mUploader = nullptr;
     //! Filtering analyses
     QList<FilteringAnalysis*> mOpenAnalyses;
     //! Welcom last data
@@ -288,14 +288,14 @@ private:
     //! list of project/subject open
     QList<QObject*> mProjectsOpen;
     //! model to hold data when using form to create a new analysis
-    PipelineAnalysis* mNewPipelineAnalysis;
-    FilteringAnalysis* mNewFilteringAnalysis;
+    PipelineAnalysis* mNewPipelineAnalysis = nullptr;
+    FilteringAnalysis* mNewFilteringAnalysis = nullptr;
 
 
-    SubjectsManager* mSubjectsManager;
+    SubjectsManager* mSubjectsManager = nullptr;
 
     //! We need ref to the QML engine to create/open new windows for Analysis
-    QQmlApplicationEngine* mQmlEngine;
+    QQmlApplicationEngine* mQmlEngine = nullptr;
 
     //! Websocket
     QWebSocket mWebSocket;

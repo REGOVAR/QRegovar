@@ -68,13 +68,13 @@ private:
     bool mIsSandbox;
     bool mIsFolder;
     QString mFullPath;
-    Project* mParent;
+    Project* mParent = nullptr;
     QDateTime mCreationDate;
     QDateTime mUpdateDate;
     QString mComment;
     QString mName;
 
-    FilesTreeModel* mFiles;
+    FilesTreeModel* mFiles = nullptr;
     // mUserRights
     // mindicators
     // mJobs

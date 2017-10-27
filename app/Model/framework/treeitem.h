@@ -38,7 +38,7 @@ public:
 protected:
     QList<TreeItem*> mChildItems;
     QHash<int, QVariant> mItemData;
-    TreeItem *mParentItem;
+    TreeItem* mParentItem = nullptr;
     bool mIsSelected;
 
     int mVirtualChildCount; // number of children (used to know if need to load children)

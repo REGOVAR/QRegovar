@@ -98,7 +98,7 @@ public:
 
 protected:
 
-    TreeItem* mRootItem;
+    TreeItem* mRootItem = nullptr;
 };
 
 #endif // TREEMODEL_H 

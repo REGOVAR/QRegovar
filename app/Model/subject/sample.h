@@ -9,22 +9,22 @@
 class Sample : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int id READ id NOTIFY idChanged)
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(QString nickname READ nickname WRITE setNickname NOTIFY nicknameChanged)
-    Q_PROPERTY(bool isMosaic READ isMosaic WRITE setIsMosaic NOTIFY isMosaicChanged)
-    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentChanged)
-    Q_PROPERTY(QStringList defaultAnnotationsDbUid READ defaultAnnotationsDbUid NOTIFY defaultAnnotationsDbUidChanged)
-    Q_PROPERTY(SampleStatus status READ status WRITE setStatus NOTIFY statusChanged)
-    Q_PROPERTY(File* source READ source WRITE setSource NOTIFY sourceChanged)
+    Q_PROPERTY(int id READ id NOTIFY dataChanged)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
+    Q_PROPERTY(QString nickname READ nickname WRITE setNickname NOTIFY dataChanged)
+    Q_PROPERTY(bool isMosaic READ isMosaic WRITE setIsMosaic NOTIFY dataChanged)
+    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
+    Q_PROPERTY(QStringList defaultAnnotationsDbUid READ defaultAnnotationsDbUid NOTIFY dataChanged)
+    Q_PROPERTY(SampleStatus status READ status WRITE setStatus NOTIFY dataChanged)
+    Q_PROPERTY(File* source READ source WRITE setSource NOTIFY dataChanged)
+    Q_PROPERTY(Subject* subject READ subject WRITE setSubject NOTIFY dataChanged)
     // special "shortcut" property for qml tableView
-    Q_PROPERTY(QVariant nameUI READ nameUI WRITE setNameUI NOTIFY nameUIChanged)
-    Q_PROPERTY(QVariant subjectUI READ subjectUI WRITE setSubjectUI NOTIFY subjectUIChanged)
-    Q_PROPERTY(QVariant statusUI READ statusUI WRITE setStatusUI NOTIFY statusUIChanged)
-    Q_PROPERTY(QVariant sourceUI READ sourceUI WRITE setSourceUI NOTIFY sourceUIChanged)
+    Q_PROPERTY(QVariant nameUI READ nameUI WRITE setNameUI NOTIFY dataChanged)
+    Q_PROPERTY(QVariant statusUI READ statusUI WRITE setStatusUI NOTIFY dataChanged)
+    Q_PROPERTY(QVariant sourceUI READ sourceUI WRITE setSourceUI NOTIFY dataChanged)
     // Property only used client side by the newAnalysis wizard
-    Q_PROPERTY(bool isIndex READ isIndex WRITE setIsIndex NOTIFY isIndexChanged)
-    Q_PROPERTY(QString sex READ sex WRITE setSex NOTIFY sexChanged)
+    Q_PROPERTY(bool isIndex READ isIndex WRITE setIsIndex NOTIFY dataChanged)
+    Q_PROPERTY(QString sex READ sex WRITE setSex NOTIFY dataChanged)
 
 
 public:
@@ -38,8 +38,8 @@ public:
     Q_ENUM(SampleStatus)
 
 
-    explicit Sample(QObject *parent = nullptr);
-    explicit Sample(int id, QString name, QString nickname, QObject *parent = nullptr);
+    explicit Sample(QObject* parent = nullptr);
+    explicit Sample(QJsonObject json, QObject* parent = nullptr);
 
     // Getters
     inline int id() const { return mId; }
@@ -49,48 +49,43 @@ public:
     inline SampleStatus status() const { return mStatus; }
     inline bool isMosaic() const { return mIsMosaic; }
     inline File* source() const { return mSource; }
+    inline Subject* subject() const { return mSubject; }
     inline QStringList defaultAnnotationsDbUid() const { return mDefaultAnnotationsDbUid; }
     inline QVariant nameUI() const { return mNameUI; }
-    inline QVariant subjectUI() const { return mSubjectUI; }
     inline QVariant statusUI() const { return mStatusUI; }
     inline QVariant sourceUI() const { return mSourceUI; }
     inline bool isIndex() const { return mIsIndex; }
     inline QString sex() const { return mSex; }
 
     // Setters
-    inline void setName(QString name) { mName = name; emit nameChanged(); emit nicknameChanged(); }
-    inline void setNickname(QString nickname) { mNickname = nickname; emit nicknameChanged(); }
-    inline void setIsMosaic(bool flag) { mIsMosaic = flag; emit isMosaicChanged(); }
-    inline void setComment(QString comment) { mComment = comment; emit commentChanged(); }
-    inline void setSource(File* source) { mSource = source; emit sourceChanged(); }
-    inline void setStatus(SampleStatus status) { mStatus = status; emit statusChanged(); }
+    inline void setName(QString name) { mName = name; emit dataChanged(); }
+    inline void setNickname(QString nickname) { mNickname = nickname; emit dataChanged(); }
+    inline void setIsMosaic(bool flag) { mIsMosaic = flag; emit dataChanged(); }
+    inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
+    inline void setSource(File* source) { mSource = source; emit dataChanged(); }
+    inline void setStatus(SampleStatus status) { mStatus = status; emit dataChanged(); }
+    inline void setSubject(Subject* subject) { mSubject = subject; emit dataChanged(); }
     void setStatus(QString status);
-    inline void setNameUI(QVariant data) { mNameUI = data; emit nameUIChanged(); }
-    inline void setSubjectUI(QVariant data) { mSubjectUI = data; emit subjectUIChanged(); }
-    inline void setStatusUI(QVariant data) { mStatusUI = data; emit statusUIChanged(); }
-    inline void setSourceUI(QVariant data) { mSourceUI = data; emit sourceUIChanged(); }
-    inline void setIsIndex(bool flag) { mIsIndex = flag; emit isIndexChanged(); }
-    inline void setSex(QString sex) { mSex = sex; emit sexChanged(); }
+    inline void setNameUI(QVariant data) { mNameUI = data; emit dataChanged(); }
+    inline void setStatusUI(QVariant data) { mStatusUI = data; emit dataChanged(); }
+    inline void setSourceUI(QVariant data) { mSourceUI = data; emit dataChanged(); }
+    inline void setIsIndex(bool flag) { mIsIndex = flag; emit dataChanged(); }
+    inline void setSex(QString sex) { mSex = sex; emit dataChanged(); }
 
     // Methods
+    //! Set model with provided json data
     Q_INVOKABLE bool fromJson(QJsonObject json);
+    //! Export model data into json object
+    Q_INVOKABLE QJsonObject toJson();
+    //! Save subject information onto server
+    Q_INVOKABLE void save();
+    //! Load Subject information from server
+    Q_INVOKABLE void load();
+    //! Convert sample status into a string value
     QString statusToLabel(SampleStatus status, double progress);
 
 Q_SIGNALS:
-    void nameChanged();
-    void nicknameChanged();
-    void isMosaicChanged();
-    void commentChanged();
-    void defaultAnnotationsDbUidChanged();
-    void nameUIChanged();
-    void subjectUIChanged();
-    void statusUIChanged();
-    void sourceUIChanged();
-    void sourceChanged();
-    void statusChanged();
-    void sexChanged();
-    void isIndexChanged();
-    void idChanged(); // never raised, but avoid QML binding warning log about "non-NOTIFIYable properties"
+    void dataChanged();
 
 public Q_SLOTS:
 
@@ -101,14 +96,14 @@ private:
     bool mIsMosaic;
     QString mComment;
     QStringList mDefaultAnnotationsDbUid;
-    File* mSource;
+    File* mSource = nullptr;
     SampleStatus mStatus;
-    Subject* mSubject;
+    Subject* mSubject = nullptr;
 
 
     // QML shortcuts
     QVariant mNameUI;
-    QVariant mSubjectUI;
+    //QVariant mSubjectUI;
     QVariant mStatusUI;
     QVariant mSourceUI;
     bool mIsIndex;

@@ -4,6 +4,8 @@
 #include <QtCore>
 #include "Model/file/file.h"
 
+class Sample;
+
 class Subject : public QObject
 {
     Q_OBJECT
@@ -13,8 +15,7 @@ class Subject : public QObject
     Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY dataChanged)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
     Q_PROPERTY(Sex sex READ sex WRITE setSex NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime dateOfBirth READ dateOfBirth WRITE setDateOfBirth NOTIFY dataChanged)
-    // Q_PROPERTY(QDateTime dateOfDeath READ dateOfDeath WRITE setDateOfDeath NOTIFY dataChanged) // Not used
+    Q_PROPERTY(QDate dateOfBirth READ dateOfBirth WRITE setDateOfBirth NOTIFY dataChanged)
     Q_PROPERTY(QString familyNumber READ familyNumber WRITE setFamilyNumber NOTIFY dataChanged)
     Q_PROPERTY(QDateTime updated READ updated NOTIFY dataChanged)
     Q_PROPERTY(QDateTime created READ created NOTIFY dataChanged)
@@ -24,7 +25,8 @@ class Subject : public QObject
     Q_PROPERTY(QList<QObject*> jobs READ jobs NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> files READ files NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> indicators READ indicators NOTIFY dataChanged)
-    // special "shortcut" property for qml tableView
+    // Special "shortcut" properties for qml display
+    Q_PROPERTY(QJsonObject subjectUI READ subjectUI NOTIFY dataChanged)
 
 public:
     enum Sex
@@ -33,6 +35,7 @@ public:
         Male,
         Female,
     };
+    Q_ENUM(Sex)
 
     // Constructors
     explicit Subject(QObject *parent = nullptr);
@@ -47,8 +50,7 @@ public:
     inline QString comment() const { return mComment; }
     inline QString familyNumber() const { return mFamilyNumber; }
     inline Sex sex() const { return mSex; }
-    inline QDateTime dateOfBirth() const { return mDateOfBirth; }
-    inline QDateTime dateOfDeath() const { return mDateOfDeath; }
+    inline QDate dateOfBirth() const { return mDateOfBirth; }
     inline QDateTime updated() const { return mUpdated; }
     inline QDateTime created() const { return mCreated; }
     inline QList<QObject*> samples() const { return mSamples; }
@@ -57,16 +59,16 @@ public:
     inline QList<QObject*> jobs() const { return mJobs; }
     inline QList<QObject*> files() const { return mFiles; }
     inline QList<QObject*> indicators() const { return mIndicators; }
+    inline QJsonObject subjectUI() const { return mSubjectUI; }
 
     // Setters
-    inline void setIdentifier(QString val) { mIdentifier = val; emit dataChanged(); }
-    inline void setFirstname(QString val) { mFirstname = val; emit dataChanged(); }
-    inline void setLastname(QString val) { mLastname = val; emit dataChanged(); }
+    inline void setIdentifier(QString val) { mIdentifier = val; updateSubjectUI(); emit dataChanged(); }
+    inline void setFirstname(QString val) { mFirstname = val; updateSubjectUI(); emit dataChanged(); }
+    inline void setLastname(QString val) { mLastname = val; updateSubjectUI(); emit dataChanged(); }
     inline void setComment(QString val) { mComment = val; emit dataChanged(); }
     inline void setFamilyNumber(QString val) { mFamilyNumber = val; emit dataChanged(); }
-    inline void setSex(Sex val) { mSex = val; emit dataChanged(); }
-    inline void setDateOfBirth(QDateTime val) { mDateOfBirth = val; emit dataChanged(); }
-    inline void setDateOfDeath(QDateTime val) { mDateOfDeath = val; emit dataChanged(); }
+    inline void setSex(Sex val) { mSex = val; updateSubjectUI(); emit dataChanged(); }
+    inline void setDateOfBirth(QDate val) { mDateOfBirth = val; updateSubjectUI(); emit dataChanged(); }
 
     // Methods
     //! Set model with provided json data
@@ -77,7 +79,11 @@ public:
     Q_INVOKABLE void save();
     //! Load Subject information from server
     Q_INVOKABLE void load();
-
+    //! Associate a sample to the subject
+    Q_INVOKABLE void addSample(Sample* sample);
+    //! SubjectUI is a all-in-one property to quickly display subject in the UI.
+    void updateSubjectUI();
+    QString computeAge(QDate d1, QDate d2);
 
 Q_SIGNALS:
     void dataChanged();
@@ -91,8 +97,7 @@ private:
     QString mComment;
     QString mFamilyNumber;
     Sex mSex;
-    QDateTime mDateOfBirth;
-    QDateTime mDateOfDeath;
+    QDate mDateOfBirth;
     QDateTime mUpdated;
     QDateTime mCreated;
     QList<QObject*> mSamples;
@@ -101,7 +106,7 @@ private:
     QList<QObject*> mJobs;
     QList<QObject*> mFiles;
     QList<QObject*> mIndicators;
-
+    QJsonObject mSubjectUI;
 };
 
 #endif // SUBJECT_H

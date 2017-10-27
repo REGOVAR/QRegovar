@@ -698,6 +698,15 @@ bool Regovar::newAnalysis(QString type)
             }
         }
 
+        // Save Subjects-samples associations
+        foreach (QObject* o, mNewFilteringAnalysis->samples())
+        {
+            Sample* sample = qobject_cast<Sample*>(o);
+            sample->save();
+            sample->subject()->save();
+        }
+
+        // Send request to server
         QJsonObject body;
         Project* proj = qobject_cast<Project*>(mProjectsList[mSelectedProject]);
         body.insert("project_id", proj->id());

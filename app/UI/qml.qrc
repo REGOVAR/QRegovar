@@ -4,19 +4,18 @@
         <file>GenericWindow.qml</file>
         <file>MainWindow.qml</file>
         <file>Icons.ttf</file>
+        <file>Dialogs/NewAnalysisWizardScreens/GenericScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/AnalysisTypeButtom.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/AnalysisTypeScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/FilteringAnnotationsScreen.qml</file>
+        <file>Dialogs/NewAnalysisWizardScreens/FilteringLaunchScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/FilteringReferenceScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/FilteringSamplesScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/FilteringSubjectsScreen.qml</file>
-        <file>Dialogs/NewAnalysisWizardScreens/GenericScreen.qml</file>
-        <file>Dialogs/NewAnalysisWizardScreens/InputsScreen.qml</file>
-        <file>Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml</file>
+        <file>Dialogs/NewAnalysisWizardScreens/PipelineInputsScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/PipelineLaunch.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml</file>
-        <file>Dialogs/NewAnalysisWizardScreens/ProjectScreen.qml</file>
         <file>Dialogs/CloseDialog.qml</file>
         <file>Dialogs/ErrorDialog.qml</file>
         <file>Dialogs/FilterNewConditionDialog.qml</file>

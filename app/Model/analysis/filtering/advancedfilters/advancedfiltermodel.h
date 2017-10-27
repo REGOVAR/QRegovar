@@ -89,10 +89,10 @@ Q_SIGNALS:
 
 protected:
     QString mQmlId;
-    FilteringAnalysis* mAnalysis;
+    FilteringAnalysis* mAnalysis = nullptr;
     ConditionType mType;
     QString mOp;
-    Annotation* mField;
+    Annotation* mField = nullptr;
     QVariant mFieldValue;
     Set* mSet;
     bool mEnabled;

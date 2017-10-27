@@ -50,7 +50,7 @@ Q_SIGNALS:
 
 
 private:
-    Annotation* mAnnotation;
+    Annotation* mAnnotation = nullptr;
     bool mIsDisplayed;
     QString mSortFilter;
     int mDisplayOrder;

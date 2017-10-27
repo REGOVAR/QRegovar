@@ -151,7 +151,7 @@ Dialog
                 TableViewColumn
                 {
                     title: qsTr("Subject")
-                    role: "subjectUI"
+                    role: "subject"
                     delegate: Item
                     {
 
@@ -163,7 +163,7 @@ Dialog
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value.sex == "M" ? "9" : styleData.value.sex == "F" ? "<" : ""
+                            text: styleData.value ? styleData.value.subjectUI.sex : ""
                             font.family: Regovar.theme.icons.name
                         }
                         Text
@@ -175,7 +175,7 @@ Dialog
                             anchors.verticalCenter: parent.verticalCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value.lastname + " " + styleData.value.firstname + "(" + styleData.value.age + ")"
+                            text: styleData.value ? styleData.value.subjectUI.name : ""
                             elide: Text.ElideRight
                         }
 

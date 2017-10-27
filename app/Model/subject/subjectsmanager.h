@@ -52,7 +52,7 @@ private:
     //! Query use to search subjects in the browser
     QString mSearchQuery;
     //! The model of the subject currently open
-    Subject* mSubjectOpen;
+    Subject* mSubjectOpen = nullptr;
     //! The index of the open subject in the list
     int mSubjectOpenIndex;
 };

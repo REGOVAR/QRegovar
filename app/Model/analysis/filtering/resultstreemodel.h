@@ -55,7 +55,7 @@ Q_SIGNALS:
     void loadedChanged();
 
 private:
-    FilteringAnalysis* mFilteringAnalysis;
+    FilteringAnalysis* mFilteringAnalysis = nullptr;
     bool mIsLoading;
     int mAnalysisId;
     int mTotal;

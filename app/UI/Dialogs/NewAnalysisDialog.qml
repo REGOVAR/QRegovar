@@ -60,7 +60,7 @@ Dialog
                     root.menuModel = [
                         { "title" : qsTr("Analysis type")},
                         { "title" : qsTr("Pipeline"), "source":"../Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml"},
-                        { "title" : qsTr("Inputs files"), "source":"../Dialogs/NewAnalysisWizardScreens/InputsScreen.qml"},
+                        { "title" : qsTr("Inputs files"), "source":"../Dialogs/NewAnalysisWizardScreens/PipelineInputsScreen.qml"},
                         { "title" : qsTr("Configure"), "source":"../Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml"},
                         { "title" : qsTr("Launch"), "source":"../Dialogs/NewAnalysisWizardScreens/PipelineLaunch.qml"}
                     ];
@@ -75,7 +75,7 @@ Dialog
                         { "title" : qsTr("Samples attributes"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringAttributesScreen.qml"},
                         { "title" : qsTr("Subjects associations"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringSubjectsScreen.qml"},
                         { "title" : qsTr("Annotations"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringAnnotationsScreen.qml"},
-                        { "title" : qsTr("Launch"), "source":"../Dialogs/NewAnalysisWizardScreens/LaunchScreen.qml"}
+                        { "title" : qsTr("Launch"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringLaunchScreen.qml"}
                     ];
                     root.analysisModel["type"] = "filtering";
                 }

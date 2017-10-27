@@ -13,7 +13,7 @@ struct TusUploadItem
 {
     QString uploadUrl;
     QString path;
-    QFile* file;
+    QFile* file = nullptr;
     quint64 size;
     quint64 offset;
     bool prepareFlag;

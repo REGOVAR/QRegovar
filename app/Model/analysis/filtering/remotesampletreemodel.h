@@ -53,7 +53,7 @@ Q_SIGNALS:
     void isLoadingChanged();
 
 private:
-    FilteringAnalysis* mFilteringAnalysis;
+    FilteringAnalysis* mFilteringAnalysis = nullptr;
     QHash<int, QByteArray> mRoles;
     bool mIsLoading;
 };

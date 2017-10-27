@@ -18,7 +18,7 @@ GenericScreen
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        text:  qsTr("This step is optional.\nYou can link samples to subjects. It will be easier to retrieve their samples and analyses later.")
+        text:  qsTr("This step is optional.\nIts allow you to link samples to subjects. Select first a sample in the table below, and then click on the oposites buttons to associate an existing subject or create a new one.")
         wrapMode: Text.WordWrap
         font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
@@ -50,7 +50,7 @@ GenericScreen
 
             TableView
             {
-                id: samplesAttributesTable
+                id: samplesSubjectsTable
                 clip: true
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -58,18 +58,131 @@ GenericScreen
                 model: regovar.newFilteringAnalysis.samples
 
                 TableViewColumn { title: qsTr("Sample"); role: "name" }
-                TableViewColumn { title: qsTr("Identifier"); role: "identifier" }
-                TableViewColumn { title: qsTr("Firstname"); role: "firstname" }
-                TableViewColumn { title: qsTr("Lastname"); role: "lastname" }
-                TableViewColumn { title: qsTr("Sex"); role: "name" }
-                TableViewColumn { title: qsTr("Family Number"); role: "name" }
-                TableViewColumn { title: qsTr("Date of birth"); role: "name" }
+                TableViewColumn
+                {
+                    title: qsTr("Identifier")
+                    role: "subject"
+                    delegate: Item
+                    {
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value ? styleData.value.identifier : ""
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
+                TableViewColumn
+                {
+                    title: qsTr("Firstname")
+                    role: "subject"
+                    delegate: Item
+                    {
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value ? styleData.value.firstname : ""
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
+                TableViewColumn
+                {
+                    title: qsTr("Lastname")
+                    role: "subject"
+                    delegate: Item
+                    {
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value ? styleData.value.lastname : ""
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
+                TableViewColumn
+                {
+                    title: qsTr("Sex")
+                    role: "subject"
+                    delegate: Item
+                    {
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value ? styleData.value.subjectUI.sex : ""
+                            font.family: Regovar.theme.icons.name
+                        }
+                    }
+                }
+                TableViewColumn
+                {
+                    title: qsTr("Family Number")
+                    role: "subject"
+                    delegate: Item
+                    {
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value ? styleData.value.familyNumber : ""
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
+                TableViewColumn
+                {
+                    title: qsTr("Date of birth")
+                    role: "subject"
+                    delegate: Item
+                    {
+                        Text
+                        {
+                            anchors.leftMargin: 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value ? styleData.value.dateOfBirth : ""
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
 
 
                 Connections
                 {
                     target: regovar.newFilteringAnalysis
-                    onAttributesChanged: samplesAttributesTable.refreshColumns()
+                    onAttributesChanged: samplesSubjectsTable.refreshColumns()
                 }
 
                 // Special column to display sample's attribute
@@ -94,31 +207,6 @@ GenericScreen
                         }
                     }
                 }
-
-
-
-                function refreshColumns()
-                {
-                    // Remove old columns (except the first one with samples names
-                    var position, col;
-                    for (var idx=samplesAttributesTable.columnCount; idx> 1; idx-- )
-                    {
-                        col = samplesAttributesTable.getColumn(idx-1);
-                        if (col !== null)
-                        {
-                            // remove columb from UI
-                            samplesAttributesTable.removeColumn(idx-1);
-                        }
-                    }
-
-                    // Add columns
-                    for (idx=0; idx < regovar.newFilteringAnalysis.attributes.length; idx++)
-                    {
-                        var attribute = regovar.newFilteringAnalysis.attributes[idx];
-                        col = columnComponent_attribute.createObject(samplesAttributesTable, {"attribute": attribute, "title": attribute.name});
-                        samplesAttributesTable.insertColumn(idx+1, col);
-                    }
-                }
             }
         }
 
@@ -140,38 +228,27 @@ GenericScreen
             Button
             {
                 id: addButton
-                text: qsTr("Find subject")
-                onClicked: { sampleSelector.reset(); sampleSelector.open(); }
+                text: qsTr("Select subject")
+                onClicked: selectSubjectDialog.open()
                 Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
+                enabled: samplesSubjectsTable.currentRow > -1
             }
             Button
             {
                 id: remButton
                 text: qsTr("New subject")
                 Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
-                onClicked:
-                {
-                    // Get list of objects to remove
-                    var samples= []
-                    samplesList.selection.forEach( function(rowIndex)
-                    {
-                        samples = samples.concat(regovar.newFilteringAnalysis.samples[rowIndex]);
-                    });
-                    regovar.newFilteringAnalysis.removeSamples(samples);
-                    trioActivated.checked = regovar.newFilteringAnalysis.samples.length == 3;
-                }
+                onClicked: newSubjectDialog.open()
+                enabled: samplesSubjectsTable.currentRow > -1
             }
         }
-
     }
 
-    NewAttributeDialog
-    {
-        id: newAttributeDialog
-    }
+    NewSubjectDialog { id: newSubjectDialog }
 
-    DeleteAttributeDialog
+    SelectSubjectDialog
     {
-        id: remAttributeDialog
+        id: selectSubjectDialog
+        onSubjectSelected: subject.addSample(samplesSubjectsTable.model[samplesSubjectsTable.currentRow])
     }
 }

@@ -34,7 +34,7 @@ Q_SIGNALS:
 
 
 private:
-    QuickFilterField* mDepth;
+    QuickFilterField* mDepth = nullptr;
     QStringList mOperators;
 };
 
