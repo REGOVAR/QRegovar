@@ -20,9 +20,7 @@ Dialog
 
 
     property alias remoteIndex: remoteFiles.currentRow
-    property alias localIndex: localFiles.currentIndex
     property alias remoteSelection: remoteFiles.selection
-    property alias localSelection: localFiles.selection
 
 
     onAccepted: console.log("Ok clicked")
@@ -158,123 +156,9 @@ Dialog
 
                 icon: "à"
                 text: qsTr("Upload local files")
-                onClicked:
-                {
-                    rootRemoteView.visible = false;
-                    rootLocalView.visible = true;
-                }
+                onClicked: localFilesDialog.open()
             }
         }
-
-
-        Rectangle
-        {
-            id: rootLocalView
-            color: Regovar.theme.backgroundColor.main
-
-            anchors.fill: root
-            visible: false
-
-
-            ItemSelectionModel
-            {
-                id: sel
-                model: fileSystemModel
-            }
-
-
-            DialogHeader
-            {
-                id: localLabel
-                anchors.top : rootLocalView.top
-                anchors.left: rootLocalView.left
-                anchors.right: rootLocalView.right
-                iconText: "1"
-                title: qsTr("Local files")
-                text: qsTr("Select files on your computer. Selected files will be uploaded on the Regovar server.")
-            }
-
-            TextField
-            {
-                id: localFilterField
-                anchors.top : localLabel.bottom
-                anchors.left: rootLocalView.left
-                anchors.right: rootLocalView.right
-                anchors.margins: 10
-                placeholderText: qsTr("Search file by name, date, comment, ...")
-            }
-
-            TreeView
-            {
-                id: localFiles
-                anchors.top : localFilterField.bottom
-                anchors.left: rootLocalView.left
-                anchors.right: rootLocalView.right
-                anchors.bottom: localSwitchButton.top
-                anchors.margins: 10
-                model: fileSystemModel
-                rootIndex: rootPathIndex
-                selection: sel
-                selectionMode:2
-
-                TableViewColumn
-                {
-                    title: "Name"
-                    role: "fileName"
-                    resizable: true
-                }
-
-                TableViewColumn
-                {
-                    title: "Size"
-                    role: "size"
-                    resizable: true
-                    horizontalAlignment : Text.AlignRight
-                    width: 70
-                }
-
-                TableViewColumn
-                {
-                    title: "Permissions"
-                    role: "displayableFilePermissions"
-                    resizable: true
-                    width: 100
-                }
-
-                TableViewColumn
-                {
-                    title: "Date Modified"
-                    role: "lastModified"
-                    resizable: true
-                }
-
-                onActivated :
-                {
-
-                    var url = fileSystemModel.data(index, FileSystemModel.UrlStringRole);
-                    Qt.openUrlExternally(url);
-                }
-            }
-
-
-            ButtonIcon
-            {
-                id: localSwitchButton
-                anchors.bottom : rootLocalView.bottom
-                anchors.left: rootLocalView.left
-                anchors.margins: 10
-
-                icon: "]"
-                text: qsTr("Back to remote files")
-                onClicked:
-                {
-                    rootLocalView.visible = false;
-                    rootRemoteView.visible = true;
-                }
-            }
-        }
-
-
 
         Button
         {
@@ -294,24 +178,6 @@ Dialog
                         files = files.concat(regovar.remoteFilesList[rowIndex]);
                     });
                     fileSelected(files);
-                }
-                if (rootLocalView.visible)
-                {
-                    // First retrieve local files url
-                    for(var i=0; i<localFiles.selection.selectedIndexes.length; i++)
-                    {
-                        var idx = localFiles.selection.selectedIndexes[i];
-                        var url = fileSystemModel.data(idx, FileSystemModel.UrlStringRole);
-                        files = files.concat(url);
-                    }
-
-                    // Start tus upload for
-                    console.log("Start upload of files : " + files);
-                    regovar.enqueueUploadFile(files);
-
-                    // Retrieve
-                    // No need to send "fileSelected(files)" signal as the tus upload will auto add it to the inputsList
-                    // TODO : find a better way to manage it to avoid multiuser problem and so on...
                 }
 
 
@@ -333,8 +199,24 @@ Dialog
     function reset()
     {
         rootRemoteView.visible = true;
-        rootLocalView.visible = false;
         remoteFiles.selection.select(0);
+    }
+
+    FileDialog
+    {
+        id: localFilesDialog
+
+        onAccepted:
+        {
+            // Start tus upload for
+            console.log("Start upload of files : " + localFilesDialog.fileUrls);
+            regovar.enqueueUploadFile(localFilesDialog.fileUrls);
+
+            // Retrieve
+            // No need to send "fileSelected(files)" signal as the tus upload will auto add it to the inputsList
+            // TODO : find a better way to manage it to avoid multiuser problem and so on...
+        }
+
     }
 }
 

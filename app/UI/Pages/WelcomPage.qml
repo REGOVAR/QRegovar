@@ -287,57 +287,67 @@ Rectangle
                     }
                 }
 
-
-
-                Text
-                {
-                    verticalAlignment: Text.AlignVCenter
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    color: Regovar.theme.primaryColor.back.dark
-                    height: Regovar.theme.font.boxSize.header
-                    text: qsTr("Last events")
-                }
-
-                Rectangle
-                {
-                    width: scrollViewArea.width
-                    height: 1
-                    color: Regovar.theme.primaryColor.back.normal
-                }
-
-
                 Column
                 {
+                    Text
+                    {
+                        verticalAlignment: Text.AlignVCenter
+                        elide: Text.ElideRight
+                        font.pixelSize: Regovar.theme.font.size.header
+                        color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.header
+                        text: qsTr("Last events")
+                    }
+
+                    Rectangle
+                    {
+                        width: scrollViewArea.width
+                        height: 1
+                        color: Regovar.theme.primaryColor.back.normal
+                    }
+
+
+
+
                     Repeater
                     {
                         model : ListModel
                         {
-                            ListElement { date: "2017-06-25 14h56"; name: "Article published"; icon:""; color:"" }
-                            ListElement { date: "2017-06-25 14h56"; name: "Start new analysis \"Hugodims\""; icon:""; color:"" }
-                            ListElement { date: "2017-06-25 14h56"; name: "Pause analysis \"Hugodims\""; icon:"m"; color:"red" }
-                            ListElement { date: "2017-06-25 14h56"; name: "Project 2 creation"; icon:""; color:"" }
+                            ListElement { date: "2017-06-25 14:56"; name: "Article published"; icon:"j"; color:"" }
+                            ListElement { date: "2017-06-25 14:56"; name: "Pause analysis \"Hugodims\""; icon:"m"; color:"red" }
+                            ListElement { date: "2017-06-25 14:56"; name: "Start new analysis \"Hugodims\""; icon:""; color:"" }
+                            ListElement { date: "2017-06-25 14:56"; name: "Creation of the project : DPNI"; icon:""; color:"" }
                         }
 
-                        Row
+                        RowLayout
                         {
+                            spacing: 0
+                            height: Regovar.theme.font.boxSize.normal
+
                             Text
                             {
-                                width: 120
+                                width: 150
                                 font.pixelSize: 12
-                                font.family: Regovar.theme.font.familly
+                                font.family: "monospace"
                                 verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: Text.left
+                                horizontalAlignment: Text.AlignLeft
                                 text: date
                                 color: Regovar.theme.frontColor.disable
                             }
+
+                            Rectangle
+                            {
+                                width: Regovar.theme.font.boxSize.normal
+                                height: Regovar.theme.font.boxSize.normal
+                                color: "transparent"
+                            }
                             Text
                             {
-                                width: 30
+                                Layout.minimumWidth: Regovar.theme.font.boxSize.normal
                                 font.pixelSize: 12
                                 font.family: Regovar.theme.icons.name
                                 verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: Text.AlignHCenter
+                                horizontalAlignment: Text.AlignLeft
                                 text: icon
                                 color: color
                             }
