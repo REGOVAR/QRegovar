@@ -193,7 +193,7 @@ Rectangle
                                 anchors.top: analysesHeader.bottom
                                 anchors.left: parent.left
                                 anchors.right: parent.right
-                                anchors.rightMargin: 15
+                                anchors.rightMargin: Regovar.theme.font.boxSize.normal
                                 height: 1
                                 color: Regovar.theme.primaryColor.back.normal
                             }
@@ -205,7 +205,7 @@ Rectangle
                                 anchors.left: parent.left
                                 anchors.right: parent.right
                                 anchors.topMargin: Regovar.theme.font.boxSize.header + 5
-                                anchors.rightMargin: 15
+                                anchors.rightMargin: Regovar.theme.font.boxSize.normal
                                 onHeightChanged: analysesScrollArea.height = Math.max(height + Regovar.theme.font.boxSize.header + 5, analysesScrollArea.height)
 
                                 Repeater
@@ -239,7 +239,7 @@ Rectangle
                             {
                                 id: subjectsHeader
                                 anchors.left: parent.left
-                                anchors.leftMargin: 15
+                                anchors.leftMargin: Regovar.theme.font.boxSize.normal
                                 verticalAlignment: Text.AlignVCenter
                                 elide: Text.ElideRight
                                 font.pixelSize: Regovar.theme.font.size.header
@@ -253,7 +253,7 @@ Rectangle
                                 anchors.top: subjectsHeader.bottom
                                 anchors.left: parent.left
                                 anchors.right: parent.right
-                                anchors.leftMargin: 15
+                                anchors.leftMargin: Regovar.theme.font.boxSize.normal
                                 height: 1
                                 color: Regovar.theme.primaryColor.back.normal
                             }
@@ -268,14 +268,18 @@ Rectangle
                                 Repeater
                                 {
                                     model: regovar.lastSubjects
-                                    SearchResultAnalysis
+                                    SearchResultSubject
                                     {
                                         width: 500
+                                        indent: 1
                                         date: model.modelData.update_date
-                                        name: model.modelData.name
-                                        projectName: model.modelData.project.name
+                                        identifier: model.modelData.identifier
+                                        firstname: model.modelData.firstname
+                                        lastname: model.modelData.lastname
+                                        sex: model.modelData.sex
+                                        age: model.modelData.age
 
-                                        onClicked: regovar.loadAnalysis(model.modelData.id)
+                                        onClicked: regovar.subjectsManager.openSubject(model.modelData.id)
                                     }
                                 }
                             }

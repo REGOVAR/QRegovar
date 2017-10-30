@@ -126,5 +126,6 @@
         <file>Dialogs/DeleteAttributeDialog.qml</file>
         <file>Dialogs/AdminConfirmWtClear.qml</file>
         <file>Dialogs/SelectSubjectDialog.qml</file>
+        <file>Pages/Browse/SearchResultSubject.qml</file>
     </qresource>
 </RCC>

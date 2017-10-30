@@ -7,11 +7,14 @@ import "../../Framework"
 Rectangle
 {
     id: root
-    property int analysisId
+    property int subjectId
     property real dateColWidth: 150
     property string date: ""
-    property string name: ""
-    property string projectName: ""
+    property string identifier: ""
+    property string firstname: ""
+    property string lastname: ""
+    property string sex: ""
+    property string age: ""
     property int indent: 1
 
     property bool isHover: false
@@ -44,6 +47,8 @@ Rectangle
             height: Regovar.theme.font.boxSize.normal
             color: "transparent"
         }
+
+
         Text
         {
             Layout.minimumWidth: Regovar.theme.font.boxSize.normal
@@ -51,17 +56,17 @@ Rectangle
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: "I"
+            text: sex == "male" ? "9" : sex == "female" ? "<" : "b"
             elide: Text.ElideRight
         }
 
         Text
         {
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: projectName
+            text: identifier
+            font.family: "monospace"
             elide: Text.ElideRight
         }
         Text
@@ -83,7 +88,7 @@ Rectangle
             font.family: Regovar.theme.font.familly
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: name
+            text: lastname + " " + firstname + (age ? " (" + age + ")" : "")
             elide: Text.ElideRight
         }
     }
