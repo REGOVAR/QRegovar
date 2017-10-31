@@ -8,7 +8,7 @@
 #include "framework/request.h"
 #include "framework/requestext.h"
 #include "file/file.h"
-#include "analysis/filtering/reference.h"
+#include "subject/reference.h"
 #include "subject/sample.h"
 #include <QDateTime>
 
@@ -89,6 +89,8 @@ void Regovar::init()
 
     // Init managers
     readSettings();
+    // Todo : load default from settings
+    mReferenceDefault = 3;
 
 
     // Init models
@@ -97,6 +99,7 @@ void Regovar::init()
     mAdmin = new Admin();
     mProjectsTreeView = new ProjectsTreeModel();
     mSubjectsManager = new SubjectsManager();
+    mSamplesManager = new SamplesManager(mReferenceDefault);
     mUploader = new TusUploader();
     mNewPipelineAnalysis = new PipelineAnalysis();
     mNewFilteringAnalysis = new FilteringAnalysis();
@@ -150,7 +153,7 @@ void Regovar::onWebsocketReceived(QString message)
         {
             QJsonObject obj = json.toObject();
             int sid = obj["id"].toInt();
-            foreach (QObject* o, mRemoteSamplesList)
+            foreach (QObject* o, mSamplesManager->samplesList())
             {
                 Sample* sample = qobject_cast<Sample*>(o);
                 if (sample->id() == sid)
@@ -270,7 +273,6 @@ void Regovar::loadWelcomData()
 
             // Get referencial available
             mReferenceDefault = data["default_reference_id"].toInt();
-            mSelectedReference = 0;
             foreach (QJsonValue jsonVal, data["references"].toArray())
             {
                 Reference* ref = new Reference();
@@ -385,10 +387,9 @@ void Regovar::refreshProjectsLists()
 
 
 
-void Regovar::resetNewAnalysisWizardModels()
+void Regovar::resetNewFilteringAnalysisWizard(int refId)
 {
     // clear data in newAnalyses wrappers
-
     mNewFilteringAnalysis->removeSamples(mNewFilteringAnalysis->samples4qml());
     mNewFilteringAnalysis->samples().clear();
     mNewFilteringAnalysis->setComment("");
@@ -396,30 +397,26 @@ void Regovar::resetNewAnalysisWizardModels()
     mNewFilteringAnalysis->setIsTrio(false);
 
     // reset references
-    mSelectedReference = 0;
     int idx = 0;
     foreach (QObject* o, mReferences)
     {
         Reference* ref = qobject_cast<Reference*>(o);
-        if (ref->id() == mReferenceDefault)
+        if (ref->id() == refId)
         {
-            mSelectedReference = idx;
             mNewFilteringAnalysis->setReference(ref);
             break;
         }
         ++idx;
     }
-
-
-
-
-    // Pipeline analysis
-
-
-//    mNewPipelineAnalysis = new PipelineAnalysis();
-//    mNewFilteringAnalysis = new FilteringAnalysis();
-    emit newPipelineAnalysisChanged();
+    mSamplesManager->setReferencialId(refId);
     emit newFilteringAnalysisChanged();
+}
+
+
+void Regovar::resetNewPipelinAnalysisWizard()
+{
+    // TODO
+    emit newPipelineAnalysisChanged();
 }
 
 
@@ -497,13 +494,14 @@ bool Regovar::openAnalysis(QJsonObject data)
 
 
 
-void Regovar::setSelectedReference(int idx)
-{
-    mSelectedReference=idx;
-    Reference* ref = qobject_cast<Reference*>(mReferences[idx]);
-    mNewFilteringAnalysis->setReference(ref, false);
-    emit selectedReferenceChanged();
-}
+//void Regovar::setSelectedReference(int idx)
+//{
+//    mSelectedReference=idx;
+//    Reference* ref = qobject_cast<Reference*>(mReferences[idx]);
+//    mNewFilteringAnalysis->setReference(ref, false);
+//    mSamplesManager->setReferencialId(ref->id());
+//    emit selectedReferenceChanged();
+//}
 
 void Regovar::setSelectedProject(int idx)
 {
@@ -555,36 +553,7 @@ void Regovar::filesEnqueued(QHash<QString,QString> mapping)
 
 
 
-void Regovar::loadSampleBrowser(int refId)
-{
-    Request* req = Request::get(QString("/sample/browserTree/%1").arg(refId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            mRemoteSamplesList.clear();
-            foreach( QJsonValue sbjData, json["data"].toArray())
-            {
-                QJsonObject subject = sbjData.toObject();
-                // TODO subject info
-                foreach( QJsonValue splData, subject["samples"].toArray())
-                {
-                    Sample* sample = new Sample();
-                    sample->fromJson(splData.toObject());
-                    mRemoteSamplesList.append(sample);
-                }
-            }
-            emit remoteSamplesListChanged();
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
-}
+
 
 
 
@@ -703,7 +672,10 @@ bool Regovar::newAnalysis(QString type)
         {
             Sample* sample = qobject_cast<Sample*>(o);
             sample->save();
-            sample->subject()->save();
+            if (sample->subject() != nullptr)
+            {
+                sample->subject()->save();
+            }
         }
 
         // Send request to server

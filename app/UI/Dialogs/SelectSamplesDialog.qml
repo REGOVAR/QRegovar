@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.0
+import QtQuick.Controls 2.2 as Control
 
 import "../Regovar"
 import "../Framework"
@@ -19,21 +20,10 @@ Dialog
     id: sampleDialog
     title: qsTr("Select your samples")
     standardButtons: Dialog.Ok | Dialog.Cancel
-
     width: 800
     height: 600
-
-    onVisibleChanged:
-    {
-        regovar.loadSampleBrowser(regovar.newFilteringAnalysis.refId);
-    }
-
-//    property alias localIndex: localFiles.currentIndex
-//    property alias localSelection: localFiles.selection
-//    property alias remoteSampleTreeModel: remoteSamples.model
-//    property alias remoteIndex: remoteSamples.currentIndex
-//    property alias remoteSelection: remoteSamples.selection
-
+    property bool referencialSelectorEnabled: true
+    signal samplesSelected(var samples)
 
     onAccepted:
     {
@@ -44,7 +34,6 @@ Dialog
     }
     onRejected: console.log("Cancel clicked")
 
-    signal samplesSelected(var samples)
 
 
 
@@ -73,15 +62,60 @@ Dialog
                 text:  qsTr("You can select samples that are already on the server.\nYou can also import new samples by uploading a (g)vcf file.")
             }
 
-            TextField
+            RowLayout
             {
                 id: remoteFilterField
                 anchors.top : remoteHeader.bottom
                 anchors.left: rootRemoteView.left
                 anchors.right: rootRemoteView.right
                 anchors.margins: 10
-                placeholderText: qsTr("Search sample by identifiant or vcf filename, subject's name, date of birth, sex, comment, ...")
+                spacing: 10
+
+                Text
+                {
+                    text: qsTr("Referencial:")
+                    enabled: referencialSelectorEnabled
+                    color: Regovar.theme.primaryColor.back.normal
+                }
+
+                ComboBox
+                {
+                    id: refCombo
+                    enabled: referencialSelectorEnabled
+                    anchors.top : remoteHeader.bottom
+                    anchors.right: rootRemoteView.right
+                    anchors.margins: 10
+                    model:regovar.references
+                    textRole: "name"
+
+                    delegate: Control.ItemDelegate
+                    {
+                        x: 1
+                        width: refCombo.width -2
+                        height: Regovar.theme.font.boxSize.normal
+                        contentItem: Text
+                        {
+                            text: modelData.name
+                            color: enabled ? Regovar.theme.boxColor.front : Regovar.theme.frontColor.disable
+                            font: refCombo.font
+                            elide: Text.ElideRight
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                        highlighted: refCombo.highlightedIndex === index
+                    }
+                }
+
+                TextField
+                {
+                    Layout.fillWidth: true
+                    anchors.leftMargin: 10 + (referencialSelectorEnabled ? refCombo.width + 10 : 0)
+                    placeholderText: qsTr("Search sample by identifiant or vcf filename, subject's name, date of birth, sex, comment, ...")
+                }
             }
+
+
+
+
 
             TableView
             {
@@ -92,9 +126,10 @@ Dialog
                 anchors.bottom: remoteSwitchButton.top
                 anchors.margins: 10
 
-                model: regovar.remoteSamplesList
+                model: regovar.samplesManager.samplesList
                 selectionMode: SelectionMode.ExtendedSelection
                 property var statusIcons: ["m", "/", "n", "h"]
+
 
                 TableViewColumn { title: qsTr("Sample"); role: "name"; horizontalAlignment: Text.AlignLeft; }
                 TableViewColumn
@@ -221,7 +256,7 @@ Dialog
 
                     color: "#aaffffff"
 
-                    visible: regovar.remoteSamplesList.length == 0
+                    visible: regovar.samplesManager.samplesList.length == 0
 
                     Text
                     {
@@ -601,7 +636,7 @@ Dialog
                 {
                     remoteSamples.selection.forEach( function(rowIndex)
                     {
-                        samples = samples.concat(regovar.remoteSamplesList[rowIndex]);
+                        samples = samples.concat(regovar.samplesManager.samplesList[rowIndex]);
                     });
                     samplesSelected(samples);
                 }
@@ -614,33 +649,7 @@ Dialog
                         var file = regovar.newPipelineAnalysis.inputsFilesList[idx];
                         regovar.newFilteringAnalysis.addSamplesFromFile(file.id);
                     }
-
-
-                    // sample/import/file
-                    // => answer create sample object into regovar.newFilteringAnalysis.samples
-                    //
-{"msg": "import_vcf_start", "data": {"samples": [{"id": 62, "name": "BIL_M_pere"}, {"id": 63, "name": "RIC_C_mere"}, {"id": 61, "name": "BIL_L"}], "file_id": "25"}}
                 }
-
-//                if (rootFileView.visible)
-//                {
-//                    // First retrieve local files url
-//                    for(var i=0; i<localFiles.selection.selectedIndexes.length; i++)
-//                    {
-//                        var idx = localFiles.selection.selectedIndexes[i];
-//                        var url = fileSystemModel.data(idx, FileSystemModel.UrlStringRole);
-//                        files = files.concat(url);
-//                    }
-
-//                    // Start tus upload for
-//                    console.log("Start upload of files : " + files);
-//                    regovar.enqueueUploadFile(files);
-
-//                    // Retrieve
-//                    // No need to send "fileSelected(files)" signal as the tus upload will auto add it to the inputsList
-//                    // TODO : find a better way to manage it to avoid multiuser problem and so on...
-//                }
-
 
                 sampleDialog.accept();
             }
@@ -658,23 +667,9 @@ Dialog
     }
 
 
-//    FileDialog
-//    {
-//        id: fileSelector
-//        title: "Please choose a file"
-//        folder: shortcuts.home
-//        onAccepted:
-//        {
-//            console.log("You chose: " + fileSelector.fileUrls)
-//            //regovar.newPipelineAnalysis.addInputs(files);
-//            Qt.quit()
-//        }
-//        onRejected:
-//        {
-//            console.log("Canceled")
-//            Qt.quit()
-//        }
-//    }
+
+
+
 
     SelectFilesDialog
     {
@@ -693,6 +688,25 @@ Dialog
                 regovar.newPipelineAnalysis.addInputFromWS(data);
             }
         }
+    }
+
+
+    function reset()
+    {
+        // init the dialog with the currently selected ref in the model
+        var idx = 0;
+        for (idx=0; idx<regovar.references.length; idx++)
+        {
+            if (regovar.references[idx].id == regovar.samplesManager.referencialId)
+            {
+                break;
+            }
+            refCombo.currentIndex = idx;
+        }
+
+        rootRemoteView.visible = true;
+        rootFileView.visible = false;
+
     }
 }
 

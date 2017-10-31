@@ -90,7 +90,7 @@ Q_SIGNALS:
 
 
 private:
-    int mId;
+    int mId = -1;
     QString mIdentifier;
     QString mFirstname;
     QString mLastname;

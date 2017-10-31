@@ -13,12 +13,15 @@
 #include "analysis/filtering/filteringanalysis.h"
 #include "Model/analysis/pipeline/pipelineanalysis.h"
 #include "subject/subjectsmanager.h"
+#include "subject/samplesmanager.h"
 #include "user.h"
 #include "admin.h"
 
 #ifndef regovar
 #define regovar (Regovar::i())
 #endif
+
+class FilteringAnalysis;
 
 
 class RegovarInfo: public QObject
@@ -84,14 +87,15 @@ class Regovar : public QObject
     Q_PROPERTY(QList<QObject*> projectsOpen READ projectsOpen NOTIFY projectsOpenChanged)
 
     Q_PROPERTY(SubjectsManager* subjectsManager READ subjectsManager NOTIFY neverChanged)
+    Q_PROPERTY(SamplesManager* samplesManager READ samplesManager NOTIFY neverChanged)
 
     // New analysis wizard
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
-    Q_PROPERTY(int selectedReference READ selectedReference WRITE setSelectedReference NOTIFY selectedReferenceChanged)
+
+
     Q_PROPERTY(QList<QObject*> projects READ projectsList NOTIFY projectsListChanged)
     Q_PROPERTY(int selectedProject READ selectedProject WRITE setSelectedProject NOTIFY selectedProjectChanged)
     Q_PROPERTY(QList<QObject*> remoteFilesList READ remoteFilesList NOTIFY remoteFilesListChanged)
-    Q_PROPERTY(QList<QObject*> remoteSamplesList READ remoteSamplesList NOTIFY remoteSamplesListChanged)
     Q_PROPERTY(PipelineAnalysis* newPipelineAnalysis READ newPipelineAnalysis NOTIFY newPipelineAnalysisChanged)
     Q_PROPERTY(FilteringAnalysis* newFilteringAnalysis READ newFilteringAnalysis NOTIFY newFilteringAnalysisChanged)
 
@@ -134,13 +138,12 @@ public:
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
     inline QList<QObject*> projectsOpen() const { return mProjectsOpen; }
     inline SubjectsManager* subjectsManager() const { return mSubjectsManager; }
+    inline SamplesManager* samplesManager() const { return mSamplesManager; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
-    inline int selectedReference() const { return mSelectedReference; }
     inline QList<QObject*> projectsList() const { return mProjectsList; }
     inline int selectedProject() const { return mSelectedProject; }
     inline QList<QObject*> remoteFilesList() const { return mRemoteFilesList; }
-    inline QList<QObject*> remoteSamplesList() const { return mRemoteSamplesList; }
     inline PipelineAnalysis* newPipelineAnalysis() const { return mNewPipelineAnalysis; }
     inline FilteringAnalysis* newFilteringAnalysis() const { return mNewFilteringAnalysis; }
 
@@ -152,7 +155,6 @@ public:
     inline void setSearchInProgress(bool flag) { mSearchInProgress = flag; emit searchInProgressChanged(); }
     inline void setQmlEngine (QQmlApplicationEngine* engine) { mQmlEngine = engine; }
     inline void setWelcomIsLoading(bool flag) { mWelcomIsLoading=flag; emit welcomIsLoadingChanged(); }
-    void setSelectedReference(int idx);
     void setSelectedProject(int idx);
 
     // Methods
@@ -165,7 +167,8 @@ public:
 
     // Analysis management
     Q_INVOKABLE bool newAnalysis(QString type);
-    Q_INVOKABLE void resetNewAnalysisWizardModels();
+    Q_INVOKABLE void resetNewFilteringAnalysisWizard(int refId);
+    Q_INVOKABLE void resetNewPipelinAnalysisWizard();
     Q_INVOKABLE FilteringAnalysis* getAnalysisFromWindowId(int winId);
     Reference* referencesFromId(int id);
     // File management
@@ -176,7 +179,6 @@ public:
     Q_INVOKABLE void loadWelcomData();
     Q_INVOKABLE void loadGithubData();
     Q_INVOKABLE void loadFilesBrowser();
-    Q_INVOKABLE void loadSampleBrowser(int refId);
     Q_INVOKABLE void close();
     Q_INVOKABLE void disconnectUser();
     Q_INVOKABLE void quit();
@@ -222,7 +224,6 @@ Q_SIGNALS:
     void serverUrlChanged();
     void projectsTreeViewChanged();
     void remoteFilesListChanged();
-    void remoteSamplesListChanged();
     void referencesChanged();
     void onClose();
     void errorOccured(QString errCode, QString message, QString techData);
@@ -236,13 +237,13 @@ Q_SIGNALS:
     void websocketMessageReceived(QString action, QJsonObject data);
     void projectsListChanged();
     void welcomIsLoadingChanged();
-    void selectedReferenceChanged();
     void selectedProjectChanged();
     void connectionStatusChanged();
     void configChanged();
     void adminChanged();
 
 private:
+    // Singleton pattern
     Regovar();
     ~Regovar();
     static Regovar* mInstance;
@@ -258,45 +259,57 @@ private:
     User* mUser = nullptr;
     //! Admin operation wrapper
     Admin* mAdmin = nullptr;
+
     //! Search request and results
     QString mSearchRequest;
     QJsonObject mSearchResult;
     bool mSearchInProgress = false;
     bool mWelcomIsLoading = false;
 
-    //! The model of the projects browser treeview
-    ProjectsTreeModel* mProjectsTreeView = nullptr;
     //! The flat list of project (use for project's combobox selection)
     QList<QObject*> mProjectsList;
     int mSelectedProject;
-    //! The model used to browse all files available on the server
-    QList<QObject*> mRemoteFilesList;
-    //! The model used to browse all samples available on the server
-    QList<QObject*> mRemoteSamplesList;
-    //! The uploader that manage TUS protocol (resumable upload)
-    TusUploader * mUploader = nullptr;
-    //! Filtering analyses
-    QList<FilteringAnalysis*> mOpenAnalyses;
+
+
     //! Welcom last data
     QJsonArray mLastEvents;
     QJsonArray mLastAnalyses;
     QJsonArray mLastSubjects;
-    //! list of references supported by the server
-    QList<QObject*> mReferences;
-    int mReferenceDefault;
-    int mSelectedReference;
-    //! list of project/subject open
-    QList<QObject*> mProjectsOpen;
+
+    //! List of open Filtering Analyses
+    QList<FilteringAnalysis*> mOpenAnalyses;
+
+
+
+    // Creation Wizards Models
     //! model to hold data when using form to create a new analysis
     PipelineAnalysis* mNewPipelineAnalysis = nullptr;
     FilteringAnalysis* mNewFilteringAnalysis = nullptr;
+    //! list of references supported by the server
+    QList<QObject*> mReferences;
+    int mReferenceDefault;
 
-
+    // Managers
+    //! Manage subjects (Browse + CRUD)
     SubjectsManager* mSubjectsManager = nullptr;
+    //! Browse all samples available on the server
+    SamplesManager* mSamplesManager = nullptr;
+    // ProjectsManager
+    //! The model of the projects browser treeview
+    ProjectsTreeModel* mProjectsTreeView = nullptr;
+    //! list of project/subject open
+    QList<QObject*> mProjectsOpen;
+    // FilesManager
+    //! The model used to browse all files available on the server
+    QList<QObject*> mRemoteFilesList;
+    //! The uploader that manage TUS protocol (resumable upload)
+    TusUploader * mUploader = nullptr;
+    // PipelinesManangers
 
+
+    // Technical stuff
     //! We need ref to the QML engine to create/open new windows for Analysis
     QQmlApplicationEngine* mQmlEngine = nullptr;
-
     //! Websocket
     QWebSocket mWebSocket;
     QUrl mWebsocketUrl;

@@ -39,7 +39,7 @@ Q_SIGNALS:
 
 
 protected:
-    int mId;
+    int mId = -1;
     QString mName;
     QString mComment;
     QString mType;

@@ -5,12 +5,11 @@
 #include "../analysis.h"
 #include "resultstreemodel.h"
 #include "annotationstreemodel.h"
-#include "remotesampletreemodel.h"
 #include "quickfilters/quickfiltermodel.h"
 #include "Model/subject/sample.h"
+#include "Model/subject/reference.h"
 #include "Model/subject/attribute.h"
 #include "fieldcolumninfos.h"
-#include "reference.h"
 #include "savedfilter.h"
 #include "advancedfilters/advancedfiltermodel.h"
 #include "advancedfilters/set.h"
@@ -19,7 +18,7 @@ class AdvancedFilterModel;
 class NewAdvancedFilterModel;
 class Set;
 class ResultsTreeModel;
-class RemoteSampleTreeModel;
+
 
 class FilteringAnalysis : public Analysis
 {
@@ -96,7 +95,6 @@ public:
     inline QuickFilterModel* quickfilters() { return mQuickFilters; }
     inline AdvancedFilterModel* advancedfilter() { return mAdvancedFilter; }
     inline NewAdvancedFilterModel* newConditionModel() { return mNewConditionModel; }
-    inline RemoteSampleTreeModel* remoteSamples() { return mRemoteSampleTreeModel; }
     // "Shortcuts properties" for QML
     QList<QObject*> samples4qml();      // convert QList<Sample*> to QList<QObject*>
     QStringList resultColumns();
@@ -155,7 +153,6 @@ Q_SIGNALS:
     void filterChanged();
     void fieldsChanged();
     void resultsChanged();
-    void remoteSamplesChanged();
     void samplesChanged();
     void sampleColumnDisplayedUpdated();
     void resultColumnsChanged();
@@ -186,14 +183,14 @@ public Q_SLOTS:
 
 private:
     // Attributes
-    int mRefId;
+    int mRefId = -1;
     QString mRefName;
     QStringList mFields;
     QJsonArray mFilterJson;
     QList<Sample*> mSamples;
     QList<QObject*> mFilters;
     QList<QObject*> mAttributes;
-    bool mSampleColumnDisplayed;
+    bool mSampleColumnDisplayed = false;
 
     QString mStatus; // status of the analysis (server side)
     LoadingStatus mLoadingStatus; // internal (UI) status used to track and coordinates asynchrone initialisation of the analysis
@@ -206,17 +203,16 @@ private:
     QList<QObject*> mAnnotationsFlatList;
     QList<QObject*> mAllAnnotations;
     AnnotationsTreeModel* mAnnotationsTreeModel = nullptr;
-    RemoteSampleTreeModel* mRemoteSampleTreeModel = nullptr;
     QList<FieldColumnInfos*> mDisplayedAnnotationColumns;
 
-    bool mIsTrio;
+    bool mIsTrio = false;
     QStringList mAnnotationsDBUsed;
     Sample* mTrioChild = nullptr;
     Sample* mTrioMother = nullptr;
     Sample* mTrioFather = nullptr;
-    int mResultsTotal;
+    int mResultsTotal = 0;
     QList<int> mSamplesIds; // = mSamples, but use as shortcuts to check quickly by sample id
-    bool mIsLoading;
+    bool mIsLoading = false;
     QString mCurrentFilterName;
     QList<QObject*> mSets;
 

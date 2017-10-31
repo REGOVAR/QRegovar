@@ -38,9 +38,6 @@ HEADERS += \
     Model/analysis/filtering/quickfilters/frequencequickfilter.h \
     Model/analysis/filtering/quickfilters/insilicopredquickfilter.h \
     Model/analysis/filtering/fieldcolumninfos.h \
-    Model/analysis/filtering/remotesampletreeitem.h \
-    Model/analysis/filtering/remotesampletreemodel.h \
-    Model/analysis/filtering/reference.h \
     Model/analysis/filtering/savedfilter.h \
     Model/file/file.h \
     Model/file/filestreeitem.h \
@@ -56,7 +53,9 @@ HEADERS += \
     Model/admin.h \
     Model/regovar.h \
     Model/user.h \
-    Model/subject/subjectsmanager.h
+    Model/subject/subjectsmanager.h \
+    Model/subject/samplesmanager.h \
+    Model/subject/reference.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -82,9 +81,6 @@ SOURCES += main.cpp \
     Model/analysis/filtering/quickfilters/frequencequickfilter.cpp \
     Model/analysis/filtering/quickfilters/insilicopredquickfilter.cpp \
     Model/analysis/filtering/fieldcolumninfos.cpp \
-    Model/analysis/filtering/remotesampletreeitem.cpp \
-    Model/analysis/filtering/remotesampletreemodel.cpp \
-    Model/analysis/filtering/reference.cpp \
     Model/analysis/filtering/savedfilter.cpp \
     Model/file/file.cpp \
     Model/file/filestreeitem.cpp \
@@ -100,7 +96,9 @@ SOURCES += main.cpp \
     Model/admin.cpp \
     Model/regovar.cpp \
     Model/user.cpp \
-    Model/subject/subjectsmanager.cpp
+    Model/subject/subjectsmanager.cpp \
+    Model/subject/samplesmanager.cpp \
+    Model/subject/reference.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

@@ -4,6 +4,7 @@
 #include <QtCore>
 #include "Model/file/file.h"
 #include "subject.h"
+#include "reference.h"
 
 
 class Sample : public QObject
@@ -18,6 +19,7 @@ class Sample : public QObject
     Q_PROPERTY(SampleStatus status READ status WRITE setStatus NOTIFY dataChanged)
     Q_PROPERTY(File* source READ source WRITE setSource NOTIFY dataChanged)
     Q_PROPERTY(Subject* subject READ subject WRITE setSubject NOTIFY dataChanged)
+    Q_PROPERTY(Reference* reference READ reference WRITE setReference NOTIFY dataChanged)
     // special "shortcut" property for qml tableView
     Q_PROPERTY(QVariant nameUI READ nameUI WRITE setNameUI NOTIFY dataChanged)
     Q_PROPERTY(QVariant statusUI READ statusUI WRITE setStatusUI NOTIFY dataChanged)
@@ -50,6 +52,7 @@ public:
     inline bool isMosaic() const { return mIsMosaic; }
     inline File* source() const { return mSource; }
     inline Subject* subject() const { return mSubject; }
+    inline Reference* reference() const { return mReference; }
     inline QStringList defaultAnnotationsDbUid() const { return mDefaultAnnotationsDbUid; }
     inline QVariant nameUI() const { return mNameUI; }
     inline QVariant statusUI() const { return mStatusUI; }
@@ -65,6 +68,7 @@ public:
     inline void setSource(File* source) { mSource = source; emit dataChanged(); }
     inline void setStatus(SampleStatus status) { mStatus = status; emit dataChanged(); }
     inline void setSubject(Subject* subject) { mSubject = subject; emit dataChanged(); }
+    inline void setReference(Reference* reference) { mReference = reference; emit dataChanged(); }
     void setStatus(QString status);
     inline void setNameUI(QVariant data) { mNameUI = data; emit dataChanged(); }
     inline void setStatusUI(QVariant data) { mStatusUI = data; emit dataChanged(); }
@@ -99,6 +103,7 @@ private:
     File* mSource = nullptr;
     SampleStatus mStatus;
     Subject* mSubject = nullptr;
+    Reference* mReference = nullptr;
 
 
     // QML shortcuts

@@ -18,14 +18,13 @@ Rectangle
     {
         // We set manually the model to be able to call *after* the reset of the control
         // otherwise with binding, this order may not be respect, and init of UI is not good.
-        console.log("reset all")
+        console.log("reset all quick filter panel")
         for (var i = 0; i < container.children.length; ++i)
         {
             var item = container.children[i];
             if (item.objectName == "qf")
             {
                 item.model = model;
-                console.log("reset qf")
                 item.reset();
             }
         }

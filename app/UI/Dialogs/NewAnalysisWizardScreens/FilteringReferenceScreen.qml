@@ -13,14 +13,17 @@ GenericScreen
     id: root
 
     readyForNext: true
-    onZChanged: checkReady()
-    Component.onCompleted: checkReady()
+    Component.onCompleted: readyForNext = true;
     property real labelColWidth: 100
-
-    function checkReady()
+    property int selectedRefId: -1
+    onZChanged:
     {
-        readyForNext = true; //refField.currentIndex > 0;
+        if (z == 0) // = button next clicked
+        {
+            regovar.resetNewFilteringAnalysisWizard(selectedRefId);
+        }
     }
+
 
     Text
     {
@@ -77,14 +80,7 @@ GenericScreen
                     ExclusiveGroup
                     {
                         id: referenceGroup
-                        onCurrentChanged:
-                        {
-                            if (current.objectName != regovar.selectedReference)
-                            {
-                                regovar.selectedReference = current.objectName;
-                                checkReady();
-                            }
-                        }
+                        onCurrentChanged: selectedRefId = current.objectName
                     }
 
                     Repeater
@@ -95,7 +91,8 @@ GenericScreen
                         {
                             text: modelData.name
                             exclusiveGroup: referenceGroup
-                            objectName: index
+                            objectName: modelData.id
+                            checked: modelData.id === regovar.samplesManager.referencialId
                         }
                     }
                 }

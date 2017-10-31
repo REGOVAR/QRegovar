@@ -78,9 +78,9 @@ QJsonObject Sample::toJson()
 
 void Sample::save()
 {
-    QJsonObject body = toJson();
+    if (mId == -1) return;
 
-    Request* request = Request::put(QString("/sample/%1").arg(mId), QJsonDocument(body).toJson());
+    Request* request = Request::put(QString("/sample/%1").arg(mId), QJsonDocument(toJson()).toJson());
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
         if (success)

@@ -74,10 +74,6 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     }
     emit samplesChanged();
 
-    // Init remote samples tree model
-    mRemoteSampleTreeModel = new RemoteSampleTreeModel(this);
-    emit remoteSamplesChanged();
-
 
     // Retrieve saved filters
     mFilters.clear();

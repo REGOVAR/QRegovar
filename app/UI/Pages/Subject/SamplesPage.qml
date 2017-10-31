@@ -1,5 +1,9 @@
 import QtQuick 2.7
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 1.4
 import "../../Regovar"
+import "../../Framework"
+import "../../Dialogs"
 
 Rectangle
 {
@@ -12,6 +16,7 @@ Rectangle
         if (model != undefined)
         {
             nameLabel.text = model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname;
+            tableView.model = model.samples;
         }
     }
 
@@ -24,33 +29,253 @@ Rectangle
         height: 50
         color: Regovar.theme.backgroundColor.alt
 
-        Text
+        RowLayout
         {
-            id: nameLabel
-            anchors.top: header.top
-            anchors.left: header.left
-            anchors.bottom: header.bottom
+            anchors.fill: parent
             anchors.margins: 10
-            font.pixelSize: 22
-            font.family: Regovar.theme.font.familly
-            color: Regovar.theme.frontColor.normal
-            verticalAlignment: Text.AlignVCenter
 
-            text: "-"
+            Text
+            {
+                id: nameLabel
+                Layout.fillWidth: true
+
+                font.pixelSize: 22
+                font.family: Regovar.theme.font.familly
+                color: Regovar.theme.frontColor.normal
+                verticalAlignment: Text.AlignVCenter
+                text: "-"
+                elide: Text.ElideRight
+            }
+
+            ConnectionStatus { }
         }
     }
-    Image
-    {
-        anchors.top: header.bottom
-        anchors.left: root.left
 
-        source: "qrc:/a250 Subject Samples.png"
+    RowLayout
+    {
+        anchors.top : header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.bottom: root.bottom
+        anchors.margins: 10
+
+
+        TableView
+        {
+            id: tableView
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            selectionMode: SelectionMode.ExtendedSelection
+
+
+            property var statusIcons: ["m", "/", "n", "h"]
+
+            TableViewColumn
+            {
+                title: qsTr("Reference")
+                role: "reference"
+
+                delegate: Item
+                {
+
+                    Text
+                    {
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        font.family: Regovar.theme.icons.name
+                        text: styleData.value.name
+                    }
+                }
+            }
+            TableViewColumn { title: qsTr("Sample"); role: "name"; horizontalAlignment: Text.AlignLeft; }
+            TableViewColumn
+            {
+                title: "Status"
+                role: "statusUI"
+                delegate: Item
+                {
+
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        font.family: Regovar.theme.icons.name
+                        text: tableView.statusIcons[styleData.value.status]
+                        onTextChanged:
+                        {
+                            if (styleData.value.status == 1) // 1 = Loading
+                            {
+                                statusIconAnimation.start();
+                            }
+                            else
+                            {
+                                statusIconAnimation.stop();
+                            }
+                        }
+                        NumberAnimation on rotation
+                        {
+                            id: statusIconAnimation
+                            duration: 1000
+                            loops: Animation.Infinite
+                            from: 0
+                            to: 360
+                        }
+                    }
+                    Text
+                    {
+                        anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                        anchors.rightMargin: 5
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value.label
+                        elide: Text.ElideRight
+                    }
+                }
+            }
+
+            TableViewColumn
+            {
+                title: qsTr("Source")
+                role: "sourceUI"
+                delegate: Item
+                {
+
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value.icon
+                        font.family: Regovar.theme.icons.name
+                    }
+                    Text
+                    {
+                        anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                        anchors.rightMargin: 5
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value.filename
+                        elide: Text.ElideRight
+                    }
+                }
+            }
+            TableViewColumn { title: qsTr("Comment"); role: "comment" }
+
+            Rectangle
+            {
+                id: helpPanel
+                anchors.fill: parent
+
+                color: "#aaffffff"
+
+                visible: model.samples.length == 0
+
+                Text
+                {
+                    text: qsTr("No sample associated to this subject.\nClick on the opposite button to add it.")
+                    font.pixelSize: Regovar.theme.font.size.header
+                    color: Regovar.theme.primaryColor.back.normal
+                    anchors.fill: parent
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.WordWrap
+                }
+                Text
+                {
+                    anchors.right: parent.right
+                    anchors.top : parent.top
+                    text: "ä"
+                    font.family: Regovar.theme.icons.name
+                    font.pixelSize: 30
+                    color: Regovar.theme.primaryColor.back.normal
+
+                    NumberAnimation on anchors.rightMargin
+                    {
+                        duration: 2000
+                        loops: Animation.Infinite
+                        from: 30
+                        to: 0
+                        easing.type: Easing.SineCurve
+                    }
+                }
+            }
+        }
+
+
+        Column
+        {
+            id: actionColumn
+            Layout.alignment: Qt.AlignTop
+            spacing: 10
+
+            property real maxWidth: 0
+            onMaxWidthChanged:
+            {
+                addButton.width = maxWidth;
+                remButton.width = maxWidth;
+            }
+
+            Button
+            {
+                id: addButton
+                text: qsTr("Add sample")
+                onClicked:
+                {
+                    sampleSelector.referencialSelectorEnabled = true;
+                    sampleSelector.reset();
+                    sampleSelector.open();
+                }
+                Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
+            }
+            Button
+            {
+                id: editButton
+                text: qsTr("Edit sample")
+                onClicked: { sampleSelector.reset(); sampleSelector.open(); }
+                Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
+            }
+            Button
+            {
+                id: remButton
+                text: qsTr("Remove sample")
+                Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
+                onClicked:
+                {
+                    // Get list of objects to remove
+                    var samples= []
+                    samplesList.selection.forEach( function(rowIndex)
+                    {
+                        samples = samples.concat(regovar.newFilteringAnalysis.samples[rowIndex]);
+                    });
+                    model.removeSamples(samples);
+                }
+            }
+        }
     }
 
-//    Text
-//    {
-//       text: "SAMPLES"
-//       font.pixelSize: 24
-//       anchors.centerIn: parent
-//    }
+    SelectSamplesDialog
+    {
+        id: sampleSelector
+        onSamplesSelected:
+        {
+            for (var idx=0; idx<samples.length; idx++)
+            {
+                model.addSample(samples[idx]);
+            }
+        }
+    }
 }

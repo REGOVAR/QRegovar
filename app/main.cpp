@@ -10,7 +10,7 @@
 #include "Model/file/filesystemmodel.cpp"
 #include "Model/analysis/filtering/filteringanalysis.h"
 #include "Model/analysis/pipeline/pipelineanalysis.h"
-#include "Model/analysis/filtering/reference.h"
+#include "Model/subject/reference.h"
 #include "Model/subject/attribute.h"
 
 
@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<AdminTableInfo>("org.regovar", 1, 0, "AdminTableInfo");
 
     qmlRegisterType<SubjectsManager>("org.regovar", 1, 0, "SubjectsManager");
+    qmlRegisterType<SamplesManager>("org.regovar", 1, 0, "SamplesManager");
     qmlRegisterType<Subject>("org.regovar", 1, 0, "Subject");
     qmlRegisterType<Sample>("org.regovar", 1, 0, "Sample");
 

@@ -38,11 +38,25 @@ Rectangle
         height: 50
         color: Regovar.theme.backgroundColor.alt
 
+        ConnectionStatus
+        {
+            id: connectionStatus
+            anchors.top: header.top
+            anchors.right: header.right
+            anchors.bottom: header.bottom
+            anchors.margins: 5
+            anchors.rightMargin: 10
+        }
+
         TextField
         {
-            property var formerSearch: ""
-            anchors.fill: header
+            anchors.top: header.top
+            anchors.left: header.left
+            anchors.bottom: header.bottom
+            anchors.right: connectionStatus.left
             anchors.margins: 10
+
+            property string formerSearch: ""
             text: regovar.searchRequest
             placeholderText: qsTr("Search projects, subjects, samples, analyses, panels...")
             onEditingFinished:

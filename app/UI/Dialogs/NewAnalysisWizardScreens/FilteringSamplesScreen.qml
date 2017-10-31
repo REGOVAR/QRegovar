@@ -468,6 +468,7 @@ GenericScreen
     SelectSamplesDialog
     {
         id: sampleSelector
+        referencialSelectorEnabled: false
         onSamplesSelected:
         {
             regovar.newFilteringAnalysis.addSamples(samples);

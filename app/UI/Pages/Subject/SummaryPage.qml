@@ -43,14 +43,7 @@ Rectangle
                 elide: Text.ElideRight
             }
 
-            ConnectionStatus
-            {
-                anchors.top: header.top
-                anchors.right: header.right
-                anchors.bottom: header.bottom
-                anchors.margins: 5
-                anchors.rightMargin: 10
-            }
+            ConnectionStatus { }
         }
     }
 

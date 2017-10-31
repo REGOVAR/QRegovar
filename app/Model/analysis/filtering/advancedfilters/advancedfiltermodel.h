@@ -11,6 +11,7 @@
 #include "Model/regovar.h"
 
 class Set;
+class FilteringAnalysis;
 
 class AdvancedFilterModel : public QObject
 {

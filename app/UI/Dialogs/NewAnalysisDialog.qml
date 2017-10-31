@@ -20,7 +20,6 @@ Dialog
     onVisibleChanged:
     {
         startScreen.visible = true;
-        regovar.resetNewAnalysisWizardModels();
     }
 
     property var menuModel
