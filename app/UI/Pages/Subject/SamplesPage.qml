@@ -1,6 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
+import org.regovar 1.0
 import "../../Regovar"
 import "../../Framework"
 import "../../Dialogs"
@@ -15,8 +16,8 @@ Rectangle
     {
         if (model != undefined)
         {
-            nameLabel.text = model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname;
-            tableView.model = model.samples;
+            nameLabel.text =  Qt.binding(function() { return model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname; });
+            tableView.model = Qt.binding(function() { return model.samples; });
         }
     }
 
@@ -182,7 +183,7 @@ Rectangle
 
                 color: "#aaffffff"
 
-                visible: model.samples.length == 0
+                visible: model ? model.samples.length == 0 : false
 
                 Text
                 {

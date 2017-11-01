@@ -19,7 +19,7 @@ void SamplesManager::setReferencialId(int refId)
     if (refId == mRefId) return;
     mRefId = refId;
 
-    Request* req = Request::get(QString("/sample/browserTree/%1").arg(refId));
+    Request* req = Request::get(QString("/sample/browse/%1").arg(refId));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)

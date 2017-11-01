@@ -94,7 +94,7 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private:
-    int mId;
+    int mId = -1;
     QString mName;
     QString mNickname;
     bool mIsMosaic;

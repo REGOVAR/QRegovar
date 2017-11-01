@@ -94,6 +94,8 @@ void SubjectsManager::openSubject(int id)
 {
     // Get subject
     Subject* subject = getOrCreateSubject(id);
+    // Refresh / get all information of the
+    subject->load();
     // Set ref index
     mSubjectOpenIndex = mSubjectsOpenList.indexOf(subject);
     if (mSubjectOpenIndex == -1)

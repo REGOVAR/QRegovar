@@ -71,6 +71,11 @@ QJsonObject Sample::toJson()
     result.insert("name", mName);
     result.insert("is_mosaic", mIsMosaic);
     result.insert("comment", mComment);
+    if (mSubject != nullptr && mSubject->id() != -1)
+    {
+        result.insert("subject_id", mSubject->id());
+    }
+
     return result;
 }
 
