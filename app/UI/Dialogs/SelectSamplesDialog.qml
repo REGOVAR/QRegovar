@@ -82,9 +82,6 @@ Dialog
                 {
                     id: refCombo
                     enabled: referencialSelectorEnabled
-                    anchors.top : remoteHeader.bottom
-                    anchors.right: rootRemoteView.right
-                    anchors.margins: 10
                     model:regovar.references
                     textRole: "name"
 

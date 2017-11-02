@@ -39,7 +39,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     mStatus = json["status"].toString();
 
     // Getting ref
-    Reference* ref = regovar->referencesFromId(json["reference_id"].toInt());
+    Reference* ref = regovar->referenceFromId(json["reference_id"].toInt());
     if (ref == nullptr)
     {
         qDebug() << "Reference unknow !";

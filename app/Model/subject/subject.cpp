@@ -44,6 +44,7 @@ bool Subject::fromJson(QJsonObject json)
     mIndicators.clear();
 
     updateSubjectUI();
+    emit dataChanged();
     return true;
 }
 
@@ -139,6 +140,17 @@ void Subject::addSample(Sample* sample)
     sample->save();
 }
 
+
+void Subject::removeSample(Sample* sample)
+{
+    // Check that sample already in the list
+    mSamples.removeAll(sample);
+    emit dataChanged();
+
+    // remove subject to the sample
+    sample->setSubject(nullptr);
+    sample->save();
+}
 
 
 void Subject::updateSubjectUI()

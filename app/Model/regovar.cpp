@@ -421,7 +421,7 @@ void Regovar::resetNewPipelinAnalysisWizard()
 
 
 
-Reference* Regovar::referencesFromId(int id)
+Reference* Regovar::referenceFromId(int id)
 {
     foreach (QObject* o, mReferences)
     {

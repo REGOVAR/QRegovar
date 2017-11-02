@@ -170,7 +170,7 @@ public:
     Q_INVOKABLE void resetNewFilteringAnalysisWizard(int refId);
     Q_INVOKABLE void resetNewPipelinAnalysisWizard();
     Q_INVOKABLE FilteringAnalysis* getAnalysisFromWindowId(int winId);
-    Reference* referencesFromId(int id);
+    Reference* referenceFromId(int id);
     // File management
     Q_INVOKABLE void enqueueUploadFile(QStringList filesPaths);
 

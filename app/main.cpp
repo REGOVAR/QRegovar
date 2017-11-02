@@ -30,7 +30,6 @@ int main(int argc, char *argv[])
     qmlRegisterType<Annotation>("org.regovar", 1, 0, "AnnotationModel");
     qmlRegisterType<FilteringAnalysis>("org.regovar", 1, 0, "FilteringAnalysis");
     qmlRegisterType<PipelineAnalysis>("org.regovar", 1, 0, "PipelineAnalysis");
-    qmlRegisterType<Reference>("org.regovar", 1, 0, "Reference");
     qmlRegisterType<FieldColumnInfos>("org.regovar", 1, 0, "FieldColumnInfos");
     qmlRegisterType<QuickFilterField>("org.regovar", 1, 0, "QuickFilterField");
     qmlRegisterType<AdvancedFilterModel>("org.regovar", 1, 0, "AdvancedFilterModel");
@@ -43,6 +42,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<SamplesManager>("org.regovar", 1, 0, "SamplesManager");
     qmlRegisterType<Subject>("org.regovar", 1, 0, "Subject");
     qmlRegisterType<Sample>("org.regovar", 1, 0, "Sample");
+    qmlRegisterType<Reference>("org.regovar", 1, 0, "Reference");
+    qmlRegisterType<Attribute>("org.regovar", 1, 0, "Attribute");
 
 
 

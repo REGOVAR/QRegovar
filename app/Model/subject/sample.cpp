@@ -29,6 +29,8 @@ bool Sample::fromJson(QJsonObject json)
     setIsMosaic(json["is_mosaic"].toBool());
     setComment(json["comment"].toString());
 
+    mReference = regovar->referenceFromId(json["reference_id"].toInt());
+
     mDefaultAnnotationsDbUid.clear();
     foreach (const QJsonValue field, json["default_dbuid"].toArray())
     {
@@ -74,6 +76,10 @@ QJsonObject Sample::toJson()
     if (mSubject != nullptr && mSubject->id() != -1)
     {
         result.insert("subject_id", mSubject->id());
+    }
+    else
+    {
+        result.insert("subject_id", QJsonValue::Null);
     }
 
     return result;

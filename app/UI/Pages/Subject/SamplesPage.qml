@@ -16,8 +16,8 @@ Rectangle
     {
         if (model != undefined)
         {
-            nameLabel.text =  Qt.binding(function() { return model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname; });
-            tableView.model = Qt.binding(function() { return model.samples; });
+            console.log("")
+            //tableView.model = Qt.binding(function() { return ; });
         }
     }
 
@@ -44,7 +44,7 @@ Rectangle
                 font.family: Regovar.theme.font.familly
                 color: Regovar.theme.frontColor.normal
                 verticalAlignment: Text.AlignVCenter
-                text: "-"
+                text: model ? model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname : "-"
                 elide: Text.ElideRight
             }
 
@@ -66,6 +66,7 @@ Rectangle
             id: tableView
             Layout.fillWidth: true
             Layout.fillHeight: true
+            model: root.model ? root.model.samples : []
 
             selectionMode: SelectionMode.ExtendedSelection
 
@@ -82,10 +83,12 @@ Rectangle
 
                     Text
                     {
+                        anchors.leftMargin: 5
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: styleData.textAlignment
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.icons.name
                         text: styleData.value.name
                     }
                 }
@@ -183,7 +186,7 @@ Rectangle
 
                 color: "#aaffffff"
 
-                visible: model ? model.samples.length == 0 : false
+                visible: root.model ? root.model.samples.length == 0 : true
 
                 Text
                 {
@@ -248,6 +251,7 @@ Rectangle
                 text: qsTr("Edit sample")
                 onClicked: { sampleSelector.reset(); sampleSelector.open(); }
                 Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
+                enabled : false
             }
             Button
             {
@@ -256,13 +260,11 @@ Rectangle
                 Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
                 onClicked:
                 {
-                    // Get list of objects to remove
-                    var samples= []
-                    samplesList.selection.forEach( function(rowIndex)
+                    tableView.selection.forEach( function(rowIndex)
                     {
-                        samples = samples.concat(regovar.newFilteringAnalysis.samples[rowIndex]);
+                        root.model.removeSample(root.model.samples[rowIndex]);
                     });
-                    model.removeSamples(samples);
+
                 }
             }
         }
@@ -275,7 +277,7 @@ Rectangle
         {
             for (var idx=0; idx<samples.length; idx++)
             {
-                model.addSample(samples[idx]);
+                root.model.addSample(samples[idx]);
             }
         }
     }

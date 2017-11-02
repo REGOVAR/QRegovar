@@ -81,6 +81,8 @@ public:
     Q_INVOKABLE void load();
     //! Associate a sample to the subject
     Q_INVOKABLE void addSample(Sample* sample);
+    //! Remove the association between the sample and the subject
+    Q_INVOKABLE void removeSample(Sample* sample);
     //! SubjectUI is a all-in-one property to quickly display subject in the UI.
     void updateSubjectUI();
     QString computeAge(QDate d1, QDate d2);
