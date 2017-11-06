@@ -77,6 +77,7 @@ Rectangle
 
         Component.onCompleted: text = regovar.searchRequest
 
+
         onEditingFinished:
         {
             if (text != "" && root.visible)
