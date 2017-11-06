@@ -4,7 +4,7 @@ import "../Regovar"
 
 Rectangle
 {
-    id:root
+    id: root
 
     property string icon: "k"
     property string text: "A text box"
@@ -13,43 +13,41 @@ Rectangle
     color: Regovar.theme.lighter(root.mainColor)
     border.width: 1
     border.color: root.mainColor
-    height: max(logo.height, message.height)
+    height: message.height + 10
 
     FontLoader { id: iconsFont; source: "../Icons.ttf" }
 
-    RowLayout
+    Text
     {
-        id: layout
-        anchors.fill: root
-        anchors.margins: 5
+        id: logo
+        width: Regovar.theme.font.boxSize.header
+        height: Regovar.theme.font.boxSize.normal
+        anchors.left: root.left
+        anchors.top: root.top
 
 
-        Text
-        {
-            id: logo
-            width: 30
-            height: 20
-            Layout.minimumWidth: 30
-            Layout.minimumHeight: 20
-
-            text: root.icon
-            font.family: iconsFont.name
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            color: mainColor
-        }
-
-        Text
-        {
-            id: message
-            Layout.minimumWidth: 30
-            Layout.minimumHeight: 20
-            Layout.fillWidth: true
-            text: root.text
-            color: Regovar.theme.darker(root.mainColor)
-            verticalAlignment: Text.AlignVCenter
-            wrapMode: Text.WordWrap
-        }
+        text: root.icon
+        font.family: iconsFont.name
+        font.pixelSize: Regovar.theme.font.size.normal
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        color: mainColor
     }
 
+    Text
+    {
+        id: message
+        anchors.left: logo.right
+        anchors.right: root.right
+        anchors.top: root.top
+        anchors.margins: 5
+        anchors.leftMargin: 0
+        onHeightChanged: root.height = height + 10
+
+        text: root.text
+        font.pixelSize: Regovar.theme.font.size.normal
+        color: Regovar.theme.darker(root.mainColor)
+        verticalAlignment: Text.AlignVCenter
+        wrapMode: Text.WordWrap
+    }
 }

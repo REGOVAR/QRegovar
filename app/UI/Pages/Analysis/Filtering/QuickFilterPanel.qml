@@ -107,6 +107,7 @@ Rectangle
                 icon: "x"
                 onClicked:
                 {
+                    model.currentFilterName = "";
                     model.results.applyFilter(model.quickfilters.toJson());
                     model.advancedfilter.forceRefresh = true;
                     model.advancedfilter.loadJson(model.quickfilters.toJson());
