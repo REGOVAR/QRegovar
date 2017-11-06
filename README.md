@@ -4,6 +4,6 @@
 
 The official heavy client (in Qt) of the Regovar project
 
-Mockup is almost finished. Implementation will start soon.
+Implementation of [beta](https://github.com/REGOVAR/QRegovar/milestone/1) in progress (50%)
 
 ![mokcup](https://raw.githubusercontent.com/REGOVAR/QRegovar/master/docs/mockup/mockup.gif)
