@@ -52,7 +52,8 @@ Rectangle
                 Layout.fillWidth: true
 //                text: qsTr("Current filter")
 //                iconText: "5"
-                text: model.currentFilterName ? model.currentFilterName : qsTr("New filter")
+                text: model.currentFilterName ? model.currentFilterName : qsTr("Save new filter")
+                enabled: model.currentFilterName == ""
                 iconText: model.currentFilterName ? "D" : "5"
                 height: header.height - 20
                 onClicked:
@@ -67,7 +68,7 @@ Rectangle
                 horizontalAlignment: Text.AlignRight
 
                 font.pixelSize: Regovar.theme.font.size.header
-                text: ( root.model != null) ? ": " + Regovar.formatBigNumber(root.model.results.total) + " " + ((root.model.results.total > 1) ? qsTr("variants") : qsTr("variant")) : ""
+                text: ( root.model != null) ? Regovar.formatBigNumber(root.model.results.total) + " " + ((root.model.results.total > 1) ? qsTr("variants") : qsTr("variant")) : ""
             }
         }
         ConnectionStatus

@@ -10,7 +10,7 @@ Button
     property string iconText: "à"
 
     ToolTip.visible: hovered
-    ToolTip.delay: 500
+    ToolTip.delay: 0
     ToolTip.text: qsTr("Save the active filter")
 
     contentItem: Row
@@ -20,7 +20,7 @@ Button
         {
             font.pixelSize: Regovar.theme.font.size.title
             font.family: Regovar.theme.icons.name
-            color: !control.enabled ? Regovar.theme.frontColor.disable : control.hovered ? Regovar.theme.secondaryColor.front.normal : ( control.down ? Regovar.theme.secondaryColor.front.dark: Regovar.theme.secondaryColor.back.normal)
+            color: !control.enabled ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.secondaryColor.front.normal
             font.weight: Font.Bold
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
@@ -32,7 +32,7 @@ Button
             id: textElmt
             font.pixelSize: Regovar.theme.font.size.title
             font.family: Regovar.theme.font.familly
-            color: !control.enabled ? Regovar.theme.frontColor.disable :  control.hovered ? Regovar.theme.secondaryColor.front.normal : ( control.down ? Regovar.theme.secondaryColor.front.dark: Regovar.theme.secondaryColor.back.normal)
+            color:  !control.enabled ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.secondaryColor.front.normal
             verticalAlignment: Text.AlignVCenter
             text: control.text
         }
@@ -42,7 +42,8 @@ Button
     background: Rectangle
     {
         anchors.fill: control
-        color : control.hovered ? Regovar.theme.secondaryColor.back.normal : ( control.down ? Regovar.theme.secondaryColor.back.dark: "transparent")
+        color : !control.enabled ? "transparent" : control.down ? Regovar.theme.secondaryColor.back.dark : Regovar.theme.secondaryColor.back.normal
+        radius: 2
 
         Behavior on color
         {

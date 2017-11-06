@@ -127,5 +127,6 @@
         <file>Dialogs/AdminConfirmWtClear.qml</file>
         <file>Dialogs/SelectSubjectDialog.qml</file>
         <file>Pages/Browse/SearchResultSubject.qml</file>
+        <file>Pages/Analysis/Filtering/VariantInformationPanel.qml</file>
     </qresource>
 </RCC>
