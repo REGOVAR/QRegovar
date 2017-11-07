@@ -123,8 +123,7 @@ void Regovar::init()
     mSubjectsManager->refreshSubjectsList();
 
 
-
-    loadGithubData();
+    // Load misc data
     loadWelcomData();
 }
 
@@ -280,6 +279,32 @@ void Regovar::loadWelcomData()
                 if (ref->id() > 0) mReferences.append(ref);
             }
             emit referencesChanged();
+
+            // Get milestones data
+            QJsonObject milestones;
+            foreach (QJsonValue val, data["milestones"].toArray())
+            {
+                milestones = val.toObject();
+                if (milestones["state"].toString() == "open")
+                {
+                    if (mConfig->release().isEmpty() || mConfig->release()["due_on"].toString() > milestones["due_on"].toString())
+                    {
+                        double progress = milestones["closed_issues"].toDouble() / (milestones["open_issues"].toDouble() + milestones["closed_issues"].toDouble());
+                        milestones.insert("progress", progress);
+                        milestones.insert("success", true);
+                        mConfig->setRelease(milestones);
+                    }
+                }
+            }
+            if (milestones.isEmpty())
+            {
+                milestones.insert("success", false);
+                milestones.insert("html_url", "https://github.com/REGOVAR/QRegovar/milestones");
+                mConfig->setRelease(milestones);
+            }
+            emit configChanged();
+
+
         }
         else
         {
@@ -292,50 +317,6 @@ void Regovar::loadWelcomData()
     });
 }
 
-void Regovar::loadGithubData()
-{
-    if (QSslSocket::supportsSsl())
-    {
-        RequestExt* req = RequestExt::get(QString("https://api.github.com/repos/REGOVAR/QRegovar/milestones"));
-        connect(req, &RequestExt::responseReceived, [this, req](const QJsonValue& json)
-        {
-            mConfig->setRelease(QJsonObject());
-            QJsonArray datas = json.toArray();
-            QJsonObject data;
-            foreach (QJsonValue val, json.toArray())
-            {
-                data = val.toObject();
-                if (data["state"].toString() == "open")
-                {
-                    if (mConfig->release().isEmpty() || mConfig->release()["due_on"].toString() > data["due_on"].toString())
-                    {
-                        double progress = data["closed_issues"].toDouble() / (data["open_issues"].toDouble() + data["closed_issues"].toDouble());
-                        data.insert("progress", progress);
-                        data.insert("success", true);
-                        mConfig->setRelease(data);
-                    }
-                }
-            }
-
-            if (data.isEmpty())
-            {
-                data.insert("success", false);
-                data.insert("html_url", "https://github.com/REGOVAR/QRegovar/milestones");
-                mConfig->setRelease(data);
-            }
-            emit configChanged();
-            req->deleteLater();
-        });
-    }
-    else
-    {
-        QJsonObject data;
-        data.insert("success", false);
-        data.insert("html_url", "https://github.com/REGOVAR/QRegovar/milestones");
-        mConfig->setRelease(data);
-        emit configChanged();
-    }
-}
 
 
 void Regovar::refreshFlatProjectsListRecursive(QJsonArray data, QString prefix)

@@ -177,7 +177,6 @@ public:
     // Others
     Q_INVOKABLE void search(QString query);
     Q_INVOKABLE void loadWelcomData();
-    Q_INVOKABLE void loadGithubData();
     Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void close();
     Q_INVOKABLE void disconnectUser();

@@ -245,7 +245,7 @@ Rectangle
                         selectByKeyboard: true
 
                         font.family: "monospace"
-                        text: styleData.value ? Regovar.formatSequence(styleData.value) : "-"
+                        text: styleData.value ? /*Regovar.formatSequence(*/styleData.value/*)*/ : "-"
                     }
                 }
             }
