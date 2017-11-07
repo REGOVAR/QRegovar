@@ -222,8 +222,18 @@ Item
 
                 function parseDate(iso)
                 {
-                    var date = Date.parse(iso);
-                    return date
+                    var date = new Date(iso);
+                    var monthNames = [
+                        qsTr("january"), qsTr("february"), qsTr("march"),
+                        qsTr("april"), qsTr("may"), qsTr("june"), qsTr("july"),
+                        qsTr("august"), qsTr("september"), qsTr("october"),
+                        qsTr("november"), qsTr("december")
+                    ];
+
+                    var day = date.getDate();
+                    var monthIndex = date.getMonth();
+                    var year = date.getFullYear();
+                    return day + ' ' + monthNames[monthIndex] + ' ' + year;
                 }
             }
 
@@ -245,7 +255,7 @@ Item
                     x: 1
                     y: 1
                     width: (regovar.config.release["success"] ?  regovar.config.release["progress"] : 0) * 148
-                    height: Regovar.theme.font.size.normal - 4
+                    height: parent.height-2
                     color: Regovar.theme.secondaryColor.back.normal
                 }
             }
