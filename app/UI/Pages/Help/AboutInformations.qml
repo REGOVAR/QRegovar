@@ -216,9 +216,15 @@ Item
             }
             Text
             {
-                text: regovar.config.release["success"] ? regovar.config.release["due_on"] : ""
+                text: regovar.config.release["success"] ? parseDate(regovar.config.release["due_on"]) : ""
                 font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.frontColor.normal
+
+                function parseDate(iso)
+                {
+                    var date = Date.parse(iso);
+                    return date
+                }
             }
 
             Text
