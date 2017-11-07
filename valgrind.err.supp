@@ -1,0 +1,185 @@
+{
+   OpenAnalysis_uninitialised_analysis
+   Memcheck:Cond
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5Core.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5Core.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5Core.so.5.9.1
+   fun:_ZNK7QString3argExii5QChar
+   fun:_ZNK7QString3argEiii5QChar
+   fun:_ZN21RemoteSampleTreeModel5resetEv
+   fun:_ZN21RemoteSampleTreeModelC1EP17FilteringAnalysis
+   fun:_ZN17FilteringAnalysis8fromJsonE11QJsonObject
+   fun:_ZN7Regovar12openAnalysisE11QJsonObject
+   fun:_ZZN7Regovar12openAnalysisEiENKUlbRK11QJsonObjectE_clEbS2_
+   fun:_ZN9QtPrivate11FunctorCallINS_11IndexesListIJLi0ELi1EEEENS_4ListIJbRK11QJsonObjectEEEvZN7Regovar12openAnalysisEiEUlbS6_E_E4callERS9_PPv
+   fun:_ZN9QtPrivate7FunctorIZN7Regovar12openAnalysisEiEUlbRK11QJsonObjectE_Li2EE4callINS_4ListIJbS4_EEEvEEvRS5_PvPSB_
+   fun:_ZN9QtPrivate18QFunctorSlotObjectIZN7Regovar12openAnalysisEiEUlbRK11QJsonObjectE_Li2ENS_4ListIJbS4_EEEvE4implEiPNS_15QSlotObjectBaseEP7QObjectPPvPb
+   fun:_ZN11QMetaObject8activateEP7QObjectiiPPv
+   fun:_ZN7Request16responseReceivedEbRK11QJsonObject
+   fun:_ZN7Request8receivedEv
+   fun:_ZN7Request18qt_static_metacallEP7QObjectN11QMetaObject4CallEiPPv
+   fun:_ZN11QMetaObject8activateEP7QObjectiiPPv
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5Network.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5Network.so.5.9.1
+   fun:_ZN7QObject5eventEP6QEvent
+   fun:_ZN16QCoreApplication6notifyEP7QObjectP6QEvent
+   fun:_ZN16QCoreApplication15notifyInternal2EP7QObjectP6QEvent
+   fun:_ZN23QCoreApplicationPrivate16sendPostedEventsEP7QObjectiP11QThreadData
+}
+
+
+
+
+
+
+
+
+
+
+
+{
+   QtCore_WebEngine_01
+   Memcheck:Cond
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   fun:start_thread
+   fun:clone
+}
+
+{
+   QtCore_WebEngine_02
+   Memcheck:Cond
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   fun:_ZN7QObject5eventEP6QEvent
+   fun:_ZN16QCoreApplication6notifyEP7QObjectP6QEvent
+   fun:_ZN16QCoreApplication15notifyInternal2EP7QObjectP6QEvent
+   fun:_ZN23QCoreApplicationPrivate16sendPostedEventsEP7QObjectiP11QThreadData
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5Core.so.5.9.1
+   fun:g_main_context_dispatch
+   obj:/lib/x86_64-linux-gnu/libglib-2.0.so.0.4800.2
+   fun:g_main_context_iteration
+   fun:_ZN20QEventDispatcherGlib13processEventsE6QFlagsIN10QEventLoop17ProcessEventsFlagEE
+   fun:_ZN10QEventLoop4execE6QFlagsINS_17ProcessEventsFlagEE
+   fun:_ZN16QCoreApplication4execEv
+   fun:main
+}
+
+{
+   QtCore_WebEngine_03
+   Memcheck:Cond
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+}
+
+{
+   QtCore_WebEngine_04
+   Memcheck:Cond
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   fun:start_thread
+   fun:clone
+}
+
+{
+   QtCore_WebEngine_05
+   Memcheck:Cond
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   fun:start_thread
+   fun:clone
+}
+
+{
+   QtCore_WebEngine_06
+   Memcheck:Cond
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   fun:_ZN15QtWebEngineCore21BrowserContextAdapter14defaultContextEv
+   fun:_ZN22QQuickWebEngineProfile14defaultProfileEv
+   fun:_ZN26QQuickWebEngineViewPrivateC1Ev
+   fun:_ZN19QQuickWebEngineViewC1EP10QQuickItem
+   obj:/opt/Qt/5.9.1/gcc_64/qml/QtWebEngine/libqtwebengineplugin.so
+   fun:_ZNK8QQmlType6createEPP7QObjectPPvm
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5Qml.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5Qml.so.5.9.1
+   fun:_ZN20QQmlComponentPrivate11beginCreateEP15QQmlContextData
+   fun:_ZN13QQmlComponent6createEP11QQmlContext
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebView.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebView.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebView.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5Qml.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5Qml.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5Qml.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5Qml.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5Qml.so.5.9.1
+}
+
+{
+   QtCore_WebEngine_07
+   Memcheck:Cond
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   obj:/opt/Qt/5.9.1/gcc_64/lib/libQt5WebEngineCore.so.5.9.1
+   fun:start_thread
+   fun:clone
+}
