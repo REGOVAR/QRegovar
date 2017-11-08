@@ -322,7 +322,7 @@ Dialog
                 anchors.right: rootFileView.right
                 iconText: "1"
                 title: qsTr("Import samples from file")
-                text: qsTr("Select the vcf file(s) from which you want to import samples.\nYou can add file that are already uploaded on the regovar server or drop your (g)vcf file here to start the upload on the server.")
+                text: qsTr("Select the vcf file(s) from which you want to import samples.\nYou can select file that are already on the regovar server or upload news ones.")
             }
 
             RowLayout
@@ -343,44 +343,7 @@ Dialog
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
-                    model: regovar.newPipelineAnalysis.inputsFilesList
-
-
-
-//                    DropArea
-//                    {
-//                        id: dropArea;
-//                        anchors.fill: parent;
-//                        onEntered:
-//                        {
-//                            if (drag.hasUrls)
-//                            {
-//                                dropAreaFeedBack.visible = true;
-//                                drag.accept (Qt.CopyAction);
-//                            }
-//                            else
-//                            {
-//                                dropOkLabel.visible = false;
-//                                dropKoLabel.visible = true;
-//                            }
-//                        }
-//                        onDropped:
-//                        {
-//                            var files= []
-//                            for(var i=0; i<drop.urls.length; i++)
-//                            {
-//                                files = files.concat(drop.urls[i]);
-//                            }
-//                            regovar.filesManager.enqueueUploadFile(files);
-//                            dropAreaFeedBack.visible = false;
-//                        }
-//                        onExited:
-//                        {
-//                            dropAreaFeedBack.visible = false;
-//                            dropOkLabel.visible = true;
-//                            dropKoLabel.visible = false;
-//                        }
-//                    }
+                    model: regovar.newFilteringAnalysis.samplesInputsFilesList
 
                     TableViewColumn
                     {
@@ -421,7 +384,6 @@ Dialog
                         role: "statusUI"
                         delegate: Item
                         {
-
                             Text
                             {
                                 anchors.leftMargin: 5
@@ -430,27 +392,28 @@ Dialog
                                 verticalAlignment: Text.AlignVCenter
                                 horizontalAlignment: styleData.textAlignment
                                 font.pixelSize: Regovar.theme.font.size.normal
+                                text: styleData.value.status == 0 ? "/" : styleData.value.status == 3 ? "l" : "n"
                                 font.family: Regovar.theme.icons.name
-                                text: remoteSamples.statusIcons[styleData.value.status]
-                                onTextChanged:
-                                {
-                                    if (styleData.value.status == 1) // 1 = Loading
-                                    {
-                                        statusIconAnimation2.start();
-                                    }
-                                    else
-                                    {
-                                        statusIconAnimation2.stop();
-                                    }
-                                }
-                                NumberAnimation on rotation
-                                {
-                                    id: statusIconAnimation2
-                                    duration: 1000
-                                    loops: Animation.Infinite
-                                    from: 0
-                                    to: 360
-                                }
+
+//                                onTextChanged:
+//                                {
+//                                    if (styleData.value.status == 1) // 1 = Loading
+//                                    {
+//                                        statusIconAnimation2.start();
+//                                    }
+//                                    else
+//                                    {
+//                                        statusIconAnimation2.stop();
+//                                    }
+//                                }
+//                                NumberAnimation on rotation
+//                                {
+//                                    id: statusIconAnimation2
+//                                    duration: 1000
+//                                    loops: Animation.Infinite
+//                                    from: 0
+//                                    to: 360
+//                                }
                             }
                             Text
                             {
@@ -464,7 +427,6 @@ Dialog
                                 text: styleData.value.label
                                 elide: Text.ElideRight
                             }
-
                         }
                     }
                     TableViewColumn { title: "Size"; role: "sizeUI"; horizontalAlignment: Text.AlignRight }
@@ -499,11 +461,11 @@ Dialog
 
                         color: "#aaffffff"
 
-                        visible: regovar.newPipelineAnalysis.inputsFilesList.length == 0
+                        visible: regovar.newFilteringAnalysis.samplesInputsFilesList.length == 0
 
                         Text
                         {
-                            text: qsTr("Drop your vcf file here, or click on the adjacent button to select vcf file already on the Regovar server.")
+                            text: qsTr("Click on the \"Add file\" button to select vcf file.")
                             font.pixelSize: Regovar.theme.font.size.header
                             color: Regovar.theme.primaryColor.back.normal
                             anchors.fill: parent
@@ -528,39 +490,6 @@ Dialog
                                 to: 0
                                 easing.type: Easing.SineCurve
                             }
-                        }
-                    }
-                    Rectangle
-                    {
-                        id: dropAreaFeedBack
-                        anchors.fill: parent;
-                        color: Regovar.theme.boxColor.back
-                        border.width: 1
-                        border.color: Regovar.theme.boxColor.border
-                        visible: false
-                        Text
-                        {
-                            id: dropOkLabel
-                            anchors.centerIn: parent
-                            text: qsTr("Drop your (g)vcf files here !")
-                            font.pixelSize: Regovar.theme.font.size.header
-                            color: Regovar.theme.primaryColor.back.normal
-                            anchors.fill: parent
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            wrapMode: Text.WordWrap
-                        }
-                        Text
-                        {
-                            id: dropKoLabel
-                            text: qsTr("Sorry, only vcf, gvcf, vcf.gz and gvcf.gz file are supported to import sample.")
-                            font.pixelSize: Regovar.theme.font.size.header
-                            color: Regovar.theme.primaryColor.back.normal
-                            anchors.fill: parent
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            wrapMode: Text.WordWrap
-                            visible: false
                         }
                     }
                 }
@@ -588,9 +517,9 @@ Dialog
                             var files= []
                             inputsList.selection.forEach( function(rowIndex)
                             {
-                                files = files.concat(regovar.filesManager.remoteList[rowIndex]);
+                                files = files.concat(regovar.newFilteringAnalysis.samplesInputsFilesList[rowIndex]);
                             });
-                            regovar.newPipelineAnalysis.removeInputs(files);
+                            regovar.newFilteringAnalysis.removeSampleInputs(files);
                         }
                     }
                 }
@@ -629,6 +558,7 @@ Dialog
             onClicked:
             {
                 var samples=[];
+                // OK Clicked from "Remote sample" view
                 if (rootRemoteView.visible)
                 {
                     remoteSamples.selection.forEach( function(rowIndex)
@@ -637,13 +567,13 @@ Dialog
                     });
                     samplesSelected(samples);
                 }
-
+                // OK Clicked from "Remote files" view
                 else if (rootFileView.visible)
                 {
                     // import all file
-                    for(var idx=0; idx<regovar.newPipelineAnalysis.inputsFilesList.length; idx++)
+                    for(var idx=0; idx<regovar.newFilteringAnalysis.samplesInputsFilesList.length; idx++)
                     {
-                        var file = regovar.newPipelineAnalysis.inputsFilesList[idx];
+                        var file = regovar.newFilteringAnalysis.samplesInputsFilesList[idx];
                         regovar.newFilteringAnalysis.addSamplesFromFile(file.id);
                     }
                 }
@@ -671,20 +601,9 @@ Dialog
     SelectFilesDialog
     {
         id: fileSelector
-        onFileSelected: { regovar.newPipelineAnalysis.addInputs(files); }
-    }
+        uploadBlocking: true
+        onFileSelected: regovar.newFilteringAnalysis.addSampleInputs(files);
 
-    Connections
-    {
-        target: regovar
-        onOnWebsocketMessageReceived:
-        {
-            // We assume that if a file is downloading, it's for us...
-            if (action == "file_upload")
-            {
-                regovar.newPipelineAnalysis.addInputFromWS(data);
-            }
-        }
     }
 
 

@@ -32,7 +32,7 @@ class File : public QObject
 public:
     enum FileStatus
     {
-        uploading = 0,
+        uploading=0,
         uploaded,
         checked,
         error
@@ -40,11 +40,10 @@ public:
     Q_ENUM(FileStatus)
 
 
-
-    File(QObject* parent=0);
-
-    bool fromJson(QJsonDocument json);
-    bool fromJson(QJsonObject json);
+    // Constructors
+    File(QObject* parent=nullptr);
+    File(QJsonObject json, QObject* parent=nullptr);
+    File(int id, QObject* parent=nullptr);
 
     // Accessors
     inline int id() { return mId; }
@@ -74,15 +73,23 @@ public:
     inline void setMd5Sum(QString md5Sum) { mMd5Sum = md5Sum; emit md5SumChanged(); }
     inline void setType(QString type) { mType = type; emit typeChanged(); }
     inline void setStatus(FileStatus status) { mStatus = status; emit statusChanged(); }
+    inline void setUpdateDate(QDateTime date) { mUpdateDate = date; emit updateDateChanged(); }
 
 
     // Methods
+    //! Set model with provided json data
+    Q_INVOKABLE bool fromJson(QJsonDocument json);
+    Q_INVOKABLE bool fromJson(QJsonObject json);
+    //! Export model data into json object
+    Q_INVOKABLE QJsonObject toJson();
+    //! Save subject information onto server
+    Q_INVOKABLE void save();
+    //! Load Subject information from server
+    Q_INVOKABLE void load();
+
+    //! Internal method to compute all-in-one property to display file in the UI.
     QString extensionToIco(QString ext);
     QString statusToLabel(FileStatus status, qint64 size, qint64 uploadOffset);
-
-
-//public Q_SLOTS:
-
 
 
 Q_SIGNALS:
@@ -118,24 +125,16 @@ private:
     qint64 mSize;
     qint64 mUploadOffset;
     QList<QString> mTags;
-    //QJob* mSource;
-    // UI attribute
+    QString mLocalPath;
+
+    // UI all-in-one attributes
     QVariant mFilenameUI;
     QString mSizeUI;
     QVariant mStatusUI;
     QString mSourceUI;
 
-    QString mLocalPath;
 
-    // mJobs
-    // mEvents
-    // mProjects
-    // mSubjects
-
-    // Methods
-    inline void setUpdateDate(QDateTime date) { mUpdateDate = date; emit updateDateChanged(); }
-
-
+    // TODO: static collection
     QStringList zip = {"zip", "gz", "xz", "tar", "rar"};
     QStringList txt = {"txt", "vcf", "sam", "fasta", "fastq", "csv"};
     QStringList src = {"sh", "bat", "xml", "css", "py", "js", "html", "htm"};

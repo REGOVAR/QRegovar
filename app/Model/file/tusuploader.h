@@ -13,10 +13,12 @@ struct TusUploadItem
 {
     QString uploadUrl;
     QString path;
+    QString fileId;
     QFile* file = nullptr;
-    quint64 size;
-    quint64 offset;
-    bool prepareFlag;
+    quint64 size = 0;
+    quint64 offset = 0;
+    bool prepareFlag = false;
+    bool paused = true;
 };
 
 class TusUploader : public QObject
@@ -41,10 +43,10 @@ public:
     // Methods
     void loadSettings();
     void writteSettings();
-    void enqueue(QStringList paths); //! Register file to the server, enqueue them and start upload as soon as possible
-    void pause(QString path);           //! Suspend upload for the file
-    void cancel(QString path);          //! Cancel upload for the file
-    void start(QString path);           //! Start/Resume upload for the file
+    void enqueue(QStringList paths);    //! Register file to the server, enqueue them and start upload as soon as possible
+    void pause(QString fileId);         //! Suspend upload for the file
+    void cancel(QString fileId);        //! Cancel upload for the file
+    void start(QString fileId);         //! Start/Resume upload for the file
     void emitFileEnqueued(QHash<QString, QString>* serverMapping);
 
 

@@ -307,6 +307,11 @@ private:
     //! Websocket
     QWebSocket mWebSocket;
     QUrl mWebsocketUrl;
+    QStringList mWsFilesActionsList = {"file_upload"};
+    QStringList mWsSamplesActionsList = {"import_vcf_processing"};
+    QStringList mWsFilteringActionsList = {"analysis_computing"};
+    QStringList mWsPipelinesActionsList = {"pipeline_install", "pipeline_uninstall"};
+    QStringList mWsJobsActionsList = {"job_"};
 };
 
 

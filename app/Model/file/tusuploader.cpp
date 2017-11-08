@@ -7,7 +7,6 @@
 
 
 
-
 TusUploader::TusUploader(QObject *parent) : QObject(parent)
 {
     mChunkSize = 50 * 1024;
@@ -44,6 +43,9 @@ void TusUploader::writteSettings()
 
 void TusUploader::enqueue(QStringList paths)
 {
+    // Fix base path to the root
+    QDir::setCurrent(QDir::rootPath());
+
     // The following hash will be set with uploadUrl returned by the server
     QHash<QString, QString>* serverMapping =  new QHash<QString, QString>();
 
@@ -54,8 +56,8 @@ void TusUploader::enqueue(QStringList paths)
         {
             path = path.mid(8);
         }
-
         QFileInfo fi(path);
+
         if (fi.isFile())
         {
             qDebug() << "Prepare upload for " << path;
@@ -76,7 +78,7 @@ void TusUploader::enqueue(QStringList paths)
             // (server will return us the url to use for the resume upload for this file)
             QByteArray size;
             size.setNum(item->size);
-            QString filename("filename " + base64Encode(item->file->fileName()));
+            QString filename("filename " + base64Encode(fi.fileName()));
 
             QNetworkRequest request(mTusUploadUrl);
             request.setRawHeader("User-Agent", mUserAgent);
@@ -97,6 +99,8 @@ void TusUploader::enqueue(QStringList paths)
                         // store url in file data
                         item->uploadUrl = mTusRootUrl + "/" + QString(reply->rawHeader("Location"));
                         item->offset = 0;
+                        QStringList parts = item->uploadUrl.split("/");
+                        item->fileId = parts[parts.count()-1];
                         serverMapping->insert(path, item->uploadUrl);
 
 
@@ -151,19 +155,16 @@ void TusUploader::emitFileEnqueued(QHash<QString, QString>* serverMapping)
 
 
 
-void TusUploader::pause(QString path)
+void TusUploader::pause(QString)
 {
-
 }
 
-void TusUploader::cancel(QString path)
+void TusUploader::cancel(QString)
 {
-
 }
 
-void TusUploader::start(QString path)
+void TusUploader::start(QString)
 {
-
 }
 
 
@@ -228,7 +229,7 @@ void TusUploader::newUpload(TusUploadItem* item)
     connectErrorSignals(reply);
     connect(reply, SIGNAL(finished()), this, SLOT(newUploadFinished()));
 
-    qDebug() << "NEW Upload" << item->file->fileName() << " : POST " << mTusUploadUrl;
+    // qDebug() << "NEW Upload" << item->file->fileName() << " : POST " << mTusUploadUrl;
 }
 
 void TusUploader::resumeUpload(TusUploadItem* item)
@@ -242,7 +243,7 @@ void TusUploader::resumeUpload(TusUploadItem* item)
     connectErrorSignals(reply);
     connect(reply, SIGNAL(finished()), this, SLOT(resumeUploadFinished()));
 
-    qDebug() << "RESUME Upload" << item->file->fileName() << " : HEAD " << item->uploadUrl;
+    // qDebug() << "RESUME Upload" << item->file->fileName() << " : HEAD " << item->uploadUrl;
 }
 
 void TusUploader::patchUpload(TusUploadItem* item)
@@ -290,11 +291,11 @@ void TusUploader::patchUpload(TusUploadItem* item)
         item->file->unmap(buf);
         item->offset += chunkSize;
 
-        qDebug() << "PATCH Upload" << item->file->fileName() << " : PATCH " << item->uploadUrl;
+        // qDebug() << "PATCH Upload" << item->file->fileName() << "=>" << item->uploadUrl << item->offset;
     }
     else
     {
-        qDebug() << "UPLOAD DONE. " << item->path << "to" << item->uploadUrl;
+        // qDebug() << "UPLOAD DONE. " << item->path << "to" << item->uploadUrl;
         item->file->close();
         item->file->deleteLater();
 

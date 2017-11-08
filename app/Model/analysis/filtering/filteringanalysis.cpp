@@ -622,6 +622,27 @@ Sample* FilteringAnalysis::getSampleById(int id)
 
 
 
+void FilteringAnalysis::addSampleInputs(QList<QObject*> inputs)
+{
+    foreach(QObject* o, inputs)
+    {
+        if (!mSamplesInputsFilesList.contains(o))
+        {
+            mSamplesInputsFilesList.append(o);
+        }
+    }
+    emit samplesInputsFilesListChanged();
+}
+
+void FilteringAnalysis::removeSampleInputs(QList<QObject*> inputs)
+{
+    foreach(QObject* o, inputs)
+    {
+        mSamplesInputsFilesList.removeAll(o);
+    }
+    emit samplesInputsFilesListChanged();
+}
+
 
 
 

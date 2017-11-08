@@ -1,12 +1,65 @@
 #include "file.h"
 #include "Model/regovar.h"
+#include "Model/framework/request.h"
 
 
 File::File(QObject* parent) : QObject(parent)
 {
 }
+File::File(QJsonObject json, QObject* parent) : QObject(parent)
+{
+    fromJson(json);
+}
+File::File(int id, QObject* parent) : QObject(parent)
+{
+    mId = id;
+    load();
+}
 
 
+
+
+
+void File::save()
+{
+    if (mId == -1) return;
+    Request* request = Request::put(QString("/file/%1").arg(mId), QJsonDocument(toJson()).toJson());
+    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            qDebug() << "File saved";
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        request->deleteLater();
+    });
+}
+
+
+
+void File::load()
+{
+    Request* req = Request::get(QString("/file/%1").arg(mId));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            fromJson(json["data"].toObject());
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
 
 
 bool File::fromJson(QJsonDocument json)
@@ -59,6 +112,19 @@ bool File::fromJson(QJsonObject json)
     //mLocalPath;
 
     return true;
+}
+
+
+
+QJsonObject File::toJson()
+{
+    QJsonObject result;
+    // Simples data
+    result.insert("id", mId);
+    result.insert("name", mName);
+    result.insert("comment", mComment);
+    // other data must be updated only by the server.
+    return result;
 }
 
 

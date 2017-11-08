@@ -86,7 +86,6 @@ Regovar::~Regovar() {}
 
 void Regovar::init()
 {
-
     // Init managers
     readSettings();
     // Todo : load default from settings
@@ -134,10 +133,10 @@ void Regovar::onWebsocketReceived(QString message)
 {
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
     QJsonObject obj = doc.object();
-    if (obj["action"].toString() != "hello") qDebug() << "Websocket" << message;
     QString action = obj["action"].toString();
     QJsonObject data = obj["data"].toObject();
 
+    // TODO: rework process WS for Sample
     if (action == "import_vcf_processing")
     {
         double progressValue = data["progress"].toDouble();
@@ -162,8 +161,14 @@ void Regovar::onWebsocketReceived(QString message)
             }
         }
     }
-
-
+    else if (mWsFilesActionsList.indexOf(action) != -1)
+    {
+        mFilesManager->processPushNotification(action, data);
+    }
+    else if (obj["action"].toString() != "hello")
+    {
+        qDebug() << "WS WARNING: Websocket Unknow message" << message;
+    }
     emit websocketMessageReceived(action, data);
 }
 

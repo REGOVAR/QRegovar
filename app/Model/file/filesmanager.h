@@ -2,6 +2,7 @@
 #define FILESMANAGER_H
 
 #include <QObject>
+#include "file.h"
 #include "filestreemodel.h"
 #include "tusuploader.h"
 
@@ -27,9 +28,13 @@ public:
     inline FilesTreeModel* filesTree() const { return mFilesTree; }
 
     // Method
+    Q_INVOKABLE File* getOrCreateFile(int id);
     Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void enqueueUploadFile(QStringList filesPaths);
-    Q_INVOKABLE void cancelUploadFile(QStringList filesPaths);
+    Q_INVOKABLE void cancelUploadFile(QList<int> filesId);
+    Q_INVOKABLE void clearUploadsList();
+    void processPushNotification(QString action, QJsonObject json);
+    void updateUploadProgress();
 
 
 public Q_SLOTS:
@@ -42,6 +47,8 @@ Q_SIGNALS:
     void filesTreeChanged();
 
 private:
+    //! internal hash map of all files. Will keep ref to all file loaded even if they are no more displayed
+    QHash<int, File*> mFiles;
     //! The progress (0 to 100) of all uploads
     int mUploadsProgress = 0;
     //! The list of files that are currently uploadling (by this client, add file with enqueueUploadFile method)

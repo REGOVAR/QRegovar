@@ -128,5 +128,6 @@
         <file>Dialogs/SelectSubjectDialog.qml</file>
         <file>Pages/Browse/SearchResultSubject.qml</file>
         <file>Pages/Analysis/Filtering/VariantInformationPanel.qml</file>
+        <file>Framework/ButtonInline.qml</file>
     </qresource>
 </RCC>

@@ -25,7 +25,7 @@ Button
     {
         implicitWidth: 100
         implicitHeight: 24
-        color : !control.enabled ? Regovar.theme.boxColor.disabled : control.down ? Regovar.theme.secondaryColor.back.dark: control.hovered? Regovar.theme.secondaryColor.back.light : Regovar.theme.secondaryColor.back.normal
+        color : !control.enabled ? Regovar.theme.boxColor.disabled : control.down ? Regovar.theme.secondaryColor.back.dark: control.hovered ? Regovar.theme.secondaryColor.back.light : Regovar.theme.secondaryColor.back.normal
 
         radius: 2
 

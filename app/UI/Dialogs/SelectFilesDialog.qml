@@ -1,7 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.2
-import QtQml.Models 2.2
+import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 import org.regovar 1.0
 import QtGraphicalEffects 1.0
@@ -12,23 +12,29 @@ import "../Framework"
 Dialog
 {
     id: fileDialog
-    title: qsTr("Select your files")
+    title: qsTr("Upload your files")
     standardButtons: Dialog.Ok | Dialog.Cancel
-
-    property bool sampleFile: false
-
     width: 500
     height: 400
-
-
+    signal fileSelected(var files)
     property alias remoteIndex: remoteFiles.currentRow
     property alias remoteSelection: remoteFiles.selection
 
+    //! if true: uploading new files will block the UI untill the upload is finished.
+    property bool uploadBlocking: false
+    property string uploadBlockingOkButtonLabel: qsTr("Uploading") + " (0%)"
+    property int uploadingProgress: regovar.filesManager.uploadsProgress
+    onUploadingProgressChanged:
+    {
+        if (uploadingProgress<100)
+            uploadBlockingOkButtonLabel = qsTr("Uploading") + " (" + uploadingProgress + "%)";
+        else
+            uploadBlockingOkButtonLabel = qsTr("Upload done");
+    }
 
-    onAccepted: console.log("Ok clicked")
-    onRejected: console.log("Cancel clicked")
 
-    signal fileSelected(var files)
+    onVisibleChanged: if (visible) reset();
+
 
     contentItem: Rectangle
     {
@@ -36,40 +42,39 @@ Dialog
         id: root
         color: Regovar.theme.backgroundColor.main
 
-        Rectangle
-        {
-            id: rootRemoteView
-            anchors.fill: root
 
-            DialogHeader
-            {
-                id: remoteHeader
-                anchors.top : rootRemoteView.top
-                anchors.left: rootRemoteView.left
-                anchors.right: rootRemoteView.right
-                iconImage: "qrc:/logo.png"
-                title: qsTr("Regovar files")
-                text: qsTr("You can select files that are already on the server.\nYou can also import new files by uploading them from your computer.")
-            }
+        DialogHeader
+        {
+            id: header
+            anchors.top : root.top
+            anchors.left: root.left
+            anchors.right: root.right
+            iconImage: "qrc:/logo.png"
+            title: qsTr("Regovar files")
+            text: qsTr("You can select files that are already on the server.\nYou can also import new files by uploading them from your computer.")
+        }
+
+        ColumnLayout
+        {
+            anchors.top : header.bottom
+            anchors.left: root.left
+            anchors.right: root.right
+            anchors.bottom: remoteSwitchButton.top
+            anchors.margins: 10
+            spacing: 10
+
 
             TextField
             {
-                id: remoteFilterField
-                anchors.top : remoteHeader.bottom
-                anchors.left: rootRemoteView.left
-                anchors.right: rootRemoteView.right
-                anchors.margins: 10
+                Layout.fillWidth: true
                 placeholderText: qsTr("Search file by name, date, comment, ...")
             }
 
             TableView
             {
                 id: remoteFiles
-                anchors.top : remoteFilterField.bottom
-                anchors.left: rootRemoteView.left
-                anchors.right: rootRemoteView.right
-                anchors.bottom: remoteSwitchButton.top
-                anchors.margins: 10
+                Layout.fillWidth: true
+                Layout.fillHeight: true
 
                 model: regovar.filesManager.remoteList
                 selectionMode: SelectionMode.ExtendedSelection
@@ -148,19 +153,172 @@ Dialog
 
                 Component.onCompleted: regovar.filesManager.loadFilesBrowser()
             }
-
-            ButtonIcon
-            {
-                id: remoteSwitchButton
-                anchors.bottom : rootRemoteView.bottom
-                anchors.left: rootRemoteView.left
-                anchors.margins: 10
-
-                icon: "à"
-                text: qsTr("Upload local files")
-                onClicked: localFilesDialog.open()
-            }
         }
+
+        Rectangle
+        {
+            id: uploadBlockingProgress
+            anchors.top : header.bottom
+            anchors.left: root.left
+            anchors.right: root.right
+            anchors.bottom: remoteSwitchButton.top
+            anchors.margins: 10
+            color: Regovar.theme.backgroundColor.main
+            visible: false
+
+            // Prevent clicks on the layer underneath
+            MouseArea { anchors.fill: parent; propagateComposedEvents: false; }
+
+
+            ColumnLayout
+            {
+                anchors.fill : parent
+                spacing: 10
+
+
+                Box
+                {
+                    Layout.fillWidth: true
+                    height: 30
+                    mainColor: Regovar.theme.frontColor.warning
+                    icon: "m"
+                    text: qsTr("Upload in progress. Please wait until it finishes before continuing.")
+                }
+
+                TableView
+                {
+                    id: uploadingFiles
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    model: regovar.filesManager.uploadsList
+                    selectionMode: SelectionMode.ExtendedSelection
+
+
+                    TableViewColumn
+                    {
+                        title: "Name"
+                        role: "filenameUI"
+                        delegate: Item
+                        {
+                            RowLayout
+                            {
+                                anchors.fill: parent
+                                anchors.leftMargin: 5
+                                anchors.rightMargin: 5
+                                spacing: 5
+
+                                // TODO: File upload play/pause/cancel button
+//                                ButtonInline
+//                                {
+//                                    icon: "y"
+//                                    text: ""
+//                                    ToolTip.text: qsTr("Pause upload of this file")
+//                                    ToolTip.visible: hovered
+//                                }
+//                                ButtonInline
+//                                {
+//                                    icon: "h"
+//                                    text: ""
+//                                    ToolTip.text: qsTr("Cancel upload of this file")
+//                                    ToolTip.visible: hovered
+//                                }
+
+                                Text
+                                {
+                                    verticalAlignment: Text.AlignVCenter
+                                    horizontalAlignment: styleData.textAlignment
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    text: styleData.value.icon
+                                    font.family: Regovar.theme.icons.name
+                                }
+                                Text
+                                {
+                                    Layout.fillWidth: true
+                                    horizontalAlignment: styleData.textAlignment
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    text: styleData.value.filename
+                                    elide: Text.ElideRight
+                                }
+                            }
+                        }
+                    }
+                    TableViewColumn
+                    {
+                        title: "Status"
+                        role: "statusUI"
+                        delegate: Item
+                        {
+
+                            Text
+                            {
+                                anchors.leftMargin: 5
+                                anchors.left: parent.left
+                                anchors.verticalCenter: parent.verticalCenter
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: styleData.textAlignment
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                text: styleData.value.status == 0 ? "/" : styleData.value.status == 3 ? "l" : "n"
+                                font.family: Regovar.theme.icons.name
+
+                                onTextChanged:
+                                {
+                                    if (styleData.value.status == 0) // 0 = Loading
+                                    {
+                                        statusIconAnimation.start();
+                                    }
+                                    else
+                                    {
+                                        statusIconAnimation.stop();
+                                        rotation = 0;
+                                    }
+                                }
+                                NumberAnimation on rotation
+                                {
+                                    id: statusIconAnimation
+                                    duration: 1000
+                                    loops: Animation.Infinite
+                                    from: 0
+                                    to: 360
+                                }
+                            }
+                            Text
+                            {
+                                anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                                anchors.rightMargin: 5
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                                horizontalAlignment: styleData.textAlignment
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                text: styleData.value.label
+                                elide: Text.ElideRight
+                            }
+
+                        }
+                    }
+                    TableViewColumn { title: "Comment"; role: "comment" }
+
+                    Component.onCompleted: regovar.filesManager.loadFilesBrowser()
+                }
+            }
+
+        }
+
+        ButtonIcon
+        {
+            id: remoteSwitchButton
+            anchors.bottom : root.bottom
+            anchors.left: root.left
+            anchors.margins: 10
+
+            visible: !uploadBlockingProgress.visible
+
+            icon: "à"
+            text: qsTr("Upload local files")
+            onClicked: localFilesDialog.open()
+        }
+
 
         Button
         {
@@ -168,21 +326,35 @@ Dialog
             anchors.bottom : root.bottom
             anchors.right: root.right
             anchors.margins: 10
+            text: !uploadBlockingProgress.visible ? qsTr("Ok") : uploadBlockingOkButtonLabel
 
-            text: qsTr("Ok")
+            enabled: !uploadBlockingProgress.visible || uploadingProgress >= 100
+
             onClicked:
             {
-                var files=[];
-                if (rootRemoteView.visible)
+                var files = [];
+                // OK Clicked from "Upload Blocking" View
+                if (uploadBlockingProgress.visible)
                 {
+                    // Get list of selected files = list of uploaded files
+                    for (var idx=0; idx<regovar.filesManager.uploadsList.length; idx++)
+                    {
+                        files = files.concat(regovar.filesManager.uploadsList[idx]);
+                    }
+                }
+                // OK Clicked from "Remote files" View
+                else
+                {
+                    // Get list of selected files
                     remoteFiles.selection.forEach( function(rowIndex)
                     {
                         files = files.concat(regovar.filesManager.remoteList[rowIndex]);
                     });
-                    fileSelected(files);
                 }
 
 
+                // Return / emit result
+                fileSelected(files);
                 fileDialog.accept();
             }
         }
@@ -193,16 +365,42 @@ Dialog
             anchors.bottom : root.bottom
             anchors.right: okButton.left
             anchors.margins: 10
-            text: qsTr("Cancel")
-            onClicked: fileDialog.reject()
+            text: !uploadBlockingProgress.visible ? qsTr("Cancel") : qsTr("Cancel all uploads")
+
+            enabled: !uploadBlockingProgress.visible || uploadingProgress < 100
+            onClicked:
+            {
+                // CANCEL Clicked from "Upload Blocking" View
+                if (uploadBlockingProgress.visible)
+                {
+                    // Clear uploading files list in the model
+                    var files = [];
+                    for (var idx=0; idx<regovar.filesManager.uploadsList.length; idx++)
+                    {
+                        files = files.concat(regovar.filesManager.uploadsList[idx].id);
+                    }
+                    regovar.filesManager.cancelUploadFile(files);
+                }
+
+                // Return / emit result
+                fileDialog.reject()
+            }
         }
     }
 
+
     function reset()
     {
-        rootRemoteView.visible = true;
+        // Force Collapse "Upload Blocking" View
+        uploadBlockingProgress.visible = false;
+
+        // Force Clear uploading files list in the model (TUS manager queue/inprogress is not impacted)
+        regovar.filesManager.clearUploadsList();
+
+        // Reset selection in the remote view
         remoteFiles.selection.select(0);
     }
+
 
     FileDialog
     {
@@ -217,13 +415,23 @@ Dialog
         {
             // Start tus upload for
             console.log("Start upload of files : " + localFilesDialog.fileUrls);
-            regovar.filesManager.enqueueUploadFile(localFilesDialog.fileUrls);
+            var files = []
+            for (var idx=0; idx<localFilesDialog.fileUrls.length; idx++)
+            {
+                files = files.concat(localFilesDialog.fileUrls[idx]);
+            }
 
-            // Retrieve
-            // No need to send "fileSelected(files)" signal as the tus upload will auto add it to the inputsList
-            // TODO : find a better way to manage it to avoid multiuser problem and so on...
+            regovar.filesManager.enqueueUploadFile(files);
+
+            if (fileDialog.uploadBlocking)
+            {
+                uploadBlockingProgress.visible = true;
+
+                // Retrieve
+                // No need to send "fileSelected(files)" signal as the tus upload will auto add it to the inputsList
+                // TODO : find a better way to manage it to avoid multiuser problem and so on...
+            }
         }
-
     }
 }
 

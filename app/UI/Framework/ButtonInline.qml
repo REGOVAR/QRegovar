@@ -8,14 +8,6 @@ Button
     text: "Button"
 
     property string icon: ""
-    onIconChanged:
-    {
-        if (icon != null && icon != undefined && icon != "")
-        {
-            iconText.visible = true
-            iconText.width = Regovar.theme.font.boxSize.normal
-        }
-    }
 
 
     contentItem: Row
@@ -30,14 +22,14 @@ Button
             color: Regovar.theme.secondaryColor.front.normal
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            height: 24
-            width: 0
-            visible: false
+            height: parent.height
+            width: icon ? Regovar.theme.font.size.normal : 0
+            visible: icon != ""
         }
         Text
         {
             text: control.text
-            height: 24
+            height: parent.height
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             font.bold: false
@@ -45,14 +37,15 @@ Button
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
+            visible: control.text != ""
         }
     }
 
 
     background: Rectangle
     {
-        implicitWidth: 100
-        implicitHeight: 24
+        implicitWidth: Regovar.theme.font.size.normal + 4
+        implicitHeight: Regovar.theme.font.size.normal + 4
         color : !control.enabled ? Regovar.theme.boxColor.disabled : control.down ? Regovar.theme.secondaryColor.back.dark: control.hovered ? Regovar.theme.secondaryColor.back.light : Regovar.theme.secondaryColor.back.normal
         radius: 2
         Behavior on color

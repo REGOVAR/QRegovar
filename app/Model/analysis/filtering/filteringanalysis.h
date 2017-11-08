@@ -47,6 +47,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(AdvancedFilterModel* advancedfilter READ advancedfilter NOTIFY filterChanged)
     // New/Edit ConditionDialog
     Q_PROPERTY(NewAdvancedFilterModel* newConditionModel READ newConditionModel NOTIFY newConditionModelChanged)
+    Q_PROPERTY(QList<QObject*> samplesInputsFilesList READ samplesInputsFilesList NOTIFY samplesInputsFilesListChanged)
     // "Shortcuts properties" for QML
     // Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
@@ -87,6 +88,7 @@ public:
     inline Sample* trioChild() const { return mTrioChild; }
     inline Sample* trioMother() const { return mTrioMother; }
     inline Sample* trioFather() const { return mTrioFather; }
+    inline QList<QObject*> samplesInputsFilesList() const { return mSamplesInputsFilesList; }
     // Panel & Treeview models
     inline AnnotationsTreeModel* annotations() { return mAnnotationsTreeModel; }
     inline QList<QObject*> annotationsFlatList() { return mAnnotationsFlatList; }
@@ -137,6 +139,8 @@ public:
     Q_INVOKABLE void saveHeaderWidth(QString header, double newSize);
     Q_INVOKABLE Set* getSetById(QString type, QString id);
     Q_INVOKABLE Sample* getSampleById(int id);
+    Q_INVOKABLE void addSampleInputs(QList<QObject*> inputs);
+    Q_INVOKABLE void removeSampleInputs(QList<QObject*> inputs);
 
 
 
@@ -169,6 +173,7 @@ Q_SIGNALS:
     void trioFatherChanged();
     void isLoadingChanged();
     void newConditionModelChanged();
+    void samplesInputsFilesListChanged();
     void filtersChanged();
     void attributesChanged();
     void currentFilterNameChanged();
@@ -198,6 +203,7 @@ private:
     QuickFilterModel* mQuickFilters = nullptr;
     AdvancedFilterModel* mAdvancedFilter = nullptr;
     NewAdvancedFilterModel* mNewConditionModel = nullptr;
+    QList<QObject*> mSamplesInputsFilesList;
 
     QHash<QString, FieldColumnInfos*> mAnnotations;
     QList<QObject*> mAnnotationsFlatList;

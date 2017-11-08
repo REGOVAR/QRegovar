@@ -153,7 +153,6 @@ Rectangle
             {
                 spacing: 30
 
-
                 Rectangle
                 {
                     color: "transparent"

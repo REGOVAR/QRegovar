@@ -98,7 +98,7 @@ QtObject
 
         property color info: "#6887ff"
         property color success : "#6cc788"
-        property color warning : "#f77a99"
+        property color warning : "#f46d44"
         property color danger : "#f44455"
     }
 
