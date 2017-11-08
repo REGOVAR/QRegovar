@@ -90,7 +90,7 @@ GenericScreen
                         {
                             files = files.concat(drop.urls[i]);
                         }
-                        regovar.enqueueUploadFile(files);
+                        regovar.filesManager.enqueueUploadFile(files);
                         dropAreaFeedBack.visible = false;
                     }
                     onExited: dropAreaFeedBack.visible = false;
@@ -211,7 +211,7 @@ GenericScreen
                         var files= []
                         inputsList.selection.forEach( function(rowIndex)
                         {
-                            files = files.concat(regovar.remoteFilesList[rowIndex]);
+                            files = files.concat(regovar.filesManager.remoteList[rowIndex]);
                         });
                         regovar.newPipelineAnalysis.removeInputs(files);
                     }

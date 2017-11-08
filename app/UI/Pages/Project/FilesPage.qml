@@ -222,7 +222,7 @@ Rectangle
         onAccepted:
         {
             var list = fileSystemModel.getFilesPath(localSelection)
-            regovar.enqueueUploadFile(list)
+            regovar.filesManager.enqueueUploadFile(list)
         }
     }
 

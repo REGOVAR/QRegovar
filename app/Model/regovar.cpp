@@ -99,18 +99,13 @@ void Regovar::init()
     mAdmin = new Admin();
     mProjectsTreeView = new ProjectsTreeModel();
     mSubjectsManager = new SubjectsManager();
+    mFilesManager = new FilesManager();
     mSamplesManager = new SamplesManager(mReferenceDefault);
-    mUploader = new TusUploader();
     mNewPipelineAnalysis = new PipelineAnalysis();
     mNewFilteringAnalysis = new FilteringAnalysis();
-    mUploader->setUploadUrl(mApiRootUrl.toString() + "/file/upload");
-    mUploader->setRootUrl(mApiRootUrl.toString());
-    mUploader->setChunkSize(50 * 1024);
-    mUploader->setBandWidthLimit(0);
 
 
     // Connections
-    connect(mUploader,  SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
     connect(&mWebSocket, &QWebSocket::connected, this, &Regovar::onWebsocketConnected);
     connect(&mWebSocket, &QWebSocket::disconnected, this, &Regovar::onWebsocketClosed);
     connect(&mWebSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onWebsocketError(QAbstractSocket::SocketError)));
@@ -493,41 +488,8 @@ void Regovar::setSelectedProject(int idx)
 
 
 
-void Regovar::loadFilesBrowser()
-{
-    Request* req = Request::get(QString("/file"));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            mRemoteFilesList.clear();
-            foreach( QJsonValue data, json["data"].toArray())
-            {
-                File* file = new File();
-                file->fromJson(data.toObject());
-                mRemoteFilesList.append(file);
-            }
-            emit remoteFilesListChanged();
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
-}
 
 
-void Regovar::filesEnqueued(QHash<QString,QString> mapping)
-{
-    qDebug() << "Upload mapping Done !";
-    foreach (QString key, mapping.keys())
-    {
-        qDebug() << key << " => " << mapping[key];
-    }
-}
 
 
 
@@ -715,10 +677,7 @@ bool Regovar::newAnalysis(QString type)
 
 
 
-void Regovar::enqueueUploadFile(QStringList filesPaths)
-{
-    mUploader->enqueue(filesPaths);
-}
+
 
 void Regovar::close()
 {

@@ -55,7 +55,8 @@ HEADERS += \
     Model/user.h \
     Model/subject/subjectsmanager.h \
     Model/subject/samplesmanager.h \
-    Model/subject/reference.h
+    Model/subject/reference.h \
+    Model/file/filesmanager.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -98,7 +99,8 @@ SOURCES += main.cpp \
     Model/user.cpp \
     Model/subject/subjectsmanager.cpp \
     Model/subject/samplesmanager.cpp \
-    Model/subject/reference.cpp
+    Model/subject/reference.cpp \
+    Model/file/filesmanager.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

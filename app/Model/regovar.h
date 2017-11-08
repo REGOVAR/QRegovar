@@ -7,15 +7,16 @@
 #include <QQmlApplicationEngine>
 #include <QtWebSockets/QtWebSockets>
 
-#include "project/projectstreemodel.h"
-#include "project/project.h"
-#include "file/tusuploader.h"
 #include "analysis/filtering/filteringanalysis.h"
-#include "Model/analysis/pipeline/pipelineanalysis.h"
+#include "analysis/pipeline/pipelineanalysis.h"
 #include "subject/subjectsmanager.h"
 #include "subject/samplesmanager.h"
+#include "file/filesmanager.h"
+// TODO: rework as manager pattern
 #include "user.h"
 #include "admin.h"
+#include "project/projectstreemodel.h"
+#include "project/project.h"
 
 #ifndef regovar
 #define regovar (Regovar::i())
@@ -86,6 +87,7 @@ class Regovar : public QObject
     Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewChanged)
     Q_PROPERTY(QList<QObject*> projectsOpen READ projectsOpen NOTIFY projectsOpenChanged)
 
+    Q_PROPERTY(FilesManager* filesManager READ filesManager NOTIFY neverChanged)
     Q_PROPERTY(SubjectsManager* subjectsManager READ subjectsManager NOTIFY neverChanged)
     Q_PROPERTY(SamplesManager* samplesManager READ samplesManager NOTIFY neverChanged)
 
@@ -95,7 +97,6 @@ class Regovar : public QObject
 
     Q_PROPERTY(QList<QObject*> projects READ projectsList NOTIFY projectsListChanged)
     Q_PROPERTY(int selectedProject READ selectedProject WRITE setSelectedProject NOTIFY selectedProjectChanged)
-    Q_PROPERTY(QList<QObject*> remoteFilesList READ remoteFilesList NOTIFY remoteFilesListChanged)
     Q_PROPERTY(PipelineAnalysis* newPipelineAnalysis READ newPipelineAnalysis NOTIFY newPipelineAnalysisChanged)
     Q_PROPERTY(FilteringAnalysis* newFilteringAnalysis READ newFilteringAnalysis NOTIFY newFilteringAnalysisChanged)
 
@@ -137,13 +138,13 @@ public:
     //--
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
     inline QList<QObject*> projectsOpen() const { return mProjectsOpen; }
+    inline FilesManager* filesManager() const { return mFilesManager; }
     inline SubjectsManager* subjectsManager() const { return mSubjectsManager; }
     inline SamplesManager* samplesManager() const { return mSamplesManager; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
     inline QList<QObject*> projectsList() const { return mProjectsList; }
     inline int selectedProject() const { return mSelectedProject; }
-    inline QList<QObject*> remoteFilesList() const { return mRemoteFilesList; }
     inline PipelineAnalysis* newPipelineAnalysis() const { return mNewPipelineAnalysis; }
     inline FilteringAnalysis* newFilteringAnalysis() const { return mNewFilteringAnalysis; }
 
@@ -172,12 +173,10 @@ public:
     Q_INVOKABLE FilteringAnalysis* getAnalysisFromWindowId(int winId);
     Reference* referenceFromId(int id);
     // File management
-    Q_INVOKABLE void enqueueUploadFile(QStringList filesPaths);
 
     // Others
     Q_INVOKABLE void search(QString query);
     Q_INVOKABLE void loadWelcomData();
-    Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void close();
     Q_INVOKABLE void disconnectUser();
     Q_INVOKABLE void quit();
@@ -194,7 +193,6 @@ public Q_SLOTS:
     void onAuthenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
 
     void refreshProjectsTreeView();
-    void filesEnqueued(QHash<QString,QString> mapping);
 
     void openAnalysis(int id);
     bool openAnalysis(QJsonObject data);
@@ -207,7 +205,6 @@ public Q_SLOTS:
     void onWebsocketReceived(QString message);
 
 
-signals:
 Q_SIGNALS:
     //! special signal used for QML property that never changed to avoid to declare to many useless signal
     //! QML need that property declare a "changed" event for binding
@@ -222,7 +219,6 @@ Q_SIGNALS:
     void searchInProgressChanged();
     void serverUrlChanged();
     void projectsTreeViewChanged();
-    void remoteFilesListChanged();
     void referencesChanged();
     void onClose();
     void errorOccured(QString errCode, QString message, QString techData);
@@ -293,16 +289,15 @@ private:
     SubjectsManager* mSubjectsManager = nullptr;
     //! Browse all samples available on the server
     SamplesManager* mSamplesManager = nullptr;
+    //! Browse&Upload files
+    FilesManager* mFilesManager = nullptr;
     // ProjectsManager
     //! The model of the projects browser treeview
     ProjectsTreeModel* mProjectsTreeView = nullptr;
     //! list of project/subject open
     QList<QObject*> mProjectsOpen;
     // FilesManager
-    //! The model used to browse all files available on the server
-    QList<QObject*> mRemoteFilesList;
-    //! The uploader that manage TUS protocol (resumable upload)
-    TusUploader * mUploader = nullptr;
+
     // PipelinesManangers
 
 

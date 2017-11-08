@@ -347,40 +347,40 @@ Dialog
 
 
 
-                    DropArea
-                    {
-                        id: dropArea;
-                        anchors.fill: parent;
-                        onEntered:
-                        {
-                            if (drag.hasUrls)
-                            {
-                                dropAreaFeedBack.visible = true;
-                                drag.accept (Qt.CopyAction);
-                            }
-                            else
-                            {
-                                dropOkLabel.visible = false;
-                                dropKoLabel.visible = true;
-                            }
-                        }
-                        onDropped:
-                        {
-                            var files= []
-                            for(var i=0; i<drop.urls.length; i++)
-                            {
-                                files = files.concat(drop.urls[i]);
-                            }
-                            regovar.enqueueUploadFile(files);
-                            dropAreaFeedBack.visible = false;
-                        }
-                        onExited:
-                        {
-                            dropAreaFeedBack.visible = false;
-                            dropOkLabel.visible = true;
-                            dropKoLabel.visible = false;
-                        }
-                    }
+//                    DropArea
+//                    {
+//                        id: dropArea;
+//                        anchors.fill: parent;
+//                        onEntered:
+//                        {
+//                            if (drag.hasUrls)
+//                            {
+//                                dropAreaFeedBack.visible = true;
+//                                drag.accept (Qt.CopyAction);
+//                            }
+//                            else
+//                            {
+//                                dropOkLabel.visible = false;
+//                                dropKoLabel.visible = true;
+//                            }
+//                        }
+//                        onDropped:
+//                        {
+//                            var files= []
+//                            for(var i=0; i<drop.urls.length; i++)
+//                            {
+//                                files = files.concat(drop.urls[i]);
+//                            }
+//                            regovar.filesManager.enqueueUploadFile(files);
+//                            dropAreaFeedBack.visible = false;
+//                        }
+//                        onExited:
+//                        {
+//                            dropAreaFeedBack.visible = false;
+//                            dropOkLabel.visible = true;
+//                            dropKoLabel.visible = false;
+//                        }
+//                    }
 
                     TableViewColumn
                     {
@@ -588,7 +588,7 @@ Dialog
                             var files= []
                             inputsList.selection.forEach( function(rowIndex)
                             {
-                                files = files.concat(regovar.remoteFilesList[rowIndex]);
+                                files = files.concat(regovar.filesManager.remoteList[rowIndex]);
                             });
                             regovar.newPipelineAnalysis.removeInputs(files);
                         }

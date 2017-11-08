@@ -15,6 +15,8 @@ Dialog
     title: qsTr("Select your files")
     standardButtons: Dialog.Ok | Dialog.Cancel
 
+    property bool sampleFile: false
+
     width: 500
     height: 400
 
@@ -69,7 +71,7 @@ Dialog
                 anchors.bottom: remoteSwitchButton.top
                 anchors.margins: 10
 
-                model: regovar.remoteFilesList
+                model: regovar.filesManager.remoteList
                 selectionMode: SelectionMode.ExtendedSelection
 
 
@@ -144,7 +146,7 @@ Dialog
                 TableViewColumn { title: "Source"; role: "sourceUI" }
                 TableViewColumn { title: "Comment"; role: "comment" }
 
-                Component.onCompleted: regovar.loadFilesBrowser()
+                Component.onCompleted: regovar.filesManager.loadFilesBrowser()
             }
 
             ButtonIcon
@@ -175,7 +177,7 @@ Dialog
                 {
                     remoteFiles.selection.forEach( function(rowIndex)
                     {
-                        files = files.concat(regovar.remoteFilesList[rowIndex]);
+                        files = files.concat(regovar.filesManager.remoteList[rowIndex]);
                     });
                     fileSelected(files);
                 }
@@ -205,12 +207,17 @@ Dialog
     FileDialog
     {
         id: localFilesDialog
+        nameFilters: [ "VCF files (*.vcf *.vcf.gz)", "GVCF (*.gvcf *.gvcf.gz)", "All files (*)" ]
+        selectedNameFilter: "VCF files (*.vcf *.vcf.gz)"
+        title: "Select file(s) to upload on the server"
+        folder: shortcuts.home
+        selectMultiple: true
 
         onAccepted:
         {
             // Start tus upload for
             console.log("Start upload of files : " + localFilesDialog.fileUrls);
-            regovar.enqueueUploadFile(localFilesDialog.fileUrls);
+            regovar.filesManager.enqueueUploadFile(localFilesDialog.fileUrls);
 
             // Retrieve
             // No need to send "fileSelected(files)" signal as the tus upload will auto add it to the inputsList
