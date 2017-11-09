@@ -174,16 +174,16 @@ Rectangle
                     testConnectionIcon.text = "/";
                     regovar.testConnection(regovarUrl.text, proxyUrl.text);
                 }
-                Connections
-                {
-                    target: regovar
-                    onTestConnectionEnd:
-                    {
-                        testConnectionIcon.text = "n";
-                        testConnectionButton.enabled = true;
+//                Connections
+//                {
+//                    target: regovar
+//                    onTestConnectionEnd:
+//                    {
+//                        testConnectionIcon.text = "n";
+//                        testConnectionButton.enabled = true;
 
-                    }
-                }
+//                    }
+//                }
             }
             Text
             {

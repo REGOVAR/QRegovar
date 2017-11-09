@@ -181,16 +181,16 @@ Rectangle
                     confirmPasswordIcon.text = "/";
                     regovar.testConnection(regovarUrl.text, proxyUrl.text);
                 }
-                Connections
-                {
-                    target: regovar
-                    onTestConnectionEnd:
-                    {
-                        confirmPasswordIcon.text = "n";
-                        confirmPasswordButton.enabled = true;
+//                Connections
+//                {
+//                    target: regovar
+//                    onTestConnectionEnd:
+//                    {
+//                        confirmPasswordIcon.text = "n";
+//                        confirmPasswordButton.enabled = true;
 
-                    }
-                }
+//                    }
+//                }
             }
             Text
             {
@@ -377,7 +377,7 @@ Rectangle
         TextField
         {
             Layout.fillWidth: true
-            text: regovar.user.email
+            text: regovar.user ? regovar.user.email : ""
             placeholderText: qsTr("Email")
         }
 
@@ -403,7 +403,7 @@ Rectangle
         TextField
         {
             Layout.fillWidth: true
-            text: regovar.user.location
+            text: regovar.user ? regovar.user.location : ""
             placeholderText: qsTr("Location")
         }
 
@@ -429,7 +429,7 @@ Rectangle
         TextField
         {
             Layout.fillWidth: true
-            text: regovar.user.function
+            text: regovar.user ? regovar.user.function : ""
             placeholderText: qsTr("Function")
         }
 

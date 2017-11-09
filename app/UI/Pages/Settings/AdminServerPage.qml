@@ -963,50 +963,53 @@ Rectangle
 
     function updateStatus()
     {
-        cpuGauge.value = serverData["cpu"]["usage"];
-        cpuCore.text = serverData["cpu"]["count"];
-        cpuVirtual.text = serverData["cpu"]["virtual"];
-        cpuFreq.text = Regovar.round(serverData["cpu"]["freq"]/1000,1) + " GHz";
-
-        ramGauge.value = serverData["ram"]["percent"];
-        ramTotal.text  = regovar.sizeToHumanReadable(serverData["ram"]["total"]);
-        ramBuffer.text = regovar.sizeToHumanReadable(serverData["ram"]["buffers"]);
-        ramCached.text = regovar.sizeToHumanReadable(serverData["ram"]["cached"]);
-        ramUsed.text   = regovar.sizeToHumanReadable(serverData["ram"]["used"]);
-        swpTotal.text  = regovar.sizeToHumanReadable(serverData["swap"]["total"]);
-        swpUsed.text   = regovar.sizeToHumanReadable(serverData["swap"]["used"]);
-
-        dskGauge.value = serverData["disk"]["overall"]["percent"];
-        dskTotal.text  = regovar.sizeToHumanReadable(serverData["disk"]["overall"]["total"]);
-        dskUsed.text   = regovar.sizeToHumanReadable(serverData["disk"]["overall"]["used"]);
-        dskFile.text   = regovar.sizeToHumanReadable(serverData["disk"]["files"]);
-        dskTmp.text    = regovar.sizeToHumanReadable(serverData["disk"]["temp"]);
-        dskCache.text  = regovar.sizeToHumanReadable(serverData["disk"]["cache"]);
-        dskDB.text     = regovar.sizeToHumanReadable(serverData["disk"]["ext_db"]);
-        dskPipe.text   = regovar.sizeToHumanReadable(serverData["disk"]["pipelines"]);
-        dskJobs.text   = regovar.sizeToHumanReadable(serverData["disk"]["jobs"]);
-
-        tablesTableView.model = regovar.admin.tables;
-        databaseResumeTotalSize.text = regovar.sizeToHumanReadable(regovar.admin.tablesTotalSize);
-        databaseResumeRepeater.model = regovar.admin.tablesSizes;
-        // Populate Pie slices
-        pieSeries.clear()
-        for (var idx=0; idx<regovar.admin.tablesSizes.length; idx++)
+        if (serverData && serverData["cpu"])
         {
-            pieSeries.append(regovar.admin.tablesSizes[idx].percent, regovar.admin.tablesSizes[idx].size);
-            var slice = pieSeries.at(idx);
-            slice.labelVisible = true;
+            cpuGauge.value = serverData["cpu"]["usage"];
+            cpuCore.text = serverData["cpu"]["count"];
+            cpuVirtual.text = serverData["cpu"]["virtual"];
+            cpuFreq.text = Regovar.round(serverData["cpu"]["freq"]/1000,1) + " GHz";
 
-        }
+            ramGauge.value = serverData["ram"]["percent"];
+            ramTotal.text  = regovar.sizeToHumanReadable(serverData["ram"]["total"]);
+            ramBuffer.text = regovar.sizeToHumanReadable(serverData["ram"]["buffers"]);
+            ramCached.text = regovar.sizeToHumanReadable(serverData["ram"]["cached"]);
+            ramUsed.text   = regovar.sizeToHumanReadable(serverData["ram"]["used"]);
+            swpTotal.text  = regovar.sizeToHumanReadable(serverData["swap"]["total"]);
+            swpUsed.text   = regovar.sizeToHumanReadable(serverData["swap"]["used"]);
 
-        // populate wt combo
-        var combolModel = [qsTr("Clear analysis tmp data:")];
-        for (var idx=0; idx<regovar.admin.wtTables.length; idx++)
-        {
-            combolModel = combolModel.concat("Analysis " + regovar.admin.wtTables[idx].id + ": " + regovar.admin.wtTables[idx].name);
+            dskGauge.value = serverData["disk"]["overall"]["percent"];
+            dskTotal.text  = regovar.sizeToHumanReadable(serverData["disk"]["overall"]["total"]);
+            dskUsed.text   = regovar.sizeToHumanReadable(serverData["disk"]["overall"]["used"]);
+            dskFile.text   = regovar.sizeToHumanReadable(serverData["disk"]["files"]);
+            dskTmp.text    = regovar.sizeToHumanReadable(serverData["disk"]["temp"]);
+            dskCache.text  = regovar.sizeToHumanReadable(serverData["disk"]["cache"]);
+            dskDB.text     = regovar.sizeToHumanReadable(serverData["disk"]["ext_db"]);
+            dskPipe.text   = regovar.sizeToHumanReadable(serverData["disk"]["pipelines"]);
+            dskJobs.text   = regovar.sizeToHumanReadable(serverData["disk"]["jobs"]);
+
+            tablesTableView.model = regovar.admin.tables;
+            databaseResumeTotalSize.text = regovar.sizeToHumanReadable(regovar.admin.tablesTotalSize);
+            databaseResumeRepeater.model = regovar.admin.tablesSizes;
+            // Populate Pie slices
+            pieSeries.clear()
+            for (var idx=0; idx<regovar.admin.tablesSizes.length; idx++)
+            {
+                pieSeries.append(regovar.admin.tablesSizes[idx].percent, regovar.admin.tablesSizes[idx].size);
+                var slice = pieSeries.at(idx);
+                slice.labelVisible = true;
+
+            }
+
+            // populate wt combo
+            var combolModel = [qsTr("Clear analysis tmp data:")];
+            for (var idx=0; idx<regovar.admin.wtTables.length; idx++)
+            {
+                combolModel = combolModel.concat("Analysis " + regovar.admin.wtTables[idx].id + ": " + regovar.admin.wtTables[idx].name);
+            }
+            databaseWorkingTables.model = combolModel;
+            databaseWorkingTables.wtModel = regovar.admin.wtTables;
         }
-        databaseWorkingTables.model = combolModel;
-        databaseWorkingTables.wtModel = regovar.admin.wtTables;
     }
 
     function highlightPieSection(index, exploded)
