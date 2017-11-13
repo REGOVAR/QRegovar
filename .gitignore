@@ -46,3 +46,6 @@ QRegovar-build/
 .vs/
 *.user
 *.vcxproj*
+
+
+.directory
