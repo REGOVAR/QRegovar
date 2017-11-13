@@ -330,15 +330,28 @@ Rectangle
                             model: resultsTree.mapToList(styleData.value)
 
 
-
                             Rectangle
                             {
+                                // display :
+                                // None => "?"
+                                // -50  => "ERR"
+                                // -1   => "-"
+                                // 0    => ref/ref
+                                // 1    => alt/alt
+                                // 2    => ref/alt
+                                // 3    => alt1/alt2
+
                                 width: 12
                                 height: 12
-                                border.width: 1
-                                border.color: (model.value == "") ? "transparent" : Regovar.theme.primaryColor.back.dark
-                                color: (model.value == "") ? "transparent" : Regovar.theme.boxColor.back
+                                border.width: gt_valid(model.value) ? 1 : 0
+                                border.color: gt_valid(model.value) ? Regovar.theme.primaryColor.back.dark : "transparent"
+                                color: gt_valid(model.value) ? Regovar.theme.boxColor.back : "transparent"
 
+                                function gt_valid(value)
+                                {
+                                    // !model.value || model.value == -50 || model.value == -1
+                                    return value !== undefined && value !== null && value !== "" && value >=0;
+                                }
 
 
                                 Rectangle
@@ -353,14 +366,14 @@ Rectangle
                                     anchors.fill: parent
                                     anchors.margins: 1
                                     anchors.leftMargin: 6
-                                    color: (model.value == 0) ? "transparent" : ((model.value == 3) ? Regovar.theme.primaryColor.back.light : Regovar.theme.primaryColor.back.dark)
+                                    color: !gt_valid(model.value) ? "transparent" : model.value == 3 ? Regovar.theme.primaryColor.back.light : Regovar.theme.primaryColor.back.dark
                                 }
                                 Text
                                 {
-                                    text : "?"
+                                    text : model.value == -50 ? "ERR" : model.value == -1 ? "-" : model.value == "" ? "?" : "? (" + model.value + ")"
                                     font.pixelSize: 10
                                     anchors.centerIn: parent
-                                    visible: model.value == ""
+                                    visible: !gt_valid(model.value)
                                 }
                             }
                         }
