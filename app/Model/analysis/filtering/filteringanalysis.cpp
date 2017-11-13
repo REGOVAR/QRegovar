@@ -188,6 +188,8 @@ void FilteringAnalysis::asynchLoadingCoordination(LoadingStatus oldSatus, Loadin
     }
     else if (newStatus == LoadingResults)
     {
+        // Restore client settings (like columns pos/size)
+        loadSettings();
         initResults();
     }
     else
@@ -259,12 +261,12 @@ void FilteringAnalysis::refreshDisplayedAnnotationColumns()
         {
             if (mAnnotations[uid]->annotation()->type() == "sample_array" && !mAnnotations["_Samples"]->isDisplayed())
             {
-                mAnnotations["_Samples"]->setDisplayOrder(idx);
+                // mAnnotations["_Samples"]->setDisplayOrder(idx);
                 mAnnotations["_Samples"]->setIsDisplayed(true);
                 mDisplayedAnnotationColumns.append(mAnnotations["_Samples"]);
                 ++idx;
             }
-            mAnnotations[uid]->setDisplayOrder(idx);
+            //mAnnotations[uid]->setDisplayOrder(idx);
             mDisplayedAnnotationColumns.append(mAnnotations[uid]);
             ++idx;
         }
@@ -682,7 +684,7 @@ void FilteringAnalysis::deleteAttribute(QStringList names)
 
 //! Add or remove a field to the display result and update or set the order
 //! Return the order of the field in the grid
-int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
+int FilteringAnalysis::setField(QString uid, bool isDisplayed, int position)
 {
     Annotation* annot = mAnnotationsTreeModel->getAnnotation(uid);
 
@@ -694,73 +696,66 @@ int FilteringAnalysis::setField(QString uid, bool isDisplayed, int order)
 
     if (isDisplayed)
     {
-        if (order != -1)
+        if (position != -1)
         {
-            order = qMin(order, mFields.count()-1);
+            position = qMin(position, mFields.count()-1);
             mFields.removeAll(uid);
-            mFields.insert(order, uid);
+            mFields.insert(position, uid);
         }
         else
         {
             mFields.removeAll(uid);
-            order = mFields.count()-1;
+            position = mFields.count()-1;
             mFields << uid;
         }
     }
     else
     {
-        order = mFields.indexOf(uid);
+        position = mFields.indexOf(uid);
         mFields.removeAll(uid);
     }
-    annot->setOrder(order);
-
-
-//    foreach (QString uid, mFields)
-//    {
-//        annot = regovar->currentFilteringAnalysis()->annotations()->getAnnotation(uid);
-//        if (annot->)
-//    }
-
-
     emit fieldsChanged();
 
     // Update columns to display in the QML view according to selected annoations
     refreshDisplayedAnnotationColumns();
-    return order;
+    saveSettings();
+    return position;
 }
 
-void FilteringAnalysis::saveHeaderPosition(QString header, int newPosition)
+void FilteringAnalysis::saveHeaderPosition(int oldPosition, int newPosition)
 {
-    if (header.isEmpty()) return;
+    //
+    mQtBugQMLHeaderDelegatePressedEventCalledTwiceWorkaround++;
+    if (mQtBugQMLHeaderDelegatePressedEventCalledTwiceWorkaround % 2 == 0) return;
 
-    // TODO : convert HMI position to real field position (as HMI add "non field columns" like "_sample" or "_rowHead")
-    // -1 for '_rowHead' which is always the first column
-    newPosition = newPosition-1;
+    oldPosition--; // First column in QML (selection's checkboxes) doesn't exists in this model
+    if (oldPosition < 0 || oldPosition >= mDisplayedAnnotationColumns.count()) return;
+    newPosition--;
+    if (newPosition < 0 || newPosition >= mDisplayedAnnotationColumns.count()) return;
 
-    // Retrieve fuids complient with provided header title
-    foreach(FieldColumnInfos* info, mAnnotations.values())
+    FieldColumnInfos* info = mDisplayedAnnotationColumns[oldPosition];
+    if (info && info->annotation())
     {
-        if (info && info->annotation() && info->annotation()->name() == header)
+        if (info->role() == FieldColumnInfos::NormalAnnotation)
         {
-            if (mFields.indexOf(info->annotation()->uid()) >= 0 )
-            {
-                mFields.move(mFields.indexOf(info->annotation()->uid()), newPosition);
-            }
+            int offset = mAnnotations["_Samples"]->isDisplayed() ? 1 : 0;
+            mFields.move(mFields.indexOf(info->annotation()->uid()), newPosition - offset);
         }
+        mDisplayedAnnotationColumns.move(oldPosition, newPosition);
+        saveSettings();
     }
 }
 
-void FilteringAnalysis::saveHeaderWidth(QString header, double newSize)
+void FilteringAnalysis::saveHeaderWidth(int headerPosition, double newSize)
 {
-    if (header.isEmpty()) return;
+    headerPosition--; // First column in QML (selection's checkboxes) doesn't exists in this model
+    if (headerPosition < 0 || headerPosition >= mDisplayedAnnotationColumns.count()) return;
 
-    // Retrieve fuids complient with provided header title
-    foreach(FieldColumnInfos* info, mAnnotations.values())
+    FieldColumnInfos* info = mDisplayedAnnotationColumns[headerPosition];
+    if (info && info->annotation())
     {
-        if (info && info->annotation() && info->annotation()->name() == header)
-        {
-            info->setWidth(newSize);
-        }
+        info->setWidth(newSize);
+        saveSettings();
     }
 }
 
@@ -823,20 +818,51 @@ void FilteringAnalysis::onWebsocketMessageReceived(QString action, QJsonObject d
 
 
 
-//void FilteringAnalysis::saveSettings()
-//{
-//    QSettings settings;
-//    settings.beginWriteArray("FilteringHeadersSizes");
-//    int idx=0;
-//    foreach (QString fuid, mAnnotations.keys())
-//    {
-//        FieldColumnInfos* info = mAnnotations[fuid];
+void FilteringAnalysis::saveSettings()
+{
+    QSettings settings;
+    settings.beginWriteArray(QString("analysis/%1/resultsHeadersSizes").arg(mId));
+    int idx=0;
+    foreach (FieldColumnInfos* info, mDisplayedAnnotationColumns)
+    {
+        if (info->annotation())
+        {
+            settings.setArrayIndex(idx);
+            settings.setValue("uid", info->annotation()->uid());
+            settings.setValue("width", info->width());
+            idx++;
+        }
+    }
+    settings.endArray();
+}
+void FilteringAnalysis::loadSettings()
+{
+    QSettings settings;
 
-//        settings.setArrayIndex(idx);
-//        settings.setValue("uid", fuid);
-//        settings.setValue("width", info->width());
-//        settings.setValue("position", info->displayOrder());
-//        idx++;
-//    }
-//    settings.endArray();
-//}
+    // Reload Analysis result headers states
+    int size = settings.beginReadArray(QString("analysis/%1/resultsHeadersSizes").arg(mId));
+
+    QStringList fields;
+    for (int pos = 0; pos < size; pos++)
+    {
+        settings.setArrayIndex(pos);
+        QString fuid = settings.value("uid").toString();
+        double width = settings.value("width").toDouble();
+        FieldColumnInfos* info = mAnnotations[fuid];
+
+        if (info)
+        {
+            info->setWidth(width);
+            if (info->role() == FieldColumnInfos::NormalAnnotation)
+            {
+                fields.append(fuid);
+            }
+        }
+    }
+    settings.endArray();
+    if (fields.count() > 0)
+    {
+        mFields.clear();
+        foreach(QString fuid, fields) { setField(fuid, true); }
+    }
+}

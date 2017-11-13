@@ -135,8 +135,8 @@ public:
     Q_INVOKABLE void addSamples(QList<QObject*> samples);
     Q_INVOKABLE void removeSamples(QList<QObject*> samples);
     Q_INVOKABLE void addSamplesFromFile(int fileId);
-    Q_INVOKABLE void saveHeaderPosition(QString header, int newPosition);
-    Q_INVOKABLE void saveHeaderWidth(QString header, double newSize);
+    Q_INVOKABLE void saveHeaderPosition(int oldPosition, int newPosition);
+    Q_INVOKABLE void saveHeaderWidth(int headerPosition, double newSize);
     Q_INVOKABLE Set* getSetById(QString type, QString id);
     Q_INVOKABLE Sample* getSampleById(int id);
     Q_INVOKABLE void addSampleInputs(QList<QObject*> inputs);
@@ -210,6 +210,7 @@ private:
     QList<QObject*> mAllAnnotations;
     AnnotationsTreeModel* mAnnotationsTreeModel = nullptr;
     QList<FieldColumnInfos*> mDisplayedAnnotationColumns;
+    int mQtBugQMLHeaderDelegatePressedEventCalledTwiceWorkaround = 0;
 
     bool mIsTrio = false;
     QStringList mAnnotationsDBUsed;
@@ -227,8 +228,8 @@ private:
     void loadAnnotations();
     void initResults();
     void refreshDisplayedAnnotationColumns();
-
-
+    void saveSettings();
+    void loadSettings();
 };
 
 #endif // FILTERINGANALYSIS_H

@@ -14,8 +14,8 @@ TreeView
     property var currentItem
     property int rowHeight: Regovar.theme.font.boxSize.normal
 
-    signal headerResized(var header, var newSize)
-    signal headerMoved(var header, var newPosition)
+    signal headerResized(var headerPosition, var newSize)
+    signal headerMoved(var oldPosition, var newPosition)
 
     style: TreeViewStyle
     {
@@ -38,17 +38,43 @@ TreeView
                     )
         }
 
-        headerDelegate:  Rectangle
+        headerDelegate:  Item
         {
             id: headerRoot
             height: 24
-            border.width: 0
+            Component.onCompleted: formerPosition = position
 
-            border.color: Regovar.theme.boxColor.border
+            property bool myPressed: styleData.pressed
+            onMyPressedChanged:
+            {
+                if (!myPressed)
+                {
+                    if (formerPosition != position)
+                    {
+                        headerMoved(formerPosition, position);
+                        formerPosition = position;
+                    }
+                }
+            }
 
+            property int formerPosition: 0
             property int position: styleData.column
-//            onPositionChanged: headerMoved(styleData.value, position)
-//            onWidthChanged: headerResized(styleData.value, width)
+//            onPositionChanged:
+//            {
+//                if (visible && width >= 0 && formerPosition !== 0)
+//                {
+//                    headerMoved(formerPosition, position);
+//                    formerPosition = position;
+//                }
+//            }
+            onWidthChanged:
+            {
+                if (visible && width >= 0)
+                {
+                    headerResized(styleData.column, width);
+                }
+            }
+
 
 
             LinearGradient
@@ -114,6 +140,8 @@ TreeView
             font.pixelSize: 16 // Regovar.theme.font.size.normal
             text: styleData.isExpanded ? "[" : "{"
             font.family: Regovar.theme.icons.name
+            visible: styleData.hasChildren
+            enabled: styleData.hasChildren
         }
     }
 

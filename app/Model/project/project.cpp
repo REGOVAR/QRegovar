@@ -39,6 +39,7 @@ bool Project::fromJson(QJsonObject json)
     mFiles->fromJson(json["files"].toArray());
 
     // Analyses
+    // TODO: lazy loading of analyses
     foreach (QJsonValue jsonVal, json["analyses"].toArray())
     {
         FilteringAnalysis* analysis = new FilteringAnalysis();

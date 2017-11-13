@@ -42,13 +42,13 @@ TableView
                 )
     }
 
-    headerDelegate: Rectangle
+    headerDelegate: Item
     {
         id: headerRoot
         height: 24
-        border.width: 0
+//        border.width: 0
 
-        border.color: Regovar.theme.boxColor.border
+//        border.color: Regovar.theme.boxColor.border
 
 
         LinearGradient

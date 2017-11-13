@@ -10,7 +10,7 @@ class FieldColumnInfos : public QObject
     Q_PROPERTY(Annotation* annotation READ annotation WRITE setAnnotation NOTIFY annotationChanged)
     Q_PROPERTY(bool isDisplayed READ isDisplayed WRITE setIsDisplayed NOTIFY isDisplayedChanged)
     Q_PROPERTY(QString sortFilter READ sortFilter WRITE setSortFilter NOTIFY sortFilterChanged)
-    Q_PROPERTY(int displayOrder READ displayOrder WRITE setDisplayOrder NOTIFY displayOrderChanged)
+    //Q_PROPERTY(int displayOrder READ displayOrder WRITE setDisplayOrder NOTIFY displayOrderChanged)
     Q_PROPERTY(float width READ width WRITE setWidth NOTIFY widthChanged)
     Q_PROPERTY(SpecialRole role READ role WRITE setRole)
 
@@ -37,7 +37,7 @@ public:
     inline void setAnnotation(Annotation* annotation) { mAnnotation = annotation; emit annotationChanged(); }
     inline void setIsDisplayed(bool isDisplayed) { mIsDisplayed = isDisplayed; emit isDisplayedChanged(); }
     inline void setSortFilter(QString sortFilter) { mSortFilter = sortFilter; emit sortFilterChanged(); }
-    inline void setDisplayOrder(int displayOrder) { mDisplayOrder = displayOrder; emit displayOrderChanged(); }
+    //inline void setDisplayOrder(int displayOrder) { mDisplayOrder = displayOrder; emit displayOrderChanged(); }
     inline void setWidth(float width) { mWith = width; emit widthChanged(); }
     inline void setRole(SpecialRole role) { mRole = role; }
 

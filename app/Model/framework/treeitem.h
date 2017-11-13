@@ -25,10 +25,10 @@ public:
     Q_INVOKABLE void setData(const QHash<int, QVariant> &data);
 
     // Lazy loading features
-    inline int virtualChildCount() { return mVirtualChildCount; }
+    inline int virtualChildCount() const { return mVirtualChildCount; }
     inline void setVirtualChildCount(int count) { mVirtualChildCount = count; }
 
-//    int childNumber() const;
+//    inline int childNumber() const;
 //    bool insertChildren(int position, int count, int columns);
 //    bool insertColumns(int position, int columns);
 //    bool removeChildren(int position, int count);

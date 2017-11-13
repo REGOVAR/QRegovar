@@ -138,8 +138,8 @@ Rectangle
         signal checked(string uid, bool isChecked)
         onChecked: console.log(uid, isChecked);
 
-        onHeaderMoved: root.model.saveHeaderPosition(header, newPosition)
-        onHeaderResized: root.model.saveHeaderWidth(header, newSize)
+        onHeaderMoved: root.model.saveHeaderPosition(oldPosition, newPosition)
+        onHeaderResized: root.model.saveHeaderWidth(headerPosition, newSize)
 
         // Default delegate for all column
         itemDelegate: Item
@@ -190,7 +190,6 @@ Rectangle
                         font.pixelSize: Regovar.theme.font.size.normal
                         elide: Text.ElideRight
                         font.family: "monospace"
-                        horizontalAlignment: Text.AlignRight
                         text: styleData.value ? Regovar.formatBigNumber(styleData.value) : "-"
                     }
                 }
@@ -214,7 +213,6 @@ Rectangle
                         verticalAlignment: Text.AlignVCenter
                         font.pixelSize: Regovar.theme.font.size.normal
                         elide: Text.ElideRight
-                        horizontalAlignment: Text.AlignLeft
                         text: styleData.value ? resultsTree.listToVal(styleData.value) : "-"
                     }
                 }
@@ -230,19 +228,14 @@ Rectangle
                 width: 100
                 delegate: Item
                 {
-                    TextEdit
+                    Text
                     {
                         anchors.leftMargin: 5
                         anchors.rightMargin: 5
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
                         font.pixelSize: Regovar.theme.font.size.normal
-
-
-                        textFormat: Text.RichText
-                        readOnly: true
-                        selectByMouse: true
-                        selectByKeyboard: true
+                        elide: Text.ElideRight
 
                         font.family: "monospace"
                         text: styleData.value ? /*Regovar.formatSequence(*/styleData.value/*)*/ : "-"
@@ -558,29 +551,6 @@ Rectangle
         }
 
 
-//        function removeField(uid)
-//        {
-//            console.log("trying to remove field : " + uid);
-//            var annot = root.model.annotations.getAnnotation(uid);
-//            console.log("  annot = " + annot);
-//            var position, col;
-//            for (var idx=0; idx< resultsTree.columnCount; idx++ )
-//            {
-//                col = resultsTree.getColumn(idx);
-//                if (col.role === annot.uid)
-//                {
-//                    console.log("  remove column " + annot.name + " at " + (idx-2));
-//                    // remove columb from UI
-//                    resultsTree.removeColumn(idx);
-//                    // Store fields state and position in the view model
-//                    root.model.setField(uid, false, idx -2);
-//                    break;
-//                }
-//            }
-//        }
-
-
-
         function insertField(uid, position, forceRefresh)
         {
             if (root.model == undefined || root.model == null)
@@ -588,10 +558,10 @@ Rectangle
                 return;
             }
 
-            console.log("trying to insert field : " + uid + " at " + position);
+            //console.log("trying to insert field : " + uid + " at " + position);
             var col;
             var info = root.model.getColumnInfo(uid);
-            console.log("  info = " + info);
+            //console.log("  info = " + info);
 
             if (uid === "_Samples")
             {
@@ -626,7 +596,7 @@ Rectangle
                 }
             }
 
-            console.log("  display column " + uid + " at " + position);
+            //console.log("  display column " + uid + " at " + position);
             resultsTree.insertColumn(position, col);
 
 
