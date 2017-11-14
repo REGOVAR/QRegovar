@@ -1,13 +1,13 @@
-#ifndef FREQUENCEQUICKFILTER_H
-#define FREQUENCEQUICKFILTER_H
-
+#ifndef ONTOLOGYQUICKFILTER_H
+#define ONTOLOGYQUICKFILTER_H
 
 #include <QObject>
 #include <QVariant>
 #include <QHash>
 #include "quickfilterblockinterface.h"
 
-class FrequenceQuickFilter : public QuickFilterBlockInterface
+
+class OntologyQuickFilter: public QuickFilterBlockInterface
 {
     Q_OBJECT
     Q_PROPERTY(QuickFilterField* _1000GAll READ _1000GAll)
@@ -16,7 +16,7 @@ class FrequenceQuickFilter : public QuickFilterBlockInterface
     Q_PROPERTY(QList<QObject*> exac READ exac)
 
 public:
-    explicit FrequenceQuickFilter(int analysisId);
+    explicit OntologyQuickFilter(int analysisId);
 
     Q_INVOKABLE bool isVisible() override;
     Q_INVOKABLE QJsonArray toJson() override;
@@ -46,4 +46,4 @@ private:
     QHash<QString,QString> mFieldsNames;
 };
 
-#endif // FREQUENCEQUICKFILTER_H
+#endif // ONTOLOGYQUICKFILTER_H

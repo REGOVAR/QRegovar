@@ -129,5 +129,6 @@
         <file>Pages/Browse/SearchResultSubject.qml</file>
         <file>Pages/Analysis/Filtering/VariantInformationPanel.qml</file>
         <file>Framework/ButtonInline.qml</file>
+        <file>Pages/Analysis/Filtering/Quickfilter/OntologyQuickFilter.qml</file>
     </qresource>
 </RCC>

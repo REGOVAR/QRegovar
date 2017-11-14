@@ -16,12 +16,12 @@ public:
     explicit TransmissionQuickFilter(int);
 
     // QuickFilterBlockInterface implementation
-    Q_INVOKABLE bool isVisible();
-    Q_INVOKABLE QJsonArray toJson();
-    Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant());
-    Q_INVOKABLE void clear();
-    Q_INVOKABLE void checkAnnotationsDB(QList<QObject*>);
-    bool loadJson(QJsonArray filter);
+    Q_INVOKABLE bool isVisible() override;
+    Q_INVOKABLE QJsonArray toJson() override;
+    Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant()) override;
+    Q_INVOKABLE void clear() override;
+    Q_INVOKABLE void checkAnnotationsDB(QList<QObject*>) override;
+    bool loadJson(QJsonArray filter) override;
 
     // Getters
     inline bool isTrio() { return mIsTrio; }

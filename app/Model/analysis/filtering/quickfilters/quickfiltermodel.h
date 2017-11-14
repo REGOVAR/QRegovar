@@ -18,6 +18,7 @@ class QuickFilterModel : public QObject
     Q_PROPERTY(QuickFilterBlockInterface* typeFilter READ typeFilter NOTIFY filterUpdated)
     Q_PROPERTY(QuickFilterBlockInterface* frequenceFilter READ frequenceFilter NOTIFY filterUpdated)
     Q_PROPERTY(QuickFilterBlockInterface* inSilicoPredFilter READ inSilicoPredFilter NOTIFY filterUpdated)
+    Q_PROPERTY(QuickFilterBlockInterface* ontologyFilter READ ontologyFilter NOTIFY filterUpdated)
 
 
 public:
@@ -28,7 +29,8 @@ public:
         PositionFilter,
         TypeFilter,
         FrequenceFilter,
-        InSilicoPredFilter
+        InSilicoPredFilter,
+        OntologyFilter
     };
 
     explicit QuickFilterModel(QObject *parent = nullptr);
@@ -43,6 +45,7 @@ public:
     inline QuickFilterBlockInterface* typeFilter() { return mQuickFilters[TypeFilter]; }
     inline QuickFilterBlockInterface* frequenceFilter() { return mQuickFilters[FrequenceFilter]; }
     inline QuickFilterBlockInterface* inSilicoPredFilter() { return mQuickFilters[InSilicoPredFilter]; }
+    inline QuickFilterBlockInterface* ontologyFilter() { return mQuickFilters[OntologyFilter]; }
 
 
     // Methods

@@ -18,12 +18,12 @@ class QualityQuickFilter : public QuickFilterBlockInterface
 public:
     QualityQuickFilter(int analysisId);
 
-    Q_INVOKABLE bool isVisible();
+    Q_INVOKABLE bool isVisible() override;
     Q_INVOKABLE QJsonArray toJson() override;
-    Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant());
-    Q_INVOKABLE void clear();
-    Q_INVOKABLE void checkAnnotationsDB(QList<QObject*> dbs);
-    bool loadJson(QJsonArray filter);
+    Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant()) override;
+    Q_INVOKABLE void clear() override;
+    Q_INVOKABLE void checkAnnotationsDB(QList<QObject*> dbs) override;
+    bool loadJson(QJsonArray filter) override;
 
     // Getters
     inline QuickFilterField* depth() { return mDepth; }
