@@ -518,9 +518,6 @@ Rectangle
         function onOpenResultContextMenuFinish(json)
         {
             resultContextMenu.data = json;
-
-            // 4- wait answers
-
         }
 
 

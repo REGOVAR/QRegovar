@@ -4,6 +4,7 @@ import QtQuick.Controls 1.4
 import org.regovar 1.0
 import "../../../Regovar"
 import "../../../Framework"
+import "VariantInformations"
 
 Rectangle
 {
@@ -137,7 +138,7 @@ Rectangle
                 color: Regovar.theme.primaryColor.back.normal
             }
 
-            VariantInformationPanel
+            VariantInformationsPanel
             {
                 id: variantInfo
 

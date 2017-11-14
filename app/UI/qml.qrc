@@ -4,10 +4,12 @@
         <file>GenericWindow.qml</file>
         <file>MainWindow.qml</file>
         <file>Icons.ttf</file>
+        <file>Charts/CircularGauge.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/GenericScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/AnalysisTypeButtom.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/AnalysisTypeScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/FilteringAnnotationsScreen.qml</file>
+        <file>Dialogs/NewAnalysisWizardScreens/FilteringAttributesScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/FilteringLaunchScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/FilteringReferenceScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/FilteringSamplesScreen.qml</file>
@@ -21,25 +23,40 @@
         <file>Dialogs/FilterNewConditionDialog.qml</file>
         <file>Dialogs/FilterSaveDialog.qml</file>
         <file>Dialogs/NewAnalysisDialog.qml</file>
+        <file>Dialogs/NewAttributeDialog.qml</file>
         <file>Dialogs/NewProjectDialog.qml</file>
         <file>Dialogs/NewSubjectDialog.qml</file>
         <file>Dialogs/SelectFilesDialog.qml</file>
         <file>Dialogs/SelectSamplesDialog.qml</file>
+        <file>Dialogs/QuestionDialog.qml</file>
+        <file>Dialogs/DialogHeader.qml</file>
+        <file>Dialogs/DeleteAttributeDialog.qml</file>
+        <file>Dialogs/AdminConfirmWtClear.qml</file>
+        <file>Dialogs/SelectSubjectDialog.qml</file>
+        <file>Framework/AutoCompleteTextField.qml</file>
         <file>Framework/Box.qml</file>
         <file>Framework/BusyIndicator.qml</file>
         <file>Framework/Button.qml</file>
+        <file>Framework/ButtonIcon.qml</file>
+        <file>Framework/ButtonInline.qml</file>
+        <file>Framework/ButtonTab.qml</file>
         <file>Framework/ButtonWelcom.qml</file>
         <file>Framework/CheckBox.qml</file>
         <file>Framework/ComboBox.qml</file>
+        <file>Framework/ComboBoxDelegate.qml</file>
+        <file>Framework/ConnectionStatus.qml</file>
         <file>Framework/ProgressBar.qml</file>
+        <file>Framework/Slider.qml</file>
         <file>Framework/SwipeView.qml</file>
         <file>Framework/Switch.qml</file>
         <file>Framework/TableView.qml</file>
+        <file>Framework/TableViewTextField.qml</file>
         <file>Framework/TabView.qml</file>
         <file>Framework/TextArea.qml</file>
         <file>Framework/TextField.qml</file>
         <file>Framework/TextFieldForm.qml</file>
         <file>Framework/TreeView.qml</file>
+        <file>Framework/Text.qml</file>
         <file>MainMenu/MainMenu.qml</file>
         <file>MainMenu/MenuEntryL1.qml</file>
         <file>MainMenu/MenuEntryL2.qml</file>
@@ -61,6 +78,12 @@
         <file>Pages/Analysis/Filtering/Quickfilter/SilicoPredQuickFilter.qml</file>
         <file>Pages/Analysis/Filtering/Quickfilter/TransmissionQuickForm.qml</file>
         <file>Pages/Analysis/Filtering/Quickfilter/TypeQuickFilter.qml</file>
+        <file>Pages/Analysis/Filtering/Quickfilter/OntologyQuickFilter.qml</file>
+        <file>Pages/Analysis/Filtering/VariantInformations/OnlineToolAction.qml</file>
+        <file>Pages/Analysis/Filtering/VariantInformations/OnlineToolsPanel.qml</file>
+        <file>Pages/Analysis/Filtering/VariantInformations/PhenotypePanel.qml</file>
+        <file>Pages/Analysis/Filtering/VariantInformations/StatsPanel.qml</file>
+        <file>Pages/Analysis/Filtering/VariantInformations/VariantInformationsPanel.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilterPanel.qml</file>
         <file>Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml</file>
         <file>Pages/Analysis/Filtering/FavoritesPanel.qml</file>
@@ -68,8 +91,8 @@
         <file>Pages/Analysis/Filtering/HelpPage.qml</file>
         <file>Pages/Analysis/Filtering/QuickFilterPanel.qml</file>
         <file>Pages/Analysis/Filtering/ResultContextMenu.qml</file>
-        <file>Pages/Analysis/Filtering/ResultContextMenuAction.qml</file>
         <file>Pages/Analysis/Filtering/ResultsPanel.qml</file>
+        <file>Pages/Analysis/Filtering/SaveFilterButton.qml</file>
         <file>Pages/Analysis/Filtering/SelectionsPage.qml</file>
         <file>Pages/Analysis/Filtering/StatisticsPage.qml</file>
         <file>Pages/Analysis/Filtering/SummaryPage.qml</file>
@@ -78,6 +101,7 @@
         <file>Pages/Browse/SearchResultAnalysis.qml</file>
         <file>Pages/Browse/SearchResultProject.qml</file>
         <file>Pages/Browse/SearchResultSample.qml</file>
+        <file>Pages/Browse/SearchResultSubject.qml</file>
         <file>Pages/Browse/SubjectsPage.qml</file>
         <file>Pages/Help/AboutCredits.qml</file>
         <file>Pages/Help/AboutInformations.qml</file>
@@ -109,26 +133,5 @@
         <file>Regovar/Regovar.qml</file>
         <file>Regovar/Style.qml</file>
         <file>Regovar/qmldir</file>
-        <file>Framework/ComboBoxDelegate.qml</file>
-        <file>Framework/Text.qml</file>
-        <file>Framework/ConnectionStatus.qml</file>
-        <file>Framework/AutoCompleteTextField.qml</file>
-        <file>Framework/ButtonIcon.qml</file>
-        <file>Framework/Slider.qml</file>
-        <file>Charts/CircularGauge.qml</file>
-        <file>Pages/Analysis/Filtering/SaveFilterButton.qml</file>
-        <file>Framework/ButtonTab.qml</file>
-        <file>Dialogs/QuestionDialog.qml</file>
-        <file>Dialogs/NewAnalysisWizardScreens/FilteringAttributesScreen.qml</file>
-        <file>Dialogs/NewAttributeDialog.qml</file>
-        <file>Dialogs/DialogHeader.qml</file>
-        <file>Framework/TableViewTextField.qml</file>
-        <file>Dialogs/DeleteAttributeDialog.qml</file>
-        <file>Dialogs/AdminConfirmWtClear.qml</file>
-        <file>Dialogs/SelectSubjectDialog.qml</file>
-        <file>Pages/Browse/SearchResultSubject.qml</file>
-        <file>Pages/Analysis/Filtering/VariantInformationPanel.qml</file>
-        <file>Framework/ButtonInline.qml</file>
-        <file>Pages/Analysis/Filtering/Quickfilter/OntologyQuickFilter.qml</file>
     </qresource>
 </RCC>

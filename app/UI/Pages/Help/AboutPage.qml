@@ -17,22 +17,21 @@ Rectangle
         anchors.fill : root
         tabSharedModel: root.model
 
-
         tabsModel: ListModel
         {
             ListElement
             {
-                title: "Informations"
+                title: qsTr("Informations")
                 source: "../Pages/Help/AboutInformations.qml"
             }
             ListElement
             {
-                title: "License"
+                title: qsTr("License")
                 source: "../Pages/Help/AboutLicense.qml"
             }
             ListElement
             {
-                title: "Credits"
+                title: qsTr("Credits")
                 source: "../Pages/Help/AboutCredits.qml"
             }
         }

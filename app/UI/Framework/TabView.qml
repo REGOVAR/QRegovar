@@ -12,6 +12,7 @@ Item
     property var tabsModel
     property var tabSharedModel
     property alias currentIndex: tabsPanel.currentIndex
+    property bool smallHeader: false
 
 
     Rectangle
@@ -20,7 +21,7 @@ Item
         anchors.left: root.left
         anchors.top: root.top
         anchors.right: root.right
-        height: 50
+        height: smallHeader ? 25 : 50
         color: Regovar.theme.backgroundColor.alt
 
         Rectangle
@@ -49,7 +50,7 @@ Item
 
             delegate: Item
             {
-                height: 45
+                height: smallHeader ? Regovar.theme.font.boxSize.normal : Regovar.theme.font.boxSize.title
                 width: headerLabel.width + headerIcon.width + (hasLabel ? 20 : 0)
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
@@ -109,13 +110,13 @@ Item
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
 
-                    width: parent.hasIcon ? 50 : 0
+                    width: parent.hasIcon ? (smallHeader ? Regovar.theme.font.boxSize.normal : Regovar.theme.font.boxSize.title) : 0
 
                     text: (parent.hasIcon) ? model.icon : ""
                     color: parent.isSelected ? Regovar.theme.primaryColor.back.dark : Regovar.theme.primaryColor.back.light
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
-                    font.pixelSize: Regovar.theme.font.size.title
+                    font.pixelSize: smallHeader ? Regovar.theme.font.size.normal : Regovar.theme.font.size.title
                     font.family: Regovar.theme.icons.name
                 }
 
@@ -123,14 +124,14 @@ Item
                 {
                     id: headerLabel
                     anchors.left: (parent.hasIcon) ? headerIcon.right : parent.left
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: (parent.hasIcon) ? 0 : 10
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
 
                     text: (parent.hasLabel) ? model.title : ""
                     color: parent.isSelected ? Regovar.theme.primaryColor.back.dark : Regovar.theme.primaryColor.back.light
                     verticalAlignment: Text.AlignVCenter
-                    font.pixelSize: Regovar.theme.font.size.title
+                    font.pixelSize: smallHeader ? Regovar.theme.font.size.normal : Regovar.theme.font.size.title
                 }
 
                 MouseArea
