@@ -28,9 +28,11 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            //text: model.name
+            text: model ? model.name : ""
             font.pixelSize: 20
             font.weight: Font.Black
+            color: Regovar.theme.primaryColor.back.dark
+            verticalAlignment: Text.AlignVCenter
         }
 
         ConnectionStatus

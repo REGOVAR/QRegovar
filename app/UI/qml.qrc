@@ -90,10 +90,8 @@
         <file>Pages/Analysis/Filtering/FilteringPage.qml</file>
         <file>Pages/Analysis/Filtering/HelpPage.qml</file>
         <file>Pages/Analysis/Filtering/QuickFilterPanel.qml</file>
-        <file>Pages/Analysis/Filtering/ResultContextMenu.qml</file>
         <file>Pages/Analysis/Filtering/ResultsPanel.qml</file>
         <file>Pages/Analysis/Filtering/SaveFilterButton.qml</file>
-        <file>Pages/Analysis/Filtering/SelectionsPage.qml</file>
         <file>Pages/Analysis/Filtering/StatisticsPage.qml</file>
         <file>Pages/Analysis/Filtering/SummaryPage.qml</file>
         <file>Pages/Browse/ProjectsPage.qml</file>
@@ -137,5 +135,8 @@
         <file>Pages/Browse/SearchResultVariant.qml</file>
         <file>Pages/Browse/SearchResultGene.qml</file>
         <file>Pages/Browse/SearchResultPhenotype.qml</file>
+        <file>Pages/Analysis/Filtering/VariantsTable.qml</file>
+        <file>Pages/Analysis/Filtering/SelectionPanel.qml</file>
+        <file>Pages/Analysis/Filtering/ResultPage.qml</file>
     </qresource>
 </RCC>

@@ -12,6 +12,7 @@ Button
 
     contentItem: Row
     {
+        spacing: (icon != "" && control.text != "") ? 5 : 0
         Text
         {
             id: iconText

@@ -9,7 +9,7 @@ Rectangle
     id: root
     property int variantId
     property int referenceId
-    property real dateColWidth: 100
+    property real dateColWidth: 50
     property string reference: ""
     property string label: ""
     property int samples_count: 0

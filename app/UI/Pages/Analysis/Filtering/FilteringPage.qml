@@ -57,6 +57,11 @@ Rectangle
                     icon: "D"
                     source: "../Pages/Analysis/Filtering/FavoritesPanel.qml"
                 }
+                ListElement
+                {
+                    icon: "`"
+                    source: "../Pages/Analysis/Filtering/SelectionPanel.qml"
+                }
             }
         }
 
