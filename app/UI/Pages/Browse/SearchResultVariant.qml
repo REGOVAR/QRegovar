@@ -7,13 +7,16 @@ import "../../Framework"
 Rectangle
 {
     id: root
-    property int projectId
+    property int variantId
+    property int referenceId
     property real dateColWidth: 100
-    property string date: ""
-    property string name: ""
+    property string reference: ""
+    property string label: ""
+    property int samples_count: 0
+    property var regovar_score
 
     property bool isHover: false
-    signal clicked()
+    signal clicked(var referenceId, var variantId)
 
     height: Regovar.theme.font.boxSize.normal
     color: "transparent"
@@ -31,9 +34,10 @@ Rectangle
         {
             Layout.minimumWidth: dateColWidth
             font.pixelSize: Regovar.theme.font.size.normal
+            font.family: "monospace"
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.disable
             verticalAlignment: Text.AlignVCenter
-            text: Regovar.formatDate(date)
+            text: reference
             elide: Text.ElideRight
         }
         Rectangle
@@ -49,7 +53,22 @@ Rectangle
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: "c"
+            text: "#"
+        }
+
+        Text
+        {
+            font.pixelSize: Regovar.theme.font.size.normal
+            font.family: Regovar.theme.font.familly
+            color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
+            verticalAlignment: Text.AlignVCenter
+            text: " (" + samples_count + ")"
+        }
+        Rectangle
+        {
+            width: Regovar.theme.font.boxSize.normal
+            height: Regovar.theme.font.boxSize.normal
+            color: "transparent"
         }
 
         Text
@@ -59,7 +78,7 @@ Rectangle
             font.family: Regovar.theme.font.familly
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: name
+            text: label
         }
     }
 
@@ -69,6 +88,6 @@ Rectangle
         hoverEnabled: true
         onEntered: isHover = true
         onExited: isHover = false
-        onClicked: root.clicked()
+        onClicked: root.clicked(phenotypeId)
     }
 }

@@ -212,5 +212,22 @@ QtObject
         return 0;
     }
 
+    function formatDate(iso)
+    {
+        var date = new Date(iso);
+
+
+        var day = date.getDate();
+        day = (day > 9 ? "" : "0") + day;
+        var month = date.getMonth() + 1;
+        month = (month > 9 ? "" : "0") + month;
+        var year = date.getFullYear();
+        var hours = date.getHours();
+        hours = (hours > 9 ? "" : "0") + hours;
+        var minutes = date.getMinutes();
+        minutes = (minutes > 9 ? "" : "0") + minutes;
+
+        return year + "-" +  month + "-" + day + " " + hours + ":" + minutes;
+    }
 
 } 

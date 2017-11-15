@@ -8,7 +8,7 @@ Rectangle
 {
     id: root
     property int analysisId
-    property real dateColWidth: 150
+    property real dateColWidth: 100
     property string date: ""
     property string name: ""
     property string projectName: ""
@@ -31,11 +31,11 @@ Rectangle
         }
         Text
         {
-            width: dateColWidth
+            Layout.minimumWidth: dateColWidth
             font.pixelSize: Regovar.theme.font.size.normal
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.disable
             verticalAlignment: Text.AlignVCenter
-            text: date
+            text: Regovar.formatDate(date)
             elide: Text.ElideRight
         }
         Rectangle

@@ -45,7 +45,7 @@ Rectangle
             anchors.bottom: header.bottom
             anchors.right: connectionStatus.left
             anchors.margins: 10
-            //text: Screen.PixelDensity
+            iconLeft: "z"
             placeholderText: qsTr("Search subjects or samples by names, comments...")
         }
     }
@@ -85,7 +85,7 @@ Rectangle
         {
             id: newSubject
             text: qsTr("New Subject")
-             onClicked: newSubjectDialog.open()
+            onClicked: newSubjectDialog.open()
         }
     }
 

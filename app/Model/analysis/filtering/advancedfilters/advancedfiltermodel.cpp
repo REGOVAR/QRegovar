@@ -2,11 +2,11 @@
 #include <QUuid>
 
 // init static lists
-QStringList AdvancedFilterModel::mOpNumberList  = QStringList() << QString("<")   << QString("<=") << QString("==") << QString(">=") << QString(">") << QString("!=");
-QStringList AdvancedFilterModel::mOpStringList  = QStringList() << QString("==")  << QString("!=") << QString("~") << QString("!~");
-QStringList AdvancedFilterModel::mOpSetList     = QStringList() << QString("IN")  << QString("NOTIN");
-QStringList AdvancedFilterModel::mOpEnumList    = QStringList() << QString("==")  << QString("!=");
-QStringList AdvancedFilterModel::mOpLogicalList = QStringList() << QString("AND") << QString("OR");
+QStringList AdvancedFilterModel::mOpNumberList  = {"<", "<=", "==", ">=", ">", "!="};
+QStringList AdvancedFilterModel::mOpStringList  = {"==", "!=", "~", "!~"};
+QStringList AdvancedFilterModel::mOpSetList     = {"IN", "NOTIN"};
+QStringList AdvancedFilterModel::mOpEnumList    = {"==", "!="};
+QStringList AdvancedFilterModel::mOpLogicalList = {"AND", "OR"};
 QHash<QString, QString> AdvancedFilterModel::mOperatorMap = AdvancedFilterModel::initOperatorMap();
 QHash<QString, QString> AdvancedFilterModel::initOperatorMap()
 {

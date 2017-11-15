@@ -133,5 +133,9 @@
         <file>Regovar/Regovar.qml</file>
         <file>Regovar/Style.qml</file>
         <file>Regovar/qmldir</file>
+        <file>Pages/Browse/SearchResultFile.qml</file>
+        <file>Pages/Browse/SearchResultVariant.qml</file>
+        <file>Pages/Browse/SearchResultGene.qml</file>
+        <file>Pages/Browse/SearchResultPhenotype.qml</file>
     </qresource>
 </RCC>

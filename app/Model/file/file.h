@@ -88,7 +88,7 @@ public:
     Q_INVOKABLE void load();
 
     //! Internal method to compute all-in-one property to display file in the UI.
-    QString extensionToIco(QString ext);
+    Q_INVOKABLE static QString extensionToIco(QString ext);
     QString statusToLabel(FileStatus status, qint64 size, qint64 uploadOffset);
 
 
@@ -135,16 +135,16 @@ private:
 
 
     // TODO: static collection
-    QStringList zip = {"zip", "gz", "xz", "tar", "rar"};
-    QStringList txt = {"txt", "vcf", "sam", "fasta", "fastq", "csv"};
-    QStringList src = {"sh", "bat", "xml", "css", "py", "js", "html", "htm"};
-    QStringList aud = {"wav", "ogg", "mp3"};
-    QStringList vid = {"avi", "wmv", "mov", "mpg", "mpeg", "mkv"};
-    QStringList img = {"tiff", "tif", "gif", "jpeg", "jpg", "jpe", "png", "bmp"};
-    QStringList xls = {"xls", "xlsx", "ods"};
-    QStringList doc = {"doc", "docx", "odt"};
-    QStringList prz = {"ppt", "pps", "ppsx", "pptx", "odp"};
-    QStringList pdf = {"pdf", "ps"};
+    static QStringList zip;
+    static QStringList txt;
+    static QStringList src;
+    static QStringList aud;
+    static QStringList vid;
+    static QStringList img;
+    static QStringList xls;
+    static QStringList doc;
+    static QStringList prz;
+    static QStringList pdf;
 };
 
 #endif // FILE_H

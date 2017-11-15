@@ -8,7 +8,9 @@ Rectangle
 {
     id: root
     property int subjectId
-    property real dateColWidth: 150
+
+
+    property real dateColWidth: 100
     property string date: ""
     property string identifier: ""
     property string firstname: ""
@@ -18,7 +20,7 @@ Rectangle
     property int indent: 1
 
     property bool isHover: false
-    signal clicked()
+    signal clicked(var subjectId)
 
     height: Regovar.theme.font.boxSize.normal
     color: "transparent"
@@ -28,17 +30,17 @@ Rectangle
         anchors.fill: parent
         Rectangle
         {
-            width: indent * Regovar.theme.font.boxSize.normal
+            width: Regovar.theme.font.boxSize.normal
             height: Regovar.theme.font.boxSize.normal
             color: "transparent"
         }
         Text
         {
-            width: dateColWidth
+            Layout.minimumWidth: dateColWidth
             font.pixelSize: Regovar.theme.font.size.normal
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.disable
             verticalAlignment: Text.AlignVCenter
-            text: date
+            text: Regovar.formatDate(date)
             elide: Text.ElideRight
         }
         Rectangle
@@ -47,8 +49,6 @@ Rectangle
             height: Regovar.theme.font.boxSize.normal
             color: "transparent"
         }
-
-
         Text
         {
             Layout.minimumWidth: Regovar.theme.font.boxSize.normal
@@ -57,7 +57,6 @@ Rectangle
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
             text: sex == "male" ? "9" : sex == "female" ? "<" : "b"
-            elide: Text.ElideRight
         }
 
         Text
@@ -65,13 +64,12 @@ Rectangle
             font.pixelSize: Regovar.theme.font.size.normal
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: identifier
             font.family: "monospace"
-            elide: Text.ElideRight
+            text: identifier
         }
         Text
         {
-            width: Regovar.theme.font.boxSize.normal
+            Layout.minimumWidth: Regovar.theme.font.boxSize.normal
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
@@ -99,6 +97,6 @@ Rectangle
         hoverEnabled: true
         onEntered: isHover = true
         onExited: isHover = false
-        onClicked: root.clicked()
+        onClicked: root.clicked(subjectId)
     }
 }

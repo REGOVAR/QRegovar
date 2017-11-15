@@ -7,13 +7,15 @@ import "../../Framework"
 Rectangle
 {
     id: root
-    property int projectId
+    property int fileId
     property real dateColWidth: 100
     property string date: ""
-    property string name: ""
+    property string filename: ""
+    property string icon: ""
+    property string status: ""
 
     property bool isHover: false
-    signal clicked()
+    signal clicked(var fileId)
 
     height: Regovar.theme.font.boxSize.normal
     color: "transparent"
@@ -49,7 +51,7 @@ Rectangle
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: "c"
+            text: icon
         }
 
         Text
@@ -59,7 +61,7 @@ Rectangle
             font.family: Regovar.theme.font.familly
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: name
+            text: filename + " (" + status + ")"
         }
     }
 
@@ -69,6 +71,6 @@ Rectangle
         hoverEnabled: true
         onEntered: isHover = true
         onExited: isHover = false
-        onClicked: root.clicked()
+        onClicked: root.clicked(fileId)
     }
 }

@@ -45,7 +45,7 @@ Rectangle
             anchors.bottom: header.bottom
             anchors.right: connectionStatus.left
             anchors.margins: 10
-            //text: Screen.PixelDensity
+            iconLeft: "z"
             placeholderText: qsTr("Search projects by names, dates, comments...")
         }
     }

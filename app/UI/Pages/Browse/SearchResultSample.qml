@@ -10,20 +10,23 @@ Rectangle
     property int subjectId
     property int sampleId
 
-    property real dateColWidth: 150
+    property real dateColWidth: 100
     property string date: ""
     property string name: ""
     property string subjectIdentifiant: ""
     property string subjectLastName: ""
     property string subjectFirstName: ""
 
+
+
     property bool isHover: false
-    signal clicked(var analysisId)
+    signal clicked(var sampleId)
 
     height: Regovar.theme.font.boxSize.normal
     color: "transparent"
-    Row
+    RowLayout
     {
+        spacing: 0
         anchors.fill: parent
         Rectangle
         {
@@ -33,11 +36,11 @@ Rectangle
         }
         Text
         {
-            width: dateColWidth
+            Layout.minimumWidth: dateColWidth
             font.pixelSize: Regovar.theme.font.size.normal
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.disable
             verticalAlignment: Text.AlignVCenter
-            text: "2017-08-27 14h15" // date
+            text: Regovar.formatDate(date)
             elide: Text.ElideRight
         }
         Rectangle
@@ -48,7 +51,7 @@ Rectangle
         }
         Text
         {
-            width: Regovar.theme.font.boxSize.normal
+            Layout.minimumWidth: Regovar.theme.font.boxSize.normal
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
@@ -66,22 +69,26 @@ Rectangle
         }
         Text
         {
+            Layout.minimumWidth: Regovar.theme.font.boxSize.normal
+            font.pixelSize: Regovar.theme.font.size.normal
+            font.family: Regovar.theme.icons.name
+            color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            text: "{"
+            elide: Text.ElideRight
+        }
+        Text
+        {
             font.pixelSize: Regovar.theme.font.size.normal
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
             font.family: Regovar.theme.font.familly
-            text: "DUPONT" + " "
+            text: "DUPONT Michel (64y)"
         }
         Text
         {
-            font.pixelSize: Regovar.theme.font.size.normal
-            color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-            verticalAlignment: Text.AlignVCenter
-            text: "Michel" + " (64y)"
-        }
-        Text
-        {
-            width: Regovar.theme.font.boxSize.normal
+            Layout.minimumWidth: Regovar.theme.font.boxSize.normal
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
@@ -92,10 +99,12 @@ Rectangle
 
         Text
         {
+            Layout.fillWidth: true
             font.pixelSize: Regovar.theme.font.size.normal
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
             text: name
+            elide: Text.ElideRight
         }
     }
 
@@ -105,6 +114,6 @@ Rectangle
         hoverEnabled: true
         onEntered: isHover = true
         onExited: isHover = false
-        onClicked: root.clicked()
+        onClicked: root.clicked(sampleId)
     }
 }

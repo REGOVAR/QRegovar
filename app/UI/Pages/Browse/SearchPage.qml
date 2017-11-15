@@ -2,6 +2,7 @@ import QtQuick 2.7
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.0
 import QtQuick.Controls 1.4
+import org.regovar 1.0
 
 import "../../Regovar"
 import "../../Framework"
@@ -16,6 +17,7 @@ Rectangle
     property bool isEmpty: true
     property bool isLoading: false
 
+    File { id: fileInstance }
 
     Connections
     {
@@ -57,6 +59,7 @@ Rectangle
             anchors.margins: 10
 
             property string formerSearch: ""
+            iconLeft: "z"
             text: regovar.searchRequest
             placeholderText: qsTr("Search projects, subjects, samples, analyses, panels...")
             onEditingFinished:
@@ -158,6 +161,7 @@ Rectangle
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.dark
                         height: Regovar.theme.font.boxSize.normal
+                        verticalAlignment: Text.AlignVCenter
                     }
 
 
@@ -186,10 +190,11 @@ Rectangle
 
                     Text
                     {
-                        text: "" + analysessResult.count + " " + (analysessResult.count > 1 ? qsTr("Analyses") : qsTr("Analysis"))
+                        text: analysessResult.count + " " + (analysessResult.count > 1 ? qsTr("Analyses") : qsTr("Analysis"))
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.dark
                         height: Regovar.theme.font.boxSize.normal
+                        verticalAlignment: Text.AlignVCenter
                     }
 
                     Repeater
@@ -203,7 +208,42 @@ Rectangle
                             name: model.modelData.name
                             projectName: model.modelData.project.name
 
-                            onClicked: regovar.loadAnalysis(model.modelData.id)
+                            onClicked: regovar.openAnalysis(model.modelData.id)
+                        }
+                    }
+                }
+
+                // Files
+                Column
+                {
+                    id: filesResult
+                    visible: false
+                    property int count: 0
+                    property var model
+
+                    Text
+                    {
+                        text: filesResult.count + " " + (filesResult.count > 1 ? qsTr("Files") : qsTr("File"))
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.normal
+                        verticalAlignment: Text.AlignVCenter
+                    }
+
+                    Repeater
+                    {
+                        model: filesResult.model
+                        onModelChanged: filesResult.count = filesResult.model.length
+                        SearchResultFile
+                        {
+                            width: scrollarea.viewport.width
+                            fileId: model.modelData.id
+                            date: model.modelData.update_date
+                            filename: model.modelData.name
+                            icon: fileInstance.extensionToIco(model.modelData.name.split(".").slice(-1).pop())
+                            status: model.modelData.status
+
+                            onClicked: console.log("open file " + model.modelData.id)
                         }
                     }
                 }
@@ -219,36 +259,28 @@ Rectangle
                     Text
                     {
                         width: scrollarea.viewport.width
-                        text: "" + subjectsResult.count + " " + subjectsResult.count > 1 ? qsTr("Subjects") : qsTr("Subject")
+                        text: subjectsResult.count + " " + (subjectsResult.count > 1 ? qsTr("Subjects") : qsTr("Subject"))
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.dark
                         height: Regovar.theme.font.boxSize.normal
+                        verticalAlignment: Text.AlignVCenter
                     }
                     Repeater
                     {
                         model: subjectsResult.model
-                        Row
+                        onModelChanged: subjectsResult.count = subjectsResult.model.length
+                        SearchResultSubject
                         {
-                            Row
-                            {
-                                Text
-                                {
-                                    width: Regovar.theme.font.boxSize.normal
-                                    font.pixelSize: Regovar.theme.font.size.normal
-                                    font.family: Regovar.theme.icons.name
-                                    color: Regovar.theme.frontColor.normal
-                                    verticalAlignment: Text.AlignVCenter
-                                    text: "b"
-                                }
-                                Text
-                                {
-                                    font.pixelSize: Regovar.theme.font.size.normal
-                                    font.family: Regovar.theme.font.familly
-                                    color: Regovar.theme.frontColor.normal
-                                    verticalAlignment: Text.AlignVCenter
-                                    text: firstname + " " + lastname + "(" + identifiant + ")"
-                                }
-                            }
+                            width: scrollarea.viewport.width
+                            date: model.modelData.update_date
+                            subjectId: model.modelData.id
+                            identifier: model.modelData.identifier
+                            firstname: model.modelData.firstname
+                            lastname: model.modelData.lastname
+                            sex: model.modelData.sex
+                            age: model.modelData.age
+
+                            onClicked: regovar.subjectsManager.openSubject(subjectId)
                         }
                     }
                 }
@@ -267,6 +299,7 @@ Rectangle
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.dark
                         height: Regovar.theme.font.boxSize.normal
+                        verticalAlignment: Text.AlignVCenter
                     }
 
                     Repeater
@@ -278,7 +311,7 @@ Rectangle
                             width: scrollarea.viewport.width
                             date: model.modelData.update_date
                             name: model.modelData.name
-                            onClicked: console.log("open sample " + model.modelData.id) // regovar.loadAnalysis(model.modelData.id)
+                            onClicked: console.log("open sample " + model.modelData.id)
                         }
                     }
                 }
@@ -293,31 +326,24 @@ Rectangle
 
                     Text
                     {
-                        text: qsTr("Phenotypes") + " (" + phenotypesResult.count + ")"
+                        text: phenotypesResult.count + " " + (phenotypesResult.count > 1 ? qsTr("Phenotypes") : qsTr("Phenotype"))
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.normal
+                        verticalAlignment: Text.AlignVCenter
                     }
 
                     Repeater
                     {
                         model: phenotypesResult.model
-                        Row
+                        onModelChanged: phenotypesResult.count = phenotypesResult.model.length
+                        SearchResultPhenotype
                         {
-                            Text
-                            {
-                                width: Regovar.theme.font.boxSize.normal
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.icons.name
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: "K"
-                            }
-                            Text
-                            {
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.font.familly
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: model.modelData.name
-                            }
+                            width: scrollarea.viewport.width
+                            phenotypeId: model.modelData.id
+                            label: model.modelData.label
+
+                            onClicked: console.log("open phenotype " + phenotypeId)
                         }
                     }
                 }
@@ -332,31 +358,24 @@ Rectangle
 
                     Text
                     {
-                        text: qsTr("Genes") + " (" + genesResult.count + ")"
+                        text: genesResult.count + " " + (genesResult.count > 1 ? qsTr("Genes") : qsTr("Gene"))
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.normal
+                        verticalAlignment: Text.AlignVCenter
                     }
 
                     Repeater
                     {
                         model: genesResult.model
-                        Row
+                        onModelChanged: genesResult.count = genesResult.model.length
+                        SearchResultGene
                         {
-                            Text
-                            {
-                                width: Regovar.theme.font.boxSize.normal
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.icons.name
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: "j"
-                            }
-                            Text
-                            {
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.font.familly
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: model.modelData.name
-                            }
+                            width: scrollarea.viewport.width
+                            geneId: model.modelData.id
+                            symbol: model.modelData.symbol
+
+                            onClicked: console.log("open gene " + geneId)
                         }
                     }
                 }
@@ -371,31 +390,28 @@ Rectangle
 
                     Text
                     {
-                        text: qsTr("Variants") + " (" + variantsResult.count + ")"
+                        text: variantsResult.count + " " + (variantsResult.count > 1 ? qsTr("Variants") : qsTr("Variant"))
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.normal
+                        verticalAlignment: Text.AlignVCenter
                     }
 
                     Repeater
                     {
                         model: variantsResult.model
-                        Row
+                        onModelChanged: variantsResult.count = variantsResult.model.length
+                        SearchResultVariant
                         {
-                            Text
-                            {
-                                width: Regovar.theme.font.boxSize.normal
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.icons.name
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: "j"
-                            }
-                            Text
-                            {
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.font.familly
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: model.modelData.name
-                            }
+                            width: scrollarea.viewport.width
+                            variantId: model.modelData.id
+                            label: model.modelData.label
+                            referenceId: model.modelData.ref_id
+                            reference: model.modelData.ref_name
+                            samples_count: model.modelData.sample_list.length
+                            regovar_score: model.modelData.regovar_score
+
+                            onClicked: console.log("open variant " + variantId + " (" + referenceId + ")")
                         }
                     }
                 }
@@ -516,6 +532,7 @@ Rectangle
     {
         projectsResult.visible = results["project"].length > 0;
         analysessResult.visible = results["analysis"].length > 0;
+        filesResult.visible = results["file"].length > 0;
         subjectsResult.visible = results["subject"].length > 0;
         samplesResult.visible = results["sample"].length > 0;
         phenotypesResult.visible = results["phenotype"].length > 0;
@@ -534,40 +551,45 @@ Rectangle
             analysessResult.model = results["analysis"];
             analysessResult.count = results["analysis"].length;
         }
+        if (filesResult.visible)
+        {
+            filesResult.model = results["file"];
+            filesResult.count = results["file"].length;
+        }
         if (subjectsResult.visible)
         {
             subjectsResult.model = results["subject"];
-            analysessResult.count = results["subject"].length;
+            subjectsResult.count = results["subject"].length;
         }
         if (samplesResult.visible)
         {
             samplesResult.model = results["sample"];
-            analysessResult.count = results["sample"].length;
+            samplesResult.count = results["sample"].length;
         }
         if (phenotypesResult.visible)
         {
             phenotypesResult.model = results["phenotype"];
-            analysessResult.count = results["phenotype"].length;
+            phenotypesResult.count = results["phenotype"].length;
         }
         if (genesResult.visible)
         {
             genesResult.model = results["gene"];
-            analysessResult.count = results["gene"].length;
+            genesResult.count = results["gene"].length;
         }
         if (variantsResult.visible)
         {
             variantsResult.model = results["variant"];
-            analysessResult.count = results["variant"].length;
+            variantsResult.count = results["variant"].length;
         }
         if (pipelinesResult.visible)
         {
             pipelinesResult.model = results["pipeline"];
-            analysessResult.count = results["pipeline"].length;
+            pipelinesResult.count = results["pipeline"].length;
         }
         if (panelsResult.visible)
         {
             panelsResult.model = results["panel"];
-            analysessResult.count = results["panel"].length;
+            panelsResult.count = results["panel"].length;
         }
     }
 }

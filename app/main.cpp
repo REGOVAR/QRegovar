@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<SamplesManager>("org.regovar", 1, 0, "SamplesManager");
     qmlRegisterType<Subject>("org.regovar", 1, 0, "Subject");
     qmlRegisterType<Sample>("org.regovar", 1, 0, "Sample");
+    qmlRegisterType<File>("org.regovar", 1, 0, "File");
     qmlRegisterType<Reference>("org.regovar", 1, 0, "Reference");
     qmlRegisterType<Attribute>("org.regovar", 1, 0, "Attribute");
 
