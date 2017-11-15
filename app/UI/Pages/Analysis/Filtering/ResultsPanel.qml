@@ -505,7 +505,7 @@ Rectangle
             var variantId = resultsTree.model.data(index, Qt.UserRole +1); // enum value of ResultsTreeModel.ColumnRole.id
             if (variantId.indexOf("_") >= 0)
             {
-                variantId = variantId.uid.split("_")[0];
+                variantId = variantId.split("_")[0];
             }
 
             // 3- get variant information
