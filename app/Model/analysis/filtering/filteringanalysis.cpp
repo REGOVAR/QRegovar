@@ -94,9 +94,13 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     // Retrieve fields
     foreach (const QJsonValue field, json["fields"].toArray())
     {
-        QString uid = field.toString();
-        mFields << uid;
-        qDebug() << " - " << uid;
+        mFields << field.toString();
+    }
+
+    // Retrieve order
+    foreach (const QJsonValue field, json["order"].toArray())
+    {
+        mOrder << field.toString();
     }
 
     // Once samples, attributes, filters and panels have been retrieved, create unique list of sets
@@ -236,7 +240,6 @@ void FilteringAnalysis::loadAnnotations()
     }
 
     // prepare quick filter (they need to check that they are complient with available annotations
-    // TODO : CRASH SOUS WINDOWS ? MAIS PAS SOUS LINUX...
     mQuickFilters->checkAnnotationsDB(mAllAnnotations);
 
     // set filter with the last applied filter
@@ -253,20 +256,19 @@ void FilteringAnalysis::refreshDisplayedAnnotationColumns()
 {
     // Set list of displayed columns
     mDisplayedAnnotationColumns.clear();
+    mDisplayedAnnotationColumns.append(mAnnotations["_RowHead"]);
     mAnnotations["_Samples"]->setIsDisplayed(false);
-    int idx = 0;
+    int idx = 1;
     foreach( QString uid, mFields)
     {
         if (mAnnotations.contains(uid))
         {
             if (mAnnotations[uid]->annotation()->type() == "sample_array" && !mAnnotations["_Samples"]->isDisplayed())
             {
-                // mAnnotations["_Samples"]->setDisplayOrder(idx);
                 mAnnotations["_Samples"]->setIsDisplayed(true);
                 mDisplayedAnnotationColumns.append(mAnnotations["_Samples"]);
                 ++idx;
             }
-            //mAnnotations[uid]->setDisplayOrder(idx);
             mDisplayedAnnotationColumns.append(mAnnotations[uid]);
             ++idx;
         }
@@ -288,10 +290,8 @@ QList<QObject*> FilteringAnalysis::samples4qml()
 QStringList FilteringAnalysis::resultColumns()
 {
     QStringList list;
-    list << "_RowHead";
     foreach (FieldColumnInfos* field, mDisplayedAnnotationColumns)
     {
-        // TODO : rework better the special case for UI additional column "samples"
         if (field->role() == FieldColumnInfos::NormalAnnotation)
         {
             list << field->annotation()->uid();
@@ -299,6 +299,10 @@ QStringList FilteringAnalysis::resultColumns()
         else if (field->role() == FieldColumnInfos::SamplesNames)
         {
             list << "_Samples";
+        }
+        else if (field->role() == FieldColumnInfos::RowHeader)
+        {
+            list << "_RowHead";
         }
     }
     return list;
@@ -421,6 +425,19 @@ void FilteringAnalysis::loadFilter(QJsonArray filter)
     setFilterJson(filter);
 }
 
+void FilteringAnalysis::setFilterOrder(int column, bool order)
+{
+    // As QML table is not able to mnage sort with several column, we force ordering with only one column
+    mOrder.clear();
+    FieldColumnInfos* info = mDisplayedAnnotationColumns[column];
+    if (info->role() == FieldColumnInfos::NormalAnnotation)
+    {
+        mOrder << QString("%1%2").arg(order ? "-" : "").arg(info->annotation()->uid());
+        // Force Variant table to refresh
+        mResults->applyFilter(mFilterJson);
+    }
+}
+
 void FilteringAnalysis::deleteFilter(int filterId)
 {
     Request* req = Request::del(QString("/analysis/%1/filter/%2").arg(mId).arg(filterId));
@@ -483,7 +500,6 @@ void FilteringAnalysis::editFilter(int filterId, QString filterName, QString fil
             {
                 // Edit
                 filter->fromJson(jsonData);
-                emit filtersChanged();
             }
             else
             {
@@ -663,72 +679,75 @@ void FilteringAnalysis::deleteAttribute(QStringList names)
 // Result
 
 //! Add or remove a field to the display result and update or set the order
-//! Return the order of the field in the grid
-int FilteringAnalysis::setField(QString uid, bool isDisplayed, int position)
+void FilteringAnalysis::setField(QString uid, bool isDisplayed, int position, bool internalUpdate)
 {
     Annotation* annot = mAnnotationsTreeModel->getAnnotation(uid);
 
     if (annot == nullptr)
     {
         qDebug() << "TODO : on check db : need to check/uncheck all fields";
-        return -1;
+        return;
     }
 
     if (isDisplayed)
     {
-        if (position != -1)
+        if (position < 0)
+        {
+            mFields.removeAll(uid);
+            mFields << uid;
+        }
+        else
         {
             position = qMin(position, mFields.count()-1);
             mFields.removeAll(uid);
             mFields.insert(position, uid);
         }
-        else
-        {
-            mFields.removeAll(uid);
-            position = mFields.count()-1;
-            mFields << uid;
-        }
     }
     else
     {
-        position = mFields.indexOf(uid);
         mFields.removeAll(uid);
     }
-    emit fieldsChanged();
 
-    // Update columns to display in the QML view according to selected annoations
-    refreshDisplayedAnnotationColumns();
-    saveSettings();
-    return position;
+
+    if (!internalUpdate)
+    {
+        // Update columns to display in the QML view according to selected annoations
+        refreshDisplayedAnnotationColumns();
+        saveSettings();
+
+        // Force Variant table to refresh
+        mResults->applyFilter(mFilterJson);
+    }
 }
 
 void FilteringAnalysis::saveHeaderPosition(int oldPosition, int newPosition)
 {
-    //
-    mQtBugQMLHeaderDelegatePressedEventCalledTwiceWorkaround++;
-    if (mQtBugQMLHeaderDelegatePressedEventCalledTwiceWorkaround % 2 == 0) return;
+    mQtBugWorkaround_QMLHeaderDelegatePressedEventCalledTwice++;
+    if (mQtBugWorkaround_QMLHeaderDelegatePressedEventCalledTwice % 2 == 0) return;
 
-    oldPosition--; // First column in QML (selection's checkboxes) doesn't exists in this model
     if (oldPosition < 0 || oldPosition >= mDisplayedAnnotationColumns.count()) return;
-    newPosition--;
     if (newPosition < 0 || newPosition >= mDisplayedAnnotationColumns.count()) return;
 
     FieldColumnInfos* info = mDisplayedAnnotationColumns[oldPosition];
     if (info && info->annotation())
     {
-        if (info->role() == FieldColumnInfos::NormalAnnotation)
-        {
-            int offset = mAnnotations["_Samples"]->isDisplayed() ? 1 : 0;
-            mFields.move(mFields.indexOf(info->annotation()->uid()), newPosition - offset);
-        }
+        // Apply change to the model
         mDisplayedAnnotationColumns.move(oldPosition, newPosition);
+        // Recompute field order without "client columns" (_rowHeader & _Samples)
+        mFields.clear();
+        foreach (FieldColumnInfos* info, mDisplayedAnnotationColumns)
+        {
+            if (info->role() == FieldColumnInfos::NormalAnnotation)
+            {
+                mFields.append(info->annotation()->uid());
+            }
+        }
         saveSettings();
     }
 }
 
 void FilteringAnalysis::saveHeaderWidth(int headerPosition, double newSize)
 {
-    headerPosition--; // First column in QML (selection's checkboxes) doesn't exists in this model
     if (headerPosition < 0 || headerPosition >= mDisplayedAnnotationColumns.count()) return;
 
     FieldColumnInfos* info = mDisplayedAnnotationColumns[headerPosition];
@@ -843,6 +862,12 @@ void FilteringAnalysis::loadSettings()
     if (fields.count() > 0)
     {
         mFields.clear();
-        foreach(QString fuid, fields) { setField(fuid, true); }
+        foreach(QString fuid, fields) { setField(fuid, true, -1, true); }
+
+        // Update columns to display in the QML view according to selected annoations
+        refreshDisplayedAnnotationColumns();
+
+        // Force Variant table to refresh
+        mResults->applyFilter(mFilterJson);
     }
 }

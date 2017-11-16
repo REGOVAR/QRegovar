@@ -24,7 +24,17 @@ TreeView
     onChecked: console.log(uid, isChecked);
 
     property FilteringAnalysis analysis
+    onAnalysisChanged:
+    {
+        if (analysis)
+        {
+            analysis.resultColumnsChanged.connect(function() { refreshResultColumns(); });
+        }
+    }
 
+    sortIndicatorVisible: true
+    onSortIndicatorColumnChanged: analysis.setFilterOrder(sortIndicatorColumn, sortIndicatorOrder)
+    onSortIndicatorOrderChanged: analysis.setFilterOrder(sortIndicatorColumn, sortIndicatorOrder)
     onHeaderMoved: analysis.saveHeaderPosition(oldPosition, newPosition)
     onHeaderResized: analysis.saveHeaderWidth(headerPosition, newSize)
     onModelChanged: if (model) { refreshResultColumns(); }

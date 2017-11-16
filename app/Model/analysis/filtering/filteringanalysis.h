@@ -29,8 +29,8 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QString refName READ refName NOTIFY refChanged)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
     Q_PROPERTY(QJsonArray filterJson READ filterJson NOTIFY filterChanged)      // Filter json formated shared with server
-    Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsChanged)             // List of fields UID shared with Server to retrieve information about variant/trx
-    Q_PROPERTY(int resultsTotal READ resultsTotal NOTIFY resultsTotalChanged)   // TODO : shall be results.total
+    //Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsChanged)             // List of fields UID shared with Server to retrieve information about variant/trx
+    Q_PROPERTY(QStringList order READ order NOTIFY orderChanged)                // List of field used for sorting result
     Q_PROPERTY(QList<QObject*> samples READ samples4qml NOTIFY samplesChanged)
     Q_PROPERTY(QList<QObject*> filters READ filters NOTIFY filtersChanged)
     Q_PROPERTY(QList<QObject*> attributes READ attributes NOTIFY attributesChanged)
@@ -57,7 +57,6 @@ class FilteringAnalysis : public Analysis
 
 
 
-
 public:
     enum LoadingStatus
     {
@@ -80,7 +79,7 @@ public:
     inline QString status() { return mStatus; }
     inline QJsonArray filterJson() { return mFilterJson; }
     inline QStringList fields() { return mFields; }
-    inline int resultsTotal() { return mResultsTotal; }
+    inline QStringList order() { return mOrder; }
     inline QList<Sample*> samples() { return mSamples; }
     inline QList<QObject*> filters() { return mFilters; }
     inline QList<QObject*> attributes() { return mAttributes; }
@@ -113,7 +112,7 @@ public:
     Q_INVOKABLE inline void setTrioFather(Sample* father) { mTrioFather=father; emit trioFatherChanged(); }
     Q_INVOKABLE inline void setIsLoading(bool flag) { mIsLoading=flag; emit isLoadingChanged(); }
     Q_INVOKABLE inline void setCurrentFilterName(QString name) { mCurrentFilterName=name; emit currentFilterNameChanged(); }
-    Q_INVOKABLE int setField(QString uid, bool isDisplayed, int order=-1);
+    Q_INVOKABLE void setField(QString uid, bool isDisplayed, int order=-1, bool internalUpdate=false);
     Q_INVOKABLE void setReference(Reference* ref, bool continueInit=false);
 
     // Methods
@@ -127,6 +126,7 @@ public:
     Q_INVOKABLE void loadFilter(QString filter);
     Q_INVOKABLE void loadFilter(QJsonObject filter);
     Q_INVOKABLE void loadFilter(QJsonArray filter);
+    Q_INVOKABLE void setFilterOrder(int column, bool order);
     Q_INVOKABLE void deleteFilter(int filterId);
     Q_INVOKABLE void saveAttribute(QString name, QStringList values);
     Q_INVOKABLE void deleteAttribute(QStringList names);
@@ -154,12 +154,12 @@ Q_SIGNALS:
     void annotationsFlatListChanged();
     void allAnnotationsChanged();
     void filterChanged();
-    void fieldsChanged();
+    //void fieldsChanged();
     void resultsChanged();
     void samplesChanged();
     void sampleColumnDisplayedUpdated();
     void resultColumnsChanged();
-    void resultsTotalChanged();
+    void orderChanged();
     void displayFilterSavingFormPopup();
     void displayFilterNewCondPopup(QString conditionUid);
     void displayClearFilterPopup();
@@ -178,6 +178,7 @@ Q_SIGNALS:
     void setsChanged();
 
 
+
 public Q_SLOTS:
     //! method use to "chain" asynch request for the init of the analysis
     void asynchLoadingCoordination(LoadingStatus oldSatus, LoadingStatus newStatus);
@@ -189,6 +190,7 @@ private:
     int mRefId = -1;
     QString mRefName;
     QStringList mFields;
+    QStringList mOrder;
     QJsonArray mFilterJson;
     QList<Sample*> mSamples;
     QList<QObject*> mFilters;
@@ -208,14 +210,12 @@ private:
     QList<QObject*> mAllAnnotations;
     AnnotationsTreeModel* mAnnotationsTreeModel = nullptr;
     QList<FieldColumnInfos*> mDisplayedAnnotationColumns;
-    int mQtBugQMLHeaderDelegatePressedEventCalledTwiceWorkaround = 0;
 
     bool mIsTrio = false;
     QStringList mAnnotationsDBUsed;
     Sample* mTrioChild = nullptr;
     Sample* mTrioMother = nullptr;
     Sample* mTrioFather = nullptr;
-    int mResultsTotal = 0;
     QList<int> mSamplesIds; // = mSamples, but use as shortcuts to check quickly by sample id
     bool mIsLoading = false;
     QString mCurrentFilterName;
@@ -228,6 +228,10 @@ private:
     void refreshDisplayedAnnotationColumns();
     void saveSettings();
     void loadSettings();
+
+
+    // Others
+    int mQtBugWorkaround_QMLHeaderDelegatePressedEventCalledTwice = 0;
 };
 
 #endif // FILTERINGANALYSIS_H

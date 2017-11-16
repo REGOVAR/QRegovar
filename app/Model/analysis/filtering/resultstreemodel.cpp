@@ -79,6 +79,9 @@ bool ResultsTreeModel::canFetchMore(const QModelIndex& parent) const
 
 void ResultsTreeModel::fetchMore(const QModelIndex& parent)
 {
+    // Check if model is ready
+    if (mAnalysisId == -1) return;
+
     // Don't use fetch mechanism to populate treeview roots items
     // Lazy loading managed by ourself (see how loadNext() is called by QML)
     if (parent == QModelIndex())
@@ -87,6 +90,7 @@ void ResultsTreeModel::fetchMore(const QModelIndex& parent)
 
     QJsonObject body;
     body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
+    body.insert("order", QJsonArray::fromStringList(mFilteringAnalysis->order()));
 
     TreeItem* item = getItem(parent);
     QString itemId = item->data(Qt::UserRole + 1).toString();
@@ -181,11 +185,15 @@ bool ResultsTreeModel::hasChildren(const QModelIndex &parent) const
 //! Reset the Treemodel with data for the current filter set in the FilteringAnalysis
 void ResultsTreeModel::applyFilter(QJsonArray filter)
 {
+    // Check if model is ready
+    if (mAnalysisId == -1) return;
+
     setIsLoading(true);
 
     QJsonObject body;
     body.insert("filter", filter);
     body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
+    body.insert("order", QJsonArray::fromStringList(mFilteringAnalysis->order()));
 
     Request* request = Request::post(QString("/analysis/%1/filtering").arg(mAnalysisId), QJsonDocument(body).toJson());
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
@@ -223,6 +231,7 @@ void ResultsTreeModel::reload()
 //! Load next result according to the mResultsPagination value (default is 100)
 void ResultsTreeModel::loadNext()
 {
+    qDebug() << "RESULTS TREEVIEW LOADNEXT !!!!!!!!!!!!!";
     // Find how many entries to load
 //    int remainder = mTotal - mLoaded;
 //    int itemsToFetch = qMin(mPagination, remainder);
