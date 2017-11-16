@@ -105,6 +105,7 @@
         <file>Pages/Help/AboutInformations.qml</file>
         <file>Pages/Help/AboutLicense.qml</file>
         <file>Pages/Help/AboutPage.qml</file>
+        <file>Pages/Help/InfoCard.qml</file>
         <file>Pages/Help/UserGuidePage.qml</file>
         <file>Pages/Project/AnalysesPage.qml</file>
         <file>Pages/Project/FilesPage.qml</file>
