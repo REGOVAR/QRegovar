@@ -88,6 +88,6 @@ Rectangle
         hoverEnabled: true
         onEntered: isHover = true
         onExited: isHover = false
-        onClicked: root.clicked(phenotypeId)
+        onClicked: root.clicked(referenceId, variantId)
     }
 }

@@ -23,8 +23,11 @@ TreeView
     signal checked(string uid, bool isChecked)
     onChecked: console.log(uid, isChecked);
 
-    onHeaderMoved: root.model.saveHeaderPosition(oldPosition, newPosition)
-    onHeaderResized: root.model.saveHeaderWidth(headerPosition, newSize)
+    property FilteringAnalysis analysis
+
+    onHeaderMoved: analysis.saveHeaderPosition(oldPosition, newPosition)
+    onHeaderResized: analysis.saveHeaderWidth(headerPosition, newSize)
+    onModelChanged: if (model) { refreshResultColumns(); }
 
     // Default delegate for all column
     itemDelegate: Item
@@ -36,7 +39,7 @@ TreeView
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Regovar.theme.font.size.normal
             elide: Text.ElideRight
-            text: styleData.value ? styleData.value : "-"
+            text: styleData.value ? String(styleData.value) : "-"
         }
     }
 
@@ -46,7 +49,7 @@ TreeView
         anchors.topMargin: 24 // 24 = Header height (see UI/Framework/TreeView.qml)
 
         acceptedButtons: Qt.RightButton
-        onClicked: resultsTree.openResultContextMenu(mouse.x, mouse.y + 24) // compense header's margin
+        onClicked: resultsTree.openVariantInfoDialog(mouse.x, mouse.y + 24) // compense header's margin
     }
 
 
@@ -312,7 +315,7 @@ TreeView
                     spacing: 1
                     Repeater
                     {
-                        model: root.model.samples
+                        model: analysis.samples
                         Text
                         {
                             height: 12
@@ -334,9 +337,15 @@ TreeView
     }
 
 
+
+    Connections
+    {
+        target: regovar
+        onVariantInformationReady: onOpenVariantInfoDialogFinish(json)
+    }
     Dialog
     {
-        id: resultContextMenu
+        id: variantInfoDialog
         title: qsTr("Variant Informations")
         visible: false
         modality: Qt.NonModal
@@ -353,27 +362,15 @@ TreeView
 
 
 
-    onModelChanged:
-    {
-        // Display selected fields
-        if (root.model !== null)
-        {
-            root.model.onContextualVariantInformationReady.connect(onOpenResultContextMenuFinish);
-            root.model.resultColumnsChanged.connect(refreshResultColumns);
-            refreshResultColumns();
-        }
-
-    }
-
     function mapToList(json)
     {
         var newModel = listModel.createObject(resultsTree);
 
-        var l = root.model.samples.length;
-        // /!\ It's important to respect the same order as in the root.model.samples list.
+        var l = analysis.samples.length;
+        // /!\ It's important to respect the same order as in the analysis.samples list.
         for (var idx=0; idx<l; idx++)
         {
-            var sid = root.model.samples[idx].id;
+            var sid = analysis.samples[idx].id;
             newModel.append({ "id": sid, "value" : json[sid]});
         }
 
@@ -390,7 +387,7 @@ TreeView
         return result.substring(2, result.length);
     }
 
-    function openResultContextMenu(x, y)
+    function openVariantInfoDialog(x, y)
     {
         // 0- retrieve row index
         var index = resultsTree.indexAt(x, y)
@@ -401,9 +398,7 @@ TreeView
         }
 
         // 1- display context menu as "loading indicator"
-        resultContextMenu.open();
-        resultContextMenu.x = x;
-        resultContextMenu.y = y + resultContextMenu.height / 2;
+        variantInfoDialog.open();
 
         // 2- retrieve variant id
         var variantId = resultsTree.model.data(index, Qt.UserRole +1); // enum value of ResultsTreeModel.ColumnRole.id
@@ -413,15 +408,15 @@ TreeView
         }
 
         // 3- get variant information
-        root.model.getVariantInfo(variantId);
+        regovar.getVariantInfo(analysis.refId, variantId, analysis.id);
 
         // 4-... call to server are asynch.
-        // See connection to the signal model.onContextualVariantInformationReady
+        // See connection to the signal openResultContextMenuFinish
 
     }
-    function onOpenResultContextMenuFinish(json)
+    function onOpenVariantInfoDialogFinish(json)
     {
-        resultContextMenu.data = json;
+        variantInfoDialog.data = json;
     }
 
 
@@ -442,26 +437,26 @@ TreeView
         }
 
         // Add columns
-        var columns = root.model.resultColumns;
+        var columns = analysis.resultColumns;
         for (idx=0; idx < columns.length; idx++)
         {
             var uid = columns[idx];
             resultsTree.insertField(uid, idx);
         }
-        //root.model.results.reset();
+        //analysis.results.reset();
     }
 
 
     function insertField(uid, position, forceRefresh)
     {
-        if (root.model == undefined || root.model == null)
+        if (analysis === undefined || analysis === null)
         {
             return;
         }
 
         //console.log("trying to insert field : " + uid + " at " + position);
         var col;
-        var info = root.model.getColumnInfo(uid);
+        var info = analysis.getColumnInfo(uid);
         //console.log("  info = " + info);
 
         if (uid === "_Samples")
@@ -503,7 +498,7 @@ TreeView
 
         if (forceRefresh)
         {
-            root.model.results.reset();
+            analysis.results.reset();
         }
     }
 }

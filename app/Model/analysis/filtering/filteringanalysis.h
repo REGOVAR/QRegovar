@@ -119,7 +119,6 @@ public:
     // Methods
     bool fromJson(QJsonObject json);
     Q_INVOKABLE inline FieldColumnInfos* getColumnInfo(QString uid) { return mAnnotations.contains(uid) ? mAnnotations[uid] : nullptr; }
-    Q_INVOKABLE void getVariantInfo(QString variantId);
     Q_INVOKABLE inline void emitDisplayFilterSavingFormPopup() { emit displayFilterSavingFormPopup(); }
     Q_INVOKABLE inline void emitDisplayFilterNewCondPopup(QString conditionUid) { emit displayFilterNewCondPopup(conditionUid); }
     Q_INVOKABLE inline void emitSelectedAnnotationsDBChanged() { emit selectedAnnotationsDBChanged(); }
@@ -161,7 +160,6 @@ Q_SIGNALS:
     void sampleColumnDisplayedUpdated();
     void resultColumnsChanged();
     void resultsTotalChanged();
-    void onContextualVariantInformationReady(QJsonObject json);
     void displayFilterSavingFormPopup();
     void displayFilterNewCondPopup(QString conditionUid);
     void displayClearFilterPopup();

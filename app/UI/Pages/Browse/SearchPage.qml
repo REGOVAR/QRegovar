@@ -2,10 +2,12 @@ import QtQuick 2.7
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.0
 import QtQuick.Controls 1.4
+import QtQuick.Dialogs 1.2
 import org.regovar 1.0
 
 import "../../Regovar"
 import "../../Framework"
+import "../Analysis/Filtering/VariantInformations"
 
 Rectangle
 {
@@ -411,7 +413,7 @@ Rectangle
                             samples_count: model.modelData.sample_list.length
                             regovar_score: model.modelData.regovar_score
 
-                            onClicked: console.log("open variant " + variantId + " (" + referenceId + ")")
+                            onClicked: openVariantInfoDialog(referenceId, variantId)
                         }
                     }
                 }
@@ -528,6 +530,30 @@ Rectangle
         }
     }
 
+
+    Connections
+    {
+        target: regovar
+        onVariantInformationReady: onOpenVariantInfoDialogFinish(json)
+    }
+    Dialog
+    {
+        id: variantInfoDialog
+        title: qsTr("Variant Informations")
+        visible: false
+        modality: Qt.NonModal
+        width: 500
+        height: 400
+
+        property alias data: infoPanel.model
+
+        contentItem: VariantInformationsPanel
+        {
+            id: infoPanel
+        }
+    }
+
+
     function displayresults(results)
     {
         projectsResult.visible = results["project"].length > 0;
@@ -591,5 +617,15 @@ Rectangle
             panelsResult.model = results["panel"];
             panelsResult.count = results["panel"].length;
         }
+    }
+
+    function openVariantInfoDialog(refId, variantId)
+    {
+        variantInfoDialog.open();
+        regovar.getVariantInfo(refId, variantId);
+    }
+    function onOpenVariantInfoDialogFinish(json)
+    {
+        variantInfoDialog.data = json;
     }
 }

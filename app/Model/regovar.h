@@ -175,6 +175,7 @@ public:
     // File management
 
     // Others
+    Q_INVOKABLE void getVariantInfo(int refId, QString variantId, int analysisId=-1);
     Q_INVOKABLE void search(QString query);
     Q_INVOKABLE void loadWelcomData();
     Q_INVOKABLE void close();
@@ -236,6 +237,7 @@ Q_SIGNALS:
     void connectionStatusChanged();
     void configChanged();
     void adminChanged();
+    void variantInformationReady(QJsonObject json);
 
 private:
     // Singleton pattern
