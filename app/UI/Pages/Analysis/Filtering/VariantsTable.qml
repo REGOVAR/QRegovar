@@ -257,7 +257,7 @@ TreeView
                                 anchors.fill: parent
                                 anchors.margins: 1
                                 anchors.leftMargin: 6
-                                color: !gt_valid(model.value) ? "transparent" : model.value == 3 ? Regovar.theme.primaryColor.back.light : Regovar.theme.primaryColor.back.dark
+                                color: !gt_valid(model.value) ||  model.value == 0 ? "transparent" : model.value == 3 ? Regovar.theme.primaryColor.back.light : Regovar.theme.primaryColor.back.dark
                             }
                             Text
                             {
