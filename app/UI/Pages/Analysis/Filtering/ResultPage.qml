@@ -16,8 +16,6 @@ Rectangle
     {
         if (root.model != null)
         {
-            selectionTree.model = root.model.results;
-            selectionTree.rowHeight = (root.model.samples.length === 1) ? 25 : root.model.samples.length * 18;
         }
     }
 

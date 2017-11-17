@@ -871,3 +871,25 @@ void FilteringAnalysis::loadSettings()
         mResults->applyFilter(mFilterJson);
     }
 }
+
+
+void FilteringAnalysis::setVariantSelection(QString id, bool isChecked)
+{
+    QString action = isChecked ? "select" : "unselect";
+
+    Request* req = Request::get(QString("/analysis/%1/%2/%3").arg(QString::number(mId), action, id));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (!success)
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+            raiseNewInternalLoadingStatus(Error);
+        }
+        req->deleteLater();
+    });
+}
+
+
+

@@ -49,7 +49,7 @@ QHash<int, QByteArray> ResultsTreeModel::roleNames() const
     int roleId = Qt::UserRole + 1;
     roles[roleId] = "id";
     ++roleId;
-    roles[roleId] = "checked";
+    roles[roleId] = "is_selected";
     ++roleId;
     // Build role from annotations all annotations available list
     foreach (QString uid, mFilteringAnalysis->annotations()->annotations()->keys())
@@ -282,24 +282,22 @@ void ResultsTreeModel::loadNext()
 TreeItem* ResultsTreeModel::newResultsTreeViewItem(const QJsonObject& rowData)
 {
     QString rowId = rowData["id"].toString();
+    bool isSelected = rowData["is_selected"].toBool();
     QHash<int, QVariant> columnData;
-    int childCount = 0;
 
 
 
     // add columns info to the item
     columnData.insert(mRoles.key("id"), QVariant(rowId));
+    columnData.insert(mRoles.key("is_selected"), QVariant(isSelected));
     foreach (QString fuid, mFilteringAnalysis->fields())
     {
-        if (fuid == "8e05e925d0ce1cb5ece5b0bcb97fa820")
-        {
-
-        }
         columnData.insert(mRoles.key(fuid.toUtf8()), rowData[fuid].toVariant());
     }
 
     ResultsTreeItem* result = new ResultsTreeItem(mFilteringAnalysis);
     result->setUid(rowId);
+    result->setIsSelected(isSelected);
     result->setData(columnData);
 
     if (rowId.contains("_"))

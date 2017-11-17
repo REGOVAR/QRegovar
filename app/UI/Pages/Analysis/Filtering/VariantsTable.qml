@@ -20,8 +20,8 @@ TreeView
 {
     id: resultsTree
 
-    signal checked(string uid, bool isChecked)
-    onChecked: console.log(uid, isChecked);
+    signal checked(string id, bool isChecked)
+    onChecked: analysis.setVariantSelection(id, isChecked);
 
     property FilteringAnalysis analysis
     onAnalysisChanged:
@@ -162,7 +162,7 @@ TreeView
                     readOnly: true
 
                     font.family: Regovar.theme.icons.name
-                    horizontalAlignment: Text.AlignHCenter
+                    horizontalAlignment: Text.AlignLeft
                     text: (styleData.value) ? "n" : "h"
                     color: (styleData.value) ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.lighter(Regovar.theme.frontColor.normal )
                 }
@@ -176,7 +176,7 @@ TreeView
         id: columnComponent_RowHead
         TableViewColumn
         {
-            role: "id"
+            role: "is_selected"
             title: ""
             width: 60
 
@@ -189,11 +189,12 @@ TreeView
                     anchors.left: parent.left
                     anchors.leftMargin: 5
                     anchors.verticalCenter: parent.verticalCenter
-                    checked: false // styleData.value
-                    text: "" // styleData.value.value
+                    checked: Boolean(styleData.value)
+                    text: ""
                     onClicked:
                     {
-                        resultsTree.checked(styleData.value.uid, checked);
+                        var id = resultsTree.model.data(styleData.index, Qt.UserRole +1);
+                        resultsTree.checked(id, checked);
                     }
                 }
             }
@@ -483,23 +484,24 @@ TreeView
 
 
             // Getting QML column according to the type of the fields
-            if (annot.name == "GT")
-                col = columnComponent_GT.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
-            else if (annot.name == "DP")
-                col = columnComponent_DP.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
-            else
+            if (annot.type == "int")
+                col = columnComponent_number.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+            else if (annot.type == "bool")
+                col = columnComponent_bool.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+            else if (annot.type == "sequence")
+                col = columnComponent_sequence.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+            else if (annot.type == "list")
+                col = columnComponent_list.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+            else if (annot.type == "sample_array")
             {
-                if (annot.type == "int")
-                    col = columnComponent_number.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
-                else if (annot.type == "bool")
-                    col = columnComponent_bool.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
-                else if (annot.type == "sequence")
-                    col = columnComponent_sequence.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
-                else if (annot.type == "list")
-                    col = columnComponent_list.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+                if (annot.name == "GT")
+                    col = columnComponent_GT.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
                 else
-                    col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+                    col = columnComponent_DP.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
             }
+            else
+                col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+
         }
 
         //console.log("  display column " + uid + " at " + position);

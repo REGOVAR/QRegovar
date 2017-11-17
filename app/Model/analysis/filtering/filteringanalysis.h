@@ -140,7 +140,7 @@ public:
     Q_INVOKABLE Sample* getSampleById(int id);
     Q_INVOKABLE void addSampleInputs(QList<QObject*> inputs);
     Q_INVOKABLE void removeSampleInputs(QList<QObject*> inputs);
-
+    Q_INVOKABLE void setVariantSelection(QString id, bool isChecked);
 
 
     void raiseNewInternalLoadingStatus(LoadingStatus newStatus);

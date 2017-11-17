@@ -30,7 +30,7 @@ TreeView
         rowDelegate: Rectangle
         {
             height: control.rowHeight
-            color:  styleData.hasActiveFocus ? Regovar.theme.secondaryColor.back.normal :
+            color:  styleData.hasActiveFocus ? Regovar.theme.secondaryColor.back.light :
                     (
                         styleData.selected ? Regovar.theme.secondaryColor.back.light :
                         (
