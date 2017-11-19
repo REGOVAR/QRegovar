@@ -682,9 +682,9 @@ void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
 
     QString url;
     if (analysisId == -1)
-        url = QString("/variant/%1/%2").arg(sRefId, variantId);
+        url = QString("/search/variant/%1/%2").arg(sRefId, variantId);
     else
-        url = QString("/variant/%1/%2/%3").arg(sRefId, variantId, sAnalysisId);
+        url = QString("/search/variant/%1/%2/%3").arg(sRefId, variantId, sAnalysisId);
 
     Request* req = Request::get(url);
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)

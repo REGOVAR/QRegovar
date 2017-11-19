@@ -160,5 +160,6 @@
         <file>InformationsPanel/Variant/PhenotypePanel.qml</file>
         <file>InformationsPanel/Variant/StatsPanel.qml</file>
         <file>InformationsPanel/Variant/VariantInformations.qml</file>
+        <file>InformationsPanel/Common/Section.qml</file>
     </qresource>
 </RCC>

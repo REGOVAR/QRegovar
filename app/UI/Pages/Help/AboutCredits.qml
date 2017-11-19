@@ -78,12 +78,13 @@ Item
             icon: "qrc:/credits/t_omim.jpg"
             url: "https://www.omim.org/"
         }
-        ListElement {
-            name: "ORPHANET"
-            comment: qsTr("Maladies rares et médicaments orphelins")
-            icon: "qrc:/credits/t_orphanet.jpg"
-            url: "http://www.orpha.net/"
-        }
+// We don't use orphanet API. Orphanet data are just included in HPO like lot of other db.
+//        ListElement {
+//            name: "ORPHANET"
+//            comment: qsTr("Maladies rares et médicaments orphelins")
+//            icon: "qrc:/credits/t_orphanet.jpg"
+//            url: "http://www.orpha.net/"
+//        }
     }
     ListModel
     {
