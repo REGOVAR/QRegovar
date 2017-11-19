@@ -16,7 +16,6 @@
         <file>credits/u_jr.jpg</file>
         <file>credits/u_js.jpg</file>
         <file>credits/u_ss.jpg</file>
-        <file>credits/t_git.jpg</file>
         <file>credits/t_hgnc.png</file>
         <file>credits/t_hpo.png</file>
         <file>credits/t_omim.jpg</file>
@@ -25,6 +24,7 @@
         <file>credits/t_python.png</file>
         <file>credits/t_qt.png</file>
         <file>credits/u_og.png</file>
-        <file>credits/t_cpp.svg</file>
+        <file>credits/t_cpp.png</file>
+        <file>credits/t_git.png</file>
     </qresource>
 </RCC>

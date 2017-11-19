@@ -26,7 +26,7 @@ Item
         }
         ListElement {
             name: "Jérémie ROQUET"
-            comment: qsTr("Computer scientist, Developper")
+            comment: qsTr("Computer scientist, Linux guru, Developper")
             icon: "qrc:/credits/u_jr.jpg"
             url: "https://github.com/Arkanosis"
         }
@@ -56,8 +56,8 @@ Item
         ListElement
         {
             name: "Github"
-            comment: qsTr("Doctor, Geneticist, Bioinformaticist, Developper")
-            icon: "qrc:/credits/t_git.jpg"
+            comment: qsTr("Web-based Git version control repository")
+            icon: "qrc:/credits/t_git.png"
             url: "https://github.com/REGOVAR"
         }
         ListElement {
@@ -93,7 +93,7 @@ Item
         {
             name: "C++ 11"
             comment: qsTr("Regovar client application")
-            icon: "qrc:/credits/t_cpp.svg"
+            icon: "qrc:/credits/t_cpp.png"
             url: "http://www.cplusplus.com/"
         }
         ListElement

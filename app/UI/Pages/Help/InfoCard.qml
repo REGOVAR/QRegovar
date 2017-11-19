@@ -28,6 +28,7 @@ Rectangle
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.margins: 10
+        fillMode: Image.PreserveAspectFit
     }
 
     ColumnLayout
@@ -35,7 +36,7 @@ Rectangle
         anchors.fill: parent
         anchors.margins: 10
         anchors.leftMargin: 70
-        spacing: 5
+        spacing: 4
 
         Text
         {

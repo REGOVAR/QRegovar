@@ -11,7 +11,7 @@ import QtQml.Models 2.2
 import "../../../Regovar"
 import "../../../Framework"
 import "../../../MainMenu"
-import "VariantInformations"
+import "../../../InformationsPanel/Variant"
 
 import org.regovar 1.0
 
@@ -365,7 +365,7 @@ TreeView
 
         property alias data: infoPanel.model
 
-        contentItem: VariantInformationsPanel
+        contentItem: VariantInformations
         {
             id: infoPanel
         }

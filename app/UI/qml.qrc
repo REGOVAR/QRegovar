@@ -79,11 +79,6 @@
         <file>Pages/Analysis/Filtering/Quickfilter/TransmissionQuickForm.qml</file>
         <file>Pages/Analysis/Filtering/Quickfilter/TypeQuickFilter.qml</file>
         <file>Pages/Analysis/Filtering/Quickfilter/OntologyQuickFilter.qml</file>
-        <file>Pages/Analysis/Filtering/VariantInformations/OnlineToolAction.qml</file>
-        <file>Pages/Analysis/Filtering/VariantInformations/OnlineToolsPanel.qml</file>
-        <file>Pages/Analysis/Filtering/VariantInformations/PhenotypePanel.qml</file>
-        <file>Pages/Analysis/Filtering/VariantInformations/StatsPanel.qml</file>
-        <file>Pages/Analysis/Filtering/VariantInformations/VariantInformationsPanel.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilterPanel.qml</file>
         <file>Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml</file>
         <file>Pages/Analysis/Filtering/FavoritesPanel.qml</file>
@@ -139,5 +134,31 @@
         <file>Pages/Analysis/Filtering/VariantsTable.qml</file>
         <file>Pages/Analysis/Filtering/SelectionPanel.qml</file>
         <file>Pages/Analysis/Filtering/ResultPage.qml</file>
+        <file>InformationsPanel/Common/OnlineToolAction.qml</file>
+        <file>InformationsPanel/Gene/GeneInformations.qml</file>
+        <file>InformationsPanel/Gene/InfoPanel.qml</file>
+        <file>InformationsPanel/Gene/OnlineToolsPanel.qml</file>
+        <file>InformationsPanel/Gene/PhenotypePanel.qml</file>
+        <file>InformationsPanel/Gene/StatsPanel.qml</file>
+        <file>InformationsPanel/Phenotype/InfoPanel.qml</file>
+        <file>InformationsPanel/Phenotype/OnlineToolsPanel.qml</file>
+        <file>InformationsPanel/Phenotype/PhenotypeInformations.qml</file>
+        <file>InformationsPanel/Phenotype/PhenotypePanel.qml</file>
+        <file>InformationsPanel/Phenotype/StatsPanel.qml</file>
+        <file>InformationsPanel/Sample/InfoPanel.qml</file>
+        <file>InformationsPanel/Sample/OnlineToolsPanel.qml</file>
+        <file>InformationsPanel/Sample/PhenotypePanel.qml</file>
+        <file>InformationsPanel/Sample/SampleInformations.qml</file>
+        <file>InformationsPanel/Sample/StatsPanel.qml</file>
+        <file>InformationsPanel/User/InfoPanel.qml</file>
+        <file>InformationsPanel/User/OnlineToolsPanel.qml</file>
+        <file>InformationsPanel/User/PhenotypePanel.qml</file>
+        <file>InformationsPanel/User/StatsPanel.qml</file>
+        <file>InformationsPanel/User/UserInformations.qml</file>
+        <file>InformationsPanel/Variant/InfoPanel.qml</file>
+        <file>InformationsPanel/Variant/OnlineToolsPanel.qml</file>
+        <file>InformationsPanel/Variant/PhenotypePanel.qml</file>
+        <file>InformationsPanel/Variant/StatsPanel.qml</file>
+        <file>InformationsPanel/Variant/VariantInformations.qml</file>
     </qresource>
 </RCC>
