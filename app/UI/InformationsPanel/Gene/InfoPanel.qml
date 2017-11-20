@@ -40,6 +40,7 @@ ScrollView
         {
             width: root.width - 30
             title: qsTr("Informations")
+            expanded: true
 
             contentItem: GridLayout
             {
@@ -66,9 +67,10 @@ ScrollView
                     {
                         anchors.fill: parent
                         hoverEnabled: true
-                        onEntered: parent.color = Regovar.theme.secondaryColor.back.light
+                        onEntered: parent.color = Regovar.theme.secondaryColor.back.normal
                         onExited: parent.color = Regovar.theme.frontColor.normal
                         onClicked: Qt.openUrlExternally("https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=" + geneData["hgnc_id"])
+                        cursorShape: "PointingHandCursor"
                     }
                 }
 
@@ -111,7 +113,7 @@ ScrollView
                 Text
                 {
                     Layout.alignment: Qt.AlignTop
-                    text: qsTr("Size:")
+                    text: qsTr("Size") + (geneData && geneData["refgene"] && geneData["refgene"].length > 0 ? " (" + geneData["refgene"][0]["name"] + "):" : "")
                     height: Regovar.theme.font.boxSize.normal
                     color: Regovar.theme.primaryColor.back.normal
                     font.pixelSize: Regovar.theme.font.size.normal
@@ -119,11 +121,22 @@ ScrollView
                 Text
                 {
                     Layout.fillWidth: true
-                    text: geneData ? "X kb (Y exons)" : ""
+                    text: geneData && geneData["refgene"] && geneData["refgene"].length > 0 ? formatSize(geneData["refgene"][0]) : ""
                     color: Regovar.theme.frontColor.normal
                     font.pixelSize: Regovar.theme.font.size.normal
                     verticalAlignment: Text.AlignVCenter
                     wrapMode: Text.WordWrap
+
+                    function formatSize(data)
+                    {
+                        var size = Math.round(data["size"]/1000, 0);
+                        size = (size > 0) ? size + " Kb" : data["size"] + " b";
+                        var exons = data["exon"];
+                        exons += " " + ((exons > 1) ? qsTr("exons") : qsTr("exon"));
+                        var trx = data["trx"];
+                        trx += " " + ((trx > 1) ? qsTr("transcripts") : qsTr("transcript"));
+                        return size + ", " + exons + ", " + trx;
+                    }
                 }
 
                 Text
@@ -191,18 +204,22 @@ ScrollView
 
             contentItem: ColumnLayout
             {
-                Text
+                TextEdit
                 {
                     Layout.fillWidth: true
-                    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec tortor ante. In dictum tempor libero, id fringilla elit ornare nec. Nulla vitae consequat tellus. Maecenas condimentum facilisis diam, non venenatis lacus euismod eu. Curabitur ornare, nisi eget gravida fringilla, lacus mi commodo turpis, vitae fringilla orci leo suscipit mauris."
+                    text: geneData ? geneData["omim_description"] : ""
                     color: Regovar.theme.frontColor.normal
                     font.pixelSize: Regovar.theme.font.size.normal
                     wrapMode: Text.WordWrap
+                    readOnly: true
+                    selectByMouse: true
+                    selectByKeyboard: true
                 }
                 Text
                 {
                     Layout.fillWidth: true
-                    text: qsTr("Read more...")
+                    visible: geneData && geneData["omim_description"]
+                    text: "[" + qsTr("Read more...") + "]"
                     height: Regovar.theme.font.boxSize.normal
                     color: Regovar.theme.frontColor.normal
                     font.pixelSize: Regovar.theme.font.size.normal
@@ -210,8 +227,10 @@ ScrollView
                     MouseArea
                     {
                         anchors.fill: parent
+                        enabled: parent.visible
                         hoverEnabled: true
-                        onEntered: parent.color = Regovar.theme.secondaryColor.back.light
+                        cursorShape: "PointingHandCursor"
+                        onEntered: parent.color = Regovar.theme.secondaryColor.back.normal
                         onExited: parent.color = Regovar.theme.frontColor.normal
                         onClicked: Qt.openUrlExternally("https://www.omim.org/entry/" + geneData["omim_id"][0])
                     }
@@ -232,130 +251,128 @@ ScrollView
 
                 Text
                 {
-                    text: qsTr("Approved symbol:")
-                    height: Regovar.theme.font.boxSize.normal
+                    Layout.alignment: Qt.AlignTop
+                    text: qsTr("Genome browser:")
                     color: Regovar.theme.primaryColor.back.normal
                     font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
                 }
-                Text
+                Column
                 {
                     Layout.fillWidth: true
-                    text: geneData ? geneData["symbol"] + " (" + geneData["hgnc_id"] + ")" : ""
-                    height: Regovar.theme.font.boxSize.normal
-                    color: Regovar.theme.frontColor.normal
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
-                    MouseArea
+                    Text
                     {
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onEntered: parent.color = Regovar.theme.secondaryColor.back.light
-                        onExited: parent.color = Regovar.theme.frontColor.normal
-                        onClicked: Qt.openUrlExternally("https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=" + geneData["hgnc_id"])
+                        Layout.fillWidth: true
+                        text: geneData ? "Ensembl (" + geneData["ensembl_gene_id"] + ")" : ""
+                        height: Regovar.theme.font.boxSize.normal
+                        color: Regovar.theme.frontColor.normal
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        verticalAlignment: Text.AlignVCenter
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            cursorShape: "PointingHandCursor"
+                            hoverEnabled: true
+                            onEntered: parent.color = Regovar.theme.secondaryColor.back.normal
+                            onExited: parent.color = Regovar.theme.frontColor.normal
+                            onClicked: Qt.openUrlExternally("https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=" + geneData["ensembl_gene_id"])
+                        }
+                    }
+                    Text
+                    {
+                        Layout.fillWidth: true
+                        text: geneData ? "Entrez (" + geneData["entrez_id"] + ")" : ""
+                        height: Regovar.theme.font.boxSize.normal
+                        color: Regovar.theme.frontColor.normal
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        verticalAlignment: Text.AlignVCenter
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            cursorShape: "PointingHandCursor"
+                            hoverEnabled: true
+                            onEntered: parent.color = Regovar.theme.secondaryColor.back.normal
+                            onExited: parent.color = Regovar.theme.frontColor.normal
+                            onClicked: Qt.openUrlExternally("https://www.ncbi.nlm.nih.gov/gene/" + geneData["entrez_id"])
+                        }
+                    }
+                    Text
+                    {
+                        Layout.fillWidth: true
+                        text: geneData ? "UCSC (" + geneData["ucsc_id"] + ")" : ""
+                        height: Regovar.theme.font.boxSize.normal
+                        color: Regovar.theme.frontColor.normal
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        verticalAlignment: Text.AlignVCenter
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            cursorShape: "PointingHandCursor"
+                            hoverEnabled: true
+                            onEntered: parent.color = Regovar.theme.secondaryColor.back.normal
+                            onExited: parent.color = Regovar.theme.frontColor.normal
+                            onClicked: Qt.openUrlExternally("https://genome.cse.ucsc.edu/cgi-bin/hgGene?db=hg38&org=Human&hgg_chrom=none&hgg_type=knownGene&hgg_gene=" + geneData["ucsc_id"])
+                        }
                     }
                 }
 
                 Text
                 {
-                    text: qsTr("Approved name:")
-                    height: Regovar.theme.font.boxSize.normal
+                    Layout.alignment: Qt.AlignTop
+                    text: qsTr("Nucleotide sequences:")
                     color: Regovar.theme.primaryColor.back.normal
                     font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
                 }
                 Text
                 {
-                    text: geneData ? geneData["name"] : ""
-                    height: Regovar.theme.font.boxSize.normal
+                    Layout.fillWidth: true
+                    text: "Todo"
                     color: Regovar.theme.frontColor.normal
                     font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
                 }
 
                 Text
                 {
-                    text: qsTr("Former symbols:")
-                    height: Regovar.theme.font.boxSize.normal
+                    Layout.alignment: Qt.AlignTop
+                    text: qsTr("Protein:")
                     color: Regovar.theme.primaryColor.back.normal
                     font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
                 }
                 Text
                 {
-                    text: geneData ? String(geneData["prev_name"]) : ""
-                    height: Regovar.theme.font.boxSize.normal
+                    Layout.fillWidth: true
+                    text: "Todo"
                     color: Regovar.theme.frontColor.normal
                     font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
                 }
 
                 Text
                 {
-                    text: qsTr("Synonyms:")
-                    height: Regovar.theme.font.boxSize.normal
+                    Layout.alignment: Qt.AlignTop
+                    text: qsTr("Clinical:")
                     color: Regovar.theme.primaryColor.back.normal
                     font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
                 }
                 Text
                 {
-                    text: geneData ? String(geneData["alias_symbol"]) : ""
-                    height: Regovar.theme.font.boxSize.normal
+                    Layout.fillWidth: true
+                    text: "Todo"
                     color: Regovar.theme.frontColor.normal
                     font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
                 }
 
                 Text
                 {
-                    text: qsTr("Locus type:")
-                    height: Regovar.theme.font.boxSize.normal
+                    Layout.alignment: Qt.AlignTop
+                    text: qsTr("Public databases:")
                     color: Regovar.theme.primaryColor.back.normal
                     font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
                 }
                 Text
                 {
-                    text: geneData ? geneData["locus_type"] : ""
-                    height: Regovar.theme.font.boxSize.normal
+                    Layout.fillWidth: true
+                    text: "Todo"
                     color: Regovar.theme.frontColor.normal
                     font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                Text
-                {
-                    text: qsTr("Chromosomal location:")
-                    height: Regovar.theme.font.boxSize.normal
-                    color: Regovar.theme.primaryColor.back.normal
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
-                }
-                Text
-                {
-                    text: geneData ? geneData["location_sortable"] : ""
-                    height: Regovar.theme.font.boxSize.normal
-                    color: Regovar.theme.frontColor.normal
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                Text
-                {
-                    text: qsTr("Size:")
-                    height: Regovar.theme.font.boxSize.normal
-                    color: Regovar.theme.primaryColor.back.normal
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
-                }
-                Text
-                {
-                    text: geneData ? "X kb (Y exons)" : ""
-                    height: Regovar.theme.font.boxSize.normal
-                    color: Regovar.theme.frontColor.normal
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    verticalAlignment: Text.AlignVCenter
                 }
             }
         }
