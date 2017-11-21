@@ -47,12 +47,6 @@ Rectangle
                 }
                 ListElement
                 {
-                    //title: qsTr("Annotations")
-                    icon: "o"
-                    source: "../Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml"
-                }
-                ListElement
-                {
                     //title: qsTr("Quick filters")
                     icon: "D"
                     source: "../Pages/Analysis/Filtering/FavoritesPanel.qml"
@@ -61,6 +55,12 @@ Rectangle
                 {
                     icon: "`"
                     source: "../Pages/Analysis/Filtering/SelectionPanel.qml"
+                }
+                ListElement
+                {
+                    //title: qsTr("Annotations")
+                    icon: "o"
+                    source: "../Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml"
                 }
             }
         }

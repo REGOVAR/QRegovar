@@ -49,19 +49,24 @@ Rectangle
             anchors.margins: 10
             spacing: 5
 
-            SaveFilterButton
+            Text
             {
-                Layout.fillWidth: true
-//                text: qsTr("Current filter")
-//                iconText: "5"
-                text: model && model.currentFilterName ? model.currentFilterName : qsTr("Save new filter")
-                enabled: model && model.currentFilterName == ""
-                iconText: model  && model.currentFilterName ? "D" : "5"
+                // visible: model && model.currentFilterName
+                text: model && model.currentFilterName ? "D" : "3"
                 height: header.height - 20
-                onClicked:
-                {
-                    model.emitDisplayFilterSavingFormPopup();
-                }
+                font.family: Regovar.theme.icons.name
+                font.pixelSize: Regovar.theme.font.size.header
+                color: Regovar.theme.primaryColor.back.dark
+                verticalAlignment: Text.AlignVCenter
+            }
+            Text
+            {
+                //Layout.fillWidth: true
+                text: model && model.currentFilterName ? model.currentFilterName : qsTr("New filter")
+                height: header.height - 20
+                font.pixelSize: Regovar.theme.font.size.header
+                color: Regovar.theme.primaryColor.back.dark
+                verticalAlignment: Text.AlignVCenter
             }
 
             Text
@@ -71,7 +76,7 @@ Rectangle
                 color: Regovar.theme.primaryColor.back.dark
 
                 font.pixelSize: Regovar.theme.font.size.header
-                text: ( root.model != null) ? Regovar.formatBigNumber(root.model.results.total) + " " + ((root.model.results.total > 1) ? qsTr("variants") : qsTr("variant")) : ""
+                text: ( root.model != null) ? ": " + Regovar.formatBigNumber(root.model.results.total) + " " + ((root.model.results.total > 1) ? qsTr("variants") : qsTr("variant")) : ""
             }
         }
         ConnectionStatus

@@ -108,6 +108,20 @@ Rectangle
                     model.results.applyFilter(model.advancedfilter.toJson());
                 }
             }
+            ButtonIcon
+            {
+                id: saveButton
+                anchors.top: parent.top
+                anchors.left: applyButton.right
+                anchors.margins: 10
+                text: qsTr("Save filter")
+                icon: "5"
+                enabled: model && model.currentFilterName == ""
+                onClicked:
+                {
+                    model.emitDisplayFilterSavingFormPopup();
+                }
+            }
         }
     }
 
