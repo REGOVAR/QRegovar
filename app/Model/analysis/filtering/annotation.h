@@ -105,9 +105,9 @@ private:
     QString mName;
     QString mVersion;
     QString mDescription;
-    bool mDefault;
-    bool mIsHeadVersion;
-    bool mSelected;
+    bool mDefault = false;
+    bool mIsHeadVersion = false;
+    bool mSelected = false;
     QList<Annotation*> mFields;
 };
 

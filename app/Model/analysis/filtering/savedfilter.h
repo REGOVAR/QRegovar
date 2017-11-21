@@ -41,12 +41,12 @@ Q_SIGNALS:
     void dataChanged();
 
 private:
-    int mId;
+    int mId = -1;
     QString mName;
     QString mDescription;
     QJsonArray mFilter;
-    int mCount;
-    double mProgress;
+    int mCount = 0;
+    double mProgress = 0;
 };
 
 #endif // SAVEDFILTER_H

@@ -125,7 +125,7 @@ void TypeQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 }
 
 
-bool TypeQuickFilter::loadJson(QJsonArray filter)
+bool TypeQuickFilter::loadJson(QJsonArray)
 {
     // TODO or not TODO ?
     return false;

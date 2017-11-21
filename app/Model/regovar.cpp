@@ -6,7 +6,6 @@
 #include <QSysInfo>
 #include "regovar.h"
 #include "framework/request.h"
-#include "framework/requestext.h"
 #include "file/file.h"
 #include "subject/reference.h"
 #include "subject/sample.h"
@@ -854,7 +853,7 @@ void Regovar::logout()
     else
     {
         Request* test = Request::get("/user/logout");
-        connect(test, &Request::responseReceived, [this](bool success, const QJsonObject& json)
+        connect(test, &Request::responseReceived, [this](bool, const QJsonObject&)
         {
             mUser->clear();
             qDebug() << Q_FUNC_INFO << "You are disconnected !";

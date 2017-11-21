@@ -79,7 +79,7 @@ void User::setRole(const UserRole& role, const UserRight& right)
     mRoles[role] = right;
     emit userChanged();
 }
-void User::setRole(const QString& role, const QString& right)
+void User::setRole(const QString&, const QString&)
 {
     // TODO
 }

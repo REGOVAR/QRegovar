@@ -54,7 +54,7 @@ private:
     //! The model of the subject currently open
     Subject* mSubjectOpen = nullptr;
     //! The index of the open subject in the list
-    int mSubjectOpenIndex;
+    int mSubjectOpenIndex = -1;
 };
 
 #endif // SUBJECTSMANAGER_H

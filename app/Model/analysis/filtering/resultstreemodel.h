@@ -56,11 +56,11 @@ Q_SIGNALS:
 
 private:
     FilteringAnalysis* mFilteringAnalysis = nullptr;
-    bool mIsLoading;
-    int mAnalysisId;
-    int mTotal;
-    int mLoaded;
-    int mPagination;
+    bool mIsLoading = false;
+    int mAnalysisId = -1;
+    int mTotal = 0;
+    int mLoaded = 0;
+    int mPagination = 0;
     QHash<int, QByteArray> mRoles;
 };
 

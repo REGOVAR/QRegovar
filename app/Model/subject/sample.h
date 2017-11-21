@@ -97,7 +97,7 @@ private:
     int mId = -1;
     QString mName;
     QString mNickname;
-    bool mIsMosaic;
+    bool mIsMosaic = false;
     QString mComment;
     QStringList mDefaultAnnotationsDbUid;
     File* mSource = nullptr;
@@ -111,7 +111,7 @@ private:
     //QVariant mSubjectUI;
     QVariant mStatusUI;
     QVariant mSourceUI;
-    bool mIsIndex;
+    bool mIsIndex = false;
     QString mSex;
 };
 

@@ -49,7 +49,7 @@ private:
     QStringList mEnumValues;
     QVariant mValue;
     QVariant mDefaultValue;
-    bool mRequired;
+    bool mRequired = false;
 };
 
 #endif // TOOLPARAMETER_H

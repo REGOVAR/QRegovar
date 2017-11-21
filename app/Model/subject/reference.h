@@ -28,7 +28,7 @@ Q_SIGNALS:
 
 private:
     QString mName;
-    int mId;
+    int mId = -1;
 };
 
 #endif // REFERENCE_H

@@ -8,7 +8,7 @@ OntologyQuickFilter::OntologyQuickFilter(int) : QuickFilterBlockInterface()
 }
 
 
-void OntologyQuickFilter::init(QString _1000gUid, QString exacUid, QStringList _1000g, QStringList exac)
+void OntologyQuickFilter::init(QString, QString, QStringList, QStringList)
 {
 
 }
@@ -44,7 +44,7 @@ void OntologyQuickFilter::clear()
 
 
 
-void OntologyQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
+void OntologyQuickFilter::checkAnnotationsDB(QList<QObject*>)
 {
     // no needs to check annotation's db
 }

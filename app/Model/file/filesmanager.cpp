@@ -136,7 +136,7 @@ void FilesManager::updateUploadProgress()
         foreach (QObject* o, mUploadsList)
         {
             File* f = qobject_cast<File*>(o);
-            int progress;
+            int progress = 0;
             double s = f->size();
             if (s>0) progress = f->uploadOffset() / s * 100;
             totalProgress += progress;

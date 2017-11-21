@@ -18,7 +18,6 @@ HEADERS += \
     Model/framework/treeitem.h \
     Model/framework/treemodel.h \
     Model/framework/request.h \
-    Model/framework/requestext.h \
     Model/analysis/analysis.h \
     Model/analysis/pipeline/pipelineanalysis.h \
     Model/analysis/filtering/advancedfilters/advancedfiltermodel.h \
@@ -65,7 +64,6 @@ SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
     Model/framework/treemodel.cpp \
     Model/framework/request.cpp \
-    Model/framework/requestext.cpp \
     Model/analysis/analysis.cpp \
     Model/analysis/pipeline/pipelineanalysis.cpp \
     Model/analysis/filtering/filteringanalysis.cpp \

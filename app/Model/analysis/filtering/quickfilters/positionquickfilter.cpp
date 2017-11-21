@@ -144,7 +144,7 @@ void PositionQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 
 
 
-bool PositionQuickFilter::loadJson(QJsonArray filter)
+bool PositionQuickFilter::loadJson(QJsonArray)
 {
     // TODO or not TODO ?
     return false;

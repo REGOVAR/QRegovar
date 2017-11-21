@@ -33,7 +33,6 @@ public:
 private:
     QList<QuickFilterField*> mFields;
     QStringList mOperators;
-    bool mIsVisible;
 };
 
 

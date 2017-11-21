@@ -53,7 +53,7 @@ void QualityQuickFilter::checkAnnotationsDB(QList<QObject*>)
 }
 
 
-bool QualityQuickFilter::loadJson(QJsonArray filter)
+bool QualityQuickFilter::loadJson(QJsonArray)
 {
     // TODO or not TODO ?
     return false;

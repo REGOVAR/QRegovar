@@ -36,9 +36,9 @@ signals:
 
 private:
     QString mText;
-    int mId;
-    qint64 mSize;
-    qint64 mOffset;
+    int mId = -1;
+    qint64 mSize = 0;
+    qint64 mOffset = 0;
 };
 
 #endif // FILESTREEITEM_H

@@ -41,8 +41,6 @@ private:
     QStringList mOperators;
     QHash<QString, QString> mOpMapping;
 
-    bool mIsVisible;
-
     QHash<QString,QString> mFieldsNames;
 };
 

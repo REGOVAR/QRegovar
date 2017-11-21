@@ -35,7 +35,6 @@ public:
 
 private:
     QList<QuickFilterField*> mFields;
-    bool mIsVisible;
 };
 
 #endif // TYPEQUICKFILTER_H

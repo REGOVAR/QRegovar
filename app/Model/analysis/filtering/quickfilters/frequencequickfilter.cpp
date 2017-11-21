@@ -193,7 +193,7 @@ void FrequenceQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 }
 
 
-bool FrequenceQuickFilter::loadJson(QJsonArray filter)
+bool FrequenceQuickFilter::loadJson(QJsonArray)
 {
     // TODO or not TODO ?
     return false;

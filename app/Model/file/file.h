@@ -113,7 +113,7 @@ Q_SIGNALS:
 
 private:
     // Attributes
-    int mId;
+    int mId = -1;
     QUrl mUrl;
     QDateTime mCreationDate;
     QDateTime mUpdateDate;

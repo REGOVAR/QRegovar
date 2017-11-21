@@ -75,7 +75,7 @@ Q_SIGNALS:
     void userChanged();
 
 protected:
-    int mId;
+    int mId = -1;
     QString mFirstname;
     QString mLastname;
     QString mEmail;

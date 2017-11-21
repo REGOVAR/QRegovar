@@ -49,7 +49,7 @@ Q_SIGNALS:
     void isActiveChanged();
     void isDisplayedChanged();
 
-private:
+protected:
     QString mFuid;
     QString mLabel;
     QString mOperator;
@@ -57,9 +57,9 @@ private:
     QStringList mOperatorsValues;
     QVariant mValue;
     QVariant mDefaultValue;
-    bool mIsActive;
-    bool mDefaultIsActive;
-    bool mIsDisplayed;
+    bool mIsActive = false;
+    bool mDefaultIsActive = false;
+    bool mIsDisplayed = true;
 
     static QHash<QString, QString> mOpMapping;
     static QHash<QString, QString> initOpMapping();
@@ -92,7 +92,8 @@ public:
     virtual bool loadJson(QJsonArray filter) = 0;
 
 
-
+protected:
+    bool mIsVisible = true;
 
 };
 

@@ -79,9 +79,9 @@ private:
     QByteArray mTusVersion;
     QString mTusRootUrl;
     QString mTusUploadUrl;
-    int mChunkSize;
-    int mBandWidthLimit;
-    int mMaxUpload;
+    int mChunkSize = 0;
+    int mBandWidthLimit = 0;
+    int mMaxUpload = 2;
 
     QNetworkAccessManager mNetManager;
     QQueue<TusUploadItem*> mQueue;

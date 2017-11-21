@@ -28,7 +28,7 @@ Q_SIGNALS:
 
 private:
     //! The id of the current referencial (update sample list on change)
-    int mRefId;
+    int mRefId = -1;
     //! List of samples
     QList<QObject*> mSamplesList;
 

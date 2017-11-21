@@ -138,7 +138,7 @@ void InSilicoPredQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 }
 
 
-bool InSilicoPredQuickFilter::loadJson(QJsonArray filter)
+bool InSilicoPredQuickFilter::loadJson(QJsonArray)
 {
     // TODO or not TODO ?
     return false;

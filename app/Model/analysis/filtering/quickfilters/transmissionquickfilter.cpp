@@ -102,7 +102,7 @@ void TransmissionQuickFilter::checkAnnotationsDB(QList<QObject*>)
 }
 
 
-bool TransmissionQuickFilter::loadJson(QJsonArray filter)
+bool TransmissionQuickFilter::loadJson(QJsonArray)
 {
     // TODO or not TODO ?
     return false;

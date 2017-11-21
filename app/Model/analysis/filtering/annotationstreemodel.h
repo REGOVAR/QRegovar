@@ -44,8 +44,8 @@ Q_SIGNALS:
 
 
 private:
-    bool mIsLoading;
-    int mRefId;
+    bool mIsLoading = false;
+    int mRefId = -1;
     QString mRefName;
 
     QHash<QString, Annotation*> mAnnotations;

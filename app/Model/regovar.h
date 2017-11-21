@@ -294,7 +294,7 @@ private:
     FilteringAnalysis* mNewFilteringAnalysis = nullptr;
     //! list of references supported by the server
     QList<QObject*> mReferences;
-    int mReferenceDefault;
+    int mReferenceDefault = -1;
 
     // Managers
     //! Manage subjects (Browse + CRUD)

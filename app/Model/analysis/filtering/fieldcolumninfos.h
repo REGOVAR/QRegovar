@@ -51,10 +51,10 @@ Q_SIGNALS:
 
 private:
     Annotation* mAnnotation = nullptr;
-    bool mIsDisplayed;
+    bool mIsDisplayed = false;
     QString mSortFilter;
-    int mDisplayOrder;
-    float mWith;
+    int mDisplayOrder = 0;
+    float mWith = 0;
     SpecialRole mRole;
 };
 

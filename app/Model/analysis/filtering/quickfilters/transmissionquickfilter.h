@@ -36,7 +36,7 @@ Q_SIGNALS:
 
 private:
     QHash<QString, QuickFilterField*> mFilters;
-    bool mIsTrio;
+    bool mIsTrio = false;
 };
 
 #endif // TRANSMISSIONQUICKFILTER_H

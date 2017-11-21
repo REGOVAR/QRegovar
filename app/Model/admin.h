@@ -35,10 +35,10 @@ private:
     QString mSection;
     QString mTable;
     QString mDescription;
-    int mCount;
-    int mSize;
-    int mRealSize;
-    bool mClearable;
+    int mCount = 0;
+    int mSize = 0;
+    int mRealSize = 0;
+    bool mClearable = false;
 };
 
 

@@ -34,7 +34,6 @@ public:
 
 private:
     QList<QuickFilterField*> mFields;
-    bool mIsVisible;
 };
 
 #endif // POSITIONQUICKFILTER_H

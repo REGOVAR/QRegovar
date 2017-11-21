@@ -64,9 +64,9 @@ Q_SIGNALS:
 
 private:
     // Attributes
-    int mId;
-    bool mIsSandbox;
-    bool mIsFolder;
+    int mId = -1;
+    bool mIsSandbox = false;
+    bool mIsFolder = false;
     QString mFullPath;
     Project* mParent = nullptr;
     QDateTime mCreationDate;

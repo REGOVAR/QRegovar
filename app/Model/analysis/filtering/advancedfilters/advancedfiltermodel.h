@@ -96,8 +96,8 @@ protected:
     Annotation* mField = nullptr;
     QVariant mFieldValue;
     Set* mSet;
-    bool mEnabled;
-    bool mCollapsed;
+    bool mEnabled = false;
+    bool mCollapsed = true;
     QList<QObject*> mSubConditions;
     QStringList mOpList;
 

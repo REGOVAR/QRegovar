@@ -1,7 +1,7 @@
 #include "toolparameter.h"
 
 ToolParameter::ToolParameter(QObject* parent) :  QObject(parent) {}
-ToolParameter::ToolParameter(QJsonObject json, QObject* parent)
+ToolParameter::ToolParameter(QJsonObject json, QObject* parent) :  QObject(parent)
 {
     mKey = json["key"].toString();
     mName = json["name"].toString();

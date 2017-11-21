@@ -33,8 +33,8 @@ signals:
 
 private:
     QString mText;
-    int mId;
-    bool mIsAnalysis;
+    int mId = -1;
+    bool mIsAnalysis = false;
 };
 
 #endif // PROJECTSTREEITEM_H

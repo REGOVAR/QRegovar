@@ -34,7 +34,7 @@ signals:
 private:
     QVariant mValue;
     QString mUid;
-    bool mIsChecked;
+    bool mIsChecked = false;
 };
 
 #endif // ANNOTATIONSTREEITEM_H
