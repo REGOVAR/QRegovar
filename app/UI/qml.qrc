@@ -161,5 +161,7 @@
         <file>InformationsPanel/Variant/StatsPanel.qml</file>
         <file>InformationsPanel/Variant/VariantInformations.qml</file>
         <file>InformationsPanel/Common/Section.qml</file>
+        <file>Pages/Analysis/Filtering/SelectionTools/ExportTool.qml</file>
+        <file>Pages/Analysis/Filtering/SelectionTools/ReportTool.qml</file>
     </qresource>
 </RCC>

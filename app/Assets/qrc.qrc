@@ -26,5 +26,7 @@
         <file>credits/u_og.png</file>
         <file>credits/t_cpp.png</file>
         <file>credits/t_git.png</file>
+        <file>credits/logo_hugo_w360.png</file>
+        <file>credits/logo_girci_w360.png</file>
     </qresource>
 </RCC>

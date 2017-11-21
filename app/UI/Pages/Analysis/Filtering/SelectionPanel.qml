@@ -1,40 +1,39 @@
 import QtQuick 2.7
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import org.regovar 1.0
 
 import "../../../Regovar"
 import "../../../Framework"
-import "../../../Dialogs"
-
+import "SelectionTools"
 
 Rectangle
 {
     id: root
-    anchors.fill: parent
     color: Regovar.theme.backgroundColor.main
 
     property FilteringAnalysis model
-
-
-    Component.onCompleted:
+    onModelChanged:
     {
-        var maxSize = Math.max()
-    }
-
-    property int buttonSize: -1
-    function setButtonSize(width, elmt)
-    {
-
-        buttonSize = Math.max(buttonSize, width);
-        elmt.width = buttonSize;
+        // We set manually the model to be able to call *after* the reset of the control
+        // otherwise with binding, this order may not be respect, and init of UI is not good.
+        console.log("reset all quick filter panel")
+        for (var i = 0; i < container.children.length; ++i)
+        {
+            var item = container.children[i];
+            if (item.objectName == "qf")
+            {
+                item.model = model;
+                item.reset();
+            }
+        }
     }
 
     ColumnLayout
     {
         anchors.fill: parent
-        spacing: 10
+        spacing: 0
 
         Rectangle
         {
@@ -83,117 +82,70 @@ Rectangle
         }
 
 
-        ButtonIcon
-        {
-            id: showButton
-            anchors.margins: 10
-            text: qsTr("Show selection")
-            icon: "`"
-            enabled: true
-            onWidthChanged: root.setButtonSize(width, this)
-        }
-
-        ButtonIcon
-        {
-            id: exportButton
-            anchors.margins: 10
-            text: qsTr("Export")
-            icon: "_"
-            enabled: true
-            onWidthChanged: root.setButtonSize(width, this)
-        }
-
-        ButtonIcon
-        {
-            id: reportButton
-            anchors.margins: 10
-            text: qsTr("Report")
-            icon: "Y"
-            enabled: true
-            onWidthChanged: root.setButtonSize(width, this)
-        }
-
-        ButtonIcon
-        {
-            id: pipeButton
-            anchors.margins: 10
-            text: qsTr("Pipeline")
-            icon: "I"
-            enabled: false
-
-            onWidthChanged: root.setButtonSize(width, this)
-        }
-        Item
+        ScrollView
         {
             Layout.fillHeight: true
             Layout.fillWidth: true
+            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+            Column
+            {
+                id: container
+                Rectangle { width: root.width; height: 5; color: "transparent" }
+                ExportTool
+                {
+                    id: exportTool; objectName: "qf"; width: root.width;
+                    onIsExpandedChanged: if (isExpanded) reportTool.isExpanded = false;
+                }
+                ReportTool
+                {
+                    id: reportTool; objectName: "qf"; width: root.width;
+                    onIsExpandedChanged: if (isExpanded) exportTool.isExpanded = false;
+                }
+            }
         }
 
-    }
-
-
-    // DIALOGS
-    FilterSaveDialog { id: filterSavingFormPopup }
-    Connections
-    {
-        target: model
-        onDisplayFilterSavingFormPopup:
+        Rectangle
         {
-            filterSavingFormPopup.saveAdvancedFilter = true;
-            filterSavingFormPopup.filterId = -1;
-            filterSavingFormPopup.filterName = "";
-            filterSavingFormPopup.filterDescription = "";
-            filterSavingFormPopup.open();
+            Layout.fillWidth: true
+            height: 1
+            color: Regovar.theme.primaryColor.back.light
         }
-    }
 
-    QuestionDialog
-    {
-        id: deleteConfirmDialog
-        title: qsTr("Filter deletion")
-        onYes: { model.deleteFilter(filterToDelete); filterToDelete = -1 }
-        onNo: filterToDelete = -1
-    }
+        Rectangle
+        {
+            Layout.fillWidth: true
+            height: exportButton.height + 20
+            color: "transparent"
 
+            Row
+            {
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.margins: 10
+                spacing: 10
+//                ButtonIcon
+//                {
+//                    id: showButton
+//                    text: qsTr("Show selection")
+//                    icon: "`"
+//                }
+                ButtonIcon
+                {
+                    id: exportButton
+                    text: qsTr("Export")
+                    icon: "_"
+                    enabled: exportTool.isExpanded
+                }
 
-    function loadResult(filter)
-    {
-        console.log("Load result " + filter.name + "(" + filter.id + ")");
-        var sf = ["AND", [["IN", ["filter", "" + filter.id ]]]];
-        // Update advance filter tree with saved filter
-        root.model.loadFilter(sf);
-        // Get Results
-        root.model.results.applyFilter(sf);
-        // Update Title
-        root.model.currentFilterName = filter.name;
-    }
-    function loadFilter(filter)
-    {
-        console.log("Load filter " + filter.name + "(" + filter.id + ")");
-        // Update advance filter tree with saved filter
-        root.model.loadFilter(filter.filter);
-        // Get Results
-        root.model.results.applyFilter(filter.filter);
-        // Update Title
-        root.model.currentFilterName = filter.name;
-    }
-    function editFilter(filter)
-    {
-        filterSavingFormPopup.filterId = filter.id;
-        filterSavingFormPopup.filterName = filter.name;
-        filterSavingFormPopup.filterDescription = filter.description;
-        filterSavingFormPopup.saveAdvancedFilter = false;
-        filterSavingFormPopup.open();
-    }
-
-    property int filterToDelete
-    function deleteFilter(filter)
-    {
-        var txt = qsTr("Do you confirm the deletion of the \"{}\" filter ?");
-        txt = txt.replace("{}", filter.name);
-        root.filterToDelete = filter.id;
-
-        deleteConfirmDialog.text = txt;
-        deleteConfirmDialog.open();
+                ButtonIcon
+                {
+                    id: reportButton
+                    text: qsTr("Report")
+                    icon: "Y"
+                    enabled: reportTool.isExpanded
+                }
+            }
+        }
     }
 }

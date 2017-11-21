@@ -106,6 +106,8 @@ Rectangle
                 onClicked:
                 {
                     model.results.applyFilter(model.advancedfilter.toJson());
+                    // Update Title
+                    root.model.currentFilterName = "";
                 }
             }
             ButtonIcon

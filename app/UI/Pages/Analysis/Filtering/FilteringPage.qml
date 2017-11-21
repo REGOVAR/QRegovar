@@ -72,12 +72,4 @@ Rectangle
             Layout.fillWidth: true
         }
     }
-
-
-
-
-
-
-
-
 }
