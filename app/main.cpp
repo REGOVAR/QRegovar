@@ -12,6 +12,8 @@
 #include "Model/analysis/pipeline/pipelineanalysis.h"
 #include "Model/subject/reference.h"
 #include "Model/subject/attribute.h"
+#include "Model/tools/tool.h"
+#include "Model/tools/toolparameter.h"
 
 
 int main(int argc, char *argv[])
@@ -45,6 +47,9 @@ int main(int argc, char *argv[])
     qmlRegisterType<File>("org.regovar", 1, 0, "File");
     qmlRegisterType<Reference>("org.regovar", 1, 0, "Reference");
     qmlRegisterType<Attribute>("org.regovar", 1, 0, "Attribute");
+
+    qmlRegisterType<Tool>("org.regovar", 1, 0, "Tool");
+    qmlRegisterType<ToolParameter>("org.regovar", 1, 0, "ToolParameter");
 
 
 

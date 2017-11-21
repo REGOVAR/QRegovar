@@ -17,6 +17,8 @@ QuickFilterBox
     isExpanded: false
 
     property bool internalUiUpdate: false
+    property var parameters
+
 
     onModelChanged:
     {
@@ -31,370 +33,84 @@ QuickFilterBox
         anchors.right: parent.right
 
 
-        Text
+
+        Rectangle { width: root.width; height: 5; color: "transparent" }
+        GridLayout
         {
+            width: content.width - 50
             anchors.left: parent.left
-            anchors.leftMargin: 5
+            anchors.leftMargin: 30
 
-            elide: Text.ElideRight
-            font.pixelSize: Regovar.theme.font.size.normal
-            color: Regovar.theme.primaryColor.back.dark
-            text: qsTr("Mode")
-        }
+            columnSpacing: 10
+            rowSpacing: 5
+            columns: 2
+            rows: 2
 
+            Text
+            {
 
+                elide: Text.ElideRight
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.primaryColor.back.dark
+                text: qsTr("Type:")
+            }
 
-        RowLayout
-        {
-            width: content.width
-            CheckBox
+            ComboBox
             {
                 id: modeAll
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                text: qsTr("All")
-                checked: true
-                onCheckedChanged:
-                {
-                    if (!internalUiUpdate)
-                    {
-                        // Update other checkboxes
-                        internalUiUpdate = true;
-                        if (checked)
-                        {
-                            modeDom.checked = false;
-                            modeRec.checked = false;
-                            modeHtz.checked = false;
-                            modeHtzComp.checked = false;
-                        }
+                Layout.fillWidth: true
+                model: regovar.exporters
+                textRole: "name"
+                onCurrentIndexChanged: parameters = regovar.exporters[currentIndex].parameters
+            }
 
-                        checkFinal();
-                        internalUiUpdate = false;
-                    }
-                }
+            Text
+            {
+                Layout.row: 1
+                Layout.column: 1
+                Layout.fillWidth: true
+                text: qsTr("Select the format in which you wants to export your data.")
+                font.pixelSize: Regovar.theme.font.size.small
+                font.italic: true
+                color: Regovar.theme.primaryColor.back.normal
+                wrapMode: Text.WordWrap
             }
         }
-        RowLayout
+
+        Rectangle
         {
-            width: content.width
-            CheckBox
+            visible: parameters
+            width: root.width
+            height: 20
+            color: "transparent"
+            Rectangle
             {
-                id: modeDom
+                width: content.width - 50
+                anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: 30
-                text: qsTr("Dominant")
-                checked: false
-                onCheckedChanged:
-                {
-                    if (!internalUiUpdate)
-                    {
-                        // Update other checkboxes
-                        internalUiUpdate = true;
-                        if (checked)
-                        {
-                            modeAll.checked = false;
-                        }
-                        checkFinal();
-                        internalUiUpdate = false;
-                    }
-                }
+                height: 1
+                color: Regovar.theme.primaryColor.back.normal
             }
         }
-        RowLayout
+
+        Column
         {
-            width: content.width
-            CheckBox
+            visible: parameters
+
+            Repeater
             {
-                id: modeRec
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                text: qsTr("Recessive")
-                checked: false
-                onCheckedChanged:
+                model: root.parameters
+
+                CheckBox
                 {
-                    if (!internalUiUpdate)
-                    {
-                        // Update other checkboxes
-                        internalUiUpdate = true;
-                        if (checked)
-                        {
-                            modeAll.checked = false;
-                            modeHtz.checked = true;
-                            modeHtzComp.checked = true;
-                        }
-                        else
-                        {
-                            modeHtz.checked = false;
-                            modeHtzComp.checked = false;
-                        }
-                        checkFinal();
-                        internalUiUpdate = false;
-                    }
-                }
-            }
-        }
-        RowLayout
-        {
-            width: content.width
-            CheckBox
-            {
-                id: modeHtz
-                anchors.left: parent.left
-                anchors.leftMargin: 50
-                text: qsTr("Homozygous")
-                checked: false
-                onCheckedChanged:
-                {
-                    if (!internalUiUpdate)
-                    {
-                        // Update other checkboxes
-                        internalUiUpdate = true;
-                        if (checked)
-                        {
-                            modeAll.checked = false;
-                            modeRec.checked = modeHtz.checked && modeHtzComp.checked;
-                        }
-                        checkFinal();
-                        internalUiUpdate = false;
-                    }
-                }
-            }
-        }
-        RowLayout
-        {
-            width: content.width
-            CheckBox
-            {
-                id: modeHtzComp
-                anchors.left: parent.left
-                anchors.leftMargin: 50
-                text: qsTr("Compound heterozygous")
-                checked: false
-                onCheckedChanged:
-                {
-                    if (!internalUiUpdate)
-                    {
-                        // Update other checkboxes
-                        internalUiUpdate = true;
-                        if (checked)
-                        {
-                            modeAll.checked = false;
-                            modeRec.checked = modeHtz.checked && modeHtzComp.checked;
-                        }
-                        checkFinal();
-                        internalUiUpdate = false;
-                    }
+                    text: modelData.key
                 }
             }
         }
 
 
-        Text
-        {
-            anchors.left: parent.left
-            anchors.leftMargin: 5
 
-            elide: Text.ElideRight
-            font.pixelSize: Regovar.theme.font.size.normal
-            color: Regovar.theme.primaryColor.back.dark
-            text: qsTr("Segregation")
-        }
-        RowLayout
-        {
-            width: content.width
-            CheckBox
-            {
-                id: segAll
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                text: qsTr("All")
-                checked: true
-                onCheckedChanged:
-                {
-                    if (!internalUiUpdate)
-                    {
-                        // Update other checkboxes
-                        internalUiUpdate = true;
-                        if (checked)
-                        {
-                            segDen.checked = false;
-                            segInh.checked = false;
-                        }
-                        checkFinal();
-                        internalUiUpdate = false;
-                    }
-                }
-            }
-        }
-        RowLayout
-        {
-            width: content.width
-            CheckBox
-            {
-                id: segDen
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                text: qsTr("De novo")
-                checked: false
-                onCheckedChanged:
-                {
-                    if (!internalUiUpdate)
-                    {
-                        // Update other checkboxes
-                        internalUiUpdate = true;
-                        if (checked)
-                        {
-                            segAll.checked = false;
-                        }
-                        checkFinal();
-                        internalUiUpdate = false;
-                    }
-                }
-            }
-        }
-        RowLayout
-        {
-            width: content.width
-            CheckBox
-            {
-                id: segInh
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                text: qsTr("Inherited")
-                checked: false
-                onCheckedChanged:
-                {
-                    if (!internalUiUpdate)
-                    {
-                        // Update other checkboxes
-                        internalUiUpdate = true;
-                        if (checked)
-                        {
-                            segAll.checked = false;
-                        }
-                        checkFinal();
-                        internalUiUpdate = false;
-                    }
-                }
-            }
-        }
-
-
-        Text
-        {
-            anchors.left: parent.left
-            anchors.leftMargin: 5
-
-            elide: Text.ElideRight
-            font.pixelSize: Regovar.theme.font.size.normal
-            color: Regovar.theme.primaryColor.back.dark
-            text: qsTr("Localisation")
-        }
-        RowLayout
-        {
-            width: content.width
-            CheckBox
-            {
-                id: locAll
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                text: qsTr("All")
-                checked: true
-                onCheckedChanged:
-                {
-                    if (!internalUiUpdate)
-                    {
-                        // Update other checkboxes
-                        internalUiUpdate = true;
-                        if (checked)
-                        {
-                            locAut.checked = false;
-                            locXlk.checked = false;
-                            locMit.checked = false;
-                        }
-                        checkFinal();
-                        internalUiUpdate = false;
-                    }
-                }
-            }
-        }
-        RowLayout
-        {
-            width: content.width
-            CheckBox
-            {
-                id: locAut
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                text: qsTr("Autosomal")
-                checked: false
-                onCheckedChanged:
-                {
-                    if (!internalUiUpdate)
-                    {
-                        // Update other checkboxes
-                        internalUiUpdate = true;
-                        if (checked)
-                        {
-                            locAll.checked = false;
-                        }
-                        checkFinal();
-                        internalUiUpdate = false;
-                    }
-                }
-            }
-        }
-        RowLayout
-        {
-            width: content.width
-            CheckBox
-            {
-                id: locXlk
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                text: qsTr("X-linked")
-                checked: false
-                onCheckedChanged:
-                {
-                    if (!internalUiUpdate)
-                    {
-                        // Update other checkboxes
-                        internalUiUpdate = true;
-                        if (checked)
-                        {
-                            locAll.checked = false;
-                        }
-                        checkFinal();
-                        internalUiUpdate = false;
-                    }
-                }
-            }
-        }
-        RowLayout
-        {
-            width: content.width
-            CheckBox
-            {
-                id: locMit
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                text: qsTr("Mitochondrial")
-                checked: false
-                onCheckedChanged:
-                {
-                    if (!internalUiUpdate)
-                    {
-                        // Update other checkboxes
-                        internalUiUpdate = true;
-                        if (checked)
-                        {
-                            locAll.checked = false;
-                        }
-                        checkFinal();
-                        internalUiUpdate = false;
-                    }
-                }
-            }
-        }
+        Rectangle { width: root.width; height: 5; color: "transparent" }
     }
 }

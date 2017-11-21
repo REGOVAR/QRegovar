@@ -17,7 +17,7 @@ ComboBox
         height: Regovar.theme.font.boxSize.normal
         contentItem: Text
         {
-            text: modelData
+            text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData
             color: enabled ? Regovar.theme.boxColor.front : Regovar.theme.frontColor.disable
             font: control.font
             elide: Text.ElideRight

@@ -91,6 +91,10 @@ class Regovar : public QObject
     Q_PROPERTY(SubjectsManager* subjectsManager READ subjectsManager NOTIFY neverChanged)
     Q_PROPERTY(SamplesManager* samplesManager READ samplesManager NOTIFY neverChanged)
 
+    // Customs Tools
+    Q_PROPERTY(QList<QObject*> exporters READ exporters NOTIFY neverChanged)
+    Q_PROPERTY(QList<QObject*> reporters READ reporters NOTIFY neverChanged)
+
     // New analysis wizard
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
 
@@ -141,6 +145,8 @@ public:
     inline FilesManager* filesManager() const { return mFilesManager; }
     inline SubjectsManager* subjectsManager() const { return mSubjectsManager; }
     inline SamplesManager* samplesManager() const { return mSamplesManager; }
+    inline QList<QObject*> exporters() const { return mExporters; }
+    inline QList<QObject*> reporters() const { return mReporters; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
     inline QList<QObject*> projectsList() const { return mProjectsList; }
@@ -256,6 +262,10 @@ private:
     User* mUser = nullptr;
     //! Admin operation wrapper
     Admin* mAdmin = nullptr;
+    //! Custom tools : export manager for variant selection
+    QList<QObject*> mExporters;
+    //! Custom tools : report manager for variant selection
+    QList<QObject*> mReporters;
 
     //! Search request and results
     QString mSearchRequest;

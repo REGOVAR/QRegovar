@@ -10,6 +10,7 @@
 #include "file/file.h"
 #include "subject/reference.h"
 #include "subject/sample.h"
+#include "tools/tool.h"
 #include <QDateTime>
 
 
@@ -279,6 +280,19 @@ void Regovar::loadWelcomData()
                 if (ref->id() > 0) mReferences.append(ref);
             }
             emit referencesChanged();
+
+            // Get custom tools deployed
+            QJsonObject tools = data["tools"].toObject();
+            foreach (QJsonValue jsonVal, tools["exporters"].toArray())
+            {
+                mExporters.append(new Tool(jsonVal.toObject()));
+            }
+//            foreach (QJsonValue jsonVal, tools["reporters"].toArray())
+//            {
+//                Reference* ref = new Reference();
+//                ref->fromJson(jsonVal.toObject());
+//                if (ref->id() > 0) mReferences.append(ref);
+//            }
 
             // Get milestones data
             QJsonObject milestones;
