@@ -46,9 +46,9 @@ Rectangle
         anchors.left: root.left
         anchors.right: root.right
         anchors.bottom: root.bottom
-        anchors.margins: 10
+        anchors.margins: 0
 
-        url: "http://regovar.readthedocs.io/fr/latest/Guide%20utilisateur/01.%20Bienvenue/"
+        url: "http://regovar.readthedocs.io/fr/latest/"
     }
 
 

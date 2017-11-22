@@ -1,6 +1,8 @@
-import QtQuick 2.7
+import QtQuick 2.9
 import QtQuick.Layouts 1.3
+import QtWebView 1.0
 import org.regovar 1.0
+//import QtWebKit 3.0
 import "../../../Regovar"
 import "../../../Framework"
 
@@ -45,15 +47,18 @@ Rectangle
         }
     }
 
-    Text
+    WebView
     {
-        anchors.centerIn: parent
-        text: qsTr("Documentation regarding filtering analyses")
-        color: Regovar.theme.primaryColor.back.dark
-        font.pixelSize: Regovar.theme.font.size.header
-        font.family: Regovar.theme.font.familly
-        verticalAlignment: Text.AlignVCenter
-        height: 35
+        anchors.top : header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.bottom: root.bottom
+        anchors.margins: 0
+
+        url: "http://regovar.readthedocs.io/fr/latest/user/filtering/"
     }
+
+
+
 
 }

@@ -61,7 +61,11 @@ QuickFilterBox
                 Layout.fillWidth: true
                 model: regovar.exporters
                 textRole: "name"
-                onCurrentIndexChanged: root.parameters = regovar.exporters[currentIndex].parameters
+                onCurrentIndexChanged:
+                {
+                    root.parameters = regovar.exporters[currentIndex].parameters;
+                    description.text = regovar.exporters[currentIndex].description;
+                }
             }
 
             Text
@@ -92,6 +96,26 @@ QuickFilterBox
                 height: 1
                 color: Regovar.theme.primaryColor.back.normal
             }
+        }
+
+        Text
+        {
+            id: description
+            visible: root.parameters && root.parameters.length > 0
+            width: root.width
+            height: 20
+            font.pixelSize: Regovar.theme.font.size.small
+            font.italic: true
+            color: Regovar.theme.primaryColor.back.normal
+            wrapMode: Text.WordWrap
+        }
+
+        Rectangle
+        {
+            visible: root.parameters && root.parameters.length > 0
+            width: root.width
+            height: 20
+            color: "transparent"
         }
 
         DynamicForm
