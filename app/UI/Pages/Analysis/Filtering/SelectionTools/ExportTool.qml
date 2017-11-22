@@ -101,8 +101,10 @@ QuickFilterBox
         Text
         {
             id: description
+            width: content.width - 50
+            anchors.left: parent.left
+            anchors.leftMargin: 30
             visible: root.parameters && root.parameters.length > 0
-            width: root.width
             height: 20
             font.pixelSize: Regovar.theme.font.size.small
             font.italic: true

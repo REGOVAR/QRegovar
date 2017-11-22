@@ -108,7 +108,7 @@ Rectangle
                     {
                         title: qsTr("Online Tools")
                         icon: "è"
-                        source: "../Pages/Analysis/Filtering/VariantInformations/OnlineToolsPanel.qml"
+                        source: "../Analysis/Filtering/VariantInformations/OnlineToolsPanel.qml"
                     }
                     ListElement
                     {

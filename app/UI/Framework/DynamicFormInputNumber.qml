@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
+import org.regovar 1.0
 
 import "../Regovar"
 
@@ -12,14 +13,14 @@ GridLayout
     columns: 2
     rows: 2
 
-    property var model
+    property ToolParameter model
 
     Text
     {
         elide: Text.ElideRight
         font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.dark
-        text: model ? model["name"] : "?"
+        text: root.model ? root.model.name : "?"
     }
 
     TextField
@@ -33,7 +34,7 @@ GridLayout
         Layout.row: 1
         Layout.column: 1
         Layout.fillWidth: true
-        text: model ? model["description"] : ["?"]
+        text: root.model ? root.model.description : "?"
         font.pixelSize: Regovar.theme.font.size.small
         font.italic: true
         color: Regovar.theme.primaryColor.back.normal

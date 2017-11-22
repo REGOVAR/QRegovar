@@ -1,12 +1,13 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
+import org.regovar 1.0
 
 
 Item
 {
     id: root
     property var component: null
-    property var model
+    property ToolParameter model
     onEnabledChanged: if (component) component.enabled = enabled;
     onModelChanged:
     {
@@ -42,7 +43,6 @@ Item
         if (comp.status == Component.Ready)
         {
             elmt = comp.createObject(root);
-            elmt.analysis = root.analysis;
             elmt.anchors.top = root.top;
             elmt.anchors.right = root.right;
             elmt.anchors.left = root.left;
@@ -52,7 +52,7 @@ Item
             if (elmt.hasOwnProperty("model"))
             {
                 elmt.model = Qt.binding(function() { return root.model; });
-                elmt.isEnabled = Qt.binding(function() { return root.isEnabled; });
+                elmt.enabled = Qt.binding(function() { return root.enabled; });
             }
         }
         else if (comp.status == Component.Error)
