@@ -163,5 +163,11 @@
         <file>InformationsPanel/Common/Section.qml</file>
         <file>Pages/Analysis/Filtering/SelectionTools/ExportTool.qml</file>
         <file>Pages/Analysis/Filtering/SelectionTools/ReportTool.qml</file>
+        <file>Framework/DynamicForm.qml</file>
+        <file>Framework/DynamicFormInput.qml</file>
+        <file>Framework/DynamicFormInputEnum.qml</file>
+        <file>Framework/DynamicFormInputBool.qml</file>
+        <file>Framework/DynamicFormInputNumber.qml</file>
+        <file>Framework/DynamicFormInputString.qml</file>
     </qresource>
 </RCC>

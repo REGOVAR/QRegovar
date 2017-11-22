@@ -61,7 +61,7 @@ QuickFilterBox
                 Layout.fillWidth: true
                 model: regovar.exporters
                 textRole: "name"
-                onCurrentIndexChanged: parameters = regovar.exporters[currentIndex].parameters
+                onCurrentIndexChanged: root.parameters = regovar.exporters[currentIndex].parameters
             }
 
             Text
@@ -79,7 +79,7 @@ QuickFilterBox
 
         Rectangle
         {
-            visible: parameters
+            visible: root.parameters && root.parameters.length > 0
             width: root.width
             height: 20
             color: "transparent"
@@ -94,22 +94,15 @@ QuickFilterBox
             }
         }
 
-        Column
+        DynamicForm
         {
-            visible: parameters
+            width: content.width - 50
+            anchors.left: parent.left
+            anchors.leftMargin: 30
 
-            Repeater
-            {
-                model: root.parameters
-
-                CheckBox
-                {
-                    text: modelData.key
-                }
-            }
+            visible: root.parameters && root.parameters.length > 0
+            model: root.parameters
         }
-
-
 
         Rectangle { width: root.width; height: 5; color: "transparent" }
     }

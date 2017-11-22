@@ -1,40 +1,34 @@
 import QtQuick 2.7
-import QtQuick.Controls 2.0
-import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
-import org.regovar 1.0
 
-import "../../../../Regovar"
 
-Rectangle
+Item
 {
     id: root
-
-    property FilteringAnalysis analysis
-    property AdvancedFilterModel model
-    property bool isEnabled
-    onIsEnabledChanged: if (component) { component.isEnabled = isEnabled; }
     property var component: null
-
-    color: "transparent"
-
+    property var model
+    onEnabledChanged: if (component) component.enabled = enabled;
     onModelChanged:
     {
         if (model)
         {
             console.log("model = " + model);
             console.log("type  = " + model.type);
-            if (model.type === 0)
+            if (model.type === "enum")
             {
-                component = createBlock("LogicalBlock.qml", model);
+                component = createBlock("DynamicFormInputEnum.qml", model);
             }
-            else if (model.type === 2)
+            else if (model.type === "bool")
             {
-                component = createBlock("SetBlock.qml", model);
+                component = createBlock("DynamicFormInputBool.qml", model);
+            }
+            else if (model.type === "int")
+            {
+                component = createBlock("DynamicFormInputNumber.qml", model);
             }
             else
             {
-                component = createBlock("FieldBlock.qml", model);
+                component = createBlock("DynamicFormInputString.qml", model);
             }
         }
     }
@@ -68,4 +62,5 @@ Rectangle
 
         return elmt;
     }
+
 }
