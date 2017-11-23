@@ -71,13 +71,13 @@ QtObject
 //        }
 
         // Add new open project
-        for (var i=0; i<regovar.projectsOpen.length; i++)
+        for (var i=0; i<regovar.projectsManager.projectsOpenList.length; i++)
         {
             var itemFound = false;
             for (var j=0; j<menuModel.model[2]["sublevel"].length; j++)
             {
 
-                if ( regovar.projectsOpen[i].id == menuModel.model[2]["sublevel"][j].projectId )
+                if (regovar.projectsManager.projectsOpenList[i].id == menuModel.model[2]["sublevel"][j].projectId )
                 {
                     itemFound = menuModel.model[2]["sublevel"][j];
                 }
@@ -86,12 +86,16 @@ QtObject
             if (itemFound === false)
             {
                 // Add project to the menu
-                currentopeningProject = regovar.projectsOpen[i];
-                menuModel.model[2]["sublevel"] = menuModel.model[2]["sublevel"].concat({ "icon": "6", "label": currentopeningProject.name, "projectId": currentopeningProject.id, "page": "", "sublevel": [
-                  { "label": qsTr("Summary"),  "page": "Project/SummaryPage.qml", "sublevel": []},
-                  { "label": qsTr("Analyses"), "page": "Project/AnalysesPage.qml", "sublevel": []},
-                  { "label": qsTr("Subjects"), "page": "Project/SubjectsPage.qml", "sublevel": []},
-                  { "label": qsTr("Files"),    "page": "Project/FilesPage.qml", "sublevel": []},
+                currentopeningProject = regovar.projectsManager.projectsOpenList[i];
+                menuModel.model[2]["sublevel"] = menuModel.model[2]["sublevel"].concat({
+                  "icon": "6",
+                  "label": currentopeningProject.name,
+                  "projectId": currentopeningProject.id,
+                  "page": "", "sublevel": [
+                      { "label": qsTr("Summary"),  "page": "Project/SummaryPage.qml", "sublevel": []},
+                      { "label": qsTr("Analyses"), "page": "Project/AnalysesPage.qml", "sublevel": []},
+                      { "label": qsTr("Subjects"), "page": "Project/SubjectsPage.qml", "sublevel": []},
+                  //{ "label": qsTr("Files"),    "page": "Project/FilesPage.qml", "sublevel": []},
                    ], "subindex": 0});
             }
         }

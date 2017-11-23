@@ -58,7 +58,9 @@ HEADERS += \
     Model/file/filesmanager.h \
     Model/analysis/filtering/quickfilters/ontologyquickfilter.h \
     Model/tools/toolparameter.h \
-    Model/tools/tool.h
+    Model/tools/tool.h \
+    Model/tools/toolsmanager.h \
+    Model/project/projectsmanager.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -104,7 +106,9 @@ SOURCES += main.cpp \
     Model/file/filesmanager.cpp \
     Model/analysis/filtering/quickfilters/ontologyquickfilter.cpp \
     Model/tools/toolparameter.cpp \
-    Model/tools/tool.cpp
+    Model/tools/tool.cpp \
+    Model/tools/toolsmanager.cpp \
+    Model/project/projectsmanager.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

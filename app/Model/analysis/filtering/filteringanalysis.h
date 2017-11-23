@@ -2,6 +2,7 @@
 #define FILTERINGANALYSIS_H
 
 #include <QObject>
+#include "Model/project/project.h"
 #include "../analysis.h"
 #include "resultstreemodel.h"
 #include "annotationstreemodel.h"
@@ -27,6 +28,7 @@ class FilteringAnalysis : public Analysis
     // Analysis properties
     Q_PROPERTY(int refId READ refId NOTIFY refChanged)
     Q_PROPERTY(QString refName READ refName NOTIFY refChanged)
+    Q_PROPERTY(Project* project READ project WRITE setProject NOTIFY projectChanged)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
     Q_PROPERTY(QJsonArray filterJson READ filterJson NOTIFY filterChanged)      // Filter json formated shared with server
     //Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsChanged)             // List of fields UID shared with Server to retrieve information about variant/trx
@@ -76,6 +78,7 @@ public:
     inline LoadingStatus loadingStatus() { return mLoadingStatus; }
     // Analysis properties
     inline QString refName() { return mRefName; }
+    inline Project* project() { return mProject; }
     inline QString status() { return mStatus; }
     inline QJsonArray filterJson() { return mFilterJson; }
     inline QStringList fields() { return mFields; }
@@ -114,9 +117,10 @@ public:
     Q_INVOKABLE inline void setCurrentFilterName(QString name) { mCurrentFilterName=name; emit currentFilterNameChanged(); }
     Q_INVOKABLE void setField(QString uid, bool isDisplayed, int order=-1, bool internalUpdate=false);
     Q_INVOKABLE void setReference(Reference* ref, bool continueInit=false);
+    Q_INVOKABLE void setProject(Project* project) { mProject = project; emit projectChanged(); }
 
     // Methods
-    bool fromJson(QJsonObject json);
+    bool fromJson(QJsonObject json, bool full_init=true);
     Q_INVOKABLE inline FieldColumnInfos* getColumnInfo(QString uid) { return mAnnotations.contains(uid) ? mAnnotations[uid] : nullptr; }
     Q_INVOKABLE inline void emitDisplayFilterSavingFormPopup() { emit displayFilterSavingFormPopup(); }
     Q_INVOKABLE inline void emitDisplayFilterNewCondPopup(QString conditionUid) { emit displayFilterNewCondPopup(conditionUid); }
@@ -148,6 +152,7 @@ public:
 
 Q_SIGNALS:
     void isLoading();
+    void projectChanged();
     void statusChanged();
     void loadingStatusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
     void annotationsChanged();
@@ -189,6 +194,7 @@ private:
     // Attributes
     int mRefId = -1;
     QString mRefName;
+    Project* mProject = nullptr;
     QStringList mFields;
     QStringList mOrder;
     QJsonArray mFilterJson;

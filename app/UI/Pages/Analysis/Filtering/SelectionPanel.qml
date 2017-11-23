@@ -136,6 +136,7 @@ Rectangle
                     text: qsTr("Export")
                     icon: "_"
                     enabled: exportTool.isExpanded
+                    onClicked: regovar.ex
                 }
 
                 ButtonIcon

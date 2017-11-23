@@ -19,7 +19,7 @@ Dialog
 
     Connections
     {
-        target: regovar
+        target: regovar.projectsManager
         onProjectCreationDone:
         {
             loadingIndicator.visible = false;
@@ -121,7 +121,7 @@ Dialog
                     if (nameField.text.trim() != "")
                     {
                         loadingIndicator.visible = true;
-                        regovar.newProject(nameField.text.trim(), commentField.text);
+                        regovar.projectsManager.newProject(nameField.text.trim(), commentField.text);
                     }
                 }
             }

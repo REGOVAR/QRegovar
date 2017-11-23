@@ -96,10 +96,12 @@ void Regovar::init()
     mUser = new User(1, "Olivier", "Gueudelot");
     mConfig = new RegovarInfo();
     mAdmin = new Admin();
-    mProjectsTreeView = new ProjectsTreeModel();
+
+    mProjectsManager = new ProjectsManager();
     mSubjectsManager = new SubjectsManager();
     mFilesManager = new FilesManager();
     mSamplesManager = new SamplesManager(mReferenceDefault);
+    mToolsManager = new ToolsManager();
     mNewPipelineAnalysis = new PipelineAnalysis();
     mNewFilteringAnalysis = new FilteringAnalysis();
 
@@ -113,7 +115,7 @@ void Regovar::init()
 
 
     // Init sub models
-    refreshProjectsLists();
+    mProjectsManager->refreshProjectsList();
     mSubjectsManager->refreshSubjectsList();
 
 
@@ -225,10 +227,6 @@ void Regovar::readSettings()
 
 
 
-void Regovar::refreshProjectsTreeView()
-{
-    qDebug() << Q_FUNC_INFO << "TODO";
-}
 
 
 
@@ -280,18 +278,6 @@ void Regovar::loadWelcomData()
             }
             emit referencesChanged();
 
-            // Get custom tools deployed
-            QJsonObject tools = data["tools"].toObject();
-            foreach (QJsonValue jsonVal, tools["exporters"].toArray())
-            {
-                mExporters.append(new Tool(jsonVal.toObject()));
-            }
-//            foreach (QJsonValue jsonVal, tools["reporters"].toArray())
-//            {
-//                Reference* ref = new Reference();
-//                ref->fromJson(jsonVal.toObject());
-//                if (ref->id() > 0) mReferences.append(ref);
-//            }
 
             // Get milestones data
             QJsonObject milestones;
@@ -332,50 +318,6 @@ void Regovar::loadWelcomData()
 
 
 
-void Regovar::refreshFlatProjectsListRecursive(QJsonArray data, QString prefix)
-{
-    foreach(const QJsonValue json, data)
-    {
-        QJsonObject p = json.toObject();
-        QString name = p["name"].toString();
-
-
-        // If folder, need to retrieve subitems recursively
-        if (p["is_folder"].toBool())
-        {
-            refreshFlatProjectsListRecursive(p["children"].toArray(), prefix + name + "/");
-        }
-        else
-        {
-            p.insert("fullpath", prefix + name);
-            Project* proj = new Project();
-            proj->fromJson(p);
-            mProjectsList << proj;
-        }
-    }
-}
-
-void Regovar::refreshProjectsLists()
-{
-    mProjectsTreeView->setIsLoading(true);
-
-    Request* request = Request::get("/project/browserTree");
-    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            mProjectsTreeView->refresh(json);
-            mProjectsList.clear();
-            refreshFlatProjectsListRecursive(json["data"].toArray(), "");
-        }
-        else
-        {
-            qCritical() << Q_FUNC_INFO << "Unable to build projects tree model (due to request error)";
-        }
-        mProjectsTreeView->setIsLoading(false);
-        request->deleteLater();
-    });
-}
 
 
 
@@ -497,11 +439,6 @@ bool Regovar::openAnalysis(QJsonObject data)
 //    emit selectedReferenceChanged();
 //}
 
-void Regovar::setSelectedProject(int idx)
-{
-    mSelectedProject=idx;
-    emit selectedProjectChanged();
-}
 
 
 
@@ -521,69 +458,8 @@ void Regovar::setSelectedProject(int idx)
 
 
 
-void Regovar::newProject(QString name, QString comment)
-{
-    QJsonObject body;
-    body.insert("name", name);
-    body.insert("is_filter", false);
-    body.insert("comment", comment);
-
-    Request* req = Request::post(QString("/project"), QJsonDocument(body).toJson());
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            refreshProjectsLists();
-            QJsonObject projectData = json["data"].toObject();
-            openProject(projectData["id"].toInt());
-            emit projectCreationDone(true, projectData["id"].toInt());
-
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
-}
 
 
-void Regovar::openProject(int id)
-{
-    Request* req = Request::get(QString("/project/%1").arg(id));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            openProject(json);
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
-}
-
-void Regovar::openProject(QJsonObject json)
-{
-    Project* project = new Project(regovar);
-
-    if (project->fromJson(json["data"].toObject()))
-    {
-        // store project model
-        mProjectsOpen.append(project);
-        emit projectsOpenChanged();
-    }
-    else
-    {
-        qDebug() << Q_FUNC_INFO << "Failed to load project data.";
-    }
-}
 
 bool Regovar::newAnalysis(QString type)
 {
@@ -641,7 +517,7 @@ bool Regovar::newAnalysis(QString type)
 
         // Send request to server
         QJsonObject body;
-        Project* proj = qobject_cast<Project*>(mProjectsList[mSelectedProject]);
+        Project* proj = mNewFilteringAnalysis->project();
         body.insert("project_id", proj->id());
         body.insert("reference_id", mNewFilteringAnalysis->refId());
         body.insert("name", mNewFilteringAnalysis->name());

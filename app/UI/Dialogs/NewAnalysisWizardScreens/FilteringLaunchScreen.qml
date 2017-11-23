@@ -56,16 +56,12 @@ GenericScreen
         {
             Layout.fillWidth: true
             id: projectField
-            model: regovar.projects
+            model: regovar.projectsManager.projectsFlatList
             textRole: "fullPath"
-            currentIndex: regovar.selectedProject
             onCurrentIndexChanged:
             {
-                if (regovar.selectedProject != currentIndex)
-                {
-                    regovar.selectedProject = currentIndex;
-                    checkReady();
-                }
+                regovar.newFilteringAnalysis.project = regovar.projectsManager.projectsFlatList[currentIndex];
+                checkReady();
             }
             delegate: ItemDelegate
             {

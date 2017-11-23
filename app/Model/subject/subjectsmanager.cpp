@@ -4,7 +4,6 @@
 
 SubjectsManager::SubjectsManager(QObject *parent) : QObject(parent)
 {
-
 }
 
 
@@ -94,7 +93,7 @@ void SubjectsManager::openSubject(int id)
 {
     // Get subject
     Subject* subject = getOrCreateSubject(id);
-    // Refresh / get all information of the
+    // Refresh / get all information of the subject
     subject->load();
     // Set ref index
     mSubjectOpenIndex = mSubjectsOpenList.indexOf(subject);

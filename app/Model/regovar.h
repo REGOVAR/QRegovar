@@ -9,9 +9,11 @@
 
 #include "analysis/filtering/filteringanalysis.h"
 #include "analysis/pipeline/pipelineanalysis.h"
+#include "project/projectsmanager.h"
 #include "subject/subjectsmanager.h"
 #include "subject/samplesmanager.h"
 #include "file/filesmanager.h"
+#include "tools/toolsmanager.h"
 // TODO: rework as manager pattern
 #include "user.h"
 #include "admin.h"
@@ -84,23 +86,19 @@ class Regovar : public QObject
     Q_PROPERTY(bool welcomIsLoading READ welcomIsLoading WRITE setWelcomIsLoading NOTIFY welcomIsLoadingChanged)
 
     // Browsers
-    Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewChanged)
-    Q_PROPERTY(QList<QObject*> projectsOpen READ projectsOpen NOTIFY projectsOpenChanged)
 
+
+    Q_PROPERTY(ProjectsManager* projectsManager READ projectsManager NOTIFY neverChanged)
     Q_PROPERTY(FilesManager* filesManager READ filesManager NOTIFY neverChanged)
     Q_PROPERTY(SubjectsManager* subjectsManager READ subjectsManager NOTIFY neverChanged)
     Q_PROPERTY(SamplesManager* samplesManager READ samplesManager NOTIFY neverChanged)
+    Q_PROPERTY(ToolsManager* toolsManager READ toolsManager NOTIFY neverChanged)
 
-    // Customs Tools
-    Q_PROPERTY(QList<QObject*> exporters READ exporters NOTIFY neverChanged)
-    Q_PROPERTY(QList<QObject*> reporters READ reporters NOTIFY neverChanged)
 
     // New analysis wizard
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
 
 
-    Q_PROPERTY(QList<QObject*> projects READ projectsList NOTIFY projectsListChanged)
-    Q_PROPERTY(int selectedProject READ selectedProject WRITE setSelectedProject NOTIFY selectedProjectChanged)
     Q_PROPERTY(PipelineAnalysis* newPipelineAnalysis READ newPipelineAnalysis NOTIFY newPipelineAnalysisChanged)
     Q_PROPERTY(FilteringAnalysis* newFilteringAnalysis READ newFilteringAnalysis NOTIFY newFilteringAnalysisChanged)
 
@@ -140,17 +138,13 @@ public:
     inline QJsonArray lastSubjects() const { return mLastSubjects; }
     inline bool welcomIsLoading() const { return mWelcomIsLoading; }
     //--
-    inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
-    inline QList<QObject*> projectsOpen() const { return mProjectsOpen; }
+    inline ProjectsManager* projectsManager() const { return mProjectsManager; }
     inline FilesManager* filesManager() const { return mFilesManager; }
     inline SubjectsManager* subjectsManager() const { return mSubjectsManager; }
     inline SamplesManager* samplesManager() const { return mSamplesManager; }
-    inline QList<QObject*> exporters() const { return mExporters; }
-    inline QList<QObject*> reporters() const { return mReporters; }
+    inline ToolsManager* toolsManager() const { return mToolsManager; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
-    inline QList<QObject*> projectsList() const { return mProjectsList; }
-    inline int selectedProject() const { return mSelectedProject; }
     inline PipelineAnalysis* newPipelineAnalysis() const { return mNewPipelineAnalysis; }
     inline FilteringAnalysis* newFilteringAnalysis() const { return mNewFilteringAnalysis; }
 
@@ -162,23 +156,14 @@ public:
     inline void setSearchInProgress(bool flag) { mSearchInProgress = flag; emit searchInProgressChanged(); }
     inline void setQmlEngine (QQmlApplicationEngine* engine) { mQmlEngine = engine; }
     inline void setWelcomIsLoading(bool flag) { mWelcomIsLoading=flag; emit welcomIsLoadingChanged(); }
-    void setSelectedProject(int idx);
 
     // Methods
-    // Project management
-    Q_INVOKABLE void newProject(QString name, QString comment);
-    Q_INVOKABLE void openProject(int id);
-    Q_INVOKABLE void openProject(QJsonObject json);
-    void refreshProjectsLists();
-    void refreshFlatProjectsListRecursive(QJsonArray data, QString prefix);
-
     // Analysis management
     Q_INVOKABLE bool newAnalysis(QString type);
     Q_INVOKABLE void resetNewFilteringAnalysisWizard(int refId);
     Q_INVOKABLE void resetNewPipelinAnalysisWizard();
     Q_INVOKABLE FilteringAnalysis* getAnalysisFromWindowId(int winId);
     Reference* referenceFromId(int id);
-    // File management
 
     // Others
     Q_INVOKABLE void getVariantInfo(int refId, QString variantId, int analysisId=-1);
@@ -199,7 +184,6 @@ public Q_SLOTS:
     void logout();
     void onAuthenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
 
-    void refreshProjectsTreeView();
 
     void openAnalysis(int id);
     bool openAnalysis(QJsonObject data);
@@ -221,29 +205,28 @@ Q_SIGNALS:
     void loginSuccess();
     void loginFailed();
     void logoutSuccess();
+
     void searchRequestChanged();
     void searchResultChanged();
     void searchInProgressChanged();
-    void serverUrlChanged();
-    void projectsTreeViewChanged();
-    void referencesChanged();
-    void onClose();
-    void errorOccured(QString errCode, QString message, QString techData);
-    void projectCreationDone(bool success, int projectId);
+    void variantInformationReady(QJsonObject json);
+
     void analysisCreationDone(bool success, int analysisId);
-    void lastDataChanged();
-    void subjectsOpenChanged();
-    void projectsOpenChanged();
     void newPipelineAnalysisChanged();
     void newFilteringAnalysisChanged();
-    void websocketMessageReceived(QString action, QJsonObject data);
-    void projectsListChanged();
+
     void welcomIsLoadingChanged();
-    void selectedProjectChanged();
-    void connectionStatusChanged();
+    void lastDataChanged();
+    void referencesChanged();
+    void serverUrlChanged();
     void configChanged();
     void adminChanged();
-    void variantInformationReady(QJsonObject json);
+    void connectionStatusChanged();
+
+    void websocketMessageReceived(QString action, QJsonObject data);
+    void errorOccured(QString errCode, QString message, QString techData);
+    void onClose();
+    //void subjectsOpenChanged();
 
 private:
     // Singleton pattern
@@ -262,10 +245,6 @@ private:
     User* mUser = nullptr;
     //! Admin operation wrapper
     Admin* mAdmin = nullptr;
-    //! Custom tools : export manager for variant selection
-    QList<QObject*> mExporters;
-    //! Custom tools : report manager for variant selection
-    QList<QObject*> mReporters;
 
     //! Search request and results
     QString mSearchRequest;
@@ -273,9 +252,6 @@ private:
     bool mSearchInProgress = false;
     bool mWelcomIsLoading = false;
 
-    //! The flat list of project (use for project's combobox selection)
-    QList<QObject*> mProjectsList;
-    int mSelectedProject;
 
 
     //! Welcom last data
@@ -303,13 +279,11 @@ private:
     SamplesManager* mSamplesManager = nullptr;
     //! Browse&Upload files
     FilesManager* mFilesManager = nullptr;
-    // ProjectsManager
-    //! The model of the projects browser treeview
-    ProjectsTreeModel* mProjectsTreeView = nullptr;
-    //! list of project/subject open
-    QList<QObject*> mProjectsOpen;
+    //! ProjectsManager
+    ProjectsManager* mProjectsManager = nullptr;
+    //! Custom Tools managers (exporters, reporters)
+    ToolsManager* mToolsManager = nullptr;
     // FilesManager
-
     // PipelinesManangers
 
 

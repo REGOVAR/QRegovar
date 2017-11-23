@@ -3,8 +3,6 @@
 
 #include <QtCore>
 
-#include "Model/file/filestreemodel.h"
-
 class Project : public QObject
 {
     Q_OBJECT
@@ -16,44 +14,47 @@ class Project : public QObject
     Q_PROPERTY(bool isFolder READ isFolder)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
-    Q_PROPERTY(FilesTreeModel* files READ files NOTIFY dataChanged)
     Q_PROPERTY(QString fullPath READ fullPath NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> analyses READ analyses NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> events READ events NOTIFY dataChanged)
 
 
 public:
-    Project(QObject* parent=0);
-    Project(bool isFolder, bool isSandbox, QObject* parent=0);
+    // Constructors
+    explicit Project(QObject* parent=nullptr);
+    explicit Project(int id, QObject *parent = nullptr);
+    explicit Project(QJsonObject json, QObject *parent = nullptr);
 
-    bool fromJson(QJsonDocument json);
-    bool fromJson(QJsonObject json);
-
-    // Accessors
-    inline int id() { return mId; }
-    inline Project* parent() { return mParent; }
-    inline QDateTime creationDate() { return mCreationDate; }
-    inline QDateTime updateDate() { return mUpdateDate; }
-    inline bool isSandbox() { return mIsSandbox; }
-    inline bool isFolder() { return mIsFolder; }
-    inline QString name() { return mName; }
-    inline QString comment() { return mComment; }
-    inline FilesTreeModel* files() { return mFiles; }
-    inline QString fullPath() { return mFullPath; }
-    inline QList<QObject*> analyses() { return mAnalyses; }
-    inline QList<QObject*> events() { return mEvents; }
+    // Getters
+    inline int id() const { return mId; }
+    inline Project* parent() const { return mParent; }
+    inline QDateTime creationDate() const { return mCreationDate; }
+    inline QDateTime updateDate() const { return mUpdateDate; }
+    inline bool isSandbox() const { return mIsSandbox; }
+    inline bool isFolder() const { return mIsFolder; }
+    inline QString name() const { return mName; }
+    inline QString comment() const { return mComment; }
+    inline QString fullPath() const { return mFullPath; }
+    inline QList<QObject*> analyses() const { return mAnalyses; }
 
     // Setters
-    void setParent(Project* parent);
+    inline void setParent(Project* parent) { mParent = parent; emit dataChanged(); }
     inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
     inline void setName(QString name) { mName = name; emit dataChanged(); }
 
+
     // Methods
+    //! Set model with provided json data
+    Q_INVOKABLE bool fromJson(QJsonObject json);
+    //! Export model data into json object
+    Q_INVOKABLE QJsonObject toJson();
+    //! Save subject information onto server
+    Q_INVOKABLE void save();
+    //! Load Subject information from server
+    Q_INVOKABLE void load();
+
+
     void buildAnalysis(QJsonObject json);
     void buildEvent(QJsonObject json);
-
-//public Q_SLOTS:
-
 
 
 Q_SIGNALS:
@@ -73,13 +74,7 @@ private:
     QDateTime mUpdateDate;
     QString mComment;
     QString mName;
-
-    FilesTreeModel* mFiles = nullptr;
-    // mUserRights
-    // mindicators
-    // mJobs
     QList<QObject*> mAnalyses;
-    QList<QObject*> mEvents;
 
     // Methods
     inline void setUpdateDate(QDateTime date) { mUpdateDate = date; emit dataChanged(); }

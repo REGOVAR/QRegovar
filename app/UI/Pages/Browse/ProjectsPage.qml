@@ -87,16 +87,6 @@ Rectangle
             text: qsTr("New Project")
              onClicked: newProjectDialog.open()
         }
-//        Button
-//        {
-//            id: newFolder
-//            text: qsTr("New Folder")
-//        }
-//        Button
-//        {
-//            id: deleteProject
-//            text: qsTr("Delete Project")
-//        }
     }
 
 
@@ -108,7 +98,7 @@ Rectangle
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
-        model: regovar.projectsTreeView
+        model: regovar.projectsManager.projectsTreeView
 
         // Default delegate for all column
         itemDelegate: Item
@@ -152,13 +142,13 @@ Rectangle
     function openSelectedProject()
     {
 
-        var item = regovar.projectsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
+        var item = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
         if (item !== undefined)
         {
             if (item.isAnalysis)
                 regovar.openAnalysis(item.id);
             else
-                regovar.openProject(item.id);
+                regovar.projectsManager.openProject(item.id);
         }
     }
 }

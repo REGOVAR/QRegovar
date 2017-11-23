@@ -28,7 +28,7 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 }
 
 
-bool FilteringAnalysis::fromJson(QJsonObject json)
+bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
 {
     // load basic data from json
     setId(json["id"].toInt());
@@ -119,8 +119,8 @@ bool FilteringAnalysis::fromJson(QJsonObject json)
     // so for the init, we just save json filter, without loading/signal
     mFilterJson = json["filter"].toArray();
 
-    // Set the ref and start the next asynch loading step
-    setReference(ref, true);
+    // Set the ref and start (if needed) the next asynch loading step
+    setReference(ref, full_init);
 
     return true;
 }
@@ -136,6 +136,8 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
     mRefId = ref->id();
     mRefName = ref->name();
     emit refChanged();
+
+    if (!continueInit) return;
 
     // STEP 1 : Load all available complient annotations DB
     Request* req = Request::get(QString("/annotation/%1").arg(mRefId));
@@ -164,7 +166,7 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
             }
 
             // continue by loading annotation's fields of selected DB
-            if (continueInit) raiseNewInternalLoadingStatus(LoadingAnnotations);
+            raiseNewInternalLoadingStatus(LoadingAnnotations);
         }
         else
         {

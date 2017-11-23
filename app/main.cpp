@@ -40,8 +40,10 @@ int main(int argc, char *argv[])
     qmlRegisterType<Project>("org.regovar", 1, 0, "Project");
     qmlRegisterType<AdminTableInfo>("org.regovar", 1, 0, "AdminTableInfo");
 
+    qmlRegisterType<ProjectsManager>("org.regovar", 1, 0, "ProjectsManager");
     qmlRegisterType<SubjectsManager>("org.regovar", 1, 0, "SubjectsManager");
     qmlRegisterType<SamplesManager>("org.regovar", 1, 0, "SamplesManager");
+    qmlRegisterType<ToolsManager>("org.regovar", 1, 0, "ToolsManager");
     qmlRegisterType<Subject>("org.regovar", 1, 0, "Subject");
     qmlRegisterType<Sample>("org.regovar", 1, 0, "Sample");
     qmlRegisterType<File>("org.regovar", 1, 0, "File");

@@ -178,47 +178,6 @@ Rectangle
             color: Regovar.theme.backgroundColor.main
             Layout.minimumHeight: 200
 
-            // Help information on this page
-            Rectangle
-            {
-                id: helpPanel
-                anchors.fill: parent
-                anchors.margins: 10
-
-                color: "transparent"
-
-                visible: regovar.newFilteringAnalysis.samples.length == 0
-
-                Text
-                {
-                    text: qsTr("Select an analysis in the table above.\nThe preview of this analysis will be display here.")
-                    font.pixelSize: Regovar.theme.font.size.header
-                    color: Regovar.theme.primaryColor.back.normal
-                    anchors.fill: parent
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    wrapMode: Text.WordWrap
-                }
-                Text
-                {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top : parent.top
-                    text: "Ä"
-                    font.family: Regovar.theme.icons.name
-                    font.pixelSize: 30
-                    color: Regovar.theme.primaryColor.back.normal
-
-                    NumberAnimation on anchors.topMargin
-                    {
-                        duration: 2000
-                        loops: Animation.Infinite
-                        from: 30
-                        to: 0
-                        easing.type: Easing.SineCurve
-                    }
-                }
-            } // end helpPanel
-
             Rectangle
             {
                 id: helpPanel

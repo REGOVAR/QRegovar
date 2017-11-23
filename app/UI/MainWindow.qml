@@ -41,14 +41,14 @@ GenericWindow
 
     Connections
     {
-        target: regovar
-        onProjectsOpenChanged:
+        target: regovar.projectsManager
+        onProjectsOpenListChanged:
         {
-            console.log ("ReloadMenu (projects)");
+            console.log ("MainMenu: Reload projects open list");
             Regovar.reloadProjectsOpenEntries();
             buildPages(menuModel.model[2]["sublevel"], Regovar.currentopeningProject);
             // select currentEntry
-            Regovar.menuModel.selectedIndex=[2, regovar.projectsOpen.length,0];
+            Regovar.menuModel.selectedIndex=[2, regovar.projectsManager.projectsOpenList.length, 0];
         }
     }
 

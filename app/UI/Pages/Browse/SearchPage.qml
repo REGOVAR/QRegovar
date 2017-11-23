@@ -178,7 +178,7 @@ Rectangle
                             width: scrollarea.viewport.width
                             date: model.modelData.update_date
                             name: model.modelData.name
-                            onClicked: regovar.openProject(model.modelData.id);
+                            onClicked: regovar.projectsManager.openProject(model.modelData.id);
                         }
                     }
                 }

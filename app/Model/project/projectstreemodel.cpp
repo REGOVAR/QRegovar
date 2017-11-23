@@ -22,6 +22,7 @@ ProjectsTreeModel::ProjectsTreeModel() : TreeModel(0)
 void ProjectsTreeModel::refresh(QJsonObject json)
 {
     beginResetModel();
+    clear();
     setupModelData(json["data"].toArray(), mRootItem);
     endResetModel();
 }
