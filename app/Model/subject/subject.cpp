@@ -1,4 +1,5 @@
 #include "subject.h"
+#include "sample.h"
 #include "Model/regovar.h"
 #include "Model/framework/request.h"
 
@@ -13,7 +14,6 @@ Subject::Subject(QJsonObject json, QObject* parent) : QObject(parent)
 Subject::Subject(int id, QObject* parent) : QObject(parent)
 {
     mId = id;
-    load();
 }
 
 

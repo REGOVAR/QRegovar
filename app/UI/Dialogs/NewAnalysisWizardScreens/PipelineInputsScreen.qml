@@ -55,7 +55,7 @@ GenericScreen
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                model: regovar.newPipelineAnalysis.inputsFilesList
+                model: regovar.newPipeline.inputsFilesList
 
 
                 Rectangle
@@ -213,7 +213,7 @@ GenericScreen
                         {
                             files = files.concat(regovar.filesManager.remoteList[rowIndex]);
                         });
-                        regovar.newPipelineAnalysis.removeInputs(files);
+                        regovar.newPipeline.removeInputs(files);
                     }
                 }
             }
@@ -224,7 +224,7 @@ GenericScreen
     SelectFilesDialog
     {
         id: fileSelector
-        onFileSelected: { regovar.newPipelineAnalysis.addInputs(files); }
+        onFileSelected: { regovar.newPipeline.addInputs(files); }
     }
 
     Connections
@@ -235,7 +235,7 @@ GenericScreen
             // We assume that if a file is downloading, it's for us...
             if (action == "file_upload")
             {
-                regovar.newPipelineAnalysis.addInputFromWS(data);
+                regovar.newPipeline.addInputFromWS(data);
             }
 
             console.log ("WS [" + action + "] " + data);

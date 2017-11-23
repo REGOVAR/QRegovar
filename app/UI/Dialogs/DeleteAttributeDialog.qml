@@ -67,7 +67,7 @@ Dialog
 
                 Repeater
                 {
-                    model: regovar.newFilteringAnalysis.attributes
+                    model: regovar.newFiltering.attributes
 
                     CheckBox
                     {
@@ -94,7 +94,7 @@ Dialog
                     var comp = attributesList.children[i];
                     if (comp.checked)
                     {
-                        regovar.newFilteringAnalysis.deleteAttribute(comp.text);
+                        regovar.newFiltering.deleteAttribute(comp.text);
                     }
                 }
                 attributePopup.close();

@@ -71,6 +71,7 @@ public:
 
     // Constructor
     explicit FilteringAnalysis(QObject* parent = nullptr);
+    explicit FilteringAnalysis(int id, QObject* parent = nullptr);
 
     // Getters
     // Internal
@@ -119,8 +120,14 @@ public:
     Q_INVOKABLE void setReference(Reference* ref, bool continueInit=false);
     Q_INVOKABLE void setProject(Project* project) { mProject = project; emit projectChanged(); }
 
+
+    // Analysis Abstracty Methods overriden
+    Q_INVOKABLE bool fromJson(QJsonObject json, bool full_init=true);
+    Q_INVOKABLE QJsonObject toJson();
+    Q_INVOKABLE void save();
+    Q_INVOKABLE void load();
+
     // Methods
-    bool fromJson(QJsonObject json, bool full_init=true);
     Q_INVOKABLE inline FieldColumnInfos* getColumnInfo(QString uid) { return mAnnotations.contains(uid) ? mAnnotations[uid] : nullptr; }
     Q_INVOKABLE inline void emitDisplayFilterSavingFormPopup() { emit displayFilterSavingFormPopup(); }
     Q_INVOKABLE inline void emitDisplayFilterNewCondPopup(QString conditionUid) { emit displayFilterNewCondPopup(conditionUid); }
@@ -145,6 +152,7 @@ public:
     Q_INVOKABLE void addSampleInputs(QList<QObject*> inputs);
     Q_INVOKABLE void removeSampleInputs(QList<QObject*> inputs);
     Q_INVOKABLE void setVariantSelection(QString id, bool isChecked);
+    Q_INVOKABLE void addFile(File* file);
 
 
     void raiseNewInternalLoadingStatus(LoadingStatus newStatus);

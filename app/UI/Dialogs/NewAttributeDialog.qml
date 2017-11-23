@@ -94,7 +94,7 @@ Dialog
 
                 Repeater
                 {
-                    model: regovar.newFilteringAnalysis.samples
+                    model: regovar.newFiltering.samples
 
                     RowLayout
                     {
@@ -147,7 +147,7 @@ Dialog
                     }
                 }
 
-                regovar.newFilteringAnalysis.saveAttribute(nameField.text, values);
+                regovar.newFiltering.saveAttribute(nameField.text, values);
                 attributePopup.close();
             }
         }

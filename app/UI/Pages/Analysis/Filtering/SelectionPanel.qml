@@ -94,12 +94,14 @@ Rectangle
                 Rectangle { width: root.width; height: 5; color: "transparent" }
                 ExportTool
                 {
-                    id: exportTool; objectName: "qf"; width: root.width;
+                    id: exportTool
+                    width: root.width
                     onIsExpandedChanged: if (isExpanded) reportTool.isExpanded = false;
                 }
                 ReportTool
                 {
-                    id: reportTool; objectName: "qf"; width: root.width;
+                    id: reportTool
+                    width: root.width
                     onIsExpandedChanged: if (isExpanded) exportTool.isExpanded = false;
                 }
             }
@@ -124,19 +126,13 @@ Rectangle
                 anchors.left: parent.left
                 anchors.margins: 10
                 spacing: 10
-//                ButtonIcon
-//                {
-//                    id: showButton
-//                    text: qsTr("Show selection")
-//                    icon: "`"
-//                }
                 ButtonIcon
                 {
                     id: exportButton
                     text: qsTr("Export")
                     icon: "_"
                     enabled: exportTool.isExpanded
-                    onClicked: regovar.ex
+                    onClicked: regovar.toolsManager.exporters[exportTool.currentIndex].run(model.id)
                 }
 
                 ButtonIcon
@@ -145,6 +141,7 @@ Rectangle
                     text: qsTr("Report")
                     icon: "Y"
                     enabled: reportTool.isExpanded
+                    onClicked: regovar.toolsManager.reporters[reportTool.currentIndex].run(model.id)
                 }
             }
         }

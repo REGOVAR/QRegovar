@@ -219,7 +219,7 @@ Rectangle
                                         name: model.modelData.name
                                         projectName: model.modelData.project.name
 
-                                        onClicked: regovar.openAnalysis(model.modelData.id)
+                                        onClicked: regovar.analysesManager.openAnalysis("Filtering", model.modelData.id)
                                         anchors.left: analysesColumn.left
                                         anchors.right: analysesColumn.right
                                     }

@@ -211,7 +211,7 @@ Rectangle
                             name: model.modelData.name
                             projectName: model.modelData.project.name
 
-                            onClicked: regovar.openAnalysis(model.modelData.id)
+                            onClicked: regovar.analysesManager.openAnalysis(model.modelData.type, model.modelData.id)
                         }
                     }
                 }

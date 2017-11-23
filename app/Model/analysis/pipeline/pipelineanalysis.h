@@ -12,13 +12,21 @@ class PipelineAnalysis: public Analysis
 
 
 public:
-    PipelineAnalysis(QObject* parent = nullptr);
+    // Constructors
+    explicit PipelineAnalysis(QObject* parent=nullptr);
+    explicit PipelineAnalysis(int id, QObject* parent=nullptr);
 
     // Getters
     inline QList<QObject*> inputsFilesList() const { return mInputsFilesList; }
 
     // Setters
 
+
+    // Analysis Abstracty Methods overriden
+    Q_INVOKABLE inline bool fromJson(QJsonObject, bool) { return true; }
+    Q_INVOKABLE inline QJsonObject toJson() { return QJsonObject(); }
+    Q_INVOKABLE inline void save() { return; }
+    Q_INVOKABLE inline void load() { return; }
 
     // Methods
     Q_INVOKABLE void addInputs(QList<QObject*> inputs);

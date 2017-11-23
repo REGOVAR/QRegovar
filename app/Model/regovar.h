@@ -7,24 +7,22 @@
 #include <QQmlApplicationEngine>
 #include <QtWebSockets/QtWebSockets>
 
-#include "analysis/filtering/filteringanalysis.h"
-#include "analysis/pipeline/pipelineanalysis.h"
 #include "project/projectsmanager.h"
 #include "subject/subjectsmanager.h"
 #include "subject/samplesmanager.h"
 #include "file/filesmanager.h"
+#include "analysis/analysesmanager.h"
 #include "tools/toolsmanager.h"
+#include "subject/reference.h"
 // TODO: rework as manager pattern
 #include "user.h"
 #include "admin.h"
-#include "project/projectstreemodel.h"
-#include "project/project.h"
+
 
 #ifndef regovar
 #define regovar (Regovar::i())
 #endif
 
-class FilteringAnalysis;
 
 
 class RegovarInfo: public QObject
@@ -71,10 +69,6 @@ class Regovar : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlChanged)
-    Q_PROPERTY(ServerStatus connectionStatus READ connectionStatus WRITE setConnectionStatus NOTIFY connectionStatusChanged)
-    Q_PROPERTY(RegovarInfo* config READ config NOTIFY configChanged)
-    Q_PROPERTY(Admin* admin READ admin NOTIFY adminChanged)
     // Welcom
     Q_PROPERTY(User* user READ user NOTIFY userChanged)
     Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
@@ -85,22 +79,26 @@ class Regovar : public QObject
     Q_PROPERTY(QJsonArray lastSubjects READ lastSubjects NOTIFY lastDataChanged)
     Q_PROPERTY(bool welcomIsLoading READ welcomIsLoading WRITE setWelcomIsLoading NOTIFY welcomIsLoadingChanged)
 
-    // Browsers
-
-
+    // Managers
     Q_PROPERTY(ProjectsManager* projectsManager READ projectsManager NOTIFY neverChanged)
-    Q_PROPERTY(FilesManager* filesManager READ filesManager NOTIFY neverChanged)
     Q_PROPERTY(SubjectsManager* subjectsManager READ subjectsManager NOTIFY neverChanged)
     Q_PROPERTY(SamplesManager* samplesManager READ samplesManager NOTIFY neverChanged)
+    Q_PROPERTY(FilesManager* filesManager READ filesManager NOTIFY neverChanged)
+    Q_PROPERTY(AnalysesManager* analysesManager READ analysesManager NOTIFY neverChanged)
     Q_PROPERTY(ToolsManager* toolsManager READ toolsManager NOTIFY neverChanged)
 
-
-    // New analysis wizard
+    // Others
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
 
+    Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlChanged)
+    Q_PROPERTY(ServerStatus connectionStatus READ connectionStatus WRITE setConnectionStatus NOTIFY connectionStatusChanged)
+    Q_PROPERTY(RegovarInfo* config READ config NOTIFY configChanged)
+    Q_PROPERTY(Admin* admin READ admin NOTIFY adminChanged)
+    Q_PROPERTY(QList<QObject*> openWindowModels READ openWindowModels NOTIFY neverChanged)
 
-    Q_PROPERTY(PipelineAnalysis* newPipelineAnalysis READ newPipelineAnalysis NOTIFY newPipelineAnalysisChanged)
-    Q_PROPERTY(FilteringAnalysis* newFilteringAnalysis READ newFilteringAnalysis NOTIFY newFilteringAnalysisChanged)
+    // TODO: rework as Manager:
+    //  - ConnectionManager (manage login, ServerStatus, pending queries, and websocket realtime event)
+    //  - Configmanager ? (admin and settings)
 
 
 
@@ -139,14 +137,14 @@ public:
     inline bool welcomIsLoading() const { return mWelcomIsLoading; }
     //--
     inline ProjectsManager* projectsManager() const { return mProjectsManager; }
-    inline FilesManager* filesManager() const { return mFilesManager; }
     inline SubjectsManager* subjectsManager() const { return mSubjectsManager; }
     inline SamplesManager* samplesManager() const { return mSamplesManager; }
+    inline FilesManager* filesManager() const { return mFilesManager; }
+    inline AnalysesManager* analysesManager() const { return mAnalysesManager; }
     inline ToolsManager* toolsManager() const { return mToolsManager; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
-    inline PipelineAnalysis* newPipelineAnalysis() const { return mNewPipelineAnalysis; }
-    inline FilteringAnalysis* newFilteringAnalysis() const { return mNewFilteringAnalysis; }
+    inline QList<QObject*> openWindowModels() const { return mOpenWindowModels; }
 
     // Setters
     inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlChanged(); }
@@ -158,11 +156,6 @@ public:
     inline void setWelcomIsLoading(bool flag) { mWelcomIsLoading=flag; emit welcomIsLoadingChanged(); }
 
     // Methods
-    // Analysis management
-    Q_INVOKABLE bool newAnalysis(QString type);
-    Q_INVOKABLE void resetNewFilteringAnalysisWizard(int refId);
-    Q_INVOKABLE void resetNewPipelinAnalysisWizard();
-    Q_INVOKABLE FilteringAnalysis* getAnalysisFromWindowId(int winId);
     Reference* referenceFromId(int id);
 
     // Others
@@ -176,7 +169,7 @@ public:
     Q_INVOKABLE inline QUuid generateUuid() { return QUuid::createUuid(); }
     Q_INVOKABLE QString sizeToHumanReadable(qint64 size, qint64 uploadOffset=-1);
     Q_INVOKABLE void raiseError(QJsonObject raiseError);
-
+    bool openNewWindow(QUrl qmlUrl, QObject* model);
 
 
 public Q_SLOTS:
@@ -184,9 +177,6 @@ public Q_SLOTS:
     void logout();
     void onAuthenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
 
-
-    void openAnalysis(int id);
-    bool openAnalysis(QJsonObject data);
 
     // Websocket
     void onWebsocketConnected();
@@ -211,10 +201,6 @@ Q_SIGNALS:
     void searchInProgressChanged();
     void variantInformationReady(QJsonObject json);
 
-    void analysisCreationDone(bool success, int analysisId);
-    void newPipelineAnalysisChanged();
-    void newFilteringAnalysisChanged();
-
     void welcomIsLoadingChanged();
     void lastDataChanged();
     void referencesChanged();
@@ -226,7 +212,6 @@ Q_SIGNALS:
     void websocketMessageReceived(QString action, QJsonObject data);
     void errorOccured(QString errCode, QString message, QString techData);
     void onClose();
-    //void subjectsOpenChanged();
 
 private:
     // Singleton pattern
@@ -264,26 +249,23 @@ private:
 
 
 
-    // Creation Wizards Models
-    //! model to hold data when using form to create a new analysis
-    PipelineAnalysis* mNewPipelineAnalysis = nullptr;
-    FilteringAnalysis* mNewFilteringAnalysis = nullptr;
     //! list of references supported by the server
     QList<QObject*> mReferences;
     int mReferenceDefault = -1;
 
     // Managers
+    //! ProjectsManager
+    ProjectsManager* mProjectsManager = nullptr;
     //! Manage subjects (Browse + CRUD)
     SubjectsManager* mSubjectsManager = nullptr;
     //! Browse all samples available on the server
     SamplesManager* mSamplesManager = nullptr;
     //! Browse&Upload files
     FilesManager* mFilesManager = nullptr;
-    //! ProjectsManager
-    ProjectsManager* mProjectsManager = nullptr;
+    //! Manage analyses
+    AnalysesManager* mAnalysesManager = nullptr;
     //! Custom Tools managers (exporters, reporters)
     ToolsManager* mToolsManager = nullptr;
-    // FilesManager
     // PipelinesManangers
 
 
@@ -298,6 +280,9 @@ private:
     QStringList mWsFilteringActionsList = {"analysis_computing"};
     QStringList mWsPipelinesActionsList = {"pipeline_install", "pipeline_uninstall"};
     QStringList mWsJobsActionsList = {"job_"};
+
+    //! List of model used by additional qml windows open
+    QList<QObject*> mOpenWindowModels;
 };
 
 

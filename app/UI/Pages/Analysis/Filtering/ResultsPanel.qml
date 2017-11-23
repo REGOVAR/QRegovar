@@ -153,7 +153,7 @@ Rectangle
         anchors.topMargin: 60
 
         color: "#aaffffff"
-        visible: !regovar.newFilteringAnalysis.isLoading
+        visible: !regovar.newFiltering.isLoading
 
         MouseArea
         {

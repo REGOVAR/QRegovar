@@ -18,12 +18,8 @@ QuickFilterBox
 
     property bool internalUiUpdate: false
     property var parameters
+    property int currentIndex: 0
 
-
-    onModelChanged:
-    {
-        root.enabled = model.quickfilters.transmissionFilter.isVisible();
-    }
 
     content: Column
     {
@@ -59,12 +55,13 @@ QuickFilterBox
             {
                 id: modeAll
                 Layout.fillWidth: true
-                model: regovar.exporters
+                model: regovar.toolsManager.exporters
                 textRole: "name"
                 onCurrentIndexChanged:
                 {
-                    root.parameters = regovar.exporters[currentIndex].parameters;
-                    description.text = regovar.exporters[currentIndex].description;
+                    root.parameters = regovar.toolsManager.exporters[currentIndex].parameters;
+                    description.text = regovar.toolsManager.exporters[currentIndex].description;
+                    root.currentIndex = currentIndex;
                 }
             }
 

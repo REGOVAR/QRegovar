@@ -16,7 +16,7 @@ ToolsManager::ToolsManager(QObject* parent) : QObject(parent)
             // Get custom export tools deployed
             foreach (QJsonValue val, data["exporters"].toArray())
             {
-                mExporters.append(new Tool(val.toObject()));
+                mExporters.append(new Tool(Tool::Exporter, val.toObject()));
             }
             // TODO: Get custom report tools deployed
         }

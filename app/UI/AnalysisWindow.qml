@@ -184,7 +184,7 @@ ApplicationWindow
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
-        model = regovar.getAnalysisFromWindowId(winId);
+        model = regovar.openWindowModels[winId];
         title = model.name;
 
         if (menuModel !== undefined)

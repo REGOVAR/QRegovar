@@ -186,7 +186,7 @@ Rectangle
 
                 color: "transparent"
 
-                visible: regovar.newFilteringAnalysis.samples.length == 0
+                visible: regovar.newFiltering.samples.length == 0
 
                 Text
                 {

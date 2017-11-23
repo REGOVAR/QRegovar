@@ -20,7 +20,7 @@ GenericScreen
     {
         if (z == 0) // = button next clicked
         {
-            regovar.resetNewFilteringAnalysisWizard(selectedRefId);
+            regovar.resetnewFilteringWizard(selectedRefId);
         }
     }
 

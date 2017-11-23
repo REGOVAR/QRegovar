@@ -1,8 +1,11 @@
 #include "tool.h"
+#include "Model/framework/request.h"
+#include "Model/regovar.h"
 
 Tool::Tool(QObject *parent) :  QObject(parent) {}
-Tool::Tool(QJsonObject json, QObject* parent) :  QObject(parent)
+Tool::Tool(ToolType type, QJsonObject json, QObject* parent) :  QObject(parent)
 {
+    mType = type;
     mKey = json["key"].toString();
     mName = json["name"].toString();
     mDescription = json["description"].toString();
@@ -35,4 +38,29 @@ void Tool::clear()
         ToolParameter* param = qobject_cast<ToolParameter*>(o);
         param->clear();
     }
+}
+
+
+void Tool::run(int analysis_id, QJsonObject parameter)
+{
+    QString cmd = (mType == Exporter) ? "export" : "report";
+    Request* req = Request::post(QString("/analysis/%1/%2").arg(analysis_id).arg(cmd), QJsonDocument(parameter).toJson());
+    connect(req, &Request::responseReceived, [this, analysis_id, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            QJsonObject data = json["data"].toObject();
+            if (mType == Exporter)
+            {
+                File* file = regovar->filesManager()->getOrCreateFile(data["id"].toInt());
+                file->fromJson(data);
+                FilteringAnalysis* analysis = regovar->analysesManager()->getOrCreateFilteringAnalysis(analysis_id);
+                //analysis->addFile(file);
+            }
+            else if (mType == Reporter)
+            {
+
+            }
+        }
+    });
 }

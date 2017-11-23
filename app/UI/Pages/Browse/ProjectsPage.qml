@@ -146,7 +146,7 @@ Rectangle
         if (item !== undefined)
         {
             if (item.isAnalysis)
-                regovar.openAnalysis(item.id);
+                regovar.analysesManager.openAnalysis(item.type, item.id);
             else
                 regovar.projectsManager.openProject(item.id);
         }

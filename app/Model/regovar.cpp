@@ -88,23 +88,18 @@ void Regovar::init()
 {
     // Init managers
     readSettings();
-    // Todo : load default from settings
-    mReferenceDefault = 3;
 
 
-    // Init models
+    // Create models
     mUser = new User(1, "Olivier", "Gueudelot");
     mConfig = new RegovarInfo();
     mAdmin = new Admin();
-
     mProjectsManager = new ProjectsManager();
     mSubjectsManager = new SubjectsManager();
-    mFilesManager = new FilesManager();
     mSamplesManager = new SamplesManager(mReferenceDefault);
+    mFilesManager = new FilesManager();
+    mAnalysesManager = new AnalysesManager();
     mToolsManager = new ToolsManager();
-    mNewPipelineAnalysis = new PipelineAnalysis();
-    mNewFilteringAnalysis = new FilteringAnalysis();
-
 
     // Connections
     connect(&mWebSocket, &QWebSocket::connected, this, &Regovar::onWebsocketConnected);
@@ -113,11 +108,9 @@ void Regovar::init()
     // connect(&mWebSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onWebsocketStateChanged(QAbstractSocket::SocketState)));
     mWebSocket.open(QUrl(mWebsocketUrl));
 
-
     // Init sub models
     mProjectsManager->refreshProjectsList();
     mSubjectsManager->refreshSubjectsList();
-
 
     // Load misc data
     loadWelcomData();
@@ -197,6 +190,9 @@ void Regovar::onWebsocketStateChanged(QAbstractSocket::SocketState)
 
 void Regovar::readSettings()
 {
+    // TODO: Load default from settings
+    mReferenceDefault = 3;
+
     // TODO : No hardcoded value => Load default from local config file ?
     QSettings settings;
     QString schm = settings.value("scheme", "http").toString();
@@ -322,37 +318,32 @@ void Regovar::loadWelcomData()
 
 
 
-
-void Regovar::resetNewFilteringAnalysisWizard(int refId)
+bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
 {
-    // clear data in newAnalyses wrappers
-    mNewFilteringAnalysis->removeSamples(mNewFilteringAnalysis->samples4qml());
-    mNewFilteringAnalysis->samples().clear();
-    mNewFilteringAnalysis->setComment("");
-    mNewFilteringAnalysis->setName("");
-    mNewFilteringAnalysis->setIsTrio(false);
+    // Store model of the new windows in a collection readable from qml
+    int lastId = mOpenWindowModels.count();
+    mOpenWindowModels.append(model);
 
-    // reset references
-    int idx = 0;
-    foreach (QObject* o, mReferences)
+    // Create new QML window
+    QQmlComponent *c = new QQmlComponent(mQmlEngine, qmlUrl, QQmlComponent::PreferSynchronous);
+    QObject* o = c->create();
+    QQuickWindow *i = qobject_cast<QQuickWindow*>(o);
+    QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
+
+    // Call init qml method to retrieve its model
+    QMetaObject::invokeMethod(i, "initFromCpp", Q_ARG(QVariant, lastId));
+
+    // Setup qml window's parent
+    i->setVisible(true);
+    QObject* root = mQmlEngine->rootObjects()[0];
+    QQuickWindow* rootWin = qobject_cast<QQuickWindow*>(root);
+    if (!rootWin)
     {
-        Reference* ref = qobject_cast<Reference*>(o);
-        if (ref->id() == refId)
-        {
-            mNewFilteringAnalysis->setReference(ref);
-            break;
-        }
-        ++idx;
+        qFatal("Error: Your root item has to be a window.");
+        return false;
     }
-    mSamplesManager->setReferencialId(refId);
-    emit newFilteringAnalysisChanged();
-}
-
-
-void Regovar::resetNewPipelinAnalysisWizard()
-{
-    // TODO
-    emit newPipelineAnalysisChanged();
+    i->setParent(0);
+    return true;
 }
 
 
@@ -372,69 +363,11 @@ Reference* Regovar::referenceFromId(int id)
 
 
 
-void Regovar::openAnalysis(int id)
-{
-    Request* req = Request::get(QString("/analysis/%1").arg(id));
-    connect(req, &Request::responseReceived, [this, req, id](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            if (openAnalysis(json["data"].toObject()))
-            {
-                qDebug() << Q_FUNC_INFO << "Filtering Analysis (id=" << id << ") Loaded.";
-            }
-            else
-            {
-                qDebug() << Q_FUNC_INFO << "Failed to load analysis from id " << id << ". Wrong json data";
-            }
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
-}
-bool Regovar::openAnalysis(QJsonObject data)
-{
-    int lastId = mOpenAnalyses.count();
-    mOpenAnalyses.append(new FilteringAnalysis(this));
-    FilteringAnalysis* analysis = mOpenAnalyses[lastId];
-
-    if (analysis->fromJson(data))
-    {
-        // Create new QML window
-        QUrl url = QUrl("qrc:/qml/AnalysisWindow.qml");
-        QQmlComponent *c = new QQmlComponent(mQmlEngine, url, QQmlComponent::PreferSynchronous);
-        QObject* o = c->create();
-        QQuickWindow *i = qobject_cast<QQuickWindow*>(o);
-        QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
-
-        //i->setProperty("winId", lastId);
-        QMetaObject::invokeMethod(i, "initFromCpp", Q_ARG(QVariant, lastId));
-        i->setVisible(true);
-        QObject* root = mQmlEngine->rootObjects()[0];
-        QQuickWindow* rootWin = qobject_cast<QQuickWindow*>(root);
-        if (!rootWin)
-        {
-            qFatal("Error: Your root item has to be a window.");
-            return false;
-        }
-        i->setParent(0);
-        return true;
-    }
-    return false;
-}
-
-
-
 //void Regovar::setSelectedReference(int idx)
 //{
 //    mSelectedReference=idx;
 //    Reference* ref = qobject_cast<Reference*>(mReferences[idx]);
-//    mNewFilteringAnalysis->setReference(ref, false);
+//    mnewFiltering->setReference(ref, false);
 //    mSamplesManager->setReferencialId(ref->id());
 //    emit selectedReferenceChanged();
 //}
@@ -459,107 +392,6 @@ bool Regovar::openAnalysis(QJsonObject data)
 
 
 
-
-
-bool Regovar::newAnalysis(QString type)
-{
-    if (type == "filtering")
-    {
-        // Samples
-        QJsonArray ids;
-        foreach (Sample* s, mNewFilteringAnalysis->samples())
-        {
-            ids.append(QJsonValue(s->id()));
-        }
-
-        // Settings
-        QJsonObject settings;
-        QJsonArray dbs;
-        settings.insert("annotations_db", dbs);
-        if (mNewFilteringAnalysis->isTrio())
-        {
-            QJsonObject trioSettings;
-            trioSettings.insert("child_id", mNewFilteringAnalysis->trioChild()->id());
-            trioSettings.insert("child_index", mNewFilteringAnalysis->trioChild()->isIndex());
-            trioSettings.insert("child_sex", mNewFilteringAnalysis->trioChild()->sex());
-            trioSettings.insert("mother_id", mNewFilteringAnalysis->trioMother()->id());
-            trioSettings.insert("mother_index", mNewFilteringAnalysis->trioMother()->isIndex());
-            trioSettings.insert("father_id", mNewFilteringAnalysis->trioFather()->id());
-            trioSettings.insert("father_index", mNewFilteringAnalysis->trioFather()->isIndex());
-            settings.insert("trio", trioSettings);
-        }
-        else
-        {
-            settings.insert("trio", false);
-        }
-
-        // Attributes
-        QJsonArray attributes;
-        if (mNewFilteringAnalysis->attributes().count() > 0)
-        {
-            foreach (QObject* o, mNewFilteringAnalysis->attributes())
-            {
-                Attribute* attr = qobject_cast<Attribute*>(o);
-                attributes.append(attr->toJson());
-            }
-        }
-
-        // Save Subjects-samples associations
-        foreach (QObject* o, mNewFilteringAnalysis->samples())
-        {
-            Sample* sample = qobject_cast<Sample*>(o);
-            sample->save();
-            if (sample->subject() != nullptr)
-            {
-                sample->subject()->save();
-            }
-        }
-
-        // Send request to server
-        QJsonObject body;
-        Project* proj = mNewFilteringAnalysis->project();
-        body.insert("project_id", proj->id());
-        body.insert("reference_id", mNewFilteringAnalysis->refId());
-        body.insert("name", mNewFilteringAnalysis->name());
-        body.insert("samples_ids", ids);
-        body.insert("settings", settings);
-        body.insert("attributes", attributes);
-
-        Request* req = Request::post(QString("/analysis"), QJsonDocument(body).toJson());
-        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-        {
-            if (success)
-            {
-                QJsonObject data = json["data"].toObject();
-                // Open new analysis
-                openAnalysis(data);
-                int id = data["id"].toInt();
-
-                // Start creation of the working table by sending the first "filtering" query
-                QJsonObject body;
-                body.insert("filter", data["filter"].toArray());
-                body.insert("fields", data["fields"].toArray());
-                Request* req2 = Request::post(QString("/analysis/%1/filtering").arg(id), QJsonDocument(body).toJson());
-                req2->deleteLater();
-
-                // notify HMI that analysis is created
-                emit analysisCreationDone(true, id);
-            }
-            else
-            {
-                QJsonObject jsonError = json;
-                jsonError.insert("method", Q_FUNC_INFO);
-                regovar->raiseError(jsonError);
-            }
-            req->deleteLater();
-        });
-    }
-    else if (type == "pipeline")
-    {
-
-    }
-	return true;
-}
 
 
 
@@ -640,11 +472,6 @@ void Regovar::raiseError(QJsonObject json)
 }
 
 
-
-FilteringAnalysis* Regovar::getAnalysisFromWindowId(int winId)
-{
-    return mOpenAnalyses[winId];
-}
 
 
 void Regovar::search(QString query)

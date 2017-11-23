@@ -26,7 +26,6 @@ File::File(QJsonObject json, QObject* parent) : QObject(parent)
 File::File(int id, QObject* parent) : QObject(parent)
 {
     mId = id;
-    load();
 }
 
 

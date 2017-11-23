@@ -5,9 +5,14 @@
 
 PipelineAnalysis::PipelineAnalysis(QObject* parent) : Analysis(parent)
 {
+    mType = "Pipeline";
     connect(regovar, SIGNAL(websocketMessageReceived(QString,QJsonObject)), this, SLOT(onWebsocketMessageReceived(QString,QJsonObject)));
 }
 
+PipelineAnalysis::PipelineAnalysis(int id, QObject* parent) : PipelineAnalysis(parent)
+{
+    mId = id;
+}
 
 
 void PipelineAnalysis::addInputs(QList<QObject*> inputs)

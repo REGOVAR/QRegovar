@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<ProjectsManager>("org.regovar", 1, 0, "ProjectsManager");
     qmlRegisterType<SubjectsManager>("org.regovar", 1, 0, "SubjectsManager");
     qmlRegisterType<SamplesManager>("org.regovar", 1, 0, "SamplesManager");
+    qmlRegisterType<AnalysesManager>("org.regovar", 1, 0, "AnalysesManager");
     qmlRegisterType<ToolsManager>("org.regovar", 1, 0, "ToolsManager");
     qmlRegisterType<Subject>("org.regovar", 1, 0, "Subject");
     qmlRegisterType<Sample>("org.regovar", 1, 0, "Sample");

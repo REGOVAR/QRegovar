@@ -7,7 +7,7 @@
 FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 {
     // Tree model are created to allow QML binding initialisation even if no data loaded
-    mType = tr("Variants Filtering");
+    mType = "Filtering";
     mResults = new ResultsTreeModel(this);
     mAnnotationsTreeModel = new AnnotationsTreeModel(this);
     mQuickFilters = new QuickFilterModel(this);
@@ -23,9 +23,23 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 
 
     setIsLoading(true);
-
-
 }
+
+
+FilteringAnalysis::FilteringAnalysis(int id, QObject* parent) : FilteringAnalysis(parent)
+{
+    mId = id;
+}
+
+
+
+
+
+//
+// Analysis Abstracty Methods overriden ----------------------------------------------------------------------------------
+//
+
+
 
 
 bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
@@ -34,7 +48,6 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     setId(json["id"].toInt());
     setName(json["name"].toString());
     setComment(json["comment"].toString());
-    setType("Dynamic filtering analysis");
     setLastUpdate(QDateTime::fromString(json["update_date"].toString(), Qt::ISODate));
     mStatus = json["status"].toString();
 
@@ -124,6 +137,87 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
 
     return true;
 }
+
+
+
+
+QJsonObject FilteringAnalysis::toJson()
+{
+    QJsonObject result;
+    // Simples data
+    result.insert("id", mId);
+    result.insert("name", mName);
+    result.insert("comment", mComment);
+//    if (mParent != nullptr)
+//    {
+//        result.insert("parent_id", mParent->id());
+//    }
+//    // Analyses
+//    if (mAnalyses.count() > 0)
+//    {
+//        QJsonArray analyses;
+//        foreach (QObject* o, mAnalyses)
+//        {
+//            FilteringAnalysis* a = qobject_cast<FilteringAnalysis*>(o);
+//            analyses.append(a->id());
+//        }
+//        result.insert("analyses_ids", analyses);
+//    }
+    // TODO: Jobs
+    // TODO: Indicators
+
+    return result;
+}
+
+void FilteringAnalysis::save()
+{
+    if (mId == -1) return;
+    Request* request = Request::put(QString("/analysis/%1").arg(mId), QJsonDocument(toJson()).toJson());
+    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            qDebug() << "Filtering Analysis saved";
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        request->deleteLater();
+    });
+}
+
+void FilteringAnalysis::load()
+{
+    if (mId == -1) return;
+
+    Request* req = Request::get(QString("/analysis/%1").arg(mId));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            fromJson(json["data"].toObject());
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
+
+
+
+//
+// Init Async ----------------------------------------------------------------------------------
+//
+
+
+
 
 
 //! Set the reference for the analysis, and load all available annotations available for this ref (async)
@@ -277,6 +371,10 @@ void FilteringAnalysis::refreshDisplayedAnnotationColumns()
     }
     emit resultColumnsChanged();
 }
+
+
+
+
 
 
 QList<QObject*> FilteringAnalysis::samples4qml()
@@ -895,3 +993,7 @@ void FilteringAnalysis::setVariantSelection(QString id, bool isChecked)
 
 
 
+void FilteringAnalysis::addFile(File*)
+{
+    // TODO
+}

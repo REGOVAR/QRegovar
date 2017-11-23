@@ -1,8 +1,10 @@
 #ifndef ANALYSIS_H
 #define ANALYSIS_H
 
-#include <QObject>
-#include <QDateTime>
+#include <QtCore>
+
+
+
 
 class Analysis : public QObject
 {
@@ -10,9 +12,11 @@ class Analysis : public QObject
     Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentChanged)
-    Q_PROPERTY(QString type READ type WRITE setType NOTIFY typeChanged)
+    Q_PROPERTY(QString type READ type NOTIFY typeChanged)
     Q_PROPERTY(QDateTime lastUpdate READ lastUpdate WRITE setLastUpdate NOTIFY lastUpdateChanged)
+
 public:
+
     explicit Analysis(QObject *parent = nullptr);
 
     // Getters
@@ -26,8 +30,21 @@ public:
     Q_INVOKABLE inline void setId(int id) { mId = id; emit idChanged(); }
     Q_INVOKABLE inline void setName(QString name) { mName = name; emit nameChanged(); }
     Q_INVOKABLE inline void setComment(QString comment) { mComment = comment; emit commentChanged(); }
-    Q_INVOKABLE inline void setType(QString type) { mType = type; emit typeChanged(); }
     Q_INVOKABLE inline void setLastUpdate(QDateTime date) { mLastUpdate = date; emit lastUpdateChanged(); }
+
+    // Methods
+    //! Set model with provided json data
+    Q_INVOKABLE virtual bool fromJson(QJsonObject json, bool full_init=true) = 0;
+    //! Export model data into json object
+    Q_INVOKABLE virtual QJsonObject toJson() = 0;
+    //! Save subject information onto server
+    Q_INVOKABLE virtual void save() = 0;
+    //! Load Subject information from server
+    Q_INVOKABLE virtual void load() = 0;
+
+
+
+
 
 Q_SIGNALS:
     void idChanged();

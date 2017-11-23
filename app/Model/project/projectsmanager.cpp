@@ -107,9 +107,9 @@ void ProjectsManager::newProject(QString name, QString comment)
 
 void ProjectsManager::openProject(int id, bool reload_from_server)
 {
-    // Get subject
+    // Get project
     Project* project = getOrCreateProject(id);
-    // Refresh / get all information of the subject
+    // Refresh / get all information of the project
     if (reload_from_server)
     {
         project->load();

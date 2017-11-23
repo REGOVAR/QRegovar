@@ -28,7 +28,7 @@ Dialog
 
     Connections
     {
-        target: regovar
+        target: regovar.analysesManager
         onAnalysisCreationDone:
         {
             loadingIndicator.visible = false;
