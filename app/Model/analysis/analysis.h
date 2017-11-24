@@ -9,11 +9,11 @@
 class Analysis : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged)
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentChanged)
-    Q_PROPERTY(QString type READ type NOTIFY typeChanged)
-    Q_PROPERTY(QDateTime lastUpdate READ lastUpdate WRITE setLastUpdate NOTIFY lastUpdateChanged)
+    Q_PROPERTY(int id READ id WRITE setId NOTIFY dataChanged)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
+    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
+    Q_PROPERTY(QString type READ type NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime lastUpdate READ lastUpdate WRITE setLastUpdate NOTIFY dataChanged)
 
 public:
 
@@ -27,10 +27,10 @@ public:
     inline QDateTime lastUpdate() { return mLastUpdate; }
 
     // Setters
-    Q_INVOKABLE inline void setId(int id) { mId = id; emit idChanged(); }
-    Q_INVOKABLE inline void setName(QString name) { mName = name; emit nameChanged(); }
-    Q_INVOKABLE inline void setComment(QString comment) { mComment = comment; emit commentChanged(); }
-    Q_INVOKABLE inline void setLastUpdate(QDateTime date) { mLastUpdate = date; emit lastUpdateChanged(); }
+    Q_INVOKABLE inline void setId(int id) { mId = id; emit dataChanged(); }
+    Q_INVOKABLE inline void setName(QString name) { mName = name; emit dataChanged(); }
+    Q_INVOKABLE inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
+    Q_INVOKABLE inline void setLastUpdate(QDateTime date) { mLastUpdate = date; emit dataChanged(); }
 
     // Methods
     //! Set model with provided json data
@@ -47,11 +47,7 @@ public:
 
 
 Q_SIGNALS:
-    void idChanged();
-    void nameChanged();
-    void commentChanged();
-    void typeChanged();
-    void lastUpdateChanged();
+    void dataChanged();
 
 
 

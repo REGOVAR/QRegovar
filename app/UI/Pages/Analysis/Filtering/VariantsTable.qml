@@ -204,7 +204,7 @@ TreeView
     // Custom Column component for GT annotations
     Component
     {
-        id: columnComponent_GT
+        id: columnComponent_SampleArrayGT
         TableViewColumn
         {
             width: 30
@@ -273,10 +273,10 @@ TreeView
             }
         }
     }
-    // Custom Column Component for DP Annotations
+    // Custom Column Component for generic type Annotations
     Component
     {
-        id: columnComponent_DP
+        id: columnComponent_SampleArrayString
         TableViewColumn
         {
             width: 60
@@ -299,7 +299,38 @@ TreeView
                         {
                             height: 12
                             font.pixelSize: 12
-                            text: (model) ? model.value : "-"
+                            text: (model) ? String(model.value) : "-"
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // Custom Column Component for SampleArray Enum Annotations
+    Component
+    {
+        id: columnComponent_SampleArrayEnum
+        TableViewColumn
+        {
+            width: 60
+
+            delegate: Item
+            {
+                ColumnLayout
+                {
+                    anchors.fill: parent
+                    anchors.leftMargin: 5
+                    anchors.rightMargin: 5
+                    spacing: 1
+                    Repeater
+                    {
+
+                        model: styleData.value ? resultsTree.mapToList(styleData.value) : null
+                        Text
+                        {
+                            height: 12
+                            font.pixelSize: 12
+                            text: String(model.value)
                         }
                     }
                 }
@@ -495,9 +526,11 @@ TreeView
             else if (annot.type == "sample_array")
             {
                 if (annot.name == "GT")
-                    col = columnComponent_GT.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+                    col = columnComponent_SampleArrayGT.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+                else if (annot.meta["type"] == "enum")
+                    col = columnComponent_SampleArrayEnum.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
                 else
-                    col = columnComponent_DP.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+                    col = columnComponent_SampleArrayString.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
             }
             else
                 col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});

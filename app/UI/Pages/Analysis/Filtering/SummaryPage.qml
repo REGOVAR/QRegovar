@@ -13,6 +13,34 @@ Rectangle
     property FilteringAnalysis model
     property bool editionMode: false
 
+    onModelChanged:
+    {
+        if (model)
+        {
+            model.dataChanged.connect(function() { refreshFromModel(); })
+            refreshFromModel();
+        }
+    }
+
+    onVisibleChanged: refreshFromModel()
+
+
+    function refreshFromModel()
+    {
+        if (model)
+        {
+            headerTitle.text = model.name;
+            nameField.text = model.name;
+            commentField.text = model.comment;
+            statusField.text = model.status;
+            typeField.text = model.type;
+            refField.text = model.refName;
+            samplesRepeater.model = model.samples;
+            annotationsRepeater.model = model.selectedAnnotationsDB;
+            //eventsTreeView.model = ...
+        }
+    }
+
 
     Rectangle
     {
@@ -25,9 +53,9 @@ Rectangle
 
         Text
         {
+            id: headerTitle
             anchors.fill: header
             anchors.margins: 10
-            text: model ? model.name : ""
             font.pixelSize: 20
             font.weight: Font.Black
             color: Regovar.theme.primaryColor.back.dark
@@ -92,8 +120,7 @@ Rectangle
             Layout.fillWidth: true
             enabled: editionMode
             placeholderText: qsTr("Name of the analysis")
-            //text: model.name
-            onTextChanged: if (model.name != text) model.name = text
+            onTextChanged: if (model) model.name = text
         }
 
         Column
@@ -132,8 +159,7 @@ Rectangle
             Layout.fillWidth: true
             enabled: editionMode
             height: 3 * Regovar.theme.font.size.normal
-            //text: model.comment
-            //onTextChanged: if (model.comment != text) model.comment = text
+            onTextChanged: if (model) model.comment = text
         }
 
 
@@ -176,9 +202,9 @@ Rectangle
         }
         Text
         {
+            id: statusField
             Layout.fillWidth: true
             height: Regovar.theme.font.size.header
-            //text: model.status
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
@@ -196,6 +222,7 @@ Rectangle
         }
         Text
         {
+            id: typeField
             Layout.fillWidth: true
             height: Regovar.theme.font.size.header
             text: "Filtering Trio"
@@ -217,9 +244,9 @@ Rectangle
         }
         Text
         {
+            id: refField
             Layout.fillWidth: true
             height: Regovar.theme.font.size.header
-            //text: model.refName
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
@@ -244,7 +271,7 @@ Rectangle
 
             Repeater
             {
-                //model: model.samples
+                id: samplesRepeater
 
                 Row
                 {
@@ -303,7 +330,7 @@ Rectangle
 
             Repeater
             {
-                //model: model.selectedAnnotationsDB
+                id: annotationsRepeater
 
                 Text
                 {
@@ -337,6 +364,7 @@ Rectangle
         }
         TreeView
         {
+            id: eventsTreeView
             Layout.fillWidth: true
             Layout.fillHeight: true
 

@@ -26,12 +26,12 @@ class FilteringAnalysis : public Analysis
     Q_OBJECT
 
     // Analysis properties
-    Q_PROPERTY(int refId READ refId NOTIFY refChanged)
-    Q_PROPERTY(QString refName READ refName NOTIFY refChanged)
-    Q_PROPERTY(Project* project READ project WRITE setProject NOTIFY projectChanged)
-    Q_PROPERTY(QString status READ status NOTIFY statusChanged)
+    Q_PROPERTY(int refId READ refId NOTIFY dataChanged)
+    Q_PROPERTY(QString refName READ refName NOTIFY dataChanged)
+    Q_PROPERTY(Project* project READ project WRITE setProject NOTIFY dataChanged)
+    Q_PROPERTY(QString status READ status NOTIFY dataChanged)
+    // Filtering properties
     Q_PROPERTY(QJsonArray filterJson READ filterJson NOTIFY filterChanged)      // Filter json formated shared with server
-    //Q_PROPERTY(QStringList fields READ fields NOTIFY fieldsChanged)             // List of fields UID shared with Server to retrieve information about variant/trx
     Q_PROPERTY(QStringList order READ order NOTIFY orderChanged)                // List of field used for sorting result
     Q_PROPERTY(QList<QObject*> samples READ samples4qml NOTIFY samplesChanged)
     Q_PROPERTY(QList<QObject*> filters READ filters NOTIFY filtersChanged)
@@ -118,7 +118,7 @@ public:
     Q_INVOKABLE inline void setCurrentFilterName(QString name) { mCurrentFilterName=name; emit currentFilterNameChanged(); }
     Q_INVOKABLE void setField(QString uid, bool isDisplayed, int order=-1, bool internalUpdate=false);
     Q_INVOKABLE void setReference(Reference* ref, bool continueInit=false);
-    Q_INVOKABLE void setProject(Project* project) { mProject = project; emit projectChanged(); }
+    Q_INVOKABLE void setProject(Project* project) { mProject = project; emit dataChanged(); }
 
 
     // Analysis Abstracty Methods overriden
@@ -160,8 +160,6 @@ public:
 
 Q_SIGNALS:
     void isLoading();
-    void projectChanged();
-    void statusChanged();
     void loadingStatusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
     void annotationsChanged();
     void annotationsFlatListChanged();
@@ -177,7 +175,7 @@ Q_SIGNALS:
     void displayFilterNewCondPopup(QString conditionUid);
     void displayClearFilterPopup();
     void selectedAnnotationsDBChanged();
-    void refChanged();
+    void dataChanged();
     void isTrioChanged();
     void trioChildChanged();
     void trioMotherChanged();

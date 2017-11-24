@@ -229,7 +229,7 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
     // Set current ref
     mRefId = ref->id();
     mRefName = ref->name();
-    emit refChanged();
+    emit dataChanged();
 
     if (!continueInit) return;
 

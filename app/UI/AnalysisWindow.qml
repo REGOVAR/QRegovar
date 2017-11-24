@@ -15,12 +15,20 @@ ApplicationWindow
     width: 800
     height: 600
 
+    title: "Analysis"
 
     // The id of this window that allow "Regovar model" to retrieve corresponding "Analysis model" among open models/windows
     property int winId: -1
 
     //! Analysis model dedicated to the window
     property FilteringAnalysis model
+    onModelChanged:
+    {
+        if (model)
+        {
+            title = model.name
+        }
+    }
 
     //! Load root's pages of regovar
     property var menuPageMapping
