@@ -14,11 +14,13 @@
 #include "savedfilter.h"
 #include "advancedfilters/advancedfiltermodel.h"
 #include "advancedfilters/set.h"
+#include "documentstreemodel.h"
 
 class AdvancedFilterModel;
 class NewAdvancedFilterModel;
 class Set;
 class ResultsTreeModel;
+class DocumentsTreeModel;
 
 
 class FilteringAnalysis : public Analysis
@@ -47,6 +49,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsChanged)
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY filterChanged)
     Q_PROPERTY(AdvancedFilterModel* advancedfilter READ advancedfilter NOTIFY filterChanged)
+    Q_PROPERTY(DocumentsTreeModel* documents READ documents NOTIFY documentsChanged)
     // New/Edit ConditionDialog
     Q_PROPERTY(NewAdvancedFilterModel* newConditionModel READ newConditionModel NOTIFY newConditionModelChanged)
     Q_PROPERTY(QList<QObject*> samplesInputsFilesList READ samplesInputsFilesList NOTIFY samplesInputsFilesListChanged)
@@ -75,31 +78,32 @@ public:
 
     // Getters
     // Internal
-    inline int refId() { return mRefId; }
-    inline LoadingStatus loadingStatus() { return mLoadingStatus; }
+    inline int refId() const { return mRefId; }
+    inline LoadingStatus loadingStatus() const { return mLoadingStatus; }
     // Analysis properties
-    inline QString refName() { return mRefName; }
-    inline Project* project() { return mProject; }
-    inline QString status() { return mStatus; }
-    inline QJsonArray filterJson() { return mFilterJson; }
-    inline QStringList fields() { return mFields; }
-    inline QStringList order() { return mOrder; }
-    inline QList<Sample*> samples() { return mSamples; }
-    inline QList<QObject*> filters() { return mFilters; }
-    inline QList<QObject*> attributes() { return mAttributes; }
+    inline QString refName() const { return mRefName; }
+    inline Project* project() const { return mProject; }
+    inline QString status() const { return mStatus; }
+    inline QJsonArray filterJson() const { return mFilterJson; }
+    inline QStringList fields() const { return mFields; }
+    inline QStringList order() const { return mOrder; }
+    inline QList<Sample*> samples() const { return mSamples; }
+    inline QList<QObject*> filters() const { return mFilters; }
+    inline QList<QObject*> attributes() const { return mAttributes; }
     inline bool isTrio() const { return mIsTrio; }
     inline Sample* trioChild() const { return mTrioChild; }
     inline Sample* trioMother() const { return mTrioMother; }
     inline Sample* trioFather() const { return mTrioFather; }
     inline QList<QObject*> samplesInputsFilesList() const { return mSamplesInputsFilesList; }
     // Panel & Treeview models
-    inline AnnotationsTreeModel* annotations() { return mAnnotationsTreeModel; }
-    inline QList<QObject*> annotationsFlatList() { return mAnnotationsFlatList; }
-    inline QList<QObject*> allAnnotations() { return mAllAnnotations; }
-    inline ResultsTreeModel* results() { return mResults; }
-    inline QuickFilterModel* quickfilters() { return mQuickFilters; }
-    inline AdvancedFilterModel* advancedfilter() { return mAdvancedFilter; }
-    inline NewAdvancedFilterModel* newConditionModel() { return mNewConditionModel; }
+    inline AnnotationsTreeModel* annotations() const { return mAnnotationsTreeModel; }
+    inline QList<QObject*> annotationsFlatList() const { return mAnnotationsFlatList; }
+    inline QList<QObject*> allAnnotations() const { return mAllAnnotations; }
+    inline ResultsTreeModel* results() const { return mResults; }
+    inline DocumentsTreeModel* documents() const { return mDocumentsTreeModel; }
+    inline QuickFilterModel* quickfilters() const { return mQuickFilters; }
+    inline AdvancedFilterModel* advancedfilter() const { return mAdvancedFilter; }
+    inline NewAdvancedFilterModel* newConditionModel() const { return mNewConditionModel; }
     // "Shortcuts properties" for QML
     QList<QObject*> samples4qml();      // convert QList<Sample*> to QList<QObject*>
     QStringList resultColumns();
@@ -168,7 +172,6 @@ Q_SIGNALS:
     //void fieldsChanged();
     void resultsChanged();
     void samplesChanged();
-    void sampleColumnDisplayedUpdated();
     void resultColumnsChanged();
     void orderChanged();
     void displayFilterSavingFormPopup();
@@ -187,6 +190,8 @@ Q_SIGNALS:
     void attributesChanged();
     void currentFilterNameChanged();
     void setsChanged();
+    void fileAdded(int fileId);
+    void documentsChanged();
 
 
 
@@ -208,6 +213,8 @@ private:
     QList<QObject*> mFilters;
     QList<QObject*> mAttributes;
     bool mSampleColumnDisplayed = false;
+    QList<File*> mFiles;
+    DocumentsTreeModel* mDocumentsTreeModel = nullptr;
 
     QString mStatus; // status of the analysis (server side)
     LoadingStatus mLoadingStatus; // internal (UI) status used to track and coordinates asynchrone initialisation of the analysis

@@ -1,6 +1,8 @@
 #include "tool.h"
 #include "Model/framework/request.h"
 #include "Model/regovar.h"
+#include "Model/file/file.h"
+#include "Model/analysis/filtering/filteringanalysis.h"
 
 Tool::Tool(QObject *parent) :  QObject(parent) {}
 Tool::Tool(ToolType type, QJsonObject json, QObject* parent) :  QObject(parent)
@@ -40,7 +42,10 @@ void Tool::clear()
     }
 }
 
-
+void Tool::run(int analysis_id)
+{
+    run(analysis_id, QJsonObject());
+}
 void Tool::run(int analysis_id, QJsonObject parameter)
 {
     QString cmd = (mType == Exporter) ? "export" : "report";
@@ -55,7 +60,7 @@ void Tool::run(int analysis_id, QJsonObject parameter)
                 File* file = regovar->filesManager()->getOrCreateFile(data["id"].toInt());
                 file->fromJson(data);
                 FilteringAnalysis* analysis = regovar->analysesManager()->getOrCreateFilteringAnalysis(analysis_id);
-                //analysis->addFile(file);
+                analysis->addFile(file);
             }
             else if (mType == Reporter)
             {

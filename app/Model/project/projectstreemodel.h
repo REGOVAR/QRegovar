@@ -7,7 +7,7 @@ class ProjectsTreeModel : public TreeModel
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingUpdated)
+    Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
 
 public:
 
@@ -31,11 +31,11 @@ public:
     inline bool isLoading() { return mIsLoading; }
 
     // Setters
-    inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingUpdated(); }
+    inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingChanged(); }
 
 
 Q_SIGNALS:
-    void isLoadingUpdated();
+    void isLoadingChanged();
 
 
 private:

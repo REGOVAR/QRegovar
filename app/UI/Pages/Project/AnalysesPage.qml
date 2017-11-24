@@ -11,6 +11,8 @@ Rectangle
 
     property QtObject model
 
+    property var currentAnalysis: null
+
     Rectangle
     {
         id: header
@@ -122,6 +124,7 @@ Rectangle
                 anchors.margins: 10
                 model: (root.model) ? root.model.analyses : []
 
+
                 // Default delegate for all column
                 itemDelegate: Item
                 {
@@ -186,7 +189,7 @@ Rectangle
 
                 color: "transparent"
 
-                visible: regovar.newFiltering.samples.length == 0
+                visible: root.currentAnalysis
 
                 Text
                 {
@@ -224,13 +227,6 @@ Rectangle
 
     function displayCurrentAnalysisPreview(analysis)
     {
-        if (analysis)
-        {
-            helpPanel.visible = false;
-        }
-        else
-        {
-            helpPanel.visible = true;
-        }
+        root.currentAnalysis = analysis;
     }
 }

@@ -12,10 +12,10 @@ class FilesTreeItem : public QObject
 public:
 
     // Constructors
-    explicit FilesTreeItem(QObject *parent = 0);
-    explicit FilesTreeItem(int id, QString text, QObject *parent = 0);
-    FilesTreeItem(const FilesTreeItem &other);
-    ~FilesTreeItem();
+    explicit FilesTreeItem(QObject* parent=nullptr);
+    explicit FilesTreeItem(int id, QString text, QObject* parent=nullptr);
+//    FilesTreeItem(const FilesTreeItem &other);
+//    ~FilesTreeItem();
 
     // Accessors
     inline QString text() { return mText; }
@@ -30,7 +30,7 @@ public:
     inline void setUploadOffset(qint64 offset) { mOffset = offset; }
 
 
-signals:
+Q_SIGNALS:
     void textChanged();
     void idChanged();
 

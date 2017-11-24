@@ -13,6 +13,7 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
     mQuickFilters = new QuickFilterModel(this);
     mAdvancedFilter = new AdvancedFilterModel(this);
     mNewConditionModel = new NewAdvancedFilterModel(this);
+    mDocumentsTreeModel = new DocumentsTreeModel(this);
     mLoadingStatus = Empty;
 
 
@@ -118,6 +119,9 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
 
     // Once samples, attributes, filters and panels have been retrieved, create unique list of sets
     resetSets();
+
+    // Retrieve results files
+    mDocumentsTreeModel->refresh(json);
 
 
     // Loading of an analysis required several asynch steps
@@ -993,7 +997,31 @@ void FilteringAnalysis::setVariantSelection(QString id, bool isChecked)
 
 
 
-void FilteringAnalysis::addFile(File*)
+void FilteringAnalysis::addFile(File* file)
 {
-    // TODO
+    if (file != nullptr && !mFiles.contains(file))
+    {
+        // Update analysis to add file list
+        mFiles.append(file);
+        int fileId = file->id();
+        // Synch with server
+        Request* request = Request::put(QString("/analysis/%1").arg(mId), QJsonDocument(toJson()).toJson());
+        connect(request, &Request::responseReceived, [this, fileId, request](bool success, const QJsonObject& json)
+        {
+            if (success)
+            {
+                QJsonObject data = json["data"].toObject();
+                // Refresh document list
+                mDocumentsTreeModel->refresh(data);
+                emit fileAdded(fileId);
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            request->deleteLater();
+        });
+    }
 }

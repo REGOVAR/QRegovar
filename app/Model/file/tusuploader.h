@@ -51,12 +51,12 @@ public:
 
 
 
-signals:
+Q_SIGNALS:
     void uploadStarted(TusUploadItem* file);
     void uploadEnded(TusUploadItem* file);
     void filesEnqueued(QHash<QString, QString> serverMapping);
 
-public slots:
+public Q_SLOTS:
     //! Try to start or resume uploads in the queue
     void startNext();
     void newUploadFinished();

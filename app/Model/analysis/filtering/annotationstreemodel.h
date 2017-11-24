@@ -8,7 +8,7 @@
 class AnnotationsTreeModel : public TreeModel
 {
     Q_OBJECT
-    Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingUpdated)
+    Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
 
 public:
 
@@ -35,12 +35,12 @@ public:
     inline QHash<QString, Annotation*>* annotations() { return &mAnnotations;}
 
     // Setters
-    inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingUpdated(); }
+    inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingChanged(); }
     inline void addAnnotation(QString uid, Annotation* annotation) {mAnnotations.insert(uid, annotation); }
 
 
 Q_SIGNALS:
-    void isLoadingUpdated();
+    void isLoadingChanged();
 
 
 private:

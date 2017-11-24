@@ -61,7 +61,9 @@ HEADERS += \
     Model/tools/tool.h \
     Model/tools/toolsmanager.h \
     Model/project/projectsmanager.h \
-    Model/analysis/analysesmanager.h
+    Model/analysis/analysesmanager.h \
+    Model/analysis/filtering/documentstreemodel.h \
+    Model/analysis/filtering/documentstreeitem.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -110,7 +112,9 @@ SOURCES += main.cpp \
     Model/tools/tool.cpp \
     Model/tools/toolsmanager.cpp \
     Model/project/projectsmanager.cpp \
-    Model/analysis/analysesmanager.cpp
+    Model/analysis/analysesmanager.cpp \
+    Model/analysis/filtering/documentstreemodel.cpp \
+    Model/analysis/filtering/documentstreeitem.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

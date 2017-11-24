@@ -13,8 +13,8 @@ class AnnotationsTreeItem : public QObject
 public:
 
 
-    explicit AnnotationsTreeItem(QObject *parent = 0);
-    explicit AnnotationsTreeItem(QString uid, QVariant value, QObject *parent = 0);
+    explicit AnnotationsTreeItem(QObject* parent=nullptr);
+    explicit AnnotationsTreeItem(QString uid, QVariant value, QObject* parent=nullptr);
     AnnotationsTreeItem(const AnnotationsTreeItem &other);
     ~AnnotationsTreeItem();
 
@@ -26,7 +26,7 @@ public:
     inline void setUid(QString uid) { mUid = uid; emit uidChanged(); }
     void setChecked(bool checked) ;
 
-signals:
+Q_SIGNALS:
     void valueChanged();
     void uidChanged();
     void checkedChanged();

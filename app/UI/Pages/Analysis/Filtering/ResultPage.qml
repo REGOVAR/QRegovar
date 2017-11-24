@@ -13,8 +13,9 @@ Rectangle
     property FilteringAnalysis model
     onModelChanged:
     {
-        if (root.model != null)
+        if (model)
         {
+            documentsTreeView.model = model.documents;
         }
     }
 
@@ -138,18 +139,33 @@ Rectangle
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
+                    onCurrentIndexChanged:
+                    {
+                        var info = model.data(currentIndex, Qt.UserRole +1);
+                        console.log(info);
+                    }
+
+
                     TableViewColumn
                     {
                         width: 100
+                        role: "name"
                         title: "Name"
                     }
                     TableViewColumn
                     {
                         width: 100
+                        role: "size"
                         title: "Size"
                     }
                     TableViewColumn
                     {
+                        role: "date"
+                        title: "Date"
+                    }
+                    TableViewColumn
+                    {
+                        role: "comment"
                         title: "Comment"
                     }
                 }

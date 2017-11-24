@@ -24,7 +24,7 @@ public:
     inline void setIsSelected(bool flag) { mIsSelected = flag; emit isSelectedChanged(); }
 
 
-signals:
+Q_SIGNALS:
     void uidChanged();
     void isSelectedChanged();
 

@@ -13,10 +13,10 @@ class ProjectsTreeItem : public QObject
 public:
 
 
-    explicit ProjectsTreeItem(QObject *parent = 0);
-    explicit ProjectsTreeItem(int id, QString text, QObject *parent = 0);
-    ProjectsTreeItem(const ProjectsTreeItem &other);
-    ~ProjectsTreeItem();
+    explicit ProjectsTreeItem(QObject* parent=nullptr);
+    explicit ProjectsTreeItem(int id, QString text, QObject* parent=nullptr);
+//    ProjectsTreeItem(const ProjectsTreeItem &other);
+//    ~ProjectsTreeItem();
 
     inline QString text() { return mText; }
     inline int id() { return mId; }
@@ -26,7 +26,7 @@ public:
     inline void setId(int id) { mId = id; emit idChanged(); }
     inline void setIsAnalysis(bool flag) { mIsAnalysis = flag; emit isAnalysisChanged(); }
 
-signals:
+Q_SIGNALS:
     void textChanged();
     void idChanged();
     void isAnalysisChanged();

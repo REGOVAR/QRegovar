@@ -12,13 +12,13 @@ class QuickFilterModel : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QuickFilterBlockInterface* transmissionFilter READ transmissionFilter NOTIFY filterUpdated)
-    Q_PROPERTY(QuickFilterBlockInterface* qualityFilter READ qualityFilter NOTIFY filterUpdated)
-    Q_PROPERTY(QuickFilterBlockInterface* positionFilter READ positionFilter NOTIFY filterUpdated)
-    Q_PROPERTY(QuickFilterBlockInterface* typeFilter READ typeFilter NOTIFY filterUpdated)
-    Q_PROPERTY(QuickFilterBlockInterface* frequenceFilter READ frequenceFilter NOTIFY filterUpdated)
-    Q_PROPERTY(QuickFilterBlockInterface* inSilicoPredFilter READ inSilicoPredFilter NOTIFY filterUpdated)
-    Q_PROPERTY(QuickFilterBlockInterface* ontologyFilter READ ontologyFilter NOTIFY filterUpdated)
+    Q_PROPERTY(QuickFilterBlockInterface* transmissionFilter READ transmissionFilter NOTIFY filterChanged)
+    Q_PROPERTY(QuickFilterBlockInterface* qualityFilter READ qualityFilter NOTIFY filterChanged)
+    Q_PROPERTY(QuickFilterBlockInterface* positionFilter READ positionFilter NOTIFY filterChanged)
+    Q_PROPERTY(QuickFilterBlockInterface* typeFilter READ typeFilter NOTIFY filterChanged)
+    Q_PROPERTY(QuickFilterBlockInterface* frequenceFilter READ frequenceFilter NOTIFY filterChanged)
+    Q_PROPERTY(QuickFilterBlockInterface* inSilicoPredFilter READ inSilicoPredFilter NOTIFY filterChanged)
+    Q_PROPERTY(QuickFilterBlockInterface* ontologyFilter READ ontologyFilter NOTIFY filterChanged)
 
 
 public:
@@ -54,7 +54,7 @@ public:
     void loadFilter(QJsonArray filter);
 
 Q_SIGNALS:
-    void filterUpdated();
+    void filterChanged();
 
 
 

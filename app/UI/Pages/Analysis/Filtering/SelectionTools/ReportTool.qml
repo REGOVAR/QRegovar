@@ -13,7 +13,7 @@ import "../Quickfilter"
 QuickFilterBox
 {
     id: root
-    title : qsTr("Export")
+    title : qsTr("Report")
     isExpanded: false
 
     property bool internalUiUpdate: false

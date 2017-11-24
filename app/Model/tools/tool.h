@@ -32,6 +32,7 @@ public:
     // Methods
     QJsonObject toJson();
     void clear();
+    void run(int analysis_id);
     void run(int analysis_id, QJsonObject parameter);
 
 Q_SIGNALS:

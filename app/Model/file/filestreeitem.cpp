@@ -4,14 +4,14 @@
 FilesTreeItem::FilesTreeItem(QObject *parent) : QObject(parent)
 {}
 
-FilesTreeItem::FilesTreeItem(const FilesTreeItem &other) : QObject(other.parent())
-{
-    mText = other.mText;
-    mId= other.mId;
-}
+//FilesTreeItem::FilesTreeItem(const FilesTreeItem &other) : QObject(other.parent())
+//{
+//    mText = other.mText;
+//    mId= other.mId;
+//}
 
-FilesTreeItem::~FilesTreeItem()
-{}
+//FilesTreeItem::~FilesTreeItem()
+//{}
 
 
 
