@@ -187,7 +187,6 @@ Q_SIGNALS:
     void searchRequestChanged();
     void searchResultChanged();
     void searchInProgressChanged();
-    void variantInformationReady(QJsonObject json);
 
     void welcomIsLoadingChanged();
     void lastDataChanged();
