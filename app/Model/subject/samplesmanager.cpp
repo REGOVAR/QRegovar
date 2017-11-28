@@ -25,11 +25,11 @@ void SamplesManager::setReferencialId(int refId)
         if (success)
         {
             mSamplesList.clear();
-            foreach( QJsonValue sbjData, json["data"].toArray())
+            for (const QJsonValue& sbjData: json["data"].toArray())
             {
                 QJsonObject subject = sbjData.toObject();
                 // TODO subject info
-                foreach( QJsonValue splData, subject["samples"].toArray())
+                for (const QJsonValue& splData: subject["samples"].toArray())
                 {
                     Sample* sample = new Sample();
                     sample->fromJson(splData.toObject());

@@ -9,7 +9,7 @@ FilesTreeModel::FilesTreeModel() : TreeModel(0)
 {
     QHash<int, QVariant> rootData;
     QHash<int, QByteArray> roles = roleNames();
-    foreach (int roleId, roles.keys())
+    for (const int roleId: roles.keys())
     {
         rootData.insert(roleId, QString(roles[roleId]));
     }
@@ -96,7 +96,7 @@ void FilesTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
 {
 
 
-    foreach(const QJsonValue json, data)
+    for (const QJsonValue& json: data)
     {
         QJsonObject p = json.toObject();
         int id = p["id"].toInt();

@@ -10,7 +10,7 @@ AnnotationsTreeModel::AnnotationsTreeModel(QObject* parent) : TreeModel(parent)
 {
     QHash<int, QVariant> rootData;
     QHash<int, QByteArray> roles = roleNames();
-    foreach (int roleId, roles.keys())
+    for (const int roleId: roles.keys())
     {
         rootData.insert(roleId, QString(roles[roleId]));
     }
@@ -77,7 +77,7 @@ QVariant AnnotationsTreeModel::newAnnotationsTreeViewItem(QString id, const QVar
 
 void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent, QStringList dbUids)
 {
-    foreach (const QJsonValue dbv, data)
+    for (const QJsonValue& dbv: data)
     {
         QJsonObject db = dbv.toObject();
 
@@ -87,7 +87,7 @@ void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent, QSt
 
 
         // Version sublevel
-        foreach (QString dbUid, dbVersion.keys())
+        for (const QString& dbUid: dbVersion.keys())
         {
             // Keep only annotations used in the analyses
             if (dbUids.contains(dbUid) || (dbUid == "" && dbName == "Variant"))
@@ -100,7 +100,7 @@ void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent, QSt
                 TreeItem* dbItem = new TreeItem(dbColData, parent);
                 parent->appendChild(dbItem);
 
-                foreach(const QJsonValue json, db["fields"].toArray())
+                for (const QJsonValue& json: db["fields"].toArray())
                 {
                     QJsonObject a = json.toObject();
 

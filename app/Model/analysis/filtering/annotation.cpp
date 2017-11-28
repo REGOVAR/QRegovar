@@ -57,7 +57,7 @@ AnnotationDB::AnnotationDB(QString uid, QString name, QString description, QStri
     mIsHeadVersion = isHeadVersion;
     setSelected(version == "_all_" ? true: isHeadVersion);
 
-    foreach (const QJsonValue data, fields)
+    for (const QJsonValue& data: fields)
     {
         QJsonObject a = data.toObject();
         QString fuid = a["uid"].toString();

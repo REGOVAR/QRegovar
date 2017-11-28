@@ -11,7 +11,7 @@ ProjectsTreeModel::ProjectsTreeModel() : TreeModel(0)
     // other rows. So that's why we create columns for all existings roles.
     QHash<int, QVariant> rootData;
     QHash<int, QByteArray> roles = roleNames();
-    foreach (int roleId, roles.keys())
+    for (const int roleId: roles.keys())
     {
         rootData.insert(roleId, QString(roles[roleId]));
     }
@@ -58,7 +58,7 @@ QVariant ProjectsTreeModel::newProjectsTreeViewItem(int id, bool isAnalysis, con
 
 void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 {
-    foreach(const QJsonValue json, data)
+    for (const QJsonValue& json: data)
     {
         QJsonObject p = json.toObject();
         int id = p["id"].toInt();
@@ -89,7 +89,7 @@ void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 
 void ProjectsTreeModel::setupModelAnalysisData(QJsonArray data, TreeItem *parent)
 {
-    foreach(const QJsonValue json, data)
+    for (const QJsonValue& json: data)
     {
         QJsonObject p = json.toObject();
         int id = p["id"].toInt();

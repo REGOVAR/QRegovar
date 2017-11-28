@@ -27,7 +27,7 @@ void ResultsTreeModel::initAnalysisData(int analysisId)
     // With QML TreeView, the rootItem must know all column's roles to allow correct display for
     // other rows. So that's why we create columns for all existings roles.
     QHash<int, QVariant> rootData;
-    foreach (int roleId, mRoles.keys())
+    for (const int roleId: mRoles.keys())
     {
         rootData.insert(roleId, QString(mRoles[roleId]));
     }
@@ -52,7 +52,7 @@ QHash<int, QByteArray> ResultsTreeModel::roleNames() const
     roles[roleId] = "is_selected";
     ++roleId;
     // Build role from annotations all annotations available list
-    foreach (QString uid, mFilteringAnalysis->annotations()->annotations()->keys())
+    for (const QString& uid: mFilteringAnalysis->annotations()->annotations()->keys())
     {
         roles[roleId] = uid.toUtf8();
         ++roleId;
@@ -290,7 +290,7 @@ TreeItem* ResultsTreeModel::newResultsTreeViewItem(const QJsonObject& rowData)
     // add columns info to the item
     columnData.insert(mRoles.key("id"), QVariant(rowId));
     columnData.insert(mRoles.key("is_selected"), QVariant(isSelected));
-    foreach (QString fuid, mFilteringAnalysis->fields())
+    for (const QString& fuid: mFilteringAnalysis->fields())
     {
         columnData.insert(mRoles.key(fuid.toUtf8()), rowData[fuid].toVariant());
     }
@@ -317,7 +317,7 @@ TreeItem* ResultsTreeModel::newResultsTreeViewItem(const QJsonObject& rowData)
 void ResultsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 {
     int loaded = 0;
-    foreach(const QJsonValue json, data)
+    for (const QJsonValue& json: data)
     {
         // Create treeview item with column's data and parent item
         TreeItem* item = newResultsTreeViewItem(json.toObject());

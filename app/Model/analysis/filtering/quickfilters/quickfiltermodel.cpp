@@ -34,7 +34,7 @@ void QuickFilterModel::init(int refId, int)
 QJsonArray QuickFilterModel::toJson()
 {
     QJsonArray filters;
-    foreach (QuickFilterBlockInterface* filter, mQuickFilters.values())
+    for (QuickFilterBlockInterface* filter: mQuickFilters.values())
     {
         if (filter->isVisible())
         {
@@ -43,7 +43,7 @@ QJsonArray QuickFilterModel::toJson()
             {
                 if (f[0].toString() == "AND")
                 {
-                    foreach (QJsonValue val, f[1].toArray())
+                    for (const QJsonValue& val: f[1].toArray())
                     {
                         filters.append(val.toArray());
                     }
@@ -82,7 +82,7 @@ void QuickFilterModel::checkAnnotationsDB(QList<QObject*> dbs)
 
 void QuickFilterModel::loadFilter(QJsonArray json)
 {
-    foreach (QuickFilterBlockInterface* filter, mQuickFilters.values())
+    for (QuickFilterBlockInterface* filter: mQuickFilters.values())
     {
         filter->loadJson(json);
     }
@@ -91,7 +91,7 @@ void QuickFilterModel::loadFilter(QJsonArray json)
 
 void QuickFilterModel::clear()
 {
-    foreach (QuickFilterBlockInterface* filter, mQuickFilters.values())
+    for (QuickFilterBlockInterface* filter: mQuickFilters.values())
     {
         filter->clear();
     }

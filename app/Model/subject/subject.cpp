@@ -34,7 +34,7 @@ bool Subject::fromJson(QJsonObject json)
 
     // samples
     mSamples.clear();
-    foreach (QJsonValue val, json["samples"].toArray()) { mSamples.append(new Sample(val.toObject())); }
+    for (const QJsonValue& val: json["samples"].toArray()) { mSamples.append(new Sample(val.toObject())); }
 
     //
     mAnalyses.clear();
@@ -64,7 +64,7 @@ QJsonObject Subject::toJson()
     result.insert("sex", mSex == Sex::Male ? "male" : mSex == Sex::Female ? "female" : "unknow");
     // Samples
     QJsonArray samples;
-    foreach (QObject* o, mSamples)
+    for (QObject* o: mSamples)
     {
         Sample* sample = qobject_cast<Sample*>(o);
         samples.append(sample->id());
@@ -125,7 +125,7 @@ void Subject::load()
 void Subject::addSample(Sample* sample)
 {
     // Check that sample not already in the list
-    foreach (QObject* o, mSamples)
+    for (QObject* o: mSamples)
     {
         Sample* s = qobject_cast<Sample*>(o);
         if (s->id() == sample->id()) return;

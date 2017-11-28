@@ -18,7 +18,7 @@ QJsonObject Attribute::toJson()
     QJsonObject result;
     result.insert("name", mName);
     QJsonObject values;
-    foreach (int sid, mSamplesValues.keys())
+    for (const int sid: mSamplesValues.keys())
     {
         values.insert(QString::number(sid), mSamplesValues[sid]);
     }
@@ -33,7 +33,7 @@ void Attribute::fromJson(QJsonObject json)
     mName = json["name"].toString();
     QJsonObject values = json["samples_values"].toObject();
 
-    foreach (QString sid, values.keys())
+    for (const QString& sid: values.keys())
     {
         QJsonObject data = values[sid].toObject();
         QString value = data["value"].toString();

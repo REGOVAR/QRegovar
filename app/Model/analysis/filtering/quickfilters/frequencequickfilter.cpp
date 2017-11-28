@@ -29,7 +29,7 @@ void FrequenceQuickFilter::init(QString _1000gUid, QString exacUid, QStringList 
     {
         m1000GAll = new QuickFilterField(_1000gUid, tr("1000G MAF"), mOperators, "<=", "0.01");
     }
-    foreach (QString fuid, _1000g)
+    for (const QString& fuid: _1000g)
     {
         m1000GFields << new QuickFilterField(fuid, mFieldsNames[fuid], mOperators, "<=", "0.01");
     }
@@ -38,7 +38,7 @@ void FrequenceQuickFilter::init(QString _1000gUid, QString exacUid, QStringList 
     {
         mExacAll = new QuickFilterField(exacUid, tr("ExAC MAF"), mOperators, "<=", "0.01");
     }
-    foreach (QString fuid, exac)
+    for (const QString& fuid: exac)
     {
         mExacFields << new QuickFilterField(fuid, mFieldsNames[fuid], mOperators, "<=", "0.01");
     }
@@ -66,7 +66,7 @@ QJsonArray FrequenceQuickFilter::toJson()
         filters.append(mExacAll->toJson());
     }
 
-    foreach (QObject* o, m1000GFields)
+    for (QObject* o: m1000GFields)
     {
         QuickFilterField* field = qobject_cast<QuickFilterField*>(o);
         if (field->isActive())
@@ -74,7 +74,7 @@ QJsonArray FrequenceQuickFilter::toJson()
             filters.append(field->toJson());
         }
     }
-    foreach (QObject* o, mExacFields)
+    for (QObject* o: mExacFields)
     {
         QuickFilterField* field = qobject_cast<QuickFilterField*>(o);
         if (field->isActive())
@@ -106,12 +106,12 @@ void FrequenceQuickFilter::setFilter(QString, bool , QVariant)
 
 void FrequenceQuickFilter::clear()
 {
-    foreach (QObject* o, m1000GFields)
+    for (QObject* o: m1000GFields)
     {
         QuickFilterField* field = qobject_cast<QuickFilterField*>(o);
         field->clear();
     }
-    foreach (QObject* o, mExacFields)
+    for (QObject* o: mExacFields)
     {
         QuickFilterField* field = qobject_cast<QuickFilterField*>(o);
         field->clear();
@@ -134,14 +134,14 @@ void FrequenceQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 
     mIsVisible = false;
     // Retrieve fuid for 1000G and Exac
-    foreach (QObject* o, dbs)
+    for (QObject* o: dbs)
     {
         AnnotationDB* db = qobject_cast<AnnotationDB*>(o);
         if (db->selected())
         {
             if (db->name().toLower() == "vep")
             {
-                foreach (Annotation* annot, db->fields())
+                for (Annotation* annot: db->fields())
                 {
                     if (annot)
                     {

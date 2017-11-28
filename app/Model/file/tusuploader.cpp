@@ -50,7 +50,7 @@ void TusUploader::enqueue(QStringList paths)
     QHash<QString, QString>* serverMapping =  new QHash<QString, QString>();
 
     // Then for each file we sent a request to the server to prepare uploadUrl for it
-    foreach (QString path, paths)
+    for (QString& path: paths)
     {
         if (path.startsWith("file:///"))
         {
@@ -114,7 +114,7 @@ void TusUploader::enqueue(QStringList paths)
 
                         // If all file have been registered, return the mapping to the view
                         int valid = 0;
-                        foreach (QString remoteUrl, serverMapping->values())
+                        for (const QString& remoteUrl: serverMapping->values())
                         {
                             if (remoteUrl.isEmpty()) break;
                             valid ++;

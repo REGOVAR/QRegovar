@@ -32,7 +32,7 @@ bool Sample::fromJson(QJsonObject json)
     mReference = regovar->referenceFromId(json["reference_id"].toInt());
 
     mDefaultAnnotationsDbUid.clear();
-    foreach (const QJsonValue field, json["default_dbuid"].toArray())
+    for (const QJsonValue& field: json["default_dbuid"].toArray())
     {
         mDefaultAnnotationsDbUid << field.toString();
     }

@@ -72,7 +72,7 @@ TreeItem* TreeItem::parent()
 
 void TreeItem::recursiveDelete()
 {
-    foreach (TreeItem* child, mChildItems)
+    for (TreeItem* child: mChildItems)
     {
         child->recursiveDelete();
     }

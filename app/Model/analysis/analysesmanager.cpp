@@ -25,7 +25,7 @@ void AnalysesManager::resetNewFiltering(int refId)
 
     // reset references
     int idx = 0;
-    foreach (QObject* o, regovar->references())
+    for (QObject* o: regovar->references())
     {
         Reference* ref = qobject_cast<Reference*>(o);
         if (ref->id() == refId)
@@ -55,7 +55,7 @@ bool AnalysesManager::newAnalysis(QString type)
     {
         // Samples
         QJsonArray ids;
-        foreach (Sample* s, mNewFiltering->samples())
+        for (Sample* s: mNewFiltering->samples())
         {
             ids.append(QJsonValue(s->id()));
         }
@@ -85,7 +85,7 @@ bool AnalysesManager::newAnalysis(QString type)
         QJsonArray attributes;
         if (mNewFiltering->attributes().count() > 0)
         {
-            foreach (QObject* o, mNewFiltering->attributes())
+            for (QObject* o: mNewFiltering->attributes())
             {
                 Attribute* attr = qobject_cast<Attribute*>(o);
                 attributes.append(attr->toJson());
@@ -93,7 +93,7 @@ bool AnalysesManager::newAnalysis(QString type)
         }
 
         // Save Subjects-samples associations
-        foreach (QObject* o, mNewFiltering->samples())
+        for (QObject* o: mNewFiltering->samples())
         {
             Sample* sample = qobject_cast<Sample*>(o);
             sample->save();

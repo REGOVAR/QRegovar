@@ -14,7 +14,7 @@ ToolsManager::ToolsManager(QObject* parent) : QObject(parent)
         {
             QJsonObject data = json["data"].toObject();
             // Get custom export tools deployed
-            foreach (QJsonValue val, data["exporters"].toArray())
+            for (const QJsonValue& val: data["exporters"].toArray())
             {
                 mExporters.append(new Tool(Tool::Exporter, val.toObject()));
             }

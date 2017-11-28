@@ -11,7 +11,7 @@ ToolParameter::ToolParameter(QJsonObject json, QObject* parent) :  QObject(paren
     mDefaultValue = json["size"].toVariant();
     mRequired = json["totalsize"].toBool();
 
-    foreach (QJsonValue val, json["enum"].toArray())
+    for (const QJsonValue& val: json["enum"].toArray())
     {
         mEnumValues << val.toString();
     }

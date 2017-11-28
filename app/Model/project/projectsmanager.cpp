@@ -32,7 +32,7 @@ void ProjectsManager::refreshProjectsList()
 
 void ProjectsManager::refreshFlatProjectsListRecursive(QJsonArray data, QString prefix)
 {
-    foreach(const QJsonValue json, data)
+    for (const QJsonValue& json: data)
     {
         QJsonObject p = json.toObject();
         QString name = p["name"].toString();

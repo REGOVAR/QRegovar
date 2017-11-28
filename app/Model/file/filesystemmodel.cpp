@@ -88,7 +88,7 @@ QList<QString> FileSystemModel::getFilesPath(QItemSelectionModel* selection)
 {
     QModelIndexList indexes = selection->selectedIndexes();
     QList<QString> paths;
-    foreach (QModelIndex idx, indexes)
+    for (const QModelIndex& idx: indexes)
     {
         if (idx.isValid())
             paths.append(filePath(idx));

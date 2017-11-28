@@ -137,11 +137,11 @@ void Regovar::onWebsocketReceived(QString message)
         double progressValue = data["progress"].toDouble();
         QString status = data["status"].toString();
 
-        foreach(QJsonValue json, data["samples"].toArray())
+        for (const QJsonValue& json: data["samples"].toArray())
         {
             QJsonObject obj = json.toObject();
             int sid = obj["id"].toInt();
-            foreach (QObject* o, mSamplesManager->samplesList())
+            for (QObject* o: mSamplesManager->samplesList())
             {
                 Sample* sample = qobject_cast<Sample*>(o);
                 if (sample->id() == sid)
@@ -239,7 +239,7 @@ void Regovar::loadWelcomData()
             mConfig->fromJson(data);
 
             // Last analyses
-            foreach (QJsonValue val, data["last_analyses"].toArray())
+            for (const QJsonValue& val: data["last_analyses"].toArray())
             {
                 QJsonObject item = val.toObject();
                 QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
@@ -247,7 +247,7 @@ void Regovar::loadWelcomData()
                 mLastAnalyses.append(item);
             }
             // Last subjects
-            foreach (QJsonValue val, data["last_subjects"].toArray())
+            for (const QJsonValue& val: data["last_subjects"].toArray())
             {
                 QJsonObject item = val.toObject();
                 QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
@@ -255,7 +255,7 @@ void Regovar::loadWelcomData()
                 mLastSubjects.append(item);
             }
             // Last events
-            foreach (QJsonValue val, data["last_events"].toArray())
+            for (const QJsonValue& val: data["last_events"].toArray())
             {
                 QJsonObject item = val.toObject();
                 QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
@@ -266,7 +266,7 @@ void Regovar::loadWelcomData()
 
             // Get referencial available
             mReferenceDefault = data["default_reference_id"].toInt();
-            foreach (QJsonValue jsonVal, data["references"].toArray())
+            for (const QJsonValue& jsonVal: data["references"].toArray())
             {
                 Reference* ref = new Reference();
                 ref->fromJson(jsonVal.toObject());
@@ -277,7 +277,7 @@ void Regovar::loadWelcomData()
 
             // Get milestones data
             QJsonObject milestones;
-            foreach (QJsonValue val, data["milestones"].toArray())
+            for (const QJsonValue& val: data["milestones"].toArray())
             {
                 milestones = val.toObject();
                 if (milestones["state"].toString() == "open")
@@ -350,7 +350,7 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
 
 Reference* Regovar::referenceFromId(int id)
 {
-    foreach (QObject* o, mReferences)
+    for (QObject* o: mReferences)
     {
         Reference* ref = qobject_cast<Reference*>(o);
         if (ref->id()==id)

@@ -17,7 +17,7 @@ void SubjectsManager::refreshSubjectsList()
         {
             mSubjectsList.clear();
             QJsonArray data = json["data"].toArray();
-            foreach (QJsonValue subjectVal, data)
+            for (const QJsonValue& subjectVal: data)
             {
                 mSubjectsList.append(new Subject(subjectVal.toObject()));
             }
@@ -36,7 +36,7 @@ void SubjectsManager::refreshSubjectsList()
 Subject* SubjectsManager::getOrCreateSubject(int id)
 {
     // Try to find subject in already know subjects
-    foreach (QObject* o, mSubjectsList)
+    for (QObject* o: mSubjectsList)
     {
         Subject* s = qobject_cast<Subject*>(o);
         if (s->id() == id)

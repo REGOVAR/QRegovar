@@ -46,7 +46,7 @@ QJsonArray TransmissionQuickFilter::toJson()
 {
     QJsonArray filter;
     QJsonArray recFilter;
-    foreach(QuickFilterField* f, mFilters.values())
+    for (QuickFilterField* f: mFilters.values())
     {
         if (f->isActive())
         {
@@ -91,7 +91,7 @@ void TransmissionQuickFilter::setFilter(QString filterId, bool filterActive, QVa
 
 void TransmissionQuickFilter::clear()
 {
-    foreach(QString fid, mFilters.keys())
+    for (const QString& fid: mFilters.keys())
     {
         mFilters[fid]->setIsActive(false);
     }

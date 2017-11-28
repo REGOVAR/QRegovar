@@ -7,7 +7,7 @@ DocumentsTreeModel::DocumentsTreeModel(FilteringAnalysis* parent) : TreeModel(pa
     // other rows. So that's why we create columns for all existings roles.
     QHash<int, QVariant> rootData;
     QHash<int, QByteArray> roles = roleNames();
-    foreach (int roleId, roles.keys())
+    for (const int roleId: roles.keys())
     {
         rootData.insert(roleId, QString(roles[roleId]));
     }
@@ -99,7 +99,7 @@ DocumentsTreeItem* DocumentsTreeModel::newSampleTreeViewItem(QJsonObject data, T
     item->appendChild(newFileTreeViewItem(file, item));
     if (!subject.isEmpty())
     {
-        foreach(const QJsonValue json, subject["files"].toArray())
+        for (const QJsonValue& json: subject["files"].toArray())
         {
             file = json.toObject();
             parent->appendChild(newFileTreeViewItem(file, parent));
@@ -115,14 +115,14 @@ DocumentsTreeItem* DocumentsTreeModel::newSampleTreeViewItem(QJsonObject data, T
 void DocumentsTreeModel::setupModelData(QJsonObject data, TreeItem *parent)
 {
     // First we add samples files (with Subject>sample as folder)
-    foreach(const QJsonValue json, data["samples"].toArray())
+    for (const QJsonValue& json: data["samples"].toArray())
     {
         QJsonObject sample = json.toObject();
         parent->appendChild(newSampleTreeViewItem(sample, parent));
     }
 
     // Next we add analysis file
-    foreach(const QJsonValue json, data["files"].toArray())
+    for (const QJsonValue& json: data["files"].toArray())
     {
         QJsonObject file = json.toObject();
         parent->appendChild(newFileTreeViewItem(file, parent));

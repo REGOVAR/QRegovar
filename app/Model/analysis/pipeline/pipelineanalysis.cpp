@@ -17,7 +17,7 @@ PipelineAnalysis::PipelineAnalysis(int id, QObject* parent) : PipelineAnalysis(p
 
 void PipelineAnalysis::addInputs(QList<QObject*> inputs)
 {
-    foreach(QObject* o1, inputs)
+    for (QObject* o1: inputs)
     {
         File* file = qobject_cast<File*>(o1);
         if (!mInputsFilesIds.contains(file->id()))
@@ -32,7 +32,7 @@ void PipelineAnalysis::addInputs(QList<QObject*> inputs)
 
 void PipelineAnalysis::removeInputs(QList<QObject*> inputs)
 {
-    foreach(QObject* o1, inputs)
+    for (QObject* o1: inputs)
     {
         File* file = qobject_cast<File*>(o1);
         if (mInputsFilesIds.contains(file->id()))
@@ -62,7 +62,7 @@ void PipelineAnalysis::onWebsocketMessageReceived(QString action, QJsonObject da
     if (action == "file_upload")
     {
         int id = data["id"].toInt();
-        foreach(QObject* o, mInputsFilesList)
+        for (QObject* o: mInputsFilesList)
         {
             File* file = qobject_cast<File*>(o);
             if (file->id() != id) continue;

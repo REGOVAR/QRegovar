@@ -63,7 +63,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
 
     // Parse settings
     QJsonObject settings = json["settings"].toObject();
-    foreach (const QJsonValue field, settings["annotations_db"].toArray())
+    for (const QJsonValue& field: settings["annotations_db"].toArray())
     {
         mAnnotationsDBUsed << field.toString();
     }
@@ -78,7 +78,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
 
     // Retrieve samples
     mSamples.clear();
-    foreach (const QJsonValue spJson, json["samples"].toArray())
+    for (const QJsonValue& spJson: json["samples"].toArray())
     {
         Sample* sample = new Sample(this);
         if(sample->fromJson(spJson.toObject()))
@@ -91,7 +91,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
 
     // Retrieve saved filters
     mFilters.clear();
-    foreach (const QJsonValue filterdata, json["filters"].toArray())
+    for (const QJsonValue& filterdata: json["filters"].toArray())
     {
         mFilters.append(new SavedFilter(filterdata.toObject()));
     }
@@ -99,20 +99,20 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
 
     // Retrieve samples attributes
     mAttributes.clear();
-    foreach (const QJsonValue attributedata, json["attributes"].toArray())
+    for (const QJsonValue& attributedata: json["attributes"].toArray())
     {
         mAttributes.append(new Attribute(attributedata.toObject()));
     }
     emit attributesChanged();
 
     // Retrieve fields
-    foreach (const QJsonValue field, json["fields"].toArray())
+    for (const QJsonValue& field: json["fields"].toArray())
     {
         mFields << field.toString();
     }
 
     // Retrieve order
-    foreach (const QJsonValue field, json["order"].toArray())
+    for (const QJsonValue& field: json["order"].toArray())
     {
         mOrder << field.toString();
     }
@@ -245,14 +245,14 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
         if (success)
         {
             QJsonObject data = json["data"].toObject();
-            foreach (const QJsonValue dbjson, data["db"].toArray())
+            for (const QJsonValue& dbjson: data["db"].toArray())
             {
                 QJsonObject db = dbjson.toObject();
                 QString name = db["name"].toString();
                 QString desc = db["description"].toString();
                 QString duid = db["default"].toString();
                 QJsonObject djsn = db["versions"].toObject();
-                foreach (const QString dbuid, djsn.keys())
+                for (const QString& dbuid: djsn.keys())
                 {
                     QJsonObject dbv = djsn[dbuid].toObject();
                     QString version = dbv["version"].toString();
@@ -316,13 +316,13 @@ void FilteringAnalysis::loadAnnotations()
     mAnnotations["_Samples"]->setRole(FieldColumnInfos::SamplesNames);
 
     // Update annotations databases
-    foreach (QObject* o, mAllAnnotations)
+    for (QObject* o: mAllAnnotations)
     {
         AnnotationDB* db = qobject_cast<AnnotationDB*>(o);
         if (mAnnotationsDBUsed.contains(db->uid()) || db->isMandatory())
         {
             db->setSelected(true);
-            foreach (Annotation* annot, db->fields())
+            for (Annotation* annot: db->fields())
             {
                 QString uid = annot->uid();
                 FieldColumnInfos* fInfo = new FieldColumnInfos(annot, mFields.contains(uid), mFields.indexOf(uid), "", this);
@@ -359,7 +359,7 @@ void FilteringAnalysis::refreshDisplayedAnnotationColumns()
     mDisplayedAnnotationColumns.append(mAnnotations["_RowHead"]);
     mAnnotations["_Samples"]->setIsDisplayed(false);
     int idx = 1;
-    foreach( QString uid, mFields)
+    for (const QString& uid: mFields)
     {
         if (mAnnotations.contains(uid))
         {
@@ -384,7 +384,7 @@ void FilteringAnalysis::refreshDisplayedAnnotationColumns()
 QList<QObject*> FilteringAnalysis::samples4qml()
 {
     QList<QObject*> result;
-    foreach (Sample* sp, mSamples)
+    for (Sample* sp: mSamples)
     {
         QObject* obj = qobject_cast<QObject*>(sp);
         result << obj;
@@ -394,7 +394,7 @@ QList<QObject*> FilteringAnalysis::samples4qml()
 QStringList FilteringAnalysis::resultColumns()
 {
     QStringList list;
-    foreach (FieldColumnInfos* field, mDisplayedAnnotationColumns)
+    for (FieldColumnInfos* field: mDisplayedAnnotationColumns)
     {
         if (field->role() == FieldColumnInfos::NormalAnnotation)
         {
@@ -415,7 +415,7 @@ QStringList FilteringAnalysis::resultColumns()
 QStringList FilteringAnalysis::selectedAnnotationsDB()
 {
     QStringList list;
-    foreach (QObject* o, mAllAnnotations)
+    for (QObject* o: mAllAnnotations)
     {
         AnnotationDB* db = qobject_cast<AnnotationDB*>(o);
         if (db->selected())
@@ -462,16 +462,16 @@ void FilteringAnalysis::resetSets()
 {
     mSets.clear();
     // add samples first
-    foreach (Sample* sample, mSamples)
+    for (Sample* sample: mSamples)
     {
         mSets.append(new Set(QString("sample"), QString::number(sample->id()), sample->nickname()));
     }
 
     // add sample's attributes
-    foreach (QObject* o, mAttributes)
+    for (QObject* o: mAttributes)
     {
         Attribute* attribute = qobject_cast<Attribute*>(o);
-        foreach (QString attrValue, attribute->getMapping().keys())
+        for (const QString& attrValue: attribute->getMapping().keys())
         {
             QString label = attribute->name() + QString(": ") + attrValue;
             mSets.append(new Set(QString("attr"), attribute->getMapping()[attrValue], label));
@@ -479,7 +479,7 @@ void FilteringAnalysis::resetSets()
     }
 
     // add filters
-    foreach (QObject* o, mFilters)
+    for (QObject* o: mFilters)
     {
         SavedFilter* filter = qobject_cast<SavedFilter*>(o);
         mSets.append(new Set("filter", QString::number(filter->id()), filter->name()));
@@ -493,7 +493,7 @@ void FilteringAnalysis::resetSets()
 
 Set* FilteringAnalysis::getSetById(QString type, QString id)
 {
-    foreach (QObject* o, mSets)
+    for (QObject* o: mSets)
     {
         Set* set = qobject_cast<Set*>(o);
         if (set->type() == type && set->id() == id)
@@ -626,7 +626,7 @@ void FilteringAnalysis::editFilter(int filterId, QString filterName, QString fil
 
 SavedFilter* FilteringAnalysis::getSavedFilterById(int id)
 {
-    foreach (QObject* o, mFilters)
+    for (QObject* o: mFilters)
     {
         SavedFilter* filter = qobject_cast<SavedFilter*>(o);
         if (filter->id() == id)
@@ -646,7 +646,7 @@ SavedFilter* FilteringAnalysis::getSavedFilterById(int id)
 
 void FilteringAnalysis::addSamples(QList<QObject*> samples)
 {
-    foreach(QObject* o1, samples)
+    for (QObject* o1: samples)
     {
         Sample* sample = qobject_cast<Sample*>(o1);
         if (!mSamplesIds.contains(sample->id()))
@@ -660,7 +660,7 @@ void FilteringAnalysis::addSamples(QList<QObject*> samples)
 
 void FilteringAnalysis::removeSamples(QList<QObject*> samples)
 {
-    foreach(QObject* o1, samples)
+    for (QObject* o1: samples)
     {
         Sample* sample = qobject_cast<Sample*>(o1);
         if (mSamplesIds.contains(sample->id()))
@@ -679,7 +679,7 @@ void FilteringAnalysis::addSamplesFromFile(int fileId)
     {
         if (success)
         {
-            foreach (QJsonValue sampleValue, json["data"].toArray())
+            for (const QJsonValue& sampleValue: json["data"].toArray())
             {
                 Sample* sample = new Sample();
                 if (sample->fromJson(sampleValue.toObject()))
@@ -710,7 +710,7 @@ void FilteringAnalysis::addSamplesFromFile(int fileId)
 
 Sample* FilteringAnalysis::getSampleById(int id)
 {
-    foreach (QObject* o, mSamples)
+    for (QObject* o: mSamples)
     {
         Sample* sample = qobject_cast<Sample*>(o);
         if (sample->id() == id)
@@ -726,7 +726,7 @@ Sample* FilteringAnalysis::getSampleById(int id)
 
 void FilteringAnalysis::addSampleInputs(QList<QObject*> inputs)
 {
-    foreach(QObject* o, inputs)
+    for (QObject* o: inputs)
     {
         if (!mSamplesInputsFilesList.contains(o))
         {
@@ -738,7 +738,7 @@ void FilteringAnalysis::addSampleInputs(QList<QObject*> inputs)
 
 void FilteringAnalysis::removeSampleInputs(QList<QObject*> inputs)
 {
-    foreach(QObject* o, inputs)
+    for (QObject* o: inputs)
     {
         mSamplesInputsFilesList.removeAll(o);
     }
@@ -755,7 +755,7 @@ void FilteringAnalysis::saveAttribute(QString name, QStringList values)
 {
     Attribute* attr = new Attribute(name);
     int idx = 0;
-    foreach (Sample* sample, mSamples)
+    for (Sample* sample: mSamples)
     {
         attr->setValue(sample->id(), values[idx]);
         idx++;
@@ -839,7 +839,7 @@ void FilteringAnalysis::saveHeaderPosition(int oldPosition, int newPosition)
         mDisplayedAnnotationColumns.move(oldPosition, newPosition);
         // Recompute field order without "client columns" (_rowHeader & _Samples)
         mFields.clear();
-        foreach (FieldColumnInfos* info, mDisplayedAnnotationColumns)
+        for (FieldColumnInfos* info: mDisplayedAnnotationColumns)
         {
             if (info->role() == FieldColumnInfos::NormalAnnotation)
             {
@@ -888,7 +888,7 @@ void FilteringAnalysis::onWebsocketMessageReceived(QString action, QJsonObject d
         if (column.startsWith("filter_"))
         {
             // update saved filter progress
-            foreach (QObject* o, mFilters)
+            for (QObject* o: mFilters)
             {
                 SavedFilter* filter = qobject_cast<SavedFilter*>(o);
                 if (filter->id() == colId)
@@ -906,7 +906,7 @@ void FilteringAnalysis::onWebsocketMessageReceived(QString action, QJsonObject d
         int filterId = data["id"].toInt();
 
         // update saved filter progress
-        foreach (QObject* o, mFilters)
+        for (QObject* o: mFilters)
         {
             SavedFilter* filter = qobject_cast<SavedFilter*>(o);
             if (filter->id() == filterId)
@@ -926,7 +926,7 @@ void FilteringAnalysis::saveSettings()
     QSettings settings;
     settings.beginWriteArray(QString("analysis/%1/resultsHeadersSizes").arg(mId));
     int idx=0;
-    foreach (FieldColumnInfos* info, mDisplayedAnnotationColumns)
+    for (FieldColumnInfos* info: mDisplayedAnnotationColumns)
     {
         if (info->annotation())
         {
@@ -966,7 +966,7 @@ void FilteringAnalysis::loadSettings()
     if (fields.count() > 0)
     {
         mFields.clear();
-        foreach(QString fuid, fields) { setField(fuid, true, -1, true); }
+        for (const QString& fuid: fields) { setField(fuid, true, -1, true); }
 
         // Update columns to display in the QML view according to selected annoations
         refreshDisplayedAnnotationColumns();

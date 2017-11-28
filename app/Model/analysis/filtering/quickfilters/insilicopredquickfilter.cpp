@@ -94,7 +94,7 @@ void InSilicoPredQuickFilter::setFilter(QString, bool, QVariant)
 
 void InSilicoPredQuickFilter::clear()
 {
-    foreach (QuickFilterField* field, mFields)
+    for (QuickFilterField* field: mFields)
     {
         field->clear();
     }
@@ -108,14 +108,14 @@ void InSilicoPredQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 
 
     mIsVisible = false;
-    foreach (QObject* o, dbs)
+    for (QObject* o: dbs)
     {
         AnnotationDB* db = qobject_cast<AnnotationDB*>(o);
         if (db->selected())
         {
             if (db->name().toLower() == "vep")
             {
-                foreach (Annotation* annot, db->fields())
+                for (Annotation* annot: db->fields())
                 {
                     if (annot && annot->name().toLower() == "sift_pred")
                     {

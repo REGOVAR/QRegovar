@@ -36,20 +36,20 @@ void Admin::getServerStatus()
             mWtTables.clear();
             mTablesTotalSize = 0;
             QHash<QString, int> sectionsSizes;
-            foreach (QJsonValue value, data["database"].toArray())
+            for (const QJsonValue& value: data["database"].toArray())
             {
                 AdminTableInfo* info = new AdminTableInfo(value.toObject());
                 mTables.append(info);
                 mTablesTotalSize += info->realSize();
                 sectionsSizes[info->section()] += info->realSize();
             }
-            foreach (QJsonValue value, data["database_tmp"].toArray())
+            for (const QJsonValue& value: data["database_tmp"].toArray())
             {
                 QJsonObject wt = value.toObject();
                 wt.insert("hSize", regovar->sizeToHumanReadable(wt["size"].toInt()));
                 mWtTables.append(wt);
             }
-            foreach (QString k, sectionsSizes.keys())
+            for (const QString& k: sectionsSizes.keys())
             {
                 QJsonObject json;
                 json.insert("section", k);

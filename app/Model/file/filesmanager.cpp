@@ -36,7 +36,7 @@ void FilesManager::loadFilesBrowser()
         if (success)
         {
             mRemoteFilesList.clear();
-            foreach( QJsonValue data, json["data"].toArray())
+            for (const QJsonValue& data: json["data"].toArray())
             {
                 QJsonObject fileData = data.toObject();
                 File* file = getOrCreateFile(fileData["id"].toInt());
@@ -69,7 +69,7 @@ void FilesManager::filesEnqueued(QHash<QString,QString> mapping)
     // Occure when tusUploader ends to enqueue all files according to TUS upload protocol.
     // Then, manager have to update uploadFilesList to allow the user to see files upload progress
     qDebug() << "Upload mapping Done !";
-    foreach (QString key, mapping.keys())
+    for (const QString& key: mapping.keys())
     {
         // retrieve file id into the mapping url
         QStringList pathSplitted = mapping[key].split("/");
@@ -87,7 +87,7 @@ void FilesManager::filesEnqueued(QHash<QString,QString> mapping)
 
 void FilesManager::cancelUploadFile(QList<int> filesId)
 {
-    foreach (int id, filesId)
+    for (const int id: filesId)
     {
         if (mFiles.contains(id))
         {
@@ -133,7 +133,7 @@ void FilesManager::updateUploadProgress()
     if (mUploadsList.count() > 0)
     {
         int totalProgress = 0;
-        foreach (QObject* o, mUploadsList)
+        for (QObject* o: mUploadsList)
         {
             File* f = qobject_cast<File*>(o);
             int progress = 0;

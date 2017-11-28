@@ -39,7 +39,7 @@ bool Project::fromJson(QJsonObject json)
 
     // Analyses
     // TODO: lazy loading of analyses
-    foreach (QJsonValue jsonVal, json["analyses"].toArray())
+    for (const QJsonValue& jsonVal: json["analyses"].toArray())
     {
         FilteringAnalysis* analysis = new FilteringAnalysis();
         analysis->fromJson(jsonVal.toObject(), false);
@@ -67,7 +67,7 @@ QJsonObject Project::toJson()
     if (mAnalyses.count() > 0)
     {
         QJsonArray analyses;
-        foreach (QObject* o, mAnalyses)
+        for (QObject* o: mAnalyses)
         {
             FilteringAnalysis* a = qobject_cast<FilteringAnalysis*>(o);
             analyses.append(a->id());

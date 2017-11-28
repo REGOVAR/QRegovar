@@ -61,7 +61,7 @@ void AdvancedFilterModel::addCondition(QString qmlId, QJsonArray json)
     }
     else
     {
-        foreach (QObject* o, mSubConditions)
+        for (QObject* o: mSubConditions)
         {
             AdvancedFilterModel* cond = qobject_cast<AdvancedFilterModel*>(o);
             cond->addCondition(qmlId, json);
@@ -80,7 +80,7 @@ void AdvancedFilterModel::removeCondition()
 }
 void AdvancedFilterModel::removeCondition(QString qmlId)
 {
-    foreach (QObject* o, mSubConditions)
+    for (QObject* o: mSubConditions)
     {
         AdvancedFilterModel* cond = qobject_cast<AdvancedFilterModel*>(o);
         if (cond->qmlId() == qmlId)
@@ -201,7 +201,7 @@ QJsonArray AdvancedFilterModel::toJson()
     if (mType == LogicalBlock)
     {
         QJsonArray sub;
-        foreach (QObject* o, mSubConditions)
+        for (QObject* o: mSubConditions)
         {
             AdvancedFilterModel* cond = qobject_cast<AdvancedFilterModel*>(o);
             sub.append(cond->toJson());

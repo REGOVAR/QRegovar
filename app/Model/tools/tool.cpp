@@ -12,7 +12,7 @@ Tool::Tool(ToolType type, QJsonObject json, QObject* parent) :  QObject(parent)
     mName = json["name"].toString();
     mDescription = json["description"].toString();
 
-    foreach (QJsonValue val, json["parameters"].toArray())
+    for (const QJsonValue& val: json["parameters"].toArray())
     {
         mParameters << new ToolParameter(val.toObject());
     }
@@ -25,7 +25,7 @@ Tool::Tool(ToolType type, QJsonObject json, QObject* parent) :  QObject(parent)
 QJsonObject Tool::toJson()
 {
     QJsonObject parameters;
-    foreach (QObject* o, mParameters)
+    for (QObject* o: mParameters)
     {
         ToolParameter* param = qobject_cast<ToolParameter*>(o);
         parameters.insert(param->key(), param->value().toJsonValue());
@@ -35,7 +35,7 @@ QJsonObject Tool::toJson()
 
 void Tool::clear()
 {
-    foreach (QObject* o, mParameters)
+    for (QObject* o: mParameters)
     {
         ToolParameter* param = qobject_cast<ToolParameter*>(o);
         param->clear();
