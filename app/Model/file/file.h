@@ -86,8 +86,10 @@ public:
     Q_INVOKABLE void save();
     //! Load Subject information from server
     Q_INVOKABLE void load();
+    //! Retrieve the physical file! (retrieve it from cache or dowload it if needed)
+    Q_INVOKABLE QFile* getLocalFile();
 
-    //! Internal method to compute all-in-one property to display file in the UI.
+    //! Helper to compute all-in-one property to display file in the UI.
     Q_INVOKABLE static QString extensionToIco(QString ext);
     QString statusToLabel(FileStatus status, qint64 size, qint64 uploadOffset);
 

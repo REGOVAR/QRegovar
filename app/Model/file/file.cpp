@@ -142,6 +142,27 @@ QJsonObject File::toJson()
 
 
 
+
+
+
+
+QFile* File::getLocalFile()
+{
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 QString File::extensionToIco(QString ext)
 {
     if (zip.contains(ext)) return "P";

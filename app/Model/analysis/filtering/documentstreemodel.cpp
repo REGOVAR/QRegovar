@@ -72,21 +72,27 @@ DocumentsTreeItem* DocumentsTreeModel::newFileTreeViewItem(QJsonObject data, Tre
 DocumentsTreeItem* DocumentsTreeModel::newSampleTreeViewItem(QJsonObject data, TreeItem* parent)
 {
     QJsonObject label;
-    label["name"] = data["name"].toString();
+    label["filename"] = data["name"].toString();
     label["icon"] = "4";
     QDateTime date = QDateTime::fromString(data["update_date"].toString(), Qt::ISODate);
+
+    // TODO: retrieve count of file associated to the sample
+    int count = 1;
 
     QJsonObject subject = data["subject"].toObject();
     if (!subject.isEmpty())
     {
-        label["subject"] = subject["firstname"].toString() + " " + subject["lastname"].toString();
+        QString sex = subject["sex"].toString();
+        label["icon"] = (sex == "female") ? "<" : (sex == "male") ? "9" : "b";
+        label["filename"] = subject["firstname"].toString() + " " + subject["lastname"].toString() + "(" + data["name"].toString() + ")";
+        // TODO: retrieve count of file associated to the sample+subject
     }
 
     // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
     QHash<int, QVariant> columnData;
     columnData.insert(Info, data);
     columnData.insert(Name, label);
-    columnData.insert(Size, "");
+    columnData.insert(Size, count + " " + (count > 1 ? tr("documents") : tr("document")));
     columnData.insert(Date, date.toString("yyyy-MM-dd HH:mm"));
     columnData.insert(Comment, data["comment"].toInt());
 

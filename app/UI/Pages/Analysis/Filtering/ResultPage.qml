@@ -151,6 +151,52 @@ Rectangle
                         width: 100
                         role: "name"
                         title: "Name"
+                        delegate: Item
+                        {
+
+                            Text
+                            {
+                                anchors.leftMargin: 5
+                                anchors.left: parent.left
+                                anchors.verticalCenter: parent.verticalCenter
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: styleData.textAlignment
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                font.family: Regovar.theme.icons.name
+                                text: styleData.value.icon
+                                onTextChanged:
+                                {
+                                    if (styleData.value.icon == "/") // = Loading
+                                    {
+                                        statusIconAnimation.start();
+                                    }
+                                    else
+                                    {
+                                        statusIconAnimation.stop();
+                                    }
+                                }
+                                NumberAnimation on rotation
+                                {
+                                    id: statusIconAnimation
+                                    duration: 1000
+                                    loops: Animation.Infinite
+                                    from: 0
+                                    to: 360
+                                }
+                            }
+                            Text
+                            {
+                                anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                                anchors.rightMargin: 5
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                                horizontalAlignment: styleData.textAlignment
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                text: styleData.value.filename
+                                elide: Text.ElideRight
+                            }
+                        }
                     }
                     TableViewColumn
                     {
