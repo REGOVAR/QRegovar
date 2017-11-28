@@ -22,8 +22,7 @@ Rectangle
 
         cacheDir.text = regovar.filesManager.cacheDir;
         cacheMaxSize.value = regovar.filesManager.cacheMaxSize;
-        var current = regovar.filesManager.cacheSize;
-        cacheCurrentSize.text = regovar.sizeToHumanReadable(current, current);
+        root.refreshCacheStats();
 
         regovar.networkManager.testServerUrl(regovarUrl.text);
         regovar.networkManager.testServerUrl(sharedServerUrl.text);
@@ -342,6 +341,7 @@ Rectangle
         // Action buttons
         Column
         {
+            spacing: 10
             ButtonIcon
             {
                 Layout.rowSpan: 2
@@ -351,11 +351,16 @@ Rectangle
                 onClicked:
                 {
                     regovar.filesManager.clearCache();
+                    root.refreshCacheStats();
                 }
             }
             Text
             {
                 id: cacheCurrentSize
+                font.pixelSize: Regovar.theme.font.size.small
+                font.italic: true
+                color: Regovar.theme.primaryColor.back.normal
+                wrapMode: Text.WordWrap
             }
         }
 
@@ -674,5 +679,14 @@ Rectangle
             Layout.fillHeight: true
             Layout.fillWidth: true
         }
+    }
+
+    function refreshCacheStats()
+    {
+        var current = regovar.filesManager.cacheSize;
+        if (current > 0)
+            cacheCurrentSize.text = qsTr("Total size") + ": " + regovar.sizeToHumanReadable(current, current);
+        else
+            cacheCurrentSize.text = qsTr("Empty");
     }
 }

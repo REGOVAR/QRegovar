@@ -102,7 +102,7 @@ void Regovar::init()
     // Init file manager
     mFilesManager = new FilesManager();
     mFilesManager->setCacheDir(mSettings.localCacheDir);
-    mFilesManager->setCacheSize(mSettings.localCacheSize);
+    mFilesManager->setCacheMaxSize(mSettings.localCacheMaxSize);
     // Init others managers
     mProjectsManager = new ProjectsManager();
     mSubjectsManager = new SubjectsManager();
@@ -135,7 +135,7 @@ void Regovar::readSettings()
     mSettings.serverUrl.setHost(settings.value("host", "dev.regovar.org").toString());
     mSettings.serverUrl.setPort(settings.value("port", 80).toInt());
     mSettings.localCacheDir = settings.value("cacheDir", QStandardPaths::standardLocations(QStandardPaths::CacheLocation)[0]).toString();
-    mSettings.localCacheSize = settings.value("cacheSize", 20).toInt();
+    mSettings.localCacheMaxSize = settings.value("cacheSize", 100).toInt();
 }
 
 

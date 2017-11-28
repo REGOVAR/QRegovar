@@ -117,9 +117,32 @@ void FilesManager::refreshCacheStats()
 
     if (info.isDir())
     {
-        mCacheSize = info.size();
+        mCacheSize = directorySize(mCacheDir);
     }
     emit cacheSizeChanged();
+}
+
+qint64 FilesManager::directorySize(const QString path)
+{
+    qint64 size = 0;
+    QFileInfo info(path);
+    if (info.isDir())
+    {
+        QDir dir(path);
+        dir.setFilter(QDir::Files | QDir::Dirs |  QDir::Hidden | QDir::NoSymLinks);
+        QFileInfoList list = dir.entryInfoList();
+
+
+        for(int i=0; i < list.size(); ++i)
+        {
+            QFileInfo fileInfo = list.at(i);
+            if (fileInfo.fileName() != "." && fileInfo.fileName() != "..")
+            {
+                size += fileInfo.size();
+            }
+        }
+    }
+    return size;
 }
 
 

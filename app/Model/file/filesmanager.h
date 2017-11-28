@@ -47,6 +47,7 @@ public:
     Q_INVOKABLE void clearCache();
     void processPushNotification(QString action, QJsonObject json);
     void updateUploadProgress();
+    qint64 directorySize(const QString path);
 
 
 public Q_SLOTS:

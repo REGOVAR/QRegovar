@@ -9,19 +9,21 @@
 class File : public QObject
 {
     Q_OBJECT
+    // File attributes
     Q_PROPERTY(int id READ id)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentChanged)
     Q_PROPERTY(QUrl url READ url)
+    Q_PROPERTY(QString md5Sum READ md5Sum WRITE setMd5Sum NOTIFY md5SumChanged)
+    Q_PROPERTY(QString type READ type WRITE setType NOTIFY typeChanged)
+    Q_PROPERTY(QList<QString> tags READ tags NOTIFY tagsChanged)
+    // Remote file attributes
     Q_PROPERTY(QDateTime creationDate READ creationDate)
     Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY updateDateChanged)
     Q_PROPERTY(qint64 size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(qint64 uploadOffset READ uploadOffset WRITE setUploadOffset NOTIFY uploadOffsetChanged)
-    Q_PROPERTY(QString md5Sum READ md5Sum WRITE setMd5Sum NOTIFY md5SumChanged)
-    Q_PROPERTY(QString type READ type WRITE setType NOTIFY typeChanged)
     Q_PROPERTY(FileStatus status READ status WRITE setStatus NOTIFY statusChanged)
-    Q_PROPERTY(QList<QString> tags READ tags NOTIFY tagsChanged)
-
+    // Local file attributes
     Q_PROPERTY(QFile* localFile READ localFile NOTIFY localFileChanged)
     Q_PROPERTY(qint64 downloadOffset READ downloadOffset WRITE setDownloadOffset NOTIFY downloadOffsetChanged)
     Q_PROPERTY(FileStatus localStatus READ localStatus WRITE setLocalStatus NOTIFY localStatusChanged)
@@ -38,7 +40,9 @@ public:
         uploading=0,
         uploaded,
         checked,
-        error
+        error,
+        downloading,
+        downloaded,
     };
     Q_ENUM(FileStatus)
 
@@ -140,8 +144,8 @@ private:
     qint64 mSize;
     qint64 mUploadOffset;
     QList<QString> mTags;
-    QString mLocalPath;
 
+    QString mLocalPath;
     QFile* mLocalFile = nullptr;
     qint64 mDownloadOffset;
     FileStatus mLocalStatus;

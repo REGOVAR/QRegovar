@@ -30,7 +30,7 @@ struct RegovarSettings
     int defaultReference = 0;
     QUrl serverUrl;
     QString localCacheDir;
-    int localCacheSize = 20;
+    int localCacheMaxSize = 0;
 };
 
 
