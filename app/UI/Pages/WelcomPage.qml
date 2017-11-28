@@ -56,8 +56,8 @@ Rectangle
             end: Qt.point(0, logo.height)
             gradient: Gradient
             {
-                GradientStop { position: 0.0; color: regovar.connectionStatus == 0 ? Regovar.theme.logo.color1 : Regovar.theme.frontColor.disable }
-                GradientStop { position: 1.0; color: regovar.connectionStatus == 0 ? Regovar.theme.logo.color2 : Regovar.theme.frontColor.disable }
+                GradientStop { position: 0.0; color: regovar.networkManager.status == 0 ? Regovar.theme.logo.color1 : Regovar.theme.frontColor.disable }
+                GradientStop { position: 1.0; color: regovar.networkManager.status == 0 ? Regovar.theme.logo.color2 : Regovar.theme.frontColor.disable }
             }
             source: logo
         }
@@ -73,7 +73,7 @@ Rectangle
         anchors.margins: 10
         width: 600
         anchors.topMargin: 50
-        enabled: regovar.connectionStatus == 0
+        enabled: regovar.networkManager.status == 0
 
         Component.onCompleted: text = regovar.searchRequest
 
@@ -87,7 +87,7 @@ Rectangle
             }
         }
 
-        placeholderText: regovar.connectionStatus == 0 ? qsTr("Search anything, project, sample, phenotype, analysis, variant, report...") : ""
+        placeholderText: regovar.networkManager.status == 0 ? qsTr("Search anything, project, sample, phenotype, analysis, variant, report...") : ""
         focus: true
     }
 
@@ -119,21 +119,21 @@ Rectangle
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New project")
                 onClicked: newProjectDialog.open()
-                enabled: regovar.connectionStatus == 0
+                enabled: regovar.networkManager.status == 0
             }
             ButtonWelcom
             {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New analysis")
                 onClicked: newAnalysisDialog.open()
-                enabled: regovar.connectionStatus == 0
+                enabled: regovar.networkManager.status == 0
             }
             ButtonWelcom
             {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New subject")
                 onClicked: newSubjectDialog.open()
-                enabled: regovar.connectionStatus == 0
+                enabled: regovar.networkManager.status == 0
             }
         }
 
@@ -370,28 +370,33 @@ Rectangle
             anchors.topMargin: newButtonsRow.height
             anchors.fill: parent
             color: Regovar.theme.backgroundColor.main
-            visible: regovar.connectionStatus != 0
+            visible: regovar.networkManager.status != 0
+
+
 
             Text
             {
-                anchors.fill: parent
-                anchors.topMargin: 100
+                id: connectionLostText
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.margins: 20
                 wrapMode: Text.WordWrap
                 elide: Text.ElideRight
-                text: qsTr("You are not connected to the Regovar server.\nCheck your connection.")
+                text: qsTr("You are not connected to the Regovar server.\nIs Regovar server online ?")
                 color: Regovar.theme.primaryColor.back.normal
                 font.pixelSize: Regovar.theme.font.size.header
                 horizontalAlignment: Text.AlignHCenter
             }
-        }
-
-        BusyIndicator
-        {
-            visible: !regovar.welcomIsLoading || regovar.connectionStatus != 0
-            anchors.top: newButtonsRow.bottom
-            anchors.left: panel.left
-            anchors.right: panel.right
-            height: 100
+            ButtonIcon
+            {
+                anchors.top: connectionLostText.bottom
+                anchors.horizontalCenter: connectionLostText.horizontalCenter
+                anchors.margins: 20
+                visible: !regovar.welcomIsLoading || regovar.networkManager.status != 0
+                icon: "d"
+                text: qsTr("Check local settings")
+                onClicked: Regovar.menuModel.selectedIndex = [4, 1, -1]
+            }
         }
     }
 

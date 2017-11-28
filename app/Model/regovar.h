@@ -2,11 +2,11 @@
 #define REGOVAR_H
 
 #include <QSettings>
-#include <QNetworkReply>
+//#include <QNetworkReply>
 #include <QAuthenticator>
 #include <QQmlApplicationEngine>
-#include <QtWebSockets/QtWebSockets>
 
+#include "framework/networkmanager.h"
 #include "project/projectsmanager.h"
 #include "subject/subjectsmanager.h"
 #include "subject/samplesmanager.h"
@@ -22,6 +22,17 @@
 #ifndef regovar
 #define regovar (Regovar::i())
 #endif
+
+
+
+struct RegovarSettings
+{
+    int defaultReference = 0;
+    QUrl serverUrl;
+    QString localCacheDir;
+    int localCacheSize = 20;
+};
+
 
 
 
@@ -70,7 +81,6 @@ class Regovar : public QObject
     Q_OBJECT
 
     // Welcom
-    Q_PROPERTY(User* user READ user NOTIFY userChanged)
     Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
@@ -80,6 +90,7 @@ class Regovar : public QObject
     Q_PROPERTY(bool welcomIsLoading READ welcomIsLoading WRITE setWelcomIsLoading NOTIFY welcomIsLoadingChanged)
 
     // Managers
+    Q_PROPERTY(NetworkManager* networkManager READ networkManager NOTIFY neverChanged)
     Q_PROPERTY(ProjectsManager* projectsManager READ projectsManager NOTIFY neverChanged)
     Q_PROPERTY(SubjectsManager* subjectsManager READ subjectsManager NOTIFY neverChanged)
     Q_PROPERTY(SamplesManager* samplesManager READ samplesManager NOTIFY neverChanged)
@@ -89,9 +100,8 @@ class Regovar : public QObject
 
     // Others
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
+    Q_PROPERTY(User* user READ user NOTIFY userChanged)
 
-    Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlChanged)
-    Q_PROPERTY(ServerStatus connectionStatus READ connectionStatus WRITE setConnectionStatus NOTIFY connectionStatusChanged)
     Q_PROPERTY(RegovarInfo* config READ config NOTIFY configChanged)
     Q_PROPERTY(Admin* admin READ admin NOTIFY adminChanged)
     Q_PROPERTY(QList<QObject*> openWindowModels READ openWindowModels NOTIFY neverChanged)
@@ -103,18 +113,7 @@ class Regovar : public QObject
 
 
 public:
-    enum ServerStatus
-    {
-        // Connected to the sever.
-        ready=0,
-        // Connection refused : user need to login
-        accessDenied,
-        // Server is in error : returned HTTP 500
-        error,
-        // Not eable to reach the server : are url/proxy settings good ? Is the server on ?
-        unreachable
-    };
-    Q_ENUMS(ServerStatus)
+
 
     static Regovar* i();
     void init();
@@ -122,8 +121,6 @@ public:
     void writeSettings();
 
     // Getters
-    inline ServerStatus connectionStatus() { return mConnectionStatus; }
-    inline QUrl& serverUrl() { return mApiRootUrl; }
     inline RegovarInfo* config() const { return mConfig; }
     inline Admin* admin() { return mAdmin; }
     //--
@@ -136,6 +133,7 @@ public:
     inline QJsonArray lastSubjects() const { return mLastSubjects; }
     inline bool welcomIsLoading() const { return mWelcomIsLoading; }
     //--
+    inline NetworkManager* networkManager() const { return mNetworkManager; }
     inline ProjectsManager* projectsManager() const { return mProjectsManager; }
     inline SubjectsManager* subjectsManager() const { return mSubjectsManager; }
     inline SamplesManager* samplesManager() const { return mSamplesManager; }
@@ -147,8 +145,6 @@ public:
     inline QList<QObject*> openWindowModels() const { return mOpenWindowModels; }
 
     // Setters
-    inline void setServerUrl(QUrl newUrl) { mApiRootUrl = newUrl; emit serverUrlChanged(); }
-    inline void setConnectionStatus(ServerStatus flag) { mConnectionStatus = flag; emit connectionStatusChanged(); }
     inline void setSearchRequest(QString searchRequest) { mSearchRequest = searchRequest; emit searchRequestChanged(); }
     inline void setSearchResult(QJsonObject searchResult) { mSearchResult = searchResult; emit searchResultChanged(); }
     inline void setSearchInProgress(bool flag) { mSearchInProgress = flag; emit searchInProgressChanged(); }
@@ -175,15 +171,6 @@ public:
 public Q_SLOTS:
     void login(QString& login, QString& password);
     void logout();
-    void onAuthenticationRequired(QNetworkReply* request, QAuthenticator* authenticator);
-
-
-    // Websocket
-    void onWebsocketConnected();
-    void onWebsocketClosed();
-    void onWebsocketError(QAbstractSocket::SocketError error);
-    void onWebsocketStateChanged(QAbstractSocket::SocketState state);
-    void onWebsocketReceived(QString message);
 
 
 Q_SIGNALS:
@@ -204,12 +191,9 @@ Q_SIGNALS:
     void welcomIsLoadingChanged();
     void lastDataChanged();
     void referencesChanged();
-    void serverUrlChanged();
     void configChanged();
     void adminChanged();
-    void connectionStatusChanged();
 
-    void websocketMessageReceived(QString action, QJsonObject data);
     void errorOccured(QString errCode, QString message, QString techData);
     void onClose();
 
@@ -220,10 +204,8 @@ private:
     static Regovar* mInstance;
 
     // Models
-    //! The root url to the server api
-    QUrl mApiRootUrl;
-    //! Server connection status
-    ServerStatus mConnectionStatus;
+    //! wrap all settings retrieved from QSetting before initialisation of all managers
+    RegovarSettings mSettings;
     //! The config retrieved from the server
     RegovarInfo* mConfig = nullptr;
     //! The current user of the application
@@ -254,7 +236,9 @@ private:
     int mReferenceDefault = -1;
 
     // Managers
-    //! ProjectsManager
+    //! Manage network (all requests Up/Down with the server, authent, and websocket connection)
+    NetworkManager* mNetworkManager = nullptr;
+    //! Manage projects (Browse + CRUD)
     ProjectsManager* mProjectsManager = nullptr;
     //! Manage subjects (Browse + CRUD)
     SubjectsManager* mSubjectsManager = nullptr;
@@ -272,14 +256,7 @@ private:
     // Technical stuff
     //! We need ref to the QML engine to create/open new windows for Analysis
     QQmlApplicationEngine* mQmlEngine = nullptr;
-    //! Websocket
-    QWebSocket mWebSocket;
-    QUrl mWebsocketUrl;
-    QStringList mWsFilesActionsList = {"file_upload"};
-    QStringList mWsSamplesActionsList = {"import_vcf_processing"};
-    QStringList mWsFilteringActionsList = {"analysis_computing"};
-    QStringList mWsPipelinesActionsList = {"pipeline_install", "pipeline_uninstall"};
-    QStringList mWsJobsActionsList = {"job_"};
+
 
     //! List of model used by additional qml windows open
     QList<QObject*> mOpenWindowModels;

@@ -19,7 +19,7 @@ QNetworkAccessManager* Request::netManager()
 //------------------------------------------------------------------------------------------------
 Request::Request(Verb verb, const QString& query, QHttpMultiPart* data, QObject* parent) : QObject(parent)
 {
-
+    mJsonQuery = true;
     QNetworkRequest request = Request::makeRequest(query);
     mReply = nullptr;
     switch (verb)
@@ -36,15 +36,18 @@ Request::Request(Verb verb, const QString& query, QHttpMultiPart* data, QObject*
         case Request::Del:
             mReply = Request::netManager()->deleteResource(request);
             break;
-
+        case Request::Download:
+            mJsonQuery = false;
+            mReply = Request::netManager()->get(request);
+            break;
         default:
             qCritical() << Q_FUNC_INFO << "Unknow query verb ... \"" << verb << "\" : \"" << query << "\"";
             break;
     }
     if (mReply != nullptr)
-    {
+    {    
         mLoading = true;
-        connect(mReply, SIGNAL(finished()), this,SLOT(received()));
+        connect(mReply, SIGNAL(finished()), this, SLOT(received()));
     }
 }
 //------------------------------------------------------------------------------------------------
@@ -53,7 +56,8 @@ Request::Request(Verb verb, const QString& query, const QByteArray& data, QObjec
     QNetworkRequest request = Request::makeRequest(query);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    mReply = Q_NULLPTR;
+    mJsonQuery = true;
+    mReply = nullptr;
     switch (verb)
     {
         case Request::Get:
@@ -67,6 +71,10 @@ Request::Request(Verb verb, const QString& query, const QByteArray& data, QObjec
             break;
         case Request::Del:
             mReply = Request::netManager()->deleteResource(request);
+            break;
+        case Request::Download:
+            mJsonQuery = false;
+            mReply = Request::netManager()->get(request);
             break;
 
         default:
@@ -109,10 +117,16 @@ Request* Request::del(const QString& query)
 {
     return new Request(Del, query);
 }
+Request* Request::download(const QString& query)
+{
+    return new Request(Download, query);
+
+}
+
 //------------------------------------------------------------------------------------------------
 QNetworkRequest Request::makeRequest(const QString& resource)
 {
-    QUrl url(Regovar::i()->serverUrl());
+    QUrl url(regovar->networkManager()->serverUrl());
     url.setPath(resource);
     qDebug() << "REQUEST:" << url.toString();
 
@@ -135,13 +149,21 @@ void Request::received()
         mReplyError = reply->error();
         if (mReplyError == QNetworkReply::NoError)
         {
-            regovar->setConnectionStatus(Regovar::ServerStatus::ready);
-            QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
-            mJson = doc.object();
-            mSuccess = mJson["success"].toBool();
-            mJson.insert("query", reply->url().toString());
-            mJson.insert("reqError", "200 OK");
-            emit responseReceived(mSuccess, mJson);
+            if (!mJsonQuery)
+            {
+                QByteArray data = reply->readAll();
+                emit downloadReceived(true, data);
+            }
+            else
+            {
+                regovar->networkManager()->setStatus(NetworkManager::ServerStatus::ready);
+                QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
+                mJson = doc.object();
+                mSuccess = mJson["success"].toBool();
+                mJson.insert("query", reply->url().toString());
+                mJson.insert("reqError", "200 OK");
+                emit responseReceived(mSuccess, mJson);
+            }
         }
         else
         {
@@ -153,29 +175,42 @@ void Request::received()
             qWarning() << "ERROR" << code << reason << mReplyError;
             if (code == "502")
             {
-                regovar->setConnectionStatus(Regovar::ServerStatus::unreachable);
+                regovar->networkManager()->setStatus(NetworkManager::ServerStatus::unreachable);
                 mJson.insert("code", "E000000");
                 mJson.insert("msg",  tr("Server unreachable. Check your settings and ensure that the server is ON."));
             }
             else if (code == "403")
             {
-                regovar->setConnectionStatus(Regovar::ServerStatus::accessDenied);
+                regovar->networkManager()->setStatus(NetworkManager::ServerStatus::accessDenied);
                 mJson.insert("code", "E000001");
                 mJson.insert("msg",  tr("Authentication required. Please log in."));
             }
             else
             {
-                regovar->setConnectionStatus(Regovar::ServerStatus::error);
+                regovar->networkManager()->setStatus(NetworkManager::ServerStatus::error);
                 mJson.insert("code", "E000002");
                 mJson.insert("msg",  tr("An unexpected error occured server side. More informations available on server logs."));
             }
             mSuccess = false;
             emit responseReceived(mSuccess, mJson);
+            emit downloadReceived(false, nullptr);
         }
     }
     else
     {
         qCritical() << "CRITICAL ERROR"<< Q_FUNC_INFO << "Request ends with no answer ? How it's possible";
     }
+
+    // delete
+    reply->disconnect();
+    mReply->disconnect();
+    reply->deleteLater();
+    mReply->deleteLater();
 }
 //------------------------------------------------------------------------------------------------
+
+
+
+
+
+

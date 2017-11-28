@@ -21,6 +21,11 @@ public:
     // Setters
     void setReferencialId(int ref);
 
+public Q_SLOTS:
+    // Called by NetworkManager when need to process WebSocket messages managed by SampleManager
+    void processPushNotification(QString action, QJsonObject data);
+
+
 Q_SIGNALS:
     // Property changed event
     void referencialIdChanged();

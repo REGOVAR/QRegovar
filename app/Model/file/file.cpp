@@ -96,6 +96,12 @@ bool File::fromJson(QJsonObject json)
     setSize(json["size"].toInt());
     setUploadOffset(json["upload_offset"].toInt());
 
+    // Build url to the local physical path
+    mLocalPath = QDir::cleanPath(regovar->filesManager()->cacheDir()
+        + QDir::separator() + "files"
+        + QDir::separator() + mId
+        + QDir::separator() + mName);
+
 
     auto meta = QMetaEnum::fromType<FileStatus>();
     setStatus(static_cast<FileStatus>(meta.keyToValue(json["status"].toString().toStdString().c_str()))); // T_T .... tout ça pour ça ....
@@ -148,6 +154,45 @@ QJsonObject File::toJson()
 
 QFile* File::getLocalFile()
 {
+    if (mStatus == uploaded || mStatus == checked)
+    {
+        if (mLocalFile != nullptr)
+        {
+            return mLocalFile;
+        }
+        if (QFile::exists(mLocalPath))
+        {
+            mLocalFile = new QFile(mLocalPath);
+            return mLocalFile;
+        }
+        else
+        {
+            // Need to download file
+            Request* req = Request::download(QString("/dl/%1/%2").arg(mId).arg(mName));
+            connect(req, &Request::downloadReceived, [this, req](bool success, const QByteArray& data)
+            {
+                if (success)
+                {
+                    mLocalFile = new QFile(mLocalPath);
+                    mLocalFile->open(QIODevice::WriteOnly);
+                    mLocalFile->write(data);
+                    mLocalFile->close();
+                }
+                else
+                {
+                    // TODO: create json error from scratch
+                    QJsonObject jsonError;
+                    jsonError.insert("method", Q_FUNC_INFO);
+                    regovar->raiseError(jsonError);
+                }
+                req->deleteLater();
+            });
+        }
+    }
+
+
+    qDebug() << "ERROR: file" << mId << "(" << mUrl << ") not ready to be retrieved. Wrong status : " << mStatus;
+    return nullptr;
 
 }
 

@@ -94,19 +94,23 @@ void Regovar::init()
     mUser = new User(1, "Olivier", "Gueudelot");
     mConfig = new RegovarInfo();
     mAdmin = new Admin();
+
+    // Init network manager
+    mNetworkManager = new NetworkManager();
+    mNetworkManager->setServerUrl(mSettings.serverUrl);
+
+    // Init file manager
+    mFilesManager = new FilesManager();
+    mFilesManager->setCacheDir(mSettings.localCacheDir);
+    mFilesManager->setCacheSize(mSettings.localCacheSize);
+    // Init others managers
     mProjectsManager = new ProjectsManager();
     mSubjectsManager = new SubjectsManager();
-    mSamplesManager = new SamplesManager(mReferenceDefault);
-    mFilesManager = new FilesManager();
+    mSamplesManager = new SamplesManager(mSettings.defaultReference);
     mAnalysesManager = new AnalysesManager();
     mToolsManager = new ToolsManager();
 
-    // Connections
-    connect(&mWebSocket, &QWebSocket::connected, this, &Regovar::onWebsocketConnected);
-    connect(&mWebSocket, &QWebSocket::disconnected, this, &Regovar::onWebsocketClosed);
-    connect(&mWebSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onWebsocketError(QAbstractSocket::SocketError)));
-    // connect(&mWebSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onWebsocketStateChanged(QAbstractSocket::SocketState)));
-    mWebSocket.open(QUrl(mWebsocketUrl));
+
 
     // Init sub models
     mProjectsManager->refreshProjectsList();
@@ -117,109 +121,29 @@ void Regovar::init()
 }
 
 
-void Regovar::onWebsocketConnected()
-{
-    setConnectionStatus(ready);
-    connect(&mWebSocket, &QWebSocket::textMessageReceived, this, &Regovar::onWebsocketReceived);
-    mWebSocket.sendTextMessage(QStringLiteral("{ \"action\" : \"hello\"}"));
-}
 
-void Regovar::onWebsocketReceived(QString message)
-{
-    QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
-    QJsonObject obj = doc.object();
-    QString action = obj["action"].toString();
-    QJsonObject data = obj["data"].toObject();
-
-    // TODO: rework process WS for Sample
-    if (action == "import_vcf_processing")
-    {
-        double progressValue = data["progress"].toDouble();
-        QString status = data["status"].toString();
-
-        for (const QJsonValue& json: data["samples"].toArray())
-        {
-            QJsonObject obj = json.toObject();
-            int sid = obj["id"].toInt();
-            for (QObject* o: mSamplesManager->samplesList())
-            {
-                Sample* sample = qobject_cast<Sample*>(o);
-                if (sample->id() == sid)
-                {
-                    sample->setStatus(status);
-                    QJsonObject statusInfo;
-                    statusInfo.insert("status", status);
-                    statusInfo.insert("label", sample->statusToLabel(sample->status(), progressValue));
-                    sample->setStatusUI(QVariant::fromValue(statusInfo));
-                    break;
-                }
-            }
-        }
-    }
-    else if (mWsFilesActionsList.indexOf(action) != -1)
-    {
-        mFilesManager->processPushNotification(action, data);
-    }
-    else if (obj["action"].toString() != "hello")
-    {
-        qDebug() << "WS WARNING: Websocket Unknow message" << message;
-    }
-    emit websocketMessageReceived(action, data);
-}
-
-void Regovar::onWebsocketClosed()
-{
-    disconnect(&mWebSocket, &QWebSocket::textMessageReceived, 0, 0);
-    mWebSocket.open(QUrl(mWebsocketUrl));
-}
-
-void Regovar::onWebsocketError(QAbstractSocket::SocketError err)
-{
-    if (err != QAbstractSocket::RemoteHostClosedError)
-    {
-        qDebug() << "WS ERROR : " << err;
-        setConnectionStatus(err == QAbstractSocket::ConnectionRefusedError ? unreachable : error);
-    }
-}
-
-void Regovar::onWebsocketStateChanged(QAbstractSocket::SocketState)
-{
-    // qDebug() << "WS state" << state;
-}
 
 
 void Regovar::readSettings()
 {
-    // TODO: Load default from settings
-    mReferenceDefault = 3;
-
-    // TODO : No hardcoded value => Load default from local config file ?
     QSettings settings;
-    QString schm = settings.value("scheme", "http").toString();
-    QString host = settings.value("host", "dev.regovar.org").toString();
-    int port = settings.value("port", 80).toInt();
 
-    // Localsite server
-    settings.beginGroup("LocalServer");
-    mApiRootUrl.setScheme(schm);
-    mApiRootUrl.setHost(host);
-    mApiRootUrl.setPort(port);
-    // Sharing server
-//    settings.beginGroup("SharingServer");
-//    mApiRootUrl.setScheme(settings.value("scheme", "http").toString());
-//    mApiRootUrl.setHost(settings.value("host", "dev.regovar.org").toString());
-//    mApiRootUrl.setPort(settings.value("port", 80).toInt());
+    // Default genome reference
+    mSettings.defaultReference = settings.value("defaultRefId", 0).toInt();
 
-    // Websocket
-    mWebsocketUrl.setScheme(schm == "https" ? "wss" : "ws");
-    mWebsocketUrl.setHost(host);
-    mWebsocketUrl.setPath("/ws");
-    mWebsocketUrl.setPort(port);
-
-    settings.endGroup();
+    mSettings.serverUrl.setScheme(settings.value("scheme", "http").toString());
+    mSettings.serverUrl.setHost(settings.value("host", "dev.regovar.org").toString());
+    mSettings.serverUrl.setPort(settings.value("port", 80).toInt());
+    mSettings.localCacheDir = settings.value("cacheDir", QStandardPaths::standardLocations(QStandardPaths::CacheLocation)[0]).toString();
+    mSettings.localCacheSize = settings.value("cacheSize", 20).toInt();
 }
 
 
+
+void Regovar::writeSettings()
+{
+    // TODO:
+}
 
 
 
@@ -566,21 +490,6 @@ void Regovar::logout()
 }
 
 
-
-void Regovar::onAuthenticationRequired(QNetworkReply* request, QAuthenticator* authenticator)
-{
-    // Basic authentication requested by the server.
-    // Try authentication using current user credentials
-    if (authenticator->password() != user()->password() || authenticator->user() != user()->login())
-    {
-        authenticator->setUser(user()->login());
-        authenticator->setPassword(user()->password());
-    }
-    else
-    {
-        request->error();
-    }
-}
 
 
 

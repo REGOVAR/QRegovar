@@ -6,8 +6,8 @@
 FilesManager::FilesManager(QObject *parent) : QObject(parent)
 {
     mUploader = new TusUploader();
-    mUploader->setUploadUrl(regovar->serverUrl().toString() + "/file/upload");
-    mUploader->setRootUrl(regovar->serverUrl().toString());
+    mUploader->setUploadUrl(regovar->networkManager()->serverUrl().toString() + "/file/upload");
+    mUploader->setRootUrl(regovar->networkManager()->serverUrl().toString());
     mUploader->setChunkSize(50 * 1024);
     mUploader->setBandWidthLimit(0);
 
@@ -106,6 +106,37 @@ void FilesManager::cancelUploadFile(QList<int> filesId)
 void FilesManager::clearUploadsList()
 {
     mUploadsList.clear();
+}
+
+
+
+void FilesManager::refreshCacheStats()
+{
+    mCacheSize = 0;
+    QFileInfo info(mCacheDir);
+
+    if (info.isDir())
+    {
+        mCacheSize = info.size();
+    }
+    emit cacheSizeChanged();
+}
+
+
+void FilesManager::clearCache()
+{
+    QDir dir(mCacheDir);
+
+    dir.setFilter(QDir::NoDotAndDotDot | QDir::Files);
+    foreach( QString dirItem, dir.entryList() )
+        dir.remove( dirItem );
+
+    dir.setFilter(QDir::NoDotAndDotDot | QDir::Dirs);
+    foreach( QString dirItem, dir.entryList() )
+    {
+        QDir subDir(dir.absoluteFilePath(dirItem));
+        subDir.removeRecursively();
+    }
 }
 
 

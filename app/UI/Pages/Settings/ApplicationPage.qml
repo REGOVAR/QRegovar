@@ -13,6 +13,22 @@ Rectangle
 
     property QtObject model
 
+
+    Component.onCompleted:
+    {
+        // init fields
+        regovarUrl.text = regovar.networkManager.serverUrl;
+        sharedServerUrl.text = regovar.networkManager.sharedServerUrl;
+
+        cacheDir.text = regovar.filesManager.cacheDir;
+        cacheMaxSize.value = regovar.filesManager.cacheMaxSize;
+        var current = regovar.filesManager.cacheSize;
+        cacheCurrentSize.text = regovar.sizeToHumanReadable(current, current);
+
+        regovar.networkManager.testServerUrl(regovarUrl.text);
+        regovar.networkManager.testServerUrl(sharedServerUrl.text);
+    }
+
     Rectangle
     {
         id: header
@@ -137,10 +153,15 @@ Rectangle
                 id: regovarUrl
                 width: parent.width
                 placeholderText: qsTr("http://regovar.local-site.com")
-                text: regovar.serverUrl
+                onTextChanged:
+                {
+                    regovarUrl.iconLeft = "m";
+                    regovarUrl.color = Regovar.theme.frontColor.warning;
+                }
             }
             Text
             {
+                id: regovarUrlMsg
                 width: parent.width
                 text: qsTr("The url to access to the Regovar server. If you change it, test the connection with the button \"Test connection\".")
                 font.pixelSize: Regovar.theme.font.size.small
@@ -150,70 +171,51 @@ Rectangle
             }
         }
 
-        // Connection test panel
-        Rectangle
+        // Connection test Button
+        ButtonIcon
         {
+            id: testConnectionButton
             Layout.rowSpan: 2
-            color: Regovar.theme.boxColor.back
-            border.width: 1
-            border.color: Regovar.theme.boxColor.border
-            width: testConnectionButton.width + 20
-            Layout.fillHeight: true
-
-
-            ButtonIcon
+            Layout.alignment: Qt.AlignTop
+            text: qsTr("Test connection !")
+            icon: "x"
+            onClicked:
             {
-                id: testConnectionButton
-                x:10
-                y:10
-                text: qsTr("Test connection !")
-                icon: "x"
-                onClicked:
+                testConnectionButton.enabled = false;
+                testConnectionButton.icon = "/";
+                regovar.networkManager.testServerUrl(regovarUrl.text);
+                regovar.networkManager.testServerUrl(sharedServerUrl.text);
+            }
+
+            Connections
+            {
+                target: regovar.networkManager
+                onTestServerUrlDone:
                 {
-                    testConnectionButton.enabled = false;
-                    testConnectionIcon.text = "/";
-                    regovar.testConnection(regovarUrl.text, proxyUrl.text);
+                    var icon = success ? "n" : "h";
+                    var color = success ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.danger;
+                    var message = success ? qsTr("Url is valid.") : qsTr("The provided url is not valid.")
+
+                    if (url == regovarUrl.text)
+                    {
+                        regovarUrl.iconLeft = icon;
+                        regovarUrl.color = color;
+                        regovarUrlMsg.text = message;
+                    }
+                    else
+                    {
+                        sharedServerUrl.iconLeft = icon;
+                        sharedServerUrl.color = color;
+                        sharedServerUrlMsg.text = message;
+                    }
+                    testConnectionButton.enabled = true;
+                    testConnectionButton.icon = "x";
                 }
-//                Connections
-//                {
-//                    target: regovar
-//                    onTestConnectionEnd:
-//                    {
-//                        testConnectionIcon.text = "n";
-//                        testConnectionButton.enabled = true;
-
-//                    }
-//                }
             }
-            Text
-            {
-                id: testConnectionIcon
-                anchors.top: testConnectionButton.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: testConnectionLabel.top
-                wrapMode: Text.WordWrap
-                text: "n"
-                verticalAlignment: Text.AlignVCenter
-                font.family: Regovar.theme.icons.name
-                font.pixelSize: 30
-                color: Regovar.theme.primaryColor.back.normal
-            }
-            Text
-            {
-                id: testConnectionLabel
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                wrapMode: Text.WordWrap
-                text: qsTr("Connection settings are OK")
-                font.pixelSize: Regovar.theme.font.size.small
-                color: Regovar.theme.primaryColor.back.normal
-                horizontalAlignment: Text.AlignHCenter
-            }
-
         }
 
-        // Proxy URL
+
+        // Shared server URL
         Row
         {
             Rectangle
@@ -224,7 +226,7 @@ Rectangle
             }
             Text
             {
-                text: qsTr("Proxy")
+                text: qsTr("Shared server")
                 font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
                 Layout.alignment: Qt.AlignTop
@@ -238,20 +240,204 @@ Rectangle
             spacing: 5
             TextField
             {
-                id: proxyUrl
+                id: sharedServerUrl
                 width: parent.width
-                placeholderText: qsTr("http://regovar.local-site.com")
+                placeholderText: qsTr("http://regovar.shared-site.com")
+                onTextChanged:
+                {
+                    sharedServerUrl.iconLeft = "m";
+                    sharedServerUrl.color = Regovar.theme.frontColor.warning;
+                }
             }
             Text
             {
+                id: sharedServerUrlMsg
                 width: parent.width
-                text: qsTr("The url to the proxy. If you change it, test the connection with the button \"Test connection\".")
+                text: qsTr("The url to access to the Shared Regovar server. If you change it, test the connection with the button \"Test connection\".")
                 font.pixelSize: Regovar.theme.font.size.small
                 font.italic: true
                 color: Regovar.theme.primaryColor.back.normal
                 wrapMode: Text.WordWrap
             }
         }
+
+
+
+        // ===== Local cache Section =====
+        Row
+        {
+            Layout.fillWidth: true
+            Layout.columnSpan: 3
+            height: Regovar.theme.font.boxSize.title
+
+            Text
+            {
+                width: Regovar.theme.font.boxSize.title
+                height: Regovar.theme.font.boxSize.title
+                text: "1"
+
+                font.family: Regovar.theme.icons.name
+                font.pixelSize: Regovar.theme.font.size.title
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                color: Regovar.theme.primaryColor.back.normal
+            }
+            Text
+            {
+                height: Regovar.theme.font.boxSize.title
+
+                elide: Text.ElideRight
+                text: qsTr("Local files cache")
+                font.bold: true
+                font.pixelSize: Regovar.theme.font.size.header
+                verticalAlignment: Text.AlignVCenter
+                color: Regovar.theme.primaryColor.back.normal
+            }
+        }
+
+        // Cache location
+        Row
+        {
+            Rectangle
+            {
+                width: Regovar.theme.font.boxSize.title
+                height: Regovar.theme.font.boxSize.title
+                color: "transparent"
+            }
+            Text
+            {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Cache directory")
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.primaryColor.back.normal
+                height: Regovar.theme.font.boxSize.normal
+                verticalAlignment: Text.AlignVCenter
+            }
+
+        }
+        Column
+        {
+            Layout.fillWidth: true
+            spacing: 5
+
+
+            TextField
+            {
+                id: cacheDir
+                width: parent.width
+                placeholderText: qsTr("Let empty to use default OS application cache directory")
+            }
+            Text
+            {
+                id: cacheDirMsg
+                width: parent.width
+                text: qsTr("The folder on this computer where file will be downloaded.")
+                font.pixelSize: Regovar.theme.font.size.small
+                font.italic: true
+                color: Regovar.theme.primaryColor.back.normal
+                wrapMode: Text.WordWrap
+            }
+        }
+
+        // Action buttons
+        Column
+        {
+            ButtonIcon
+            {
+                Layout.rowSpan: 2
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Clear cache !")
+                icon: "h"
+                onClicked:
+                {
+                    regovar.filesManager.clearCache();
+                }
+            }
+            Text
+            {
+                id: cacheCurrentSize
+            }
+        }
+
+        // Cache size limit
+        Row
+        {
+            Rectangle
+            {
+                width: Regovar.theme.font.boxSize.title
+                height: Regovar.theme.font.boxSize.title
+                color: "transparent"
+            }
+            Text
+            {
+                text: qsTr("Size limit")
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.primaryColor.back.normal
+                Layout.alignment: Qt.AlignTop
+                height: Regovar.theme.font.boxSize.normal
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+        Column
+        {
+            Layout.fillWidth: true
+            spacing: 5
+
+            Row
+            {
+                spacing: 10
+
+                Rectangle
+                {
+                    color: "transparent"
+                    width: 400
+                    height: Regovar.theme.font.boxSize.normal
+
+                    Rectangle
+                    {
+                        color: Regovar.theme.primaryColor.back.normal
+                        width: 2
+                        height: parent.height
+                        x: Math.round(100 * (parent.width / cacheMaxSize.maximumValue)) + 5
+                    }
+
+                    Slider
+                    {
+                        id: cacheMaxSize
+                        maximumValue: 1000
+                        minimumValue: 1
+                        stepSize: 1
+                        value: 0
+                        onValueChanged:
+                        {
+                            cacheMaxSizeLabel.text = value + " Go";
+                            regovar.filesManager.cacheMaxSize = value;
+                        }
+                        width: parent.width
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+
+                Text
+                {
+                    id: cacheMaxSizeLabel
+                    text: ""
+                }
+            }
+
+            Text
+            {
+                width: parent.width
+                text: qsTr("Set the maximum size allowed for the cache folder (Older cached files will be automatically deleted when folder size limit is reach.")
+                font.pixelSize: Regovar.theme.font.size.small
+                font.italic: true
+                color: Regovar.theme.primaryColor.back.normal
+                wrapMode: Text.WordWrap
+            }
+        }
+
+
+
 
 
 
@@ -330,34 +516,12 @@ Rectangle
             }
         }
 
-        // Interface test panel
-        Rectangle
+        // No action buttons
+        Item
         {
+            Layout.minimumWidth: 10
+            Layout.minimumHeight: 10
             Layout.rowSpan: 4
-            color: Regovar.theme.boxColor.back
-            border.width: 1
-            border.color: Regovar.theme.boxColor.border
-            width: testConnectionButton.width + 20
-            Layout.fillHeight: true
-
-            ButtonIcon
-            {
-                x:10
-                y:10
-                text: qsTr("Apply settings")
-                icon: "n"
-            }
-            Text
-            {
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                wrapMode: Text.WordWrap
-                text: qsTr("Todo : preview of interface setting before validation")
-                font.pixelSize: Regovar.theme.font.size.small
-                color: Regovar.theme.primaryColor.back.normal
-                horizontalAlignment: Text.AlignHCenter
-            }
         }
 
         // Theme

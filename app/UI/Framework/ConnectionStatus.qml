@@ -58,13 +58,13 @@ GridLayout
 
     Connections
     {
-        target: regovar
-        onConnectionStatusChanged: updateConnectionStatus()
+        target: regovar.networkManager
+        onStatusChanged: updateConnectionStatus()
     }
 
     function updateConnectionStatus()
     {
-        if (regovar.connectionStatus == 0)
+        if (regovar.networkManager.status == 0)
         {
             serverLabel.text = qsTr("online");
             serverIcon.text = "F";
@@ -73,12 +73,12 @@ GridLayout
         }
         else
         {
-            serverIcon.text = (regovar.connectionStatus == 3) ? "h" : "F";
+            serverIcon.text = (regovar.networkManager.status == 3) ? "h" : "F";
             serverIcon.color = Regovar.theme.frontColor.danger;
             serverLabel.color = Regovar.theme.frontColor.danger;
-            if (regovar.connectionStatus == 1)
+            if (regovar.networkManager.status == 1)
                 serverLabel.text = qsTr("You must login to use regovar");
-            else if (regovar.connectionStatus == 2)
+            else if (regovar.networkManager.status == 2)
                 serverLabel.text = qsTr("Regovar server in error");
             else
                 serverLabel.text = qsTr("Regovar server not reachable");

@@ -48,3 +48,33 @@ void SamplesManager::setReferencialId(int refId)
         req->deleteLater();
     });
 }
+
+
+
+void SamplesManager::processPushNotification(QString action, QJsonObject data)
+{
+    if (action == "import_vcf_processing")
+    {
+        double progressValue = data["progress"].toDouble();
+        QString status = data["status"].toString();
+
+        for (const QJsonValue& json: data["samples"].toArray())
+        {
+            QJsonObject obj = json.toObject();
+            int sid = obj["id"].toInt();
+            for (QObject* o: mSamplesList)
+            {
+                Sample* sample = qobject_cast<Sample*>(o);
+                if (sample->id() == sid)
+                {
+                    sample->setStatus(status);
+                    QJsonObject statusInfo;
+                    statusInfo.insert("status", status);
+                    statusInfo.insert("label", sample->statusToLabel(sample->status(), progressValue));
+                    sample->setStatusUI(QVariant::fromValue(statusInfo));
+                    break;
+                }
+            }
+        }
+    }
+}

@@ -8,7 +8,6 @@
 
 class File : public QObject
 {
-
     Q_OBJECT
     Q_PROPERTY(int id READ id)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
@@ -22,6 +21,10 @@ class File : public QObject
     Q_PROPERTY(QString type READ type WRITE setType NOTIFY typeChanged)
     Q_PROPERTY(FileStatus status READ status WRITE setStatus NOTIFY statusChanged)
     Q_PROPERTY(QList<QString> tags READ tags NOTIFY tagsChanged)
+
+    Q_PROPERTY(QFile* localFile READ localFile NOTIFY localFileChanged)
+    Q_PROPERTY(qint64 downloadOffset READ downloadOffset WRITE setDownloadOffset NOTIFY downloadOffsetChanged)
+    Q_PROPERTY(FileStatus localStatus READ localStatus WRITE setLocalStatus NOTIFY localStatusChanged)
 
     // Property for QML quick display in tableView
     Q_PROPERTY(QVariant filenameUI READ filenameUI NOTIFY filenameUIChanged)
@@ -59,6 +62,10 @@ public:
     inline FileStatus status() { return mStatus; }
     inline QList<QString> tags() { return mTags; }
 
+    inline QFile* localFile() { return mLocalFile; }
+    inline qint64 downloadOffset() { return mDownloadOffset; }
+    inline FileStatus localStatus() { return mLocalStatus; }
+
     inline QVariant filenameUI() { return mFilenameUI; }
     inline QVariant statusUI() { return mStatusUI; }
     inline QString sizeUI() { return mSizeUI; }
@@ -75,6 +82,8 @@ public:
     inline void setStatus(FileStatus status) { mStatus = status; emit statusChanged(); }
     inline void setUpdateDate(QDateTime date) { mUpdateDate = date; emit updateDateChanged(); }
 
+    inline void setDownloadOffset(qint64 offset) { mDownloadOffset = offset; emit downloadOffset(); }
+    inline void setLocalStatus(FileStatus status) { mLocalStatus = status; emit localStatusChanged(); }
 
     // Methods
     //! Set model with provided json data
@@ -105,6 +114,10 @@ Q_SIGNALS:
     void statusChanged();
     void tagsChanged();
 
+    void localFileChanged();
+    void downloadOffsetChanged();
+    void localStatusChanged();
+
     void filenameUIChanged();
     void sizeUIChanged();
     void sourceUIChanged();
@@ -128,6 +141,11 @@ private:
     qint64 mUploadOffset;
     QList<QString> mTags;
     QString mLocalPath;
+
+    QFile* mLocalFile = nullptr;
+    qint64 mDownloadOffset;
+    FileStatus mLocalStatus;
+
 
     // UI all-in-one attributes
     QVariant mFilenameUI;
