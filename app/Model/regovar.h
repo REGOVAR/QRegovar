@@ -156,6 +156,7 @@ public:
 
     // Others
     Q_INVOKABLE void getVariantInfo(int refId, QString variantId, int analysisId=-1);
+    Q_INVOKABLE void getGeneInfo(QString geneName, int analysisId=-1);
     Q_INVOKABLE void search(QString query);
     Q_INVOKABLE void loadWelcomData();
     Q_INVOKABLE void close();
@@ -193,6 +194,8 @@ Q_SIGNALS:
     void referencesChanged();
     void configChanged();
     void adminChanged();
+    void variantInformationReady(QJsonObject json);
+    void geneInformationReady(QJsonObject json);
 
     void errorOccured(QString errCode, QString message, QString techData);
     void onClose();

@@ -349,6 +349,31 @@ void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
 }
 
 
+void Regovar::getGeneInfo(QString geneName, int analysisId)
+{
+    QString sAnalysisId = QString::number(analysisId);
+    QString url;
+    if (analysisId == -1)
+        url = QString("/search/gene/%1").arg(geneName);
+    else
+        url = QString("/search/gene/%1/%2").arg(geneName, sAnalysisId);
+
+    Request* req = Request::get(url);
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            emit geneInformationReady(json["data"].toObject());
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
 
 
 
