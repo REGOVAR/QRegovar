@@ -6,7 +6,7 @@
 
 #include "networktask.h"
 
-
+class File;
 
 class NetworkManager : public QObject
 {
@@ -46,6 +46,7 @@ public:
 
     // Methods
     Q_INVOKABLE bool testServerUrl(QString url);
+
 
 
 public Q_SLOTS:

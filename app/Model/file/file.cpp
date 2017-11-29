@@ -1,4 +1,6 @@
 #include "file.h"
+
+#include <QTextStream>
 #include "Model/regovar.h"
 #include "Model/framework/request.h"
 
@@ -177,6 +179,7 @@ QFile* File::getLocalFile()
                     mLocalFile->open(QIODevice::WriteOnly);
                     mLocalFile->write(data);
                     mLocalFile->close();
+                    emit localFileChanged();
                 }
                 else
                 {
@@ -199,6 +202,38 @@ QFile* File::getLocalFile()
 
 
 
+
+QString File::readFile()
+{
+    if (!QFile::exists(mLocalPath))
+    {
+        return "File doesn't exists.";
+    }
+    if (mLocalFile == nullptr)
+    {
+        mLocalFile = new QFile(mLocalPath);
+    }
+
+    QString fileContent;
+    if (mLocalFile->open(QIODevice::ReadOnly))
+    {
+        QString line;
+        QTextStream t(mLocalFile);
+        do
+        {
+            line = t.readLine();
+            fileContent += line;
+        } while (!line.isNull());
+
+        mLocalFile->close();
+    }
+    else
+    {
+        qDebug() << "Unable to open the file :" << mLocalPath;
+        return QString();
+    }
+    return fileContent;
+}
 
 
 

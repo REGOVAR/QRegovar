@@ -104,7 +104,10 @@ public:
 
     //! Helper to compute all-in-one property to display file in the UI.
     Q_INVOKABLE static QString extensionToIco(QString ext);
-    QString statusToLabel(FileStatus status, qint64 size, qint64 uploadOffset);
+    Q_INVOKABLE QString statusToLabel(FileStatus status, qint64 size, qint64 uploadOffset);
+
+    // Read
+    Q_INVOKABLE QString readFile();
 
 
 Q_SIGNALS:

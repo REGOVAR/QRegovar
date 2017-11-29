@@ -1,6 +1,7 @@
 #include "networkmanager.h"
 
 #include "Model/regovar.h"
+#include "Model/file/file.h"
 
 
 NetworkManager::NetworkManager(QObject *parent) : QObject(parent)
@@ -12,6 +13,9 @@ NetworkManager::NetworkManager(QObject *parent) : QObject(parent)
     // connect(&mWebSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onWebsocketStateChanged(QAbstractSocket::SocketState)));
     mWebSocket.open(QUrl(mWebsocketUrl));
 }
+
+
+
 
 
 

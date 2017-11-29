@@ -169,5 +169,7 @@
         <file>Framework/DynamicFormInputBool.qml</file>
         <file>Framework/DynamicFormInputNumber.qml</file>
         <file>Framework/DynamicFormInputString.qml</file>
+        <file>Framework/FileViewer.qml</file>
+        <file>Framework/FileViewers/TxtViewer.qml</file>
     </qresource>
 </RCC>
