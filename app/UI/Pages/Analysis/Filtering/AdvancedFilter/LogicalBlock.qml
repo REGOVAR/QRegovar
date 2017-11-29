@@ -197,7 +197,8 @@ Rectangle
                 color: "transparent"
 
                 id: logicalSubItem
-                property bool isChecked: true
+                property bool isChecked: modelData.enabled
+                onIsCheckedChanged: modelData.enabled = isChecked
 
                 Rectangle
                 {
@@ -253,8 +254,7 @@ Rectangle
                     anchors.leftMargin: 5 + Regovar.theme.font.boxSize.normal
                     width: root.width - 5 - Regovar.theme.font.boxSize.normal
                     isEnabled: logicalSubItem.isChecked && root.isEnabled
-
-                    onHeightChanged: { parent.height = height; console.log("z height=" + height + " total="+fullSize()); resize(); }
+                    onHeightChanged: { parent.height = height; resize(); }
                 }
             }
         }

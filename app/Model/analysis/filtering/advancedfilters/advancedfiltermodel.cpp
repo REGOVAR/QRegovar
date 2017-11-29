@@ -200,7 +200,10 @@ QJsonArray AdvancedFilterModel::toJson()
         for (QObject* o: mSubConditions)
         {
             AdvancedFilterModel* cond = qobject_cast<AdvancedFilterModel*>(o);
-            sub.append(cond->toJson());
+            if (cond->enabled())
+            {
+                sub.append(cond->toJson());
+            }
         }
         result.append(sub);
     }
