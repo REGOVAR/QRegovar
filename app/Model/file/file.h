@@ -24,6 +24,7 @@ class File : public QObject
     Q_PROPERTY(qint64 uploadOffset READ uploadOffset WRITE setUploadOffset NOTIFY uploadOffsetChanged)
     Q_PROPERTY(FileStatus status READ status WRITE setStatus NOTIFY statusChanged)
     // Local file attributes
+    Q_PROPERTY(QString localFilePath READ localFilePath NOTIFY localFilePathChanged)
     Q_PROPERTY(bool localFileReady READ localFileReady NOTIFY localFileReadyChanged)
     Q_PROPERTY(qint64 downloadOffset READ downloadOffset WRITE setDownloadOffset NOTIFY downloadOffsetChanged)
     Q_PROPERTY(FileStatus localStatus READ localStatus WRITE setLocalStatus NOTIFY localStatusChanged)
@@ -66,6 +67,7 @@ public:
     inline FileStatus status() { return mStatus; }
     inline QList<QString> tags() { return mTags; }
 
+    inline QString localFilePath() { return mLocalPath; }
     inline bool localFileReady() { return mLocalFileReady; }
     inline qint64 downloadOffset() { return mDownloadOffset; }
     inline FileStatus localStatus() { return mLocalStatus; }
@@ -122,6 +124,7 @@ Q_SIGNALS:
     void statusChanged();
     void tagsChanged();
 
+    void localFilePathChanged();
     void localFileReadyChanged();
     void downloadOffsetChanged();
     void localStatusChanged();

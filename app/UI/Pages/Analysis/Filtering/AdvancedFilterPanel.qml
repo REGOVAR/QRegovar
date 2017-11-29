@@ -6,8 +6,8 @@ import org.regovar 1.0
 
 import "../../../Regovar"
 import "../../../Framework"
-import "AdvancedFilter"
 import "../../../Dialogs"
+import "AdvancedFilter"
 
 Rectangle
 {

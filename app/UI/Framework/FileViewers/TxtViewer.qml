@@ -35,4 +35,12 @@ Rectangle
             font.family: "monospace"
         }
     }
+
+    Button
+    {
+        anchors.bottom: root.bottom
+        anchors.right: root.right
+        text: qsTr("Open externaly")
+        onClicked: Qt.openUrlExternally(file.localeFilePath);
+    }
 }

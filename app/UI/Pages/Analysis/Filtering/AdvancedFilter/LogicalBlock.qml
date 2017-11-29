@@ -27,8 +27,14 @@ Rectangle
     property string logicalColor: Regovar.theme.filtering.filterAND
 
 
-    onModelChanged: updateViewFromModel()
-
+    onModelChanged:
+    {
+        if (model)
+        {
+            model.filterChanged.connect(updateViewFromModel);
+            updateViewFromModel();
+        }
+    }
 
     function updateViewFromModel()
     {
