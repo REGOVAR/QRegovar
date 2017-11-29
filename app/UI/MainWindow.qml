@@ -99,7 +99,7 @@ GenericWindow
 
     Connections
     {
-        target: regovar
+        target: regovar.networkManager
         onWebsocketMessageReceived:
         {
             //console.log ("WS [" + action + "] " + data);

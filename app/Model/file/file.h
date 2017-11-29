@@ -24,7 +24,7 @@ class File : public QObject
     Q_PROPERTY(qint64 uploadOffset READ uploadOffset WRITE setUploadOffset NOTIFY uploadOffsetChanged)
     Q_PROPERTY(FileStatus status READ status WRITE setStatus NOTIFY statusChanged)
     // Local file attributes
-    Q_PROPERTY(QFile* localFile READ localFile NOTIFY localFileChanged)
+    Q_PROPERTY(bool localFileReady READ localFileReady NOTIFY localFileReadyChanged)
     Q_PROPERTY(qint64 downloadOffset READ downloadOffset WRITE setDownloadOffset NOTIFY downloadOffsetChanged)
     Q_PROPERTY(FileStatus localStatus READ localStatus WRITE setLocalStatus NOTIFY localStatusChanged)
 
@@ -66,7 +66,7 @@ public:
     inline FileStatus status() { return mStatus; }
     inline QList<QString> tags() { return mTags; }
 
-    inline QFile* localFile() { return mLocalFile; }
+    inline bool localFileReady() { return mLocalFileReady; }
     inline qint64 downloadOffset() { return mDownloadOffset; }
     inline FileStatus localStatus() { return mLocalStatus; }
 
@@ -99,15 +99,16 @@ public:
     Q_INVOKABLE void save();
     //! Load Subject information from server
     Q_INVOKABLE void load();
-    //! Retrieve the physical file! (retrieve it from cache or dowload it if needed)
-    Q_INVOKABLE QFile* getLocalFile();
+    //! Dowload the file and put it in cache. When file is ready, the localFileReadyChanged signal is emit
+    Q_INVOKABLE bool downloadLocalFile();
+    //! Read file content as QString
+    Q_INVOKABLE QString readFile();
 
     //! Helper to compute all-in-one property to display file in the UI.
     Q_INVOKABLE static QString extensionToIco(QString ext);
     Q_INVOKABLE QString statusToLabel(FileStatus status, qint64 size, qint64 uploadOffset);
 
-    // Read
-    Q_INVOKABLE QString readFile();
+
 
 
 Q_SIGNALS:
@@ -121,7 +122,7 @@ Q_SIGNALS:
     void statusChanged();
     void tagsChanged();
 
-    void localFileChanged();
+    void localFileReadyChanged();
     void downloadOffsetChanged();
     void localStatusChanged();
 
@@ -149,7 +150,7 @@ private:
     QList<QString> mTags;
 
     QString mLocalPath;
-    QFile* mLocalFile = nullptr;
+    bool mLocalFileReady = false;
     qint64 mDownloadOffset;
     FileStatus mLocalStatus;
 

@@ -99,10 +99,16 @@ bool File::fromJson(QJsonObject json)
     setUploadOffset(json["upload_offset"].toInt());
 
     // Build url to the local physical path
-    mLocalPath = QDir::cleanPath(regovar->filesManager()->cacheDir()
-        + QDir::separator() + "files"
-        + QDir::separator() + mId
-        + QDir::separator() + mName);
+    QString folder = QDir::cleanPath(regovar->filesManager()->cacheDir()
+            + QDir::separator() + "files"
+            + QDir::separator() + QString::number(mId));
+
+    mLocalPath = QDir::cleanPath(folder + QDir::separator() + mName);
+    QDir dir(folder);
+    if (!dir.exists())
+    {
+        dir.mkpath(".");
+    }
 
 
     auto meta = QMetaEnum::fromType<FileStatus>();
@@ -153,33 +159,45 @@ QJsonObject File::toJson()
 
 
 
-
-QFile* File::getLocalFile()
+// TODO: to redo with TUS protocol
+bool File::downloadLocalFile()
 {
     if (mStatus == uploaded || mStatus == checked)
     {
-        if (mLocalFile != nullptr)
-        {
-            return mLocalFile;
-        }
         if (QFile::exists(mLocalPath))
         {
-            mLocalFile = new QFile(mLocalPath);
-            return mLocalFile;
+            QFileInfo info(mLocalPath);
+            mDownloadOffset = info.size();
+            //if (mDownloadOffset == mSize)
+            {
+                mLocalFileReady = true;
+                emit downloadOffsetChanged();
+                emit localFileReadyChanged();
+                emit localStatusChanged();
+            }
+//            else
+//            {
+//                // TODO: TUS: continue download
+//                qDebug() << "ERROR: CACHED FILE, partial download, need to resume";
+//            }
         }
         else
         {
             // Need to download file
-            Request* req = Request::download(QString("/dl/%1/%2").arg(mId).arg(mName));
+            Request* req = Request::download(QString("/dl/file/%1/%2").arg(mId).arg(mName));
             connect(req, &Request::downloadReceived, [this, req](bool success, const QByteArray& data)
             {
                 if (success)
                 {
-                    mLocalFile = new QFile(mLocalPath);
-                    mLocalFile->open(QIODevice::WriteOnly);
-                    mLocalFile->write(data);
-                    mLocalFile->close();
-                    emit localFileChanged();
+                    QFile* file = new QFile(mLocalPath);
+                    file->open(QIODevice::WriteOnly);
+                    file->write(data);
+                    file->close();
+                    mDownloadOffset = file->size();
+                    mLocalFileReady = true;
+                    emit downloadOffsetChanged();
+                    emit localFileReadyChanged();
+                    emit localStatusChanged();
                 }
                 else
                 {
@@ -191,12 +209,12 @@ QFile* File::getLocalFile()
                 req->deleteLater();
             });
         }
+        return true;
     }
 
 
     qDebug() << "ERROR: file" << mId << "(" << mUrl << ") not ready to be retrieved. Wrong status : " << mStatus;
-    return nullptr;
-
+    return false;
 }
 
 
@@ -205,27 +223,25 @@ QFile* File::getLocalFile()
 
 QString File::readFile()
 {
-    if (!QFile::exists(mLocalPath))
+    if (!mLocalFileReady || !QFile::exists(mLocalPath))
     {
-        return "File doesn't exists.";
-    }
-    if (mLocalFile == nullptr)
-    {
-        mLocalFile = new QFile(mLocalPath);
+        return tr("File %1 doesn't exists. Please, download it first").arg(mLocalPath);
     }
 
+    QFile* file = new QFile(mLocalPath);
     QString fileContent;
-    if (mLocalFile->open(QIODevice::ReadOnly))
+    if (file->open(QIODevice::ReadOnly))
     {
         QString line;
-        QTextStream t(mLocalFile);
+        QTextStream t(file);
         do
         {
             line = t.readLine();
-            fileContent += line;
+            fileContent += line + "\n";
         } while (!line.isNull());
 
-        mLocalFile->close();
+        file->close();
+        file->deleteLater();
     }
     else
     {

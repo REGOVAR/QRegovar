@@ -171,5 +171,6 @@
         <file>Framework/DynamicFormInputString.qml</file>
         <file>Framework/FileViewer.qml</file>
         <file>Framework/FileViewers/TxtViewer.qml</file>
+        <file>Framework/FileViewers/WaitingPanel.qml</file>
     </qresource>
 </RCC>

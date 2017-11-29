@@ -10,7 +10,7 @@ QNetworkAccessManager* Request::netManager()
         mNetManager = new QNetworkAccessManager();
         connect ( mNetManager,
                   SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
-                  Regovar::i(),
+                  regovar->networkManager(),
                   SLOT(onAuthenticationRequired(QNetworkReply*, QAuthenticator*)));
     }
 

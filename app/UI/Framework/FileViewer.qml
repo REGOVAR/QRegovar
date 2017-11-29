@@ -13,77 +13,57 @@ Rectangle
 
     function openFile(id)
     {
+        emptyPanel.visible = true;
+        waitingPanel.visible = true;
         viewer.visible = true;
-        viewer.file = regovar.filesManager.getOrCreateFile(id);
+
+
+        // Get file
+        var file = regovar.filesManager.getOrCreateFile(id);
+
+        // Check online status
+        switch(file.status)
+        {
+        case 0: // Uploading
+            waitingPanel.visible = true;
+            waitingPanel.file = file;
+
+            return;
+        case 3: // error
+            errorPanel.visible = true;
+            errorPanel.file = file;
+            return;
+        }
+
+        // Check if already in cache
+        if (file.localFileReady)
+        {
+            // yes : open it
+            viewer.visible = true;
+            viewer.file = file;
+        }
+        else
+        {
+            // no : download it
+            waitingPanel.visible = true;
+            waitingPanel.file = file;
+            file.downloadLocalFile();
+            return;
+        }
     }
 
 
-    ColumnLayout
+    Item
     {
         id: rightPanel
         anchors.fill: parent
         anchors.leftMargin: 10
-        spacing: 10
-
-        Rectangle
-        {
-            Layout.fillWidth: true
-            height: Regovar.theme.font.boxSize.header
-            color: "transparent"
-
-            RowLayout
-            {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.right: parent.right
-                spacing: 10
-
-                Text
-                {
-                    id: rightPanelHeader
-                    Layout.fillWidth: true
-                    font.pixelSize: Regovar.theme.font.size.header
-                    color: Regovar.theme.primaryColor.back.dark
-                    text: qsTr("Current document")
-                    elide: Text.ElideRight
-                }
-
-                Row
-                {
-                    spacing: 10
-
-                    ButtonInline
-                    {
-                        text: ""
-                        icon: "\""
-                    }
-                    ButtonInline
-                    {
-                        text: ""
-                        icon: "é"
-                    }
-                }
-            }
-
-
-
-            Rectangle
-            {
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                width: parent.width
-                height: 1
-                color: Regovar.theme.primaryColor.back.normal
-            }
-        }
 
         Rectangle
         {
             id: emptyPanel
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            anchors.fill: parent
             color: "transparent"
-
 
             Text
             {
@@ -94,14 +74,19 @@ Rectangle
             }
         }
 
+        WaitingPanel
+        {
+            id: waitingPanel
+            anchors.fill: parent
+            color: Regovar.theme.backgroundColor.normal
+            visible: false
+            onWaitingDone: openFile(fileId)
+        }
         TxtViewer
         {
             id: viewer
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            color: Regovar.theme.backgroundColor.normal
+            anchors.fill: parent
             visible: false
-
         }
     }
 }
