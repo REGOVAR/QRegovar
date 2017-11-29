@@ -25,7 +25,14 @@ Rectangle
     property bool mouseHover: false
     property string toolTip
 
-    onModelChanged: updateViewFromModel()
+    onModelChanged:
+    {
+        if (model)
+        {
+            model.filterChanged.connect(updateViewFromModel);
+            updateViewFromModel();
+        }
+    }
     function updateViewFromModel()
     {
         if (model)

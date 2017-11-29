@@ -152,24 +152,21 @@ void AdvancedFilterModel::loadJson(QJsonArray filterJson)
 
         if (mField != nullptr)
         {
+            mFieldValue = valueJson.at(1).toVariant();
             if (mField->type() == "int" || mField->type() == "sample_array")
             {
-                mFieldValue = QVariant(valueJson[1].toInt());
                 mOpList = mOpNumberList;
             }
             else if (mField->type() == "string" || mField->type() == "sequence")
             {
-                mFieldValue = QVariant(valueJson[1].toString());
                 mOpList = mOpStringList;
             }
             else if (mField->type() == "float")
             {
-                mFieldValue = QVariant(valueJson[1].toDouble());
                 mOpList = mOpNumberList;
             }
             else if (mField->type() == "enum")
             {
-                mFieldValue = QVariant(valueJson[1].toDouble());
                 mOpList = mOpEnumList;
             }
             else if (mField->type() == "bool")
@@ -180,7 +177,6 @@ void AdvancedFilterModel::loadJson(QJsonArray filterJson)
             {
                 // TODO: not well managed
                 qDebug() << "WARNING : This kind of field is not well managed...";
-                mFieldValue = QVariant(valueJson[1].toString());
                 mOpList = mOpStringList;
             }
         }
