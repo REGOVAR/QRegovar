@@ -24,6 +24,7 @@
         <file>Dialogs/FilterSaveDialog.qml</file>
         <file>Dialogs/NewAnalysisDialog.qml</file>
         <file>Dialogs/NewAttributeDialog.qml</file>
+        <file>Dialogs/NewPanelDialog.qml</file>
         <file>Dialogs/NewProjectDialog.qml</file>
         <file>Dialogs/NewSubjectDialog.qml</file>
         <file>Dialogs/SelectFilesDialog.qml</file>
@@ -106,13 +107,14 @@
         <file>Pages/Project/FilesPage.qml</file>
         <file>Pages/Project/SubjectsPage.qml</file>
         <file>Pages/Project/SummaryPage.qml</file>
-        <file>Pages/Settings/AdminStatisticsPage.qml</file>
+        <file>Pages/Settings/AdminAnnotationsPage.qml</file>
         <file>Pages/Settings/AdminUsersPage.qml</file>
         <file>Pages/Settings/AdminPipesPage.qml</file>
         <file>Pages/Settings/AdminServerPage.qml</file>
         <file>Pages/Settings/ApplicationPage.qml</file>
         <file>Pages/Settings/PanelsPage.qml</file>
         <file>Pages/Settings/ProfilePage.qml</file>
+        <file>Pages/Settings/StatisticsPage.qml</file>
         <file>Pages/Subject/AnalysesPage.qml</file>
         <file>Pages/Subject/CharacteristicsPage.qml</file>
         <file>Pages/Subject/FilesPage.qml</file>
@@ -140,6 +142,10 @@
         <file>InformationsPanel/Gene/OnlineToolsPanel.qml</file>
         <file>InformationsPanel/Gene/PhenotypePanel.qml</file>
         <file>InformationsPanel/Gene/StatsPanel.qml</file>
+        <file>InformationsPanel/Panel/EventsPanel.qml</file>
+        <file>InformationsPanel/Panel/InfoPanel.qml</file>
+        <file>InformationsPanel/Panel/PanelInformations.qml</file>
+        <file>InformationsPanel/Panel/VersionDetailsPanel.qml</file>
         <file>InformationsPanel/Phenotype/InfoPanel.qml</file>
         <file>InformationsPanel/Phenotype/OnlineToolsPanel.qml</file>
         <file>InformationsPanel/Phenotype/PhenotypeInformations.qml</file>
@@ -151,8 +157,6 @@
         <file>InformationsPanel/Sample/SampleInformations.qml</file>
         <file>InformationsPanel/Sample/StatsPanel.qml</file>
         <file>InformationsPanel/User/InfoPanel.qml</file>
-        <file>InformationsPanel/User/OnlineToolsPanel.qml</file>
-        <file>InformationsPanel/User/PhenotypePanel.qml</file>
         <file>InformationsPanel/User/StatsPanel.qml</file>
         <file>InformationsPanel/User/UserInformations.qml</file>
         <file>InformationsPanel/Variant/InfoPanel.qml</file>
@@ -172,5 +176,8 @@
         <file>Framework/FileViewer.qml</file>
         <file>Framework/FileViewers/TxtViewer.qml</file>
         <file>Framework/FileViewers/WaitingPanel.qml</file>
+        <file>Dialogs/NewPanelEntryDialog.qml</file>
+        <file>Pages/Settings/PanelFormNewGene.qml</file>
+        <file>Pages/Settings/PanelFormNewCustom.qml</file>
     </qresource>
 </RCC>

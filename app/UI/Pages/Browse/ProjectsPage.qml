@@ -135,9 +135,6 @@ Rectangle
 
     NewProjectDialog { id: newProjectDialog }
 
-    property var component
-    property var name
-
     /// Retrive model of the selected project in the treeview and set the Regovar.currentProject with it.
     function openSelectedProject()
     {

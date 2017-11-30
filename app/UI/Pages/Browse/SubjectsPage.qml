@@ -135,9 +135,6 @@ Rectangle
 
     NewSubjectDialog { id: newSubjectDialog }
 
-    property var component
-    property var name
-
     /// Retrive model of the selected Subject in the tableview and ask model to open it
     function openSelectedSubject()
     {

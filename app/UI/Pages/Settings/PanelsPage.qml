@@ -1,15 +1,23 @@
 import QtQuick 2.9
-import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.0
+import QtQuick.Dialogs 1.2
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
+//import org.regovar 1.0
+
 import "../../Regovar"
 import "../../Framework"
+import "../../Dialogs"
+import "../../InformationsPanel/Panel"
 
 Rectangle
 {
     id: root
     color: Regovar.theme.backgroundColor.main
 
-
     property QtObject model
+
+
 
     Rectangle
     {
@@ -24,7 +32,7 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Panels")
+            text: qsTr("Panels settings")
             font.pixelSize: 20
             font.weight: Font.Black
         }
@@ -37,8 +45,6 @@ Rectangle
             anchors.rightMargin: 10
         }
     }
-
-
 
     // Help information on this page
     Box
@@ -53,23 +59,128 @@ Rectangle
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("Browse, create and edit gene panels.")
+        text: qsTr("Browse, create and edit genes panels.")
     }
 
-    Image
+    Column
     {
-        anchors.top : helpInfoBox.bottom
-        anchors.left: root.left
-        anchors.margins: 10
+        id: actionsPanel
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
+        anchors.right: root.right
+        anchors.margins : 10
+        spacing: 10
 
 
-        source: "qrc:/a310 Settings Panels.png"
-
+        Button
+        {
+            text: qsTr("New panel")
+            onClicked:  newPanelDialog.open()
+        }
+        Button
+        {
+            text: qsTr("Update panel")
+            onClicked: updateSelectedPanel()
+        }
+        Button
+        {
+            text: qsTr("Open panel")
+             onClicked: openSelectedPanel()
+        }
     }
 
 
+    TreeView
+    {
+        id: browser
+        anchors.left: root.left
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
+        anchors.right: actionsPanel.left
+        anchors.bottom: root.bottom
+        anchors.margins: 10
+        model: regovar.panelsManager.panelsTreeView
+
+        // Default delegate for all column
+        itemDelegate: Item
+        {
+            Text
+            {
+                anchors.leftMargin: 5
+                anchors.fill: parent
+                verticalAlignment: Text.AlignVCenter
+                font.pixelSize: Regovar.theme.font.size.normal
+                text: styleData.value.text
+                elide: Text.ElideRight
+            }
+        }
+
+        TableViewColumn
+        {
+            role: "shared"
+            title: "Shared"
+            width: 50
+        }
+        TableViewColumn
+        {
+            role: "name"
+            title: "Name"
+            width: 250
+        }
+        TableViewColumn
+        {
+            role: "date"
+            title: "Date"
+        }
+        TableViewColumn
+        {
+            role: "comment"
+            title: "Comment"
+            width: 400
+        }
+    }
+
+    NewPanelDialog { id: newPanelDialog }
 
 
+    Connections
+    {
+        target: regovar
+        onVariantInformationReady: onOpenVariantInfoDialogFinish(json)
+    }
+    Dialog
+    {
+        id: viewPanelDialog
+        title: qsTr("Panel informations")
+        visible: false
+        modality: Qt.NonModal
+        width: 500
+        height: 400
+
+        property alias data: infoPanel.model
+
+        contentItem: PanelInformations
+        {
+            id: infoPanel
+        }
+    }
 
 
+    /// Retrive model of the selected panel in the treeview and display information.
+    function openSelectedPanel()
+    {
+
+        var item = regovar.panelsManager.panelsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
+        if (item !== undefined)
+        {
+            if (item.isAnalysis)
+                regovar.analysesManager.openAnalysis(item.type, item.id);
+            else
+                regovar.projectsManager.openProject(item.id);
+        }
+    }
+
+    /// Retrive model of the selected panel in the treeview and display wizard to create new version
+    function updateSelectedPanel()
+    {
+
+    }
 }

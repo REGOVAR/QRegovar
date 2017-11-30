@@ -42,11 +42,12 @@ QtObject
                 { "icon": "b", "label": qsTr("My profile"),  "page": "Settings/ProfilePage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "I", "label": qsTr("Application"), "page": "Settings/ApplicationPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "q", "label": qsTr("Panels"),      "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "^", "label": qsTr("Statistics"),  "page": "Settings/StatisticsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "d", "label": qsTr("Administration"), "page": "", "sublevel": [
                     { "icon": "", "label": qsTr("Server"),    "page": "Settings/AdminServerPage.qml", "sublevel": [], "subindex": -1},
                     { "icon": "", "label": qsTr("Users"),     "page": "Settings/AdminUsersPage.qml", "sublevel": [], "subindex": -1},
                     { "icon": "", "label": qsTr("Pipelines"), "page": "Settings/AdminPipesPage.qml", "sublevel": [], "subindex": -1},
-                    { "icon": "", "label": qsTr("Databases"), "page": "Settings/AdminStatisticsPage.qml", "sublevel": [], "subindex": -1},
+                    { "icon": "", "label": qsTr("Annotations"), "page": "Settings/AdminAnnotationsPage.qml", "sublevel": [], "subindex": -1},
                     ], "subindex": 0},
                 ], "subindex": 0},
             { "icon": "e", "label": qsTr("Help"),           "page": "", "sublevel": [
