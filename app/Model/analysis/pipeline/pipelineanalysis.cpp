@@ -6,7 +6,6 @@
 PipelineAnalysis::PipelineAnalysis(QObject* parent) : Analysis(parent)
 {
     mType = "Pipeline";
-    connect(regovar, SIGNAL(websocketMessageReceived(QString,QJsonObject)), this, SLOT(onWebsocketMessageReceived(QString,QJsonObject)));
 }
 
 PipelineAnalysis::PipelineAnalysis(int id, QObject* parent) : PipelineAnalysis(parent)
@@ -57,20 +56,21 @@ void PipelineAnalysis::addInputFromWS(QJsonObject json)
 }
 
 
-void PipelineAnalysis::onWebsocketMessageReceived(QString action, QJsonObject data)
+void PipelineAnalysis::processPushNotification(QString, QJsonObject)
 {
-    if (action == "file_upload")
-    {
-        int id = data["id"].toInt();
-        for (QObject* o: mInputsFilesList)
-        {
-            File* file = qobject_cast<File*>(o);
-            if (file->id() != id) continue;
+    // TODO
+//    if (action == "file_upload")
+//    {
+//        int id = data["id"].toInt();
+//        for (QObject* o: mInputsFilesList)
+//        {
+//            File* file = qobject_cast<File*>(o);
+//            if (file->id() != id) continue;
 
-            // Update file model
-            file->fromJson(data);
+//            // Update file model
+//            file->fromJson(data);
 
-            break;
-        }
-    }
+//            break;
+//        }
+//    }
 }

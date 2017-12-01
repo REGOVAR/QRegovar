@@ -212,4 +212,19 @@ PipelineAnalysis* AnalysesManager::getOrCreatePipelineAnalysis(int id)
     mPipelineAnalyses.insert(id, newAnalysis);
     return newAnalysis;
 }
-
+FilteringAnalysis* AnalysesManager::getFilteringAnalysis(int id)
+{
+    if (mFilteringAnalyses.contains(id))
+    {
+        return mFilteringAnalyses[id];
+    }
+    return nullptr;
+}
+PipelineAnalysis* AnalysesManager::getPipelineAnalysis(int id)
+{
+    if (mPipelineAnalyses.contains(id))
+    {
+        return mPipelineAnalyses[id];
+    }
+    return nullptr;
+}

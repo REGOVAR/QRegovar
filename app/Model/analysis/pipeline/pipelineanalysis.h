@@ -33,9 +33,8 @@ public:
     Q_INVOKABLE void removeInputs(QList<QObject*> inputs);
     Q_INVOKABLE void addInputFromWS(QJsonObject json);
 
-
 public Q_SLOTS:
-    void onWebsocketMessageReceived(QString ,QJsonObject);
+    void processPushNotification(QString action, QJsonObject data);
 
 Q_SIGNALS:
     void inputsFilesListChanged();

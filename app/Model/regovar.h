@@ -14,6 +14,7 @@
 #include "analysis/analysesmanager.h"
 #include "tools/toolsmanager.h"
 #include "subject/reference.h"
+#include "panel/panelsmanager.h"
 // TODO: rework as manager pattern
 #include "user.h"
 #include "admin.h"
@@ -96,6 +97,7 @@ class Regovar : public QObject
     Q_PROPERTY(SamplesManager* samplesManager READ samplesManager NOTIFY neverChanged)
     Q_PROPERTY(FilesManager* filesManager READ filesManager NOTIFY neverChanged)
     Q_PROPERTY(AnalysesManager* analysesManager READ analysesManager NOTIFY neverChanged)
+    Q_PROPERTY(PanelsManager* panelsManager READ panelsManager NOTIFY neverChanged)
     Q_PROPERTY(ToolsManager* toolsManager READ toolsManager NOTIFY neverChanged)
 
     // Others
@@ -139,6 +141,7 @@ public:
     inline SamplesManager* samplesManager() const { return mSamplesManager; }
     inline FilesManager* filesManager() const { return mFilesManager; }
     inline AnalysesManager* analysesManager() const { return mAnalysesManager; }
+    inline PanelsManager* panelsManager() const { return mPanelsManager; }
     inline ToolsManager* toolsManager() const { return mToolsManager; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
@@ -250,6 +253,8 @@ private:
     FilesManager* mFilesManager = nullptr;
     //! Manage analyses
     AnalysesManager* mAnalysesManager = nullptr;
+    //! Manage genes panels
+    PanelsManager* mPanelsManager = nullptr;
     //! Custom Tools managers (exporters, reporters)
     ToolsManager* mToolsManager = nullptr;
     // PipelinesManangers

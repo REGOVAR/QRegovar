@@ -3,8 +3,8 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import org.regovar 1.0
 
-import "../../../../Regovar"
-import "../../../../Framework"
+import "../../Regovar"
+import "../../Framework"
 
 
 Rectangle

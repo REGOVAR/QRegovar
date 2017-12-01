@@ -19,8 +19,6 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 
     connect(this, SIGNAL(loadingStatusChanged(LoadingStatus,LoadingStatus)),
             this, SLOT(asynchLoadingCoordination(LoadingStatus,LoadingStatus)));
-    connect(regovar, SIGNAL(websocketMessageReceived(QString,QJsonObject)),
-            this, SLOT(onWebsocketMessageReceived(QString,QJsonObject)));
 
 
     setIsLoading(true);
@@ -56,7 +54,8 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     Reference* ref = regovar->referenceFromId(json["reference_id"].toInt());
     if (ref == nullptr)
     {
-        qDebug() << "Reference unknow !";
+        // Abord init. This kind of init occure when just displaying list of lastest analyses.
+        // We do not load all data of analyses...
         return false;
     }
     mQuickFilters->init(ref->id(), mId);
@@ -870,7 +869,7 @@ void FilteringAnalysis::saveHeaderWidth(int headerPosition, double newSize)
 // Misc
 
 
-void FilteringAnalysis::onWebsocketMessageReceived(QString action, QJsonObject data)
+void FilteringAnalysis::processPushNotification(QString action, QJsonObject data)
 {
     // update done in regovar on the global remote list
 

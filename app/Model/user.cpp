@@ -32,7 +32,7 @@ bool User::fromJson(QJsonObject json)
     mEmail = json["email"].toString();
     mFunction = json["function"].toString();
     mLocation = json["location"].toString();
-    mLastActivity = QDate::fromString(json["last_activity"].toString());
+    mLastActivity = QDateTime::fromString(json["last_activity"].toString());
     qDebug() << Q_FUNC_INFO << "New User" << mId << mFirstname << mLastname;
 
     mRoles.clear();

@@ -218,7 +218,7 @@ ScrollView
                 Text
                 {
                     Layout.fillWidth: true
-                    visible: geneData && geneData["omim_description"]
+                    visible: (geneData && geneData["omim_description"]) ? true: false
                     text: "[" + qsTr("Read more...") + "]"
                     height: Regovar.theme.font.boxSize.normal
                     color: Regovar.theme.frontColor.normal

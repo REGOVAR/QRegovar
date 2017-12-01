@@ -120,7 +120,7 @@ Rectangle
                     {
                         title: qsTr("Phenotype")
                         icon: "K"
-                        source: "../InformationsPanel/Variant/PhenotypePanel.qml"
+                        source: "../InformationsPanel/Phenotype/InfoPanel.qml"
                     }
                     ListElement
                     {

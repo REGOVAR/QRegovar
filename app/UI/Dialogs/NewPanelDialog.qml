@@ -263,7 +263,7 @@ Dialog
     Connections
     {
         target: regovar.panelsManager
-        onPanelCreationDone:
+        onCommitNewPanelDone:
         {
             loadingIndicator.visible = false;
             if (success) root.close();

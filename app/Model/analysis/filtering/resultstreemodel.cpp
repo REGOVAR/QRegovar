@@ -302,7 +302,7 @@ TreeItem* ResultsTreeModel::newResultsTreeViewItem(const QJsonObject& rowData)
 
     if (rowId.contains("_"))
     {
-        qDebug() << "TRX ROW DETECTED :" << rowId;
+        // Trx row
         result->setVirtualChildCount(0);
     }
     else

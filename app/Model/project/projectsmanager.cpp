@@ -2,7 +2,7 @@
 #include "Model/framework/request.h"
 #include "Model/regovar.h"
 
-ProjectsManager::ProjectsManager(QObject *parent) : QObject(parent)
+ProjectsManager::ProjectsManager(QObject* parent) : QObject(parent)
 {
     mProjectsTreeView = new ProjectsTreeModel();
 }

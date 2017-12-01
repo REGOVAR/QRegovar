@@ -2,6 +2,8 @@
 
 #include "Model/regovar.h"
 #include "Model/file/file.h"
+#include "Model/analysis/filtering/filteringanalysis.h"
+#include "Model/analysis/pipeline/pipelineanalysis.h"
 
 
 NetworkManager::NetworkManager(QObject *parent) : QObject(parent)
@@ -86,6 +88,24 @@ void NetworkManager::onWebsocketReceived(QString message)
     else if (mWsFilesActionsList.indexOf(action) != -1)
     {
         regovar->filesManager()->processPushNotification(action, data);
+    }
+    else if (mWsFilteringActionsList.indexOf(action) != -1)
+    {
+        int id = data["id"].toInt();
+        FilteringAnalysis* analysis = regovar->analysesManager()->getFilteringAnalysis(id);
+        if (analysis != nullptr)
+        {
+            analysis->processPushNotification(action, data);
+        }
+    }
+    else if (mWsPipelinesActionsList.indexOf(action) != -1)
+    {
+        int id = data["id"].toInt();
+        PipelineAnalysis* analysis = regovar->analysesManager()->getPipelineAnalysis(id);
+        if (analysis != nullptr)
+        {
+            analysis->processPushNotification(action, data);
+        }
     }
     else if (obj["action"].toString() != "hello")
     {

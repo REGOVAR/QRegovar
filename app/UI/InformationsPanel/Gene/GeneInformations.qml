@@ -108,19 +108,19 @@ Rectangle
                     {
                         title: qsTr("Informations")
                         icon: "j"
-                        source: "../InformationsPanel/Variant/InfoPanel.qml"
+                        source: "../InformationsPanel/Gene/InfoPanel.qml"
                     }
                     ListElement
                     {
                         title: qsTr("Online Tools")
                         icon: "è"
-                        source: "../InformationsPanel/Variant/OnlineToolsPanel.qml"
+                        source: "../InformationsPanel/Gene/OnlineToolsPanel.qml"
                     }
                     ListElement
                     {
                         title: qsTr("Phenotype")
                         icon: "K"
-                        source: "../InformationsPanel/Variant/PhenotypePanel.qml"
+                        source: "../InformationsPanel/Phenotype/InfoPanel.qml"
                     }
                     ListElement
                     {

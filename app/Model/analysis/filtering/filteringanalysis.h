@@ -199,7 +199,7 @@ public Q_SLOTS:
     //! method use to "chain" asynch request for the init of the analysis
     void asynchLoadingCoordination(LoadingStatus oldSatus, LoadingStatus newStatus);
     //! handle message received from server via websocket
-    void onWebsocketMessageReceived(QString ,QJsonObject);
+    void processPushNotification(QString action, QJsonObject data);
 
 private:
     // Attributes

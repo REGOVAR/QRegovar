@@ -26,6 +26,8 @@ public:
     Q_INVOKABLE FilteringAnalysis* getOrCreateFilteringAnalysis(int id);
     Q_INVOKABLE PipelineAnalysis* getOrCreatePipelineAnalysis(int id);
 
+    FilteringAnalysis* getFilteringAnalysis(int id);
+    PipelineAnalysis* getPipelineAnalysis(int id);
 
     void resetNewFiltering(int refId);
     void resetNewPipeline();

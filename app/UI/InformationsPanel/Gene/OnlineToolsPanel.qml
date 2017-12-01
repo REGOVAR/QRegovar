@@ -4,8 +4,10 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import org.regovar 1.0
 
-import "../../../../Regovar"
-import "../../../../Framework"
+
+import "../../Regovar"
+import "../../Framework"
+import "../Common"
 
 
 ScrollView

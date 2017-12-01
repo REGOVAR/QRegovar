@@ -147,6 +147,7 @@ Rectangle
             anchors.right: panel.right
             anchors.bottom: panel.bottom
 
+
             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
             Column
@@ -277,7 +278,7 @@ Rectangle
                                         firstname: model.modelData.firstname
                                         lastname: model.modelData.lastname
                                         sex: model.modelData.sex
-                                        age: model.modelData.age
+                                        // age: model.modelData.age
 
                                         onClicked: regovar.subjectsManager.openSubject(model.modelData.id)
                                     }

@@ -61,13 +61,13 @@ Dialog
                 {
                     enabled: true
                     title: qsTr("Gene & Phenotype")
-                    source: "../Pages/Settings/PanelFormNewGene.qml"
+                    source: "../InformationsPanel/Panel/PanelFormNewGene.qml"
                 }
                 ListElement
                 {
                     enabled: true
                     title: qsTr("Custom")
-                    source: "../Pages/Settings/PanelFormNewCustom.qml"
+                    source: "../InformationsPanel/Panel/PanelFormNewCustom.qml"
                 }
             }
         }

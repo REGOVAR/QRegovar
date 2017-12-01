@@ -140,7 +140,6 @@
         <file>InformationsPanel/Gene/GeneInformations.qml</file>
         <file>InformationsPanel/Gene/InfoPanel.qml</file>
         <file>InformationsPanel/Gene/OnlineToolsPanel.qml</file>
-        <file>InformationsPanel/Gene/PhenotypePanel.qml</file>
         <file>InformationsPanel/Gene/StatsPanel.qml</file>
         <file>InformationsPanel/Panel/EventsPanel.qml</file>
         <file>InformationsPanel/Panel/InfoPanel.qml</file>
@@ -149,11 +148,9 @@
         <file>InformationsPanel/Phenotype/InfoPanel.qml</file>
         <file>InformationsPanel/Phenotype/OnlineToolsPanel.qml</file>
         <file>InformationsPanel/Phenotype/PhenotypeInformations.qml</file>
-        <file>InformationsPanel/Phenotype/PhenotypePanel.qml</file>
         <file>InformationsPanel/Phenotype/StatsPanel.qml</file>
         <file>InformationsPanel/Sample/InfoPanel.qml</file>
         <file>InformationsPanel/Sample/OnlineToolsPanel.qml</file>
-        <file>InformationsPanel/Sample/PhenotypePanel.qml</file>
         <file>InformationsPanel/Sample/SampleInformations.qml</file>
         <file>InformationsPanel/Sample/StatsPanel.qml</file>
         <file>InformationsPanel/User/InfoPanel.qml</file>
@@ -161,7 +158,6 @@
         <file>InformationsPanel/User/UserInformations.qml</file>
         <file>InformationsPanel/Variant/InfoPanel.qml</file>
         <file>InformationsPanel/Variant/OnlineToolsPanel.qml</file>
-        <file>InformationsPanel/Variant/PhenotypePanel.qml</file>
         <file>InformationsPanel/Variant/StatsPanel.qml</file>
         <file>InformationsPanel/Variant/VariantInformations.qml</file>
         <file>InformationsPanel/Common/Section.qml</file>
@@ -177,7 +173,8 @@
         <file>Framework/FileViewers/TxtViewer.qml</file>
         <file>Framework/FileViewers/WaitingPanel.qml</file>
         <file>Dialogs/NewPanelEntryDialog.qml</file>
-        <file>Pages/Settings/PanelFormNewGene.qml</file>
-        <file>Pages/Settings/PanelFormNewCustom.qml</file>
+        <file>InformationsPanel/Panel/PanelFormNewGene.qml</file>
+        <file>InformationsPanel/Panel/PanelFormNewCustom.qml</file>
+        <file>InformationsPanel/Panel/PanelSearchEntry.qml</file>
     </qresource>
 </RCC>

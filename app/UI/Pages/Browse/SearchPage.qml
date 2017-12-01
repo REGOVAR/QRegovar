@@ -378,7 +378,7 @@ Rectangle
                             geneId: model.modelData.id
                             symbol: model.modelData.symbol
 
-                            onClicked: console.log("open gene " + geneId)
+                            onClicked: openGeneInfoDialog(model.modelData.symbol)
                         }
                     }
                 }
@@ -535,7 +535,7 @@ Rectangle
     Connections
     {
         target: regovar
-        onVariantInformationReady: onOpenVariantInfoDialogFinish(json)
+        onVariantInformationReady: variantInfoDialog.data = json
     }
     Dialog
     {
@@ -556,7 +556,7 @@ Rectangle
     Connections
     {
         target: regovar
-        onGeneInformationReady: onOpenGeneInfoDialogFinish(json)
+        onGeneInformationReady: geneInfoDialog.data = json
     }
     Dialog
     {
@@ -643,11 +643,14 @@ Rectangle
 
     function openVariantInfoDialog(refId, variantId)
     {
+        variantInfoDialog.data = null;
         variantInfoDialog.open();
         regovar.getVariantInfo(refId, variantId);
     }
-    function onOpenVariantInfoDialogFinish(json)
+    function openGeneInfoDialog(symbol)
     {
-        variantInfoDialog.data = json;
+        variantInfoDialog.data = null;
+        variantInfoDialog.open();
+        regovar.getGeneInfo(symbol);
     }
 }

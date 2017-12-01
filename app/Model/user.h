@@ -31,6 +31,12 @@ public:
 
     Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY userChanged)
     Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY userChanged)
+    Q_PROPERTY(QString email READ email WRITE setEmail NOTIFY userChanged)
+    Q_PROPERTY(QString login READ login WRITE setLogin NOTIFY userChanged)
+    Q_PROPERTY(QString password READ password WRITE setPassword NOTIFY userChanged)
+    Q_PROPERTY(QString function READ function WRITE setFunction NOTIFY userChanged)
+    Q_PROPERTY(QString location READ location WRITE setLocation NOTIFY userChanged)
+    Q_PROPERTY(QDateTime lastActivity READ lastActivity WRITE setLastActivity NOTIFY userChanged)
 
     // Constructors
     User(QObject* parent=nullptr);
@@ -45,7 +51,7 @@ public:
     inline const QString& password() const { return mPassword; }
     inline const QString& function() const { return mFunction; }
     inline const QString& location() const { return mLocation; }
-    inline const QDate& lastActivity() const { return mLastActivity; }
+    inline const QDateTime& lastActivity() const { return mLastActivity; }
     // Setters
     inline void setLastname(const QString& lastname) { mLastname = lastname; emit userChanged(); }
     inline void setFirstname(const QString& firstname) { mFirstname = firstname; emit userChanged(); }
@@ -54,7 +60,7 @@ public:
     inline void setPassword(const QString& password) { mPassword = password; emit userChanged(); }
     inline void setFunction(const QString& function) { mFunction = function; emit userChanged(); }
     inline void setLocation(const QString& location) { mLocation = location; emit userChanged(); }
-    inline void setLastActivity(const QDate& lastActivity) { mLastActivity = lastActivity; emit userChanged(); }
+    inline void setLastActivity(const QDateTime& lastActivity) { mLastActivity = lastActivity; emit userChanged(); }
 
 
     // Methods
@@ -83,7 +89,7 @@ protected:
     QString mPassword;
     QString mFunction;
     QString mLocation;
-    QDate mLastActivity;
+    QDateTime mLastActivity;
     QHash<UserRole, UserRight> mRoles;
 
     // Internal method used to build user role model from json dictionary

@@ -281,7 +281,7 @@ Item
                     color: Regovar.theme.frontColor.normal
                     MouseArea
                     {
-                        enabled: regovar.config.release["success"]
+                        enabled: (regovar.config && regovar.config.release && regovar.config.release["success"]) ? true : false
                         anchors.fill: parent
                         cursorShape: "PointingHandCursor"
                         onClicked: Qt.openUrlExternally(regovar.config.release["html_url"])

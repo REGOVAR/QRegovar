@@ -108,6 +108,7 @@ void Regovar::init()
     mSubjectsManager = new SubjectsManager();
     mSamplesManager = new SamplesManager(mSettings.defaultReference);
     mAnalysesManager = new AnalysesManager();
+    mPanelsManager = new PanelsManager();
     mToolsManager = new ToolsManager();
 
 

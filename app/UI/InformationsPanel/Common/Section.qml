@@ -16,7 +16,7 @@ Rectangle
     property alias title: title.text
     property alias contentItem: container.contentItem
 
-    visible: root.section1Expanded
+    visible: root.expanded
     implicitWidth: 200
     implicitHeight: Regovar.theme.font.boxSize.header
     height: root.expanded ? Regovar.theme.font.boxSize.header + container.height : Regovar.theme.font.boxSize.header

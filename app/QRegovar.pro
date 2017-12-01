@@ -1,4 +1,4 @@
-QT += qml quick widgets websockets charts network
+QT += qml quick widgets websockets charts network webengine
 
 CONFIG += c++11
 
@@ -65,7 +65,9 @@ HEADERS += \
     Model/analysis/filtering/documentstreemodel.h \
     Model/analysis/filtering/documentstreeitem.h \
     Model/framework/networkmanager.h \
-    Model/framework/networktask.h
+    Model/framework/networktask.h \
+    Model/panel/panelsmanager.h \
+    Model/panel/panel.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -118,7 +120,9 @@ SOURCES += main.cpp \
     Model/analysis/filtering/documentstreemodel.cpp \
     Model/analysis/filtering/documentstreeitem.cpp \
     Model/framework/networkmanager.cpp \
-    Model/framework/networktask.cpp
+    Model/framework/networktask.cpp \
+    Model/panel/panelsmanager.cpp \
+    Model/panel/panel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

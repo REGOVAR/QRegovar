@@ -3,8 +3,8 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import org.regovar 1.0
 
-import "../../../../Regovar"
-import "../../../../Framework"
+import "../../Regovar"
+import "../../Framework"
 
 
 Rectangle
@@ -106,21 +106,21 @@ Rectangle
                 {
                     ListElement
                     {
-                        title: qsTr("Online Tools")
+                        title: qsTr("Informations")
                         icon: "è"
-                        source: "../Analysis/Filtering/VariantInformations/OnlineToolsPanel.qml"
+                        source: "../InformationsPanel/Phenotype/InfoPanel.qml"
                     }
                     ListElement
                     {
-                        title: qsTr("Phenotype")
+                        title: qsTr("Online tools")
                         icon: "K"
-                        source: "../Pages/Analysis/Filtering/VariantInformations/PhenotypePanel.qml"
+                        source: "../InformationsPanel/Phenotype/OnlineToolsPanel.qml"
                     }
                     ListElement
                     {
                         title: qsTr("Regovar statistics")
                         icon: "^"
-                        source: "../Pages/Analysis/Filtering/VariantInformations/StatsPanel.qml"
+                        source: "../InformationsPanel/Phenotype/StatsPanel.qml"
                     }
                 }
             }
