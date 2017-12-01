@@ -63,7 +63,7 @@ void PanelsManager::commitNewPanel()
 void PanelsManager::searchPanelEntry(QString query)
 {
     Request* request = Request::get(QString("/panel/search/%1").arg(query));
-    connect(request, &Request::responseReceived, [this, query, request](bool success, const QJsonObject& json)
+    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
         if (success)
         {
@@ -72,7 +72,7 @@ void PanelsManager::searchPanelEntry(QString query)
         }
         else
         {
-            qCritical() << Q_FUNC_INFO << "Error occured when search panel entries with the request:" << query;
+            qCritical() << Q_FUNC_INFO << "Error occured when search panel entries";
         }
         request->deleteLater();
     });

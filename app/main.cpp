@@ -3,7 +3,7 @@
 #include <QSettings>
 #include <QtQml>
 #include <QtCore>
-#include <QtWebEngine/qtwebengineglobal.h>
+//#include <QtWebEngine/qtwebengineglobal.h>
 
 #include "Model/regovar.h" // include regovar singleton which wrap all models and is the interface with the server
 #include "Model/framework/treemodel.h"
@@ -59,7 +59,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<ToolParameter>("org.regovar", 1, 0, "ToolParameter");
 
     // Must be called before creating any webwidget/webqml
-    QtWebEngine::initialize();
+    //QtWebEngine::initialize();
+    //qmlRegisterType<QQmlWebChannel>("org.regovar", 1, 0, "QQmlWebChannel");
 
     QQmlApplicationEngine engine;
 

@@ -20,7 +20,7 @@ Dialog
 
     property int currentStep: 1
 
-    property var newEntryModel: ({"type": "gene", "label": "", "ref_id": "0", "ref_name": "All"})
+    property var newEntryModel: ({"0": {}, "1":{ "label": "", "ref_id": "0", "chr": "", "start": "", "end": ""}})
 
 
     contentItem: Rectangle
@@ -81,6 +81,7 @@ Dialog
 
             height: Regovar.theme.font.boxSize.normal
             spacing: 10
+            visible: tabView.currentIndex == 1
 
 
             Button
@@ -88,6 +89,7 @@ Dialog
                 text: qsTr("Add new entry")
                 onClicked:
                 {
+                    regovar.panelsManager.newPanel.addEntry(root.newEntryModel["1"]);
                 }
             }
         }

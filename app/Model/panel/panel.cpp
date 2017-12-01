@@ -90,3 +90,13 @@ void Panel::load()
         req->deleteLater();
     });
 }
+
+
+
+
+
+
+void Panel::addEntry(QJsonObject data)
+{
+    mCurrentEntries.append(data);
+}

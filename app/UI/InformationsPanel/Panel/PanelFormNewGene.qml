@@ -24,15 +24,13 @@ Rectangle
         }
     }
 
-    Connections
+    function onSearchPanelEntryDone(json)
     {
-        target: regovar.panelsManager
-        onSearchPanelEntryDone:
-        {
-            phenotypesResult.model = json["phenotype"];
-            genesResult.model = json["gene"];
-        }
+        phenotypesResult.model = json["phenotype"];
+        genesResult.model = json["gene"];
     }
+
+    Component.onCompleted: regovar.panelsManager.searchPanelEntryDone.connect(onSearchPanelEntryDone);
 
 
     GridLayout
@@ -99,7 +97,7 @@ Rectangle
                         {
                             width: scrollarea.viewport.width
                             model: modelData
-                            onAdded: console.log("Add Gene " + modelData["symbol"])
+                            onAdded: regovar.panelsManager.newPanel.addEntry(modelData);
                             onShowDetails:
                             {
                                 geneInfoDialog.open();
@@ -136,7 +134,7 @@ Rectangle
                         {
                             width: scrollarea.viewport.width
                             model: modelData
-                            onAdded: console.log("Add Phentype " + modelData["label"])
+                            onAdded: regovar.panelsManager.newPanel.addEntry(modelData);
                             onShowDetails:
                             {
                                 phenotypeInfoDialog.open();

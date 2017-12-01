@@ -156,11 +156,13 @@ Dialog
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
+                model: regovar.panelsManager.newPanel.currentEntries
+
                 TableViewColumn
                 {
-                    role: "label"
                     title: qsTr("Label")
                     width: 200
+
                 }
                 TableViewColumn
                 {

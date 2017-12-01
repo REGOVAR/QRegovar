@@ -46,6 +46,8 @@ public:
     //! Load Subject information from server
     Q_INVOKABLE void load();
 
+    //! Add a new entry to the list (only used by the qml wizard)
+    Q_INVOKABLE void addEntry(QJsonObject data);
 
 
 Q_SIGNALS:
