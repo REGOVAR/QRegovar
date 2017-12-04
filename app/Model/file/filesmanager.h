@@ -39,6 +39,7 @@ public:
 
     // Method
     Q_INVOKABLE File* getOrCreateFile(int id);
+    Q_INVOKABLE File* getFile(int id);
     Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void enqueueUploadFile(QStringList filesPaths);
     Q_INVOKABLE void cancelUploadFile(QList<int> filesId);

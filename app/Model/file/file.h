@@ -100,7 +100,7 @@ public:
     //! Save subject information onto server
     Q_INVOKABLE void save();
     //! Load Subject information from server
-    Q_INVOKABLE void load();
+    Q_INVOKABLE void load(bool forceRefresh=true);
     //! Dowload the file and put it in cache. When file is ready, the localFileReadyChanged signal is emit
     Q_INVOKABLE bool downloadLocalFile();
     //! Read file content as QString
@@ -164,6 +164,8 @@ private:
     QVariant mStatusUI;
     QString mSourceUI;
 
+    // Internal
+    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
 
     // TODO: static collection
     static QStringList zip;

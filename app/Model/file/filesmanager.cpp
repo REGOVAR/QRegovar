@@ -27,6 +27,20 @@ File* FilesManager::getOrCreateFile(int id)
 }
 
 
+File* FilesManager::getFile(int id)
+{
+    if (!mFiles.contains(id))
+    {
+        return nullptr;
+    }
+
+    // get file and force refresh if needed
+    File* file = mFiles[id];
+    file->load(false);
+
+    return file;
+}
+
 
 void FilesManager::loadFilesBrowser()
 {

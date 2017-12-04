@@ -16,6 +16,11 @@ Sample::Sample(QJsonObject json, QObject* parent) : QObject(parent)
 
 void Sample::setStatus(QString status)
 {
+    if (status.isEmpty())
+    {
+        status = "empty";
+    }
+
     auto meta = QMetaEnum::fromType<SampleStatus>();
     setStatus(static_cast<SampleStatus>(meta.keyToValue(status.toStdString().c_str()))); // T_T .... tout ça pour ça ....
 }
@@ -39,8 +44,8 @@ bool Sample::fromJson(QJsonObject json)
 
     setStatus(json["status"].toString());
 
-    File* source = new File();
-    source->fromJson(json["file"].toObject());
+
+    File* source = regovar->filesManager()->getFile(json["file_id"].toInt());
     setSource(source);
     setSourceUI(source->filenameUI());
 

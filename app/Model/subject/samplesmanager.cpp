@@ -53,27 +53,34 @@ void SamplesManager::setReferenceId(int refId)
 
 void SamplesManager::processPushNotification(QString action, QJsonObject data)
 {
+    // Retrieve realtime progress data
+    QString status = data["status"].toString();
+    double progressValue = 0.0;
     if (action == "import_vcf_processing")
     {
-        double progressValue = data["progress"].toDouble();
-        QString status = data["status"].toString();
+        progressValue = data["progress"].toDouble();
+    }
+    else if (action == "import_vcf_end")
+    {
+        progressValue = 1.0;
+    }
 
-        for (const QJsonValue& json: data["samples"].toArray())
+    // Update sample status
+    for (const QJsonValue& json: data["samples"].toArray())
+    {
+        QJsonObject obj = json.toObject();
+        int sid = obj["id"].toInt();
+        for (QObject* o: mSamplesList)
         {
-            QJsonObject obj = json.toObject();
-            int sid = obj["id"].toInt();
-            for (QObject* o: mSamplesList)
+            Sample* sample = qobject_cast<Sample*>(o);
+            if (sample->id() == sid)
             {
-                Sample* sample = qobject_cast<Sample*>(o);
-                if (sample->id() == sid)
-                {
-                    sample->setStatus(status);
-                    QJsonObject statusInfo;
-                    statusInfo.insert("status", status);
-                    statusInfo.insert("label", sample->statusToLabel(sample->status(), progressValue));
-                    sample->setStatusUI(QVariant::fromValue(statusInfo));
-                    break;
-                }
+                sample->setStatus(status);
+                QJsonObject statusInfo;
+                statusInfo.insert("status", status);
+                statusInfo.insert("label", sample->statusToLabel(sample->status(), progressValue));
+                sample->setStatusUI(QVariant::fromValue(statusInfo));
+                break;
             }
         }
     }

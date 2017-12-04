@@ -13,7 +13,6 @@ NetworkManager::NetworkManager(QObject *parent) : QObject(parent)
     connect(&mWebSocket, &QWebSocket::disconnected, this, &NetworkManager::onWebsocketClosed);
     connect(&mWebSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onWebsocketError(QAbstractSocket::SocketError)));
     // connect(&mWebSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onWebsocketStateChanged(QAbstractSocket::SocketState)));
-    mWebSocket.open(QUrl(mWebsocketUrl));
 }
 
 
@@ -39,6 +38,10 @@ void NetworkManager::setServerUrl(QUrl url)
     mWebsocketUrl.setHost(url.host());
     mWebsocketUrl.setPath("/ws");
     mWebsocketUrl.setPort(url.port());
+
+    // Disconnect to former url and reconnect to the new
+    mWebSocket.close();
+    mWebSocket.open(QUrl(mWebsocketUrl));
 
     emit serverUrlChanged();
 }
@@ -130,9 +133,9 @@ void NetworkManager::onWebsocketError(QAbstractSocket::SocketError err)
     }
 }
 
-void NetworkManager::onWebsocketStateChanged(QAbstractSocket::SocketState)
+void NetworkManager::onWebsocketStateChanged(QAbstractSocket::SocketState state)
 {
-    // qDebug() << "WS state" << state;
+    qDebug() << "WS state" << state;
 }
 
 
