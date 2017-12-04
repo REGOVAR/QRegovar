@@ -195,7 +195,6 @@ QString Subject::computeAge(QDate d1, QDate d2)
             }
             d += beginDate.date().daysInMonth();
         }
-        qDebug()<<y<<m<<d;
     }
 
     QString age;

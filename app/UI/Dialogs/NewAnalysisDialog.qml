@@ -226,7 +226,7 @@ Dialog
             }
         }
 
-        Item
+        Rectangle
         {
             id: stackPanel
             anchors.top: parent.top
@@ -235,19 +235,16 @@ Dialog
             anchors.right: parent.right
             anchors.margins: 10
 
-            Rectangle
-            {
-                // FIXME : To be sure to hide tabs that are not selected ( selectedTab.z = 100, otherTabs.z = 0) BUT Zorder not working :(... need to fin another solution)
-                anchors.fill: parent
-                color: Regovar.theme.backgroundColor.main
-                z: 99
+            color: Regovar.theme.backgroundColor.main
+            z: 99
 
-                // block click otherwise risk to interact with hidden tabs
-                MouseArea
-                {
-                    anchors.fill: parent
-                }
+
+            // block click otherwise risk to interact with hidden tabs
+            MouseArea
+            {
+                anchors.fill: stackPanel
             }
+
         }
 
 
@@ -346,7 +343,7 @@ Dialog
 
     function launchAnalaysis()
     {
-        if (regovar.newAnalysis(root.analysisModel["type"]))
+        if (regovar.analysesManager.newAnalysis(root.analysisModel["type"]))
         {
 
         }

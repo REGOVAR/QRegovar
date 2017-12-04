@@ -41,14 +41,22 @@ Rectangle
     }
 
 
-    Image
+    Item
     {
         id: logo
-        source: "qrc:/regovar.png"
-        sourceSize.height: 125
         anchors.top: header.bottom
         anchors.topMargin: 50
         anchors.horizontalCenter: header.horizontalCenter
+        height: logoImage.height
+        width: logoImage.width
+
+        Image
+        {
+            id: logoImage
+            source: "qrc:/regovar.png"
+            sourceSize.height: 125
+        }
+
         LinearGradient
         {
             anchors.fill: parent
@@ -59,9 +67,11 @@ Rectangle
                 GradientStop { position: 0.0; color: regovar.networkManager.status == 0 ? Regovar.theme.logo.color1 : Regovar.theme.frontColor.disable }
                 GradientStop { position: 1.0; color: regovar.networkManager.status == 0 ? Regovar.theme.logo.color2 : Regovar.theme.frontColor.disable }
             }
-            source: logo
+            source: logoImage
         }
     }
+
+
 
 
 
