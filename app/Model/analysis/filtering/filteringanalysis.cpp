@@ -27,6 +27,7 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 
 FilteringAnalysis::FilteringAnalysis(int id, QObject* parent) : FilteringAnalysis(parent)
 {
+    // Notice : -1 is for unvalid analysis, >0 is for existing analyses in Regovar srver DB, 0 is for new wizard model
     mId = id;
 }
 
@@ -173,7 +174,7 @@ QJsonObject FilteringAnalysis::toJson()
 
 void FilteringAnalysis::save()
 {
-    if (mId == -1) return;
+    if (mId <= 0) return;
     Request* request = Request::put(QString("/analysis/%1").arg(mId), QJsonDocument(toJson()).toJson());
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
@@ -193,7 +194,7 @@ void FilteringAnalysis::save()
 
 void FilteringAnalysis::load()
 {
-    if (mId == -1) return;
+    if (mId <= 0) return;
 
     Request* req = Request::get(QString("/analysis/%1").arg(mId));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
@@ -288,6 +289,9 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
 
 void FilteringAnalysis::asynchLoadingCoordination(LoadingStatus oldSatus, LoadingStatus newStatus)
 {
+    // Full init not available for unvalid and new Wizard models
+    if (mId <=0) return;
+
     if (newStatus == LoadingAnnotations)
     {
         loadAnnotations();

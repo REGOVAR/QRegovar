@@ -26,6 +26,7 @@ bool NetworkManager::testServerUrl(QString url)
 {
     // TODO: do a request, and check if get expected result
     emit testServerUrlDone(!url.isEmpty(), url);
+    return true;
 }
 
 

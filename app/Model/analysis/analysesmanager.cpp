@@ -7,8 +7,9 @@
 AnalysesManager::AnalysesManager(QObject *parent) : QObject(parent)
 {
     // Force the manager as Parent of these analysis to avoid garbage collector to destroy them unexpectedly
-    mNewPipeline = new PipelineAnalysis(this);
-    mNewFiltering = new FilteringAnalysis(this);
+    // We force 0 as id. -1 is for unvalid analysis, >0 is for existing analyses in Regovar srver DB, 0 is for new wizard models
+    mNewPipeline = new PipelineAnalysis(0, this);
+    mNewFiltering = new FilteringAnalysis(0, this);
 }
 
 
