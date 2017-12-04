@@ -55,7 +55,7 @@ GenericScreen
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                model: regovar.newFiltering.samples
+                model: regovar.analysesManager.newFiltering.samples
 
                 TableViewColumn { title: qsTr("Sample"); role: "name" }
                 TableViewColumn
@@ -178,12 +178,6 @@ GenericScreen
                     }
                 }
 
-
-                Connections
-                {
-                    target: regovar.newFiltering
-                    onAttributesChanged: samplesSubjectsTable.refreshColumns()
-                }
 
                 // Special column to display sample's attribute
                 Component

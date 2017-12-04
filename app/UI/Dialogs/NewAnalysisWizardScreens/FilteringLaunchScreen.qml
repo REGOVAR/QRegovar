@@ -60,7 +60,7 @@ GenericScreen
             textRole: "fullPath"
             onCurrentIndexChanged:
             {
-                regovar.newFiltering.project = regovar.projectsManager.projectsFlatList[currentIndex];
+                regovar.analysesManager.newFiltering.project = regovar.projectsManager.projectsFlatList[currentIndex];
                 checkReady();
             }
             delegate: ItemDelegate
@@ -107,12 +107,12 @@ GenericScreen
             id: nameField
             Layout.fillWidth: true
             placeholderText: qsTr("The name of the analysis")
-            text: regovar.newFiltering.name
+            text: regovar.analysesManager.newFiltering.name
             onTextChanged:
             {
-                if (regovar.newFiltering.name != text)
+                if (regovar.analysesManager.newFiltering.name != text)
                 {
-                    regovar.newFiltering.name = text;
+                    regovar.analysesManager.newFiltering.name = text;
                     checkReady();
                 }
             }
@@ -211,7 +211,7 @@ GenericScreen
                     {
                         Layout.fillWidth: true
                         height: Regovar.theme.font.size.header
-                        text: regovar.newFiltering.refName
+                        text: regovar.analysesManager.newFiltering.refName
                         color: Regovar.theme.frontColor.disable
                         font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.font.familly
@@ -242,7 +242,7 @@ GenericScreen
 
                         Repeater
                         {
-                            model: regovar.newFiltering.samples
+                            model: regovar.analysesManager.newFiltering.samples
 
                             Row
                             {
@@ -294,7 +294,7 @@ GenericScreen
                     width: scrollArea.viewport.width - 10
                     spacing: 10
 
-                    visible: regovar.newFiltering.attributes.length > 0
+                    visible: regovar.analysesManager.newFiltering.attributes.length > 0
 
                     Text
                     {
@@ -315,7 +315,7 @@ GenericScreen
 
                         Repeater
                         {
-                            model: regovar.newFiltering.attributes
+                            model: regovar.analysesManager.newFiltering.attributes
 
                             Text
                             {
@@ -351,7 +351,7 @@ GenericScreen
 
                         Repeater
                         {
-                            model: regovar.newFiltering.selectedAnnotationsDB
+                            model: regovar.analysesManager.newFiltering.selectedAnnotationsDB
 
                             Text
                             {
@@ -380,13 +380,13 @@ GenericScreen
         currentDate = new Date();
 
         var name = currentDate.toLocaleString(Qt.locale(), "yyyy.MM.dd");
-        if (regovar.newFiltering.samples.length == 1)
+        if (regovar.analysesManager.newFiltering.samples.length == 1)
         {
-            name = qsTr("Singleton ") + regovar.newFiltering.samples[0].name + " - " + name;
+            name = qsTr("Singleton ") + regovar.analysesManager.newFiltering.samples[0].name + " - " + name;
         }
-        else if (regovar.newFiltering.samples.length == 3 && regovar.newFiltering.isTrio)
+        else if (regovar.analysesManager.newFiltering.samples.length == 3 && regovar.analysesManager.newFiltering.isTrio)
         {
-            name = qsTr("Trio ") + regovar.newFiltering.child.name + " - " + name;
+            name = qsTr("Trio ") + regovar.analysesManager.newFiltering.child.name + " - " + name;
         }
         else
         {

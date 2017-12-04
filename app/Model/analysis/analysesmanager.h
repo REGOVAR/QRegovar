@@ -26,12 +26,12 @@ public:
     Q_INVOKABLE FilteringAnalysis* getOrCreateFilteringAnalysis(int id);
     Q_INVOKABLE PipelineAnalysis* getOrCreatePipelineAnalysis(int id);
 
-    FilteringAnalysis* getFilteringAnalysis(int id);
-    PipelineAnalysis* getPipelineAnalysis(int id);
+    Q_INVOKABLE FilteringAnalysis* getFilteringAnalysis(int id);
+    Q_INVOKABLE PipelineAnalysis* getPipelineAnalysis(int id);
 
-    void resetNewFiltering(int refId);
-    void resetNewPipeline();
-    bool newAnalysis(QString type);
+    Q_INVOKABLE void resetNewFiltering(int refId);
+    Q_INVOKABLE void resetNewPipeline();
+    Q_INVOKABLE bool newAnalysis(QString type);
 
 public Q_SLOTS:
     bool openAnalysis(QString type, int id, bool reload_from_server=true);

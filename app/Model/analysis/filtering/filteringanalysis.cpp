@@ -58,7 +58,6 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
         // We do not load all data of analyses...
         return false;
     }
-    mQuickFilters->init(ref->id(), mId);
 
     // Parse settings
     QJsonObject settings = json["settings"].toObject();
@@ -232,6 +231,10 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
     // Set current ref
     mRefId = ref->id();
     mRefName = ref->name();
+
+    // Update quickfilter
+    mQuickFilters->init(ref->id(), mId);
+
     emit dataChanged();
 
     if (!continueInit) return;

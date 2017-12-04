@@ -6,9 +6,9 @@
 
 AnalysesManager::AnalysesManager(QObject *parent) : QObject(parent)
 {
-
-    mNewPipeline = new PipelineAnalysis();
-    mNewFiltering = new FilteringAnalysis();
+    // Force the manager as Parent of these analysis to avoid garbage collector to destroy them unexpectedly
+    mNewPipeline = new PipelineAnalysis(this);
+    mNewFiltering = new FilteringAnalysis(this);
 }
 
 
@@ -30,12 +30,12 @@ void AnalysesManager::resetNewFiltering(int refId)
         Reference* ref = qobject_cast<Reference*>(o);
         if (ref->id() == refId)
         {
-            mNewFiltering->setReference(ref);
+            mNewFiltering->setReference(ref, true);
             break;
         }
         ++idx;
     }
-    regovar->samplesManager()->setReferencialId(refId);
+    regovar->samplesManager()->setReferenceId(refId);
     emit newFilteringChanged();
 }
 

@@ -7,7 +7,7 @@ class SamplesManager : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(int referencialId READ referencialId WRITE setReferencialId NOTIFY referencialIdChanged)
+    Q_PROPERTY(int referencialId READ referencialId WRITE setReferenceId NOTIFY referencialIdChanged)
     Q_PROPERTY(QList<QObject*> samplesList READ samplesList NOTIFY samplesListChanged)
 
 public:
@@ -19,7 +19,7 @@ public:
     inline QList<QObject*> samplesList() const { return mSamplesList; }
 
     // Setters
-    void setReferencialId(int ref);
+    void setReferenceId(int ref);
 
 public Q_SLOTS:
     // Called by NetworkManager when need to process WebSocket messages managed by SampleManager

@@ -28,7 +28,7 @@ Dialog
     onAccepted:
     {
         // sample/import/file
-        // => answer create sample object into regovar.newFiltering.samples
+        // => answer create sample object into regovar.analysesManager.newFiltering.samples
         //
         console.log("Ok clicked")
     }
@@ -257,7 +257,7 @@ Dialog
 
                     Text
                     {
-                        text: qsTr("No sample complient with the reference ") + regovar.newFiltering.refName + qsTr(" on the server Regovar.\nTo import new samples from files click on the button below.")
+                        text: qsTr("No sample complient with the reference ") + regovar.analysesManager.newFiltering.refName + qsTr(" on the server Regovar.\nTo import new samples from files click on the button below.")
                         font.pixelSize: Regovar.theme.font.size.header
                         color: Regovar.theme.primaryColor.back.normal
                         anchors.fill: parent
@@ -343,7 +343,7 @@ Dialog
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
-                    model: regovar.newFiltering.samplesInputsFilesList
+                    model: regovar.analysesManager.newFiltering.samplesInputsFilesList
 
                     TableViewColumn
                     {
@@ -461,7 +461,7 @@ Dialog
 
                         color: "#aaffffff"
 
-                        visible: regovar.newFiltering.samplesInputsFilesList.length == 0
+                        visible: regovar.analysesManager.newFiltering.samplesInputsFilesList.length == 0
 
                         Text
                         {
@@ -517,9 +517,9 @@ Dialog
                             var files= []
                             inputsList.selection.forEach( function(rowIndex)
                             {
-                                files = files.concat(regovar.newFiltering.samplesInputsFilesList[rowIndex]);
+                                files = files.concat(regovar.analysesManager.newFiltering.samplesInputsFilesList[rowIndex]);
                             });
-                            regovar.newFiltering.removeSampleInputs(files);
+                            regovar.analysesManager.newFiltering.removeSampleInputs(files);
                         }
                     }
                 }
@@ -571,10 +571,10 @@ Dialog
                 else if (rootFileView.visible)
                 {
                     // import all file
-                    for(var idx=0; idx<regovar.newFiltering.samplesInputsFilesList.length; idx++)
+                    for(var idx=0; idx<regovar.analysesManager.newFiltering.samplesInputsFilesList.length; idx++)
                     {
-                        var file = regovar.newFiltering.samplesInputsFilesList[idx];
-                        regovar.newFiltering.addSamplesFromFile(file.id);
+                        var file = regovar.analysesManager.newFiltering.samplesInputsFilesList[idx];
+                        regovar.analysesManager.newFiltering.addSamplesFromFile(file.id);
                     }
                 }
 
@@ -602,7 +602,7 @@ Dialog
     {
         id: fileSelector
         uploadBlocking: true
-        onFileSelected: regovar.newFiltering.addSampleInputs(files);
+        onFileSelected: regovar.analysesManager.newFiltering.addSampleInputs(files);
 
     }
 

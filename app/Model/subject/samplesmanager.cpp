@@ -8,13 +8,13 @@ SamplesManager::SamplesManager(QObject *parent) : QObject(parent)
 }
 SamplesManager::SamplesManager(int refId, QObject *parent) : QObject(parent)
 {
-    setReferencialId(refId);
+    setReferenceId(refId);
 }
 
 
 
 
-void SamplesManager::setReferencialId(int refId)
+void SamplesManager::setReferenceId(int refId)
 {
     if (refId == mRefId) return;
     mRefId = refId;

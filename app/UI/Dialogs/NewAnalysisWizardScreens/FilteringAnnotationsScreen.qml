@@ -23,7 +23,7 @@ GenericScreen
     {
         if (z==100)
         {
-            samplesList.model = regovar.newFiltering.allAnnotations;
+            samplesList.model = regovar.analysesManager.newFiltering.allAnnotations;
         }
     }
 
@@ -67,7 +67,7 @@ GenericScreen
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            // model: regovar.newFiltering.allAnnotations
+            // model: regovar.analysesManager.newFiltering.allAnnotations
 
             TableViewColumn
             {
@@ -81,7 +81,7 @@ GenericScreen
                     onCheckedChanged:
                     {
                         if (modelData.selected != checked) modelData.selected = checked;
-                        regovar.newFiltering.emitSelectedAnnotationsDBChanged();
+                        regovar.analysesManager.newFiltering.emitSelectedAnnotationsDBChanged();
                     }
                     enabled: modelData.name == "Regovar" || modelData.name == "Variant" ? false : true
                 }

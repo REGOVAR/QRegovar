@@ -22,11 +22,11 @@ GenericScreen
 
         readyForNext = false;
 
-        if (regovar.newFiltering.samples.length > 0)
+        if (regovar.analysesManager.newFiltering.samples.length > 0)
         {
 
             // Check for trio
-            regovar.newFiltering.isTrio = trioActivated.checked;
+            regovar.analysesManager.newFiltering.isTrio = trioActivated.checked;
             if (trioActivated.checked)
             {
                 // assert that child/mother/father are distinct samples
@@ -34,15 +34,15 @@ GenericScreen
                     childSample.currentIndex  !=  fatherSample.currentIndex &&
                     motherSample.currentIndex != fatherSample.currentIndex)
                 {
-                    regovar.newFiltering.child = regovar.newFiltering.samples[childSample.currentIndex];
-                    regovar.newFiltering.mother = regovar.newFiltering.samples[motherSample.currentIndex];
-                    regovar.newFiltering.father = regovar.newFiltering.samples[fatherSample.currentIndex];
+                    regovar.analysesManager.newFiltering.child = regovar.analysesManager.newFiltering.samples[childSample.currentIndex];
+                    regovar.analysesManager.newFiltering.mother = regovar.analysesManager.newFiltering.samples[motherSample.currentIndex];
+                    regovar.analysesManager.newFiltering.father = regovar.analysesManager.newFiltering.samples[fatherSample.currentIndex];
 
-                    regovar.newFiltering.child.isIndex = childIndex.checked;
-                    regovar.newFiltering.mother.isIndex = motherIndex.checked;
-                    regovar.newFiltering.father.isIndex = fatherIndex.checked;
+                    regovar.analysesManager.newFiltering.child.isIndex = childIndex.checked;
+                    regovar.analysesManager.newFiltering.mother.isIndex = motherIndex.checked;
+                    regovar.analysesManager.newFiltering.father.isIndex = fatherIndex.checked;
 
-                    regovar.newFiltering.child.sex = childSex.currentIndex == 1 ? "F" : "M";
+                    regovar.analysesManager.newFiltering.child.sex = childSex.currentIndex == 1 ? "F" : "M";
 
                     readyForNext = true;
                 }
@@ -65,9 +65,9 @@ GenericScreen
             // Refresh selected annotation by default according to the samples
             var idx;
             var annotDbUid=[];
-            for(idx=0; idx<regovar.newFiltering.samples.length; idx++)
+            for(idx=0; idx<regovar.analysesManager.newFiltering.samples.length; idx++)
             {
-                var sample = regovar.newFiltering.samples[idx];
+                var sample = regovar.analysesManager.newFiltering.samples[idx];
                 for(var j=0; j<sample.defaultAnnotationsDbUid.length; j++)
                 {
                     var uid = sample.defaultAnnotationsDbUid[j];
@@ -78,11 +78,11 @@ GenericScreen
                 }
             }
 
-            for(idx=0; idx<regovar.newFiltering.allAnnotations.length; idx++)
+            for(idx=0; idx<regovar.analysesManager.newFiltering.allAnnotations.length; idx++)
             {
-                var isDefault = annotDbUid.indexOf(regovar.newFiltering.allAnnotations[idx].uid) > -1;
-                regovar.newFiltering.allAnnotations[idx].selected = idx < 2 || isDefault;
-                regovar.newFiltering.allAnnotations[idx].isDefault = isDefault;
+                var isDefault = annotDbUid.indexOf(regovar.analysesManager.newFiltering.allAnnotations[idx].uid) > -1;
+                regovar.analysesManager.newFiltering.allAnnotations[idx].selected = idx < 2 || isDefault;
+                regovar.analysesManager.newFiltering.allAnnotations[idx].isDefault = isDefault;
             }
         }
     }
@@ -130,7 +130,7 @@ GenericScreen
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                model: regovar.newFiltering.samples
+                model: regovar.analysesManager.newFiltering.samples
                 selectionMode: SelectionMode.ExtendedSelection
                 property var statusIcons: ["m", "/", "n", "h"]
 
@@ -260,7 +260,7 @@ GenericScreen
 
                     color: "#aaffffff"
 
-                    visible: regovar.newFiltering.samples.length == 0
+                    visible: regovar.analysesManager.newFiltering.samples.length == 0
 
                     Text
                     {
@@ -302,7 +302,7 @@ GenericScreen
                 checked: false
                 onCheckedChanged:
                 {
-                    checked = regovar.newFiltering.samples.length == 3 && checked;
+                    checked = regovar.analysesManager.newFiltering.samples.length == 3 && checked;
                     checkReady();
                 }
             }
@@ -320,7 +320,7 @@ GenericScreen
                 ComboBox
                 {
                     id: childSample
-                    model: regovar.newFiltering.samples
+                    model: regovar.analysesManager.newFiltering.samples
                     Layout.fillWidth: true
                     enabled: trioActivated.checked
                     textRole: 'name'
@@ -360,7 +360,7 @@ GenericScreen
                 {
                     id: motherSample
                     enabled: trioActivated.checked
-                    model: regovar.newFiltering.samples
+                    model: regovar.analysesManager.newFiltering.samples
                     textRole: 'name'
                     Layout.fillWidth: true
                     onCurrentIndexChanged: checkReady();
@@ -393,7 +393,7 @@ GenericScreen
                 {
                     id: fatherSample
                     enabled: trioActivated.checked
-                    model: regovar.newFiltering.samples
+                    model: regovar.analysesManager.newFiltering.samples
                     textRole: 'name'
                     Layout.fillWidth: true
                     onCurrentIndexChanged: checkReady();
@@ -457,10 +457,10 @@ GenericScreen
                     var samples= []
                     samplesList.selection.forEach( function(rowIndex)
                     {
-                        samples = samples.concat(regovar.newFiltering.samples[rowIndex]);
+                        samples = samples.concat(regovar.analysesManager.newFiltering.samples[rowIndex]);
                     });
-                    regovar.newFiltering.removeSamples(samples);
-                    trioActivated.checked = regovar.newFiltering.samples.length == 3;
+                    regovar.analysesManager.newFiltering.removeSamples(samples);
+                    trioActivated.checked = regovar.analysesManager.newFiltering.samples.length == 3;
                 }
             }
         }
@@ -472,8 +472,8 @@ GenericScreen
         referencialSelectorEnabled: false
         onSamplesSelected:
         {
-            regovar.newFiltering.addSamples(samples);
-            trioActivated.checked = regovar.newFiltering.samples.length == 3;
+            regovar.analysesManager.newFiltering.addSamples(samples);
+            trioActivated.checked = regovar.analysesManager.newFiltering.samples.length == 3;
             checkReady();
         }
     }

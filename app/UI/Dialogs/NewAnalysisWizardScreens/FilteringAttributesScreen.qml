@@ -55,14 +55,14 @@ GenericScreen
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                model: regovar.newFiltering.samples
+                model: regovar.analysesManager.newFiltering.samples
 
                 TableViewColumn { title: qsTr("Sample"); role: "name" }
 
 
                 Connections
                 {
-                    target: regovar.newFiltering
+                    target: regovar.analysesManager.newFiltering
                     onAttributesChanged: samplesAttributesTable.refreshColumns()
                 }                
 
@@ -106,9 +106,9 @@ GenericScreen
                     }
 
                     // Add columns
-                    for (idx=0; idx < regovar.newFiltering.attributes.length; idx++)
+                    for (idx=0; idx < regovar.analysesManager.newFiltering.attributes.length; idx++)
                     {
-                        var attribute = regovar.newFiltering.attributes[idx];
+                        var attribute = regovar.analysesManager.newFiltering.attributes[idx];
                         col = columnComponent_attribute.createObject(samplesAttributesTable, {"attribute": attribute, "title": attribute.name});
                         samplesAttributesTable.insertColumn(idx+1, col);
                     }

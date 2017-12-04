@@ -15,12 +15,12 @@ GenericScreen
     readyForNext: true
     Component.onCompleted: readyForNext = true;
     property real labelColWidth: 100
-    property int selectedRefId: -1
+    property int selectedRefId: regovar.analysesManager.newFiltering.refId
     onZChanged:
     {
         if (z == 0) // = button next clicked
         {
-            regovar.resetnewFilteringWizard(selectedRefId);
+            regovar.analysesManager.resetNewFiltering(selectedRefId);
         }
     }
 
