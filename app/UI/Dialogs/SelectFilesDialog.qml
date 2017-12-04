@@ -34,6 +34,7 @@ Dialog
 
 
     onVisibleChanged: if (visible) reset();
+    Component.onCompleted: regovar.filesManager.loadFilesBrowser()
 
 
     contentItem: Rectangle
@@ -150,8 +151,6 @@ Dialog
                 TableViewColumn { title: "Date"; role: "updateDate" }
                 TableViewColumn { title: "Source"; role: "sourceUI" }
                 TableViewColumn { title: "Comment"; role: "comment" }
-
-                Component.onCompleted: regovar.filesManager.loadFilesBrowser()
             }
         }
 
@@ -299,7 +298,6 @@ Dialog
                     }
                     TableViewColumn { title: "Comment"; role: "comment" }
 
-                    Component.onCompleted: regovar.filesManager.loadFilesBrowser()
                 }
             }
 
