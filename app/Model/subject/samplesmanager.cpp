@@ -1,5 +1,4 @@
 #include "samplesmanager.h"
-#include "sample.h"
 #include "Model/regovar.h"
 #include "Model/framework/request.h"
 
@@ -9,6 +8,19 @@ SamplesManager::SamplesManager(QObject *parent) : QObject(parent)
 SamplesManager::SamplesManager(int refId, QObject *parent) : QObject(parent)
 {
     setReferenceId(refId);
+}
+
+
+Sample* SamplesManager::getOrCreate(int id)
+{
+    if (mSamples.contains(id))
+    {
+        return mSamples[id];
+    }
+    // else
+    Sample* newSample = new Sample(id);
+    mSamples.insert(id, newSample);
+    return newSample;
 }
 
 

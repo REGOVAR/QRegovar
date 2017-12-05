@@ -41,6 +41,7 @@ public:
 
 
     explicit Sample(QObject* parent = nullptr);
+    explicit Sample(int id, QObject* parent = nullptr);
     explicit Sample(QJsonObject json, QObject* parent = nullptr);
 
     // Getters

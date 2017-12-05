@@ -2,6 +2,7 @@
 #define SAMPLESMANAGER_H
 
 #include <QtCore>
+#include "sample.h"
 
 class SamplesManager : public QObject
 {
@@ -36,6 +37,8 @@ private:
     int mRefId = -1;
     //! List of samples
     QList<QObject*> mSamplesList;
+
+    QHash<int, Sample*> mSamples;
 
 };
 

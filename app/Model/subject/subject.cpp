@@ -34,7 +34,12 @@ bool Subject::fromJson(QJsonObject json)
 
     // samples
     mSamples.clear();
-    for (const QJsonValue& val: json["samples"].toArray()) { mSamples.append(new Sample(val.toObject())); }
+    for (const QJsonValue& val: json["samples"].toArray())
+    {
+        QJsonObject sampleData = val.toObject();
+        Sample* sample = regovar->samplesManager()->getOrCreate(sampleData["id"].toInt());
+        mSamples.append(sample);
+    }
 
     //
     mAnalyses.clear();

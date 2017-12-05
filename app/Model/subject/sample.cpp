@@ -8,11 +8,18 @@ Sample::Sample(QObject *parent) : QObject(parent)
 {
 }
 
-
+Sample::Sample(int id, QObject* parent) : QObject(parent)
+{
+    mId = id;
+}
 Sample::Sample(QJsonObject json, QObject* parent) : QObject(parent)
 {
     fromJson(json);
 }
+
+
+
+
 
 void Sample::setStatus(QString status)
 {
