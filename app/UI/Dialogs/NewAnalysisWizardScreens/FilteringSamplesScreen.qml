@@ -196,6 +196,7 @@ GenericScreen
                                     statusIconAnimation.stop();
                                 }
                             }
+
                             NumberAnimation on rotation
                             {
                                 id: statusIconAnimation

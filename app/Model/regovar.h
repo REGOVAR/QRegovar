@@ -101,6 +101,7 @@ class Regovar : public QObject
     Q_PROPERTY(ToolsManager* toolsManager READ toolsManager NOTIFY neverChanged)
 
     // Others
+    Q_PROPERTY(RegovarSettings settings READ settings NOTIFY settingsChanged)
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
     Q_PROPERTY(User* user READ user NOTIFY userChanged)
 
@@ -145,6 +146,7 @@ public:
     inline ToolsManager* toolsManager() const { return mToolsManager; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
+    inline RegovarSettings settings() const { return mSettings; }
     inline QList<QObject*> openWindowModels() const { return mOpenWindowModels; }
 
     // Setters
@@ -193,6 +195,7 @@ Q_SIGNALS:
 
     void welcomIsLoadingChanged();
     void lastDataChanged();
+    void settingsChanged();
     void referencesChanged();
     void configChanged();
     void adminChanged();

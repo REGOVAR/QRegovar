@@ -11,17 +11,20 @@ SamplesManager::SamplesManager(int refId, QObject *parent) : QObject(parent)
 }
 
 
-Sample* SamplesManager::getOrCreate(int id)
+Sample* SamplesManager::getOrCreate(int sampleId)
 {
-    if (mSamples.contains(id))
+    if (mSamples.contains(sampleId))
     {
-        return mSamples[id];
+        return mSamples[sampleId];
     }
     // else
-    Sample* newSample = new Sample(id);
-    mSamples.insert(id, newSample);
+    Sample* newSample = new Sample(sampleId, this);
+    mSamples.insert(sampleId, newSample);
+    mSamplesList.append(newSample); // TODO: need to insert respecting sort order ?
     return newSample;
 }
+
+
 
 
 
@@ -43,9 +46,9 @@ void SamplesManager::setReferenceId(int refId)
                 // TODO subject info
                 for (const QJsonValue& splData: subject["samples"].toArray())
                 {
-                    Sample* sample = new Sample();
-                    sample->fromJson(splData.toObject());
-                    mSamplesList.append(sample);
+                    QJsonObject sampleData = splData.toObject();
+                    Sample* sample = regovar->samplesManager()->getOrCreate(sampleData["id"].toInt());
+                    sample->fromJson(sampleData);
                 }
             }
             emit referencialIdChanged();
@@ -75,6 +78,7 @@ void SamplesManager::processPushNotification(QString action, QJsonObject data)
     else if (action == "import_vcf_end")
     {
         progressValue = 1.0;
+        status = "ready";
     }
 
     // Update sample status
@@ -82,18 +86,14 @@ void SamplesManager::processPushNotification(QString action, QJsonObject data)
     {
         QJsonObject obj = json.toObject();
         int sid = obj["id"].toInt();
-        for (QObject* o: mSamplesList)
-        {
-            Sample* sample = qobject_cast<Sample*>(o);
-            if (sample->id() == sid)
-            {
-                sample->setStatus(status);
-                QJsonObject statusInfo;
-                statusInfo.insert("status", status);
-                statusInfo.insert("label", sample->statusToLabel(sample->status(), progressValue));
-                sample->setStatusUI(QVariant::fromValue(statusInfo));
-                break;
-            }
-        }
+
+        Sample* sample = getOrCreate(sid);
+        sample->setStatus(status);
+
+        QJsonObject statusInfo;
+        statusInfo.insert("status", sample->status());
+        statusInfo.insert("label", sample->statusToLabel(sample->status(), progressValue));
+        sample->setStatusUI(QVariant::fromValue(statusInfo));
+
     }
 }

@@ -79,8 +79,9 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     mSamples.clear();
     for (const QJsonValue& spJson: json["samples"].toArray())
     {
-        Sample* sample = new Sample(this);
-        if(sample->fromJson(spJson.toObject()))
+        QJsonObject sampleData = spJson.toObject();
+        Sample* sample = regovar->samplesManager()->getOrCreate(sampleData["id"].toInt());
+        if(sample->fromJson(sampleData))
         {
             mSamples.append(sample);
         }
@@ -687,18 +688,15 @@ void FilteringAnalysis::addSamplesFromFile(int fileId)
         {
             for (const QJsonValue& sampleValue: json["data"].toArray())
             {
-                Sample* sample = new Sample();
-                if (sample->fromJson(sampleValue.toObject()))
+                QJsonObject sampleData = sampleValue.toObject();
+                Sample* sample = regovar->samplesManager()->getOrCreate(sampleData["id"].toInt());
+                if (sample->fromJson(sampleData))
                 {
                     if (!mSamplesIds.contains(sample->id()))
                     {
                         mSamplesIds.append(sample->id());
                         mSamples.append(sample);
                     }
-                }
-                else
-                {
-                    sample->deleteLater();
                 }
             }
             emit samplesChanged();

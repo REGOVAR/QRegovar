@@ -22,6 +22,9 @@ public:
     // Setters
     void setReferenceId(int ref);
 
+    // Methods
+    Sample* getOrCreate(int sampleId);
+
 public Q_SLOTS:
     // Called by NetworkManager when need to process WebSocket messages managed by SampleManager
     void processPushNotification(QString action, QJsonObject data);
@@ -37,7 +40,7 @@ private:
     int mRefId = -1;
     //! List of samples
     QList<QObject*> mSamplesList;
-
+    //! internal collection of all loaded samples
     QHash<int, Sample*> mSamples;
 
 };

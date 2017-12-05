@@ -137,7 +137,7 @@ void Subject::addSample(Sample* sample)
     }
 
     // Add sample to the subject
-    mSamples.append(new Sample(sample->toJson()));
+    mSamples.append(sample);
     emit dataChanged();
 
     // add subject to the sample
