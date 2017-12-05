@@ -74,17 +74,24 @@ Rectangle
         Button
         {
             text: qsTr("New panel")
-            onClicked:  newPanelDialog.open()
+            onClicked:
+            {
+                // reset and open wizard
+                regovar.panelsManager.newPanel.reset();
+                newPanelDialog.open();
+            }
         }
         Button
         {
             text: qsTr("Update panel")
             onClicked: updateSelectedPanel()
+            enabled: browser.currentIndex
         }
         Button
         {
             text: qsTr("Open panel")
              onClicked: openSelectedPanel()
+             enabled: browser.currentIndex
         }
     }
 
@@ -164,6 +171,7 @@ Rectangle
     }
 
 
+
     /// Retrive model of the selected panel in the treeview and display information.
     function openSelectedPanel()
     {
@@ -181,6 +189,7 @@ Rectangle
     /// Retrive model of the selected panel in the treeview and display wizard to create new version
     function updateSelectedPanel()
     {
+        var item = regovar.panelsManager.panelsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
 
     }
 }

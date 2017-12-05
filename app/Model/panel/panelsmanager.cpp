@@ -4,7 +4,7 @@
 
 PanelsManager::PanelsManager(QObject* parent) : QObject(parent)
 {
-
+    mNewPanel = new Panel(this);
 }
 
 

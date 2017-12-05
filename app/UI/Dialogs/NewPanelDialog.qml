@@ -17,7 +17,6 @@ Dialog
     height: 400
 
     property int currentStep: 1
-    onVisibleChanged: reset()
 
 
     contentItem: Rectangle
@@ -70,6 +69,7 @@ Dialog
                 id: nameField
                 Layout.fillWidth: true
                 placeholderText: qsTr("Name of the panel")
+                text: regovar.panelsManager.newPanel.name
             }
 
             Text
@@ -86,6 +86,7 @@ Dialog
                 id: ownerField
                 Layout.fillWidth: true
                 placeholderText: qsTr("Full name of the panel's owner or referring.")
+                text: regovar.panelsManager.newPanel.owner
             }
 
             Text
@@ -102,6 +103,7 @@ Dialog
                 id: versionField
                 Layout.fillWidth: true
                 placeholderText: qsTr("Optional name of this version. (let empty for automatic incrementation number).")
+                text: regovar.panelsManager.newPanel.currentVersion
             }
 
             Text
@@ -116,9 +118,10 @@ Dialog
             }
             TextArea
             {
-                id: commentField
+                id: descriptionField
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                text: regovar.panelsManager.newPanel.description
             }
 
             Text
@@ -135,7 +138,7 @@ Dialog
                 id: sharedField
                 Layout.fillWidth: true
                 text: qsTr("Check it if you want to share this panel with the community.")
-                checked: false
+                checked: regovar.panelsManager.newPanel.shared
             }
         }
 
@@ -162,6 +165,7 @@ Dialog
                 {
                     title: qsTr("Label")
                     width: 200
+                    role: "label"
 
                 }
                 TableViewColumn
@@ -238,7 +242,7 @@ Dialog
                         if (nameField.text.trim() != "")
                         {
                             loadingIndicator.visible = true;
-                            regovar.projectsManager.newProject(nameField.text.trim(), commentField.text);
+                            regovar.panelsManager.commitNewPanel();
                         }
                     }
                 }
@@ -269,16 +273,6 @@ Dialog
         {
             loadingIndicator.visible = false;
             if (success) root.close();
-        }
-    }
-
-
-    function reset()
-    {
-        if (root.visible)
-        {
-            nameField.text = "";
-            commentField.text = "";
         }
     }
 

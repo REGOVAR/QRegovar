@@ -7,15 +7,15 @@ class Panel : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int id READ id)
-    Q_PROPERTY(QString name READ name NOTIFY dataChanged)
-    Q_PROPERTY(QString owner READ owner NOTIFY dataChanged)
-    Q_PROPERTY(QString description READ description NOTIFY dataChanged)
-    Q_PROPERTY(bool shared READ shared NOTIFY dataChanged)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
+    Q_PROPERTY(QString owner READ owner WRITE setOwner NOTIFY dataChanged)
+    Q_PROPERTY(QString description READ description WRITE setDescription NOTIFY dataChanged)
+    Q_PROPERTY(bool shared READ shared WRITE setShared NOTIFY dataChanged)
     Q_PROPERTY(QStringList versions READ versions NOTIFY dataChanged)
     Q_PROPERTY(QDateTime creationDate READ creationDate)
     Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
 
-    Q_PROPERTY(QString currentVersion READ currentVersion NOTIFY dataChanged)
+    Q_PROPERTY(QString currentVersion READ currentVersion WRITE setCurrentVersion NOTIFY dataChanged)
     Q_PROPERTY(QVariantList currentEntries READ currentEntries NOTIFY dataChanged)
 
 
@@ -36,6 +36,13 @@ public:
     inline QString currentVersion() const { return mCurrentVersion; }
     inline QVariantList currentEntries() const { return mCurrentEntries; }
 
+    // Setters
+    inline void setName(QString name) { mName = name; emit dataChanged(); }
+    inline void setOwner(QString owner) { mOwner = owner; emit dataChanged(); }
+    inline void setDescription(QString desc) { mDescription = desc; emit dataChanged(); }
+    inline void setShared(bool flag) { mShared = flag; emit dataChanged(); }
+    inline void setCurrentVersion(QString version) { mCurrentVersion = version; emit dataChanged(); }
+
     // Methods
     //! Set model with provided json data
     Q_INVOKABLE bool fromJson(QJsonObject json);
@@ -48,6 +55,8 @@ public:
 
     //! Add a new entry to the list (only used by the qml wizard)
     Q_INVOKABLE void addEntry(QJsonObject data);
+    //! Reset data (only used by Creation wizard to reset its model)
+    Q_INVOKABLE void reset();
 
 
 Q_SIGNALS:

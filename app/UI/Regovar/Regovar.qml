@@ -41,7 +41,7 @@ QtObject
             { "icon": "d", "label": qsTr("Settings"),        "page": "",   "sublevel": [
                 { "icon": "b", "label": qsTr("My profile"),  "page": "Settings/ProfilePage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "I", "label": qsTr("Application"), "page": "Settings/ApplicationPage.qml", "sublevel": [], "subindex": -1},
-                //{ "icon": "q", "label": qsTr("Panels"),      "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "q", "label": qsTr("Panels"),      "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "^", "label": qsTr("Statistics"),  "page": "Settings/StatisticsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "d", "label": qsTr("Administration"), "page": "", "sublevel": [
                     { "icon": "", "label": qsTr("Server"),    "page": "Settings/AdminServerPage.qml", "sublevel": [], "subindex": -1},

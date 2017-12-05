@@ -9,13 +9,18 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
+    property var model
+    onModelChanged:
+    {
+
+    }
 
     GridLayout
     {
         anchors.fill: parent
         anchors.margins: 10
 
-        rows: 6
+        rows: 5
         columns: 2
         columnSpacing: 30
         rowSpacing: 10
@@ -35,24 +40,9 @@ Rectangle
             id: labelfield
             Layout.fillWidth: true
             placeholderText: qsTr("Optional label for the region.")
+            onTextEdited: model["label"] = text;
         }
 
-        Text
-        {
-            text: qsTr("Reference*")
-            color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
-            verticalAlignment: Text.AlignVCenter
-            height: 35
-            font.bold: true
-        }
-        ComboBox
-        {
-            id: refField
-            Layout.fillWidth: true
-            model: ["All", "hg19", "Hg38"]
-        }
 
         Text
         {
@@ -69,6 +59,7 @@ Rectangle
             id: chrfield
             Layout.fillWidth: true
             placeholderText: qsTr("The number of the chromosome in the selected ref.")
+            onTextEdited: model["chr"] = text;
         }
 
         Text
@@ -86,6 +77,7 @@ Rectangle
             id: startfield
             Layout.fillWidth: true
             placeholderText: qsTr("The start position of the region.")
+            onTextEdited: model["start"] = text;
         }
 
         Text
@@ -104,6 +96,7 @@ Rectangle
             id: endfield
             Layout.fillWidth: true
             placeholderText: qsTr("The end position of the region.")
+            onTextEdited: model["end"] = text;
         }
 
         Item

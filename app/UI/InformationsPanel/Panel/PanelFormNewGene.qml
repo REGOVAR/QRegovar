@@ -97,7 +97,7 @@ Rectangle
                         {
                             width: scrollarea.viewport.width
                             model: modelData
-                            onAdded: regovar.panelsManager.newPanel.addEntry(modelData);
+                            onAdded: regovar.panelsManager.newPanel.addEntry({"label" : modelData["symbol"], "id": modelData["id"], "details": modelData["id"]});
                             onShowDetails:
                             {
                                 geneInfoDialog.open();
@@ -134,7 +134,7 @@ Rectangle
                         {
                             width: scrollarea.viewport.width
                             model: modelData
-                            onAdded: regovar.panelsManager.newPanel.addEntry(modelData);
+                            onAdded: regovar.panelsManager.newPanel.addEntry({"label" : modelData["label"], "id": modelData["id"], "details": modelData["id"]});
                             onShowDetails:
                             {
                                 phenotypeInfoDialog.open();

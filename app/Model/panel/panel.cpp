@@ -99,4 +99,18 @@ void Panel::load()
 void Panel::addEntry(QJsonObject data)
 {
     mCurrentEntries.append(data);
+    emit dataChanged();
+}
+
+
+void Panel::reset()
+{
+    mName = "";
+    mDescription = "";
+    mOwner = "";
+    mDescription = "";
+    mShared = false;
+    mCurrentVersion = "";
+    mCurrentEntries.clear();
+    emit dataChanged();
 }

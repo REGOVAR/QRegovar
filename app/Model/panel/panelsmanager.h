@@ -38,7 +38,7 @@ private:
     //! List of all panels
     QList<QObject*> mPanelsList;
     //! Model for Wizard data when creating new panel
-    Panel* mNewPanel;
+    Panel* mNewPanel = nullptr;
 
 };
 
