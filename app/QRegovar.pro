@@ -67,7 +67,9 @@ HEADERS += \
     Model/framework/networkmanager.h \
     Model/framework/networktask.h \
     Model/panel/panelsmanager.h \
-    Model/panel/panel.h
+    Model/panel/panel.h \
+    Model/panel/panelstreemodel.h \
+    Model/panel/panelstreeitem.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -122,7 +124,9 @@ SOURCES += main.cpp \
     Model/framework/networkmanager.cpp \
     Model/framework/networktask.cpp \
     Model/panel/panelsmanager.cpp \
-    Model/panel/panel.cpp
+    Model/panel/panel.cpp \
+    Model/panel/panelstreemodel.cpp \
+    Model/panel/panelstreeitem.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

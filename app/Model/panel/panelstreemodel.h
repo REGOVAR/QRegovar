@@ -1,9 +1,9 @@
-#ifndef PROJECTSTREEMODEL_H
-#define PROJECTSTREEMODEL_H
+#ifndef PANELSTREEMODEL_H
+#define PANELSTREEMODEL_H
 
 #include "Model/framework/treemodel.h"
 
-class ProjectsTreeModel : public TreeModel
+class PanelsTreeModel : public TreeModel
 {
     Q_OBJECT
     Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
@@ -11,13 +11,14 @@ class ProjectsTreeModel : public TreeModel
 public:
     enum JsonModelRoles
     {
-        NameRole = Qt::UserRole + 1,
-        CommentRole,
-        DateRole,
+        Name = Qt::UserRole + 1,
+        Comment,
+        Date,
+        Shared
     };
 
     // Constructor
-    explicit ProjectsTreeModel();
+    explicit PanelsTreeModel();
 
     // Getters
     inline bool isLoading() { return mIsLoading; }
@@ -28,9 +29,9 @@ public:
     // Methods
     QHash<int, QByteArray> roleNames() const override;
     void refresh(QJsonObject json);
-    QVariant newProjectsTreeItem(int id, bool isAnalaysis, const QString& text);
+    QVariant newPanelsTreeItem(int id, const QString& version, const QString& text);
     void setupModelData(QJsonArray data, TreeItem *parent);
-    void setupModelAnalysisData(QJsonArray data, TreeItem *parent);
+    void setupModelPanelEntryData(int panelId, QJsonObject data, TreeItem *parent);
 
 Q_SIGNALS:
     void isLoadingChanged();
@@ -40,4 +41,4 @@ private:
     bool mIsLoading;
 };
 
-#endif // PROJECTSTREEMODEL_H
+#endif // PANELSTREEMODEL_H

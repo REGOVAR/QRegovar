@@ -8,7 +8,7 @@ SubjectsManager::SubjectsManager(QObject *parent) : QObject(parent)
 
 
 
-void SubjectsManager::refreshSubjectsList()
+void SubjectsManager::refresh()
 {
     Request* request = Request::get("/subject");
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
@@ -74,7 +74,7 @@ void SubjectsManager::newSubject(QString identifier, QString firstname, QString 
             openSubject(subject->id());
             emit subjectCreationDone(true, subject->id());
 
-            refreshSubjectsList();
+            refresh();
         }
         else
         {

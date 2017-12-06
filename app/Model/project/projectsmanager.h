@@ -36,7 +36,7 @@ public:
 
 public Q_SLOTS:
     //! Refresh projects list (Treeview model and flat list)
-    void refreshProjectsList();
+    void refresh();
 
 Q_SIGNALS:
     // Property changed event

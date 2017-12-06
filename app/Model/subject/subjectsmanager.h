@@ -32,8 +32,8 @@ public:
     Q_INVOKABLE Subject* getOrCreateSubject(int id);
     Q_INVOKABLE void newSubject(QString identifier, QString firstname, QString lastname, int sex, QString dateOfBirth, QString familyNumber, QString comment);
     Q_INVOKABLE void openSubject(int id);
-    //Q_INVOKABLE void openSubject(QJsonObject json);
-    Q_INVOKABLE void refreshSubjectsList();
+    //! refresh models with data from server
+    Q_INVOKABLE void refresh();
 
 Q_SIGNALS:
     // Property changed event

@@ -11,17 +11,16 @@ class ProjectsTreeItem : public QObject
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
 
 public:
-
-
+    // Constructors
     explicit ProjectsTreeItem(QObject* parent=nullptr);
     explicit ProjectsTreeItem(int id, QString text, QObject* parent=nullptr);
-//    ProjectsTreeItem(const ProjectsTreeItem &other);
-//    ~ProjectsTreeItem();
 
+    // Getters
     inline QString text() { return mText; }
     inline int id() { return mId; }
     inline bool isAnalysis() { return mIsAnalysis; }
 
+    // Setters
     inline void setText(QString text) { mText = text; emit textChanged(); }
     inline void setId(int id) { mId = id; emit idChanged(); }
     inline void setIsAnalysis(bool flag) { mIsAnalysis = flag; emit isAnalysisChanged(); }

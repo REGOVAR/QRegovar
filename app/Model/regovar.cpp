@@ -89,7 +89,6 @@ void Regovar::init()
     // Init managers
     readSettings();
 
-
     // Create models
     mUser = new User(1, "Olivier", "Gueudelot");
     mConfig = new RegovarInfo();
@@ -103,6 +102,7 @@ void Regovar::init()
     mFilesManager = new FilesManager();
     mFilesManager->setCacheDir(mSettings.localCacheDir);
     mFilesManager->setCacheMaxSize(mSettings.localCacheMaxSize);
+
     // Init others managers
     mProjectsManager = new ProjectsManager();
     mSubjectsManager = new SubjectsManager();
@@ -111,11 +111,10 @@ void Regovar::init()
     mPanelsManager = new PanelsManager();
     mToolsManager = new ToolsManager();
 
-
-
     // Init sub models
-    mProjectsManager->refreshProjectsList();
-    mSubjectsManager->refreshSubjectsList();
+    mProjectsManager->refresh();
+    mSubjectsManager->refresh();
+    mPanelsManager->refresh();
 
     // Load misc data
     loadWelcomData();

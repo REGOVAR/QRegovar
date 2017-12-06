@@ -8,7 +8,7 @@ ProjectsManager::ProjectsManager(QObject* parent) : QObject(parent)
 }
 
 
-void ProjectsManager::refreshProjectsList()
+void ProjectsManager::refresh()
 {
     mProjectsTreeView->setIsLoading(true);
 
@@ -90,7 +90,7 @@ void ProjectsManager::newProject(QString name, QString comment)
             openProject(project->id(), false);
             emit projectCreationDone(true, project->id());
 
-            refreshProjectsList();
+            refresh();
         }
         else
         {

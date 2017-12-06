@@ -5,18 +5,9 @@
 PanelsManager::PanelsManager(QObject* parent) : QObject(parent)
 {
     mNewPanel = new Panel(this);
+    mPanelsTree = new PanelsTreeModel();
 }
 
-
-
-void PanelsManager::updatePanelsList()
-{
-    mPanelsList.clear();
-    for(Panel* panel: mPanels.values())
-    {
-        mPanelsList.append(panel);
-    }
-}
 
 
 Panel* PanelsManager::getOrCreatePanel(int id)
@@ -32,6 +23,7 @@ Panel* PanelsManager::getOrCreatePanel(int id)
 }
 
 
+
 void PanelsManager::commitNewPanel()
 {
     Request* req = Request::post(QString("/panel"), QJsonDocument(mNewPanel->toJson()).toJson());
@@ -42,9 +34,8 @@ void PanelsManager::commitNewPanel()
             QJsonObject data = json["data"].toObject();
             Panel* panel = getOrCreatePanel(data["id"].toInt());
             panel->fromJson(data);
-            updatePanelsList();
+            updatePanelsLists();
             emit commitNewPanelDone(true);
-            emit panelsChanged();
         }
         else
         {
@@ -56,7 +47,6 @@ void PanelsManager::commitNewPanel()
         req->deleteLater();
     });
 }
-
 
 
 
@@ -80,7 +70,42 @@ void PanelsManager::searchPanelEntry(QString query)
 
 
 
+void PanelsManager::refresh()
+{
+    mPanelsTree->setIsLoading(true);
 
+    Request* request = Request::get("/panel");
+    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            // Refreshing treeModel with provided json will Create/update internal collection of panel
+            mPanelsTree->refresh(json);
+            // Refresh public model used by QML
+            updatePanelsLists();
+        }
+        else
+        {
+            qCritical() << Q_FUNC_INFO << "Unable to build projects tree model (due to request error)";
+        }
+        mPanelsTree->setIsLoading(false);
+        request->deleteLater();
+    });
+}
+
+
+
+void PanelsManager::updatePanelsLists()
+{
+    mPanelsList.clear();
+    for(Panel* panel: mPanels.values())
+    {
+        mPanelsList.append(panel);
+    }
+
+
+    emit panelsChanged();
+}
 
 
 
