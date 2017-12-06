@@ -66,7 +66,7 @@ Dialog
             }
             TextField
             {
-                id: nameField
+                id: panelNameField
                 Layout.fillWidth: true
                 placeholderText: qsTr("Name of the panel")
                 text: regovar.panelsManager.newPanel.name
@@ -230,7 +230,7 @@ Dialog
             Button
             {
                 text: root.currentStep == 1 ? qsTr("Next >") : qsTr("Finish")
-                enabled: nameField.text.trim() != "" && !newPanelEntryDialog.visible
+                enabled: panelNameField.text.trim() != "" && !newPanelEntryDialog.visible
                 onClicked:
                 {
                     if (step1.visible)
@@ -239,10 +239,10 @@ Dialog
                     }
                     else
                     {
-                        if (nameField.text.trim() != "")
+                        if (panelNameField.text.trim() != "")
                         {
                             loadingIndicator.visible = true;
-                            regovar.panelsManager.commitNewPanel();
+                            root.commit();
                         }
                     }
                 }
@@ -279,6 +279,28 @@ Dialog
     function removeSelectedEntry()
     {
 
+    }
+
+
+    // FIXME: for weird raison, property binding not working.
+    function reset()
+    {
+        panelNameField.text = "";
+        ownerField.text = "";
+        descriptionField.text = "";
+        versionField.text = "";
+        sharedField.checked = "";
+        regovar.panelsManager.newPanel.reset();
+    }
+
+    function commit()
+    {
+        regovar.panelsManager.newPanel.name = panelNameField.text;
+        regovar.panelsManager.newPanel.owner = ownerField.text;
+        regovar.panelsManager.newPanel.description = descriptionField.text;
+        regovar.panelsManager.newPanel.currentVersion = versionField.text;
+        regovar.panelsManager.newPanel.shared = sharedField.checked;
+        regovar.panelsManager.commitNewPanel();
     }
 
 }

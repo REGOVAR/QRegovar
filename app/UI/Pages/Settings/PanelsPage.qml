@@ -77,7 +77,7 @@ Rectangle
             onClicked:
             {
                 // reset and open wizard
-                regovar.panelsManager.newPanel.reset();
+                newPanelDialog.reset();
                 newPanelDialog.open();
             }
         }
