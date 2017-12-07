@@ -176,5 +176,8 @@
         <file>InformationsPanel/Panel/PanelFormNewGene.qml</file>
         <file>InformationsPanel/Panel/PanelFormNewCustom.qml</file>
         <file>InformationsPanel/Panel/PanelSearchEntry.qml</file>
+        <file>Pages/Browse/SearchResultPipeline.qml</file>
+        <file>Pages/Browse/SearchResultPanel.qml</file>
+        <file>Pages/Browse/SearchResultUser.qml</file>
     </qresource>
 </RCC>

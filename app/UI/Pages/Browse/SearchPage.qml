@@ -157,6 +157,11 @@ Rectangle
                     visible: false
                     property int count: 0
                     property var model
+                    onModelChanged:
+                    {
+                        count = model.length;
+                        visible = count > 0;
+                    }
 
                     Text
                     {
@@ -167,11 +172,9 @@ Rectangle
                         verticalAlignment: Text.AlignVCenter
                     }
 
-
                     Repeater
                     {
                         model: projectsResult.model
-                        onModelChanged: projectsResult.count = projectsResult.model.length
 
                         SearchResultProject
                         {
@@ -190,6 +193,11 @@ Rectangle
                     visible: false
                     property int count: 0
                     property var model
+                    onModelChanged:
+                    {
+                        count = model.length;
+                        visible = count > 0;
+                    }
 
                     Text
                     {
@@ -203,7 +211,6 @@ Rectangle
                     Repeater
                     {
                         model: analysessResult.model
-                        onModelChanged: analysessResult.count = analysessResult.model.length
                         SearchResultAnalysis
                         {
                             width: scrollarea.viewport.width
@@ -223,6 +230,11 @@ Rectangle
                     visible: false
                     property int count: 0
                     property var model
+                    onModelChanged:
+                    {
+                        count = model.length;
+                        visible = count > 0;
+                    }
 
                     Text
                     {
@@ -236,7 +248,6 @@ Rectangle
                     Repeater
                     {
                         model: filesResult.model
-                        onModelChanged: filesResult.count = filesResult.model.length
                         SearchResultFile
                         {
                             width: scrollarea.viewport.width
@@ -258,6 +269,11 @@ Rectangle
                     visible: false
                     property int count: 0
                     property var model
+                    onModelChanged:
+                    {
+                        count = model.length;
+                        visible = count > 0;
+                    }
 
                     Text
                     {
@@ -271,7 +287,6 @@ Rectangle
                     Repeater
                     {
                         model: subjectsResult.model
-                        onModelChanged: subjectsResult.count = subjectsResult.model.length
                         SearchResultSubject
                         {
                             width: scrollarea.viewport.width
@@ -295,6 +310,11 @@ Rectangle
                     visible: false
                     property int count: 0
                     property var model
+                    onModelChanged:
+                    {
+                        count = model.length;
+                        visible = count > 0;
+                    }
 
                     Text
                     {
@@ -308,7 +328,6 @@ Rectangle
                     Repeater
                     {
                         model: samplesResult.model
-                        onModelChanged: samplesResult.count = samplesResult.model.length
                         SearchResultSample
                         {
                             width: scrollarea.viewport.width
@@ -326,6 +345,11 @@ Rectangle
                     visible: false
                     property int count: 0
                     property var model
+                    onModelChanged:
+                    {
+                        count = model.length;
+                        visible = count > 0;
+                    }
 
                     Text
                     {
@@ -339,7 +363,6 @@ Rectangle
                     Repeater
                     {
                         model: phenotypesResult.model
-                        onModelChanged: phenotypesResult.count = phenotypesResult.model.length
                         SearchResultPhenotype
                         {
                             width: scrollarea.viewport.width
@@ -358,6 +381,11 @@ Rectangle
                     visible: false
                     property int count: 0
                     property var model
+                    onModelChanged:
+                    {
+                        count = model.length;
+                        visible = count > 0;
+                    }
 
                     Text
                     {
@@ -371,7 +399,6 @@ Rectangle
                     Repeater
                     {
                         model: genesResult.model
-                        onModelChanged: genesResult.count = genesResult.model.length
                         SearchResultGene
                         {
                             width: scrollarea.viewport.width
@@ -390,6 +417,11 @@ Rectangle
                     visible: false
                     property int count: 0
                     property var model
+                    onModelChanged:
+                    {
+                        count = model.length;
+                        visible = count > 0;
+                    }
 
                     Text
                     {
@@ -403,7 +435,6 @@ Rectangle
                     Repeater
                     {
                         model: variantsResult.model
-                        onModelChanged: variantsResult.count = variantsResult.model.length
                         SearchResultVariant
                         {
                             width: scrollarea.viewport.width
@@ -426,34 +457,32 @@ Rectangle
                     visible: false
                     property int count: 0
                     property var model
+                    onModelChanged:
+                    {
+                        count = model.length;
+                        visible = count > 0;
+                    }
 
                     Text
                     {
-                        text: qsTr("Pipelines") + " (" + pipelinesResult.count + ")"
+                        text: usersResult.count + " " + (pipelinesResult.count > 1 ? qsTr("Pipelines") : qsTr("Pipeline"))
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.normal
+                        verticalAlignment: Text.AlignVCenter
                     }
 
                     Repeater
                     {
                         model: pipelinesResult.model
-                        Row
+                        SearchResultPipeline
                         {
-                            Text
-                            {
-                                width: Regovar.theme.font.boxSize.normal
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.icons.name
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: "j"
-                            }
-                            Text
-                            {
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.font.familly
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: model.modelData.name
-                            }
+                            width: scrollarea.viewport.width
+                            pipelineId: model.modelData.id
+                            name: model.modelData.name
+                            date: model.modelData.update_date
+
+                            onClicked: openPipelineInfoDialog(pipelineId)
                         }
                     }
                 }
@@ -465,34 +494,69 @@ Rectangle
                     visible: false
                     property int count: 0
                     property var model
+                    onModelChanged:
+                    {
+                        count = model.length;
+                        visible = count > 0;
+                    }
 
                     Text
                     {
-                        text: qsTr("Panels") + " (" + panelsResult.count + ")"
+                        text: panelsResult.count + " " + (panelsResult.count > 1 ? qsTr("Panels") : qsTr("Panel"))
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.normal
+                        verticalAlignment: Text.AlignVCenter
                     }
 
                     Repeater
                     {
                         model: panelsResult.model
-                        Row
+                        SearchResultPanel
                         {
-                            Text
-                            {
-                                width: Regovar.theme.font.boxSize.normal
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.icons.name
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: "q"
-                            }
-                            Text
-                            {
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.font.familly
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: model.modelData.name
-                            }
+                            width: scrollarea.viewport.width
+                            panelId: model.modelData.id
+                            name: model.modelData.name
+                            owner: model.modelData.owner
+                            date: model.modelData.update_date
+
+                            onClicked: openPanelInfoDialog(model.modelData.id)
+                        }
+                    }
+                }
+
+                // User
+                Column
+                {
+                    id: usersResult
+                    visible: false
+                    property int count: 0
+                    property var model
+                    onModelChanged:
+                    {
+                        count = model.length;
+                        visible = count > 0;
+                    }
+                    Text
+                    {
+                        text: usersResult.count + " " + (usersResult.count > 1 ? qsTr("Users") : qsTr("User"))
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.normal
+                        verticalAlignment: Text.AlignVCenter
+                    }
+
+                    Repeater
+                    {
+                        model: usersResult.model
+                        SearchResultUser
+                        {
+                            width: scrollarea.viewport.width
+                            userId: model.modelData.id
+                            fullname: model.modelData.fullname
+                            date: model.modelData.update_date
+
+                            onClicked: openUserInfoDialog(model.modelData.id)
                         }
                     }
                 }
@@ -588,6 +652,7 @@ Rectangle
         variantsResult.visible = results["variant"].length > 0;
         pipelinesResult.visible = results["pipeline"].length > 0;
         panelsResult.visible = results["panel"].length > 0;
+        usersResult.visible = results["user"].length > 0;
 
         if (projectsResult.visible)
         {
@@ -597,47 +662,42 @@ Rectangle
         if (analysessResult.visible)
         {
             analysessResult.model = results["analysis"];
-            analysessResult.count = results["analysis"].length;
         }
         if (filesResult.visible)
         {
             filesResult.model = results["file"];
-            filesResult.count = results["file"].length;
         }
         if (subjectsResult.visible)
         {
             subjectsResult.model = results["subject"];
-            subjectsResult.count = results["subject"].length;
         }
         if (samplesResult.visible)
         {
             samplesResult.model = results["sample"];
-            samplesResult.count = results["sample"].length;
         }
         if (phenotypesResult.visible)
         {
             phenotypesResult.model = results["phenotype"];
-            phenotypesResult.count = results["phenotype"].length;
         }
         if (genesResult.visible)
         {
             genesResult.model = results["gene"];
-            genesResult.count = results["gene"].length;
         }
         if (variantsResult.visible)
         {
             variantsResult.model = results["variant"];
-            variantsResult.count = results["variant"].length;
         }
         if (pipelinesResult.visible)
         {
             pipelinesResult.model = results["pipeline"];
-            pipelinesResult.count = results["pipeline"].length;
         }
         if (panelsResult.visible)
         {
             panelsResult.model = results["panel"];
-            panelsResult.count = results["panel"].length;
+        }
+        if (usersResult.visible)
+        {
+            usersResult.model = results["panel"];
         }
     }
 
@@ -648,6 +708,12 @@ Rectangle
         regovar.getVariantInfo(refId, variantId);
     }
     function openGeneInfoDialog(symbol)
+    {
+        variantInfoDialog.data = null;
+        variantInfoDialog.open();
+        regovar.getGeneInfo(symbol);
+    }
+    function openPanelInfoDialog(panelid)
     {
         variantInfoDialog.data = null;
         variantInfoDialog.open();
