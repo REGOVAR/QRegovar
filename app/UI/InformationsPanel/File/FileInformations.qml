@@ -29,13 +29,11 @@ Rectangle
     {
         if (model && model.loaded)
         {
-            console.log("fileInfo.updateFromModel " + model)
             icon.text = model.filenameUI["icon"];
             title.text = "<h1>" + model.name + "</h1></br>";
             title.text += qsTr("Status") + ": " + model.statusUI["label"] + "</br>";
             title.text += qsTr("Size") + ": " + model.sizeUI + "</br>";
             title.text += qsTr("Last modification") + ": " + Regovar.formatDate(model.updateDate);
-            console.log(icon.text + " - " + title.text);
         }
     }
 

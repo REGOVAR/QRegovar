@@ -7,3 +7,12 @@ The official heavy client (in Qt) of the Regovar project
 Implementation of [beta](https://github.com/REGOVAR/QRegovar/milestone/1) in progress (50%)
 
 ![mokcup](https://raw.githubusercontent.com/REGOVAR/QRegovar/master/docs/mockup/mockup.gif)
+
+
+# Credits
+Thanks for their help :
+
+ * [Fontastic](http://app.fontastic.me/)
+ * [Freepik](https://www.flaticon.com/)
+ * [Inkscape](https://inkscape.org/en/)
+

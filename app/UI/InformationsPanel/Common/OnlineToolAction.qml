@@ -1,4 +1,5 @@
 import QtQuick 2.9
+import QtQuick.Layouts 1.3
 import "../../Regovar"
 
 Rectangle
@@ -8,20 +9,21 @@ Rectangle
     implicitWidth: 200
 
     property string url: ""
-    property string iconText: ""
+    property string icon: ""
     property string label: ""
     property bool isHover: false
+    property var model
 
     color: (isHover) ? Regovar.theme.secondaryColor.back.light : Regovar.theme.backgroundColor.main
 
-    Row
+    RowLayout
     {
         anchors.fill: parent
 
         Text
         {
-            text: root.iconText
-            width: Regovar.theme.font.boxSize.header
+            text: root.icon
+            Layout.minimumWidth: Regovar.theme.font.boxSize.header
             height: Regovar.theme.font.boxSize.header
 
             font.family: Regovar.theme.icons.name
@@ -32,28 +34,35 @@ Rectangle
         }
         Text
         {
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.header
             text: root.label
             font.family: "monospace"
-            height: Regovar.theme.font.boxSize.header
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.normal
             verticalAlignment: Text.AlignVCenter
+            elide: Text.ElideRight
         }
     }
 
     MouseArea
     {
-        anchors.fill: root
+        anchors.fill: parent
         cursorShape: (root.enabled) ? Qt.PointingHandCursor : Qt.ArrowCursor
         hoverEnabled: true
         onEntered: root.isHover = true
         onExited: root.isHover = false
         onClicked:
         {
-            if (root.url != "")
+            var finalUrl = root.url;
+            if (model)
             {
-                Qt.openUrlExternally(root.url);
+                for (var idx=0; idx<model.length; idx++)
+                {
+                    finalUrl = finalUrl.replace("{" + idx + "}", model[idx]);
+                }
             }
+            Qt.openUrlExternally(finalUrl);
         }
     }
 }
