@@ -30,7 +30,6 @@ Rectangle
         horizontalAlignment: Text.AlignHCenter
 
         color: Regovar.theme.primaryColor.front.normal
-        elide: Text.ElideRight
 
         visible: text != ""
     }

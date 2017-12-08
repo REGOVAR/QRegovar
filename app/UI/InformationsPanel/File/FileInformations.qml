@@ -12,19 +12,33 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property var model
-    onModelChanged:  if (model) { updateFromModel(model); }
+    property File model
+    onModelChanged: setFileModel(model)
 
-
-
-    function updateFromModel(data)
+    function setFileModel(file)
     {
-        icon.text = data.filenameUI["icon"];
-        title.text = "<h1>" + data.name + "</h1></br>";
-        title.text += qsTr("Status") + ": " + data.statusUI["label"] + "</br>";
-        title.text += qsTr("Size") + ": " + data.sizeUI + "</br>";
-        title.text += qsTr("Last modification") + ": " + Regovar.formatDate(data.updateDate);
+        if (file)
+        {
+            file.dataRefreshed.connect(updateFromModel);
+            updateFromModel();
+        }
     }
+
+
+    function updateFromModel()
+    {
+        if (model && model.loaded)
+        {
+            console.log("fileInfo.updateFromModel " + model)
+            icon.text = model.filenameUI["icon"];
+            title.text = "<h1>" + model.name + "</h1></br>";
+            title.text += qsTr("Status") + ": " + model.statusUI["label"] + "</br>";
+            title.text += qsTr("Size") + ": " + model.sizeUI + "</br>";
+            title.text += qsTr("Last modification") + ": " + Regovar.formatDate(model.updateDate);
+            console.log(icon.text + " - " + title.text);
+        }
+    }
+
 
 
 
@@ -39,7 +53,7 @@ Rectangle
         {
             id: header
             Layout.fillWidth: true
-            Layout.minimumHeight: Regovar.theme.font.boxSize.header
+            Layout.minimumHeight: 100 // icon : 80 + 2*10
             color: Regovar.theme.primaryColor.back.normal
 
             Text
@@ -47,28 +61,25 @@ Rectangle
                 id: icon
                 anchors.top: parent.top
                 anchors.left: parent.left
-                text: "j"
-                width: Regovar.theme.font.boxSize.header
-                height: Regovar.theme.font.boxSize.header
-
+                anchors.margins: 10
+                width: 80
+                height: 80
+                font.pixelSize: 80
                 font.family: Regovar.theme.icons.name
-                color: Regovar.theme.primaryColor.front.normal
-                font.pixelSize: Regovar.theme.font.size.header
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
+                color: Regovar.theme.primaryColor.front.normal
             }
             TextEdit
             {
                 id: title
                 anchors.top: parent.top
-                anchors.left: parent.left
+                anchors.left: icon.right
                 anchors.right: parent.right
-                anchors.margins: 5
-                anchors.leftMargin: Regovar.theme.font.boxSize.header + 10
+                anchors.margins: 10
                 textFormat: TextEdit.RichText
-                text: ""
-                onPaintedHeightChanged: { header.Layout.minimumHeight = Math.max(Regovar.theme.font.boxSize.header, paintedHeight + 10); }
-                font.pixelSize: Regovar.theme.font.size.header
+                onPaintedHeightChanged: { header.Layout.minimumHeight = Math.max(100, paintedHeight + 20); }
+                font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.front.normal
                 readOnly: true
                 selectByMouse: true
@@ -83,7 +94,7 @@ Rectangle
             Layout.fillWidth: true
             TabView
             {
-                id: swipeview
+                id: tabsPanel
                 anchors.fill : parent
                 tabSharedModel: root.model
                 smallHeader: true

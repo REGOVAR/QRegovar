@@ -203,6 +203,7 @@ Rectangle
         contentItem: FileInformations
         {
             id: fileInfoPanel
+
         }
     }
 

@@ -9,6 +9,8 @@
 class File : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(bool loaded READ loaded NOTIFY dataRefreshed)
     // File attributes
     Q_PROPERTY(int id READ id)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
@@ -16,7 +18,7 @@ class File : public QObject
     Q_PROPERTY(QUrl url READ url)
     Q_PROPERTY(QString md5Sum READ md5Sum WRITE setMd5Sum NOTIFY md5SumChanged)
     Q_PROPERTY(QString type READ type WRITE setType NOTIFY typeChanged)
-    Q_PROPERTY(QList<QString> tags READ tags NOTIFY tagsChanged)
+    Q_PROPERTY(QString tags READ tags WRITE setTags NOTIFY tagsChanged)
     // Remote file attributes
     Q_PROPERTY(QDateTime creationDate READ creationDate)
     Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY updateDateChanged)
@@ -54,32 +56,34 @@ public:
     File(int id, QObject* parent=nullptr);
 
     // Accessors
-    inline int id() { return mId; }
-    inline QString name() { return mName; }
-    inline QString comment() { return mComment; }
-    inline QUrl url() { return mUrl; }
-    inline QDateTime creationDate() { return mCreationDate; }
-    inline QDateTime updateDate() { return mUpdateDate; }
-    inline qint64 size() { return mSize; }
-    inline qint64 uploadOffset() { return mUploadOffset; }
-    inline QString md5Sum() { return mMd5Sum; }
-    inline QString type() { return mType; }
-    inline FileStatus status() { return mStatus; }
-    inline QList<QString> tags() { return mTags; }
+    inline bool loaded() const { return mLoaded; }
+    inline int id() const { return mId; }
+    inline QString name() const { return mName; }
+    inline QString comment() const { return mComment; }
+    inline QUrl url() const { return mUrl; }
+    inline QDateTime creationDate() const { return mCreationDate; }
+    inline QDateTime updateDate() const { return mUpdateDate; }
+    inline qint64 size() const { return mSize; }
+    inline qint64 uploadOffset() const { return mUploadOffset; }
+    inline QString md5Sum() const { return mMd5Sum; }
+    inline QString type() const { return mType; }
+    inline FileStatus status() const { return mStatus; }
+    inline QString tags() const { return mTags; }
 
-    inline QString localFilePath() { return mLocalPath; }
-    inline bool localFileReady() { return mLocalFileReady; }
-    inline qint64 downloadOffset() { return mDownloadOffset; }
-    inline FileStatus localStatus() { return mLocalStatus; }
+    inline QString localFilePath() const { return mLocalPath; }
+    inline bool localFileReady() const { return mLocalFileReady; }
+    inline qint64 downloadOffset() const { return mDownloadOffset; }
+    inline FileStatus localStatus() const { return mLocalStatus; }
 
-    inline QVariant filenameUI() { return mFilenameUI; }
-    inline QVariant statusUI() { return mStatusUI; }
-    inline QString sizeUI() { return mSizeUI; }
-    inline QString sourceUI() { return mSourceUI; }
+    inline QVariant filenameUI() const { return mFilenameUI; }
+    inline QVariant statusUI() const { return mStatusUI; }
+    inline QString sizeUI() const { return mSizeUI; }
+    inline QString sourceUI() const { return mSourceUI; }
 
 
     // Setters
     inline void setComment(QString comment) { mComment = comment; emit commentChanged(); }
+    inline void setTags(QString tags) { mTags = tags; emit tagsChanged(); }
     inline void setName(QString name) { mName = name; emit nameChanged(); }
     inline void setSize(qint64 size) { mSize = size; emit sizeChanged(); }
     inline void setUploadOffset(qint64 uploadOffset) { mUploadOffset = uploadOffset; emit uploadOffsetChanged(); }
@@ -114,6 +118,7 @@ public:
 
 
 Q_SIGNALS:
+    void dataRefreshed();
     void nameChanged();
     void commentChanged();
     void updateDateChanged();
@@ -138,6 +143,9 @@ Q_SIGNALS:
 
 
 private:
+
+    bool mLoaded = false;
+
     // Attributes
     int mId = -1;
     QUrl mUrl;
@@ -150,7 +158,7 @@ private:
     FileStatus mStatus;
     qint64 mSize;
     qint64 mUploadOffset;
-    QList<QString> mTags;
+    QString mTags;
 
     QString mLocalPath;
     bool mLocalFileReady = false;

@@ -21,8 +21,8 @@ bool Panel::fromJson(QJsonObject json)
     mOwner = json["owner"].toString();
     mDescription = json["description"].toString();
     mShared = json["shared"].toBool();
-    mCreationDate = QDateTime::fromString(json["creation_date"].toString());
-    mUpdateDate = QDateTime::fromString(json["update_date"].toString());
+    mCreationDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
+    mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     // Versions
     // Entries
 

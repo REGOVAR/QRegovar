@@ -30,8 +30,8 @@ bool Project::fromJson(QJsonObject json)
     {
         mFullPath = json["fullpath"].toString();
     }
-    mCreationDate = QDateTime::fromString(json["creation_date"].toString());
-    mUpdateDate = QDateTime::fromString(json["update_date"].toString());
+    mCreationDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
+    mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     mIsSandbox = json["is_sandbox"].toBool();
     mIsFolder = json["is_folder"].toBool();
     mComment = json["comment"].toString();

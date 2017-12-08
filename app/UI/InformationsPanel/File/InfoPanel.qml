@@ -13,15 +13,70 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property bool editionMode: false
-    property var model
-    onModelChanged:  if (model) { updateFromModel(model); }
+    property File model
+    onModelChanged: setFileModel(model)
 
-
-    function updateFromModel(data)
+    function setFileModel(file)
     {
-        console.log("display info panel of FileInfos dialog")
+        if (file)
+        {
+            file.dataRefreshed.connect(updateViewFromModel);
+            updateViewFromModel();
+        }
     }
 
+
+    function updateViewFromModel()
+    {
+        if (model && model.loaded)
+        {
+            nameField.text = model.name;
+            tagsField.text = model.tags;
+            commentField.text = model.comment;
+
+            remoteCreation.text = Regovar.formatDate(model.creationDate);
+            remoteSize.text = model.sizeUI;
+            remoteStatus.text = model.statusUI["label"];
+            remoteMd5.text = model.md5Sum;
+            remoteSource.text = model.sourceUI;
+
+            localCreation.text = "-";
+            localSize.text = "-";
+            localStatus.text = "-";
+            localMd5.text = "-";
+            localPath.text = model.localFilePath;
+        }
+        else
+        {
+            nameField.text = "";
+            tagsField.text = "";
+            commentField.text = "";
+
+            remoteCreation.text = "";
+            remoteSize.text = "";
+            remoteStatus.text = "";
+            remoteMd5.text = "";
+            remoteSource.text = "";
+
+            localCreation.text = "";
+            localSize.text = "";
+            localStatus.text = "";
+            localMd5.text = "";
+            localPath.text = "";
+        }
+    }
+
+
+    function updateModelFromView()
+    {
+        if (model)
+        {
+            model.name = nameField.text;
+            model.comment = commentField.text;
+            model.tags = tagsField.text;
+            model.save();
+        }
+    }
 
 
     ColumnLayout
@@ -98,7 +153,7 @@ Rectangle
             }
             TextField
             {
-                id: lastnameField
+                id: tagsField
                 Layout.fillWidth: true
                 enabled: editionMode
                 placeholderText: qsTr("List of tags")
@@ -116,7 +171,7 @@ Rectangle
             }
             TextArea
             {
-                id: firstnameField
+                id: commentField
                 Layout.fillWidth: true
                 enabled: editionMode
             }
@@ -172,8 +227,8 @@ Rectangle
                 }
                 Text
                 {
+                    id: remoteCreation
                     Layout.fillWidth: true
-                    text: "2017-12-25 17:45"
                     color: Regovar.theme.frontColor.normal
                     elide: Text.ElideRight
                 }
@@ -189,8 +244,8 @@ Rectangle
                 }
                 Text
                 {
+                    id: remoteSize
                     Layout.fillWidth: true
-                    text: "2.65 Go"
                     color: Regovar.theme.frontColor.normal
                     elide: Text.ElideRight
                 }
@@ -206,8 +261,8 @@ Rectangle
                 }
                 Text
                 {
+                    id: remoteStatus
                     Layout.fillWidth: true
-                    text: "Checked"
                     color: Regovar.theme.frontColor.normal
                     elide: Text.ElideRight
                 }
@@ -223,8 +278,8 @@ Rectangle
                 }
                 Text
                 {
+                    id: remoteMd5
                     Layout.fillWidth: true
-                    text: "415a54c5a24f4g35a51a55sd41fg4"
                     color: Regovar.theme.frontColor.normal
                     elide: Text.ElideRight
                 }
@@ -240,8 +295,8 @@ Rectangle
                 }
                 Text
                 {
+                    id: remoteSource
                     Layout.fillWidth: true
-                    text: "Uploaded by a user"
                     color: Regovar.theme.frontColor.normal
                     elide: Text.ElideRight
                 }
@@ -306,8 +361,8 @@ Rectangle
                 }
                 Text
                 {
+                    id: localCreation
                     Layout.fillWidth: true
-                    text: "2017-12-25 17:45"
                     color: Regovar.theme.frontColor.normal
                     elide: Text.ElideRight
                 }
@@ -323,8 +378,8 @@ Rectangle
                 }
                 Text
                 {
+                    id: localSize
                     Layout.fillWidth: true
-                    text: "2.65 Go"
                     color: Regovar.theme.frontColor.normal
                     elide: Text.ElideRight
                 }
@@ -340,8 +395,8 @@ Rectangle
                 }
                 Text
                 {
+                    id: localStatus
                     Layout.fillWidth: true
-                    text: "Checked"
                     color: Regovar.theme.frontColor.normal
                     elide: Text.ElideRight
                 }
@@ -357,8 +412,8 @@ Rectangle
                 }
                 Text
                 {
+                    id: localMd5
                     Layout.fillWidth: true
-                    text: "415a54c5a24f4g35a51a55sd41fg4"
                     color: Regovar.theme.frontColor.normal
                     elide: Text.ElideRight
                 }
@@ -374,8 +429,8 @@ Rectangle
                 }
                 Text
                 {
+                    id: localPath
                     Layout.fillWidth: true
-                    text: regovar.settings.localCacheDir + "6/toto.xml"
                     color: Regovar.theme.frontColor.normal
                     elide: Text.ElideRight
                 }
@@ -392,34 +447,7 @@ Rectangle
 
     }
 
-    function updateViewFromModel(model)
-    {
-        if (model)
-        {
-            nameLabel.text = model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname;
-            idField.text = model.identifier;
-            firstnameField.text = model.firstname;
-            lastnameField.text = model.lastname;
-            dateOfBirthField.text = model.dateOfBirth;
-            familyNumberField.text = model.familyNumber;
-            commentField.text = model.comment;
-        }
-    }
 
-    function updateModelFromView()
-    {
-        if (model)
-        {
-            var json={};
-            json["identifier"] = idField.text;
-            json["firstname"] = firstnameField.text;
-            json["lastname"] = lastnameField.text;
-            json["dateOfBirth"] = dateOfBirthField.text;
-            json["familyNumber"] = familyNumberField.text;
-            json["comment"] = commentField.text;
 
-            model.deleteLater()
-        }
-    }
 
 }

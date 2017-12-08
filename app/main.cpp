@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Tool>("org.regovar", 1, 0, "Tool");
     qmlRegisterType<ToolParameter>("org.regovar", 1, 0, "ToolParameter");
 
+
     // Must be called before creating any webwidget/webqml
     //QtWebEngine::initialize();
     //qmlRegisterType<QQmlWebChannel>("org.regovar", 1, 0, "QQmlWebChannel");

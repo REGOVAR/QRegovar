@@ -321,7 +321,9 @@ Reference* Regovar::referenceFromId(int id)
 
 void Regovar::getFileInfo(int fileId, int)
 {
-    emit fileInformationReady(mFilesManager->getFile(fileId));
+    File* file = mFilesManager->getOrCreateFile(fileId);
+    file->load(false);
+    emit fileInformationReady(file);
 }
 
 

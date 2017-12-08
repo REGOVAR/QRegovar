@@ -60,7 +60,7 @@ void File::load(bool forceRefresh)
 {
     // Check if need refresh
     qint64 diff = mLastInternalLoad.secsTo(QDateTime::currentDateTime());
-    if (forceRefresh || diff > 60)
+    if (!mLoaded || forceRefresh || diff > 60)
     {
         mLastInternalLoad = QDateTime::currentDateTime();
         Request* req = Request::get(QString("/file/%1").arg(mId));
@@ -91,13 +91,13 @@ bool File::fromJson(QJsonDocument json)
 
 bool File::fromJson(QJsonObject json)
 {
-
     mId = json["id"].toInt();
     setName(json["name"].toString());
     setComment(json["comment"].toString());
+    setTags(json["tags"].toString());
     mUrl = QUrl(json["path"].toString());
-    mCreationDate = QDateTime::fromString(json["creation_date"].toString());
-    mUpdateDate = QDateTime::fromString(json["update_date"].toString());
+    mCreationDate = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
+    mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     emit updateDateChanged();
     setMd5Sum(json["md5sum"].toString());
     setType(json["type"].toString());
@@ -143,6 +143,8 @@ bool File::fromJson(QJsonObject json)
     //mSource;
     //mLocalPath;
 
+    mLoaded = true;
+    emit dataRefreshed();
     return true;
 }
 

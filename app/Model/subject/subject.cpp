@@ -29,8 +29,8 @@ bool Subject::fromJson(QJsonObject json)
     QString sex = json["sex"].toString();
     mSex = sex == "male" ? Sex::Male : "female" ?  Sex::Female : Sex::Unknow;
     mDateOfBirth = QDate::fromString(json["date_of_birth"].toString());
-    mUpdated = QDateTime::fromString(json["update_date"].toString());
-    mCreated = QDateTime::fromString(json["create_date"].toString());
+    mUpdated = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
+    mCreated = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
 
     // samples
     mSamples.clear();
