@@ -3,8 +3,8 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import org.regovar 1.0
 
-import "../../../../Regovar"
-import "../../../../Framework"
+import "../../Regovar"
+import "../../Framework"
 
 
 Rectangle
@@ -16,28 +16,14 @@ Rectangle
     onModelChanged:  if (model) { updateFromModel(model); }
 
 
-    property string varId
-    onVarIdChanged:
-    {
-        if (varId)
-        {
-            // Display loading feedback
-
-            // request informations
-
-        }
-        else
-        {
-            // Display help message
-        }
-    }
 
     function updateFromModel(data)
     {
-        var variant = "chr" + data["chr"] + ":" + data["pos"] + " " + data["ref"] + ">" + data["alt"];
-        var gene = data["genename"];
-        var ref = data["reference"];
-        title.text = "<span style=\"font-family: monospace;\">" + variant + "</span><br/><br/><i>Ref: </i>" + ref + "&nbsp;&nbsp;&nbsp;</span>\n\n<i>Gene: </i>" + gene;
+        icon.text = data.filenameUI["icon"];
+        title.text = "<h1>" + data.name + "</h1></br>";
+        title.text += qsTr("Status") + ": " + data.statusUI["label"] + "</br>";
+        title.text += qsTr("Size") + ": " + data.sizeUI + "</br>";
+        title.text += qsTr("Last modification") + ": " + Regovar.formatDate(data.updateDate);
     }
 
 
@@ -58,6 +44,7 @@ Rectangle
 
             Text
             {
+                id: icon
                 anchors.top: parent.top
                 anchors.left: parent.left
                 text: "j"
@@ -106,25 +93,24 @@ Rectangle
                 {
                     ListElement
                     {
-                        title: qsTr("Online Tools")
-                        icon: "è"
-                        source: "../Pages/Analysis/Filtering/VariantInformations/OnlineToolsPanel.qml"
+                        title: qsTr("Informations")
+                        icon: "j"
+                        source: "../InformationsPanel/File/InfoPanel.qml"
                     }
                     ListElement
                     {
-                        title: qsTr("Phenotype")
-                        icon: "K"
-                        source: "../Pages/Analysis/Filtering/VariantInformations/PhenotypePanel.qml"
+                        title: qsTr("Relations")
+                        icon: "ê"
+                        source: "../InformationsPanel/Common/RelationsPanel.qml"
                     }
                     ListElement
                     {
-                        title: qsTr("Regovar statistics")
-                        icon: "^"
-                        source: "../Pages/Analysis/Filtering/VariantInformations/StatsPanel.qml"
+                        title: qsTr("Events")
+                        icon: "H"
+                        source: "../InformationsPanel/Common/EventsPanel.qml"
                     }
                 }
             }
         }
     }
-
 }

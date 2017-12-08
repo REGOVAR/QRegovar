@@ -160,8 +160,14 @@ public:
     Reference* referenceFromId(int id);
 
     // Others
-    Q_INVOKABLE void getVariantInfo(int refId, QString variantId, int analysisId=-1);
+    Q_INVOKABLE void getFileInfo(int fileId, int analysisId=-1);
     Q_INVOKABLE void getGeneInfo(QString geneName, int analysisId=-1);
+    Q_INVOKABLE void getPanelInfo(int panelId, int analysisId=-1);
+    Q_INVOKABLE void getPhenotypeInfo(QString phenotypeId, int analysisId=-1);
+    Q_INVOKABLE void getPipelineInfo(int pipelineId, int analysisId=-1);
+    Q_INVOKABLE void getSampleInfo(int sampleId, int analysisId=-1);
+    Q_INVOKABLE void getUserInfo(int userId, int analysisId=-1);
+    Q_INVOKABLE void getVariantInfo(int refId, QString variantId, int analysisId=-1);
     Q_INVOKABLE void search(QString query);
     Q_INVOKABLE void loadWelcomData();
     Q_INVOKABLE void close();
@@ -199,8 +205,15 @@ Q_SIGNALS:
     void referencesChanged();
     void configChanged();
     void adminChanged();
-    void variantInformationReady(QJsonObject json);
+
+    void fileInformationReady(File* file);
     void geneInformationReady(QJsonObject json);
+    void panelInformationReady(QJsonObject json);
+    void phenotypeInformationReady(QJsonObject json);
+    void pipelineInformationReady(QJsonObject json);
+    void sampleInformationReady(QJsonObject json);
+    void userInformationReady(QJsonObject json);
+    void variantInformationReady(QJsonObject json);
 
     void errorOccured(QString errCode, QString message, QString techData);
     void onClose();

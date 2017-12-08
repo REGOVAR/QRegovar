@@ -120,7 +120,7 @@ Rectangle
                     {
                         title: qsTr("Events")
                         icon: "H"
-                        source: "../InformationsPanel/Panel/EventsPanel.qml"
+                        source: "../InformationsPanel/Common/EventsPanel.qml"
                     }
                 }
             }

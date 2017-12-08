@@ -141,7 +141,6 @@
         <file>InformationsPanel/Gene/InfoPanel.qml</file>
         <file>InformationsPanel/Gene/OnlineToolsPanel.qml</file>
         <file>InformationsPanel/Gene/StatsPanel.qml</file>
-        <file>InformationsPanel/Panel/EventsPanel.qml</file>
         <file>InformationsPanel/Panel/InfoPanel.qml</file>
         <file>InformationsPanel/Panel/PanelInformations.qml</file>
         <file>InformationsPanel/Panel/VersionDetailsPanel.qml</file>
@@ -179,5 +178,13 @@
         <file>Pages/Browse/SearchResultPipeline.qml</file>
         <file>Pages/Browse/SearchResultPanel.qml</file>
         <file>Pages/Browse/SearchResultUser.qml</file>
+        <file>InformationsPanel/File/FileInformations.qml</file>
+        <file>InformationsPanel/File/InfoPanel.qml</file>
+        <file>InformationsPanel/Common/EventsPanel.qml</file>
+        <file>InformationsPanel/Pipeline/InfoPanel.qml</file>
+        <file>InformationsPanel/Pipeline/PipelineInformations.qml</file>
+        <file>InformationsPanel/Pipeline/StatsPanel.qml</file>
+        <file>InformationsPanel/Common/RelationsPanel.qml</file>
+        <file>Pages/Browse/SearchResultsList.qml</file>
     </qresource>
 </RCC>

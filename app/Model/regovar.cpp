@@ -319,6 +319,152 @@ Reference* Regovar::referenceFromId(int id)
 
 
 
+void Regovar::getFileInfo(int fileId, int)
+{
+    emit fileInformationReady(mFilesManager->getFile(fileId));
+}
+
+
+void Regovar::getGeneInfo(QString geneName, int analysisId)
+{
+    QString sAnalysisId = QString::number(analysisId);
+    QString url;
+    if (analysisId == -1)
+        url = QString("/search/gene/%1").arg(geneName);
+    else
+        url = QString("/search/gene/%1/%2").arg(geneName, sAnalysisId);
+
+    Request* req = Request::get(url);
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            emit geneInformationReady(json["data"].toObject());
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
+
+
+void Regovar::getPanelInfo(int panelId, int)
+{
+    QString sPanelId = QString::number(panelId);
+    QString url = QString("/panel/%1").arg(sPanelId);
+
+    Request* req = Request::get(url);
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            emit panelInformationReady(json["data"].toObject());
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
+
+
+void Regovar::getPhenotypeInfo(QString phenotypeId, int)
+{
+    QString url = QString("/search/phenotype/%1").arg(phenotypeId);
+
+    Request* req = Request::get(url);
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            emit phenotypeInformationReady(json["data"].toObject());
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
+
+
+void Regovar::getPipelineInfo(int pipelineId, int)
+{
+    QString sPipelineId = QString::number(pipelineId);
+    QString url = QString("/pipeline/%1").arg(sPipelineId);
+
+    Request* req = Request::get(url);
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            emit pipelineInformationReady(json["data"].toObject());
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
+
+
+void Regovar::getSampleInfo(int sampleId, int)
+{
+    QString sSampleId = QString::number(sampleId);
+    QString url = QString("/sample/%1").arg(sSampleId);
+
+    Request* req = Request::get(url);
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            emit sampleInformationReady(json["data"].toObject());
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
+
+
+void Regovar::getUserInfo(int userId, int)
+{
+    QString sUserId = QString::number(userId);
+    QString url = QString("/user/%1").arg(sUserId);
+
+    Request* req = Request::get(url);
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            emit userInformationReady(json["data"].toObject());
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
+
 
 void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
 {
@@ -349,31 +495,9 @@ void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
 }
 
 
-void Regovar::getGeneInfo(QString geneName, int analysisId)
-{
-    QString sAnalysisId = QString::number(analysisId);
-    QString url;
-    if (analysisId == -1)
-        url = QString("/search/gene/%1").arg(geneName);
-    else
-        url = QString("/search/gene/%1/%2").arg(geneName, sAnalysisId);
 
-    Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            emit geneInformationReady(json["data"].toObject());
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
-}
+
+
 
 
 

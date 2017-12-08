@@ -122,6 +122,12 @@ Rectangle
                         icon: "^"
                         source: "../InformationsPanel/Sample/StatsPanel.qml"
                     }
+                    ListElement
+                    {
+                        title: qsTr("Events")
+                        icon: "è"
+                        source: "../InformationsPanel/Common/EventsPanel.qml"
+                    }
                 }
             }
         }

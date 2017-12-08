@@ -3,8 +3,8 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import org.regovar 1.0
 
-import "../../../../Regovar"
-import "../../../../Framework"
+import "../../Regovar"
+import "../../Framework"
 
 
 Rectangle
@@ -115,6 +115,12 @@ Rectangle
                         title: qsTr("Regovar statistics")
                         icon: "^"
                         source: "../InformationsPanel/User/StatsPanel.qml"
+                    }
+                    ListElement
+                    {
+                        title: qsTr("Events")
+                        icon: "è"
+                        source: "../InformationsPanel/Common/EventsPanel.qml"
                     }
                 }
             }
