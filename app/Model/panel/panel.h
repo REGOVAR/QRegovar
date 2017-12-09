@@ -2,6 +2,7 @@
 #define PANEL_H
 
 #include <QtCore>
+#include "panelversion.h"
 
 class Panel : public QObject
 {
@@ -69,7 +70,7 @@ private:
     QString mDescription;
     bool mShared = false;
     QStringList mVersions;
-    QHash<QString, QVariantList> mEntries;
+    QHash<QString, PanelVersion*> mEntries;
     QDateTime mCreationDate;
     QDateTime mUpdateDate;
 

@@ -106,21 +106,15 @@ Rectangle
                 {
                     ListElement
                     {
-                        title: qsTr("Online Tools")
-                        icon: "è"
-                        source: "../Pages/Analysis/Filtering/VariantInformations/OnlineToolsPanel.qml"
-                    }
-                    ListElement
-                    {
-                        title: qsTr("Phenotype")
-                        icon: "K"
-                        source: "../Pages/Analysis/Filtering/VariantInformations/PhenotypePanel.qml"
+                        title: qsTr("Informations")
+                        icon: "j"
+                        source: "../InformationsPanel/Pipeline/InfoPanel.qml"
                     }
                     ListElement
                     {
                         title: qsTr("Regovar statistics")
                         icon: "^"
-                        source: "../Pages/Analysis/Filtering/VariantInformations/StatsPanel.qml"
+                        source: "../InformationsPanel/Pipeline/StatsPanel.qml"
                     }
                 }
             }

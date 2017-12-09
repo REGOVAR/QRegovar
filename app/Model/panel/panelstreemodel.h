@@ -2,6 +2,7 @@
 #define PANELSTREEMODEL_H
 
 #include "Model/framework/treemodel.h"
+#include "panel.h"
 
 class PanelsTreeModel : public TreeModel
 {
@@ -31,7 +32,7 @@ public:
     void refresh(QJsonObject json);
     QVariant newPanelsTreeItem(int id, const QString& version, const QString& text);
     void setupModelData(QJsonArray data, TreeItem *parent);
-    void setupModelPanelEntryData(int panelId, QJsonObject data, TreeItem *parent);
+    void setupModelPaneVersionData(Panel* panel, TreeItem *parent);
 
 Q_SIGNALS:
     void isLoadingChanged();

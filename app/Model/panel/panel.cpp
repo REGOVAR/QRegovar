@@ -24,7 +24,13 @@ bool Panel::fromJson(QJsonObject json)
     mCreationDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
     mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     // Versions
-    // Entries
+    mVersions.clear();
+    mEntries.clear();
+    for (QJsonValue vv: json["versions"].toArray())
+    {
+        PanelVersion* pv = new PanelVersion(vv.toObject());
+        mVersions.append(pv->version());
+    }
 
     emit dataChanged();
 

@@ -104,7 +104,7 @@ Rectangle
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
-        model: regovar.panelsManager.panelsTreeView
+        model: regovar.panelsManager.panelsTree
 
         // Default delegate for all column
         itemDelegate: Item

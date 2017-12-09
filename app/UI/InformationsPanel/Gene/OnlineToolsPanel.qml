@@ -208,7 +208,7 @@ ScrollView
 
             OnlineToolAction
             {
-                url: toolsList.get(index).url
+                url: geneDBList.get(index).url
                 label: name
                 icon: "_"
                 model: geneDBData
@@ -255,7 +255,7 @@ ScrollView
 
             OnlineToolAction
             {
-                url: toolsList.get(index).url
+                url: homologsDBList.get(index).url
                 label: name
                 icon: "_"
                 model: homologsDBData
@@ -302,7 +302,7 @@ ScrollView
 
             OnlineToolAction
             {
-                url: toolsList.get(index).url
+                url: nucleotideDBList.get(index).url
                 label: name
                 icon: "_"
                 model: nucleotideDBData
@@ -349,7 +349,7 @@ ScrollView
 
             OnlineToolAction
             {
-                url: toolsList.get(index).url
+                url: proteinDBList.get(index).url
                 label: name
                 icon: "_"
                 model: proteinDBData
@@ -396,7 +396,7 @@ ScrollView
 
             OnlineToolAction
             {
-                url: toolsList.get(index).url
+                url: clinicalDBList.get(index).url
                 label: name
                 icon: "_"
                 model: clinicalDBData
@@ -443,7 +443,7 @@ ScrollView
 
             OnlineToolAction
             {
-                url: toolsList.get(index).url
+                url: otherDBList.get(index).url
                 label: name
                 icon: "_"
                 model: otherDBData

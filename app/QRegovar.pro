@@ -69,7 +69,8 @@ HEADERS += \
     Model/panel/panelsmanager.h \
     Model/panel/panel.h \
     Model/panel/panelstreemodel.h \
-    Model/panel/panelstreeitem.h
+    Model/panel/panelstreeitem.h \
+    Model/panel/panelversion.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -126,7 +127,8 @@ SOURCES += main.cpp \
     Model/panel/panelsmanager.cpp \
     Model/panel/panel.cpp \
     Model/panel/panelstreemodel.cpp \
-    Model/panel/panelstreeitem.cpp
+    Model/panel/panelstreeitem.cpp \
+    Model/panel/panelversion.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

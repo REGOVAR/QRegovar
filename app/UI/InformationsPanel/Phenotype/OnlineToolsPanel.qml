@@ -127,7 +127,7 @@ ScrollView
             OnlineToolAction
             {
                 url: modelData.url
-                iconText: "_"
+                icon: "_"
                 label: modelData.name
                 width: root.width - 2
             }

@@ -127,7 +127,7 @@ ScrollView
             OnlineToolAction
             {
                 url: "http://compbio.charite.de/hpoweb/showterm?id=" + modelData.id
-                iconText: "_"
+                icon: "_"
                 label: modelData.label
                 width: root.width - 2
             }
