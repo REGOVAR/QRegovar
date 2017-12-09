@@ -122,15 +122,15 @@ Rectangle
 
         TableViewColumn
         {
-            role: "shared"
-            title: "Shared"
-            width: 50
-        }
-        TableViewColumn
-        {
             role: "name"
             title: "Name"
             width: 250
+        }
+        TableViewColumn
+        {
+            role: "shared"
+            title: "Shared"
+            width: 50
         }
         TableViewColumn
         {
