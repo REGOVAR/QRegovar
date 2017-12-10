@@ -118,6 +118,12 @@ Rectangle
                     }
                     ListElement
                     {
+                        title: qsTr("References")
+                        icon: "Y"
+                        source: "../InformationsPanel/Gene/ReferencePanel.qml"
+                    }
+                    ListElement
+                    {
                         title: qsTr("Phenotype")
                         icon: "K"
                         source: "../InformationsPanel/Phenotype/InfoPanel.qml"
