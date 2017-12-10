@@ -37,8 +37,9 @@ Rectangle
         var variant = "chr" + data["chr"] + ":" + data["pos"] + " " + data["ref"] + ">" + data["alt"];
         var gene = data["genename"];
         var ref = data["reference"];
-        title.text = "<h1>" + data["name"] + "</h1></br>";
-        title.text += "<span style=\"font-family: monospace;\">" + data["symbol"] + " (" + data["hgnc_id"] + ")</span></br>";
+        title.text = "<h1>" + data["name"] + "</h1>";
+        title.text += "<span style=\"font-family: monospace;\">" + data["symbol"] + " (" + data["hgnc_id"] + ")</span><br>";
+        title.text += data["location"];
     }
 
 

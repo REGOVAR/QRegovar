@@ -83,8 +83,6 @@ ScrollView
                 {
                     Layout.fillWidth: true
                     text: formatPubMed(modelData)
-                    width: Regovar.theme.font.boxSize.header
-                    height: Regovar.theme.font.boxSize.header
                     textFormat: TextEdit.RichText
                     font.pixelSize: Regovar.theme.font.size.normal + 2
                     color: Regovar.theme.frontColor.normal
