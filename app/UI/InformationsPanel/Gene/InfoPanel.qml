@@ -15,6 +15,7 @@ ScrollView
     anchors.fill: parent
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
+    property var geneData
     property var model
     onModelChanged:  if (model) { updateFromModel(model); }
 
@@ -28,8 +29,6 @@ ScrollView
                 geneData = data;
         }
     }
-
-    property var geneData
 
 
     Column

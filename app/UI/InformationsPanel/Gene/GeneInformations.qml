@@ -119,7 +119,7 @@ Rectangle
                     }
                     ListElement
                     {
-                        title: qsTr("References")
+                        title: qsTr("Pubmed")
                         icon: "Y"
                         source: "../InformationsPanel/Gene/ReferencePanel.qml"
                     }

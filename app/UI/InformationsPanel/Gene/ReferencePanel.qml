@@ -16,94 +16,56 @@ ScrollView
     anchors.fill: parent
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
+
+    property var pubmedData
     property var model
+    onModelChanged: updateFromModel(model)
 
-    Column
+    function updateFromModel(data)
     {
-        x:10
-        y:5
-        width: root.width
-        spacing: 10
-
-        // Pubmed resources
-        Rectangle
+        if (data && "pubmed" in data)
         {
-            width: root.width - 20
-            height: Regovar.theme.font.boxSize.header
-            color: "transparent"
-
-            Row
+            data = data["pubmed"];
+            var txt = "<ul>";
+            for (var idx=0; idx<data.length; idx++)
             {
-                anchors.fill: parent
-
-                Text
-                {
-                    text: "{"
-                    width: Regovar.theme.font.boxSize.header
-                    height: Regovar.theme.font.boxSize.header
-
-                    font.family: Regovar.theme.icons.name
-                    color: Regovar.theme.primaryColor.back.normal
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                Text
-                {
-                    text: qsTr("Pubmed")
-                    height: Regovar.theme.font.boxSize.header
-                    color: Regovar.theme.primaryColor.back.normal
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                }
+                var d = data[idx];
+                txt += "<li><b>" + d["title"] + "</b><br>";
+                txt += d["authors"] + ".<br>";
+                txt += d["source"] + "<br>";
+                txt += "<a href=\"https://www.ncbi.nlm.nih.gov/pubmed/" + d["id"] + "\">PMID: " + d["id"] + "</a><br></li>";
             }
+            txt += "</ul>";
+            pubmedData = txt;
         }
-        Repeater
+        else
         {
-            model: root.model ? root.model["pubmed_id"] : []
-
-            RowLayout
-            {
-                x: 10
-                width: root.width - 30
-                Text
-                {
-                    Layout.alignment: Qt.AlignTop
-                    text: "Y"
-                    width: Regovar.theme.font.boxSize.header
-                    height: Regovar.theme.font.boxSize.header
-
-                    font.family: Regovar.theme.icons.name
-                    color: Regovar.theme.primaryColor.back.normal
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                TextEdit
-                {
-                    Layout.fillWidth: true
-                    text: formatPubMed(modelData)
-                    textFormat: TextEdit.RichText
-                    font.pixelSize: Regovar.theme.font.size.normal + 2
-                    color: Regovar.theme.frontColor.normal
-                    readOnly: true
-                    selectByMouse: true
-                    selectByKeyboard: true
-                    wrapMode: TextEdit.Wrap
-                    onLinkActivated: Qt.openUrlExternally(link)
-                }
-            }
+            pubmedData = "";
         }
     }
 
-    function formatPubMed(data)
+    Column
     {
-        var text = "";
-        text += "<b>" + data["title"] + "</b><br>";
-        text += data["firstauthor"] + ", ..., " + data["lastauthor"] + ".<br>";
-        text += data["source"] + " - " + data["pubdate"] + "<br>";
-        text += "<a href=\"https://www.ncbi.nlm.nih.gov/pubmed/" + data["uid"] + "\">PMID: " + data["uid"] + "</a>";
+        x: 10
+        y: 10
 
-        return text;
+        TextEdit
+        {
+            width: root.width - 30
+            text: pubmedData
+            textFormat: TextEdit.RichText
+            font.pixelSize: Regovar.theme.font.size.normal + 2
+            color: Regovar.theme.frontColor.normal
+            readOnly: true
+            selectByMouse: true
+            selectByKeyboard: true
+            wrapMode: TextEdit.Wrap
+            onLinkActivated: Qt.openUrlExternally(link)
+        }
+        Item
+        {
+            width: 1
+            height: 10
+        }
     }
 }
