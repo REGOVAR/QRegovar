@@ -59,23 +59,29 @@ ScrollView
         }
     }
 
-    property var proteinDBData: root.model ? [root.model["uniprot_ids"][0]] : []
-    property var proteinDBList: ListModel
+    property var expresionDBData: root.model ? [root.model["symbol"], root.model["uniprot_ids"][0]] : []
+    property var expressionDBList: ListModel
     {
+
+        ListElement
+        {
+            name : "Clue"
+            url  : "https://clue.io/command?q={0}"
+        }
         ListElement
         {
             name : "UniProt"
-            url  : "http://www.uniprot.org/uniprot/{0}"
+            url  : "http://www.uniprot.org/uniprot/{1}"
         }
         ListElement
         {
             name : "InterPro"
-            url  : "https://www.ebi.ac.uk/interpro/ISearch?query={0}"
+            url  : "https://www.ebi.ac.uk/interpro/ISearch?query={1}"
         }
         ListElement
         {
             name : "PDBe"
-            url  : "https://www.ebi.ac.uk/pdbe/searchResults.html?display=both&term={0}"
+            url  : "https://www.ebi.ac.uk/pdbe/searchResults.html?display=both&term={1}"
         }
     }
 
@@ -345,14 +351,14 @@ ScrollView
         }
         Repeater
         {
-            model: proteinDBList
+            model: expressionDBList
 
             OnlineToolAction
             {
-                url: proteinDBList.get(index).url
+                url: expressionDBList.get(index).url
                 label: name
                 icon: "_"
-                model: proteinDBData
+                model: expresionDBData
                 width: root.width - Regovar.theme.font.boxSize.header
             }
         }
