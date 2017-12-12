@@ -404,6 +404,7 @@ TreeView
 
 
 
+
     function mapToList(json)
     {
         var newModel = listModel.createObject(resultsTree);
@@ -413,7 +414,21 @@ TreeView
         for (var idx=0; idx<l; idx++)
         {
             var sid = analysis.samples[idx].id;
-            newModel.append({ "id": sid, "value" : json[sid]});
+            var data = json[sid];
+            if (typeof(data) == "object")
+            {
+                if ("length" in data)
+                {
+                    var datares = ""
+                    for (var idx2=0; idx2<data.length; idx2++)
+                    {
+                        datares += data[idx2] + ", ";
+                    }
+                    data = datares;
+                }
+            }
+
+            newModel.append({ "id": sid, "value" : data});
         }
 
         return newModel;

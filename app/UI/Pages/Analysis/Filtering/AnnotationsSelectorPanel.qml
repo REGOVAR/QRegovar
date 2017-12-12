@@ -107,7 +107,12 @@ Rectangle
 
                             Component.onCompleted:
                             {
-                                checked = annotationsSelector.model.data(styleData.index, Qt.UserRole + 2);
+                                var idx = styleData.index;
+                                var data = annotationsSelector.model.data(idx, Qt.UserRole + 2)
+                                if (data)
+                                {
+                                    checked = data;
+                                }
                             }
                         }
                     }
