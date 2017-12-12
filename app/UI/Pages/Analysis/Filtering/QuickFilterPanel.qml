@@ -108,10 +108,11 @@ Rectangle
                 icon: "x"
                 onClicked:
                 {
+                    var qf = model.quickfilters.toJson();
                     model.currentFilterName = "";
-                    model.results.applyFilter(model.quickfilters.toJson());
+                    model.results.applyFilter(qf);
                     model.advancedfilter.forceRefresh = true;
-                    model.advancedfilter.loadJson(model.quickfilters.toJson());
+                    model.advancedfilter.loadJson(qf);
                 }
             }
             ButtonIcon

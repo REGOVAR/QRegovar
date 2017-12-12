@@ -153,7 +153,7 @@ Rectangle
         anchors.topMargin: 60
 
         color: "#aaffffff"
-        visible: !regovar.analysesManager.newFiltering.isLoading
+        visible: resultsTree.model ? resultsTree.model.isLoading : false
 
         MouseArea
         {

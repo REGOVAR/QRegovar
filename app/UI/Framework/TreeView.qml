@@ -70,10 +70,9 @@ TreeView
                 }
             }
 
-            // Design
             LinearGradient
             {
-                anchors.fill: parent
+                anchors.fill: headerRoot
                 anchors.margins: 1
                 start: Qt.point(0, 0)
                 end: Qt.point(0, 24)
@@ -112,7 +111,7 @@ TreeView
             }
             RowLayout
             {
-                anchors.fill: parent
+                anchors.fill: headerRoot
                 anchors.leftMargin: 5
                 anchors.rightMargin: 5
                 // Label

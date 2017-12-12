@@ -191,6 +191,9 @@ void ResultsTreeModel::applyFilter(QJsonArray filter)
 
     setIsLoading(true);
 
+    // Save last applied filter
+    regovar->analysesManager()->getFilteringAnalysis(mAnalysisId)->setFilterJson(filter);
+
     QJsonObject body;
     body.insert("filter", filter);
     body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
