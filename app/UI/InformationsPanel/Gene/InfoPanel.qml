@@ -114,16 +114,38 @@ ScrollView
 
             text += "</td></tr>";
         }
+
         // text += "<tr><td><b>:</b></td><td>" + data[""] + "</td></tr>";
 
 
 
 
-        text += "</table><br><br>";
+        text += "</table><br/><br/>";
 
-        if (data["omim_description"])
+        // OMIM Allelic variants references
+        if ("omim_variants" in data && data["omim_variants"].length>0)
         {
-            text += "<b>Omim description:</b><br>" + data["omim_description"];
+            text += "<b>OMIM allelic variants:</b>";
+            if (data["refgene"].length > 0)
+            {
+                text += "<ol>";
+                for (var idx=0; idx<data["omim_variants"].length; idx++)
+                {
+                    var d = data["omim_variants"][idx];
+                    text += "<li><b>" + d["name"] + "</b><br/>";
+                    text += d["mutations"] + " (";
+                    if ("dbSnps" in d)
+                        text += "<a href=\"http://www.ensembl.org/Homo_sapiens/Variation/Summary?v=" + d["dbSnps"] + ";toggle_HGVS_names=open\">dbSNP:" + d["dbSnps"] + "</a>, ";
+                    if ("exacDbSnps" in d)
+                        text += "<a href=\"http://exac.broadinstitute.org/awesome?query=" + d["exacDbSnps"] + "\">Exac:" + d["exacDbSnps"] + "</a>, ";
+                    if ("clinvarAccessions" in d)
+                        text += "<a href=\"https://www.ncbi.nlm.nih.gov/clinvar?term=" + d["clinvarAccessions"] + "\">" + d["clinvarAccessions"] + "</a>, ";
+                    text +=")<br/>";
+                    text += d["text"] + "<br/></li>";
+                }
+                text += "</ol>";
+            }
+            text += "</td></tr>";
         }
 
         return text;

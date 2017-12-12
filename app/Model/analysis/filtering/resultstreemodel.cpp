@@ -57,7 +57,6 @@ QHash<int, QByteArray> ResultsTreeModel::roleNames() const
         roles[roleId] = uid.toUtf8();
         ++roleId;
     }
-    qDebug() << "Result Tree's roles defined : " << roles.count() << "roles";
     return roles;
 }
 
@@ -72,7 +71,7 @@ bool ResultsTreeModel::canFetchMore(const QModelIndex& parent) const
     // for other item, check if variant result pointed by the index have trx
     TreeItem* item = getItem(parent);
     if (item)
-        return item->virtualChildCount() > 0;
+        return item->virtualChildCount() > 0 && item->children().count() != item->virtualChildCount() ;
     return false;
 }
 
@@ -88,6 +87,7 @@ void ResultsTreeModel::fetchMore(const QModelIndex& parent)
         return;
 
 
+
     QJsonObject body;
     body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
     body.insert("order", QJsonArray::fromStringList(mFilteringAnalysis->order()));
@@ -99,7 +99,7 @@ void ResultsTreeModel::fetchMore(const QModelIndex& parent)
     {
         if (success)
         {
-            beginInsertRows(parent, 0, item->virtualChildCount()-1);
+            beginInsertRows(parent, 0, item->virtualChildCount());
 
             QJsonObject data = json["data"].toObject();
             setLoaded(0);

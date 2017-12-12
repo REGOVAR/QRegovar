@@ -52,7 +52,7 @@ bool Sample::fromJson(QJsonObject json)
     setStatus(json["status"].toString());
 
 
-    File* source = regovar->filesManager()->getFile(json["file_id"].toInt());
+    File* source = regovar->filesManager()->getOrCreateFile(json["file_id"].toInt());
     setSource(source);
     setSourceUI(source->filenameUI());
 

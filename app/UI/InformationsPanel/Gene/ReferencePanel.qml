@@ -26,7 +26,7 @@ ScrollView
         if (data && "pubmed" in data)
         {
             data = data["pubmed"];
-            var txt = "<ul>";
+            var txt = "<ol>";
             for (var idx=0; idx<data.length; idx++)
             {
                 var d = data[idx];
@@ -35,7 +35,7 @@ ScrollView
                 txt += d["source"] + "<br>";
                 txt += "<a href=\"https://www.ncbi.nlm.nih.gov/pubmed/" + d["id"] + "\">PMID: " + d["id"] + "</a><br></li>";
             }
-            txt += "</ul>";
+            txt += "</ol>";
             pubmedData = txt;
         }
         else
