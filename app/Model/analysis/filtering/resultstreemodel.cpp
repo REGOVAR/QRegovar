@@ -99,7 +99,8 @@ void ResultsTreeModel::fetchMore(const QModelIndex& parent)
     {
         if (success)
         {
-            beginInsertRows(parent, 0, item->virtualChildCount());
+            int count = item->virtualChildCount();
+            beginInsertRows(parent, 0, count-1);
 
             QJsonObject data = json["data"].toObject();
             setLoaded(0);

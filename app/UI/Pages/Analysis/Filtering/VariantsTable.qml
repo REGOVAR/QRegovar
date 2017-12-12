@@ -190,7 +190,7 @@ TreeView
                     anchors.leftMargin: 5
                     anchors.verticalCenter: parent.verticalCenter
                     checked: Boolean(styleData.value)
-                    text: resultsTree.model.data(styleData.index, Qt.UserRole +1)
+                    text: "" // resultsTree.model.data(styleData.index, Qt.UserRole +1)
                     onClicked:
                     {
                         var id = resultsTree.model.data(styleData.index, Qt.UserRole +1);
