@@ -78,7 +78,7 @@ Rectangle
         {
             id: waitingPanel
             anchors.fill: parent
-            color: Regovar.theme.backgroundColor.normal
+            color: Regovar.theme.backgroundColor.main
             visible: false
             onWaitingDone: openFile(fileId)
         }

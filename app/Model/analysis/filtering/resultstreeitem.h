@@ -12,17 +12,17 @@ class ResultsTreeItem : public TreeItem
     Q_PROPERTY(bool isSelected READ isSelected WRITE setIsSelected NOTIFY isSelectedChanged)
 
 public:
+    // Constructors
     explicit ResultsTreeItem(FilteringAnalysis* analysis=nullptr, TreeItem* parent=nullptr);
     explicit ResultsTreeItem(QString uid, QVariant text, FilteringAnalysis* analysis=nullptr, int childCount=0, TreeItem* parent=nullptr);
 
-
+    // Getters
+    inline QString uid() { return mUid; }
     inline bool isSelected() const { return mIsSelected; }
 
-
-    inline QString uid() { return mUid; }
+    // Setters
     inline void setUid(QString uid) { mUid = uid; emit uidChanged(); }
     inline void setIsSelected(bool flag) { mIsSelected = flag; emit isSelectedChanged(); }
-
 
 Q_SIGNALS:
     void uidChanged();

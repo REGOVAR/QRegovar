@@ -14,7 +14,9 @@ public:
 
     enum AnnotationsModelRoles
     {
-        NameRole = Qt::UserRole + 1,
+        IdRole = Qt::UserRole + 1,
+        CheckedRole,
+        NameRole,
         VersionRole,
         DescriptionRole,
     };
@@ -25,12 +27,12 @@ public:
 
     bool fromJson(QJsonObject data, QStringList dbUids);
     void addEntry(QString dbName, QString dbVersion, QString dbDescription, bool isDbSelected, FieldColumnInfos* data);
-    QVariant newAnnotationsTreeViewItem(QString id, const QVariant &value, bool isChecked=false);
     void setupModelData(QJsonArray data, TreeItem *parent, QStringList dbUids);
 
 
     // Accessors
     inline bool isLoading() { return mIsLoading; }
+    Q_INVOKABLE Annotation* getAnnotation(const QModelIndex &index);
     Q_INVOKABLE Annotation* getAnnotation(QString uid) ;
     inline QHash<QString, Annotation*>* annotations() { return &mAnnotations;}
 

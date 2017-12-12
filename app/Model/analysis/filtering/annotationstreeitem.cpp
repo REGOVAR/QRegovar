@@ -1,24 +1,16 @@
 #include "annotationstreeitem.h"
 
 
-AnnotationsTreeItem::AnnotationsTreeItem(QObject *parent) : QObject(parent)
-{}
-
-AnnotationsTreeItem::AnnotationsTreeItem(const AnnotationsTreeItem &other) : QObject(other.parent())
-{
-    mValue = other.mValue;
-    mUid= other.mUid;
-}
-
-AnnotationsTreeItem::~AnnotationsTreeItem()
+AnnotationsTreeItem::AnnotationsTreeItem(TreeItem *parent) : TreeItem(parent)
 {}
 
 
 
-AnnotationsTreeItem::AnnotationsTreeItem(QString uid, QVariant value, QObject *parent) : QObject(parent)
+AnnotationsTreeItem::AnnotationsTreeItem(const QString uid, const bool checked, const QHash<int, QVariant>& data, TreeItem *parent) : TreeItem(parent)
 {
-    mValue = value;
-    mUid= uid;
+    setUid(uid);
+    setChecked(checked);
+    setData(data);
 }
 
 

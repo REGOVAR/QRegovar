@@ -1,7 +1,7 @@
 #include <QDebug>
 #include <QtNetwork>
 #include "annotationstreemodel.h"
-#include "annotationstreeitem.h"
+#include "Model/framework/treeitem.h"
 #include "Model/framework/request.h"
 
 
@@ -37,6 +37,17 @@ bool AnnotationsTreeModel::fromJson(QJsonObject data, QStringList dbUids)
 }
 
 
+Annotation* AnnotationsTreeModel::getAnnotation(const QModelIndex &index)
+{
+    TreeItem* item = getItem(index);
+    if (item != nullptr)
+    {
+        return getAnnotation(item->data(IdRole).toString());
+    }
+    return nullptr;
+}
+
+
 Annotation* AnnotationsTreeModel::getAnnotation(QString uid)
 {
     if (mAnnotations.contains(uid))
@@ -54,6 +65,8 @@ Annotation* AnnotationsTreeModel::getAnnotation(QString uid)
 QHash<int, QByteArray> AnnotationsTreeModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
+    roles[IdRole] = "id";
+    roles[CheckedRole] = "Checked";
     roles[NameRole] = "name";
     roles[VersionRole] = "version";
     roles[DescriptionRole] = "description";
@@ -62,16 +75,8 @@ QHash<int, QByteArray> AnnotationsTreeModel::roleNames() const
 
 
 
-QVariant AnnotationsTreeModel::newAnnotationsTreeViewItem(QString id, const QVariant& value, bool isChecked)
-{
-    AnnotationsTreeItem *t = new AnnotationsTreeItem(this);
-    t->setValue(value);
-    t->setUid(id);
-    t->setChecked(isChecked);
-    QVariant v;
-    v.setValue(t);
-    return v;
-}
+
+
 
 
 
@@ -94,9 +99,11 @@ void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent, QSt
             {
                 // Create DB entry
                 QHash<int, QVariant> dbColData;
-                dbColData.insert(NameRole, newAnnotationsTreeViewItem(dbUid, QVariant(dbName)));
-                dbColData.insert(VersionRole, newAnnotationsTreeViewItem(dbUid, QVariant(dbVersion[""])));
-                dbColData.insert(DescriptionRole, newAnnotationsTreeViewItem(dbUid, QVariant(dbDescription)));
+                dbColData.insert(IdRole, QVariant(dbUid));
+                dbColData.insert(CheckedRole, QVariant(false));
+                dbColData.insert(NameRole, QVariant(dbName));
+                dbColData.insert(VersionRole, QVariant(dbVersion[""]));
+                dbColData.insert(DescriptionRole, QVariant(dbDescription));
                 TreeItem* dbItem = new TreeItem(dbColData, parent);
                 parent->appendChild(dbItem);
 
@@ -114,9 +121,11 @@ void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent, QSt
                     mAnnotations.insert(uid, annot);
 
                     QHash<int, QVariant> annotColData;
-                    annotColData.insert(NameRole, newAnnotationsTreeViewItem(uid, QVariant(name)));
-                    annotColData.insert(VersionRole, newAnnotationsTreeViewItem(uid, QVariant(dbVersion[""])));
-                    annotColData.insert(DescriptionRole, newAnnotationsTreeViewItem(uid, QVariant(description)));
+                    dbColData.insert(IdRole, QVariant(uid));
+                    dbColData.insert(CheckedRole, QVariant(false));
+                    annotColData.insert(NameRole, QVariant(name));
+                    annotColData.insert(VersionRole, QVariant(dbVersion[""]));
+                    annotColData.insert(DescriptionRole, QVariant(description));
                     TreeItem* annotItem = new TreeItem(annotColData, dbItem);
                     dbItem->appendChild(annotItem);
 
@@ -124,8 +133,6 @@ void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent, QSt
                 }
             }
         }
-
-
     }
     qDebug() << "Annotations Model Ready";
 }
@@ -147,10 +154,7 @@ void AnnotationsTreeModel::addEntry(QString dbName, QString dbVersion, QString d
     for(int idx=0; idx < mRootItem->childCount(); idx++)
     {
         TreeItem* item = mRootItem->child(idx);
-        QVariant i1 = item->data(NameRole);
-        QObject* i2 = qvariant_cast<QObject*>(i1);
-        AnnotationsTreeItem* i3 = qobject_cast<AnnotationsTreeItem*>(i2);
-        QString itemDbName = i3->value().toString();
+        QString itemDbName = item->data(NameRole).toString();
         if (fullName == itemDbName)
         {
             parentDB = item;
@@ -162,8 +166,11 @@ void AnnotationsTreeModel::addEntry(QString dbName, QString dbVersion, QString d
     {
         // Create DB entry
         QHash<int, QVariant> dbColData4Db;
-        dbColData4Db.insert(NameRole, newAnnotationsTreeViewItem(dbUid, QVariant(fullName), isDbSelected));
-        dbColData4Db.insert(DescriptionRole, newAnnotationsTreeViewItem(dbUid, QVariant(dbDescription)));
+        dbColData4Db.insert(IdRole, QVariant(dbUid));
+        dbColData4Db.insert(CheckedRole, QVariant(isDbSelected));
+        dbColData4Db.insert(NameRole, QVariant(fullName));
+        dbColData4Db.insert(VersionRole, QVariant(dbVersion));
+        dbColData4Db.insert(DescriptionRole, QVariant(dbDescription));
 
         parentDB = new TreeItem(dbColData4Db, mRootItem);
         mRootItem->appendChild(parentDB);
@@ -179,8 +186,10 @@ void AnnotationsTreeModel::addEntry(QString dbName, QString dbVersion, QString d
     mAnnotations.insert(uid, data->annotation()); // need that ?
 
     QHash<int, QVariant> annotColData;
-    annotColData.insert(NameRole, newAnnotationsTreeViewItem(uid, QVariant(data->annotation()->name()), data->isDisplayed()));
-    annotColData.insert(DescriptionRole, newAnnotationsTreeViewItem(uid, QVariant(data->annotation()->description())));
+    annotColData.insert(IdRole, QVariant(uid));
+    annotColData.insert(CheckedRole, QVariant(data->isDisplayed()));
+    annotColData.insert(NameRole, QVariant(data->annotation()->name()));
+    annotColData.insert(DescriptionRole, QVariant(data->annotation()->description()));
     TreeItem* annotItem = new TreeItem(annotColData, parentDB);
     parentDB->appendChild(annotItem);
 }

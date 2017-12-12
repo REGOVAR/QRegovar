@@ -3,36 +3,30 @@
 
 #include "Model/framework/treeitem.h"
 
-class AnnotationsTreeItem : public QObject
+class AnnotationsTreeItem : public TreeItem
 {
     Q_OBJECT
     Q_PROPERTY(QString uid READ uid WRITE setUid NOTIFY uidChanged)
-    Q_PROPERTY(QVariant value READ value WRITE setValue NOTIFY valueChanged)
     Q_PROPERTY(bool checked READ checked WRITE setChecked NOTIFY checkedChanged)
 
 public:
+    // Constructors
+    explicit AnnotationsTreeItem(TreeItem* parent=nullptr);
+    explicit AnnotationsTreeItem(const QString uid, const bool checked, const QHash<int, QVariant>& data, TreeItem* parent=nullptr);
 
-
-    explicit AnnotationsTreeItem(QObject* parent=nullptr);
-    explicit AnnotationsTreeItem(QString uid, QVariant value, QObject* parent=nullptr);
-    AnnotationsTreeItem(const AnnotationsTreeItem &other);
-    ~AnnotationsTreeItem();
-
-    inline QVariant value() { return mValue; }
+    // Getters
     inline QString uid() { return mUid; }
     inline bool checked() { return mIsChecked;}
 
-    inline void setValue(QVariant value) { mValue = value; emit valueChanged(); }
+    // Setters
     inline void setUid(QString uid) { mUid = uid; emit uidChanged(); }
     void setChecked(bool checked) ;
 
 Q_SIGNALS:
-    void valueChanged();
     void uidChanged();
     void checkedChanged();
 
 private:
-    QVariant mValue;
     QString mUid;
     bool mIsChecked = false;
 };

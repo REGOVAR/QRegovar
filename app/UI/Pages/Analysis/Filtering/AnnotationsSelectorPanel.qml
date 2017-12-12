@@ -95,12 +95,19 @@ Rectangle
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
-                            checked: styleData.value.checked
-                            text: (styleData.value == undefined || styleData.value.value == undefined) ? "-"  : styleData.value.value
+                            text: styleData.value ? styleData.value : "-"
                             onClicked:
                             {
-                                var test = styleData.value
-                                annotationsSelector.checked(styleData.value.uid, checked);
+                                var annot = annotationsSelector.model.getAnnotation(styleData.index);
+                                if (annot)
+                                {
+                                    annotationsSelector.checked(annot.uid, checked);
+                                }
+                            }
+
+                            Component.onCompleted:
+                            {
+                                checked = annotationsSelector.model.data(styleData.index, Qt.UserRole + 2);
                             }
                         }
                     }
@@ -113,7 +120,7 @@ Rectangle
                     width: 250
                     delegate: Text
                     {
-                        text: (styleData.value == undefined || styleData.value.value == undefined) ? "-"  : styleData.value.value
+                        text: styleData.value ? styleData.value : "-"
                         elide: Text.ElideRight
                     }
                 }

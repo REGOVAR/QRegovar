@@ -22,7 +22,8 @@ public:
     Q_INVOKABLE int row() const;
     Q_INVOKABLE TreeItem *parent();
     Q_INVOKABLE void recursiveDelete();
-    Q_INVOKABLE void setData(const QHash<int, QVariant> &data);
+    Q_INVOKABLE void setData(const QHash<int, QVariant>& data);
+    Q_INVOKABLE void setData(const int role, QVariant data);
 
     // Lazy loading features
     inline int virtualChildCount() const { return mVirtualChildCount; }

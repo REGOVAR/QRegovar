@@ -27,7 +27,6 @@ HEADERS += \
     Model/analysis/filtering/quickfilters/transmissionquickfilter.h \
     Model/analysis/filtering/quickfilters/quickfilterblockinterface.h \
     Model/analysis/filtering/annotation.h \
-    Model/analysis/filtering/annotationstreeitem.h \
     Model/analysis/filtering/annotationstreemodel.h \
     Model/analysis/filtering/resultstreeitem.h \
     Model/analysis/filtering/resultstreemodel.h \
@@ -85,7 +84,6 @@ SOURCES += main.cpp \
     Model/analysis/filtering/quickfilters/transmissionquickfilter.cpp \
     Model/analysis/filtering/quickfilters/quickfilterblockinterface.cpp \
     Model/analysis/filtering/annotation.cpp \
-    Model/analysis/filtering/annotationstreeitem.cpp \
     Model/analysis/filtering/annotationstreemodel.cpp \
     Model/analysis/filtering/resultstreeitem.cpp \
     Model/analysis/filtering/resultstreemodel.cpp \

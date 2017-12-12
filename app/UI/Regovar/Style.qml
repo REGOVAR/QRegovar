@@ -127,8 +127,8 @@ QtObject
         // TODO / FIXME : why only font.size.title is auto updated onchanged ?
         // need to reset manually other value...
         font.size.header = 4.0 * Screen.pixelDensity * fontSizeCoeff;
-        font.size.control = 3.0 * Screen.pixelDensity * fontSizeCoeff;
-        font.size.content = 2.5 * Screen.pixelDensity * fontSizeCoeff;
+        font.size.normal = 3.0 * Screen.pixelDensity * fontSizeCoeff;
+        font.size.small = 2.5 * Screen.pixelDensity * fontSizeCoeff;
     }
 
 

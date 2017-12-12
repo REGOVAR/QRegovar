@@ -40,6 +40,13 @@ void TreeItem::setData(const QHash<int, QVariant>& data)
 {
     mItemData = data;
 }
+void TreeItem::setData(const int role, QVariant data)
+{
+    if (mItemData.contains(role))
+    {
+        mItemData[role] = data;
+    }
+}
 
 int TreeItem::row() const
 {
