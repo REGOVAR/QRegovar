@@ -151,16 +151,13 @@ TreeView
             width: 30
             delegate: Item
             {
-                TextEdit
+                Text
                 {
                     anchors.leftMargin: 5
                     anchors.rightMargin: 5
                     anchors.fill: parent
                     verticalAlignment: Text.AlignVCenter
                     font.pixelSize: Regovar.theme.font.size.normal
-                    textFormat: Text.RichText
-                    readOnly: true
-
                     font.family: Regovar.theme.icons.name
                     horizontalAlignment: Text.AlignLeft
                     text: (styleData.value) ? "n" : "h"
@@ -328,9 +325,11 @@ TreeView
                         model: styleData.value ? resultsTree.mapToList(styleData.value) : null
                         Text
                         {
+                            Layout.fillWidth: true
                             height: 12
                             font.pixelSize: 12
                             text: String(model.value)
+                            elide: Text.ElideRight
                         }
                     }
                 }
