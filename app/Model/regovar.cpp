@@ -319,18 +319,18 @@ Reference* Regovar::referenceFromId(int id)
 
 
 
-void Regovar::getFileInfo(int fileId, int)
+void Regovar::getFileInfo(int fileId, int analysisId)
 {
-    emit fileInformationSearching();
+    emit fileInformationSearching(analysisId);
     File* file = mFilesManager->getOrCreateFile(fileId);
     file->load(false);
-    emit fileInformationReady(file);
+    emit fileInformationReady(file, analysisId);
 }
 
 
 void Regovar::getGeneInfo(QString geneName, int analysisId)
 {
-    emit geneInformationSearching();
+    emit geneInformationSearching(analysisId);
     QString sAnalysisId = QString::number(analysisId);
     QString url;
     if (analysisId == -1)
@@ -339,15 +339,15 @@ void Regovar::getGeneInfo(QString geneName, int analysisId)
         url = QString("/search/gene/%1/%2").arg(geneName, sAnalysisId);
 
     Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    connect(req, &Request::responseReceived, [this, req, analysisId](bool success, const QJsonObject& json)
     {
         if (success)
         {
-            emit geneInformationReady(json["data"].toObject());
+            emit geneInformationReady(json["data"].toObject(), analysisId);
         }
         else
         {
-            emit geneInformationReady(QJsonValue::Null);
+            emit geneInformationReady(QJsonValue::Null, analysisId);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
@@ -357,22 +357,22 @@ void Regovar::getGeneInfo(QString geneName, int analysisId)
 }
 
 
-void Regovar::getPanelInfo(int panelId, int)
+void Regovar::getPanelInfo(int panelId, int analysisId)
 {
-    emit panelInformationSearching();
+    emit panelInformationSearching(analysisId);
     QString sPanelId = QString::number(panelId);
     QString url = QString("/panel/%1").arg(sPanelId);
 
     Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    connect(req, &Request::responseReceived, [this, req, analysisId](bool success, const QJsonObject& json)
     {
         if (success)
         {
-            emit panelInformationReady(json["data"].toObject());
+            emit panelInformationReady(json["data"].toObject(), analysisId);
         }
         else
         {
-            emit panelInformationReady(QJsonValue::Null);
+            emit panelInformationReady(QJsonValue::Null, analysisId);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
@@ -382,21 +382,21 @@ void Regovar::getPanelInfo(int panelId, int)
 }
 
 
-void Regovar::getPhenotypeInfo(QString phenotypeId, int)
+void Regovar::getPhenotypeInfo(QString phenotypeId, int analysisId)
 {
-    emit phenotypeInformationSearching();
+    emit phenotypeInformationSearching(analysisId);
     QString url = QString("/search/phenotype/%1").arg(phenotypeId);
 
     Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    connect(req, &Request::responseReceived, [this, req, analysisId](bool success, const QJsonObject& json)
     {
         if (success)
         {
-            emit phenotypeInformationReady(json["data"].toObject());
+            emit phenotypeInformationReady(json["data"].toObject(), analysisId);
         }
         else
         {
-            emit phenotypeInformationReady(QJsonValue::Null);
+            emit phenotypeInformationReady(QJsonValue::Null, analysisId);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
@@ -431,22 +431,22 @@ void Regovar::getPipelineInfo(int pipelineId, int)
 }
 
 
-void Regovar::getSampleInfo(int sampleId, int)
+void Regovar::getSampleInfo(int sampleId, int analysisId)
 {
-    emit sampleInformationSearching();
+    emit sampleInformationSearching(analysisId);
     QString sSampleId = QString::number(sampleId);
     QString url = QString("/sample/%1").arg(sSampleId);
 
     Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    connect(req, &Request::responseReceived, [this, req, analysisId](bool success, const QJsonObject& json)
     {
         if (success)
         {
-            emit sampleInformationReady(json["data"].toObject());
+            emit sampleInformationReady(json["data"].toObject(), analysisId);
         }
         else
         {
-            emit sampleInformationReady(QJsonValue::Null);
+            emit sampleInformationReady(QJsonValue::Null, analysisId);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
@@ -483,7 +483,7 @@ void Regovar::getUserInfo(int userId, int)
 
 void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
 {
-    emit variantInformationSearching();
+    emit variantInformationSearching(analysisId);
     QString sRefId = QString::number(refId);
     QString sAnalysisId = QString::number(analysisId);
 
@@ -494,15 +494,15 @@ void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
         url = QString("/search/variant/%1/%2/%3").arg(sRefId, variantId, sAnalysisId);
 
     Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    connect(req, &Request::responseReceived, [this, req, analysisId](bool success, const QJsonObject& json)
     {
         if (success)
         {
-            emit variantInformationReady(json["data"].toObject());
+            emit variantInformationReady(json["data"].toObject(), analysisId);
         }
         else
         {
-            emit variantInformationReady(QJsonValue::Null);
+            emit variantInformationReady(QJsonValue::Null, analysisId);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);

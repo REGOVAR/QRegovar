@@ -206,22 +206,22 @@ Q_SIGNALS:
     void configChanged();
     void adminChanged();
     // Infos panels events
-    void fileInformationSearching();
-    void geneInformationSearching();
-    void panelInformationSearching();
-    void phenotypeInformationSearching();
-    void pipelineInformationSearching();
-    void sampleInformationSearching();
-    void userInformationSearching();
-    void variantInformationSearching();
-    void fileInformationReady(File* file);
-    void geneInformationReady(QJsonValue json);
-    void panelInformationReady(QJsonValue json);
-    void phenotypeInformationReady(QJsonValue json);
-    void pipelineInformationReady(QJsonValue json);
-    void sampleInformationReady(QJsonValue json);
-    void userInformationReady(QJsonValue json);
-    void variantInformationReady(QJsonValue json);
+    void fileInformationSearching(int analysisId=-1);
+    void geneInformationSearching(int analysisId=-1);
+    void panelInformationSearching(int analysisId=-1);
+    void phenotypeInformationSearching(int analysisId=-1);
+    void pipelineInformationSearching(int analysisId=-1);
+    void sampleInformationSearching(int analysisId=-1);
+    void userInformationSearching(int analysisId=-1);
+    void variantInformationSearching(int analysisId=-1);
+    void fileInformationReady(File* file, int analysisId=-1);
+    void geneInformationReady(QJsonValue json, int analysisId=-1);
+    void panelInformationReady(QJsonValue json, int analysisId=-1);
+    void phenotypeInformationReady(QJsonValue json, int analysisId=-1);
+    void pipelineInformationReady(QJsonValue json, int analysisId=-1);
+    void sampleInformationReady(QJsonValue json, int analysisId=-1);
+    void userInformationReady(QJsonValue json, int analysisId=-1);
+    void variantInformationReady(QJsonValue json, int analysisId=-1);
 
     void errorOccured(QString errCode, QString message, QString techData);
     void onClose();

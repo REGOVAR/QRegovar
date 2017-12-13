@@ -150,7 +150,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onFileInformationSearching: { fileInfoPanel.reset(); fileInfoDialog.open(); }
+            onFileInformationSearching: { if (analysisId == -1) { fileInfoPanel.reset(); fileInfoDialog.open(); }}
         }
     }
 
@@ -172,7 +172,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onGeneInformationSearching: { geneInfoPanel.reset(); geneInfoDialog.open(); }
+            onGeneInformationSearching: { if (analysisId == -1) { geneInfoPanel.reset(); geneInfoDialog.open(); }}
         }
     }
 
@@ -194,7 +194,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onPanelInformationSearching: { panelInfoPanel.reset(); panelInfoDialog.open(); }
+            onPanelInformationSearching: { if (analysisId == -1) { panelInfoPanel.reset(); panelInfoDialog.open(); }}
         }
     }
 
@@ -216,7 +216,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onPhenotypeInformationSearvhing: { phenotypeInfoPanel.reset(); phenotypeInfoDialog.open(); }
+            onPhenotypeInformationSearvhing: { if (analysisId == -1) { phenotypeInfoPanel.reset(); phenotypeInfoDialog.open(); }}
         }
     }
 
@@ -238,7 +238,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onPipelineInformationSearching: { pipelineInfoPanel.reset(); pipelineInfoDialog.open(); }
+            onPipelineInformationSearching: { if (analysisId == -1) { pipelineInfoPanel.reset(); pipelineInfoDialog.open(); }}
         }
     }
 
@@ -260,7 +260,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onSampleInformationSearching: { sampleInfoPanel.reset(); sampleInfoDialog.open(); }
+            onSampleInformationSearching: { if (analysisId == -1) { sampleInfoPanel.reset(); sampleInfoDialog.open(); }}
         }
     }
 
@@ -281,7 +281,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onUserInformationSearching: { userInfoPanel.reset(); userInfoDialog.open(); }
+            onUserInformationSearching: { if (analysisId == -1) { userInfoPanel.reset(); userInfoDialog.open(); }}
         }
     }
 
@@ -303,7 +303,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onVariantInformationSearching: { variantInfoPanel.reset(); variantInfoDialog.open(); }
+            onVariantInformationSearching: { if (analysisId == -1) { variantInfoPanel.reset(); variantInfoDialog.open(); }}
         }
     }
 }

@@ -202,8 +202,6 @@ Item
     //! Refresh the tabs list and open the first page
     function forceRefreshTabs()
     {
-        console.log("force refresh tabs");
-
         // Create new pages
         if (tabsModel !== undefined)
         {
