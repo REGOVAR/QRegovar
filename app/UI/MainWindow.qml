@@ -1,7 +1,16 @@
 import QtQuick 2.9
 import Qt.labs.settings 1.0
+import QtQuick.Dialogs 1.2
 
 import "Regovar"
+import "InformationsPanel/File"
+import "InformationsPanel/Gene"
+import "InformationsPanel/Panel"
+import "InformationsPanel/Phenotype"
+import "InformationsPanel/Pipeline"
+import "InformationsPanel/Sample"
+import "InformationsPanel/User"
+import "InformationsPanel/Variant"
 
 GenericWindow
 {
@@ -113,4 +122,188 @@ GenericWindow
     }
 
 
+
+
+
+
+
+    //
+    // Info panels
+    //
+
+    // File info dialog
+    Dialog
+    {
+        id: fileInfoDialog
+        title: qsTr("File Informations")
+        visible: false
+        modality: Qt.NonModal
+        width: 500
+        height: 400
+
+        contentItem: FileInformations
+        {
+            id: fileInfoPanel
+
+        }
+
+        Connections
+        {
+            target: regovar
+            onFileInformationSearching: { fileInfoPanel.reset(); fileInfoDialog.open(); }
+        }
+    }
+
+    // Gene info dialog
+    Dialog
+    {
+        id: geneInfoDialog
+        title: qsTr("Gene Informations")
+        visible: false
+        modality: Qt.NonModal
+        width: 500
+        height: 400
+
+        contentItem: GeneInformations
+        {
+            id: geneInfoPanel
+        }
+
+        Connections
+        {
+            target: regovar
+            onGeneInformationSearching: { geneInfoPanel.reset(); geneInfoDialog.open(); }
+        }
+    }
+
+    // Panel info dialog
+    Dialog
+    {
+        id: panelInfoDialog
+        title: qsTr("Panel Informations")
+        visible: false
+        modality: Qt.NonModal
+        width: 500
+        height: 400
+
+        contentItem: PanelInformations
+        {
+            id: panelInfoPanel
+        }
+
+        Connections
+        {
+            target: regovar
+            onPanelInformationSearching: { panelInfoPanel.reset(); panelInfoDialog.open(); }
+        }
+    }
+
+    // Phenotype info dialog
+    Dialog
+    {
+        id: phenotypeInfoDialog
+        title: qsTr("Phenotype Informations")
+        visible: false
+        modality: Qt.NonModal
+        width: 500
+        height: 400
+
+        contentItem: PhenotypeInformations
+        {
+            id: phenotypeInfoPanel
+        }
+
+        Connections
+        {
+            target: regovar
+            onPhenotypeInformationSearvhing: { phenotypeInfoPanel.reset(); phenotypeInfoDialog.open(); }
+        }
+    }
+
+    // Pipeline info dialog
+    Dialog
+    {
+        id: pipelineInfoDialog
+        title: qsTr("Pipeline Informations")
+        visible: false
+        modality: Qt.NonModal
+        width: 500
+        height: 400
+
+        contentItem: PipelineInformations
+        {
+            id: pipelineInfoPanel
+        }
+
+        Connections
+        {
+            target: regovar
+            onPipelineInformationSearching: { pipelineInfoPanel.reset(); pipelineInfoDialog.open(); }
+        }
+    }
+
+    // Sample info dialog
+    Dialog
+    {
+        id: sampleInfoDialog
+        title: qsTr("Sample Informations")
+        visible: false
+        modality: Qt.NonModal
+        width: 500
+        height: 400
+
+        contentItem: SampleInformations
+        {
+            id: sampleInfoPanel
+        }
+
+        Connections
+        {
+            target: regovar
+            onSampleInformationSearching: { sampleInfoPanel.reset(); sampleInfoDialog.open(); }
+        }
+    }
+
+    // User info dialog
+    Dialog
+    {
+        id: userInfoDialog
+        title: qsTr("User Informations")
+        visible: false
+        modality: Qt.NonModal
+        width: 500
+        height: 400
+        contentItem: UserInformations
+        {
+            id: userInfoPanel
+        }
+
+        Connections
+        {
+            target: regovar
+            onUserInformationSearching: { userInfoPanel.reset(); userInfoDialog.open(); }
+        }
+    }
+
+    // Variant info panel
+    Dialog
+    {
+        id: variantInfoDialog
+        title: qsTr("Variant Informations")
+        visible: false
+        modality: Qt.NonModal
+        width: 500
+        height: 400
+
+        contentItem: VariantInformations
+        {
+            id: variantInfoPanel
+        }
+
+        Connections
+        {
+            target: regovar
+            onVariantInformationSearching: { variantInfoPanel.reset(); variantInfoDialog.open(); }
+        }
+    }
 }

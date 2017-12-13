@@ -149,14 +149,12 @@
         <file>InformationsPanel/Phenotype/PhenotypeInformations.qml</file>
         <file>InformationsPanel/Phenotype/StatsPanel.qml</file>
         <file>InformationsPanel/Sample/InfoPanel.qml</file>
-        <file>InformationsPanel/Sample/OnlineToolsPanel.qml</file>
         <file>InformationsPanel/Sample/SampleInformations.qml</file>
         <file>InformationsPanel/Sample/StatsPanel.qml</file>
         <file>InformationsPanel/User/InfoPanel.qml</file>
         <file>InformationsPanel/User/StatsPanel.qml</file>
         <file>InformationsPanel/User/UserInformations.qml</file>
         <file>InformationsPanel/Variant/InfoPanel.qml</file>
-        <file>InformationsPanel/Variant/OnlineToolsPanel.qml</file>
         <file>InformationsPanel/Variant/StatsPanel.qml</file>
         <file>InformationsPanel/Variant/VariantInformations.qml</file>
         <file>InformationsPanel/Common/Section.qml</file>

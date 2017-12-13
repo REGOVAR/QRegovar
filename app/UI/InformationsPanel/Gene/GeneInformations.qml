@@ -64,5 +64,4 @@ InfoPanel
         target: regovar
         onGeneInformationReady: root.model = json
     }
-
 }

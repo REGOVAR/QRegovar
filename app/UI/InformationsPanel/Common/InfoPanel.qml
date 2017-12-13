@@ -16,6 +16,7 @@ Rectangle
 
     property var updateFromModel: function(model) {  console.log("ERROR : Please you MUST implement updateFromModel(model)"); }
     property bool loading: true
+    property bool error: false
     property string icon: "j"
     property string title: "Information"
     property alias tabSharedModel: tabsPanel.tabSharedModel
@@ -25,8 +26,13 @@ Rectangle
     {
         if (model)
         {
+            root.error = false;
             updateFromModel(model);
             //tabsPanel.forceRefreshTabs();
+        }
+        else
+        {
+            root.error = true;
         }
     }
 
@@ -36,6 +42,7 @@ Rectangle
         root.loading = true;
         root.model = null;
         tabsPanel.clear();
+        root.error = false;
     }
 
 
@@ -65,7 +72,7 @@ Rectangle
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 color: Regovar.theme.primaryColor.front.normal
-                text: root.loading ? "/" : root.icon
+                text: root.error ? "m" : root.loading ? "/" : root.icon
                 onTextChanged:
                 {
                     if (text == "/")
@@ -81,7 +88,7 @@ Rectangle
                 NumberAnimation on rotation
                 {
                     id: iconAnimation
-                    duration: 1000
+                    duration: 1500
                     loops: Animation.Infinite
                     from: 0
                     to: 360
@@ -102,7 +109,7 @@ Rectangle
                 selectByMouse: true
                 selectByKeyboard: true
                 wrapMode: TextEdit.Wrap
-                text: root.loading ? "<h1>" + qsTr("Collecting data...") + "</h1>" : root.title
+                text: root.error ? "<h1>" + qsTr("Unable to retrieve data") + "</h1>" : root.loading ? "<h1>" + qsTr("Collecting data...") + "</h1>" : root.title
             }
         }
 

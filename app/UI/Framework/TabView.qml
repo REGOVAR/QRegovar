@@ -224,7 +224,7 @@ Item
                 }
                 else if (comp.status == Component.Error)
                 {
-                    pages.append(false);
+                    pages.push(false);
                     console.log("> Error creating tab's QML component : ", comp.errorString());
                 }
             }

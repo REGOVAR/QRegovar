@@ -5,121 +5,64 @@ import org.regovar 1.0
 
 import "../../Regovar"
 import "../../Framework"
+import "../Common"
 
-
-Rectangle
+InfoPanel
 {
     id: root
-    color: Regovar.theme.backgroundColor.main
-
-    property File model
-    onModelChanged: setFileModel(model)
-
-    function setFileModel(file)
+    icon: "ì"
+    updateFromModel: function updateFromModel(file)
     {
         if (file)
         {
-            file.dataRefreshed.connect(updateFromModel);
-            updateFromModel();
+            // Update tabs
+            root.tabSharedModel = data;
+            var ttt = listModel.createObject(root);
+            ttt.append(
+                {   "title": qsTr("Informations"),
+                    "icon": "j",
+                    "source": "../InformationsPanel/File/InfoPanel.qml"
+                });
+            ttt.append({
+                    "title": qsTr("Relations"),
+                    "icon": "ê",
+                    "source": "../InformationsPanel/Common/RelationsPanel.qml"
+                });
+            ttt.append({
+                    "title": qsTr("Events"),
+                    "icon": "H",
+                    "source": "../InformationsPanel/Common/EventsPanel.qml"
+                });
+            root.tabsModel = ttt;
+            root.loading = false;
+
+
+            file.dataRefreshed.connect(refreshViewFromModel);
+            refreshViewFromModel();
         }
     }
 
-
-    function updateFromModel()
+    function refreshViewFromModel()
     {
         if (model && model.loaded)
         {
-            icon.text = model.filenameUI["icon"];
-            title.text = "<h1>" + model.name + "</h1></br>";
-            title.text += qsTr("Status") + ": " + model.statusUI["label"] + "</br>";
-            title.text += qsTr("Size") + ": " + model.sizeUI + "</br>";
-            title.text += qsTr("Last modification") + ": " + Regovar.formatDate(model.updateDate);
+            root.icon = model.filenameUI["icon"];
+            root.title = "<h1>" + model.name + "</h1></br>";
+            root.title += qsTr("Status") + ": " + model.statusUI["label"] + "</br>";
+            root.title += qsTr("Size") + ": " + model.sizeUI + "</br>";
+            root.title += qsTr("Last modification") + ": " + Regovar.formatDate(model.updateDate);
         }
     }
 
-
-
-
-
-
-    ColumnLayout
+    Component
     {
-        anchors.fill: parent
-        spacing: 0
+        id:listModel
+        ListModel {}
+    }
 
-        Rectangle
-        {
-            id: header
-            Layout.fillWidth: true
-            Layout.minimumHeight: 100 // icon : 80 + 2*10
-            color: Regovar.theme.primaryColor.back.normal
-
-            Text
-            {
-                id: icon
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.margins: 10
-                width: 80
-                height: 80
-                font.pixelSize: 80
-                font.family: Regovar.theme.icons.name
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                color: Regovar.theme.primaryColor.front.normal
-            }
-            TextEdit
-            {
-                id: title
-                anchors.top: parent.top
-                anchors.left: icon.right
-                anchors.right: parent.right
-                anchors.margins: 10
-                textFormat: TextEdit.RichText
-                onPaintedHeightChanged: { header.Layout.minimumHeight = Math.max(100, paintedHeight + 20); }
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.primaryColor.front.normal
-                readOnly: true
-                selectByMouse: true
-                selectByKeyboard: true
-                wrapMode: TextEdit.Wrap
-            }
-        }
-
-        Rectangle
-        {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            TabView
-            {
-                id: tabsPanel
-                anchors.fill : parent
-                tabSharedModel: root.model
-                smallHeader: true
-
-
-                tabsModel: ListModel
-                {
-                    ListElement
-                    {
-                        title: qsTr("Informations")
-                        icon: "j"
-                        source: "../InformationsPanel/File/InfoPanel.qml"
-                    }
-                    ListElement
-                    {
-                        title: qsTr("Relations")
-                        icon: "ê"
-                        source: "../InformationsPanel/Common/RelationsPanel.qml"
-                    }
-                    ListElement
-                    {
-                        title: qsTr("Events")
-                        icon: "H"
-                        source: "../InformationsPanel/Common/EventsPanel.qml"
-                    }
-                }
-            }
-        }
+    Connections
+    {
+        target: regovar
+        onFileInformationReady: root.model = file
     }
 }

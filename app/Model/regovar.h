@@ -189,23 +189,31 @@ Q_SIGNALS:
     //! special signal used for QML property that never changed to avoid to declare to many useless signal
     //! QML need that property declare a "changed" event for binding
     void neverChanged();
-
+    // Session events
     void userChanged();
     void loginSuccess();
     void loginFailed();
     void logoutSuccess();
-
+    // Omnisearch events
     void searchRequestChanged();
     void searchResultChanged();
     void searchInProgressChanged();
-
+    // Misc events
     void welcomIsLoadingChanged();
     void lastDataChanged();
     void settingsChanged();
     void referencesChanged();
     void configChanged();
     void adminChanged();
-
+    // Infos panels events
+    void fileInformationSearching();
+    void geneInformationSearching();
+    void panelInformationSearching();
+    void phenotypeInformationSearching();
+    void pipelineInformationSearching();
+    void sampleInformationSearching();
+    void userInformationSearching();
+    void variantInformationSearching();
     void fileInformationReady(File* file);
     void geneInformationReady(QJsonObject json);
     void panelInformationReady(QJsonObject json);

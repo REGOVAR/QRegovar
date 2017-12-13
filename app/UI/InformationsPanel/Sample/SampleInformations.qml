@@ -5,132 +5,51 @@ import org.regovar 1.0
 
 import "../../Regovar"
 import "../../Framework"
+import "../Common"
 
-
-Rectangle
+InfoPanel
 {
     id: root
-    color: Regovar.theme.backgroundColor.main
-
-    property var model
-    onModelChanged:  if (model) { updateFromModel(model); }
-
-
-    property string varId
-    onVarIdChanged:
+    icon: "j"
+    updateFromModel: function updateFromModel(data)
     {
-        if (varId)
-        {
-            // Display loading feedback
-
-            // request informations
-
-        }
-        else
-        {
-            // Display help message
-        }
-    }
-
-    function updateFromModel(data)
-    {
+        // Update title
         var variant = "chr" + data["chr"] + ":" + data["pos"] + " " + data["ref"] + ">" + data["alt"];
         var gene = data["genename"];
         var ref = data["reference"];
-        title.text = "<span style=\"font-family: monospace;\">" + variant + "</span><br/><br/><i>Ref: </i>" + ref + "&nbsp;&nbsp;&nbsp;</span>\n\n<i>Gene: </i>" + gene;
+        root.title = "<span style=\"font-family: monospace;\">" + variant + "</span><br/><br/><i>Ref: </i>" + ref + "&nbsp;&nbsp;&nbsp;</span>\n\n<i>Gene: </i>" + gene;
+
+        // Update tabs
+        root.tabSharedModel = data;
+        var ttt = listModel.createObject(root);
+        ttt.append(
+            {   "title": qsTr("Informations"),
+                "icon": "j",
+                "source": "../InformationsPanel/Sample/InfoPanel.qmll"
+            });
+        ttt.append({
+                "title": qsTr("Regovar statistics"),
+                "icon": "^",
+                "source": "../InformationsPanel/Pipeline/StatsPanel.qml"
+            });
+        ttt.append({
+                "title": qsTr("Events"),
+                "icon": "è",
+                "source": "../InformationsPanel/Common/EventsPanel.qml"
+            });
+        root.tabsModel = ttt;
+        root.loading = false;
     }
 
-
-
-
-
-    ColumnLayout
+    Component
     {
-        anchors.fill: parent
-        spacing: 0
-
-        Rectangle
-        {
-            id: header
-            Layout.fillWidth: true
-            Layout.minimumHeight: Regovar.theme.font.boxSize.header
-            color: Regovar.theme.primaryColor.back.normal
-
-            Text
-            {
-                anchors.top: parent.top
-                anchors.left: parent.left
-                text: "j"
-                width: Regovar.theme.font.boxSize.header
-                height: Regovar.theme.font.boxSize.header
-
-                font.family: Regovar.theme.icons.name
-                color: Regovar.theme.primaryColor.front.normal
-                font.pixelSize: Regovar.theme.font.size.header
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-            }
-            TextEdit
-            {
-                id: title
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: 5
-                anchors.leftMargin: Regovar.theme.font.boxSize.header + 10
-                textFormat: TextEdit.RichText
-                text: ""
-                onPaintedHeightChanged: { header.Layout.minimumHeight = Math.max(Regovar.theme.font.boxSize.header, paintedHeight + 10); }
-                font.pixelSize: Regovar.theme.font.size.header
-                color: Regovar.theme.primaryColor.front.normal
-                readOnly: true
-                selectByMouse: true
-                selectByKeyboard: true
-                wrapMode: TextEdit.Wrap
-            }
-        }
-
-        Rectangle
-        {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            TabView
-            {
-                id: swipeview
-                anchors.fill : parent
-                tabSharedModel: root.model
-                smallHeader: true
-
-
-                tabsModel: ListModel
-                {
-                    ListElement
-                    {
-                        title: qsTr("Informations")
-                        icon: "è"
-                        source: "../InformationsPanel/Sample/InfoPanel.qml"
-                    }
-                    ListElement
-                    {
-                        title: qsTr("Online tools")
-                        icon: "K"
-                        source: "../InformationsPanel/Sample/OnlineToolsPanel.qml"
-                    }
-                    ListElement
-                    {
-                        title: qsTr("Regovar statistics")
-                        icon: "^"
-                        source: "../InformationsPanel/Sample/StatsPanel.qml"
-                    }
-                    ListElement
-                    {
-                        title: qsTr("Events")
-                        icon: "è"
-                        source: "../InformationsPanel/Common/EventsPanel.qml"
-                    }
-                }
-            }
-        }
+        id:listModel
+        ListModel {}
     }
 
+    Connections
+    {
+        target: regovar
+        onSampleInformationReady: root.model = json
+    }
 }
