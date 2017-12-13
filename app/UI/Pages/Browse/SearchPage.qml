@@ -208,11 +208,6 @@ Rectangle
     }
 
     // Gene info dialog
-    Connections
-    {
-        target: regovar
-        onGeneInformationReady: geneInfoDialog.data = json
-    }
     Dialog
     {
         id: geneInfoDialog
@@ -221,8 +216,6 @@ Rectangle
         modality: Qt.NonModal
         width: 500
         height: 400
-
-        property alias data: geneInfoPanel.model
 
         contentItem: GeneInformations
         {

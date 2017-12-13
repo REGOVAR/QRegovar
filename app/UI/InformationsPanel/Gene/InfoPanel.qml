@@ -17,7 +17,8 @@ ScrollView
 
     property var geneData
     property var model
-    onModelChanged:  if (model) { updateFromModel(model); }
+    onModelChanged: updateFromModel(model);
+    Component.onCompleted: updateFromModel(model);
 
     function updateFromModel(data)
     {
@@ -29,6 +30,7 @@ ScrollView
                 geneData = data;
         }
     }
+
 
 
     Column
@@ -58,6 +60,8 @@ ScrollView
 
     function formatInfo(data)
     {
+        if (!data) return "";
+
         var text = "<table>";
         text += "<tr><td><b>Locus type:</b></td><td>" + data["locus_type"] + "</td></tr>";
         // Former names/symbols

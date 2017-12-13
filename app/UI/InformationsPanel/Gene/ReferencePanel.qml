@@ -52,7 +52,7 @@ ScrollView
         TextEdit
         {
             width: root.width - 30
-            text: pubmedData
+            text: pubmedData ? pubmedData : ""
             textFormat: TextEdit.RichText
             font.pixelSize: Regovar.theme.font.size.normal + 2
             color: Regovar.theme.frontColor.normal

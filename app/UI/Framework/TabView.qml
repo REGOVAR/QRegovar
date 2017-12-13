@@ -173,14 +173,41 @@ Item
 
 
 
-    property var menuPageMapping
+    property var menuPageMapping: []
     property var previousIndex
+    onTabsModelChanged: forceRefreshTabs()
 
-    onTabsModelChanged:
+
+
+    function clear()
     {
+        // Hide current page
+        if (menuPageMapping[previousIndex])
+        {
+            menuPageMapping[previousIndex].z = 0;
+        }
+
+        // Delete old pages
+        for (var idx=0; idx<menuPageMapping.length; idx++)
+        {
+            menuPageMapping[idx].destroy();
+        }
+
+        // Clear model
+        tabsModel.clear();
+    }
+
+
+
+    //! Refresh the tabs list and open the first page
+    function forceRefreshTabs()
+    {
+        console.log("force refresh tabs");
+
+        // Create new pages
         if (tabsModel !== undefined)
         {
-            var pages = {};
+            var pages = [];
             for (var idx=0; idx<tabsModel.count; idx++)
             {
                 var model = tabsModel.get(idx);
@@ -188,20 +215,21 @@ Item
                 if (comp.status == Component.Ready)
                 {
                     var elmt = comp.createObject(stackPanel, {"z": 0});
-                    pages[idx] = elmt;
+                    pages.push(elmt);
+
                     if (elmt.hasOwnProperty("model"))
                     {
                         elmt.model = Qt.binding(function() { return tabSharedModel; });
                     }
-
-
                 }
                 else if (comp.status == Component.Error)
                 {
+                    pages.append(false);
                     console.log("> Error creating tab's QML component : ", comp.errorString());
                 }
             }
 
+            // Open first tab page
             menuPageMapping = pages;
             previousIndex = 0
             openPage();
@@ -211,16 +239,20 @@ Item
     //! Open qml page according to the selected index
     function openPage()
     {
-        if (menuPageMapping !== undefined)
+        if (menuPageMapping.length > 0)
         {
             var newIdx = tabsPanel.currentIndex;
 
             if (menuPageMapping[previousIndex])
             {
                 menuPageMapping[previousIndex].z = 0;
-                menuPageMapping[newIdx].z = 100;
-                menuPageMapping[newIdx].anchors.fill = stackPanel;
-                previousIndex = newIdx;
+
+                if (menuPageMapping[newIdx])
+                {
+                    menuPageMapping[newIdx].z = 100;
+                    menuPageMapping[newIdx].anchors.fill = stackPanel;
+                    previousIndex = newIdx;
+                }
             }
         }
     }

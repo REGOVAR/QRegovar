@@ -104,12 +104,12 @@ Rectangle
 
                 tabsModel: ListModel
                 {
-                    ListElement
-                    {
-                        title: qsTr("Informations")
-                        icon: "è"
-                        source: "../InformationsPanel/Phenotype/InfoPanel.qml"
-                    }
+//                    ListElement
+//                    {
+//                        title: qsTr("Informations")
+//                        icon: "è"
+//                        source: "../InformationsPanel/Phenotype/InfoPanel.qml"
+//                    }
                     ListElement
                     {
                         title: qsTr("Online tools")

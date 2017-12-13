@@ -187,5 +187,6 @@
         <file>InformationsPanel/Common/RelationsPanel.qml</file>
         <file>Pages/Browse/SearchResultsList.qml</file>
         <file>InformationsPanel/Gene/ReferencePanel.qml</file>
+        <file>InformationsPanel/Common/InfoPanel.qml</file>
     </qresource>
 </RCC>

@@ -485,13 +485,13 @@ ScrollView
 
     function openFileInfoDialog(fileId)
     {
-        fileInfoDialog.data = null;
+        fileInfoPanel.reset();
         fileInfoDialog.open();
         regovar.getFileInfo(fileId);
     }
     function openGeneInfoDialog(symbol)
     {
-        geneInfoDialog.data = null;
+        geneInfoPanel.reset();
         geneInfoDialog.open();
         regovar.getGeneInfo(symbol);
     }

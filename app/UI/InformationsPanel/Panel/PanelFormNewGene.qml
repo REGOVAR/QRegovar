@@ -100,7 +100,6 @@ Rectangle
                             onAdded: regovar.panelsManager.newPanel.addEntry({"label" : modelData["symbol"], "id": modelData["id"], "details": modelData["id"]});
                             onShowDetails:
                             {
-                                geneInfoDialog.open();
                                 regovar.getGeneInfo(modelData["symbol"]);
                             }
                         }
@@ -178,47 +177,47 @@ Rectangle
     }
 
 
-    Connections
-    {
-        target: regovar
-        onGeneInformationReady:  geneInfoDialog.data = json
-    }
-    Dialog
-    {
-        id: geneInfoDialog
-        title: qsTr("Gene Informations")
-        visible: false
-        modality: Qt.NonModal
-        width: 500
-        height: 400
+//    Connections
+//    {
+//        target: regovar
+//        onGeneInformationReady:  geneInfoDialog.data = json
+//    }
+//    Dialog
+//    {
+//        id: geneInfoDialog
+//        title: qsTr("Gene Informations")
+//        visible: false
+//        modality: Qt.NonModal
+//        width: 500
+//        height: 400
 
-        property alias data: geneInfoPanel.model
+//        property alias data: geneInfoPanel.model
 
-        contentItem: GeneInformations
-        {
-            id: geneInfoPanel
-        }
-    }
+//        contentItem: GeneInformations
+//        {
+//            id: geneInfoPanel
+//        }
+//    }
 
-    Connections
-    {
-        target: regovar
-        onVariantInformationReady: phenotypeInfoDialog.data = json
-    }
-    Dialog
-    {
-        id: phenotypeInfoDialog
-        title: qsTr("Gene Informations")
-        visible: false
-        modality: Qt.NonModal
-        width: 500
-        height: 400
+//    Connections
+//    {
+//        target: regovar
+//        onVariantInformationReady: phenotypeInfoDialog.data = json
+//    }
+//    Dialog
+//    {
+//        id: phenotypeInfoDialog
+//        title: qsTr("Gene Informations")
+//        visible: false
+//        modality: Qt.NonModal
+//        width: 500
+//        height: 400
 
-        property alias data: phenotypeInfoPanel.model
+//        property alias data: phenotypeInfoPanel.model
 
-        contentItem: PhenotypeInformations
-        {
-            id: phenotypeInfoPanel
-        }
-    }
+//        contentItem: PhenotypeInformations
+//        {
+//            id: phenotypeInfoPanel
+//        }
+//    }
 }

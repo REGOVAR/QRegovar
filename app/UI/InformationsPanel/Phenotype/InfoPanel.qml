@@ -26,9 +26,6 @@ ScrollView
         {
             diseases = data["diseases"];
             phenotypes = data["phenotypes"];
-
-            diseaseHeader.visible = diseases && diseases.length > 0;
-            phenotypeHeader.visible = phenotypes && phenotypes.length > 0;
         }
     }
 

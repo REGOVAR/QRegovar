@@ -12,35 +12,31 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
+
+
+    property var updateFromModel: function(model) {  console.log("ERROR : Please you MUST implement updateFromModel(model)"); }
+    property bool loading: true
+    property string icon: "j"
+    property string title: "Information"
+    property alias tabSharedModel: tabsPanel.tabSharedModel
+    property alias tabsModel: tabsPanel.tabsModel
     property var model
-    onModelChanged:  if (model) { updateFromModel(model); }
-
-
-    property string varId
-    onVarIdChanged:
+    onModelChanged:
     {
-        if (varId)
+        if (model)
         {
-            // Display loading feedback
-
-            // request informations
-
-        }
-        else
-        {
-            // Display help message
+            updateFromModel(model);
+            //tabsPanel.forceRefreshTabs();
         }
     }
 
-    function updateFromModel(data)
+
+    function reset()
     {
-        var variant = "chr" + data["chr"] + ":" + data["pos"] + " " + data["ref"] + ">" + data["alt"];
-        var gene = data["genename"];
-        var ref = data["reference"];
-        title.text = "<h1 style=\"font-family: monospace;\">" + variant + "</h1><br/><br/>Gene: <i>" + gene + "</i><br/>Ref: <i>" + ref + "</i>";
+        root.loading = true;
+        root.model = null;
+        tabsPanel.clear();
     }
-
-
 
 
 
@@ -69,7 +65,27 @@ Rectangle
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 color: Regovar.theme.primaryColor.front.normal
-                text: "ì"
+                text: root.loading ? "/" : root.icon
+                onTextChanged:
+                {
+                    if (text == "/")
+                    {
+                        iconAnimation.start();
+                    }
+                    else
+                    {
+                        iconAnimation.stop();
+                    }
+                }
+
+                NumberAnimation on rotation
+                {
+                    id: iconAnimation
+                    duration: 1000
+                    loops: Animation.Infinite
+                    from: 0
+                    to: 360
+                }
             }
             TextEdit
             {
@@ -86,6 +102,7 @@ Rectangle
                 selectByMouse: true
                 selectByKeyboard: true
                 wrapMode: TextEdit.Wrap
+                text: root.loading ? "<h1>" + qsTr("Collecting data...") + "</h1>" : root.title
             }
         }
 
@@ -95,41 +112,12 @@ Rectangle
             Layout.fillWidth: true
             TabView
             {
-                id: swipeview
+                id: tabsPanel
                 anchors.fill : parent
                 tabSharedModel: root.model
                 smallHeader: true
-
-
-                tabsModel: ListModel
-                {
-                    ListElement
-                    {
-                        title: qsTr("Variant")
-                        icon: "j"
-                        source: "../InformationsPanel/Variant/InfoPanel.qml"
-                    }
-//                    ListElement
-//                    {
-//                        title: qsTr("Gene")
-//                        icon: "j"
-//                        source: "../InformationsPanel/Gene/InfoPanel.qml"
-//                    }
-//                    ListElement
-//                    {
-//                        title: qsTr("Phenotype")
-//                        icon: "K"
-//                        source: "../InformationsPanel/Phenotype/InfoPanel.qml"
-//                    }
-                    ListElement
-                    {
-                        title: qsTr("Regovar statistics")
-                        icon: "^"
-                        source: "../InformationsPanel/Variant/StatsPanel.qml"
-                    }
-                }
+                tabsModel: ListModel {}
             }
         }
     }
-
 }
