@@ -8,7 +8,8 @@
 #include "typequickfilter.h"
 #include "frequencequickfilter.h"
 #include "insilicopredquickfilter.h"
-#include "ontologyquickfilter.h"
+#include "phenotypequickfilter.h"
+#include "panelquickfilter.h"
 
 
 QuickFilterModel::QuickFilterModel(QObject *parent) : QObject(parent)
@@ -25,7 +26,8 @@ void QuickFilterModel::init(int refId, int)
     mQuickFilters[TypeFilter] = new TypeQuickFilter(refId);
     mQuickFilters[FrequenceFilter] = new FrequenceQuickFilter(refId);
     mQuickFilters[InSilicoPredFilter] = new InSilicoPredQuickFilter(refId);
-    mQuickFilters[OntologyFilter] = new OntologyQuickFilter(refId);
+    //mQuickFilters[PanelFilter] = new PanelQuickFilter(refId);
+    mQuickFilters[PhenotypeFilter] = new PhenotypeQuickFilter(refId);
 }
 
 
@@ -77,7 +79,7 @@ void QuickFilterModel::checkAnnotationsDB(QList<QObject*> dbs)
     mQuickFilters[TypeFilter]->checkAnnotationsDB(dbs);
     mQuickFilters[FrequenceFilter]->checkAnnotationsDB(dbs);
     mQuickFilters[InSilicoPredFilter]->checkAnnotationsDB(dbs);
-    mQuickFilters[OntologyFilter]->checkAnnotationsDB(dbs);
+    mQuickFilters[PhenotypeFilter]->checkAnnotationsDB(dbs);
 }
 
 void QuickFilterModel::loadFilter(QJsonArray json)

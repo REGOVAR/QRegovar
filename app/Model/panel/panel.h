@@ -7,12 +7,12 @@
 class Panel : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int id READ id)
+    Q_PROPERTY(QString id READ id)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
     Q_PROPERTY(QString owner READ owner WRITE setOwner NOTIFY dataChanged)
     Q_PROPERTY(QString description READ description WRITE setDescription NOTIFY dataChanged)
+    Q_PROPERTY(QStringList versionsId READ versionsId NOTIFY dataChanged)
     Q_PROPERTY(bool shared READ shared WRITE setShared NOTIFY dataChanged)
-    Q_PROPERTY(QStringList versions READ versions NOTIFY dataChanged)
     Q_PROPERTY(QDateTime creationDate READ creationDate)
     Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
 
@@ -23,15 +23,15 @@ class Panel : public QObject
 public:
     // Constructors
     explicit Panel(QObject* parent=nullptr);
-    explicit Panel(int id, QObject* parent=nullptr);
+    explicit Panel(QString id, QObject* parent=nullptr);
 
     // Getters
-    inline int id() const { return mId; }
+    inline QString id() const { return mId; }
     inline QString name() const { return mName; }
     inline QString owner() const { return mOwner; }
     inline QString description() const { return mDescription; }
+    inline QStringList versionsId() const { return mOrderedVersionsId; }
     inline bool shared() const { return mShared; }
-    inline QStringList versions() const { return mVersions; }
     inline QDateTime creationDate() const { return mCreationDate; }
     inline QDateTime updateDate() const { return mUpdateDate; }
     inline QString currentVersion() const { return mCurrentVersion; }
@@ -58,18 +58,20 @@ public:
     Q_INVOKABLE void addEntry(QJsonObject data);
     //! Reset data (only used by Creation wizard to reset its model)
     Q_INVOKABLE void reset();
+    //! Return panel version details if provided id match; otherwise return null
+    inline PanelVersion* getVersion(QString id) const { return (mEntries.contains(id)) ? mEntries[id] : nullptr; }
 
 
 Q_SIGNALS:
     void dataChanged();
 
 private:
-    int mId = -1;
+    QString mId;
     QString mName;
     QString mOwner;
     QString mDescription;
     bool mShared = false;
-    QStringList mVersions;
+    QStringList mOrderedVersionsId;
     QHash<QString, PanelVersion*> mEntries;
     QDateTime mCreationDate;
     QDateTime mUpdateDate;

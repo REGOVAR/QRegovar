@@ -55,7 +55,6 @@ HEADERS += \
     Model/subject/samplesmanager.h \
     Model/subject/reference.h \
     Model/file/filesmanager.h \
-    Model/analysis/filtering/quickfilters/ontologyquickfilter.h \
     Model/tools/toolparameter.h \
     Model/tools/tool.h \
     Model/tools/toolsmanager.h \
@@ -68,8 +67,9 @@ HEADERS += \
     Model/panel/panelsmanager.h \
     Model/panel/panel.h \
     Model/panel/panelstreemodel.h \
-    Model/panel/panelstreeitem.h \
-    Model/panel/panelversion.h
+    Model/panel/panelversion.h \
+    Model/analysis/filtering/quickfilters/phenotypequickfilter.h \
+    Model/analysis/filtering/quickfilters/panelquickfilter.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -112,7 +112,6 @@ SOURCES += main.cpp \
     Model/subject/samplesmanager.cpp \
     Model/subject/reference.cpp \
     Model/file/filesmanager.cpp \
-    Model/analysis/filtering/quickfilters/ontologyquickfilter.cpp \
     Model/tools/toolparameter.cpp \
     Model/tools/tool.cpp \
     Model/tools/toolsmanager.cpp \
@@ -125,8 +124,9 @@ SOURCES += main.cpp \
     Model/panel/panelsmanager.cpp \
     Model/panel/panel.cpp \
     Model/panel/panelstreemodel.cpp \
-    Model/panel/panelstreeitem.cpp \
-    Model/panel/panelversion.cpp
+    Model/panel/panelversion.cpp \
+    Model/analysis/filtering/quickfilters/phenotypequickfilter.cpp \
+    Model/analysis/filtering/quickfilters/panelquickfilter.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

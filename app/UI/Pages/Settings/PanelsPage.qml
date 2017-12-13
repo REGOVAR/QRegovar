@@ -106,20 +106,6 @@ Rectangle
         anchors.margins: 10
         model: regovar.panelsManager.panelsTree
 
-        // Default delegate for all column
-        itemDelegate: Item
-        {
-            Text
-            {
-                anchors.leftMargin: 5
-                anchors.fill: parent
-                verticalAlignment: Text.AlignVCenter
-                font.pixelSize: Regovar.theme.font.size.normal
-                text: styleData.value.text
-                elide: Text.ElideRight
-            }
-        }
-
         TableViewColumn
         {
             role: "name"

@@ -5,7 +5,7 @@
 Panel::Panel(QObject* parent) : QObject(parent)
 {}
 
-Panel::Panel(int id, QObject* parent) : QObject(parent)
+Panel::Panel(QString id, QObject* parent) : QObject(parent)
 {
     mId = id;
 }
@@ -16,7 +16,7 @@ Panel::Panel(int id, QObject* parent) : QObject(parent)
 
 bool Panel::fromJson(QJsonObject json)
 {
-    mId = json["id"].toInt();
+    mId = json["id"].toString();
     mName = json["name"].toString();
     mOwner = json["owner"].toString();
     mDescription = json["description"].toString();
@@ -24,12 +24,13 @@ bool Panel::fromJson(QJsonObject json)
     mCreationDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
     mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     // Versions
-    mVersions.clear();
+    mOrderedVersionsId.clear();
     mEntries.clear();
     for (QJsonValue vv: json["versions"].toArray())
     {
         PanelVersion* pv = new PanelVersion(vv.toObject());
-        mVersions.append(pv->version());
+        mEntries.insert(pv->id(), pv);
+        mOrderedVersionsId.append(pv->id());
     }
 
     emit dataChanged();
@@ -69,7 +70,7 @@ QJsonObject Panel::toJson()
 
 void Panel::save()
 {
-    if (mId == -1) return;
+    if (mId.isEmpty()) return;
     Request* request = Request::put(QString("/panel/%1").arg(mId), QJsonDocument(toJson()).toJson());
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
@@ -131,3 +132,8 @@ void Panel::reset()
     mCurrentEntries.clear();
     emit dataChanged();
 }
+
+
+
+
+

@@ -23,7 +23,7 @@ public:
     inline PanelsTreeModel* panelsTree() const { return mPanelsTree; }
 
     // Methods
-    Q_INVOKABLE Panel* getOrCreatePanel(int id);
+    Q_INVOKABLE Panel* getOrCreatePanel(QString id);
     Q_INVOKABLE void commitNewPanel();
     Q_INVOKABLE void searchPanelEntry(QString query);
     //! refresh models with data from server
@@ -38,7 +38,7 @@ Q_SIGNALS:
 
 private:
     //! Internal collection of panel models
-    QHash<int, Panel*> mPanels;
+    QHash<QString, Panel*> mPanels;
     //! Model for Wizard data when creating new panel
     Panel* mNewPanel = nullptr;
     //! List of all panels

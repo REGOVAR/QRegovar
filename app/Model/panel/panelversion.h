@@ -6,6 +6,7 @@
 class PanelVersion: public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString id READ id WRITE setId NOTIFY dataChanged)
     Q_PROPERTY(QString version READ version WRITE setVersion NOTIFY dataChanged)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
     Q_PROPERTY(QVariantList entries READ entries NOTIFY dataChanged)
@@ -18,6 +19,7 @@ public:
     explicit PanelVersion(QJsonObject json, QObject* parent=nullptr);
 
     // Getters
+    inline QString id() const { return mId; }
     inline QString version() const { return mVersion; }
     inline QString comment() const { return mComment; }
     inline QVariantList entries() const { return mEntries; }
@@ -25,6 +27,7 @@ public:
     inline QDateTime updateDate() const { return mUpdateDate; }
 
     // Setters
+    inline void setId(QString i) { mId = i; emit dataChanged(); }
     inline void setVersion(QString v) { mVersion = v; emit dataChanged(); }
     inline void setComment(QString c) { mComment = c; emit dataChanged(); }
 
@@ -35,6 +38,7 @@ Q_SIGNALS:
     void dataChanged();
 
 private:
+    QString mId;
     QString mVersion;
     QString mComment;
     QVariantList mEntries;

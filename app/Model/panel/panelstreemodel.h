@@ -12,14 +12,16 @@ class PanelsTreeModel : public TreeModel
 public:
     enum JsonModelRoles
     {
-        Name = Qt::UserRole + 1,
+        PanelId = Qt::UserRole + 1,
+        VersionId,
+        Name,
         Comment,
         Date,
         Shared
     };
 
     // Constructor
-    explicit PanelsTreeModel();
+    explicit PanelsTreeModel(QObject* parent=nullptr);
 
     // Getters
     inline bool isLoading() { return mIsLoading; }
@@ -28,15 +30,14 @@ public:
     inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingChanged(); }
 
     // Methods
-    QHash<int, QByteArray> roleNames() const override;
     void refresh(QJsonObject json);
-    QVariant newPanelsTreeItem(int id, const QString& version, const QString& text);
+    QHash<int, QByteArray> roleNames() const override;
+    QVariant newPanelsTreeItem(QString id, const QString& version, const QString& text);
     void setupModelData(QJsonArray data, TreeItem *parent);
     void setupModelPaneVersionData(Panel* panel, TreeItem *parent);
 
 Q_SIGNALS:
     void isLoadingChanged();
-
 
 private:
     bool mIsLoading;

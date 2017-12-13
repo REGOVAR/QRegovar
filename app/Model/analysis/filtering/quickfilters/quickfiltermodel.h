@@ -30,7 +30,8 @@ public:
         TypeFilter,
         FrequenceFilter,
         InSilicoPredFilter,
-        OntologyFilter
+        PanelFilter,
+        PhenotypeFilter
     };
 
     explicit QuickFilterModel(QObject *parent = nullptr);
@@ -45,7 +46,7 @@ public:
     inline QuickFilterBlockInterface* typeFilter() { return mQuickFilters[TypeFilter]; }
     inline QuickFilterBlockInterface* frequenceFilter() { return mQuickFilters[FrequenceFilter]; }
     inline QuickFilterBlockInterface* inSilicoPredFilter() { return mQuickFilters[InSilicoPredFilter]; }
-    inline QuickFilterBlockInterface* ontologyFilter() { return mQuickFilters[OntologyFilter]; }
+    inline QuickFilterBlockInterface* ontologyFilter() { return mQuickFilters[PhenotypeFilter]; }
 
 
     // Methods

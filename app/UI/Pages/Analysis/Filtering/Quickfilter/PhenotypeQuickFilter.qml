@@ -12,7 +12,7 @@ import "../../../../Framework"
 QuickFilterBox
 {
     id: root
-    title : qsTr("Ontology (HPO)")
+    title : qsTr("Phenotype (HPO)")
     isExpanded: false
 
     function reset()

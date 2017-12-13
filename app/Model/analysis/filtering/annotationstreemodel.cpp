@@ -8,6 +8,8 @@
 
 AnnotationsTreeModel::AnnotationsTreeModel(QObject* parent) : TreeModel(parent)
 {
+    // With QML TreeView, the rootItem must know all column's roles to allow correct display for
+    // other rows. So that's why we create columns for all existings roles.
     QHash<int, QVariant> rootData;
     QHash<int, QByteArray> roles = roleNames();
     for (const int roleId: roles.keys())

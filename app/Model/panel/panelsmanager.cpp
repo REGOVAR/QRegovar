@@ -10,7 +10,7 @@ PanelsManager::PanelsManager(QObject* parent) : QObject(parent)
 
 
 
-Panel* PanelsManager::getOrCreatePanel(int id)
+Panel* PanelsManager::getOrCreatePanel(QString id)
 {
     if (mPanels.contains(id))
     {
@@ -32,7 +32,7 @@ void PanelsManager::commitNewPanel()
         if (success)
         {
             QJsonObject data = json["data"].toObject();
-            Panel* panel = getOrCreatePanel(data["id"].toInt());
+            Panel* panel = getOrCreatePanel(data["id"].toString());
             panel->fromJson(data);
             updatePanelsLists();
             emit commitNewPanelDone(true);

@@ -1,11 +1,12 @@
 #include <QDebug>
 #include "panelstreemodel.h"
-#include "panelstreeitem.h"
+#include "panelversion.h"
+#include "Model/framework/treeitem.h"
 #include "Model/framework/request.h"
 #include "Model/regovar.h"
 
 
-PanelsTreeModel::PanelsTreeModel() : TreeModel(nullptr)
+PanelsTreeModel::PanelsTreeModel(QObject* parent) : TreeModel(parent)
 {
     // With QML TreeView, the rootItem must know all column's roles to allow correct display for
     // other rows. So that's why we create columns for all existings roles.
@@ -49,33 +50,24 @@ QHash<int, QByteArray> PanelsTreeModel::roleNames() const
 
 
 
-QVariant PanelsTreeModel::newPanelsTreeItem(int id, const QString& version, const QString& text)
-{
-    PanelsTreeItem *t = new PanelsTreeItem(this);
-    t->setId(id);
-    t->setVersion(version);
-    t->setText(text);
-    QVariant v;
-    v.setValue(t);
-    return v;
-}
-
 
 void PanelsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 {
     for (const QJsonValue& json: data)
     {
         QJsonObject pJson = json.toObject();
-        int id = pJson["id"].toInt();
+        QString id = pJson["id"].toString();
         Panel* p = regovar->panelsManager()->getOrCreatePanel(id);
         p->fromJson(pJson);
 
         // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
         QHash<int, QVariant> columnData;
-        columnData.insert(Name,    newPanelsTreeItem(id, "", p->name()));
-        columnData.insert(Comment, newPanelsTreeItem(id, "", p->description()));
-        columnData.insert(Date,    newPanelsTreeItem(id, "", p->updateDate().toString("yyyy-MM-dd HH:mm")));
-        columnData.insert(Shared,  newPanelsTreeItem(id, "", p->shared() ? tr("Yes") : ""));
+        columnData.insert(PanelId, QVariant(id));
+        columnData.insert(VersionId, QVariant(""));
+        columnData.insert(Name,  QVariant(p->name()));
+        columnData.insert(Comment, QVariant(p->description()));
+        columnData.insert(Date, QVariant(p->updateDate().toString("yyyy-MM-dd HH:mm")));
+        columnData.insert(Shared, QVariant(p->shared() ? tr("Yes") : ""));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);
@@ -88,15 +80,18 @@ void PanelsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 
 void PanelsTreeModel::setupModelPaneVersionData(Panel* panel, TreeItem *parent)
 {
-    int id=panel->id();
-    for(QString vName: panel->versions())
+    QString id = panel->id();
+    for(QString vId: panel->versionsId())
     {
-        // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
+        PanelVersion* vdata = panel->getVersion(vId);
+        // Store data into treeitem's columns (/!\ columns order must respect enum order)
         QHash<int, QVariant> columnData;
-        columnData.insert(Name,    newPanelsTreeItem(id, vName, vName));
-        columnData.insert(Comment, newPanelsTreeItem(id, vName, ""));
-        columnData.insert(Date,    newPanelsTreeItem(id, vName, ""));
-        columnData.insert(Shared,  newPanelsTreeItem(id, vName, panel->shared() ? tr("Yes") : ""));
+        columnData.insert(PanelId, QVariant(id));
+        columnData.insert(VersionId, QVariant(vdata->id()));
+        columnData.insert(Name, QVariant(vdata->version()));
+        columnData.insert(Comment, QVariant(vdata->comment()));
+        columnData.insert(Date, QVariant(vdata->updateDate().toString("yyyy-MM-dd HH:mm")));
+        columnData.insert(Shared, QVariant(panel->shared() ? tr("Yes") : ""));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);

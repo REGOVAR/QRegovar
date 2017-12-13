@@ -25,6 +25,7 @@
         <file>Dialogs/NewAnalysisDialog.qml</file>
         <file>Dialogs/NewAttributeDialog.qml</file>
         <file>Dialogs/NewPanelDialog.qml</file>
+        <file>Dialogs/NewPanelEntryDialog.qml</file>
         <file>Dialogs/NewProjectDialog.qml</file>
         <file>Dialogs/NewSubjectDialog.qml</file>
         <file>Dialogs/SelectFilesDialog.qml</file>
@@ -46,6 +47,15 @@
         <file>Framework/ComboBox.qml</file>
         <file>Framework/ComboBoxDelegate.qml</file>
         <file>Framework/ConnectionStatus.qml</file>
+        <file>Framework/DynamicForm.qml</file>
+        <file>Framework/DynamicFormInput.qml</file>
+        <file>Framework/DynamicFormInputEnum.qml</file>
+        <file>Framework/DynamicFormInputBool.qml</file>
+        <file>Framework/DynamicFormInputNumber.qml</file>
+        <file>Framework/DynamicFormInputString.qml</file>
+        <file>Framework/FileViewer.qml</file>
+        <file>Framework/FileViewers/TxtViewer.qml</file>
+        <file>Framework/FileViewers/WaitingPanel.qml</file>
         <file>Framework/ProgressBar.qml</file>
         <file>Framework/Slider.qml</file>
         <file>Framework/SwipeView.qml</file>
@@ -58,6 +68,40 @@
         <file>Framework/TextFieldForm.qml</file>
         <file>Framework/TreeView.qml</file>
         <file>Framework/Text.qml</file>
+        <file>InformationsPanel/Common/RelationsPanel.qml</file>
+        <file>InformationsPanel/Common/InfoPanel.qml</file>
+        <file>InformationsPanel/Common/EventsPanel.qml</file>
+        <file>InformationsPanel/Common/Section.qml</file>
+        <file>InformationsPanel/Common/OnlineToolAction.qml</file>
+        <file>InformationsPanel/File/FileInformations.qml</file>
+        <file>InformationsPanel/File/InfoPanel.qml</file>
+        <file>InformationsPanel/Gene/GeneInformations.qml</file>
+        <file>InformationsPanel/Gene/InfoPanel.qml</file>
+        <file>InformationsPanel/Gene/ReferencePanel.qml</file>
+        <file>InformationsPanel/Gene/OnlineToolsPanel.qml</file>
+        <file>InformationsPanel/Gene/StatsPanel.qml</file>
+        <file>InformationsPanel/Panel/InfoPanel.qml</file>
+        <file>InformationsPanel/Panel/PanelInformations.qml</file>
+        <file>InformationsPanel/Panel/VersionDetailsPanel.qml</file>
+        <file>InformationsPanel/Panel/PanelFormNewGene.qml</file>
+        <file>InformationsPanel/Panel/PanelFormNewCustom.qml</file>
+        <file>InformationsPanel/Panel/PanelSearchEntry.qml</file>
+        <file>InformationsPanel/Phenotype/InfoPanel.qml</file>
+        <file>InformationsPanel/Phenotype/OnlineToolsPanel.qml</file>
+        <file>InformationsPanel/Phenotype/PhenotypeInformations.qml</file>
+        <file>InformationsPanel/Phenotype/StatsPanel.qml</file>
+        <file>InformationsPanel/Pipeline/InfoPanel.qml</file>
+        <file>InformationsPanel/Pipeline/PipelineInformations.qml</file>
+        <file>InformationsPanel/Pipeline/StatsPanel.qml</file>
+        <file>InformationsPanel/Sample/InfoPanel.qml</file>
+        <file>InformationsPanel/Sample/SampleInformations.qml</file>
+        <file>InformationsPanel/Sample/StatsPanel.qml</file>
+        <file>InformationsPanel/User/InfoPanel.qml</file>
+        <file>InformationsPanel/User/StatsPanel.qml</file>
+        <file>InformationsPanel/User/UserInformations.qml</file>
+        <file>InformationsPanel/Variant/InfoPanel.qml</file>
+        <file>InformationsPanel/Variant/StatsPanel.qml</file>
+        <file>InformationsPanel/Variant/VariantInformations.qml</file>
         <file>MainMenu/MainMenu.qml</file>
         <file>MainMenu/MenuEntryL1.qml</file>
         <file>MainMenu/MenuEntryL2.qml</file>
@@ -79,23 +123,36 @@
         <file>Pages/Analysis/Filtering/Quickfilter/SilicoPredQuickFilter.qml</file>
         <file>Pages/Analysis/Filtering/Quickfilter/TransmissionQuickForm.qml</file>
         <file>Pages/Analysis/Filtering/Quickfilter/TypeQuickFilter.qml</file>
-        <file>Pages/Analysis/Filtering/Quickfilter/OntologyQuickFilter.qml</file>
+        <file>Pages/Analysis/Filtering/Quickfilter/PhenotypeQuickFilter.qml</file>
+        <file>Pages/Analysis/Filtering/SelectionTools/ExportTool.qml</file>
+        <file>Pages/Analysis/Filtering/SelectionTools/ReportTool.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilterPanel.qml</file>
         <file>Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml</file>
         <file>Pages/Analysis/Filtering/FavoritesPanel.qml</file>
         <file>Pages/Analysis/Filtering/FilteringPage.qml</file>
         <file>Pages/Analysis/Filtering/HelpPage.qml</file>
         <file>Pages/Analysis/Filtering/QuickFilterPanel.qml</file>
+        <file>Pages/Analysis/Filtering/ResultPage.qml</file>
         <file>Pages/Analysis/Filtering/ResultsPanel.qml</file>
         <file>Pages/Analysis/Filtering/SaveFilterButton.qml</file>
+        <file>Pages/Analysis/Filtering/SelectionPanel.qml</file>
         <file>Pages/Analysis/Filtering/StatisticsPage.qml</file>
         <file>Pages/Analysis/Filtering/SummaryPage.qml</file>
+        <file>Pages/Analysis/Filtering/VariantsTable.qml</file>
         <file>Pages/Browse/ProjectsPage.qml</file>
         <file>Pages/Browse/SearchPage.qml</file>
         <file>Pages/Browse/SearchResultAnalysis.qml</file>
+        <file>Pages/Browse/SearchResultFile.qml</file>
+        <file>Pages/Browse/SearchResultGene.qml</file>
+        <file>Pages/Browse/SearchResultPanel.qml</file>
+        <file>Pages/Browse/SearchResultPhenotype.qml</file>
+        <file>Pages/Browse/SearchResultPipeline.qml</file>
         <file>Pages/Browse/SearchResultProject.qml</file>
         <file>Pages/Browse/SearchResultSample.qml</file>
         <file>Pages/Browse/SearchResultSubject.qml</file>
+        <file>Pages/Browse/SearchResultUser.qml</file>
+        <file>Pages/Browse/SearchResultVariant.qml</file>
+        <file>Pages/Browse/SearchResultsList.qml</file>
         <file>Pages/Browse/SubjectsPage.qml</file>
         <file>Pages/Help/AboutCredits.qml</file>
         <file>Pages/Help/AboutInformations.qml</file>
@@ -129,62 +186,5 @@
         <file>Regovar/Regovar.qml</file>
         <file>Regovar/Style.qml</file>
         <file>Regovar/qmldir</file>
-        <file>Pages/Browse/SearchResultFile.qml</file>
-        <file>Pages/Browse/SearchResultVariant.qml</file>
-        <file>Pages/Browse/SearchResultGene.qml</file>
-        <file>Pages/Browse/SearchResultPhenotype.qml</file>
-        <file>Pages/Analysis/Filtering/VariantsTable.qml</file>
-        <file>Pages/Analysis/Filtering/SelectionPanel.qml</file>
-        <file>Pages/Analysis/Filtering/ResultPage.qml</file>
-        <file>InformationsPanel/Common/OnlineToolAction.qml</file>
-        <file>InformationsPanel/Gene/GeneInformations.qml</file>
-        <file>InformationsPanel/Gene/InfoPanel.qml</file>
-        <file>InformationsPanel/Gene/OnlineToolsPanel.qml</file>
-        <file>InformationsPanel/Gene/StatsPanel.qml</file>
-        <file>InformationsPanel/Panel/InfoPanel.qml</file>
-        <file>InformationsPanel/Panel/PanelInformations.qml</file>
-        <file>InformationsPanel/Panel/VersionDetailsPanel.qml</file>
-        <file>InformationsPanel/Phenotype/InfoPanel.qml</file>
-        <file>InformationsPanel/Phenotype/OnlineToolsPanel.qml</file>
-        <file>InformationsPanel/Phenotype/PhenotypeInformations.qml</file>
-        <file>InformationsPanel/Phenotype/StatsPanel.qml</file>
-        <file>InformationsPanel/Sample/InfoPanel.qml</file>
-        <file>InformationsPanel/Sample/SampleInformations.qml</file>
-        <file>InformationsPanel/Sample/StatsPanel.qml</file>
-        <file>InformationsPanel/User/InfoPanel.qml</file>
-        <file>InformationsPanel/User/StatsPanel.qml</file>
-        <file>InformationsPanel/User/UserInformations.qml</file>
-        <file>InformationsPanel/Variant/InfoPanel.qml</file>
-        <file>InformationsPanel/Variant/StatsPanel.qml</file>
-        <file>InformationsPanel/Variant/VariantInformations.qml</file>
-        <file>InformationsPanel/Common/Section.qml</file>
-        <file>Pages/Analysis/Filtering/SelectionTools/ExportTool.qml</file>
-        <file>Pages/Analysis/Filtering/SelectionTools/ReportTool.qml</file>
-        <file>Framework/DynamicForm.qml</file>
-        <file>Framework/DynamicFormInput.qml</file>
-        <file>Framework/DynamicFormInputEnum.qml</file>
-        <file>Framework/DynamicFormInputBool.qml</file>
-        <file>Framework/DynamicFormInputNumber.qml</file>
-        <file>Framework/DynamicFormInputString.qml</file>
-        <file>Framework/FileViewer.qml</file>
-        <file>Framework/FileViewers/TxtViewer.qml</file>
-        <file>Framework/FileViewers/WaitingPanel.qml</file>
-        <file>Dialogs/NewPanelEntryDialog.qml</file>
-        <file>InformationsPanel/Panel/PanelFormNewGene.qml</file>
-        <file>InformationsPanel/Panel/PanelFormNewCustom.qml</file>
-        <file>InformationsPanel/Panel/PanelSearchEntry.qml</file>
-        <file>Pages/Browse/SearchResultPipeline.qml</file>
-        <file>Pages/Browse/SearchResultPanel.qml</file>
-        <file>Pages/Browse/SearchResultUser.qml</file>
-        <file>InformationsPanel/File/FileInformations.qml</file>
-        <file>InformationsPanel/File/InfoPanel.qml</file>
-        <file>InformationsPanel/Common/EventsPanel.qml</file>
-        <file>InformationsPanel/Pipeline/InfoPanel.qml</file>
-        <file>InformationsPanel/Pipeline/PipelineInformations.qml</file>
-        <file>InformationsPanel/Pipeline/StatsPanel.qml</file>
-        <file>InformationsPanel/Common/RelationsPanel.qml</file>
-        <file>Pages/Browse/SearchResultsList.qml</file>
-        <file>InformationsPanel/Gene/ReferencePanel.qml</file>
-        <file>InformationsPanel/Common/InfoPanel.qml</file>
     </qresource>
 </RCC>
