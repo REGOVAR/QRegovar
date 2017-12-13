@@ -124,11 +124,6 @@ Rectangle
             iconLeft: "z"
             placeholderText: qsTr("Search by position chr1:422566 or by genes names...")
         }
-        ComboBox
-        {
-            model: ["Group By", "Gene Name"]
-        }
-
     }
 
 

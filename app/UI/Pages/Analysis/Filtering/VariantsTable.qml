@@ -500,6 +500,21 @@ TreeView
             resultsTree.insertField(uid, idx);
         }
         //analysis.results.reset();
+
+        // Restore sort column indicator
+        for (idx=0; idx<analysis.order.length; idx++)
+        {
+            var orderDirection = 0;
+            uid = analysis.order[idx];
+            if (uid[0] == "-")
+            {
+                uid = uid.substr(1);
+                orderDirection = 1;
+            }
+
+            resultsTree.sortIndicatorColumn = columns.indexOf(uid);
+            resultsTree.sortIndicatorOrder = orderDirection;
+        }
     }
 
 
