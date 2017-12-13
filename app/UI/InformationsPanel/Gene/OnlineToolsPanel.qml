@@ -39,7 +39,7 @@ ScrollView
         }
     }
 
-    property var nucleotideDBData: root.model ? [root.model["ena"][0], root.model["refseq_accession"][0], root.model["ccds_id"][0]] : []
+    property var nucleotideDBData: root.model ? [root.model["ena"], root.model["refseq_accession"], root.model["ccds_id"]] : []
     property var nucleotideDBList: ListModel
     {
         ListElement
@@ -85,7 +85,7 @@ ScrollView
         }
     }
 
-    property var clinicalDBData: root.model ? [root.model["symbol"], root.model["omim_id"][0]] : []
+    property var clinicalDBData: root.model ? [root.model["symbol"], root.model["omim_id"]] : []
     property var clinicalDBList: ListModel
     {
         ListElement
@@ -106,7 +106,7 @@ ScrollView
     }
 
 
-    property var homologsDBData: root.model ? [root.model["mgd_id"][0], root.model["rgd_id"][0]] : []
+    property var homologsDBData: root.model ? [root.model["mgd_id"], root.model["rgd_id"]] : []
     property var homologsDBList: ListModel
     {
         ListElement

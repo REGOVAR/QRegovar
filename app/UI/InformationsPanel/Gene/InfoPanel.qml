@@ -66,65 +66,38 @@ ScrollView
         text += "<tr><td><b>Locus type:</b></td><td>" + data["locus_type"] + "</td></tr>";
         // Former names/symbols
         text += "<tr><td><b>Former names:</b></td><td>";
-        if (data["prev_name"].length > 1)
+        if ("prev_symbol" in data)
         {
-            text += "<ul>";
-            for (var idx=0; idx<data["prev_name"].length; idx++)
+            for (var idx=0; idx<data["prev_symbol"].length; idx++)
             {
-                text += "<li>" ;
-                if ("prev_symbol" in data)
-                {
-                    text += data["prev_symbol"][idx] + ": ";
-                }
-                text += data["prev_name"][idx] + "</li>";
+                text += "<i>" + data["prev_symbol"][idx] + "</i>, ";
             }
-        }
-        else if (data["prev_name"].length == 1)
-        {
-            text += "<li>";
-            if ("prev_symbol" in data)
-            {
-                text += data["prev_symbol"][0] + ": ";
-            }
-            text += data["prev_name"][0] + "</li>";
         }
         text += "</td></tr>";
 
         // Synonyms
         text += "<tr><td><b>Synonyms:</b></td><td>";
-        for (var idx=0; idx<data["alias_symbol"].length; idx++)
+        if ("alias_symbol" in data)
         {
-            text += data["alias_symbol"][idx] + ", ";
+            for (var idx=0; idx<data["alias_symbol"].length; idx++)
+            {
+                text += "<i>" + data["alias_symbol"][idx] + "</i>, ";
+            }
         }
         text += "</td></tr>";
+        // text += "<tr><td><b>:</b></td><td>" + data[""] + "</td></tr>";
+        text += "</table><br/><br/>";
 
         // Genomes references
         if ("refgene" in data && data["refgene"].length>0)
         {
-            text += "<tr><td><b>Genome reference:</b></td><td>";
-            if (data["refgene"].length > 1)
+            text += "<b>Genome reference:</b><ul>";
+            for (var idx=0; idx<data["refgene"].length; idx++)
             {
-                text += "<ul>";
-                for (var idx=0; idx<data["refgene"].length; idx++)
-                {
-                    text += "<li>" + data["refgene"][idx]["name"] + ": " + formatSize(data["refgene"][idx]) + "</li>";
-                }
-                text += "</ul>";
+                text += "<li>" + data["refgene"][idx]["name"] + ": " + formatSize(data["refgene"][idx]) + "</li>";
             }
-            else
-            {
-                text += data["refgene"][0]["name"] + ": " + formatSize(data["refgene"][0]);
-            }
-
-            text += "</td></tr>";
+            text += "</ul>";
         }
-
-        // text += "<tr><td><b>:</b></td><td>" + data[""] + "</td></tr>";
-
-
-
-
-        text += "</table><br/><br/>";
 
         // OMIM Allelic variants references
         if ("omim_variants" in data && data["omim_variants"].length>0)

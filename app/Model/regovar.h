@@ -215,13 +215,13 @@ Q_SIGNALS:
     void userInformationSearching();
     void variantInformationSearching();
     void fileInformationReady(File* file);
-    void geneInformationReady(QJsonObject json);
-    void panelInformationReady(QJsonObject json);
-    void phenotypeInformationReady(QJsonObject json);
-    void pipelineInformationReady(QJsonObject json);
-    void sampleInformationReady(QJsonObject json);
-    void userInformationReady(QJsonObject json);
-    void variantInformationReady(QJsonObject json);
+    void geneInformationReady(QJsonValue json);
+    void panelInformationReady(QJsonValue json);
+    void phenotypeInformationReady(QJsonValue json);
+    void pipelineInformationReady(QJsonValue json);
+    void sampleInformationReady(QJsonValue json);
+    void userInformationReady(QJsonValue json);
+    void variantInformationReady(QJsonValue json);
 
     void errorOccured(QString errCode, QString message, QString techData);
     void onClose();

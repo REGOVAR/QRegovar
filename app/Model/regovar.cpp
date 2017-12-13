@@ -347,7 +347,7 @@ void Regovar::getGeneInfo(QString geneName, int analysisId)
         }
         else
         {
-            emit geneInformationReady(QJsonObject());
+            emit geneInformationReady(QJsonValue::Null);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
@@ -372,7 +372,7 @@ void Regovar::getPanelInfo(int panelId, int)
         }
         else
         {
-            emit panelInformationReady(QJsonObject());
+            emit panelInformationReady(QJsonValue::Null);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
@@ -396,7 +396,7 @@ void Regovar::getPhenotypeInfo(QString phenotypeId, int)
         }
         else
         {
-            emit phenotypeInformationReady(QJsonObject());
+            emit phenotypeInformationReady(QJsonValue::Null);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
@@ -421,7 +421,7 @@ void Regovar::getPipelineInfo(int pipelineId, int)
         }
         else
         {
-            emit pipelineInformationReady(QJsonObject());
+            emit pipelineInformationReady(QJsonValue::Null);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
@@ -446,7 +446,7 @@ void Regovar::getSampleInfo(int sampleId, int)
         }
         else
         {
-            emit sampleInformationReady(QJsonObject());
+            emit sampleInformationReady(QJsonValue::Null);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
@@ -471,7 +471,7 @@ void Regovar::getUserInfo(int userId, int)
         }
         else
         {
-            emit userInformationReady(QJsonObject());
+            emit userInformationReady(QJsonValue::Null);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
@@ -502,7 +502,7 @@ void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
         }
         else
         {
-            emit variantInformationReady(QJsonObject());
+            emit variantInformationReady(QJsonValue::Null);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);

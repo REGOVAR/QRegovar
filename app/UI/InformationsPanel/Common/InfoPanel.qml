@@ -82,6 +82,7 @@ Rectangle
                     else
                     {
                         iconAnimation.stop();
+                        rotation = 0;
                     }
                 }
 

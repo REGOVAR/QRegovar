@@ -51,6 +51,6 @@ InfoPanel
     Connections
     {
         target: regovar
-        onPhenotypeInformationReady: phenotypeInfoDialog.data = json
+        onPhenotypeInformationReady: root.model = json
     }
 }
