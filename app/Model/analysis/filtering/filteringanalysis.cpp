@@ -66,6 +66,10 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     {
         mAnnotationsDBUsed << field.toString();
     }
+    for (const QJsonValue& field: settings["panels"].toArray())
+    {
+        mPanelsUsed << field.toString();
+    }
     if (settings["trio"].isBool())
     {
         mIsTrio = false;

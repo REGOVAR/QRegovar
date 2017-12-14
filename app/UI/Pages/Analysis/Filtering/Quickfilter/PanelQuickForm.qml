@@ -20,29 +20,34 @@ QuickFilterBox
 
     onModelChanged:
     {
-        //root.enabled = model.quickfilters.panelFilter.isVisible();
+        panelRepeater.model =model.quickfilters.panelFilter.panelsList;
+        panelAll.visible = panelRepeater.model.length > 1;
+        if (!panelAll.visible)
+        {
+            panelAll.height = 0;
+        }
+
+
+
     }
 
     function checkFinal()
     {
-//        // Mode
-//        modeRec.checked = (modeHtz.checked || modeHtzComp.checked);
-//        modeAll.checked = (!modeDom.checked && !modeRec.checked && !modeHtz.checked && !modeHtzComp.checked);
-//        // Segregation
-//        segAll.checked = (!segDen.checked && !segInh.checked);
-//        // Localisation
-//        locAll.checked = (!locAut.checked && !locMit.checked && !locXlk.checked);
+        // Compute the final checked status of the "All" button
+        var finalCheck = false;
 
-//        // send final combination to the model to update the filter
-//        var tm = model.quickfilters.transmissionFilter;
-//        tm.setFilter("dom", modeDom.checked);
-//        tm.setFilter("rec_hom", modeRec.checked);
-//        tm.setFilter("rec_htzcomp", modeHtzComp.checked);
-//        tm.setFilter("denovo", segDen.checked);
-//        tm.setFilter("inherited", segInh.checked);
-//        tm.setFilter("aut", locAut.checked);
-//        tm.setFilter("xlk", locXlk.checked);
-//        tm.setFilter("mit", locMit.checked);
+        for (var i = 0; i < content.children.length; ++i)
+        {
+            var item = content.children[i];
+            if (item.objectName == "QuickFilterFieldControl")
+            {
+                finalCheck = finalCheck || item.checked;
+            }
+        }
+
+        internalUiUpdate = true;
+        panelAll.checked = !finalCheck;
+        internalUiUpdate = false;
     }
 
 
@@ -59,116 +64,71 @@ QuickFilterBox
             width: content.width
             CheckBox
             {
-                id: modeAll
+                id: panelAll
                 anchors.left: parent.left
                 anchors.leftMargin: 30
                 text: qsTr("All")
                 checked: true
                 onCheckedChanged:
                 {
-//                    if (!internalUiUpdate)
-//                    {
-//                        // Update other checkboxes
-//                        internalUiUpdate = true;
-//                        if (checked)
-//                        {
-//                            modeDom.checked = false;
-//                            modeRec.checked = false;
-//                            modeHtz.checked = false;
-//                            modeHtzComp.checked = false;
-//                        }
+                    // Update other checkboxes
+                    if (!internalUiUpdate && checked)
+                    {
+                        internalUiUpdate = true;
+                        for (var i = 0; i < container.children.length; ++i)
+                        {
+                            var item = container.children[i];
+                            if (item.objectName == "QuickFilterFieldControl")
+                            {
+                                item.checked = false;
+                            }
+                        }
+                        internalUiUpdate = false;
+                    }
 
-//                        checkFinal();
-//                        internalUiUpdate = false;
-//                    }
+                    checkFinal();
                 }
             }
         }
-        RowLayout
+
+        Repeater
         {
-            width: content.width
-            CheckBox
+            id: panelRepeater
+
+            RowLayout
             {
-                id: modeDom
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                text: qsTr("Retina")
-                checked: false
-                onCheckedChanged:
+                width: content.width
+
+                CheckBox
                 {
-//                    if (!internalUiUpdate)
-//                    {
-//                        // Update other checkboxes
-//                        internalUiUpdate = true;
-//                        if (checked)
-//                        {
-//                            modeAll.checked = false;
-//                        }
-//                        checkFinal();
-//                        internalUiUpdate = false;
-//                    }
+                    id: gItem
+                    objectName: "QuickFilterFieldControl"
+                    width: container.width
+                    text: modelData.label
+                    checked: modelData.isActive
+                    onCheckedChanged:
+                    {
+                        modelData.isActive = checked
+                        if (!internalUiUpdate)
+                        {
+                            // Update other checkboxes
+                            internalUiUpdate = true;
+                            if (checked)
+                            {
+                                panelAll.checked = false;
+                            }
+                            checkFinal();
+                            internalUiUpdate = false;
+                        }
+                    }
                 }
             }
         }
-        RowLayout
+
+        ButtonInline
         {
-            width: content.width
-            CheckBox
-            {
-                id: modeRec
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                text: qsTr("HUGODIMS")
-                checked: false
-                onCheckedChanged:
-                {
-//                    if (!internalUiUpdate)
-//                    {
-//                        // Update other checkboxes
-//                        internalUiUpdate = true;
-//                        if (checked)
-//                        {
-//                            modeAll.checked = false;
-//                            modeHtz.checked = true;
-//                            modeHtzComp.checked = true;
-//                        }
-//                        else
-//                        {
-//                            modeHtz.checked = false;
-//                            modeHtzComp.checked = false;
-//                        }
-//                        checkFinal();
-//                        internalUiUpdate = false;
-//                    }
-                }
-            }
-        }
-        RowLayout
-        {
-            width: content.width
-            CheckBox
-            {
-                id: segAll
-                anchors.left: parent.left
-                anchors.leftMargin: 30
-                text: qsTr("Strasbourg")
-                checked: false
-                onCheckedChanged:
-                {
-//                    if (!internalUiUpdate)
-//                    {
-//                        // Update other checkboxes
-//                        internalUiUpdate = true;
-//                        if (checked)
-//                        {
-//                            segDen.checked = false;
-//                            segInh.checked = false;
-//                        }
-//                        checkFinal();
-//                        internalUiUpdate = false;
-//                    }
-                }
-            }
+            icon: "à"
+            text: qsTr("Add panel")
         }
     }
 }

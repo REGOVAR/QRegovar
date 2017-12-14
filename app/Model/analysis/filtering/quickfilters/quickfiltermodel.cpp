@@ -16,7 +16,7 @@ QuickFilterModel::QuickFilterModel(QObject *parent) : QObject(parent)
 {
 }
 
-void QuickFilterModel::init(int refId, int)
+void QuickFilterModel::init(int refId, int analysisId)
 {
     mQuickFilters.clear();
     // Load filter according to the refID, analysisId
@@ -26,7 +26,7 @@ void QuickFilterModel::init(int refId, int)
     mQuickFilters[TypeFilter] = new TypeQuickFilter(refId);
     mQuickFilters[FrequenceFilter] = new FrequenceQuickFilter(refId);
     mQuickFilters[InSilicoPredFilter] = new InSilicoPredQuickFilter(refId);
-    //mQuickFilters[PanelFilter] = new PanelQuickFilter(refId);
+    mQuickFilters[PanelFilter] = new PanelQuickFilter(analysisId);
     mQuickFilters[PhenotypeFilter] = new PhenotypeQuickFilter(refId);
 }
 
@@ -79,6 +79,7 @@ void QuickFilterModel::checkAnnotationsDB(QList<QObject*> dbs)
     mQuickFilters[TypeFilter]->checkAnnotationsDB(dbs);
     mQuickFilters[FrequenceFilter]->checkAnnotationsDB(dbs);
     mQuickFilters[InSilicoPredFilter]->checkAnnotationsDB(dbs);
+    mQuickFilters[PanelFilter]->checkAnnotationsDB(dbs);
     mQuickFilters[PhenotypeFilter]->checkAnnotationsDB(dbs);
 }
 

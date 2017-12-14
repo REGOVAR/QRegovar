@@ -9,11 +9,13 @@
 class PanelQuickFilter: public QuickFilterBlockInterface
 {
     Q_OBJECT
-    Q_PROPERTY(QuickFilterField* depth READ depth NOTIFY depthChanged)
+    Q_PROPERTY(QList<QObject*> panelsList READ panelsList NOTIFY panelsListChanged)
 
 public:
+    // Constructor
     PanelQuickFilter(int analysisId);
 
+    // Methods overrided
     Q_INVOKABLE bool isVisible() override;
     Q_INVOKABLE QJsonArray toJson() override;
     Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant()) override;
@@ -22,14 +24,15 @@ public:
     bool loadJson(QJsonArray filter) override;
 
     // Getters
-    inline QuickFilterField* depth() { return mDepth; }
+    inline QList<QObject*> panelsList() const { return mPanelsList; }
+
 
 Q_SIGNALS:
-    void depthChanged();
+    void panelsListChanged();
 
 private:
-    QuickFilterField* mDepth = nullptr;
     QStringList mOperators;
+    QList<QObject*> mPanelsList;
 };
 
 #endif // PANELQUICKFILTER_H

@@ -1,8 +1,30 @@
 #include "panelquickfilter.h"
+#include "Model/regovar.h"
+#include "Model/analysis/filtering/filteringanalysis.h"
 
-PanelQuickFilter::PanelQuickFilter(int): QuickFilterBlockInterface()
+PanelQuickFilter::PanelQuickFilter(int analysisId): QuickFilterBlockInterface()
 {
-    mIsVisible = false;
+    mOperators.clear();
+    mOperators.append("∈");
+    mOperators.append("∉");
+
+
+    mPanelsList.clear();
+
+    // Retrieve list of available panel in the analysis settings
+    FilteringAnalysis* analysis = regovar->analysesManager()->getOrCreateFilteringAnalysis(analysisId);
+    for (const QString& panelId: analysis->panelsUsed())
+    {
+        Panel* panel = regovar->panelsManager()->getOrCreatePanel(panelId);
+        PanelVersion* version = panel->getVersion(panelId);
+        QuickFilterField* panelFilter = new QuickFilterField(
+                    "panel_"+panelId,
+                    QString("%1 (%2)").arg(panel->name(), version->version()),
+                    mOperators,  "IN", 0, false, this);
+        mPanelsList << panelFilter;
+    }
+
+    mIsVisible = mPanelsList.count();
 }
 
 
@@ -14,42 +36,28 @@ bool PanelQuickFilter::isVisible()
 
 
 QJsonArray PanelQuickFilter::toJson()
-{/*
-    QJsonArray conditions;
+{
+    QJsonArray filters;
     // Sift
-    if (mFields[0]->isActive())
+    for (QObject* o: mPanelsList)
     {
-        QuickFilterField* field = mFields[0];
-        QString old = field->value().toString();
-        conditions.append(field->toJson());
-        field->setValue(old + "_low_confidence");
-        conditions.append(field->toJson());
-        field->setValue(old);
-    }
-    // Polyphen
-    if (mFields[1]->isActive())
-    {
-        conditions.append(mFields[1]->toJson());
-    }
-    // CADD
-    if (mFields[2]->isActive())
-    {
-        conditions.append(mFields[2]->toJson());
+        QuickFilterField* field = qobject_cast<QuickFilterField*>(o);
+        if (field != nullptr && field->isActive())
+        {
+            filters.append(field->toJson());
+        }
     }
 
-    if (conditions.count() == 0)
+    if (filters.count() > 1)
     {
-        return conditions;
+        QJsonArray result;
+        result.append("OR");
+        result.append(filters);
+        return result;
     }
-    if (conditions.count() == 1)
-    {
-        return conditions[0].toArray();
-    }
-
-    QJsonArray result;
-    result.append("OR");
-    result.append(conditions);*/
-    return QJsonArray();
+    else if (filters.count() == 1)
+        return filters[0].toArray();
+    return filters;
 }
 
 
@@ -67,41 +75,9 @@ void PanelQuickFilter::clear()
 //    }
 }
 
-void PanelQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
+void PanelQuickFilter::checkAnnotationsDB(QList<QObject*>)
 {
-//    QString siftUid = "";
-//    QString polyUid = "";
-//    QString caddUid = "";
-
-
-//    mIsVisible = false;
-//    for (QObject* o: dbs)
-//    {
-//        AnnotationDB* db = qobject_cast<AnnotationDB*>(o);
-//        if (db->selected())
-//        {
-//            if (db->name().toLower() == "vep")
-//            {
-//                for (Annotation* annot: db->fields())
-//                {
-//                    if (annot && annot->name().toLower() == "sift_pred")
-//                    {
-//                        siftUid = annot->uid();
-//                        mIsVisible = true;
-//                    }
-//                    else if (annot && annot->name().toLower() == "polyphen_pred")
-//                    {
-//                        polyUid = annot->uid();
-//                        mIsVisible = true;
-//                    }
-//                    // TODO: retrieve CADD
-//                }
-//            }
-//        }
-//    }
-
-//    init(siftUid, polyUid, caddUid);
-//    mIsVisible = siftUid.isEmpty() || polyUid.isEmpty() || caddUid.isEmpty();
+    // Nothing to do
 }
 
 

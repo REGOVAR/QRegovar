@@ -28,7 +28,7 @@ bool Panel::fromJson(QJsonObject json)
     mEntries.clear();
     for (QJsonValue vv: json["versions"].toArray())
     {
-        PanelVersion* pv = new PanelVersion(vv.toObject());
+        PanelVersion* pv = new PanelVersion(vv.toObject(), this);
         mEntries.insert(pv->id(), pv);
         mOrderedVersionsId.append(pv->id());
     }

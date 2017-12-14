@@ -18,7 +18,8 @@ class QuickFilterModel : public QObject
     Q_PROPERTY(QuickFilterBlockInterface* typeFilter READ typeFilter NOTIFY filterChanged)
     Q_PROPERTY(QuickFilterBlockInterface* frequenceFilter READ frequenceFilter NOTIFY filterChanged)
     Q_PROPERTY(QuickFilterBlockInterface* inSilicoPredFilter READ inSilicoPredFilter NOTIFY filterChanged)
-    Q_PROPERTY(QuickFilterBlockInterface* ontologyFilter READ ontologyFilter NOTIFY filterChanged)
+    Q_PROPERTY(QuickFilterBlockInterface* panelFilter READ panelFilter NOTIFY filterChanged)
+    Q_PROPERTY(QuickFilterBlockInterface* phenotypeFilter READ phenotypeFilter NOTIFY filterChanged)
 
 
 public:
@@ -46,7 +47,8 @@ public:
     inline QuickFilterBlockInterface* typeFilter() { return mQuickFilters[TypeFilter]; }
     inline QuickFilterBlockInterface* frequenceFilter() { return mQuickFilters[FrequenceFilter]; }
     inline QuickFilterBlockInterface* inSilicoPredFilter() { return mQuickFilters[InSilicoPredFilter]; }
-    inline QuickFilterBlockInterface* ontologyFilter() { return mQuickFilters[PhenotypeFilter]; }
+    inline QuickFilterBlockInterface* panelFilter() { return mQuickFilters[PanelFilter]; }
+    inline QuickFilterBlockInterface* phenotypeFilter() { return mQuickFilters[PhenotypeFilter]; }
 
 
     // Methods

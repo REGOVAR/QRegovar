@@ -12,11 +12,20 @@ PanelsManager::PanelsManager(QObject* parent) : QObject(parent)
 
 Panel* PanelsManager::getOrCreatePanel(QString id)
 {
+    // Check if id found in panels
     if (mPanels.contains(id))
     {
         return mPanels[id];
     }
-    // else
+    // Check if id found in panels versions
+    for(Panel* panel: mPanels.values())
+    {
+        if (panel->getVersion(id) != nullptr)
+        {
+            return panel;
+        }
+    }
+    // else create new panel
     Panel* newPanel = new Panel(id);
     mPanels.insert(id, newPanel);
     return newPanel;

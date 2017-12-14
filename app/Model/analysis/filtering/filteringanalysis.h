@@ -57,6 +57,7 @@ class FilteringAnalysis : public Analysis
     // Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
     Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
     Q_PROPERTY(QStringList selectedAnnotationsDB READ selectedAnnotationsDB NOTIFY selectedAnnotationsDBChanged)
+    Q_PROPERTY(QStringList panelsUsed READ panelsUsed NOTIFY panelsUsedChanged)
     Q_PROPERTY(QString currentFilterName READ currentFilterName WRITE setCurrentFilterName NOTIFY currentFilterNameChanged)
     Q_PROPERTY(QList<QObject*> sets READ sets NOTIFY setsChanged)
 
@@ -108,21 +109,22 @@ public:
     QList<QObject*> samples4qml();      // convert QList<Sample*> to QList<QObject*>
     QStringList resultColumns();
     QStringList selectedAnnotationsDB();
+    inline QStringList panelsUsed() const { return mPanelsUsed; }
     inline bool isLoading() const { return mIsLoading; }
     inline QString currentFilterName() const { return mCurrentFilterName; }
     QList<QObject*> sets() const { return mSets; } // concat filters, samples, samples attributes and panel in one list
 
     // Setters
-    Q_INVOKABLE inline void setFilterJson(QJsonArray filterJson) { mFilterJson = filterJson; emit filterChanged(); }
-    Q_INVOKABLE inline void setIsTrio(bool flag) { mIsTrio=flag; emit isTrioChanged(); }
-    Q_INVOKABLE inline void setTrioChild(Sample* child) { mTrioChild=child; emit trioChildChanged(); }
-    Q_INVOKABLE inline void setTrioMother(Sample* mother) { mTrioMother=mother; emit trioMotherChanged(); }
-    Q_INVOKABLE inline void setTrioFather(Sample* father) { mTrioFather=father; emit trioFatherChanged(); }
-    Q_INVOKABLE inline void setIsLoading(bool flag) { mIsLoading=flag; emit isLoadingChanged(); }
-    Q_INVOKABLE inline void setCurrentFilterName(QString name) { mCurrentFilterName=name; emit currentFilterNameChanged(); }
+    inline void setFilterJson(QJsonArray filterJson) { mFilterJson = filterJson; emit filterChanged(); }
+    inline void setIsTrio(bool flag) { mIsTrio=flag; emit isTrioChanged(); }
+    inline void setTrioChild(Sample* child) { mTrioChild=child; emit trioChildChanged(); }
+    inline void setTrioMother(Sample* mother) { mTrioMother=mother; emit trioMotherChanged(); }
+    inline void setTrioFather(Sample* father) { mTrioFather=father; emit trioFatherChanged(); }
+    inline void setIsLoading(bool flag) { mIsLoading=flag; emit isLoadingChanged(); }
+    inline void setCurrentFilterName(QString name) { mCurrentFilterName=name; emit currentFilterNameChanged(); }
     Q_INVOKABLE void setField(QString uid, bool isDisplayed, int order=-1, bool internalUpdate=false);
-    Q_INVOKABLE void setReference(Reference* ref, bool continueInit=false);
-    Q_INVOKABLE void setProject(Project* project) { mProject = project; emit dataChanged(); }
+    void setReference(Reference* ref, bool continueInit=false);
+    void setProject(Project* project) { mProject = project; emit dataChanged(); }
 
 
     // Analysis Abstracty Methods overriden
@@ -192,6 +194,7 @@ Q_SIGNALS:
     void setsChanged();
     void fileAdded(int fileId);
     void documentsChanged();
+    void panelsUsedChanged();
 
 
 
@@ -232,6 +235,7 @@ private:
 
     bool mIsTrio = false;
     QStringList mAnnotationsDBUsed;
+    QStringList mPanelsUsed;
     Sample* mTrioChild = nullptr;
     Sample* mTrioMother = nullptr;
     Sample* mTrioFather = nullptr;
