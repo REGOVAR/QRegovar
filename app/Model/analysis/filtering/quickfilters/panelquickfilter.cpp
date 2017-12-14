@@ -18,7 +18,7 @@ PanelQuickFilter::PanelQuickFilter(int analysisId): QuickFilterBlockInterface()
         Panel* panel = regovar->panelsManager()->getOrCreatePanel(panelId);
         PanelVersion* version = panel->getVersion(panelId);
         QuickFilterField* panelFilter = new QuickFilterField(
-                    "panel_"+panelId,
+                    panelId,
                     QString("%1 (%2)").arg(panel->name(), version->version()),
                     mOperators,  "IN", 0, false, this);
         mPanelsList << panelFilter;
@@ -44,7 +44,15 @@ QJsonArray PanelQuickFilter::toJson()
         QuickFilterField* field = qobject_cast<QuickFilterField*>(o);
         if (field != nullptr && field->isActive())
         {
-            filters.append(field->toJson());
+            QJsonArray opLeft;
+            opLeft.append("panel");
+            opLeft.append(field->fuid());
+
+            QJsonArray result;
+            result.append(field->op());
+            result.append(opLeft);
+
+            filters.append(result);
         }
     }
 
