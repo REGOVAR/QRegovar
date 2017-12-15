@@ -69,7 +69,8 @@ HEADERS += \
     Model/panel/panelstreemodel.h \
     Model/panel/panelversion.h \
     Model/analysis/filtering/quickfilters/phenotypequickfilter.h \
-    Model/analysis/filtering/quickfilters/panelquickfilter.h
+    Model/analysis/filtering/quickfilters/panelquickfilter.h \
+    Model/settings.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -126,7 +127,8 @@ SOURCES += main.cpp \
     Model/panel/panelstreemodel.cpp \
     Model/panel/panelversion.cpp \
     Model/analysis/filtering/quickfilters/phenotypequickfilter.cpp \
-    Model/analysis/filtering/quickfilters/panelquickfilter.cpp
+    Model/analysis/filtering/quickfilters/panelquickfilter.cpp \
+    Model/settings.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

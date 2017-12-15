@@ -16,6 +16,32 @@ FilesManager::FilesManager(QObject *parent) : QObject(parent)
 
 
 
+void FilesManager::setCacheDir(QString path)
+{
+    mCacheDir = path;
+    if (mCacheDir.isEmpty())
+    {
+        mCacheDir = QStandardPaths::standardLocations(QStandardPaths::CacheLocation)[0];
+    }
+    regovar->settings()->setLocalCacheDir(mCacheDir);
+    regovar->settings()->save();
+    refreshCacheStats();
+    emit cacheDirChanged();
+}
+
+
+
+void FilesManager::setCacheMaxSize(int size)
+{
+    mCacheMaxSize = qMin(qMax(1,size), 1000);
+    regovar->settings()->setLocalCacheMaxSize(mCacheMaxSize);
+    regovar->settings()->save();
+    emit cacheMaxSizeChanged();
+}
+
+
+
+
 File* FilesManager::getOrCreateFile(int id)
 {
     if (!mFiles.contains(id))
@@ -25,6 +51,7 @@ File* FilesManager::getOrCreateFile(int id)
     }
     return mFiles[id];
 }
+
 
 
 File* FilesManager::getFile(int id)
@@ -126,14 +153,14 @@ void FilesManager::clearUploadsList()
 
 void FilesManager::refreshCacheStats()
 {
-    mCacheSize = 0;
+    mCacheOccupiedSize = 0;
     QFileInfo info(mCacheDir);
 
     if (info.isDir())
     {
-        mCacheSize = directorySize(mCacheDir);
+        mCacheOccupiedSize = directorySize(mCacheDir);
     }
-    emit cacheSizeChanged();
+    emit cacheOccupiedSizeChanged();
 }
 
 qint64 FilesManager::directorySize(const QString path)

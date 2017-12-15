@@ -18,6 +18,7 @@
 // TODO: rework as manager pattern
 #include "user.h"
 #include "admin.h"
+#include "settings.h"
 
 
 #ifndef regovar
@@ -26,13 +27,6 @@
 
 
 
-struct RegovarSettings
-{
-    int defaultReference = 0;
-    QUrl serverUrl;
-    QString localCacheDir;
-    int localCacheMaxSize = 0;
-};
 
 
 
@@ -101,7 +95,7 @@ class Regovar : public QObject
     Q_PROPERTY(ToolsManager* toolsManager READ toolsManager NOTIFY neverChanged)
 
     // Others
-    Q_PROPERTY(RegovarSettings settings READ settings NOTIFY settingsChanged)
+    Q_PROPERTY(Settings* settings READ settings NOTIFY settingsChanged)
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
     Q_PROPERTY(User* user READ user NOTIFY userChanged)
 
@@ -116,12 +110,8 @@ class Regovar : public QObject
 
 
 public:
-
-
     static Regovar* i();
     void init();
-    void readSettings();
-    void writeSettings();
 
     // Getters
     inline RegovarInfo* config() const { return mConfig; }
@@ -146,7 +136,7 @@ public:
     inline ToolsManager* toolsManager() const { return mToolsManager; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
-    inline RegovarSettings settings() const { return mSettings; }
+    inline Settings* settings() const { return mSettings; }
     inline QList<QObject*> openWindowModels() const { return mOpenWindowModels; }
 
     // Setters
@@ -234,7 +224,7 @@ private:
 
     // Models
     //! wrap all settings retrieved from QSetting before initialisation of all managers
-    RegovarSettings mSettings;
+    Settings* mSettings = nullptr;
     //! The config retrieved from the server
     RegovarInfo* mConfig = nullptr;
     //! The current user of the application
@@ -262,7 +252,6 @@ private:
 
     //! list of references supported by the server
     QList<QObject*> mReferences;
-    int mReferenceDefault = -1;
 
     // Managers
     //! Manage network (all requests Up/Down with the server, authent, and websocket connection)

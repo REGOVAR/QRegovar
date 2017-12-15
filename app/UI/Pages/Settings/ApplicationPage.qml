@@ -320,12 +320,7 @@ Rectangle
             spacing: 5
 
 
-            TextField
-            {
-                id: cacheDir
-                width: parent.width
-                placeholderText: qsTr("Let empty to use default OS application cache directory")
-            }
+
             Text
             {
                 id: cacheDirMsg
@@ -339,30 +334,7 @@ Rectangle
         }
 
         // Action buttons
-        Column
-        {
-            spacing: 10
-            ButtonIcon
-            {
-                Layout.rowSpan: 2
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Clear cache !")
-                icon: "h"
-                onClicked:
-                {
-                    regovar.filesManager.clearCache();
-                    root.refreshCacheStats();
-                }
-            }
-            Text
-            {
-                id: cacheCurrentSize
-                font.pixelSize: Regovar.theme.font.size.small
-                font.italic: true
-                color: Regovar.theme.primaryColor.back.normal
-                wrapMode: Text.WordWrap
-            }
-        }
+
 
         // Cache size limit
         Row
@@ -388,52 +360,12 @@ Rectangle
             Layout.fillWidth: true
             spacing: 5
 
-            Row
-            {
-                spacing: 10
 
-                Rectangle
-                {
-                    color: "transparent"
-                    width: 400
-                    height: Regovar.theme.font.boxSize.normal
-
-                    Rectangle
-                    {
-                        color: Regovar.theme.primaryColor.back.normal
-                        width: 2
-                        height: parent.height
-                        x: Math.round(100 * (parent.width / cacheMaxSize.maximumValue)) + 5
-                    }
-
-                    Slider
-                    {
-                        id: cacheMaxSize
-                        maximumValue: 1000
-                        minimumValue: 1
-                        stepSize: 1
-                        value: 0
-                        onValueChanged:
-                        {
-                            cacheMaxSizeLabel.text = value + " Go";
-                            regovar.filesManager.cacheMaxSize = value;
-                        }
-                        width: parent.width
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                }
-
-                Text
-                {
-                    id: cacheMaxSizeLabel
-                    text: ""
-                }
-            }
 
             Text
             {
                 width: parent.width
-                text: qsTr("Set the maximum size allowed for the cache folder (Older cached files will be automatically deleted when folder size limit is reach.")
+                text: qsTr("")
                 font.pixelSize: Regovar.theme.font.size.small
                 font.italic: true
                 color: Regovar.theme.primaryColor.back.normal

@@ -175,7 +175,8 @@ Rectangle
     /// Retrive model of the selected panel in the treeview and display wizard to create new version
     function updateSelectedPanel()
     {
-        var item = regovar.panelsManager.panelsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
-
+        var panelId = regovar.panelsManager.panelsTree.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
+        newPanelDialog.model = regovar.panelsManager.getOrCreatePanel(panelId);
+        newPanelDialog.open();
     }
 }

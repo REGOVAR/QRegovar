@@ -38,9 +38,14 @@ QtObject
             { "icon": "b", "label": qsTr("Subjects"),    "page": "", "sublevel": [
                 { "icon": "z", "label": qsTr("Browser"), "page": "Browse/SubjectsPage.qml", "sublevel": [], "subindex": -1, "subjectId": -1},
                 ], "subindex": 0},
-            { "icon": "d", "label": qsTr("Settings"),        "page": "",   "sublevel": [
-                { "icon": "b", "label": qsTr("My profile"),  "page": "Settings/ProfilePage.qml", "sublevel": [], "subindex": -1},
-                { "icon": "I", "label": qsTr("Application"), "page": "Settings/ApplicationPage.qml", "sublevel": [], "subindex": -1},
+            { "icon": "d", "label": qsTr("Settings"), "page": "", "sublevel": [
+                { "icon": "b", "label": qsTr("My profile"), "page": "Settings/ProfilePage.qml", "sublevel": [], "subindex": -1},
+                { "icon": "I", "label": qsTr("Application"), "page": "", "sublevel": [
+                            { "icon": "", "label": qsTr("Regovar"), "page": "Settings/ApplicationRegovarPage.qml", "sublevel": [], "subindex": -1},
+                            { "icon": "", "label": qsTr("Interface"), "page": "Settings/ApplicationInterfacePage.qml", "sublevel": [], "subindex": -1},
+                            { "icon": "", "label": qsTr("Connection"), "page": "Settings/ApplicationConnectionPage.qml", "sublevel": [], "subindex": -1},
+                            { "icon": "", "label": qsTr("Cache"), "page": "Settings/ApplicationCachePage.qml", "sublevel": [], "subindex": -1},
+                            ], "subindex": 0},
                 { "icon": "q", "label": qsTr("Panels"),      "page": "Settings/PanelsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "^", "label": qsTr("Statistics"),  "page": "Settings/StatisticsPage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "d", "label": qsTr("Administration"), "page": "", "sublevel": [

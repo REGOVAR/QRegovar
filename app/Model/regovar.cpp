@@ -11,6 +11,7 @@
 #include "subject/sample.h"
 #include "tools/tool.h"
 #include <QDateTime>
+#include <QApplication>
 
 
 
@@ -86,8 +87,8 @@ Regovar::~Regovar() {}
 
 void Regovar::init()
 {
-    // Init managers
-    readSettings();
+    // Load settings
+    mSettings = new Settings();
 
     // Create models
     mUser = new User(1, "Olivier", "Gueudelot");
@@ -96,17 +97,18 @@ void Regovar::init()
 
     // Init network manager
     mNetworkManager = new NetworkManager();
-    mNetworkManager->setServerUrl(mSettings.serverUrl);
+    mNetworkManager->setServerUrl(mSettings->serverUrl());
+    mNetworkManager->setSharedUrl(mSettings->sharedUrl());
 
     // Init file manager
     mFilesManager = new FilesManager();
-    mFilesManager->setCacheDir(mSettings.localCacheDir);
-    mFilesManager->setCacheMaxSize(mSettings.localCacheMaxSize);
+    mFilesManager->setCacheDir(mSettings->localCacheDir());
+    mFilesManager->setCacheMaxSize(mSettings->localCacheMaxSize());
 
     // Init others managers
     mProjectsManager = new ProjectsManager();
     mSubjectsManager = new SubjectsManager();
-    mSamplesManager = new SamplesManager(mSettings.defaultReference);
+    mSamplesManager = new SamplesManager(mSettings->defaultReference());
     mAnalysesManager = new AnalysesManager();
     mPanelsManager = new PanelsManager();
     mToolsManager = new ToolsManager();
@@ -121,29 +123,6 @@ void Regovar::init()
 }
 
 
-
-
-
-void Regovar::readSettings()
-{
-    QSettings settings;
-
-    // Default genome reference
-    mSettings.defaultReference = settings.value("defaultRefId", 0).toInt();
-
-    mSettings.serverUrl.setScheme(settings.value("scheme", "http").toString());
-    mSettings.serverUrl.setHost(settings.value("host", "dev.regovar.org").toString());
-    mSettings.serverUrl.setPort(settings.value("port", 80).toInt());
-    mSettings.localCacheDir = settings.value("cacheDir", QStandardPaths::standardLocations(QStandardPaths::CacheLocation)[0]).toString();
-    mSettings.localCacheMaxSize = settings.value("cacheSize", 100).toInt();
-}
-
-
-
-void Regovar::writeSettings()
-{
-    // TODO:
-}
 
 
 
@@ -189,7 +168,6 @@ void Regovar::loadWelcomData()
             emit lastDataChanged();
 
             // Get referencial available
-            mReferenceDefault = data["default_reference_id"].toInt();
             for (const QJsonValue& jsonVal: data["references"].toArray())
             {
                 Reference* ref = new Reference();
@@ -522,8 +500,10 @@ void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
 
 void Regovar::close()
 {
-    emit onClose();
+    settings()->save();
+    QApplication::quit();
 }
+
 
 void Regovar::disconnectUser()
 {

@@ -10,7 +10,7 @@ class FilesManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString cacheDir READ cacheDir WRITE setCacheDir NOTIFY cacheDirChanged)
-    Q_PROPERTY(qint64 cacheSize READ cacheSize WRITE setCacheSize NOTIFY cacheSizeChanged)
+    Q_PROPERTY(qint64 cacheOccupiedSize READ cacheOccupiedSize WRITE setCacheOccupiedSize NOTIFY cacheOccupiedSizeChanged)
     Q_PROPERTY(int cacheMaxSize READ cacheMaxSize WRITE setCacheMaxSize NOTIFY cacheMaxSizeChanged)
     Q_PROPERTY(QList<QObject*> uploadsList READ uploadsList NOTIFY uploadsChanged)
     Q_PROPERTY(int uploadsProgress READ uploadsProgress NOTIFY uploadsChanged)
@@ -25,7 +25,7 @@ public:
 
     // Getters
     inline QString cacheDir() const { return mCacheDir; }
-    inline qint64 cacheSize() const { return mCacheSize; }
+    inline qint64 cacheOccupiedSize() const { return mCacheOccupiedSize; }
     inline int cacheMaxSize() const { return mCacheMaxSize; }
     inline int uploadsProgress() const { return mUploadsProgress; }
     inline QList<QObject*> remoteList() const { return mRemoteFilesList; }
@@ -33,9 +33,9 @@ public:
     inline FilesTreeModel* filesTree() const { return mFilesTree; }
 
     // Setters
-    inline void setCacheDir(QString path) { mCacheDir = path; refreshCacheStats(); emit cacheDirChanged(); }
-    inline void setCacheSize(int size) { mCacheSize = size; emit cacheSizeChanged(); }
-    inline void setCacheMaxSize(int size) { mCacheMaxSize = size; emit cacheMaxSizeChanged(); }
+    void setCacheDir(QString path);
+    inline void setCacheOccupiedSize(int size) { mCacheOccupiedSize = size; emit cacheOccupiedSizeChanged(); }
+    void setCacheMaxSize(int size);
 
     // Method
     Q_INVOKABLE File* getOrCreateFile(int id);
@@ -57,7 +57,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void cacheDirChanged();
-    void cacheSizeChanged();
+    void cacheOccupiedSizeChanged();
     void cacheMaxSizeChanged();
     void uploadsChanged();
     void remoteListChanged();
@@ -79,7 +79,7 @@ private:
     //! The path to the local cache folder
     QString mCacheDir;
     //! The current size of the cache folder (in bytes)
-    qint64 mCacheSize = 0;
+    qint64 mCacheOccupiedSize = 0;
     //! The maximum size of the cache folder (in giga)
     int mCacheMaxSize = 20;
 };

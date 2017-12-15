@@ -16,6 +16,8 @@ Dialog
     width: 600
     height: 400
 
+    // If panelId set with panel id or panel version id,
+    property string panelId: null
     property int currentStep: 1
 
 
@@ -285,6 +287,7 @@ Dialog
     // FIXME: for weird raison, property binding not working.
     function reset()
     {
+        model = null;
         panelNameField.text = "";
         ownerField.text = "";
         descriptionField.text = "";

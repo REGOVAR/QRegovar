@@ -28,7 +28,7 @@ Rectangle
             anchors.margins: 10
             text: qsTr("User profile settings")
             font.pixelSize: 20
-            font.weight: Font.Black
+            font.weight: Font.bold
         }
         ConnectionStatus
         {

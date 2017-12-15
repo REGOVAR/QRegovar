@@ -12,7 +12,7 @@ class NetworkManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlChanged)
-    Q_PROPERTY(QUrl sharedServerUrl READ sharedServerUrl WRITE setSharedServerUrl NOTIFY sharedServerUrlChanged)
+    Q_PROPERTY(QUrl sharedUrl READ sharedUrl WRITE setSharedUrl NOTIFY sharedUrlChanged)
     Q_PROPERTY(ServerStatus status READ status WRITE setStatus NOTIFY statusChanged)
 
 
@@ -36,16 +36,16 @@ public:
 
     // Getters
     inline QUrl& serverUrl() { return mServerUrl; }
-    inline QUrl& sharedServerUrl() { return mSharedServerUrl; }
+    inline QUrl& sharedUrl() { return mSharedUrl; }
     inline ServerStatus status() { return mStatus; }
 
     // Setters
     inline void setStatus(ServerStatus flag) { mStatus = flag; emit statusChanged(); }
+    inline void setSharedUrl(QUrl url) { mSharedUrl = url; emit sharedUrlChanged(); }
     void setServerUrl(QUrl url);
-    void setSharedServerUrl(QUrl url);
 
     // Methods
-    Q_INVOKABLE bool testServerUrl(QString url);
+    Q_INVOKABLE bool testServerUrl(QString serverUrl, QString sharedUrl);
 
 
 
@@ -62,16 +62,16 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void serverUrlChanged();
-    void sharedServerUrlChanged();
+    void sharedUrlChanged();
     void statusChanged();
-    void testServerUrlDone(bool success, QString url);
+    void testServerUrlDone(bool success, QString serverUrlValid, QString sharedUrlValid);
     void websocketMessageReceived(QString action, QJsonObject data);
 
 
 private:
     //! The root url to the server api
     QUrl mServerUrl;
-    QUrl mSharedServerUrl;
+    QUrl mSharedUrl;
 
     //! List of all network task currently in progress
     QList<NetworkTask*> mTasks;

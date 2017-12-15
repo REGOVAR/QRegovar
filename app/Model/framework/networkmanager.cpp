@@ -21,10 +21,26 @@ NetworkManager::NetworkManager(QObject *parent) : QObject(parent)
 
 
 
-bool NetworkManager::testServerUrl(QString url)
+bool NetworkManager::testServerUrl(QString serverUrl, QString sharedUrl)
 {
     // TODO: do a request, and check if get expected result
-    emit testServerUrlDone(!url.isEmpty(), url);
+    bool test1 = !serverUrl.isEmpty();
+    bool test2 = !sharedUrl.isEmpty();
+    if (test1)
+    {
+        mServerUrl = QUrl(serverUrl);
+        regovar->settings()->setServerUrl(QUrl(serverUrl));
+    }
+    if (test1)
+    {
+        mSharedUrl = QUrl(sharedUrl);
+        regovar->settings()->setSharedUrl(QUrl(sharedUrl));
+    }
+    if(test1 || test2)
+    {
+        regovar->settings()->save();
+    }
+    emit testServerUrlDone(test1 || test2, mServerUrl.toString(), mSharedUrl.toString());
     return true;
 }
 
@@ -45,14 +61,6 @@ void NetworkManager::setServerUrl(QUrl url)
 
     emit serverUrlChanged();
 }
-
-
-void NetworkManager::setSharedServerUrl(QUrl)
-{
-    // TODO:
-    emit sharedServerUrlChanged();
-}
-
 
 
 

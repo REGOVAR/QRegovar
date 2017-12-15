@@ -20,6 +20,7 @@ GenericWindow
 
     property QtObject model
 
+    onClosing: regovar.close()
 
     menuModel: Regovar.menuModel
     title: "Regovar - " + menuModel.mainTitle
@@ -31,20 +32,19 @@ GenericWindow
         property alias y: root.y
         property alias width: root.width
         property alias height: root.height
-
-        property int themeId: 0
-        property real fontSizeCoeff: 1.0
     }
     Component.onCompleted:
     {
-        Regovar.theme.themeId = settings.themeId
-        Regovar.theme.fontSizeCoeff = settings.fontSizeCoeff
+        Regovar.theme.themeId = regovar.settings.themeId
+        Regovar.theme.fontSizeCoeff = regovar.settings.fontSize
+        Regovar.helpInfoBoxDisplayed = regovar.settings.displayHelp
     }
     Component.onDestruction:
     {
-        // store value choose by the user to restore it next time
-        settings.themeId = Regovar.theme.themeId
-        settings.fontSizeCoeff = Regovar.theme.fontSizeCoeff
+        regovar.settings.themeId = Regovar.theme.themeId
+        regovar.settings.fontSize = Regovar.theme.fontSizeCoeff
+        regovar.settings.displayHelp = Regovar.helpInfoBoxDisplayed
+        regovar.settings.save()
     }
 
 
