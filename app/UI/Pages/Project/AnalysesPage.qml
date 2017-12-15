@@ -28,6 +28,7 @@ Rectangle
             anchors.top: header.top
             anchors.left: header.left
             anchors.bottom: header.bottom
+            anchors.right: connectionStatus.left
             anchors.margins: 10
             font.pixelSize: 22
             font.family: Regovar.theme.font.familly
@@ -38,6 +39,7 @@ Rectangle
         }
         ConnectionStatus
         {
+            id: connectionStatus
             anchors.top: header.top
             anchors.right: header.right
             anchors.bottom: header.bottom
@@ -47,12 +49,63 @@ Rectangle
 
     }
 
+    // Help information on this page
+    Box
+    {
+        id: helpInfoBox
+        anchors.top : header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.margins: 10
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        mainColor: Regovar.theme.frontColor.success
+        icon: "k"
+        text: qsTr("This page list all analyses that have been done in the current project.")
+    }
+
+
+    ColumnLayout
+    {
+        id: actionsPanel
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
+        anchors.right: root.right
+        anchors.margins : 10
+        spacing: 10
+
+
+        Button
+        {
+            id: newAnalysis
+            text: qsTr("New")
+            onClicked:  console.log("New analysis")
+        }
+        Button
+        {
+            id: openAnalysis
+            text: qsTr("Open")
+            onClicked:  console.log("Open analysis")
+        }
+        Button
+        {
+            id: playPauseAnalysis
+            text: qsTr("Pause")
+            onClicked:  console.log("Pause/Play analysis")
+        }
+        Button
+        {
+            id: deleteAnalysis
+            text: qsTr("Delete")
+            onClicked:  console.log("Delete analysis")
+        }
+    }
 
     SplitView
     {
-        anchors.top: header.bottom
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
         anchors.left: root.left
-        anchors.right: root.right
+        anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         orientation: Qt.Vertical
 
@@ -63,65 +116,10 @@ Rectangle
             color: Regovar.theme.backgroundColor.main
             Layout.minimumHeight: 200
 
-            // Help information on this page
-            Box
-            {
-                id: helpInfoBox
-                anchors.top : topPanel.top
-                anchors.left: topPanel.left
-                anchors.right: topPanel.right
-                anchors.margins: 10
-                height: 30
-
-                visible: Regovar.helpInfoBoxDisplayed
-                mainColor: Regovar.theme.frontColor.success
-                icon: "k"
-                text: qsTr("This page list all analyses that have been done in the current project.")
-            }
-
-            Column
-            {
-                id: actionsPanel
-                anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
-                anchors.right: topPanel.right
-                anchors.margins : 10
-                spacing: 10
-
-
-                Button
-                {
-                    id: newAnalysis
-                    text: qsTr("New")
-                    onClicked:  console.log("New analysis")
-                }
-                Button
-                {
-                    id: openAnalysis
-                    text: qsTr("Open")
-                    onClicked:  console.log("Open analysis")
-                }
-                Button
-                {
-                    id: playPauseAnalysis
-                    text: qsTr("Pause")
-                    onClicked:  console.log("Pause/Play analysis")
-                }
-                Button
-                {
-                    id: deleteAnalysis
-                    text: qsTr("Delete")
-                    onClicked:  console.log("Delete analysis")
-                }
-            }
-
-
             TableView
             {
                 id: browser
-                anchors.left: topPanel.left
-                anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
-                anchors.right: actionsPanel.left
-                anchors.bottom: topPanel.bottom
+                anchors.fill: parent
                 anchors.margins: 10
                 model: (root.model) ? root.model.analyses : []
 

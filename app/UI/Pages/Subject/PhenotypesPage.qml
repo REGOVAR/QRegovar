@@ -34,6 +34,7 @@ Rectangle
             anchors.top: header.top
             anchors.left: header.left
             anchors.bottom: header.bottom
+            anchors.right: connectionStatus.left
             anchors.margins: 10
             font.pixelSize: 22
             font.family: Regovar.theme.font.familly
@@ -41,6 +42,15 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
 
             text: "-"
+        }
+        ConnectionStatus
+        {
+            id: connectionStatus
+            anchors.top: header.top
+            anchors.right: header.right
+            anchors.bottom: header.bottom
+            anchors.margins: 5
+            anchors.rightMargin: 10
         }
     }
 
