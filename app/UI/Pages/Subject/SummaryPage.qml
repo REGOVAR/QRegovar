@@ -186,18 +186,28 @@ Rectangle
 
         Text
         {
-            text: qsTr("Priority")
+            text: qsTr("Indicator")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.familly
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
-        ComboBox
+        Rectangle
         {
-            enabled: editionMode
-            model: ["Urgent", "High", "Normal", "Low"]
-            currentIndex: 1
+            color: "transparent"
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.normal
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            Text
+            {
+                anchors.fill: parent
+                text: qsTr("Not yet implemented")
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.frontColor.disable
+                verticalAlignment: Text.AlignVCenter
+            }
         }
 
 
@@ -264,12 +274,14 @@ Rectangle
             {
                 id: addFile
                 text: qsTr("Add event")
+                enabled: false
             }
 
             Button
             {
                 id: editFile
                 text: qsTr("Edit event")
+                enabled: false
             }
         }
     }
@@ -282,7 +294,7 @@ Rectangle
             idField.text = model.identifier;
             firstnameField.text = model.firstname;
             lastnameField.text = model.lastname;
-            dateOfBirthField.text = model.dateOfBirth;
+            dateOfBirthField.text = Regovar.formatShortDate(model.dateOfBirth);
             familyNumberField.text = model.familyNumber;
             commentField.text = model.comment;
         }
@@ -292,15 +304,15 @@ Rectangle
     {
         if (model)
         {
-            var json={};
-            json["identifier"] = idField.text;
-            json["firstname"] = firstnameField.text;
-            json["lastname"] = lastnameField.text;
-            json["dateOfBirth"] = dateOfBirthField.text;
-            json["familyNumber"] = familyNumberField.text;
-            json["comment"] = commentField.text;
+            model.identifier = idField.text;
+            model.firstname = firstnameField.text;
+            model.lastname = lastnameField.text;
+            model.familyNumber = familyNumberField.text;
+            model.comment = commentField.text;
+            model.dateOfBirth = Regovar.dateFromShortString(dateOfBirthField.text);
 
-            model.deleteLater()
+            model.save();
+            nameLabel.text = model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname;
         }
     }
 }

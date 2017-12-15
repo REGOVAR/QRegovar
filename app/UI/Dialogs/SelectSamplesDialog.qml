@@ -100,6 +100,11 @@ Dialog
                         }
                         highlighted: refCombo.highlightedIndex === index
                     }
+
+                    onCurrentIndexChanged:
+                    {
+                        regovar.samplesManager.referencialId = regovar.references[currentIndex].id;
+                    }
                 }
 
                 TextField

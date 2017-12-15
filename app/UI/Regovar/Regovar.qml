@@ -58,8 +58,8 @@ QtObject
             { "icon": "e", "label": qsTr("Help"),           "page": "", "sublevel": [
                 { "icon": "e", "label": qsTr("User guide"), "page": "Help/UserGuidePage.qml", "sublevel": [], "subindex": -1},
                 { "icon": "f", "label": qsTr("About"),      "page": "Help/AboutPage.qml", "sublevel": [], "subindex": -1}
-                ], "subindex": 0},
-            { "icon": "h", "label": qsTr("Close"),        "page": "@close",      "sublevel": [], "subindex": -1}
+                ], "subindex": 0}
+           // { "icon": "h", "label": qsTr("Close"),        "page": "@close",      "sublevel": [], "subindex": -1}
         ]
     }
 
@@ -225,8 +225,6 @@ QtObject
     function formatDate(iso)
     {
         var date = new Date(iso);
-
-
         var day = date.getDate();
         day = (day > 9 ? "" : "0") + day;
         var month = date.getMonth() + 1;
@@ -238,6 +236,24 @@ QtObject
         minutes = (minutes > 9 ? "" : "0") + minutes;
 
         return year + "-" +  month + "-" + day + " " + hours + ":" + minutes;
+    }
+
+    function formatShortDate(iso)
+    {
+        var date = new Date(iso);
+        var day = date.getDate();
+        day = (day > 9 ? "" : "0") + day;
+        var month = date.getMonth() + 1;
+        month = (month > 9 ? "" : "0") + month;
+        var year = date.getFullYear();
+
+        return year + "-" +  month + "-" + day;
+    }
+
+    function dateFromShortString(dateString)
+    {
+        var dateElmt = dateString.split("-");
+        return new Date(dateElmt[0], dateElmt[1] - 1,  dateElmt[2]);
     }
 
 } 

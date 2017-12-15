@@ -17,7 +17,7 @@ Dialog
     height: 400
 
     // If panelId set with panel id or panel version id,
-    property string panelId: null
+    property string panelId: ""
     property int currentStep: 1
 
 

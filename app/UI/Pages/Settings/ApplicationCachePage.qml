@@ -19,7 +19,7 @@ Rectangle
     {
         cacheDir.text = regovar.filesManager.cacheDir;
         cacheMaxSize.value = regovar.filesManager.cacheMaxSize;
-        cacheMaxSizeLabel.text = value + " Go";
+        cacheMaxSizeLabel.text = regovar.filesManager.cacheMaxSize + " Go";
         root.refreshCacheStats();
         componentReady = true;
     }

@@ -184,6 +184,118 @@ Rectangle
         Rectangle
         {
             Layout.row: 7
+            Layout.column: 0
+            color: "transparent"
+            width: 10
+            height: 10
+        }
+
+        // Subject indicators
+        Text
+        {
+            Layout.row: 8
+            Layout.column: 0
+            Layout.columnSpan: 2
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.title
+
+            elide: Text.ElideRight
+            text: qsTr("Subject indicators")
+            font.bold: true
+            font.pixelSize: Regovar.theme.font.size.header
+            verticalAlignment: Text.AlignVCenter
+            color: Regovar.theme.primaryColor.back.normal
+        }
+        Text
+        {
+            Layout.row: 9
+            Layout.column: 1
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
+            text: qsTr("Set custom indicators to help you to manage subjects. Indicators are set for all subjects stored on this server, and are shared with all users.")
+            font.pixelSize: Regovar.theme.font.size.normal
+            color: Regovar.theme.primaryColor.back.normal
+            height: Regovar.theme.font.boxSize.normal
+            verticalAlignment: Text.AlignVCenter
+        }
+        Rectangle
+        {
+            Layout.row: 10
+            Layout.column: 1
+            color: "transparent"
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.normal
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            Text
+            {
+                anchors.fill: parent
+                text: qsTr("Not yet implemented")
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.frontColor.disable
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle
+        {
+            Layout.row: 11
+            Layout.column: 0
+            color: "transparent"
+            width: 10
+            height: 10
+        }
+
+        // Analyses indicators
+        Text
+        {
+            Layout.row: 12
+            Layout.column: 0
+            Layout.columnSpan: 2
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.title
+
+            elide: Text.ElideRight
+            text: qsTr("Analyses indicators")
+            font.bold: true
+            font.pixelSize: Regovar.theme.font.size.header
+            verticalAlignment: Text.AlignVCenter
+            color: Regovar.theme.primaryColor.back.normal
+        }
+        Text
+        {
+            Layout.row: 13
+            Layout.column: 1
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
+            text: qsTr("Set custom indicators to help you to manage analyses. Indicators are set for all analyses done on this server, and are shared with all users.")
+            font.pixelSize: Regovar.theme.font.size.normal
+            color: Regovar.theme.primaryColor.back.normal
+            height: Regovar.theme.font.boxSize.normal
+            verticalAlignment: Text.AlignVCenter
+        }
+        Rectangle
+        {
+            Layout.row: 14
+            Layout.column: 1
+            color: "transparent"
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.normal
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            Text
+            {
+                anchors.fill: parent
+                text: qsTr("Not yet implemented")
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.frontColor.disable
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle
+        {
+            Layout.row: 15
             Layout.column: 1
             color: "transparent"
             Layout.fillHeight: true

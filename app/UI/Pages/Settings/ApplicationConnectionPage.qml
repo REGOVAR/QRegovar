@@ -19,8 +19,7 @@ Rectangle
         regovarUrl.text = regovar.networkManager.serverUrl;
         sharedUrl.text = regovar.networkManager.sharedUrl;
 
-        regovar.networkManager.testServerUrl(regovarUrl.text);
-        regovar.networkManager.testServerUrl(sharedUrl.text);
+        regovar.networkManager.testServerUrl(regovarUrl.text, sharedUrl.text);
     }
 
     Rectangle

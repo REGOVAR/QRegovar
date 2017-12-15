@@ -28,7 +28,7 @@ bool Subject::fromJson(QJsonObject json)
     mFamilyNumber = json["family_number"].toString();
     QString sex = json["sex"].toString();
     mSex = sex == "male" ? Sex::Male : "female" ?  Sex::Female : Sex::Unknow;
-    mDateOfBirth = QDate::fromString(json["date_of_birth"].toString());
+    mDateOfBirth = QDate::fromString(json["dateofbirth"].toString(), Qt::ISODate);
     mUpdated = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     mCreated = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
 
@@ -63,7 +63,7 @@ QJsonObject Subject::toJson()
     result.insert("identifier", mIdentifier);
     result.insert("firstname", mFirstname);
     result.insert("lastname", mLastname);
-    result.insert("date_of_birth", mDateOfBirth.toString(Qt::ISODate));
+    result.insert("dateofbirth", mDateOfBirth.toString(Qt::ISODate));
     result.insert("family_number", mFamilyNumber);
     result.insert("comment", mComment);
     result.insert("sex", mSex == Sex::Male ? "male" : mSex == Sex::Female ? "female" : "unknow");
