@@ -26,7 +26,7 @@ Panel* PanelsManager::getOrCreatePanel(QString id)
         }
     }
     // else create new panel
-    Panel* newPanel = new Panel(id);
+    Panel* newPanel = new Panel(true);
     mPanels.insert(id, newPanel);
     return newPanel;
 }

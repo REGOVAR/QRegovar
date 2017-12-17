@@ -3,9 +3,12 @@
 
 #include <QtCore>
 
+class Panel;
+
 class PanelVersion: public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(Panel* panel READ panel NOTIFY dataChanged)
     Q_PROPERTY(QString id READ id WRITE setId NOTIFY dataChanged)
     Q_PROPERTY(QString version READ version WRITE setVersion NOTIFY dataChanged)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
@@ -15,10 +18,11 @@ class PanelVersion: public QObject
 
 public:
     // Constructors
-    explicit PanelVersion(QObject* parent=nullptr);
-    explicit PanelVersion(QJsonObject json, QObject* parent=nullptr);
+    explicit PanelVersion(Panel* panel);
+    explicit PanelVersion(QJsonObject json, Panel* panel);
 
     // Getters
+    inline Panel* panel() const { return mPanel; }
     inline QString id() const { return mId; }
     inline QString version() const { return mVersion; }
     inline QString comment() const { return mComment; }
@@ -38,6 +42,7 @@ Q_SIGNALS:
     void dataChanged();
 
 private:
+    Panel* mPanel = nullptr;
     QString mId;
     QString mVersion;
     QString mComment;

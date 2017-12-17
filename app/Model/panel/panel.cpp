@@ -2,39 +2,102 @@
 #include "Model/regovar.h"
 #include "Model/framework/request.h"
 
-Panel::Panel(QObject* parent) : QObject(parent)
-{}
 
-Panel::Panel(QString id, QObject* parent) : QObject(parent)
+
+Panel::Panel(bool rootPanel, QObject* parent) : QObject(parent)
 {
-    mId = id;
+    if (rootPanel)
+    {
+        mOrderedVersionsIds = new QStringList();
+        mVersionsMap = new QHash<QString, Panel*>();
+    }
+}
+
+Panel::Panel(QStringList* orderedVersions, QHash<QString, Panel*>* map, QObject* parent) : QObject(parent)
+{
+    mOrderedVersionsIds = orderedVersions;
+    mVersionsMap = map;
+}
+
+
+
+
+Panel* Panel::buildPanel(QJsonObject json)
+{
+    // Create first panel
+    Panel* panel = new Panel(true);
+    if (panel->fromJson(json))
+    {
+        // Create all other versions of the same panel
+        for (QJsonValue data: json["versions"].toArray())
+        {
+            panel->addVersion(data.toObject(), true);
+        }
+    }
+    return panel;
 }
 
 
 
 
 
+QList<QObject*> Panel::versions()
+{
+    QList<QObject*> result;
+
+//    for(QString id: mOrderedVersionsIds)
+//    {
+//        result.append(mVersionsMap[id]);
+//    }
+
+    return result;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+bool Panel::addVersion(QJsonObject data, bool append)
+{
+    Panel* panel = new Panel(mOrderedVersionsIds, mVersionsMap);
+    bool result = panel->fromJson(data);
+    if (result)
+    {
+        mVersionsMap->insert(panel->versionId(), panel);
+        if (append)
+        {
+            mOrderedVersionsIds->append(panel->versionId());
+        }
+        else
+        {
+            mOrderedVersionsIds->insert(0, panel->versionId());
+        }
+    }
+    return result;
+}
+
+
+
+
+// Load only data for the current panelversion.
 bool Panel::fromJson(QJsonObject json)
 {
-    mId = json["id"].toString();
+    mPanelId = json["id"].toString();
     mName = json["name"].toString();
     mOwner = json["owner"].toString();
     mDescription = json["description"].toString();
     mShared = json["shared"].toBool();
     mCreationDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
     mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
-    // Versions
-    mOrderedVersionsId.clear();
-    mEntries.clear();
-    for (QJsonValue vv: json["versions"].toArray())
-    {
-        PanelVersion* pv = new PanelVersion(vv.toObject(), this);
-        mEntries.insert(pv->id(), pv);
-        mOrderedVersionsId.append(pv->id());
-    }
 
     emit dataChanged();
-
     return true;
 }
 
@@ -42,7 +105,7 @@ QJsonObject Panel::toJson()
 {
     QJsonObject result;
     // Simples data
-    result.insert("id", mId);
+    result.insert("id", mPanelId);
     result.insert("name", mName);
     result.insert("owner", mOwner);
     result.insert("description", mDescription);
@@ -52,10 +115,10 @@ QJsonObject Panel::toJson()
     // Versions
     // Notice: json export is used only for Update and Create one version of the panel
     // So, we don't format json with the list of all available version as done server side
-    result.insert("version", mCurrentVersion);
+    result.insert("version", mVersion);
     QJsonArray entries;
 
-    for(const QVariant& value: mCurrentEntries)
+    for(const QVariant& value: mEntries)
     {
         entries.append(value.toJsonObject());
     }
@@ -70,8 +133,8 @@ QJsonObject Panel::toJson()
 
 void Panel::save()
 {
-    if (mId.isEmpty()) return;
-    Request* request = Request::put(QString("/panel/%1").arg(mId), QJsonDocument(toJson()).toJson());
+    if (mPanelId.isEmpty()) return;
+    Request* request = Request::put(QString("/panel/%1").arg(mPanelId), QJsonDocument(toJson()).toJson());
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
         if (success)
@@ -92,7 +155,7 @@ void Panel::save()
 
 void Panel::load()
 {
-    Request* req = Request::get(QString("/panel/%1").arg(mId));
+    Request* req = Request::get(QString("/panel/%1").arg(mPanelId));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)
@@ -116,7 +179,7 @@ void Panel::load()
 
 void Panel::addEntry(QJsonObject data)
 {
-    mCurrentEntries.append(data);
+    mEntries.append(data);
     emit dataChanged();
 }
 
@@ -128,8 +191,8 @@ void Panel::reset()
     mOwner = "";
     mDescription = "";
     mShared = false;
-    mCurrentVersion = "";
-    mCurrentEntries.clear();
+    mVersion = "";
+    mEntries.clear();
     emit dataChanged();
 }
 

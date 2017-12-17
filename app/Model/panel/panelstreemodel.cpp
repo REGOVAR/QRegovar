@@ -80,14 +80,14 @@ void PanelsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 
 void PanelsTreeModel::setupModelPaneVersionData(Panel* panel, TreeItem *parent)
 {
-    QString id = panel->id();
-    for(QString vId: panel->versionsId())
+    QString id = panel->panelId();
+    for(QString vId: panel->versionsIds())
     {
-        PanelVersion* vdata = panel->getVersion(vId);
+        Panel* vdata = panel->getVersion(vId);
         // Store data into treeitem's columns (/!\ columns order must respect enum order)
         QHash<int, QVariant> columnData;
         columnData.insert(PanelId, QVariant(id));
-        columnData.insert(VersionId, QVariant(vdata->id()));
+        columnData.insert(VersionId, QVariant(vdata->versionId()));
         columnData.insert(Name, QVariant(vdata->version()));
         columnData.insert(Comment, QVariant(vdata->comment()));
         columnData.insert(Date, QVariant(vdata->updateDate().toString("yyyy-MM-dd HH:mm")));

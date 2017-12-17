@@ -67,7 +67,6 @@ HEADERS += \
     Model/panel/panelsmanager.h \
     Model/panel/panel.h \
     Model/panel/panelstreemodel.h \
-    Model/panel/panelversion.h \
     Model/analysis/filtering/quickfilters/phenotypequickfilter.h \
     Model/analysis/filtering/quickfilters/panelquickfilter.h \
     Model/settings.h
@@ -125,7 +124,6 @@ SOURCES += main.cpp \
     Model/panel/panelsmanager.cpp \
     Model/panel/panel.cpp \
     Model/panel/panelstreemodel.cpp \
-    Model/panel/panelversion.cpp \
     Model/analysis/filtering/quickfilters/phenotypequickfilter.cpp \
     Model/analysis/filtering/quickfilters/panelquickfilter.cpp \
     Model/settings.cpp

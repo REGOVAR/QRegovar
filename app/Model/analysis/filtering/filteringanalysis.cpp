@@ -497,7 +497,11 @@ void FilteringAnalysis::resetSets()
     }
 
     // add panels
-    // Todo
+    for (QString& panelId: mPanelsUsed)
+    {
+        Panel* panel = regovar->panelsManager()->getOrCreatePanel(panelId);
+        mSets.append(new Set("panel", panel->versionId(), panel->fullname() ));
+    }
 
     emit setsChanged();
 }

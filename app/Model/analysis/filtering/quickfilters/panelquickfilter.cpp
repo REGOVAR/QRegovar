@@ -16,10 +16,9 @@ PanelQuickFilter::PanelQuickFilter(int analysisId): QuickFilterBlockInterface()
     for (const QString& panelId: analysis->panelsUsed())
     {
         Panel* panel = regovar->panelsManager()->getOrCreatePanel(panelId);
-        PanelVersion* version = panel->getVersion(panelId);
         QuickFilterField* panelFilter = new QuickFilterField(
                     panelId,
-                    QString("%1 (%2)").arg(panel->name(), version->version()),
+                    QString("%1 (%2)").arg(panel->name(), panel->version()),
                     mOperators,  "IN", 0, false, this);
         mPanelsList << panelFilter;
     }
