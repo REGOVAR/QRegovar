@@ -77,15 +77,15 @@ Rectangle
 
         Button
         {
-            id: openSubject
-            text: qsTr("Open")
-            onClicked:  openSelectedSubject()
+            id: newSubject
+            text: qsTr("New Subject")
+            onClicked: regovar.openNewSubjectWizard()
         }
         Button
         {
-            id: newSubject
-            text: qsTr("New Subject")
-            onClicked: newSubjectDialog.open()
+            id: openSubject
+            text: qsTr("Open")
+            onClicked:  openSelectedSubject()
         }
     }
 
@@ -132,8 +132,6 @@ Rectangle
             title: "Comment"
         }
     }
-
-    NewSubjectDialog { id: newSubjectDialog }
 
     /// Retrive model of the selected Subject in the tableview and ask model to open it
     function openSelectedSubject()

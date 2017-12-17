@@ -77,15 +77,15 @@ Rectangle
 
         Button
         {
-            id: openProject
-            text: qsTr("Open")
-            onClicked:  openSelectedProject()
+            id: newProject
+            text: qsTr("New Project")
+             onClicked: regovar.openNewProjectWizard()
         }
         Button
         {
-            id: newProject
-            text: qsTr("New Project")
-             onClicked: newProjectDialog.open()
+            id: openProject
+            text: qsTr("Open")
+            onClicked:  openSelectedProject()
         }
     }
 
@@ -132,8 +132,6 @@ Rectangle
             width: 400
         }
     }
-
-    NewProjectDialog { id: newProjectDialog }
 
     /// Retrive model of the selected project in the treeview and set the Regovar.currentProject with it.
     function openSelectedProject()

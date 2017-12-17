@@ -128,21 +128,21 @@ Rectangle
             {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New project")
-                onClicked: newProjectDialog.open()
+                onClicked: regovar.openNewProjectWizard()
                 enabled: regovar.networkManager.status == 0
             }
             ButtonWelcom
             {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New analysis")
-                onClicked: newAnalysisDialog.open()
+                onClicked: regovar.openNewAnalysisWizard()
                 enabled: regovar.networkManager.status == 0
             }
             ButtonWelcom
             {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New subject")
-                onClicked: newSubjectDialog.open()
+                onClicked: regovar.openNewSubjectWizard()
                 enabled: regovar.networkManager.status == 0
             }
         }
@@ -410,13 +410,5 @@ Rectangle
             }
         }
     }
-
-    // DIALOGS
-    NewProjectDialog { id: newProjectDialog }
-
-    NewAnalysisDialog { id: newAnalysisDialog }
-
-    NewSubjectDialog { id: newSubjectDialog }
-
 }
 

@@ -3,6 +3,7 @@ import Qt.labs.settings 1.0
 import QtQuick.Dialogs 1.2
 
 import "Regovar"
+import "Dialogs"
 import "InformationsPanel/File"
 import "InformationsPanel/Gene"
 import "InformationsPanel/Panel"
@@ -126,6 +127,42 @@ GenericWindow
 
 
 
+    //
+    // Creation wizards
+    //
+
+    NewProjectDialog
+    {
+        id: newProjectDialog
+
+        Connections
+        {
+            target: regovar
+            onNewProjectWizardOpen: { newProjectDialog.reset(); newProjectDialog.open(); }
+        }
+    }
+
+    NewAnalysisDialog
+    {
+        id: newAnalysisDialog
+
+        Connections
+        {
+            target: regovar
+            onNewAnalysisWizardOpen: { newAnalysisDialog.reset(); newAnalysisDialog.open(); }
+        }
+    }
+
+    NewSubjectDialog
+    {
+        id: newSubjectDialog
+
+        Connections
+        {
+            target: regovar
+            onNewSubjectWizardOpen: { newSubjectDialog.reset(); newSubjectDialog.open(); }
+        }
+    }
 
     //
     // Info panels
@@ -144,7 +181,6 @@ GenericWindow
         contentItem: FileInformations
         {
             id: fileInfoPanel
-
         }
 
         Connections

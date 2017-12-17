@@ -85,25 +85,31 @@ Rectangle
         {
             id: newAnalysis
             text: qsTr("New")
-            onClicked:  console.log("New analysis")
+            onClicked: regovar.openNewAnalysisWizard()
         }
         Button
         {
             id: openAnalysis
             text: qsTr("Open")
-            onClicked:  console.log("Open analysis")
+            onClicked:
+            {
+                var analysis = browser.model[browser.currentRow];
+                regovar.analysesManager.openAnalysis(analysis.type, analysis.id)
+            }
         }
         Button
         {
             id: playPauseAnalysis
             text: qsTr("Pause")
             onClicked:  console.log("Pause/Play analysis")
+            enabled: false
         }
         Button
         {
             id: deleteAnalysis
             text: qsTr("Delete")
             onClicked:  console.log("Delete analysis")
+            enabled: false
         }
     }
 

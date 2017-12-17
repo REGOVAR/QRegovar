@@ -79,13 +79,17 @@ Rectangle
         {
             id: newAnalysis
             text: qsTr("New")
-            onClicked:  console.log("New analysis")
+            onClicked: regovar.openNewAnalysisWizard()
         }
         Button
         {
             id: openAnalysis
             text: qsTr("Open")
-            onClicked:  console.log("Open analysis")
+            onClicked:
+            {
+                var analysis = browser.model[browser.currentRow];
+                regovar.analysesManager.openAnalysis(analysis.type, analysis.id)
+            }
         }
         Button
         {

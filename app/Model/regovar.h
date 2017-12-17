@@ -148,8 +148,10 @@ public:
 
     // Methods
     Reference* referenceFromId(int id);
-
     // Others
+    Q_INVOKABLE inline void openNewProjectWizard() { emit newProjectWizardOpen(); }
+    Q_INVOKABLE inline void openNewAnalysisWizard() { emit newAnalysisWizardOpen(); }
+    Q_INVOKABLE inline void openNewSubjectWizard() { emit newSubjectWizardOpen(); }
     Q_INVOKABLE void getFileInfo(int fileId, int analysisId=-1);
     Q_INVOKABLE void getGeneInfo(QString geneName, int analysisId=-1);
     Q_INVOKABLE void getPanelInfo(int panelId, int analysisId=-1);
@@ -195,6 +197,10 @@ Q_SIGNALS:
     void referencesChanged();
     void configChanged();
     void adminChanged();
+    // Wizards events
+    void newProjectWizardOpen();
+    void newAnalysisWizardOpen();
+    void newSubjectWizardOpen();
     // Infos panels events
     void fileInformationSearching(int analysisId=-1);
     void geneInformationSearching(int analysisId=-1);
