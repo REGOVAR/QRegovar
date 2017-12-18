@@ -75,7 +75,7 @@ Dialog
             {
                 id: nameField
                 Layout.fillWidth: true
-                placeholderText: qsTr("Name of the project")
+                placeholder: qsTr("Name of the project")
             }
 
             Text

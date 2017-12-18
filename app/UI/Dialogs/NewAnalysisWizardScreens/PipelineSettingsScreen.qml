@@ -81,7 +81,7 @@ GenericScreen
 //                {
 //                    id: nameField
 //                    Layout.fillWidth: true
-//                    placeholderText: qsTr("The name of the analysis")
+//                    placeholder: qsTr("The name of the analysis")
 //                }
 //            }
 //            RowLayout
@@ -129,7 +129,7 @@ GenericScreen
 //                {
 //                    id: commentField
 //                    Layout.fillWidth: true
-//                    placeholderText: qsTr("Optional comment")
+//                    placeholder: qsTr("Optional comment")
 //                }
 //            }
 

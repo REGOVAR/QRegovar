@@ -46,7 +46,7 @@ Rectangle
             anchors.right: connectionStatus.left
             anchors.margins: 10
             iconLeft: "z"
-            placeholderText: qsTr("Search subjects or samples by names, comments...")
+            placeholder: qsTr("Search subjects or samples by names, comments...")
         }
     }
 

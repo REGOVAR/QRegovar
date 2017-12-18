@@ -38,6 +38,7 @@ bool Subject::fromJson(QJsonObject json)
     {
         QJsonObject sampleData = val.toObject();
         Sample* sample = regovar->samplesManager()->getOrCreate(sampleData["id"].toInt());
+        sample->fromJson(sampleData);
         mSamples.append(sample);
     }
 

@@ -59,7 +59,6 @@ Rectangle
             Layout.fillWidth: true
             Layout.fillHeight: true
             model: root.model ? root.model.samples : []
-
             selectionMode: SelectionMode.ExtendedSelection
 
 
@@ -144,28 +143,29 @@ Rectangle
                 role: "sourceUI"
                 delegate: Item
                 {
-
                     Text
                     {
+                        id: sourceIcon
                         anchors.leftMargin: 5
                         anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: styleData.textAlignment
                         font.pixelSize: Regovar.theme.font.size.normal
-                        text: styleData.value.icon
                         font.family: Regovar.theme.icons.name
+                        text: styleData.value.icon
                     }
                     Text
                     {
+                        id: sourceLabel
                         anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
                         anchors.rightMargin: 5
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: styleData.textAlignment
                         font.pixelSize: Regovar.theme.font.size.normal
-                        text: styleData.value.filename
                         elide: Text.ElideRight
+                        text: styleData.value.filename
                     }
                 }
             }

@@ -111,7 +111,7 @@ Dialog
                 {
                     Layout.fillWidth: true
                     anchors.leftMargin: 10 + (referencialSelectorEnabled ? refCombo.width + 10 : 0)
-                    placeholderText: qsTr("Search sample by identifiant or vcf filename, subject's name, date of birth, sex, comment, ...")
+                    placeholder: qsTr("Search sample by identifiant or vcf filename, subject's name, date of birth, sex, comment, ...")
                 }
             }
 
@@ -200,7 +200,7 @@ Dialog
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.subjectUI.sex : ""
+                            text: styleData.value.subjectUI.sex
                             font.family: Regovar.theme.icons.name
                         }
                         Text
@@ -212,7 +212,7 @@ Dialog
                             anchors.verticalCenter: parent.verticalCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.subjectUI.name : ""
+                            text: styleData.value.subjectUI.name
                             elide: Text.ElideRight
                         }
 
@@ -233,7 +233,7 @@ Dialog
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value.icon
+                            text: styleData.value ? styleData.value.icon : ""
                             font.family: Regovar.theme.icons.name
                         }
                         Text
@@ -244,7 +244,7 @@ Dialog
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value.filename
+                            text: styleData.value ? styleData.value.filename : ""
                             elide: Text.ElideRight
                         }
                     }

@@ -61,7 +61,7 @@ Rectangle
             property string formerSearch: ""
             iconLeft: "z"
             text: regovar.searchRequest
-            placeholderText: qsTr("Search projects, subjects, samples, analyses, panels...")
+            placeholder: qsTr("Search projects, subjects, samples, analyses, panels...")
             onEditingFinished:
             {
                 if (formerSearch != text)

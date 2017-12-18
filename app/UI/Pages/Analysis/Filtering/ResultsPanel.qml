@@ -122,7 +122,7 @@ Rectangle
         {
             Layout.fillWidth: true
             iconLeft: "z"
-            placeholderText: qsTr("Search by position chr1:422566 or by genes names...")
+            placeholder: qsTr("Search by position chr1:422566 or by genes names...")
         }
     }
 

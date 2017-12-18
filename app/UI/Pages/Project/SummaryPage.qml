@@ -97,7 +97,7 @@ Rectangle
             id: nameField
             Layout.fillWidth: true
             enabled: editionMode
-            placeholderText: qsTr("Name of the project")
+            placeholder: qsTr("Name of the project")
             text: ""
         }
 

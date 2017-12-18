@@ -6,7 +6,7 @@ import "../Regovar"
 TextField
 {
     id: control
-    placeholderText: ""
+    placeholder: ""
     font.pixelSize: Regovar.theme.font.size.normal
     color: Regovar.theme.frontColor.normal
     padding: 0

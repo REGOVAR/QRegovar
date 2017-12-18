@@ -29,7 +29,6 @@ int main(int argc, char *argv[])
     app.setApplicationVersion("0.0.b");
 
     // Register custom classes to use it with QML
-    qmlRegisterUncreatableType<FileSystemModel>("org.regovar", 1, 0, "FileSystemModel", "Cannot create a FileSystemModel instance.");
     qmlRegisterType<TreeModel>("org.regovar", 1, 0, "TreeModel");
     qmlRegisterType<Annotation>("org.regovar", 1, 0, "AnnotationModel");
     qmlRegisterType<FilteringAnalysis>("org.regovar", 1, 0, "FilteringAnalysis");
@@ -68,13 +67,6 @@ int main(int argc, char *argv[])
     // Init regovar model
     regovar->init();
     regovar->setQmlEngine(&engine);
-
-    // Init filesystem model
-    FileSystemModel* fsm = new FileSystemModel(&engine);
-    fsm->setRootPath(QDir::rootPath()); // Crash with Ubuntu 16 - Gnome
-    fsm->setResolveSymlinks(true);
-    engine.rootContext()->setContextProperty("fileSystemModel", fsm);
-    engine.rootContext()->setContextProperty("rootPathIndex", fsm->index(fsm->rootPath()));
 
     engine.rootContext()->setContextProperty("regovar", regovar);
     engine.addImportPath("qrc:/qml/");

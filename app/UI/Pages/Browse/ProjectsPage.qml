@@ -46,7 +46,7 @@ Rectangle
             anchors.right: connectionStatus.left
             anchors.margins: 10
             iconLeft: "z"
-            placeholderText: qsTr("Search projects by names, dates, comments...")
+            placeholder: qsTr("Search projects by names, dates, comments...")
         }
     }
 

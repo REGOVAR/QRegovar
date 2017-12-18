@@ -6,7 +6,7 @@ import "../Regovar"
 TextField
 {
     id: control
-    placeholderText: qsTr("Enter description")
+    placeholder: qsTr("Enter description")
     font.pixelSize: Regovar.theme.font.size.normal
     font.family: "monospace"
     color: Regovar.theme.frontColor.normal

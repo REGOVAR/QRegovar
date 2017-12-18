@@ -19,7 +19,9 @@ void SubjectsManager::refresh()
             QJsonArray data = json["data"].toArray();
             for (const QJsonValue& subjectVal: data)
             {
-                mSubjectsList.append(new Subject(subjectVal.toObject()));
+                QJsonObject subjectData = subjectVal.toObject();
+                Subject* subject = getOrCreateSubject(subjectData["id"].toInt());
+                subject->fromJson(subjectData);
             }
             emit subjectsListChanged();
         }

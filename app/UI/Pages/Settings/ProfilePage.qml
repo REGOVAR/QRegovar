@@ -136,14 +136,14 @@ Rectangle
             {
                 id: newPassword
                 width: parent.width
-                placeholderText: qsTr("New password")
+                placeholder: qsTr("New password")
                 echoMode: "Password"
             }
             TextField
             {
                 id: newPasswordConfirm
                 width: parent.width
-                placeholderText: qsTr("New password confirmation")
+                placeholder: qsTr("New password confirmation")
                 echoMode: "Password"
             }
             Text
@@ -236,7 +236,7 @@ Rectangle
             {
                 id: oldPassword
                 width: parent.width
-                placeholderText: qsTr("Current password")
+                placeholder: qsTr("Current password")
                 echoMode: "Password"
             }
             Text
@@ -308,7 +308,7 @@ Rectangle
         {
             Layout.fillWidth: true
             text: regovar.user.lastname
-            placeholderText: qsTr("Lastname")
+            placeholder: qsTr("Lastname")
         }
 
         // User avatar panel
@@ -352,7 +352,7 @@ Rectangle
         {
             Layout.fillWidth: true
             text: regovar.user.firstname
-            placeholderText: qsTr("Firstname")
+            placeholder: qsTr("Firstname")
         }
 
         // Email
@@ -378,7 +378,7 @@ Rectangle
         {
             Layout.fillWidth: true
             text: regovar.user ? regovar.user.email : ""
-            placeholderText: qsTr("Email")
+            placeholder: qsTr("Email")
         }
 
         // Location
@@ -404,7 +404,7 @@ Rectangle
         {
             Layout.fillWidth: true
             text: regovar.user ? regovar.user.location : ""
-            placeholderText: qsTr("Location")
+            placeholder: qsTr("Location")
         }
 
         // Function
@@ -430,7 +430,7 @@ Rectangle
         {
             Layout.fillWidth: true
             text: regovar.user ? regovar.user.function : ""
-            placeholderText: qsTr("Function")
+            placeholder: qsTr("Function")
         }
 
 

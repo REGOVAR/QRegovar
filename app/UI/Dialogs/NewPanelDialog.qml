@@ -70,7 +70,7 @@ Dialog
             {
                 id: panelNameField
                 Layout.fillWidth: true
-                placeholderText: qsTr("Name of the panel")
+                placeholder: qsTr("Name of the panel")
                 text: regovar.panelsManager.newPanel.name
             }
 
@@ -87,7 +87,7 @@ Dialog
             {
                 id: ownerField
                 Layout.fillWidth: true
-                placeholderText: qsTr("Full name of the panel's owner or referring.")
+                placeholder: qsTr("Full name of the panel's owner or referring.")
                 text: regovar.panelsManager.newPanel.owner
             }
 
@@ -104,7 +104,7 @@ Dialog
             {
                 id: versionField
                 Layout.fillWidth: true
-                placeholderText: qsTr("Optional name of this version. (let empty for automatic incrementation number).")
+                placeholder: qsTr("Optional name of this version. (let empty for automatic incrementation number).")
                 text: regovar.panelsManager.newPanel.version
             }
 

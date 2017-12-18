@@ -68,7 +68,7 @@ Dialog
             {
                 id: nameField
                 Layout.fillWidth: true
-                placeholderText: qsTr("Name of your filter (mandatory)")
+                placeholder: qsTr("Name of your filter (mandatory)")
             }
             Text
             {

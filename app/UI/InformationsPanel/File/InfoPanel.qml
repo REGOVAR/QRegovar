@@ -110,7 +110,7 @@ Rectangle
                 id: nameField
                 Layout.fillWidth: true
                 enabled: editionMode
-                placeholderText: qsTr("Name of the file")
+                placeholder: qsTr("Name of the file")
             }
 
             Column
@@ -156,7 +156,7 @@ Rectangle
                 id: tagsField
                 Layout.fillWidth: true
                 enabled: editionMode
-                placeholderText: qsTr("List of tags")
+                placeholder: qsTr("List of tags")
             }
 
             Text

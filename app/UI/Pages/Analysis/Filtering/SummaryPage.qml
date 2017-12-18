@@ -119,7 +119,7 @@ Rectangle
             id: nameField
             Layout.fillWidth: true
             enabled: editionMode
-            placeholderText: qsTr("Name of the analysis")
+            placeholder: qsTr("Name of the analysis")
             onTextChanged: if (model) model.name = text
         }
 

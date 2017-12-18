@@ -120,7 +120,7 @@ Rectangle
             Layout.column: 1
             Layout.fillWidth: true
             width: parent.width
-            placeholderText: qsTr("http://regovar.local-site.com")
+            placeholder: qsTr("http://regovar.local-site.com")
             onTextChanged:
             {
                 regovarUrl.iconLeft = "m";
@@ -174,7 +174,7 @@ Rectangle
             Layout.column: 1
             Layout.fillWidth: true
             width: parent.width
-            placeholderText: qsTr("http://regovar.shared-site.com")
+            placeholder: qsTr("http://regovar.shared-site.com")
             onTextChanged:
             {
                 sharedUrl.iconLeft = "m";

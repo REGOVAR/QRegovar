@@ -56,7 +56,7 @@ Rectangle
         {
             id: fieldSelector
             Layout.fillWidth: true
-            placeholderText: "Search fied"
+            placeholder: "Search fied"
             onSelectedItemChanged: updateFilterControls()
         }
         Text
@@ -136,7 +136,7 @@ Rectangle
             id: fieldInput
             Layout.fillWidth: true
             visible: false
-			placeholderText: qsTr("Set field's value")
+			placeholder: qsTr("Set field's value")
         }
         Switch
         {

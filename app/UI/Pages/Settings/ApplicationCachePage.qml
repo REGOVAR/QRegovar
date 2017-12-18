@@ -123,7 +123,7 @@ Rectangle
             Layout.column: 1
             Layout.fillWidth: true
             width: parent.width
-            placeholderText: qsTr("Let empty to use default OS application cache directory")
+            placeholder: qsTr("Let empty to use default OS application cache directory")
         }
 
         Rectangle

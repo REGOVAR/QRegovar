@@ -76,7 +76,7 @@ Dialog
             {
                 id: idField
                 Layout.fillWidth: true
-                placeholderText: qsTr("Unique anonymous identifier for the subject")
+                placeholder: qsTr("Unique anonymous identifier for the subject")
             }
 
             Text
@@ -92,7 +92,7 @@ Dialog
             {
                 id: firstnameField
                 Layout.fillWidth: true
-                placeholderText: qsTr("Firstname of the subject")
+                placeholder: qsTr("Firstname of the subject")
             }
 
             Text
@@ -108,7 +108,7 @@ Dialog
             {
                 id: lastnameField
                 Layout.fillWidth: true
-                placeholderText: qsTr("Lastname of the subject")
+                placeholder: qsTr("Lastname of the subject")
             }
 
             Text
@@ -140,7 +140,7 @@ Dialog
             {
                 id: dateOfBirthField
                 Layout.fillWidth: true
-                placeholderText: qsTr("YYYY-MM-DD")
+                placeholder: qsTr("YYYY-MM-DD")
             }
 
             Text
@@ -156,7 +156,7 @@ Dialog
             {
                 id: familyNumberField
                 Layout.fillWidth: true
-                placeholderText: qsTr("Family number of the subject")
+                placeholder: qsTr("Family number of the subject")
             }
 
 

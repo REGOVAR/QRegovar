@@ -12,7 +12,7 @@ Rectangle
     color: "blue"
 
     property alias text: textField.text
-    property alias placeholderText: textField.placeholderText
+    property alias placeholder: textField.placeholder
     property int proposalContextWidth: 100
     property var model
     property int maxPopupHeight: 200

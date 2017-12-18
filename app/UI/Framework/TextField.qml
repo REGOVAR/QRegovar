@@ -1,21 +1,30 @@
 import QtQuick 2.9
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.2
+import QtQuick.Controls.Styles 1.4
+
 import "../Framework" as Controls
 import "../Regovar"
 
 TextField
 {
     id: control
-    placeholderText: qsTr("Enter description")
+    placeholderText: enabled ? control.placeholder : ""
     font.pixelSize: Regovar.theme.font.size.normal
     font.family: Regovar.theme.font.familly
     color: Regovar.theme.frontColor.normal
+
     selectByMouse :true
 
+    property string placeholder: qsTr("Enter description")
     property string iconLeft: ""
     property string iconLeftColor: Regovar.theme.darker(Regovar.theme.boxColor.border)
     property string iconRight: ""
     property string iconRightColor: Regovar.theme.darker(Regovar.theme.boxColor.border)
+
+
+
+
+
 
     onIconLeftChanged:
     {

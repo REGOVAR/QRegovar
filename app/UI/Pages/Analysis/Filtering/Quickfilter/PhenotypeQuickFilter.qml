@@ -232,7 +232,7 @@ QuickFilterBox
                 width: content.width - 30
 
                 iconLeft: "z"
-                placeholderText: qsTr("Enter search terms...")
+                placeholder: qsTr("Enter search terms...")
             }
 
             Repeater

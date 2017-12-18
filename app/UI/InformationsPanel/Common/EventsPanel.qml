@@ -29,7 +29,7 @@ Rectangle
             Layout.columnSpan: 2
             Layout.fillWidth: true
             iconLeft: "z"
-            placeholderText: qsTr("Search events...")
+            placeholder: qsTr("Search events...")
         }
 
         TableView

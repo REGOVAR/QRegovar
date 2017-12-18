@@ -68,7 +68,7 @@ Dialog
             TextField
             {
                 Layout.fillWidth: true
-                placeholderText: qsTr("Search file by name, date, comment, ...")
+                placeholder: qsTr("Search file by name, date, comment, ...")
             }
 
             TableView
@@ -406,7 +406,7 @@ Dialog
         nameFilters: [ "VCF files (*.vcf *.vcf.gz)", "GVCF (*.gvcf *.gvcf.gz)", "All files (*)" ]
         selectedNameFilter: "VCF files (*.vcf *.vcf.gz)"
         title: "Select file(s) to upload on the server"
-        folder: shortcuts.home
+        //folder: shortcuts.home
         selectMultiple: true
 
         onAccepted:

@@ -173,7 +173,7 @@ Rectangle
             Layout.row: 6
             Layout.column: 1
             Layout.fillWidth: true
-            placeholderText: qsTr("autism, RNAseq, BIRC6 ...")
+            placeholder: qsTr("autism, RNAseq, BIRC6 ...")
             onTextChanged:
             {
                 regovar.settings.pubmedTerms = text;

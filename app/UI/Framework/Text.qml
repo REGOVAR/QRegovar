@@ -8,7 +8,8 @@ Text
     id: control
     font.pixelSize: Regovar.theme.font.size.normal
     font.family: Regovar.theme.font.familly
-    color: enabled ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
+    color: enabled ? Regovar.theme.frontColor.normal : disableColor
+    property var disableColor: Regovar.theme.frontColor.disable
 }
 
 //TextArea

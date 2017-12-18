@@ -75,7 +75,7 @@ Dialog
                     {
                         id: nameField
                         Layout.fillWidth: true
-                        placeholderText: qsTr("Name of the attribute (mandatory)")
+                        placeholder: qsTr("Name of the attribute (mandatory)")
                         onTextEdited: checkSave()
                     }
                 }
@@ -114,7 +114,7 @@ Dialog
                         TextField
                         {
                             Layout.fillWidth: true
-                            placeholderText: ""
+                            placeholder: ""
                             objectName: "sampleValueField"
                             onTextEdited: checkSave()
                         }

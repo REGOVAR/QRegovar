@@ -106,7 +106,7 @@ GenericScreen
         {
             id: nameField
             Layout.fillWidth: true
-            placeholderText: qsTr("The name of the analysis")
+            placeholder: qsTr("The name of the analysis")
             text: regovar.analysesManager.newFiltering.name
             onTextChanged:
             {

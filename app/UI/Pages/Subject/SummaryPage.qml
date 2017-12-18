@@ -87,7 +87,7 @@ Rectangle
             id: idField
             Layout.fillWidth: true
             enabled: editionMode
-            placeholderText: qsTr("Unique anonymous identifier")
+            placeholder: qsTr("Unique anonymous identifier")
             text: ""
         }
 
@@ -133,7 +133,7 @@ Rectangle
             id: firstnameField
             Layout.fillWidth: true
             enabled: editionMode
-            placeholderText: qsTr("Firstname of the subject")
+            placeholder: qsTr("Firstname of the subject")
             text: ""
         }
 
@@ -151,7 +151,7 @@ Rectangle
             id: lastnameField
             Layout.fillWidth: true
             enabled: editionMode
-            placeholderText: qsTr("Lastname of the subject")
+            placeholder: qsTr("Lastname of the subject")
             text: ""
         }
 
@@ -169,7 +169,7 @@ Rectangle
             id: dateOfBirthField
             Layout.fillWidth: true
             enabled: editionMode
-            placeholderText: qsTr("YYYY-MM-DD")
+            placeholder: qsTr("YYYY-MM-DD")
             text: ""
         }
 
@@ -187,7 +187,7 @@ Rectangle
             id: familyNumberField
             Layout.fillWidth: true
             enabled: editionMode
-            placeholderText: qsTr("Family number of the subject")
+            placeholder: qsTr("Family number of the subject")
             text: ""
         }
 

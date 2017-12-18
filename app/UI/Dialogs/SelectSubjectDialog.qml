@@ -55,7 +55,7 @@ Dialog
             anchors.left: root.left
             anchors.right: root.right
             anchors.margins: 10
-            placeholderText: qsTr("Search subjects by identifier, firstname, lastname, date of birth, sex, comment, ...")
+            placeholder: qsTr("Search subjects by identifier, firstname, lastname, date of birth, sex, comment, ...")
             text: regovar.subjectsManager.searchQuery
         }
 

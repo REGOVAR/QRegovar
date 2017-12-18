@@ -178,7 +178,7 @@ Rectangle
             TextField
             {
                 id: field
-                placeholderText: "File path..."
+                placeholder: "File path..."
                 implicitWidth: parent.width
             }
 
