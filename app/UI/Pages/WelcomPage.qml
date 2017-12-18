@@ -228,7 +228,7 @@ Rectangle
                                         width: analysesScrollArea.width - 30 // 15 right margin + 15 ScrollBar width
                                         date: model.modelData.update_date
                                         name: model.modelData.name
-                                        projectName: model.modelData.project.name
+                                        fullpath: model.modelData.fullpath
 
                                         onClicked: regovar.analysesManager.openAnalysis("Filtering", model.modelData.id)
                                         anchors.left: analysesColumn.left

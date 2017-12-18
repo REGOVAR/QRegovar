@@ -13,6 +13,7 @@ Rectangle
     property string name: ""
     property string projectName: ""
     property int indent: 1
+    property var fullpath: []
 
     property bool isHover: false
     signal clicked()
@@ -55,25 +56,34 @@ Rectangle
             elide: Text.ElideRight
         }
 
-        Text
+        Repeater
         {
-            font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
-            color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-            verticalAlignment: Text.AlignVCenter
-            text: projectName
-            elide: Text.ElideRight
-        }
-        Text
-        {
-            width: Regovar.theme.font.boxSize.normal
-            font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.icons.name
-            color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            text: "{"
-            elide: Text.ElideRight
+            model: fullpath
+
+            Row
+            {
+                spacing: 0
+                Text
+                {
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.font.familly
+                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
+                    verticalAlignment: Text.AlignVCenter
+                    text: modelData.name
+                    elide: Text.ElideRight
+                }
+                Text
+                {
+                    width: Regovar.theme.font.boxSize.normal
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.icons.name
+                    color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    text: "{"
+                    elide: Text.ElideRight
+                }
+            }
         }
 
         Text
