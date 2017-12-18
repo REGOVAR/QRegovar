@@ -240,10 +240,9 @@ Rectangle
             Button
             {
                 id: editButton
-                text: qsTr("Edit sample")
-                onClicked: { sampleSelector.reset(); sampleSelector.open(); }
+                text: qsTr("Open sample")
+                onClicked: regovar.getSampleInfo(root.model.samples[tableView.currentRow].id)
                 Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
-                enabled : false
             }
             Button
             {
@@ -256,7 +255,6 @@ Rectangle
                     {
                         root.model.removeSample(root.model.samples[rowIndex]);
                     });
-
                 }
             }
         }

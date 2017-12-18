@@ -164,6 +164,7 @@ GenericWindow
         }
     }
 
+
     //
     // Info panels
     //

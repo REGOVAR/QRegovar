@@ -190,7 +190,10 @@ Item
         // Delete old pages
         for (var idx=0; idx<menuPageMapping.length; idx++)
         {
-            menuPageMapping[idx].destroy();
+            if(menuPageMapping[idx])
+            {
+                menuPageMapping[idx].destroy();
+            }
         }
 
         // Clear model

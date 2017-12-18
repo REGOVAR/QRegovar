@@ -10,14 +10,11 @@ import "../Common"
 InfoPanel
 {
     id: root
-    icon: "j"
+    icon: "4"
     updateFromModel: function updateFromModel(data)
     {
         // Update title
-        var variant = "chr" + data["chr"] + ":" + data["pos"] + " " + data["ref"] + ">" + data["alt"];
-        var gene = data["genename"];
-        var ref = data["reference"];
-        root.title = "<span style=\"font-family: monospace;\">" + variant + "</span><br/><br/><i>Ref: </i>" + ref + "&nbsp;&nbsp;&nbsp;</span>\n\n<i>Gene: </i>" + gene;
+        root.title = "<h1 style=\"font-family: monospace;\">" + data.name + "</h1><br/><br/>Status: " + data.statusUI["label"];
 
         // Update tabs
         root.tabSharedModel = data;
@@ -28,9 +25,14 @@ InfoPanel
                 "source": "../InformationsPanel/Sample/InfoPanel.qmll"
             });
         ttt.append({
+                "title": qsTr("Usage"),
+                "icon": "ê",
+                "source": "../InformationsPanel/Common/RelationsPanel.qml"
+            });
+        ttt.append({
                 "title": qsTr("Regovar statistics"),
                 "icon": "^",
-                "source": "../InformationsPanel/Pipeline/StatsPanel.qml"
+                "source": "../InformationsPanel/Sample/StatsPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Events"),

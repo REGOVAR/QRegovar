@@ -17,8 +17,8 @@ ScrollView
 
     property var geneData
     property var model
-    onModelChanged: updateFromModel(model);
-    Component.onCompleted: updateFromModel(model);
+    onModelChanged: updateFromModel(model)
+    Component.onCompleted: updateFromModel(model)
 
     function updateFromModel(data)
     {
