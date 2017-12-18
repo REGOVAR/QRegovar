@@ -12,14 +12,6 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property QtObject model
-    onModelChanged:
-    {
-        if (model != undefined)
-        {
-            console.log("")
-            //tableView.model = Qt.binding(function() { return ; });
-        }
-    }
 
     Rectangle
     {

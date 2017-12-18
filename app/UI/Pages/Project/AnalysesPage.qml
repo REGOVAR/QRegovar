@@ -11,7 +11,6 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property QtObject model
-
     property var currentAnalysis: null
 
     Rectangle
@@ -23,30 +22,26 @@ Rectangle
         height: 50
         color: Regovar.theme.backgroundColor.alt
 
-        Text
+        RowLayout
         {
-            anchors.top: header.top
-            anchors.left: header.left
-            anchors.bottom: header.bottom
-            anchors.right: connectionStatus.left
+            anchors.fill: parent
             anchors.margins: 10
-            font.pixelSize: 22
-            font.family: Regovar.theme.font.familly
-            color: Regovar.theme.frontColor.normal
-            verticalAlignment: Text.AlignVCenter
 
-            text: (model) ? model.name : "?"
-        }
-        ConnectionStatus
-        {
-            id: connectionStatus
-            anchors.top: header.top
-            anchors.right: header.right
-            anchors.bottom: header.bottom
-            anchors.margins: 5
-            anchors.rightMargin: 10
-        }
+            Text
+            {
+                id: nameLabel
+                Layout.fillWidth: true
 
+                font.pixelSize: 22
+                font.family: Regovar.theme.font.familly
+                color: Regovar.theme.frontColor.normal
+                verticalAlignment: Text.AlignVCenter
+                text: (model) ? model.name : ""
+                elide: Text.ElideRight
+            }
+
+            ConnectionStatus { }
+        }
     }
 
     // Help information on this page
@@ -79,7 +74,11 @@ Rectangle
         {
             id: newAnalysis
             text: qsTr("New")
-            onClicked: regovar.openNewAnalysisWizard()
+            onClicked:
+            {
+                regovar.openNewAnalysisWizard();
+                regovar.analysesManager.newFiltering.project = model;
+            }
         }
         Button
         {
@@ -96,12 +95,14 @@ Rectangle
             id: playPauseAnalysis
             text: qsTr("Pause")
             onClicked:  console.log("Pause/Play analysis")
+            enabled: false
         }
         Button
         {
             id: deleteAnalysis
             text: qsTr("Delete")
             onClicked:  console.log("Delete analysis")
+            enabled: false
         }
     }
 
@@ -109,6 +110,7 @@ Rectangle
     {
         anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
         anchors.left: root.left
+        anchors.leftMargin: 10
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         orientation: Qt.Vertical
@@ -125,8 +127,8 @@ Rectangle
                 id: browser
                 anchors.fill: parent
                 anchors.margins: 10
+                anchors.leftMargin: 0
                 model: (root.model) ? root.model.analyses : []
-
 
                 // Default delegate for all column
                 itemDelegate: Item
@@ -184,46 +186,64 @@ Rectangle
             color: Regovar.theme.backgroundColor.main
             Layout.minimumHeight: 200
 
-            Rectangle
+            GridLayout
             {
-                id: helpPanel
                 anchors.fill: parent
                 anchors.margins: 10
-
-                color: "transparent"
-
-                visible: root.currentAnalysis
+                anchors.leftMargin: 0
+                columns: 3
+                rowSpacing: 10
+                columnSpacing: 10
 
                 Text
                 {
-                    text: qsTr("Select an analysis in the table above.\nThe preview of this analysis will be display here.")
+                    Layout.fillWidth: true
+                    height: Regovar.theme.font.boxSize.header
+                    elide: Text.ElideRight
                     font.pixelSize: Regovar.theme.font.size.header
-                    color: Regovar.theme.primaryColor.back.normal
-                    anchors.fill: parent
                     verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    wrapMode: Text.WordWrap
+                    color: Regovar.theme.primaryColor.back.normal
+                    text: currentAnalysis ? currentAnalysis.name : ""
+                }
+
+                Text
+                {
+                    height: Regovar.theme.font.boxSize.header
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    verticalAlignment: Text.AlignVCenter
+                    color: Regovar.theme.primaryColor.back.normal
+                    font.family: Regovar.theme.icons.name
+                    text: currentAnalysis ? "H" : ""
                 }
                 Text
                 {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top : parent.top
-                    text: "Ä"
-                    font.family: Regovar.theme.icons.name
-                    font.pixelSize: 30
+                    height: Regovar.theme.font.boxSize.header
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    verticalAlignment: Text.AlignVCenter
                     color: Regovar.theme.primaryColor.back.normal
+                    text: currentAnalysis ? Regovar.formatDate(currentAnalysis.lastUpdate) : ""
+                }
 
-                    NumberAnimation on anchors.topMargin
+                Rectangle
+                {
+                    color: "transparent"
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.columnSpan: 3
+                    border.width: 1
+                    border.color: Regovar.theme.boxColor.border
+                    Text
                     {
-                        duration: 2000
-                        loops: Animation.Infinite
-                        from: 30
-                        to: 0
-                        easing.type: Easing.SineCurve
+                        anchors.fill: parent
+                        text: qsTr("Not yet implemented")
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        color: Regovar.theme.frontColor.disable
+                        verticalAlignment: Text.AlignVCenter
                     }
                 }
-            } // end helpPanel
-
+            }
         } // end bottomPanel
     } // end SplitView
 
