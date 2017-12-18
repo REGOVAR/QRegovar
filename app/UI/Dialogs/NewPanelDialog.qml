@@ -105,7 +105,7 @@ Dialog
                 id: versionField
                 Layout.fillWidth: true
                 placeholderText: qsTr("Optional name of this version. (let empty for automatic incrementation number).")
-                text: regovar.panelsManager.newPanel.currentVersion
+                text: regovar.panelsManager.newPanel.version
             }
 
             Text

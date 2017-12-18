@@ -11,6 +11,17 @@ Rectangle
 
     property QtObject model
     property bool editionMode: false
+    onModelChanged:
+    {
+        if(model)
+        {
+            model.dataChanged.connect(function() {updateViewFromModel(model)});
+        }
+
+        updateViewFromModel(model)
+    }
+
+
 
     Rectangle
     {
@@ -21,30 +32,27 @@ Rectangle
         height: 50
         color: Regovar.theme.backgroundColor.alt
 
-        Text
+        RowLayout
         {
-            anchors.top: header.top
-            anchors.left: header.left
-            anchors.bottom: header.bottom
+            anchors.fill: parent
             anchors.margins: 10
 
-            font.pixelSize: 22
-            font.family: Regovar.theme.font.familly
-            color: Regovar.theme.frontColor.normal
-            verticalAlignment: Text.AlignVCenter
-            text: (model) ? model.name : "?"
-        }
-        ConnectionStatus
-        {
-            anchors.top: header.top
-            anchors.right: header.right
-            anchors.bottom: header.bottom
-            anchors.margins: 5
-            anchors.rightMargin: 10
+            Text
+            {
+                id: nameLabel
+                Layout.fillWidth: true
+
+                font.pixelSize: 22
+                font.family: Regovar.theme.font.familly
+                color: Regovar.theme.frontColor.normal
+                verticalAlignment: Text.AlignVCenter
+                text: "-"
+                elide: Text.ElideRight
+            }
+
+            ConnectionStatus { }
         }
     }
-
-
 
     // Help information on this page
     Box
@@ -62,9 +70,6 @@ Rectangle
         text: qsTr("This page gives you an overview of the project.")
     }
 
-
-
-
     GridLayout
     {
         anchors.top : header.bottom
@@ -73,12 +78,9 @@ Rectangle
         anchors.bottom: root.bottom
         anchors.margins : 10
         anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
-
-        rows: 3
         columns: 3
         columnSpacing: 10
         rowSpacing: 10
-
 
         Text
         {
@@ -96,7 +98,7 @@ Rectangle
             Layout.fillWidth: true
             enabled: editionMode
             placeholderText: qsTr("Name of the project")
-            text: (model) ? model.name : ""
+            text: ""
         }
 
         Column
@@ -105,20 +107,27 @@ Rectangle
             Layout.alignment: Qt.AlignTop
             spacing: 10
 
-
             Button
             {
                 text: editionMode ? qsTr("Save") : qsTr("Edit")
-                onClicked:  editionMode = !editionMode
+                onClicked:
+                {
+                    editionMode = !editionMode;
+                    if (!editionMode)
+                    {
+                        // when click on save : update model
+                        updateModelFromView();
+                    }
+                }
             }
 
             Button
             {
                 visible: editionMode
                 text: qsTr("Cancel")
+                onClicked: { updateViewFromModel(model); editionMode = false; }
             }
         }
-
 
         Text
         {
@@ -132,6 +141,7 @@ Rectangle
         }
         TextArea
         {
+            id: commentField
             Layout.fillWidth: true
             enabled: editionMode
             text: (model) ? model.comment : ""
@@ -149,10 +159,6 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
             height: 45
         }
-
-
-
-
 
         TableView
         {
@@ -175,23 +181,44 @@ Rectangle
 
         Column
         {
-            spacing: 10
             Layout.alignment: Qt.AlignTop
-
+            spacing: 10
 
             Button
             {
                 id: addFile
                 text: qsTr("Add event")
-                onClicked:  fileDialog.open()
+                enabled: false
             }
 
             Button
             {
                 id: editFile
                 text: qsTr("Edit event")
-                onClicked: customPopup.open()
+                enabled: false
             }
+        }
+    }
+
+    function updateViewFromModel(model)
+    {
+        if (model)
+        {
+            nameLabel.text = model.name;
+            nameField.text = model.name;
+            commentField.text = model.comment;
+        }
+    }
+
+    function updateModelFromView()
+    {
+        if (model)
+        {
+            model.name = nameField.text;
+            model.comment = commentField.text;
+
+            model.save();
+            nameLabel.text = model.name;
         }
     }
 }

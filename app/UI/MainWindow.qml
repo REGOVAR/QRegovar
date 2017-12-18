@@ -252,7 +252,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onPhenotypeInformationSearvhing: { if (analysisId == -1) { phenotypeInfoPanel.reset(); phenotypeInfoDialog.open(); }}
+            onPhenotypeInformationSearching: { if (analysisId == -1) { phenotypeInfoPanel.reset(); phenotypeInfoDialog.open(); }}
         }
     }
 

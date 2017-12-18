@@ -9,12 +9,9 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property bool editionMode: false
     property QtObject model
+    property bool editionMode: false
     onModelChanged: updateViewFromModel(model)
-
-
-
 
     Rectangle
     {
@@ -47,19 +44,33 @@ Rectangle
         }
     }
 
+    // Help information on this page
+    Box
+    {
+        id: helpInfoBox
+        anchors.top : header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.margins: 10
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        mainColor: Regovar.theme.frontColor.success
+        icon: "k"
+        text: qsTr("This page gives you an overview of the subject.")
+    }
+
     GridLayout
     {
         anchors.top : header.bottom
         anchors.left: root.left
         anchors.right: root.right
         anchors.bottom: root.bottom
-        anchors.margins: 10
-
-        rows: 8
+        anchors.margins : 10
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
         columns: 3
         columnSpacing: 10
         rowSpacing: 10
-
 
         Text
         {
@@ -77,7 +88,7 @@ Rectangle
             Layout.fillWidth: true
             enabled: editionMode
             placeholderText: qsTr("Unique anonymous identifier")
-            text: "MD-65-45"
+            text: ""
         }
 
         Column
@@ -85,7 +96,6 @@ Rectangle
             Layout.rowSpan: 7
             Layout.alignment: Qt.AlignTop
             spacing: 10
-
 
             Button
             {
@@ -108,9 +118,6 @@ Rectangle
                 onClicked: { updateViewFromModel(model); editionMode = false; }
             }
         }
-
-
-
 
         Text
         {
@@ -210,7 +217,6 @@ Rectangle
             }
         }
 
-
         Text
         {
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
@@ -231,6 +237,7 @@ Rectangle
         }
 
 
+
         Text
         {
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
@@ -242,33 +249,29 @@ Rectangle
             height: 35
         }
 
-
-
-        TreeView
+        TableView
         {
             id: events
-            Layout.fillWidth: true
             Layout.fillHeight: true
-
+            Layout.fillWidth: true
+            model: (root.model) ? root.model.events : []
 
             TableViewColumn
             {
                 title: "Date"
-                role: "filenameUI"
+                role: "date"
             }
             TableViewColumn
             {
                 title: "Event"
-                role: "filenameUI"
+                role: "eventUI"
             }
         }
-
 
         Column
         {
             Layout.alignment: Qt.AlignTop
             spacing: 10
-
 
             Button
             {

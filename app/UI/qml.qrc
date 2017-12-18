@@ -168,7 +168,6 @@
         <file>Pages/Settings/AdminUsersPage.qml</file>
         <file>Pages/Settings/AdminPipesPage.qml</file>
         <file>Pages/Settings/AdminServerPage.qml</file>
-        <file>Pages/Settings/PanelsPage.qml</file>
         <file>Pages/Settings/ProfilePage.qml</file>
         <file>Pages/Settings/StatisticsPage.qml</file>
         <file>Pages/Subject/AnalysesPage.qml</file>
@@ -189,5 +188,6 @@
         <file>Pages/Settings/ApplicationInterfacePage.qml</file>
         <file>Pages/Settings/ApplicationConnectionPage.qml</file>
         <file>Pages/Settings/ApplicationCachePage.qml</file>
+        <file>Pages/Panel/PanelsPage.qml</file>
     </qresource>
 </RCC>
