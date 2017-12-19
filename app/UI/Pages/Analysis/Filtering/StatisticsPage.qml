@@ -18,7 +18,6 @@ Rectangle
     property FilteringAnalysis model
     onModelChanged: updateViewFromModel(model)
     property var statisticsModel
-    property var qualityModel
 
     function updateViewFromModel(model)
     {
@@ -31,11 +30,8 @@ Rectangle
                 comboModel.push(model.samples[idx].name);
             }
 
-            section1SamplesCombo.model = comboModel;
-            section2SamplesCombo.model = comboModel;
-
-            section1SamplesCombo.currentIndex = 0;
-            section2SamplesCombo.currentIndex = 0;
+            levelCombo.model = comboModel;
+            levelCombo.currentIndex = 0;
         }
     }
 
@@ -90,12 +86,9 @@ Rectangle
     }
 
 
-    //
-    // Section1 Header : Statistics
-    //
-    Row
+    RowLayout
     {
-        id: section1Header
+        id: levelSelector
         anchors.top : header.bottom
         anchors.left: root.left
         anchors.right: root.right
@@ -106,27 +99,18 @@ Rectangle
         Text
         {
             height: Regovar.theme.font.boxSize.header
-            text: "^"
-            font.family: Regovar.theme.icons.name
-            font.pixelSize: Regovar.theme.font.size.header
-            verticalAlignment: Text.AlignVCenter
-            color: Regovar.theme.primaryColor.back.normal
-        }
-        Text
-        {
-            height: Regovar.theme.font.boxSize.header
             elide: Text.ElideRight
-            text: qsTr("Statistics: ")
-            font.bold: true
+            text: qsTr("Select a sample:")
             font.pixelSize: Regovar.theme.font.size.header
             verticalAlignment: Text.AlignVCenter
             color: Regovar.theme.primaryColor.back.normal
         }
         ComboBox
         {
-            id: section1SamplesCombo
+            id: levelCombo
             height: Regovar.theme.font.boxSize.header - 4
             Layout.alignment: Qt.AlignVCenter
+            Layout.fillWidth: true
             model: []
             onCurrentIndexChanged:
             {
@@ -142,6 +126,40 @@ Rectangle
                     }
                 }
             }
+        }
+    }
+
+    //
+    // Section1 Header : Statistics
+    //
+    Row
+    {
+        id: section1Header
+        anchors.top : levelSelector.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.margins: 10
+        anchors.topMargin: 30
+        spacing: 10
+
+        Text
+        {
+            height: Regovar.theme.font.boxSize.header
+            text: "^"
+            font.family: Regovar.theme.icons.name
+            font.pixelSize: Regovar.theme.font.size.header
+            verticalAlignment: Text.AlignVCenter
+            color: Regovar.theme.primaryColor.back.normal
+        }
+        Text
+        {
+            height: Regovar.theme.font.boxSize.header
+            elide: Text.ElideRight
+            text: qsTr("Statistics")
+            font.bold: true
+            font.pixelSize: Regovar.theme.font.size.header
+            verticalAlignment: Text.AlignVCenter
+            color: Regovar.theme.primaryColor.back.normal
         }
     }
     Rectangle
@@ -199,6 +217,7 @@ Rectangle
         anchors.left: root.left
         anchors.right: root.right
         anchors.margins: 10
+        anchors.topMargin: 30
         spacing: 10
 
         Text
@@ -215,32 +234,11 @@ Rectangle
             Layout.fillWidth: true
             height: Regovar.theme.font.boxSize.header
             elide: Text.ElideRight
-            text: qsTr("Quality :")
+            text: qsTr("Quality")
             font.bold: true
             font.pixelSize: Regovar.theme.font.size.header
             verticalAlignment: Text.AlignVCenter
             color: Regovar.theme.primaryColor.back.normal
-        }
-        ComboBox
-        {
-            id: section2SamplesCombo
-            height: Regovar.theme.font.boxSize.header - 4
-            Layout.alignment: Qt.AlignVCenter
-            model: []
-            onCurrentIndexChanged:
-            {
-                if (root.model && root.model.samples && root.model.samples.length > 0)
-                {
-                    if (currentIndex == 0)
-                    {
-                        root.statisticsModel = root.model.samples;
-                    }
-                    else if (currentIndex-1 >= 0 && currentIndex-1 < root.model.samples.length)
-                    {
-                        root.qualityModel = root.model.samples[currentIndex-1];
-                    }
-                }
-            }
         }
     }
     Rectangle
@@ -278,8 +276,8 @@ Rectangle
             {
                 spacing: 10
 
-                QualityOverview { id: qualOverview; model: root.qualityModel }
-                QualityFilter { id: qualFilter; model: root.qualityModel }
+                QualityOverview { id: qualOverview; model: root.statisticsModel }
+                QualityFilter { id: qualFilter; model: root.statisticsModel }
             }
         }
     }

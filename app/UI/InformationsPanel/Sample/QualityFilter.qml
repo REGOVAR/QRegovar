@@ -27,7 +27,7 @@ Item
     {
         anchors.top: root.top
         anchors.left: root.left
-        text: qsTr("Filter & Qual")
+        text: qsTr("Filter")
         font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
         height: Regovar.theme.font.boxSize.normal
@@ -174,6 +174,7 @@ Item
             var stats = sample.stats;
             var variantTotal = stats["sample_total_variant"];
             var filter = stats["filter"];
+            var filterDesc = sample.filter_description;
             var filterChartModel = [];
             for (var key in filter)
             {
