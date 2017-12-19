@@ -5,7 +5,10 @@ import QtCharts 2.0
 import org.regovar 1.0
 import "../../../Regovar"
 import "../../../Framework"
-import "../../../Dialogs"
+
+import "../../../InformationsPanel/Sample"
+
+
 
 Rectangle
 {
@@ -14,14 +17,25 @@ Rectangle
 
     property FilteringAnalysis model
     onModelChanged: updateViewFromModel(model)
-
+    property var statisticsModel
+    property var qualityModel
 
     function updateViewFromModel(model)
     {
         if (model)
         {
-            section1HeaderSamples.model = model.samples;
-            section1HeaderSamples.currentIndex = 0;
+            var comboModel = ["All"];
+            for (var idx=0; idx<model.samples.length; idx++)
+            {
+
+                comboModel.push(model.samples[idx].name);
+            }
+
+            section1SamplesCombo.model = comboModel;
+            section2SamplesCombo.model = comboModel;
+
+            section1SamplesCombo.currentIndex = 0;
+            section2SamplesCombo.currentIndex = 0;
         }
     }
 
@@ -77,432 +91,102 @@ Rectangle
 
 
     //
-    // Section1 Statistics
+    // Section1 Header : Statistics
     //
-
-    SplitView
+    Row
     {
-        id: section1Content
+        id: section1Header
         anchors.top : header.bottom
         anchors.left: root.left
         anchors.right: root.right
         anchors.margins: 10
         anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
+        spacing: 10
 
-        Rectangle
+        Text
         {
-            id: overAllStats
-            Layout.minimumWidth: Regovar.theme.font.boxSize.title - 10
-            color: "transparent"
-            width: 500
-            height: 200
-            clip: true
-
-            // Header
-            Row
-            {
-                x:0
-                id: section1HeaderOverAll
-                anchors.top: parent.top
-                spacing: 10
-
-                Text
-                {
-                    width: Regovar.theme.font.boxSize.title - 10
-                    height: Regovar.theme.font.boxSize.header
-                    text: "^"
-
-                    font.family: Regovar.theme.icons.name
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                }
-                Text
-                {
-                    Layout.fillWidth: true
-                    height: Regovar.theme.font.boxSize.header
-
-                    elide: Text.ElideRight
-                    text: qsTr("Statistics")
-                    font.bold: true
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                }
-            }
-            Rectangle
-            {
-                anchors.top: section1HeaderOverAll.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: 10
-                anchors.topMargin: 0
-                anchors.leftMargin: 0
-                height: 1
-                color: Regovar.theme.primaryColor.back.normal
-            }
-
-            // Content
-            Rectangle
-            {
-                anchors.top: section1HeaderOverAll.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                anchors.margins: 10
-                color: "transparent"
-                clip: true
-
-                GridLayout
-                {
-                    anchors.fill: parent
-                    columns: 3
-                    rows: 6
-                    columnSpacing: 10
-                    rowSpacing: 5
-
-                    // Filename
-                    Rectangle
-                    {
-                        width: Regovar.theme.font.boxSize.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        color: "transparent"
-                    }
-                    Text
-                    {
-                        text: qsTr("VCF file")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                    Text
-                    {
-                        id: sampleFileField
-                        Layout.fillWidth: true
-                        text: qsTr("toto.vcf.gz (md5 check ok)")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    // Reference
-                    Rectangle
-                    {
-                        width: Regovar.theme.font.boxSize.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        color: "transparent"
-                    }
-                    Text
-                    {
-                        text: qsTr("VCF header reference")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                    Text
-                    {
-                        text: qsTr("Hg38 (check)")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    // variant total
-                    Rectangle
-                    {
-                        width: Regovar.theme.font.boxSize.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        color: "transparent"
-                    }
-                    Text
-                    {
-                        text: qsTr("Total variants")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                    Text
-                    {
-                        text: "600 000"
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                        font.family: "monospace"
-                    }
-
-                    // variant total
-                    Rectangle
-                    {
-                        width: Regovar.theme.font.boxSize.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        color: "transparent"
-                    }
-                    Text
-                    {
-                        text: qsTr("Total transcript")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                    Text
-                    {
-                        text: "1 600 000"
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                        font.family: "monospace"
-                    }
-
-                    // gene total
-                    Rectangle
-                    {
-                        width: Regovar.theme.font.boxSize.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        color: "transparent"
-                    }
-                    Text
-                    {
-                        text: qsTr("Overlapped genes")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                    Text
-                    {
-                        text: "16"
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
-                        verticalAlignment: Text.AlignVCenter
-                        font.family: "monospace"
-                    }
-
-                    Rectangle
-                    {
-                        Layout.columnSpan: 3
-                        color: "transparent"
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                    }
-                }
-            }
+            height: Regovar.theme.font.boxSize.header
+            text: "^"
+            font.family: Regovar.theme.icons.name
+            font.pixelSize: Regovar.theme.font.size.header
+            verticalAlignment: Text.AlignVCenter
+            color: Regovar.theme.primaryColor.back.normal
         }
-
-        Rectangle
+        Text
         {
-            id: samplesStats
-            color: "transparent"
-            width: 700
-            height: 200
-            clip: true
-
-            // Header
-            ComboBox
+            height: Regovar.theme.font.boxSize.header
+            elide: Text.ElideRight
+            text: qsTr("Statistics: ")
+            font.bold: true
+            font.pixelSize: Regovar.theme.font.size.header
+            verticalAlignment: Text.AlignVCenter
+            color: Regovar.theme.primaryColor.back.normal
+        }
+        ComboBox
+        {
+            id: section1SamplesCombo
+            height: Regovar.theme.font.boxSize.header - 4
+            Layout.alignment: Qt.AlignVCenter
+            model: []
+            onCurrentIndexChanged:
             {
-                id: section1HeaderSamples
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.margins: 10
-                anchors.topMargin: 2
-                height: Regovar.theme.font.boxSize.header - 4 // 4 = 2*2 top/bottom margin
-
-                model: []
-                textRole: "name"
-                onCurrentIndexChanged: if (model && model.length > 0) updateStatistics(model[currentIndex])
-            }
-            Rectangle
-            {
-                anchors.top: section1HeaderSamples.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: 10
-                anchors.topMargin: 2
-                anchors.rightMargin: 0
-                height: 1
-                color: Regovar.theme.primaryColor.back.normal
-            }
-
-            // Content
-            ScrollView
-            {
-                id: section1ContentSamples
-                anchors.fill: parent
-                anchors.leftMargin: 10
-                anchors.rightMargin: 10
-                anchors.topMargin: 20 + Regovar.theme.font.boxSize.header
-
-                horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
-                verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
-                Row
+                if (root.model && root.model.samples && root.model.samples.length > 0)
                 {
-                    y: 5
-                    spacing: 10
-
-                    Rectangle
+                    if (currentIndex == 0)
                     {
-                        width: 300
-                        height: section1ContentSamples.height
-                        border.width: 1
-                        border.color: Regovar.theme.boxColor.border
-                        color: Regovar.theme.boxColor.back
-                        ScrollView
-                        {
-                            anchors.fill: parent
-
-                            Column
-                            {
-                                id: variantClassesLayout
-                                x: 5
-                                y: 5
-                                width: parent.width - 10
-
-
-                                Item
-                                {
-                                    width: variantClassesLayout.width
-                                    height: Regovar.theme.font.boxSize.normal
-                                    Text
-                                    {
-                                        anchors.left: parent.left
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        text: qsTr("Total variants")
-                                        font.pixelSize: Regovar.theme.font.size.normal
-                                        color: Regovar.theme.primaryColor.back.normal
-                                        height: Regovar.theme.font.boxSize.normal
-                                        verticalAlignment: Text.AlignVCenter
-                                        font.bold: true
-                                    }
-                                    Text
-                                    {
-                                        anchors.right: parent.right
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        id: variantsTotal
-                                        Layout.alignment: Qt.AlignRight
-                                        text: "-"
-                                        font.pixelSize: Regovar.theme.font.size.normal
-                                        color: Regovar.theme.primaryColor.back.normal
-                                        height: Regovar.theme.font.boxSize.normal
-                                        verticalAlignment: Text.AlignVCenter
-                                        font.bold: true
-                                    }
-                                }
-
-
-
-                                Repeater
-                                {
-                                    id: variantClassesRepeater
-
-                                    Rectangle
-                                    {
-                                        width: variantClassesLayout.width
-                                        height: Regovar.theme.font.boxSize.normal
-                                        property bool hovered: false
-                                        color: !hovered ? "transparent" : Regovar.theme.secondaryColor.back.light
-
-                                        Text
-                                        {
-                                            anchors.left: parent.left
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            text: " - " + modelData.label + " (" + modelData.percent + ")"
-                                            font.pixelSize: Regovar.theme.font.size.normal
-                                            color: Regovar.theme.primaryColor.back.normal
-                                            height: Regovar.theme.font.boxSize.normal
-                                            verticalAlignment: Text.AlignVCenter
-                                        }
-                                        Text
-                                        {
-                                            anchors.right: parent.right
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            text:  modelData.count
-                                            font.pixelSize: Regovar.theme.font.size.normal
-                                            color: Regovar.theme.primaryColor.back.normal
-                                            height: Regovar.theme.font.boxSize.normal
-                                            verticalAlignment: Text.AlignVCenter
-                                        }
-                                        MouseArea
-                                        {
-                                            anchors.fill: parent
-                                            hoverEnabled: true
-                                            onEntered: { root.highlightPieSection(variantClassesPieSeries, index, true); parent.hovered = true; }
-                                            onExited: { root.highlightPieSection(variantClassesPieSeries, index, false); parent.hovered = false; }
-                                        }
-                                    }
-                                }
-
-                                Item { width: 10; height: 10; }
-                            }
-                        }
+                        root.statisticsModel = root.model.samples;
                     }
-
-                    ChartView
+                    else if (currentIndex-1 >= 0 && currentIndex-1 < root.model.samples.length)
                     {
-                        height: section1ContentSamples.height
-                        width: 200
-                        antialiasing: true
-                        //animationOptions: ChartView.AllAnimations
-                        backgroundColor: Regovar.theme.backgroundColor.main // Regovar.theme.boxColor.back
-                        legend.visible: false
-                        margins.top: 0
-                        margins.bottom: 0
-                        margins.left: 0
-                        margins.right: 0
-
-
-                        PieSeries
-                        {
-                            id: variantClassesPieSeries
-                            property string hoveredSerie: ""
-                        }
+                        root.statisticsModel = root.model.samples[currentIndex-1];
                     }
-
-                    /*
-                    // === VEP stats II - Consequence ===
-                    Rectangle
-                    {
-                        width: 1
-                        height: 1
-                        color: Regovar.theme.primaryColor.back.normal
-                    }
-
-                    ChartView
-                    {
-                        height: 150
-                        width: 150
-                        antialiasing: true
-                        animationOptions: ChartView.AllAnimations
-                        backgroundColor: Regovar.theme.boxColor.back
-                        legend.visible: false
-                        margins.top: 0
-                        margins.bottom: 0
-                        margins.left: 0
-                        margins.right: 0
-
-
-                        PieSeries
-                        {
-                            PieSlice { label: "Frameshift"; value: 67;  }
-                            PieSlice { label: "Coding sequence"; value: 20 }
-                            PieSlice { label: "Stop lost"; value: 13 }
-                        }
-                    }
-                    */
                 }
             }
         }
     }
+    Rectangle
+    {
+        anchors.top: section1Header.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 10
+        anchors.topMargin: 0
+        height: 1
+        color: Regovar.theme.primaryColor.back.normal
+    }
 
 
+    //
+    // Section1 Content : Statistics
+    //
+    Rectangle
+    {
+        id: section1Content
+        anchors.top: section1Header.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 10
+        height: 250
+        color: "transparent"
+        clip: true
+
+        ScrollView
+        {
+            anchors.fill: parent
+            horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
+            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+            Row
+            {
+                spacing: 10
+
+                StatsOverview { id: statsOverview; model: root.statisticsModel}
+                StatsVariantClasses { id: statsVariantClasses; model: root.statisticsModel }
+                StatsVepConsequences { id: statsVepConsequences; model: root.statisticsModel }
+                StatsVepImpacts { id: statsVepImpacts; model: root.statisticsModel }
+            }
+        }
+    }
 
 
     //
@@ -519,10 +203,8 @@ Rectangle
 
         Text
         {
-            width: Regovar.theme.font.boxSize.title - 10
             height: Regovar.theme.font.boxSize.header
             text: "^"
-
             font.family: Regovar.theme.icons.name
             font.pixelSize: Regovar.theme.font.size.header
             verticalAlignment: Text.AlignVCenter
@@ -532,13 +214,33 @@ Rectangle
         {
             Layout.fillWidth: true
             height: Regovar.theme.font.boxSize.header
-
             elide: Text.ElideRight
-            text: qsTr("Quality")
+            text: qsTr("Quality :")
             font.bold: true
             font.pixelSize: Regovar.theme.font.size.header
             verticalAlignment: Text.AlignVCenter
             color: Regovar.theme.primaryColor.back.normal
+        }
+        ComboBox
+        {
+            id: section2SamplesCombo
+            height: Regovar.theme.font.boxSize.header - 4
+            Layout.alignment: Qt.AlignVCenter
+            model: []
+            onCurrentIndexChanged:
+            {
+                if (root.model && root.model.samples && root.model.samples.length > 0)
+                {
+                    if (currentIndex == 0)
+                    {
+                        root.statisticsModel = root.model.samples;
+                    }
+                    else if (currentIndex-1 >= 0 && currentIndex-1 < root.model.samples.length)
+                    {
+                        root.qualityModel = root.model.samples[currentIndex-1];
+                    }
+                }
+            }
         }
     }
     Rectangle
@@ -557,62 +259,28 @@ Rectangle
     //
     Rectangle
     {
+        id: section2Content
         anchors.top: section2Header.bottom
-        anchors.left: root.left
-        anchors.right: root.right
+        anchors.left: parent.left
+        anchors.right: parent.right
         anchors.margins: 10
-
+        height: 250
         color: "transparent"
-        height: Regovar.theme.font.boxSize.normal
-        border.width: 1
-        border.color: Regovar.theme.boxColor.border
-        Text
+        clip: true
+
+        ScrollView
         {
-            anchors.centerIn: parent
-            text: qsTr("Not yet implemented")
-            font.pixelSize: Regovar.theme.font.size.normal
-            color: Regovar.theme.frontColor.disable
-            verticalAlignment: Text.AlignVCenter
-        }
-    }
+            anchors.fill: parent
+            horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
+            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-
-    function updateStatistics(sample)
-    {
-        if (sample)
-        {
-            var stats = sample.stats;
-            var variantTotal = stats["sample_total_variant"];
-
-            // Compute : Variant classes
-            var variantClasses = ["not", "ref", "snv", "mnv", "insertion", "deletion", "others"];
-            var vclassesNames = {"not": qsTr("Not in this sample"), "ref": qsTr("Reference"), "snv": qsTr("SNV"), "mnv": qsTr("MNV"), "insertion": qsTr("Insertion"), "deletion": qsTr("Deletion"), "others": qsTr("Others")};
-            var variantClassesChartModel = [];
-            variantClasses.forEach(function (vclass)
+            Row
             {
-                var count = stats["variants_classes"][vclass];
-                variantClassesChartModel = variantClassesChartModel.concat({
-                    "label": vclassesNames[vclass],
-                    "percent": (count / variantTotal * 100.0).toFixed(1) + " %",
-                    "count": count,
-                    "value": count / variantTotal * 100.0 });
-            });
-            // Populate legend
-            variantClassesRepeater.model = variantClassesChartModel;
-            // Populate Pie slices
-            variantClassesPieSeries.clear()
-            for (var idx=0; idx<variantClassesChartModel.length; idx++)
-            {
-                variantClassesPieSeries.append(variantClassesChartModel[idx]["percent"], variantClassesChartModel[idx]["value"]);
-                var slice = variantClassesPieSeries.at(idx);
-                slice.labelVisible = false;
+                spacing: 10
+
+                QualityOverview { id: qualOverview; model: root.qualityModel }
+                QualityFilter { id: qualFilter; model: root.qualityModel }
             }
         }
-    }
-
-
-    function highlightPieSection(pieChart, index, exploded)
-    {
-        pieChart.at(index).exploded = exploded;
     }
 }

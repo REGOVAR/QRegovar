@@ -189,5 +189,11 @@
         <file>Pages/Settings/ApplicationConnectionPage.qml</file>
         <file>Pages/Settings/ApplicationCachePage.qml</file>
         <file>Pages/Panel/PanelsPage.qml</file>
+        <file>InformationsPanel/Sample/StatsOverview.qml</file>
+        <file>InformationsPanel/Sample/StatsVariantClasses.qml</file>
+        <file>InformationsPanel/Sample/StatsVepConsequences.qml</file>
+        <file>InformationsPanel/Sample/StatsVepImpacts.qml</file>
+        <file>InformationsPanel/Sample/QualityOverview.qml</file>
+        <file>InformationsPanel/Sample/QualityFilter.qml</file>
     </qresource>
 </RCC>
