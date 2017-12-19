@@ -47,6 +47,7 @@ Item
         border.width: 1
         border.color: Regovar.theme.boxColor.border
         clip: true
+        property double minLabelWidth: 30
 
         RowLayout
         {
@@ -60,32 +61,29 @@ Item
                 Layout.alignment: Qt.AlignTop
                 Layout.fillWidth: true
 
-                Item
+                RowLayout
                 {
                     width: variantClassesLayout.width
                     height: Regovar.theme.font.boxSize.normal
+
                     Text
                     {
-                        anchors.left: parent.left
-                        anchors.verticalCenter: parent.verticalCenter
+                        Layout.fillHeight: true
                         text: qsTr("Total variants")
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
                         verticalAlignment: Text.AlignVCenter
                         font.bold: true
                     }
                     Text
                     {
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
                         id: totalVariant
-                        Layout.alignment: Qt.AlignRight
-                        text: "-"
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
-                        height: Regovar.theme.font.boxSize.normal
                         verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignRight
                         font.bold: true
                     }
                 }
@@ -101,25 +99,31 @@ Item
                         property bool hovered: false
                         color: !hovered ? "transparent" : Regovar.theme.secondaryColor.back.light
 
-                        Text
+                        RowLayout
                         {
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            text: " - " + modelData.label + " (" + modelData.percent + ")"
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            color: Regovar.theme.primaryColor.back.normal
-                            height: Regovar.theme.font.boxSize.normal
-                            verticalAlignment: Text.AlignVCenter
-                        }
-                        Text
-                        {
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            text:  modelData.count
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            color: Regovar.theme.primaryColor.back.normal
-                            height: Regovar.theme.font.boxSize.normal
-                            verticalAlignment: Text.AlignVCenter
+                            anchors.fill: parent
+                            spacing: 5
+                            Text
+                            {
+                                Layout.fillHeight: true
+                                Layout.fillWidth: true
+                                text: " - " + modelData.label + " (" + modelData.percent + ")"
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                color: Regovar.theme.primaryColor.back.normal
+                                verticalAlignment: Text.AlignVCenter
+                                elide: Text.ElideRight
+                            }
+                            Text
+                            {
+                                Layout.fillHeight: true
+                                Layout.minimumWidth: content.minLabelWidth
+                                text:  modelData.count
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                color: Regovar.theme.primaryColor.back.normal
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: Text.AlignRight
+                                onPaintedWidthChanged: content.minLabelWidth = Math.max(content.minLabelWidth, paintedWidth)
+                            }
                         }
                         MouseArea
                         {

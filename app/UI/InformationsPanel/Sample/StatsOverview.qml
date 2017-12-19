@@ -45,8 +45,8 @@ Item
         border.width: 1
         border.color: Regovar.theme.boxColor.border
         clip: true
-
         property double minLabelWidth: 30
+
         ColumnLayout
         {
             anchors.fill: parent
