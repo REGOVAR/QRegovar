@@ -40,6 +40,7 @@ bool Sample::fromJson(QJsonObject json)
     setNickname(""); // Todo
     setIsMosaic(json["is_mosaic"].toBool());
     setComment(json["comment"].toString());
+    mStats = json["stats"].toObject();
 
     mReference = regovar->referenceFromId(json["reference_id"].toInt());
 

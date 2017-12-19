@@ -232,7 +232,7 @@ Rectangle
                     border.color: Regovar.theme.boxColor.border
                     Text
                     {
-                        anchors.fill: parent
+                        anchors.centerIn: parent
                         text: qsTr("Not yet implemented")
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.frontColor.disable

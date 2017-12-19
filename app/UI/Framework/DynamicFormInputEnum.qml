@@ -28,7 +28,7 @@ GridLayout
         id: input
         Layout.fillWidth: true
         model: root.model ? root.model.enumValues : ["?"]
-        onModelChanged: if (root.model) input.currentIndex = root.model.defaultValue
+        onModelChanged: if (root.model && root.model.defaultValue) input.currentIndex = root.model.defaultValue
         onCurrentIndexChanged: if (root.model) root.model.value = input.currentIndex
     }
 

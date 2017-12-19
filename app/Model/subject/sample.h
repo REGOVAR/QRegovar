@@ -28,6 +28,7 @@ class Sample : public QObject
     Q_PROPERTY(bool isIndex READ isIndex WRITE setIsIndex NOTIFY dataChanged)
     Q_PROPERTY(QString sex READ sex WRITE setSex NOTIFY dataChanged)
 
+    Q_PROPERTY(QJsonObject stats READ stats NOTIFY dataChanged)
 
 public:
     enum SampleStatus
@@ -60,6 +61,7 @@ public:
     inline QVariant sourceUI() const { return mSourceUI; }
     inline bool isIndex() const { return mIsIndex; }
     inline QString sex() const { return mSex; }
+    inline QJsonObject stats() const { return mStats; }
 
     // Setters
     inline void setName(QString name) { mName = name; emit dataChanged(); }
@@ -105,6 +107,7 @@ private:
     SampleStatus mStatus;
     Subject* mSubject = nullptr;
     Reference* mReference = nullptr;
+    QJsonObject mStats;
 
 
     // QML shortcuts
