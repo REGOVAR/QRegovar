@@ -86,7 +86,7 @@ Item
                         color: Regovar.theme.primaryColor.back.normal
                         height: Regovar.theme.font.boxSize.normal
                         verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignRight
+                        horizontalAlignment: Text.AlignLeft
                         elide: Text.ElideRight
                         text: modelData.value
                     }
@@ -118,7 +118,7 @@ Item
         if (sample)
         {
             data.push({"label": qsTr("VCF file"), "value": sample.source.name});
-            data.push({"label": qsTr("VCF import"), "value": Regovar.formatDate(sample.source.creationDate)});
+            data.push({"label": qsTr("VCF import"), "value": Regovar.formatDate(sample.source.createDate)});
             data.push({"label": qsTr("BAM file"), "value": "-"});
             data.push({"label": qsTr("VCF header reference"), "value": sample.reference.name}); // TODO: this stat must be computed by import manager server side
             data.push({"label": qsTr("Total variants"), "value": Regovar.formatBigNumber(sample.stats["total_variant"])});

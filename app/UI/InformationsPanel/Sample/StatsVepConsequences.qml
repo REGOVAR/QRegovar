@@ -11,16 +11,17 @@ Item
     width: 450
     height: 250
 
+
     property var model
     onModelChanged:
     {
-        if ("samples" in model)
+        if (model && "samples" in model)
         {
-            updateViewFromAnalysisModel(model);
+            root.updateViewFromAnalysisModel(model);
         }
         else
         {
-            updateViewFromSampleModel(model);
+            root.updateViewFromSampleModel(model);
         }
     }
 
@@ -53,95 +54,110 @@ Item
         clip: true
         property double minLabelWidth: 30
 
-        RowLayout
+        // NOTICE: due to weird behavior of ChartView with Layout, we manage layout ourself
+        ScrollView
         {
-            anchors.fill: parent
+            id: vepConsequencesLayout
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
             anchors.margins: 5
-            spacing: 5
+            width: Math.max(0, parent.width - 10 - height)
+            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-            ScrollView
+            Column
             {
-                id: vepConsequencesLayout
-                verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-                horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-
-                Column
+                Repeater
                 {
-                    Repeater
+                    id: vepConsequenceRepeater
+
+                    Rectangle
                     {
-                        id: variantClassesRepeater
+                        width: vepConsequencesLayout.width
+                        height: Regovar.theme.font.boxSize.normal
+                        property bool hovered: false
+                        color: !hovered ? "transparent" : Regovar.theme.secondaryColor.back.light
 
-                        Rectangle
+                        RowLayout
                         {
-                            width: vepConsequencesLayout.width
-                            height: Regovar.theme.font.boxSize.normal
-                            property bool hovered: false
-                            color: !hovered ? "transparent" : Regovar.theme.secondaryColor.back.light
-
-                            RowLayout
+                            anchors.fill: parent
+                            spacing: 5
+                            Text
                             {
-                                anchors.fill: parent
-                                spacing: 5
-                                Text
-                                {
-                                    Layout.fillHeight: true
-                                    Layout.fillWidth: true
-                                    text: " - " + modelData.label + " (" + modelData.percent + ")"
-                                    font.pixelSize: Regovar.theme.font.size.normal
-                                    color: Regovar.theme.primaryColor.back.normal
-                                    verticalAlignment: Text.AlignVCenter
-                                    elide: Text.ElideRight
-                                }
-                                Text
-                                {
-                                    Layout.fillHeight: true
-                                    Layout.minimumWidth: content.minLabelWidth
-                                    text:  modelData.count
-                                    font.pixelSize: Regovar.theme.font.size.normal
-                                    color: Regovar.theme.primaryColor.back.normal
-                                    verticalAlignment: Text.AlignVCenter
-                                    horizontalAlignment: Text.AlignRight
-                                    onPaintedWidthChanged: content.minLabelWidth = Math.max(content.minLabelWidth, paintedWidth)
-                                }
+                                Layout.fillHeight: true
+                                Layout.fillWidth: true
+                                text: " - " + modelData.label + " (" + modelData.percent + ")"
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                color: Regovar.theme.primaryColor.back.normal
+                                verticalAlignment: Text.AlignVCenter
+                                elide: Text.ElideRight
                             }
-                            MouseArea
+                            Text
                             {
-                                anchors.fill: parent
-                                hoverEnabled: true
-                                onEntered: { root.highlightPieSection(variantClassesPieSeries, index, true); parent.hovered = true; }
-                                onExited: { root.highlightPieSection(variantClassesPieSeries, index, false); parent.hovered = false; }
+                                Layout.fillHeight: true
+                                Layout.minimumWidth: content.minLabelWidth
+                                text:  modelData.count
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                color: Regovar.theme.primaryColor.back.normal
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: Text.AlignRight
+                                onPaintedWidthChanged: content.minLabelWidth = Math.max(content.minLabelWidth, paintedWidth)
                             }
                         }
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onEntered: { root.highlightPieSection(vepConsequencePieSeries, index, true); parent.hovered = true; }
+                            onExited: { root.highlightPieSection(vepConsequencePieSeries, index, false); parent.hovered = false; }
+                        }
                     }
-
-                    Item { width: 10; height: 10; }
                 }
+
+                Item { width: 10; height: 10; }
             }
+        }
 
+        ChartView
+        {
+            anchors.top: parent.top
+            anchors.right: parent.right
+            height: parent.height
+            width: parent.height
+            antialiasing: true
+            animationOptions: ChartView.AllAnimations
+            backgroundColor: content.color
+            legend.visible: false
+            margins.top: 0
+            margins.bottom: 0
+            margins.left: 0
+            margins.right: 0
 
-            ChartView
+            PieSeries
             {
-                Layout.alignment: Qt.AlignTop
-                height: parent.height
-                width: parent.height
-                antialiasing: true
-                animationOptions: ChartView.AllAnimations
-                backgroundColor: content.color
-                legend.visible: false
-                margins.top: 0
-                margins.bottom: 0
-                margins.left: 0
-                margins.right: 0
-
-
-                PieSeries
-                {
-                    id: variantClassesPieSeries
-                    property string hoveredSerie: ""
-                }
+                id: vepConsequencePieSeries
+                property string hoveredSerie: ""
             }
+        }
+    }
+
+    Rectangle
+    {
+        id: empty
+        anchors.fill: parent
+        anchors.topMargin: Regovar.theme.font.boxSize.normal
+        color: Regovar.theme.boxColor.back
+        border.width: 1
+        border.color: Regovar.theme.boxColor.border
+        visible: false
+
+        Text
+        {
+            anchors.centerIn: parent
+            text: qsTr("Vep statistics not available")
+            font.pixelSize: Regovar.theme.font.size.title
+            color: Regovar.theme.primaryColor.back.light
         }
     }
 
@@ -167,20 +183,20 @@ Item
                     "value": count / transcriptTotal * 100.0 });
             }
             // Populate legend
-            variantClassesRepeater.model = vepConsequenceChartModel;
+            vepConsequenceRepeater.model = vepConsequenceChartModel;
             // Populate Pie slices
-            variantClassesPieSeries.clear();
+            vepConsequencePieSeries.clear();
             for (var idx=0; idx<vepConsequenceChartModel.length; idx++)
             {
-                variantClassesPieSeries.append(vepConsequenceChartModel[idx]["percent"], vepConsequenceChartModel[idx]["value"]);
-                var slice = variantClassesPieSeries.at(idx);
+                vepConsequencePieSeries.append(vepConsequenceChartModel[idx]["percent"], vepConsequenceChartModel[idx]["value"]);
+                var slice = vepConsequencePieSeries.at(idx);
                 slice.labelVisible = false;
             }
         }
         else
         {
-            variantClassesPieSeries.clear();
-            variantClassesRepeater.model = [];
+            vepConsequencePieSeries.clear();
+            vepConsequenceRepeater.model = [];
         }
     }
 
@@ -190,30 +206,41 @@ Item
         {
             var stats = sample.stats;
             var transcriptTotal = stats["sample_total_variant"];
+            if ("vep_consequences" in stats)
+            {
+                stats = stats["vep_consequences"];
 
-            // Compute : Variant classes
-            var variantClasses = ["not", "ref", "snv", "mnv", "insertion", "deletion", "others"];
-            var vclassesNames = {"not": qsTr("Not in this sample"), "ref": qsTr("Reference"), "snv": qsTr("SNV"), "mnv": qsTr("MNV"), "insertion": qsTr("Insertion"), "deletion": qsTr("Deletion"), "others": qsTr("Others")};
-            var vepConsequenceChartModel = [];
-            variantClasses.forEach(function (vclass)
+                // Compute : Variant classes
+                var variantClasses = ["not", "ref", "snv", "mnv", "insertion", "deletion", "others"];
+                var vclassesNames = {"not": qsTr("Not in this sample"), "ref": qsTr("Reference"), "snv": qsTr("SNV"), "mnv": qsTr("MNV"), "insertion": qsTr("Insertion"), "deletion": qsTr("Deletion"), "others": qsTr("Others")};
+                var vepConsequenceChartModel = [];
+                variantClasses.forEach(function (vclass)
+                {
+                    var count = stats["variants_classes"][vclass];
+                    vepConsequenceChartModel.push({
+                        "label": vclassesNames[vclass],
+                        "percent": (count / transcriptTotal * 100.0).toFixed(1) + " %",
+                        "count": Regovar.formatBigNumber(count),
+                        "value": count / transcriptTotal * 100.0 });
+                });
+                // Populate legend
+                vepConsequenceRepeater.model = vepConsequenceChartModel;
+                // Populate Pie slices
+                vepConsequencePieSeries.clear();
+                for (var idx=0; idx<vepConsequenceChartModel.length; idx++)
+                {
+                    vepConsequencePieSeries.append(vepConsequenceChartModel[idx]["percent"], vepConsequenceChartModel[idx]["value"]);
+                    var slice = vepConsequencePieSeries.at(idx);
+                    slice.labelVisible = false;
+                }
+
+                empty.visible = false;
+                content.enabled = true;
+            }
+            else
             {
-                var count = stats["variants_classes"][vclass];
-                vepConsequenceChartModel.push({
-                    "label": vclassesNames[vclass],
-                    "percent": (count / transcriptTotal * 100.0).toFixed(1) + " %",
-                    "count": Regovar.formatBigNumber(count),
-                    "value": count / transcriptTotal * 100.0 });
-            });
-            // Populate legend
-            totalVariant.text = Regovar.formatBigNumber(transcriptTotal);
-            variantClassesRepeater.model = vepConsequenceChartModel;
-            // Populate Pie slices
-            variantClassesPieSeries.clear();
-            for (var idx=0; idx<vepConsequenceChartModel.length; idx++)
-            {
-                variantClassesPieSeries.append(vepConsequenceChartModel[idx]["percent"], vepConsequenceChartModel[idx]["value"]);
-                var slice = variantClassesPieSeries.at(idx);
-                slice.labelVisible = false;
+                empty.visible = true;
+                content.enabled = false;
             }
         }
     }

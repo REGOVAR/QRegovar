@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import Qt.labs.settings 1.0
-import QtQuick.Dialogs 1.2
+import QtQuick.Window 2.3
 
 import "Regovar"
 import "Dialogs"
@@ -170,7 +170,7 @@ GenericWindow
     //
 
     // File info dialog
-    Dialog
+    Window
     {
         id: fileInfoDialog
         title: qsTr("File Informations")
@@ -178,21 +178,25 @@ GenericWindow
         modality: Qt.NonModal
         width: 500
         height: 400
+        minimumHeight : 300
+        minimumWidth : 300
+        flags: Qt.Dialog
 
-        contentItem: FileInformations
+        FileInformations
         {
             id: fileInfoPanel
+            anchors.fill: parent
         }
 
         Connections
         {
             target: regovar
-            onFileInformationSearching: { if (analysisId == -1) { fileInfoPanel.reset(); fileInfoDialog.open(); }}
+            onFileInformationSearching: { if (analysisId == -1) { fileInfoPanel.reset(); fileInfoDialog.show(); }}
         }
     }
 
     // Gene info dialog
-    Dialog
+    Window
     {
         id: geneInfoDialog
         title: qsTr("Gene Informations")
@@ -200,21 +204,25 @@ GenericWindow
         modality: Qt.NonModal
         width: 500
         height: 400
+        minimumHeight : 300
+        minimumWidth : 300
+        flags: Qt.Dialog
 
-        contentItem: GeneInformations
+        GeneInformations
         {
             id: geneInfoPanel
+            anchors.fill: parent
         }
 
         Connections
         {
             target: regovar
-            onGeneInformationSearching: { if (analysisId == -1) { geneInfoPanel.reset(); geneInfoDialog.open(); }}
+            onGeneInformationSearching: { if (analysisId == -1) { geneInfoPanel.reset(); geneInfoDialog.show(); }}
         }
     }
 
     // Panel info dialog
-    Dialog
+    Window
     {
         id: panelInfoDialog
         title: qsTr("Panel Informations")
@@ -222,21 +230,25 @@ GenericWindow
         modality: Qt.NonModal
         width: 500
         height: 400
+        minimumHeight : 300
+        minimumWidth : 300
+        flags: Qt.Dialog
 
-        contentItem: PanelInformations
+        PanelInformations
         {
             id: panelInfoPanel
+            anchors.fill: parent
         }
 
         Connections
         {
             target: regovar
-            onPanelInformationSearching: { if (analysisId == -1) { panelInfoPanel.reset(); panelInfoDialog.open(); }}
+            onPanelInformationSearching: { if (analysisId == -1) { panelInfoPanel.reset(); panelInfoDialog.show(); }}
         }
     }
 
     // Phenotype info dialog
-    Dialog
+    Window
     {
         id: phenotypeInfoDialog
         title: qsTr("Phenotype Informations")
@@ -244,21 +256,25 @@ GenericWindow
         modality: Qt.NonModal
         width: 500
         height: 400
+        minimumHeight : 300
+        minimumWidth : 300
+        flags: Qt.Dialog
 
-        contentItem: PhenotypeInformations
+        PhenotypeInformations
         {
             id: phenotypeInfoPanel
+            anchors.fill: parent
         }
 
         Connections
         {
             target: regovar
-            onPhenotypeInformationSearching: { if (analysisId == -1) { phenotypeInfoPanel.reset(); phenotypeInfoDialog.open(); }}
+            onPhenotypeInformationSearching: { if (analysisId == -1) { phenotypeInfoPanel.reset(); phenotypeInfoDialog.show(); }}
         }
     }
 
     // Pipeline info dialog
-    Dialog
+    Window
     {
         id: pipelineInfoDialog
         title: qsTr("Pipeline Informations")
@@ -266,21 +282,25 @@ GenericWindow
         modality: Qt.NonModal
         width: 500
         height: 400
+        minimumHeight : 300
+        minimumWidth : 300
+        flags: Qt.Dialog
 
-        contentItem: PipelineInformations
+        PipelineInformations
         {
             id: pipelineInfoPanel
+            anchors.fill: parent
         }
 
         Connections
         {
             target: regovar
-            onPipelineInformationSearching: { if (analysisId == -1) { pipelineInfoPanel.reset(); pipelineInfoDialog.open(); }}
+            onPipelineInformationSearching: { if (analysisId == -1) { pipelineInfoPanel.reset(); pipelineInfoDialog.show(); }}
         }
     }
 
     // Sample info dialog
-    Dialog
+    Window
     {
         id: sampleInfoDialog
         title: qsTr("Sample Informations")
@@ -288,21 +308,25 @@ GenericWindow
         modality: Qt.NonModal
         width: 500
         height: 400
+        minimumHeight : 300
+        minimumWidth : 300
+        flags: Qt.Dialog
 
-        contentItem: SampleInformations
+        SampleInformations
         {
             id: sampleInfoPanel
+            anchors.fill: parent
         }
 
         Connections
         {
             target: regovar
-            onSampleInformationSearching: { if (analysisId == -1) { sampleInfoPanel.reset(); sampleInfoDialog.open(); }}
+            onSampleInformationSearching: { if (analysisId == -1) { sampleInfoPanel.reset(); sampleInfoDialog.show(); }}
         }
     }
 
     // User info dialog
-    Dialog
+    Window
     {
         id: userInfoDialog
         title: qsTr("User Informations")
@@ -310,20 +334,25 @@ GenericWindow
         modality: Qt.NonModal
         width: 500
         height: 400
-        contentItem: UserInformations
+        minimumHeight : 300
+        minimumWidth : 300
+        flags: Qt.Dialog
+
+        UserInformations
         {
             id: userInfoPanel
+            anchors.fill: parent
         }
 
         Connections
         {
             target: regovar
-            onUserInformationSearching: { if (analysisId == -1) { userInfoPanel.reset(); userInfoDialog.open(); }}
+            onUserInformationSearching: { if (analysisId == -1) { userInfoPanel.reset(); userInfoDialog.show(); }}
         }
     }
 
     // Variant info panel
-    Dialog
+    Window
     {
         id: variantInfoDialog
         title: qsTr("Variant Informations")
@@ -331,16 +360,20 @@ GenericWindow
         modality: Qt.NonModal
         width: 500
         height: 400
+        minimumHeight : 300
+        minimumWidth : 300
+        flags: Qt.Dialog
 
-        contentItem: VariantInformations
+        VariantInformations
         {
             id: variantInfoPanel
+            anchors.fill: parent
         }
 
         Connections
         {
             target: regovar
-            onVariantInformationSearching: { if (analysisId == -1) { variantInfoPanel.reset(); variantInfoDialog.open(); }}
+            onVariantInformationSearching: { if (analysisId == -1) { variantInfoPanel.reset(); variantInfoDialog.show(); }}
         }
     }
 }

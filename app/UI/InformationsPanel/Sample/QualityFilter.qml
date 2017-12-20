@@ -14,7 +14,7 @@ Item
     property var model
     onModelChanged:
     {
-        if ("samples" in model)
+        if (model && "samples" in model)
         {
             updateViewFromAnalysisModel(model);
         }
@@ -53,21 +53,23 @@ Item
         clip: true
         property double minLabelWidth: 30
 
-        RowLayout
+        // NOTICE: due to weird behavior of ChartView with Layout, we manage layout ourself
+        ScrollView
         {
-            anchors.fill: parent
+            id: qualFilterLayout
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
             anchors.margins: 5
-            spacing: 5
+            width: Math.max(0, parent.width - 10 - height)
+            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
             Column
             {
-                id: variantClassesLayout
-                Layout.alignment: Qt.AlignTop
-                Layout.fillWidth: true
-
                 RowLayout
                 {
-                    width: variantClassesLayout.width
+                    width: qualFilterLayout.width
                     height: Regovar.theme.font.boxSize.normal
 
                     Text
@@ -94,11 +96,11 @@ Item
 
                 Repeater
                 {
-                    id: variantClassesRepeater
+                    id: qualFilterRepeater
 
                     Rectangle
                     {
-                        width: variantClassesLayout.width
+                        width: qualFilterLayout.width
                         height: Regovar.theme.font.boxSize.normal
                         property bool hovered: false
                         color: !hovered ? "transparent" : Regovar.theme.secondaryColor.back.light
@@ -141,34 +143,54 @@ Item
 
                 Item { width: 10; height: 10; }
             }
+        }
 
-            ChartView
+        ChartView
+        {
+            anchors.top: parent.top
+            anchors.right: parent.right
+            height: parent.height
+            width: parent.height
+            antialiasing: true
+            animationOptions: ChartView.AllAnimations
+            backgroundColor: content.color
+            legend.visible: false
+            margins.top: 0
+            margins.bottom: 0
+            margins.left: 0
+            margins.right: 0
+
+            PieSeries
             {
-                height: parent.height
-                width: parent.height
-                antialiasing: true
-                animationOptions: ChartView.AllAnimations
-                backgroundColor: content.color
-                legend.visible: false
-                margins.top: 0
-                margins.bottom: 0
-                margins.left: 0
-                margins.right: 0
-
-
-                PieSeries
-                {
-                    id: filterPieSeries
-                    property string hoveredSerie: ""
-                }
+                id: filterPieSeries
+                property string hoveredSerie: ""
             }
+        }
+    }
+
+    Rectangle
+    {
+        id: empty
+        anchors.fill: parent
+        anchors.topMargin: Regovar.theme.font.boxSize.normal
+        color: Regovar.theme.boxColor.back
+        border.width: 1
+        border.color: Regovar.theme.boxColor.border
+        visible: false
+
+        Text
+        {
+            anchors.centerIn: parent
+            text: qsTr("Filter quality not available")
+            font.pixelSize: Regovar.theme.font.size.title
+            color: Regovar.theme.primaryColor.back.light
         }
     }
 
     function updateViewFromAnalysisModel(model)
     {
         var stats = model.stats;
-        var variantTotal = stats["total_variant"];
+        var variantTotal = stats["sample_total_variant"];
 //        var filter = stats["filter"];
 //        var filterDesc = sample.filter_description;
 //        var filterChartModel = [];
@@ -183,7 +205,7 @@ Item
 //        }
 //        // Populate legend
 //        totalVariant.text = Regovar.formatBigNumber(variantTotal);
-//        variantClassesRepeater.model = filterChartModel;
+//        qualFilterRepeater.model = filterChartModel;
 //        // Populate Pie slices
 //        filterPieSeries.clear()
 //        for (var idx=0; idx<filterChartModel.length; idx++)
@@ -197,10 +219,15 @@ Item
 
     function updateViewFromSampleModel(sample)
     {
-        if (sample)
+        if (!sample || !sample.stats)
+        {
+            empty.visible = true;
+            content.enabled = false;
+        }
+        else
         {
             var stats = sample.stats;
-            var variantTotal = stats["total_variant"];
+            var variantTotal = stats["sample_total_variant"];
             var filter = stats["filter"];
             var filterDesc = sample.filter_description;
             var filterChartModel = [];
@@ -215,7 +242,7 @@ Item
             }
             // Populate legend
             totalVariant.text = Regovar.formatBigNumber(variantTotal);
-            variantClassesRepeater.model = filterChartModel;
+            qualFilterRepeater.model = filterChartModel;
             // Populate Pie slices
             filterPieSeries.clear()
             for (var idx=0; idx<filterChartModel.length; idx++)
@@ -224,6 +251,8 @@ Item
                 var slice = filterPieSeries.at(idx);
                 slice.labelVisible = false;
             }
+            empty.visible = false;
+            content.enabled = true;
         }
     }
 

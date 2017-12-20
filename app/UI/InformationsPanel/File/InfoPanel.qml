@@ -13,14 +13,22 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property bool editionMode: false
-    property File model
+    property File fileModel: null
+    property var model
     onModelChanged: setFileModel(model)
 
     function setFileModel(file)
     {
         if (file)
         {
-            file.dataChanged.connect(updateViewFromModel);
+            // Disconnect from former model
+            if (fileModel)
+            {
+                fileModel.dataChanged.disconnect(updateViewFromModel);
+            }
+            // connect to new model and display informations
+            fileModel = file;
+            fileModel.dataChanged.connect(updateViewFromModel);
             updateViewFromModel();
         }
     }
@@ -28,23 +36,23 @@ Rectangle
 
     function updateViewFromModel()
     {
-        if (model && model.loaded)
+        if (fileModel && fileModel.loaded)
         {
-            nameField.text = model.name;
-            tagsField.text = model.tags;
-            commentField.text = model.comment;
+            nameField.text = fileModel.name;
+            tagsField.text = fileModel.tags;
+            commentField.text = fileModel.comment;
 
-            remoteCreation.text = Regovar.formatDate(model.creationDate);
-            remoteSize.text = model.sizeUI;
-            remoteStatus.text = model.statusUI["label"];
-            remoteMd5.text = model.md5Sum;
-            remoteSource.text = model.sourceUI;
+            remoteCreation.text = Regovar.formatDate(fileModel.creationDate);
+            remoteSize.text = fileModel.sizeUI;
+            remoteStatus.text = fileModel.statusUI["label"];
+            remoteMd5.text = fileModel.md5Sum;
+            remoteSource.text = fileModel.sourceUI;
 
             localCreation.text = "-";
             localSize.text = "-";
             localStatus.text = "-";
             localMd5.text = "-";
-            localPath.text = model.localFilePath;
+            localPath.text = fileModel.localFilePath;
         }
         else
         {
@@ -69,12 +77,12 @@ Rectangle
 
     function updateModelFromView()
     {
-        if (model)
+        if (fileModel)
         {
-            model.name = nameField.text;
-            model.comment = commentField.text;
-            model.tags = tagsField.text;
-            model.save();
+            fileModel.name = nameField.text;
+            fileModel.comment = commentField.text;
+            fileModel.tags = tagsField.text;
+            fileModel.save();
         }
     }
 

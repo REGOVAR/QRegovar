@@ -308,7 +308,7 @@ void Regovar::getFileInfo(int fileId, int analysisId)
 
 void Regovar::getPanelInfo(QString panelId, int analysisId)
 {
-    emit fileInformationSearching(analysisId);
+    emit panelInformationSearching(analysisId);
     Panel* panel = mPanelsManager->getOrCreatePanel(panelId);
     panel->load(false);
     emit panelInformationReady(panel, analysisId);

@@ -47,7 +47,7 @@ Rectangle
         Text
         {
             anchors.centerIn: parent
-            text: qsTr("No relation found. This object is never used...")
+            text: qsTr("Not yet implemented")
             font.pixelSize: Regovar.theme.font.size.title
             color: Regovar.theme.primaryColor.back.light
         }

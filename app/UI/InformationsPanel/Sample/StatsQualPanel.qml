@@ -34,18 +34,16 @@ Rectangle
         id: content
         anchors.fill: parent
 
-        ColumnLayout
+        Column
         {
             x:10
             y:10
-            width: parent.width-30
 
-
-            StatsOverview { id: statsOverview; model: root.model; Layout.fillWidth: true}
-            StatsVariantClasses { id: statsVariantClasses; model: root.model; Layout.fillWidth: true }
-            StatsVepConsequences { id: statsVepConsequences; model: root.model; Layout.fillWidth: true }
-            StatsVepImpacts { id: statsVepImpacts; model: root.model; Layout.fillWidth: true }
-            QualityFilter { id: qualFilter; model: root.model; Layout.fillWidth: true }
+            StatsOverview { id: statsOverview; model: root.model; width: statsVariantClasses.width }
+            StatsVariantClasses { id: statsVariantClasses; model: root.model; }
+            StatsVepConsequences { id: statsVepConsequences; model: root.model; }
+            //StatsVepImpacts { id: statsVepImpacts; model: root.model; }
+            QualityFilter { id: qualFilter; model: root.model; }
         }
     }
 

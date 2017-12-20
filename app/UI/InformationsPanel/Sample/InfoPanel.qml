@@ -12,6 +12,7 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
+    property bool editionMode: false
     property Sample sampleModel: null
     property var model
     onModelChanged: setSampleModel(model)
@@ -34,14 +35,13 @@ Rectangle
 
     function updateViewFromModel()
     {
-        if (model && model.loaded)
+        if (sampleModel && sampleModel.loaded)
         {
-            nameField.text = model.name;
-            commentField.text = model.comment;
-            creation.text = Regovar.formatDate(model.created);
-            vcfFile.text = data.file;
-            reference.text = data.reference.name;
-            annotations.text = data.defaultAnnotationsDbUid;
+            nameField.text = sampleModel.name;
+            commentField.text = sampleModel.comment;
+            creation.text = Regovar.formatDate(sampleModel.createDate);
+            vcfFile.text = sampleModel.source.name;
+            reference.text = sampleModel.reference.name;
         }
         else
         {
@@ -50,7 +50,6 @@ Rectangle
             creation.text = "";
             vcfFile.text = "";
             reference.text = "";
-            annotations.text = "";
         }
     }
 
@@ -59,9 +58,9 @@ Rectangle
     {
         if (model)
         {
-            model.name = nameField.text;
-            model.comment = commentField.text;
-            model.save();
+            sampleModel.name = nameField.text;
+            sampleModel.comment = commentField.text;
+            sampleModel.save();
         }
     }
 
@@ -147,9 +146,20 @@ Rectangle
             }
         }
 
+        Rectangle
+        {
+            height: 1
+            Layout.fillWidth: true
+            color: Regovar.theme.primaryColor.back.normal
+        }
+
         GridLayout
         {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
             columns: 2
+            columnSpacing: 10
+            rowSpacing: 5
 
             Text
             {
@@ -203,21 +213,12 @@ Rectangle
                 elide: Text.ElideRight
             }
 
-            Text
+
+            Item
             {
-                text: qsTr("Default annotations DB")
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
-                verticalAlignment: Text.AlignVCenter
-                height: 35
-            }
-            Text
-            {
-                id: annotations
+                Layout.columnSpan: 2
+                Layout.fillHeight: true
                 Layout.fillWidth: true
-                color: Regovar.theme.frontColor.normal
-                elide: Text.ElideRight
             }
         }
     }

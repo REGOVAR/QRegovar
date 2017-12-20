@@ -123,7 +123,7 @@ ScrollView
                     filename: model.modelData.name
                     icon: fileInstance.extensionToIco(model.modelData.name.split(".").slice(-1).pop())
                     status: model.modelData.status
-                    onClicked: root.openFileInfoDialog(model.modelData.id)
+                    onClicked: regovar.getFileInfo(model.modelData.id)
                 }
             }
         }
@@ -198,7 +198,7 @@ ScrollView
                     width: root.viewport.width
                     date: model.modelData.update_date
                     name: model.modelData.name
-                    onClicked: root.openSampleInfoDialog(model.modelData.id)
+                    onClicked: regovar.getSampleInfo(model.modelData.id)
                 }
             }
         }
@@ -233,7 +233,7 @@ ScrollView
                     width: root.viewport.width
                     phenotypeId: model.modelData.id
                     label: model.modelData.label
-                    onClicked: root.openPhenotypeInfoDialog(phenotypeId)
+                    onClicked: regovar.getPhenotypeInfo(phenotypeId)
                 }
             }
         }
@@ -268,7 +268,7 @@ ScrollView
                     width: root.viewport.width
                     geneId: model.modelData.id
                     symbol: model.modelData.symbol
-                    onClicked: root.openGeneInfoDialog(model.modelData.symbol)
+                    onClicked: regovar.getGeneInfo(model.modelData.symbol)
                 }
             }
         }
@@ -307,7 +307,7 @@ ScrollView
                     reference: model.modelData.ref_name
                     samples_count: model.modelData.sample_list.length
                     regovar_score: model.modelData.regovar_score
-                    onClicked: root.openVariantInfoDialog(referenceId, variantId)
+                    onClicked: regovar.getVariantInfo(referenceId, variantId)
                 }
             }
         }
@@ -343,7 +343,7 @@ ScrollView
                     pipelineId: model.modelData.id
                     name: model.modelData.name
                     date: model.modelData.update_date
-                    onClicked: root.openPipelineInfoDialog(pipelineId)
+                    onClicked: regovar.getPipelineInfo(model.modelData.id)
                 }
             }
         }
@@ -380,7 +380,7 @@ ScrollView
                     name: model.modelData.name
                     owner: model.modelData.owner
                     date: model.modelData.update_date
-                    onClicked: root.openPanelInfoDialog(model.modelData.id)
+                    onClicked: regovar.getPanelInfo(model.modelData.id)
                 }
             }
         }
@@ -415,7 +415,7 @@ ScrollView
                     userId: model.modelData.id
                     fullname: model.modelData.fullname
                     date: model.modelData.update_date
-                    onClicked: root.openUserInfoDialog(model.modelData.id)
+                    onClicked: regovar.getUserInfo(model.modelData.id)
                 }
             }
         }
@@ -424,17 +424,17 @@ ScrollView
 
     function displayresults(results)
     {
-        projectsResult.visible = results["project"].length > 0;
-        analysessResult.visible = results["analysis"].length > 0;
-        filesResult.visible = results["file"].length > 0;
-        subjectsResult.visible = results["subject"].length > 0;
-        samplesResult.visible = results["sample"].length > 0;
-        phenotypesResult.visible = results["phenotype"].length > 0;
-        genesResult.visible = results["gene"].length > 0;
-        variantsResult.visible = results["variant"].length > 0;
-        pipelinesResult.visible = results["pipeline"].length > 0;
-        panelsResult.visible = results["panel"].length > 0;
-        usersResult.visible = results["user"].length > 0;
+        projectsResult.visible = "project" in result && results["project"].length > 0;
+        analysessResult.visible = "analysis" in result && results["analysis"].length > 0;
+        filesResult.visible = "file" in result && results["file"].length > 0;
+        subjectsResult.visible = "subject" in result && results["subject"].length > 0;
+        samplesResult.visible = "sample" in result && results["sample"].length > 0;
+        phenotypesResult.visible = "phenotype" in result && results["phenotype"].length > 0;
+        genesResult.visible = "gene" in result && results["gene"].length > 0;
+        variantsResult.visible = "variant" in result && results["variant"].length > 0;
+        pipelinesResult.visible = "pipeline" in result && results["pipeline"].length > 0;
+        panelsResult.visible = "panel" in result && results["panel"].length > 0;
+        usersResult.visible = "user" in result && results["user"].length > 0;
 
         if (projectsResult.visible)
         {
@@ -481,54 +481,5 @@ ScrollView
         {
             usersResult.model = results["panel"];
         }
-    }
-
-    function openFileInfoDialog(fileId)
-    {
-        fileInfoPanel.reset();
-        fileInfoDialog.open();
-        regovar.getFileInfo(fileId);
-    }
-    function openGeneInfoDialog(symbol)
-    {
-        geneInfoPanel.reset();
-        geneInfoDialog.open();
-        regovar.getGeneInfo(symbol);
-    }
-    function openPanelInfoDialog(panelId)
-    {
-        panelInfoDialog.data = null;
-        panelInfoDialog.open();
-        regovar.getPanelInfo(panelId);
-    }
-    function openPhenotypeInfoDialog(phenotypeId)
-    {
-        phenotypeInfoDialog.data = null;
-        phenotypeInfoDialog.open();
-        regovar.getPhenotypeInfo(phenotypeId);
-    }
-    function openPipelineInfoDialog(pipelineId)
-    {
-        pipelineInfoDialog.data = null;
-        pipelineInfoDialog.open();
-        regovar.getPipelineInfo(pipelineId);
-    }
-    function openSampleInfoDialog(sampleId)
-    {
-        sampleInfoDialog.data = null;
-        sampleInfoDialog.open();
-        regovar.getSampleInfo(sampleId);
-    }
-    function openUserInfoDialog(userId)
-    {
-        userInfoDialog.data = null;
-        userInfoDialog.open();
-        regovar.getUserInfo(userId);
-    }
-    function openVariantInfoDialog(refId, variantId)
-    {
-        variantInfoDialog.data = null;
-        variantInfoDialog.open();
-        regovar.getVariantInfo(refId, variantId);
     }
 }

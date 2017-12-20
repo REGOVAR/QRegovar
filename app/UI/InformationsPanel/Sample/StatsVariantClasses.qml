@@ -14,13 +14,13 @@ Item
     property var model
     onModelChanged:
     {
-        if ("samples" in model)
+        if (model && "samples" in model)
         {
-            updateViewFromAnalysisModel(model);
+            root.updateViewFromAnalysisModel(model);
         }
         else
         {
-            updateViewFromSampleModel(model);
+            root.updateViewFromSampleModel(model);
         }
     }
 
@@ -53,17 +53,20 @@ Item
         clip: true
         property double minLabelWidth: 30
 
-        RowLayout
+        // NOTICE: due to weird behavior of ChartView with Layout, we manage layout ourself
+        ScrollView
         {
-            anchors.fill: parent
+            id: variantClassesLayout
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
             anchors.margins: 5
-            spacing: 5
+            width: Math.max(0, parent.width - 10 - height)
+            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
             Column
             {
-                id: variantClassesLayout
-                Layout.alignment: Qt.AlignTop
-                Layout.fillWidth: true
 
                 RowLayout
                 {
@@ -141,26 +144,28 @@ Item
 
                 Item { width: 10; height: 10; }
             }
+        }
 
-            ChartView
+        ChartView
+        {
+            anchors.top: parent.top
+            anchors.right: parent.right
+            height: parent.height
+            width: parent.height
+            antialiasing: true
+            animationOptions: ChartView.AllAnimations
+            backgroundColor: content.color
+            legend.visible: false
+            margins.top: 0
+            margins.bottom: 0
+            margins.left: 0
+            margins.right: 0
+
+
+            PieSeries
             {
-                height: parent.height
-                width: parent.height
-                antialiasing: true
-                animationOptions: ChartView.AllAnimations
-                backgroundColor: content.color
-                legend.visible: false
-                margins.top: 0
-                margins.bottom: 0
-                margins.left: 0
-                margins.right: 0
-
-
-                PieSeries
-                {
-                    id: variantClassesPieSeries
-                    property string hoveredSerie: ""
-                }
+                id: variantClassesPieSeries
+                property string hoveredSerie: ""
             }
         }
     }

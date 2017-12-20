@@ -13,7 +13,6 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
 
-
     property var updateFromModel: function(model) {  console.log("ERROR : Please you MUST implement updateFromModel(model)"); }
     property bool loading: true
     property bool error: false
