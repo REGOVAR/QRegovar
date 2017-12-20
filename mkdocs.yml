@@ -13,8 +13,6 @@ pages:
  - 'INSTALLATION':
     - 'Client': 'installation/client.md'
     - 'Configuration': 'installation/configuration.md'
- - 'UTILISATEUR': 
-    - 'Doc officiel' : 'http://regovar.readthedocs.io/fr/latest/'
  - 'DÉVELOPPEUR':
     - 'Communauté': 'developper/community.md'
     - 'Bonnes pratiques': 'developper/good_practices.md'
