@@ -180,7 +180,7 @@ Item
             var count = stats["variants_classes"][vclass];
             variantClassesChartModel.push({
                 "label": vclassesNames[vclass],
-                "percent": (count / variantTotal * 100.0).toFixed(1) + " %",
+                "percent": (count / variantTotal * 100.0).toFixed(1) + "%",
                 "count": Regovar.formatBigNumber(count),
                 "value": count / variantTotal * 100.0 });
         });
@@ -188,7 +188,7 @@ Item
         totalVariant.text = Regovar.formatBigNumber(variantTotal);
         variantClassesRepeater.model = variantClassesChartModel;
         // Populate Pie slices
-        variantClassesPieSeries.clear()
+        variantClassesPieSeries.clear();
         for (var idx=0; idx<variantClassesChartModel.length; idx++)
         {
             variantClassesPieSeries.append(variantClassesChartModel[idx]["percent"], variantClassesChartModel[idx]["value"]);
@@ -213,7 +213,7 @@ Item
                 var count = stats["variants_classes"][vclass];
                 variantClassesChartModel.push({
                     "label": vclassesNames[vclass],
-                    "percent": (count / variantTotal * 100.0).toFixed(1) + " %",
+                    "percent": (count / variantTotal * 100.0).toFixed(1) + "%",
                     "count": Regovar.formatBigNumber(count),
                     "value": count / variantTotal * 100.0 });
             });
@@ -221,7 +221,7 @@ Item
             totalVariant.text = Regovar.formatBigNumber(variantTotal);
             variantClassesRepeater.model = variantClassesChartModel;
             // Populate Pie slices
-            variantClassesPieSeries.clear()
+            variantClassesPieSeries.clear();
             for (var idx=0; idx<variantClassesChartModel.length; idx++)
             {
                 variantClassesPieSeries.append(variantClassesChartModel[idx]["percent"], variantClassesChartModel[idx]["value"]);
