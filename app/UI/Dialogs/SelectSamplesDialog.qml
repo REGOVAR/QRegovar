@@ -46,16 +46,17 @@ Dialog
 
         Rectangle
         {
-            id: rootRemoteView
+            id: rootSampleView
             anchors.fill: root
+            color: "transparent"
 
 
             DialogHeader
             {
-                id: remoteHeader
-                anchors.top : rootRemoteView.top
-                anchors.left: rootRemoteView.left
-                anchors.right: rootRemoteView.right
+                id: sampleViewHeader
+                anchors.top : rootSampleView.top
+                anchors.left: rootSampleView.left
+                anchors.right: rootSampleView.right
 
                 iconText: "4"
                 title: qsTr("Regovar samples")
@@ -64,10 +65,10 @@ Dialog
 
             RowLayout
             {
-                id: remoteFilterField
-                anchors.top : remoteHeader.bottom
-                anchors.left: rootRemoteView.left
-                anchors.right: rootRemoteView.right
+                id: sampleViewFiltersRow
+                anchors.top : sampleViewHeader.bottom
+                anchors.left: rootSampleView.left
+                anchors.right: rootSampleView.right
                 anchors.margins: 10
                 spacing: 10
 
@@ -112,21 +113,40 @@ Dialog
                     Layout.fillWidth: true
                     anchors.leftMargin: 10 + (referencialSelectorEnabled ? refCombo.width + 10 : 0)
                     placeholder: qsTr("Search sample by identifiant or vcf filename, subject's name, date of birth, sex, comment, ...")
+                    enabled: false
                 }
             }
 
 
 
+            Button
+            {
+                id: importSampleButton
+                anchors.top : sampleViewFiltersRow.bottom
+                anchors.right: rootSampleView.right
+                anchors.margins: 10
+
+                text: qsTr("Import sample\nfrom file")
+                onClicked:
+                {
+                    rootSampleView.enabled = false;
+                    okButton.enabled = false;
+                    cancelButton.enabled = false;
+                    rootImportView.visible = true;
+                    localFilesDialog.open();
+                }
+            }
 
 
             TableView
             {
-                id: remoteSamples
-                anchors.top : remoteFilterField.bottom
-                anchors.left: rootRemoteView.left
-                anchors.right: rootRemoteView.right
-                anchors.bottom: remoteSwitchButton.top
+                id: selectedSamplesTable
+                anchors.top : sampleViewFiltersRow.bottom
+                anchors.left: rootSampleView.left
+                anchors.right: importSampleButton.left
+                anchors.bottom: rootSampleView.bottom
                 anchors.margins: 10
+                anchors.bottomMargin: okButton.height + 20
 
                 model: regovar.samplesManager.samplesList
                 selectionMode: SelectionMode.ExtendedSelection
@@ -150,7 +170,7 @@ Dialog
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
                             font.family: Regovar.theme.icons.name
-                            text: remoteSamples.statusIcons[styleData.value.status]
+                            text: selectedSamplesTable.statusIcons[styleData.value.status]
                             onTextChanged:
                             {
                                 if (styleData.value.status == 1) // 1 = Loading
@@ -272,52 +292,38 @@ Dialog
                     }
                 }
             }
-
-            ButtonIcon
-            {
-                id: remoteSwitchButton
-                anchors.bottom : rootRemoteView.bottom
-                anchors.left: rootRemoteView.left
-                anchors.margins: 10
-
-                icon: "à"
-                text: qsTr("Import sample from file")
-                onClicked:
-                {
-                    rootRemoteView.visible = false;
-                    rootFileView.visible = true;
-                }
-            }
         }
 
 
         Rectangle
         {
-            id: rootFileView
-            color: Regovar.theme.backgroundColor.main
-
+            id: rootImportView
+            color: "#aa000000"
             anchors.fill: root
+            anchors.topMargin: sampleViewHeader.height
             visible: false
 
 
-            DialogHeader
-            {
-                id: localHeader
-                anchors.top : rootFileView.top
-                anchors.left: rootFileView.left
-                anchors.right: rootFileView.right
-                iconText: "1"
-                title: qsTr("Import samples from file")
-                text: qsTr("Select the vcf file(s) from which you want to import samples.\nYou can select file that are already on the regovar server or upload news ones.")
-            }
+
+//            DialogHeader
+//            {
+//                id: importViewHeader
+//                anchors.top : rootImportView.top
+//                anchors.left: rootImportView.left
+//                anchors.right: rootImportView.right
+//                iconText: "1"
+//                title: qsTr("Import samples from file")
+//                text: qsTr("Select the vcf file(s) from which you want to import samples.\nYou can select file that are already on the regovar server or upload news ones.")
+//            }
 
             RowLayout
             {
                 spacing: 10
-                anchors.top : localHeader.bottom
-                anchors.left: rootFileView.left
-                anchors.right: rootFileView.right
-                anchors.bottom: localSwitchButton.top
+                anchors.fill: parent
+//                anchors.top : importViewHeader.bottom
+//                anchors.left: rootImportView.left
+//                anchors.right: rootImportView.right
+//                anchors.bottom: localSwitchButton.top
                 anchors.margins: 10
 
 
@@ -473,7 +479,7 @@ Dialog
                     {
                         id: addButton
                         text: qsTr("Add file")
-                        onClicked: { fileSelector.reset(); fileSelector.open(); }
+                        onClicked: { localFilesDialog.open(); }
                     }
                     Button
                     {
@@ -492,25 +498,6 @@ Dialog
                     }
                 }
             }
-
-
-
-
-            ButtonIcon
-            {
-                id: localSwitchButton
-                anchors.bottom : rootFileView.bottom
-                anchors.left: rootFileView.left
-                anchors.margins: 10
-
-                icon: "]"
-                text: qsTr("Back to remote samples")
-                onClicked:
-                {
-                    rootFileView.visible = false;
-                    rootRemoteView.visible = true;
-                }
-            }
         }
 
 
@@ -527,16 +514,16 @@ Dialog
             {
                 var samples=[];
                 // OK Clicked from "Remote sample" view
-                if (rootRemoteView.visible)
+                if (rootSampleView.visible)
                 {
-                    remoteSamples.selection.forEach( function(rowIndex)
+                    selectedSamplesTable.selection.forEach( function(rowIndex)
                     {
                         samples = samples.concat(regovar.samplesManager.samplesList[rowIndex]);
                     });
                     samplesSelected(samples);
                 }
                 // OK Clicked from "Remote files" view
-                else if (rootFileView.visible)
+                else if (rootImportView.visible)
                 {
                     // import all file
                     for(var idx=0; idx<regovar.analysesManager.newFiltering.samplesInputsFilesList.length; idx++)
@@ -565,13 +552,39 @@ Dialog
 
 
 
-
-    SelectFilesDialog
+    FileDialog
     {
-        id: fileSelector
-        uploadBlocking: true
-        onFileSelected: regovar.analysesManager.newFiltering.addSampleInputs(files);
+        id: localFilesDialog
+        nameFilters: [ "VCF files (*.vcf *.vcf.gz)", "GVCF (*.gvcf *.gvcf.gz)", "All files (*)" ]
+        selectedNameFilter: "VCF files (*.vcf *.vcf.gz)"
+        title: "Select file(s) to upload on the server"
+        //folder: shortcuts.home
+        selectMultiple: true
 
+        onAccepted:
+        {
+            // Start tus upload for
+            console.log("Start upload of files : " + localFilesDialog.fileUrls);
+            var files = []
+            for (var idx=0; idx<localFilesDialog.fileUrls.length; idx++)
+            {
+                files = files.concat(localFilesDialog.fileUrls[idx]);
+            }
+
+            regovar.filesManager.enqueueUploadFile(files);
+
+            if (fileDialog.uploadBlocking)
+            {
+                uploadBlockingProgress.visible = true;
+
+                // Retrieve
+                // No need to send "fileSelected(files)" signal as the tus upload will auto add it to the inputsList
+                // TODO : find a better way to manage it to avoid multiuser problem and so on...
+            }
+
+            // TODO: when import done :
+            // regovar.analysesManager.newFiltering.addSampleInputs(files);
+        }
     }
 
 
@@ -588,8 +601,8 @@ Dialog
             refCombo.currentIndex = idx;
         }
 
-        rootRemoteView.visible = true;
-        rootFileView.visible = false;
+        rootSampleView.visible = true;
+        rootImportView.visible = false;
 
     }
 }
