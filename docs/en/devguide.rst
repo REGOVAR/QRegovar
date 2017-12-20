@@ -1,9 +1,0 @@
-Developer Guide
-###############
-
-
-
-
-TODO
-
-

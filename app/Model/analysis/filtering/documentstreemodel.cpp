@@ -59,7 +59,7 @@ DocumentsTreeItem* DocumentsTreeModel::newFileTreeViewItem(QJsonObject data, Tre
     columnData.insert(Info, data);
     columnData.insert(Name, file->filenameUI());
     columnData.insert(Size, file->sizeUI());
-    columnData.insert(Date, file->updateDate());
+    columnData.insert(Date, file->updated());
     columnData.insert(Comment, file->comment());
 
     // Create item

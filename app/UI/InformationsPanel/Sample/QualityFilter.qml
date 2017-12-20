@@ -195,7 +195,7 @@ Item
     }
 
 
-    function updateStatistics(sample)
+    function updateViewFromSampleModel(sample)
     {
         if (sample)
         {

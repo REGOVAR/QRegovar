@@ -10,32 +10,33 @@ class File : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool loaded READ loaded NOTIFY dataRefreshed)
+    // Regovar resource attribute
+    Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime updated READ updated NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime created READ created NOTIFY dataChanged)
     // File attributes
     Q_PROPERTY(int id READ id)
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentChanged)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
+    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
     Q_PROPERTY(QUrl url READ url)
-    Q_PROPERTY(QString md5Sum READ md5Sum WRITE setMd5Sum NOTIFY md5SumChanged)
-    Q_PROPERTY(QString type READ type WRITE setType NOTIFY typeChanged)
-    Q_PROPERTY(QString tags READ tags WRITE setTags NOTIFY tagsChanged)
+    Q_PROPERTY(QString md5Sum READ md5Sum WRITE setMd5Sum NOTIFY dataChanged)
+    Q_PROPERTY(QString type READ type WRITE setType NOTIFY dataChanged)
+    Q_PROPERTY(QString tags READ tags WRITE setTags NOTIFY dataChanged)
     // Remote file attributes
-    Q_PROPERTY(QDateTime creationDate READ creationDate)
-    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY updateDateChanged)
-    Q_PROPERTY(qint64 size READ size WRITE setSize NOTIFY sizeChanged)
-    Q_PROPERTY(qint64 uploadOffset READ uploadOffset WRITE setUploadOffset NOTIFY uploadOffsetChanged)
-    Q_PROPERTY(FileStatus status READ status WRITE setStatus NOTIFY statusChanged)
+    Q_PROPERTY(qint64 size READ size WRITE setSize NOTIFY dataChanged)
+    Q_PROPERTY(qint64 uploadOffset READ uploadOffset WRITE setUploadOffset NOTIFY dataChanged)
+    Q_PROPERTY(FileStatus status READ status WRITE setStatus NOTIFY dataChanged)
     // Local file attributes
-    Q_PROPERTY(QString localFilePath READ localFilePath NOTIFY localFilePathChanged)
-    Q_PROPERTY(bool localFileReady READ localFileReady NOTIFY localFileReadyChanged)
-    Q_PROPERTY(qint64 downloadOffset READ downloadOffset WRITE setDownloadOffset NOTIFY downloadOffsetChanged)
-    Q_PROPERTY(FileStatus localStatus READ localStatus WRITE setLocalStatus NOTIFY localStatusChanged)
+    Q_PROPERTY(QString localFilePath READ localFilePath NOTIFY dataChanged)
+    Q_PROPERTY(bool localFileReady READ localFileReady NOTIFY dataChanged)
+    Q_PROPERTY(qint64 downloadOffset READ downloadOffset WRITE setDownloadOffset NOTIFY dataChanged)
+    Q_PROPERTY(FileStatus localStatus READ localStatus WRITE setLocalStatus NOTIFY dataChanged)
 
     // Property for QML quick display in tableView
-    Q_PROPERTY(QVariant filenameUI READ filenameUI NOTIFY filenameUIChanged)
-    Q_PROPERTY(QVariant statusUI READ statusUI NOTIFY statusUIChanged)
-    Q_PROPERTY(QString sizeUI READ sizeUI NOTIFY sizeUIChanged)
-    Q_PROPERTY(QString sourceUI READ sourceUI NOTIFY sourceUIChanged)
+    Q_PROPERTY(QVariant filenameUI READ filenameUI NOTIFY dataChanged)
+    Q_PROPERTY(QVariant statusUI READ statusUI NOTIFY dataChanged)
+    Q_PROPERTY(QString sizeUI READ sizeUI NOTIFY dataChanged)
+    Q_PROPERTY(QString sourceUI READ sourceUI NOTIFY dataChanged)
 
 public:
     enum FileStatus
@@ -57,12 +58,12 @@ public:
 
     // Accessors
     inline bool loaded() const { return mLoaded; }
+    inline QDateTime updated() const { return mUpdated; }
+    inline QDateTime created() const { return mCreated; }
     inline int id() const { return mId; }
     inline QString name() const { return mName; }
     inline QString comment() const { return mComment; }
     inline QUrl url() const { return mUrl; }
-    inline QDateTime creationDate() const { return mCreationDate; }
-    inline QDateTime updateDate() const { return mUpdateDate; }
     inline qint64 size() const { return mSize; }
     inline qint64 uploadOffset() const { return mUploadOffset; }
     inline QString md5Sum() const { return mMd5Sum; }
@@ -82,18 +83,17 @@ public:
 
 
     // Setters
-    inline void setComment(QString comment) { mComment = comment; emit commentChanged(); }
-    inline void setTags(QString tags) { mTags = tags; emit tagsChanged(); }
-    inline void setName(QString name) { mName = name; emit nameChanged(); }
-    inline void setSize(qint64 size) { mSize = size; emit sizeChanged(); }
-    inline void setUploadOffset(qint64 uploadOffset) { mUploadOffset = uploadOffset; emit uploadOffsetChanged(); }
-    inline void setMd5Sum(QString md5Sum) { mMd5Sum = md5Sum; emit md5SumChanged(); }
-    inline void setType(QString type) { mType = type; emit typeChanged(); }
-    inline void setStatus(FileStatus status) { mStatus = status; emit statusChanged(); }
-    inline void setUpdateDate(QDateTime date) { mUpdateDate = date; emit updateDateChanged(); }
+    inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
+    inline void setTags(QString tags) { mTags = tags; emit dataChanged(); }
+    inline void setName(QString name) { mName = name; emit dataChanged(); }
+    inline void setSize(qint64 size) { mSize = size; emit dataChanged(); }
+    inline void setUploadOffset(qint64 uploadOffset) { mUploadOffset = uploadOffset; emit dataChanged(); }
+    inline void setMd5Sum(QString md5Sum) { mMd5Sum = md5Sum; emit dataChanged(); }
+    inline void setType(QString type) { mType = type; emit dataChanged(); }
+    inline void setStatus(FileStatus status) { mStatus = status; emit dataChanged(); }
 
     inline void setDownloadOffset(qint64 offset) { mDownloadOffset = offset; emit downloadOffset(); }
-    inline void setLocalStatus(FileStatus status) { mLocalStatus = status; emit localStatusChanged(); }
+    inline void setLocalStatus(FileStatus status) { mLocalStatus = status; emit dataChanged(); }
 
     // Methods
     //! Set model with provided json data
@@ -118,39 +118,18 @@ public:
 
 
 Q_SIGNALS:
-    void dataRefreshed();
-    void nameChanged();
-    void commentChanged();
-    void updateDateChanged();
-    void sizeChanged();
-    void uploadOffsetChanged();
-    void md5SumChanged();
-    void typeChanged();
-    void statusChanged();
-    void tagsChanged();
-
-    void localFilePathChanged();
-    void localFileReadyChanged();
-    void downloadOffsetChanged();
-    void localStatusChanged();
-
-    void filenameUIChanged();
-    void sizeUIChanged();
-    void sourceUIChanged();
-    void statusUIChanged();
-
-
+    void dataChanged();
 
 
 private:
 
     bool mLoaded = false;
+    QDateTime mUpdated;
+    QDateTime mCreated;
 
     // Attributes
     int mId = -1;
     QUrl mUrl;
-    QDateTime mCreationDate;
-    QDateTime mUpdateDate;
     QString mComment;
     QString mName;
     QString mMd5Sum;

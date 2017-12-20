@@ -39,7 +39,7 @@ InfoPanel
             });
         ttt.append({
                 "title": qsTr("Regovar statistics"),
-                "icon": "^",
+                "icon": "í",
                 "source": "../InformationsPanel/Variant/StatsPanel.qml"
             });
         root.tabsModel = ttt;

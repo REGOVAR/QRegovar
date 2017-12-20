@@ -12,129 +12,206 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property var model
-    onModelChanged: updateFromModel(model)
-    Component.onCompleted: updateFromModel(model)
+    property Sample model
+    onModelChanged: setSampleModel(model)
 
-    function updateFromModel(data)
+    function setSampleModel(sample)
     {
-        if (data)
+        if (sample)
         {
-            if ("gene" in data)
-                geneData = data["gene"];
-            else
-                geneData = data;
+            sample.dataRefreshed.connect(updateViewFromModel);
+            updateViewFromModel();
         }
     }
 
-    Column
+    function updateViewFromModel()
     {
-        x: 10
-        y: 10
-
-        TextEdit
+        if (model && model.loaded)
         {
-            width: root.width - 30
-            text: formatInfo(geneData)
-            textFormat: TextEdit.RichText
-            font.pixelSize: Regovar.theme.font.size.normal + 2
-            color: Regovar.theme.frontColor.normal
-            readOnly: true
-            selectByMouse: true
-            selectByKeyboard: true
-            wrapMode: TextEdit.Wrap
-            onLinkActivated: Qt.openUrlExternally(link)
+            nameField.text = model.name;
+            commentField.text = model.comment;
+            creation.text = Regovar.formatDate(model.created);
+            vcfFile.text = data.file;
+            reference.text = data.reference.name;
+            annotations.text = data.defaultAnnotationsDbUid;
         }
-        Item
+        else
         {
-            width: 1
-            height: 10
+            nameField.text = "";
+            commentField.text = "";
+            creation.text = "";
+            vcfFile.text = "";
+            reference.text = "";
+            annotations.text = "";
         }
     }
 
-    function formatInfo(data)
+
+    function updateModelFromView()
     {
-        if (!data) return "";
-
-        var text = "<table>";
-        // Subject info
-        text += "<tr><td><b>Subject:</b></td><td>";
-        if ("subject" in data)
+        if (model)
         {
-            text += data["subject"]["identifier"] + ": " + data["subject"]["lastname"] + " " + data["subject"]["firstname"];
+            model.name = nameField.text;
+            model.comment = commentField.text;
+            model.save();
         }
-        text += "</td></tr>";
+    }
 
-        // VCF import info
-        text += "<tr><td><b>Import file:</b></td><td>";
-        if ("file" in data)
-        {
-            text += data["file"]["name"] + "</td></tr>";
-            text += "<tr><td><b>Import date:</b></td><td>" + Regovar.formatDate(data["create_date"]);
-        }
-        text += "</td></tr>";
 
-        // Filter quality
-        text += "<tr><td><b>Synonyms:</b></td><td>";
-        if ("alias_symbol" in data)
+    ColumnLayout
+    {
+        anchors.fill: parent
+        anchors.margins: 10
+        spacing: 10
+
+
+        // Editable informations
+        GridLayout
         {
-            for (var idx=0; idx<data["alias_symbol"].length; idx++)
+            Layout.fillWidth: true
+            rows: 2
+            columns: 3
+            columnSpacing: 10
+            rowSpacing: 10
+
+            Text
             {
-                text += "<i>" + data["alias_symbol"][idx] + "</i>, ";
+                text: qsTr("Name*")
+                font.bold: true
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height: 35
             }
-        }
-        text += "</td></tr>";
-        // text += "<tr><td><b>:</b></td><td>" + data[""] + "</td></tr>";
-        text += "</table><br/><br/>";
-
-        // Genomes references
-        if ("refgene" in data && data["refgene"].length>0)
-        {
-            text += "<b>Genome reference:</b><ul>";
-            for (var idx=0; idx<data["refgene"].length; idx++)
+            TextField
             {
-                text += "<li>" + data["refgene"][idx]["name"] + ": " + formatSize(data["refgene"][idx]) + "</li>";
+                id: nameField
+                Layout.fillWidth: true
+                enabled: editionMode
+                placeholder: qsTr("Name of the sample")
             }
-            text += "</ul>";
-        }
 
-        // OMIM Allelic variants references
-        if ("omim_variants" in data && data["omim_variants"].length>0)
-        {
-            text += "<b>OMIM allelic variants:</b>";
-            if (data["refgene"].length > 0)
+            Column
             {
-                text += "<ol>";
-                for (var idx=0; idx<data["omim_variants"].length; idx++)
+                Layout.rowSpan: 3
+                Layout.alignment: Qt.AlignTop
+                spacing: 10
+
+
+                Button
                 {
-                    var d = data["omim_variants"][idx];
-                    text += "<li><b>" + d["name"] + "</b><br/>";
-                    text += d["mutations"] + " (";
-                    if ("dbSnps" in d)
-                        text += "<a href=\"http://www.ensembl.org/Homo_sapiens/Variation/Summary?v=" + d["dbSnps"] + ";toggle_HGVS_names=open\">dbSNP:" + d["dbSnps"] + "</a>, ";
-                    if ("exacDbSnps" in d)
-                        text += "<a href=\"http://exac.broadinstitute.org/awesome?query=" + d["exacDbSnps"] + "\">Exac:" + d["exacDbSnps"] + "</a>, ";
-                    if ("clinvarAccessions" in d)
-                        text += "<a href=\"https://www.ncbi.nlm.nih.gov/clinvar?term=" + d["clinvarAccessions"] + "\">" + d["clinvarAccessions"] + "</a>, ";
-                    text +=")<br/>";
-                    text += d["text"] + "<br/></li>";
+                    text: editionMode ? qsTr("Save") : qsTr("Edit")
+                    onClicked:
+                    {
+                        editionMode = !editionMode;
+                        if (!editionMode)
+                        {
+                            // when click on save : update model
+                            updateModelFromView();
+                        }
+                    }
                 }
-                text += "</ol>";
+
+                Button
+                {
+                    visible: editionMode
+                    text: qsTr("Cancel")
+                    onClicked: { updateViewFromModel(model); editionMode = false; }
+                }
             }
-            text += "</td></tr>";
+
+            Text
+            {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Comment")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height: 35
+            }
+            TextArea
+            {
+                id: commentField
+                Layout.fillWidth: true
+                enabled: editionMode
+            }
         }
 
-        return text;
+        GridLayout
+        {
+            columns: 2
+
+            Text
+            {
+                text: qsTr("Creation")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height: 35
+            }
+            Text
+            {
+                id: creation
+                Layout.fillWidth: true
+                color: Regovar.theme.frontColor.normal
+                elide: Text.ElideRight
+            }
+
+
+            Text
+            {
+                text: qsTr("VCF File")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height: 35
+            }
+            Text
+            {
+                id: vcfFile
+                Layout.fillWidth: true
+                color: Regovar.theme.frontColor.normal
+                elide: Text.ElideRight
+            }
+
+            Text
+            {
+                text: qsTr("Reference")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height: 35
+            }
+            Text
+            {
+                id: reference
+                Layout.fillWidth: true
+                color: Regovar.theme.frontColor.normal
+                elide: Text.ElideRight
+            }
+
+            Text
+            {
+                text: qsTr("Default annotations DB")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height: 35
+            }
+            Text
+            {
+                id: annotations
+                Layout.fillWidth: true
+                color: Regovar.theme.frontColor.normal
+                elide: Text.ElideRight
+            }
+        }
     }
 
-    function formatSize(data)
-    {
-        var size = Math.round(data["size"]/1000, 0);
-        size = (size > 0) ? size + " Kb" : data["size"] + " b";
-        var exons = data["exon"];
-        exons += " " + ((exons > 1) ? qsTr("exons") : qsTr("exon"));
-        var trx = data["trx"];
-        trx += " " + ((trx > 1) ? qsTr("transcripts") : qsTr("transcript"));
-        return size + ", " + exons + ", " + trx;
-    }
 }

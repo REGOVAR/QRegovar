@@ -14,7 +14,13 @@ InfoPanel
     updateFromModel: function updateFromModel(data)
     {
         // Update title
-        root.title = "<h1 style=\"font-family: monospace;\">" + data.name + "</h1><br/><br/>Status: " + data.statusUI["label"];
+        root.title  = "<h1 style=\"font-family: monospace;\">" + data.name + "</h1>";
+        var subject = "-";
+        if ("subject" in data)
+        {
+            subject = data.subject.identifier + " - " + data.subject.lastname + " " + data.subject.firstname;
+        }
+        root.title += "<br/>Subject: " + subject + "<br/>Status: " + data.status;
 
         // Update tabs
         root.tabSharedModel = data;
@@ -22,17 +28,17 @@ InfoPanel
         ttt.append(
             {   "title": qsTr("Informations"),
                 "icon": "j",
-                "source": "../InformationsPanel/Sample/InfoPanel.qmll"
+                "source": "../InformationsPanel/Sample/InfoPanel.qml"
+            });
+        ttt.append(
+            {   "title": qsTr("Stats & Quality"),
+                "icon": "^",
+                "source": "../InformationsPanel/Sample/StatsQualPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Usage"),
                 "icon": "ê",
                 "source": "../InformationsPanel/Common/RelationsPanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Regovar statistics"),
-                "icon": "^",
-                "source": "../InformationsPanel/Sample/StatsPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Events"),

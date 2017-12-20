@@ -41,6 +41,8 @@ bool Sample::fromJson(QJsonObject json)
     setIsMosaic(json["is_mosaic"].toBool());
     setComment(json["comment"].toString());
     mStats = json["stats"].toObject();
+    mUpdated = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
+    mCreated = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
 
     mReference = regovar->referenceFromId(json["reference_id"].toInt());
 

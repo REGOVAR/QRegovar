@@ -10,6 +10,11 @@
 class Sample : public QObject
 {
     Q_OBJECT
+    // Regovar resource attribute
+    Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime updated READ updated NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime created READ created NOTIFY dataChanged)
+    // Sample attribute
     Q_PROPERTY(int id READ id NOTIFY dataChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
     Q_PROPERTY(QString nickname READ nickname WRITE setNickname NOTIFY dataChanged)
@@ -20,6 +25,8 @@ class Sample : public QObject
     Q_PROPERTY(File* source READ source WRITE setSource NOTIFY dataChanged)
     Q_PROPERTY(Subject* subject READ subject WRITE setSubject NOTIFY dataChanged)
     Q_PROPERTY(Reference* reference READ reference WRITE setReference NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime updated READ updated NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime created READ created NOTIFY dataChanged)
     // special "shortcut" property for qml tableView
     Q_PROPERTY(QVariant nameUI READ nameUI WRITE setNameUI NOTIFY dataChanged)
     Q_PROPERTY(QVariant statusUI READ statusUI WRITE setStatusUI NOTIFY dataChanged)
@@ -46,6 +53,9 @@ public:
     explicit Sample(QJsonObject json, QObject* parent = nullptr);
 
     // Getters
+    inline bool loaded() const { return mLoaded; }
+    inline QDateTime updated() const { return mUpdated; }
+    inline QDateTime created() const { return mCreated; }
     inline int id() const { return mId; }
     inline QString name() const { return mName; }
     inline QString nickname() const { return mNickname.isEmpty() ? mName : mNickname; }
@@ -97,6 +107,11 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private:
+
+    bool mLoaded = false;
+    QDateTime mUpdated;
+    QDateTime mCreated;
+
     int mId = -1;
     QString mName;
     QString mNickname;

@@ -184,7 +184,7 @@ Rectangle
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.margins: 10
-        height: 250
+        height: 290
         color: "transparent"
         clip: true
 
@@ -262,7 +262,7 @@ Rectangle
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.margins: 10
-        height: 250
+        height: 290
         color: "transparent"
         clip: true
 
