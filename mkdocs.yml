@@ -1,0 +1,33 @@
+site_name: QRegovar
+theme: readthedocs
+markdown_extensions:
+ - extra
+ - nl2br
+ - sane_lists
+ - abbr
+ - attr_list
+ - def_list
+ - tables 
+pages:
+ - 'ACCUEIL': 'index.md'
+ - 'INSTALLATION':
+    - 'Client': 'installation/client.md'
+    - 'Configuration': 'installation/configuration.md'
+ - 'UTILISATEUR': 
+    - 'Doc officiel' : 'http://regovar.readthedocs.io/fr/latest/'
+ - 'DÉVELOPPEUR':
+    - 'Communauté': 'developper/community.md'
+    - 'Bonnes pratiques': 'developper/good_practices.md'
+    - 'Environnement & Prérequis': 'developper/prerequisites.md'
+    - 'Architecture': 'developper/architecture.md'
+    - 'Model': 'developper/model.md'
+    - 'UI': 'developper/ui.md'
+    - 'Authentification': 'developper/authentication.md'
+    - 'Paramètres utilisateur': 'tech/usersettings.md'
+    - 'Gestion des erreurs': 'developper/errors.md'
+ - 'FICHES TECHNIQUES':
+    - 'Request': 'tech/request.md'
+    - 'File management': 'tech/file.md'
+    
+    
+ 

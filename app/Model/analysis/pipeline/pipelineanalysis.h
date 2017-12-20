@@ -26,7 +26,7 @@ public:
     Q_INVOKABLE inline bool fromJson(QJsonObject, bool) { return true; }
     Q_INVOKABLE inline QJsonObject toJson() { return QJsonObject(); }
     Q_INVOKABLE inline void save() { return; }
-    Q_INVOKABLE inline void load() { return; }
+    Q_INVOKABLE inline void load(bool) { return; }
 
     // Methods
     Q_INVOKABLE void addInputs(QList<QObject*> inputs);

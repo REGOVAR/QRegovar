@@ -12,8 +12,8 @@ class File : public QObject
 
     // Regovar resource attribute
     Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime updated READ updated NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime created READ created NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
     // File attributes
     Q_PROPERTY(int id READ id)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
@@ -58,8 +58,8 @@ public:
 
     // Accessors
     inline bool loaded() const { return mLoaded; }
-    inline QDateTime updated() const { return mUpdated; }
-    inline QDateTime created() const { return mCreated; }
+    inline QDateTime updateDate() const { return mUpdateDate; }
+    inline QDateTime createDate() const { return mCreateDate; }
     inline int id() const { return mId; }
     inline QString name() const { return mName; }
     inline QString comment() const { return mComment; }
@@ -124,8 +124,9 @@ Q_SIGNALS:
 private:
 
     bool mLoaded = false;
-    QDateTime mUpdated;
-    QDateTime mCreated;
+    QDateTime mUpdateDate;
+    QDateTime mCreateDate;
+    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
 
     // Attributes
     int mId = -1;
@@ -151,8 +152,6 @@ private:
     QVariant mStatusUI;
     QString mSourceUI;
 
-    // Internal
-    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
 
     // TODO: static collection
     static QStringList zip;

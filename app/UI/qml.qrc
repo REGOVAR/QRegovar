@@ -69,7 +69,7 @@
         <file>Framework/TreeView.qml</file>
         <file>Framework/Text.qml</file>
         <file>InformationsPanel/Common/RelationsPanel.qml</file>
-        <file>InformationsPanel/Common/InfoPanel.qml</file>
+        <file>InformationsPanel/Common/InformationsPanel.qml</file>
         <file>InformationsPanel/Common/EventsPanel.qml</file>
         <file>InformationsPanel/Common/Section.qml</file>
         <file>InformationsPanel/Common/OnlineToolAction.qml</file>

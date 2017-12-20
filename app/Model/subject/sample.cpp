@@ -41,8 +41,8 @@ bool Sample::fromJson(QJsonObject json)
     setIsMosaic(json["is_mosaic"].toBool());
     setComment(json["comment"].toString());
     mStats = json["stats"].toObject();
-    mUpdated = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
-    mCreated = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
+    mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
+    mCreateDate = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
 
     mReference = regovar->referenceFromId(json["reference_id"].toInt());
 
@@ -76,7 +76,9 @@ bool Sample::fromJson(QJsonObject json)
     statusInfo.insert("label", statusToLabel(mStatus, json["loading_progress"].toDouble()));
     setStatusUI(QVariant::fromValue(statusInfo));
 
-	return true;
+    mLoaded = true;
+    emit dataChanged();
+    return true;
 }
 
 
@@ -125,23 +127,29 @@ void Sample::save()
 
 
 
-void Sample::load()
+void Sample::load(bool forceRefresh)
 {
-    Request* req = Request::get(QString("/sample/%1").arg(mId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    // Check if need refresh
+    qint64 diff = mLastInternalLoad.secsTo(QDateTime::currentDateTime());
+    if (!mLoaded || forceRefresh || diff > MIN_SYNC_DELAY)
     {
-        if (success)
+        mLastInternalLoad = QDateTime::currentDateTime();
+        Request* req = Request::get(QString("/sample/%1").arg(mId));
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
-            fromJson(json["data"].toObject());
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
+            if (success)
+            {
+                fromJson(json["data"].toObject());
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            req->deleteLater();
+        });
+    }
 }
 
 

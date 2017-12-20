@@ -30,7 +30,7 @@ bool Project::fromJson(QJsonObject json)
     {
         mFullPath = json["fullpath"].toString();
     }
-    mCreationDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
+    mCreateDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
     mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     mIsSandbox = json["is_sandbox"].toBool();
     mIsFolder = json["is_folder"].toBool();
@@ -46,8 +46,8 @@ bool Project::fromJson(QJsonObject json)
         mAnalyses.append(analysis);
     }
 
+    mLoaded = true;
     emit dataChanged();
-
     return true;
 }
 
@@ -87,6 +87,7 @@ QJsonObject Project::toJson()
 void Project::save()
 {
     if (mId == -1) return;
+
     Request* request = Request::put(QString("/project/%1").arg(mId), QJsonDocument(toJson()).toJson());
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
@@ -105,22 +106,27 @@ void Project::save()
 }
 
 
-
-void Project::load()
+void Project::load(bool forceRefresh)
 {
-    Request* req = Request::get(QString("/project/%1").arg(mId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    // Check if need refresh
+    qint64 diff = mLastInternalLoad.secsTo(QDateTime::currentDateTime());
+    if (!mLoaded || forceRefresh || diff > MIN_SYNC_DELAY)
     {
-        if (success)
+        mLastInternalLoad = QDateTime::currentDateTime();
+        Request* req = Request::get(QString("/project/%1").arg(mId));
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
-            fromJson(json["data"].toObject());
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
+            if (success)
+            {
+                fromJson(json["data"].toObject());
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            req->deleteLater();
+        });
+    }
 }

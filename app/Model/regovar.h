@@ -154,7 +154,7 @@ public:
     Q_INVOKABLE inline void openNewSubjectWizard() { emit newSubjectWizardOpen(); }
     Q_INVOKABLE void getFileInfo(int fileId, int analysisId=-1);
     Q_INVOKABLE void getGeneInfo(QString geneName, int analysisId=-1);
-    Q_INVOKABLE void getPanelInfo(int panelId, int analysisId=-1);
+    Q_INVOKABLE void getPanelInfo(QString panelId, int analysisId=-1);
     Q_INVOKABLE void getPhenotypeInfo(QString phenotypeId, int analysisId=-1);
     Q_INVOKABLE void getPipelineInfo(int pipelineId, int analysisId=-1);
     Q_INVOKABLE void getSampleInfo(int sampleId, int analysisId=-1);
@@ -210,13 +210,14 @@ Q_SIGNALS:
     void sampleInformationSearching(int analysisId=-1);
     void userInformationSearching(int analysisId=-1);
     void variantInformationSearching(int analysisId=-1);
+
     void fileInformationReady(File* file, int analysisId=-1);
-    void geneInformationReady(QJsonValue json, int analysisId=-1);
-    void panelInformationReady(QJsonValue json, int analysisId=-1);
-    void phenotypeInformationReady(QJsonValue json, int analysisId=-1);
+    void panelInformationReady(Panel* panel, int analysisId=-1);
+    void sampleInformationReady(Sample* sample, int analysisId=-1);
+    void userInformationReady(User* user, int analysisId=-1);
     void pipelineInformationReady(QJsonValue json, int analysisId=-1);
-    void sampleInformationReady(QJsonValue json, int analysisId=-1);
-    void userInformationReady(QJsonValue json, int analysisId=-1);
+    void geneInformationReady(QJsonValue json, int analysisId=-1);
+    void phenotypeInformationReady(QJsonValue json, int analysisId=-1);
     void variantInformationReady(QJsonValue json, int analysisId=-1);
 
     void errorOccured(QString errCode, QString message, QString techData);

@@ -12,14 +12,22 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property Sample model
+    property Sample sampleModel: null
+    property var model
     onModelChanged: setSampleModel(model)
 
     function setSampleModel(sample)
     {
         if (sample)
         {
-            sample.dataRefreshed.connect(updateViewFromModel);
+            // Disconnect from former model
+            if (sampleModel)
+            {
+                sampleModel.dataChanged.disconnect(updateViewFromModel);
+            }
+            // connect to new model and display informations
+            sampleModel = sample;
+            sampleModel.dataChanged.connect(updateViewFromModel);
             updateViewFromModel();
         }
     }

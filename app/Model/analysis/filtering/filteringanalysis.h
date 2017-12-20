@@ -26,7 +26,6 @@ class DocumentsTreeModel;
 class FilteringAnalysis : public Analysis
 {
     Q_OBJECT
-
     // Analysis properties
     Q_PROPERTY(int refId READ refId NOTIFY dataChanged)
     Q_PROPERTY(QString refName READ refName NOTIFY dataChanged)
@@ -79,16 +78,13 @@ public:
     explicit FilteringAnalysis(int id, QObject* parent = nullptr);
 
     // Getters
-    // Internal
-    inline int refId() const { return mRefId; }
-    inline LoadingStatus loadingStatus() const { return mLoadingStatus; }
-    // Analysis properties
     inline QString refName() const { return mRefName; }
     inline Project* project() const { return mProject; }
     inline QString status() const { return mStatus; }
     inline QJsonArray filterJson() const { return mFilterJson; }
     inline QStringList fields() const { return mFields; }
     inline QStringList order() const { return mOrder; }
+    inline int refId() const { return mRefId; }
     inline QList<Sample*> samples() const { return mSamples; }
     inline QList<QObject*> filters() const { return mFilters; }
     inline QList<QObject*> attributes() const { return mAttributes; }
@@ -133,7 +129,7 @@ public:
     Q_INVOKABLE bool fromJson(QJsonObject json, bool full_init=true);
     Q_INVOKABLE QJsonObject toJson();
     Q_INVOKABLE void save();
-    Q_INVOKABLE void load();
+    Q_INVOKABLE void load(bool forceRefresh=true);
 
     // Methods
     Q_INVOKABLE inline FieldColumnInfos* getColumnInfo(QString uid) { return mAnnotations.contains(uid) ? mAnnotations[uid] : nullptr; }
@@ -166,6 +162,8 @@ public:
     void resetSets();
 
 Q_SIGNALS:
+    void dataChanged();
+
     void isLoading();
     void loadingStatusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
     void annotationsChanged();
@@ -181,7 +179,6 @@ Q_SIGNALS:
     void displayFilterNewCondPopup(QString conditionUid);
     void displayClearFilterPopup();
     void selectedAnnotationsDBChanged();
-    void dataChanged();
     void isTrioChanged();
     void trioChildChanged();
     void trioMotherChanged();
@@ -206,7 +203,6 @@ public Q_SLOTS:
     void processPushNotification(QString action, QJsonObject data);
 
 private:
-    // Attributes
     int mRefId = -1;
     QString mRefName;
     Project* mProject = nullptr;

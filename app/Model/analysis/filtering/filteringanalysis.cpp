@@ -48,7 +48,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     setId(json["id"].toInt());
     setName(json["name"].toString());
     setComment(json["comment"].toString());
-    setLastUpdate(QDateTime::fromString(json["update_date"].toString(), Qt::ISODate));
+    mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     mStatus = json["status"].toString();
     mStats = json["statistics"].toObject();
 
@@ -144,6 +144,8 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     // Set the ref and start (if needed) the next asynch loading step
     setReference(ref, full_init);
 
+    mLoaded = true;
+    emit dataChanged();
     return true;
 }
 
@@ -198,27 +200,33 @@ void FilteringAnalysis::save()
     });
 }
 
-void FilteringAnalysis::load()
+void FilteringAnalysis::load(bool forceRefresh)
 {
     if (mId <= 0) return;
 
-    Request* req = Request::get(QString("/analysis/%1").arg(mId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    // Check if need refresh
+    qint64 diff = mLastInternalLoad.secsTo(QDateTime::currentDateTime());
+    if (!mLoaded || forceRefresh || diff > MIN_SYNC_DELAY)
     {
-        if (success)
-        {
-            fromJson(json["data"].toObject());
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
-}
+        mLastInternalLoad = QDateTime::currentDateTime();
 
+        Request* req = Request::get(QString("/analysis/%1").arg(mId));
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+        {
+            if (success)
+            {
+                fromJson(json["data"].toObject());
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            req->deleteLater();
+        });
+    }
+}
 
 
 //

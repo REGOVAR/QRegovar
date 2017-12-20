@@ -7,7 +7,7 @@ import "../../Regovar"
 import "../../Framework"
 import "../Common"
 
-InfoPanel
+InformationsPanel
 {
     id: root
     icon: "ì"
@@ -37,7 +37,7 @@ InfoPanel
             root.loading = false;
 
 
-            file.dataRefreshed.connect(refreshViewFromModel);
+            file.dataChanged.connect(refreshViewFromModel);
             refreshViewFromModel();
         }
     }

@@ -6,10 +6,13 @@
 class Project : public QObject
 {
     Q_OBJECT
+    // Regovar resource attributes
+    Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
+    // project attributes
     Q_PROPERTY(int id READ id)
     Q_PROPERTY(Project* parent READ parent WRITE setParent NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime creationDate READ creationDate)
-    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
     Q_PROPERTY(bool isSandbox READ isSandbox)
     Q_PROPERTY(bool isFolder READ isFolder)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
@@ -25,10 +28,11 @@ public:
     explicit Project(QJsonObject json, QObject *parent = nullptr);
 
     // Getters
+    inline bool loaded() const { return mLoaded; }
+    inline QDateTime createDate() const { return mCreateDate; }
+    inline QDateTime updateDate() const { return mUpdateDate; }
     inline int id() const { return mId; }
     inline Project* parent() const { return mParent; }
-    inline QDateTime creationDate() const { return mCreationDate; }
-    inline QDateTime updateDate() const { return mUpdateDate; }
     inline bool isSandbox() const { return mIsSandbox; }
     inline bool isFolder() const { return mIsFolder; }
     inline QString name() const { return mName; }
@@ -50,7 +54,7 @@ public:
     //! Save subject information onto server
     Q_INVOKABLE void save();
     //! Load Subject information from server
-    Q_INVOKABLE void load();
+    Q_INVOKABLE void load(bool forceRefresh=true);
 
 
     void buildAnalysis(QJsonObject json);
@@ -64,14 +68,16 @@ Q_SIGNALS:
 
 
 private:
+    bool mLoaded = false;
+    QDateTime mCreateDate;
+    QDateTime mUpdateDate;
+    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
     // Attributes
     int mId = -1;
     bool mIsSandbox = false;
     bool mIsFolder = false;
     QString mFullPath;
     Project* mParent = nullptr;
-    QDateTime mCreationDate;
-    QDateTime mUpdateDate;
     QString mComment;
     QString mName;
     QList<QObject*> mAnalyses;

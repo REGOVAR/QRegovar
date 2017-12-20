@@ -7,7 +7,7 @@ import "../../Regovar"
 import "../../Framework"
 import "../Common"
 
-InfoPanel
+InformationsPanel
 {
     id: root
     icon: "j"
@@ -50,6 +50,6 @@ InfoPanel
     Connections
     {
         target: regovar
-        onPanelInformationReady: root.model = json
+        onPanelInformationReady: root.model = panel
     }
 }

@@ -94,9 +94,10 @@ bool Panel::fromJson(QJsonObject json)
     mOwner = json["owner"].toString();
     mDescription = json["description"].toString();
     mShared = json["shared"].toBool();
-    mCreationDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
+    mCreateDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
     mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
 
+    mLoaded = true;
     emit dataChanged();
     return true;
 }
@@ -153,25 +154,30 @@ void Panel::save()
 
 
 
-void Panel::load()
+void Panel::load(bool forceRefresh)
 {
-    Request* req = Request::get(QString("/panel/%1").arg(mPanelId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    // Check if need refresh
+    qint64 diff = mLastInternalLoad.secsTo(QDateTime::currentDateTime());
+    if (!mLoaded || forceRefresh || diff > MIN_SYNC_DELAY)
     {
-        if (success)
+        mLastInternalLoad = QDateTime::currentDateTime();
+        Request* req = Request::get(QString("/panel/%1").arg(mPanelId));
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
-            fromJson(json["data"].toObject());
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
+            if (success)
+            {
+                fromJson(json["data"].toObject());
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            req->deleteLater();
+        });
+    }
 }
-
 
 
 

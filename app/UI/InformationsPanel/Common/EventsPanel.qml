@@ -30,6 +30,7 @@ Rectangle
             Layout.fillWidth: true
             iconLeft: "z"
             placeholder: qsTr("Search events...")
+            enabled: false
         }
 
         TableView
@@ -69,16 +70,19 @@ Rectangle
             {
                 id: addEvent
                 text: qsTr("Add event")
+                enabled: false
             }
             Button
             {
                 id: editEvent
                 text: qsTr("Edit event")
+                enabled: false
             }
             Button
             {
                 id: deleteEvent
                 text: qsTr("Delete event")
+                enabled: false
             }
         }
     }

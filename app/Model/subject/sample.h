@@ -12,9 +12,9 @@ class Sample : public QObject
     Q_OBJECT
     // Regovar resource attribute
     Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime updated READ updated NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime created READ created NOTIFY dataChanged)
-    // Sample attribute
+    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
+    // Sample attributes
     Q_PROPERTY(int id READ id NOTIFY dataChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
     Q_PROPERTY(QString nickname READ nickname WRITE setNickname NOTIFY dataChanged)
@@ -25,8 +25,6 @@ class Sample : public QObject
     Q_PROPERTY(File* source READ source WRITE setSource NOTIFY dataChanged)
     Q_PROPERTY(Subject* subject READ subject WRITE setSubject NOTIFY dataChanged)
     Q_PROPERTY(Reference* reference READ reference WRITE setReference NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime updated READ updated NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime created READ created NOTIFY dataChanged)
     // special "shortcut" property for qml tableView
     Q_PROPERTY(QVariant nameUI READ nameUI WRITE setNameUI NOTIFY dataChanged)
     Q_PROPERTY(QVariant statusUI READ statusUI WRITE setStatusUI NOTIFY dataChanged)
@@ -54,8 +52,8 @@ public:
 
     // Getters
     inline bool loaded() const { return mLoaded; }
-    inline QDateTime updated() const { return mUpdated; }
-    inline QDateTime created() const { return mCreated; }
+    inline QDateTime updateDate() const { return mUpdateDate; }
+    inline QDateTime createDate() const { return mCreateDate; }
     inline int id() const { return mId; }
     inline QString name() const { return mName; }
     inline QString nickname() const { return mNickname.isEmpty() ? mName : mNickname; }
@@ -97,7 +95,7 @@ public:
     //! Save subject information onto server
     Q_INVOKABLE void save();
     //! Load Subject information from server
-    Q_INVOKABLE void load();
+    Q_INVOKABLE void load(bool forceRefresh=true);
     //! Convert sample status into a string value
     QString statusToLabel(SampleStatus status, double progress);
 
@@ -109,8 +107,9 @@ public Q_SLOTS:
 private:
 
     bool mLoaded = false;
-    QDateTime mUpdated;
-    QDateTime mCreated;
+    QDateTime mUpdateDate;
+    QDateTime mCreateDate;
+    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
 
     int mId = -1;
     QString mName;

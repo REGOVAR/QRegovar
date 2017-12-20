@@ -9,6 +9,11 @@ class Sample;
 class Subject : public QObject
 {
     Q_OBJECT
+    // Regovar resource attribute
+    Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
+    // Subject attributes
     Q_PROPERTY(int id READ id NOTIFY dataChanged)
     Q_PROPERTY(QString identifier READ identifier WRITE setIdentifier NOTIFY dataChanged)
     Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY dataChanged)
@@ -17,8 +22,6 @@ class Subject : public QObject
     Q_PROPERTY(Sex sex READ sex WRITE setSex NOTIFY dataChanged)
     Q_PROPERTY(QDate dateOfBirth READ dateOfBirth WRITE setDateOfBirth NOTIFY dataChanged)
     Q_PROPERTY(QString familyNumber READ familyNumber WRITE setFamilyNumber NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime updated READ updated NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime created READ created NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> samples READ samples NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> analyses READ analyses NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> projects READ projects NOTIFY dataChanged)
@@ -43,6 +46,9 @@ public:
     explicit Subject(QJsonObject json, QObject *parent = nullptr);
 
     // Getters
+    inline bool loaded() const { return mLoaded; }
+    inline QDateTime updateDate() const { return mUpdateDate; }
+    inline QDateTime createDate() const { return mCreateDate; }
     inline int id() const { return mId; }
     inline QString identifier() const { return mIdentifier; }
     inline QString firstname() const { return mFirstname; }
@@ -51,8 +57,6 @@ public:
     inline QString familyNumber() const { return mFamilyNumber; }
     inline Sex sex() const { return mSex; }
     inline QDate dateOfBirth() const { return mDateOfBirth; }
-    inline QDateTime updated() const { return mUpdated; }
-    inline QDateTime created() const { return mCreated; }
     inline QList<QObject*> samples() const { return mSamples; }
     inline QList<QObject*> analyses() const { return mAnalyses; }
     inline QList<QObject*> projects() const { return mProjects; }
@@ -78,7 +82,7 @@ public:
     //! Save subject information onto server
     Q_INVOKABLE void save();
     //! Load Subject information from server
-    Q_INVOKABLE void load();
+    Q_INVOKABLE void load(bool forceRefresh=true);
     //! Associate a sample to the subject
     Q_INVOKABLE void addSample(Sample* sample);
     //! Remove the association between the sample and the subject
@@ -92,6 +96,11 @@ Q_SIGNALS:
 
 
 private:
+    bool mLoaded = false;
+    QDateTime mUpdateDate;
+    QDateTime mCreateDate;
+    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
+
     int mId = -1;
     QString mIdentifier;
     QString mFirstname;
@@ -100,8 +109,6 @@ private:
     QString mFamilyNumber;
     Sex mSex;
     QDate mDateOfBirth;
-    QDateTime mUpdated;
-    QDateTime mCreated;
     QList<QObject*> mSamples;
     QList<QObject*> mAnalyses;
     QList<QObject*> mProjects;

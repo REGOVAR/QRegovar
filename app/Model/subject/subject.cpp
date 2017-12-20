@@ -29,8 +29,8 @@ bool Subject::fromJson(QJsonObject json)
     QString sex = json["sex"].toString();
     mSex = sex == "male" ? Sex::Male : "female" ?  Sex::Female : Sex::Unknow;
     mDateOfBirth = QDate::fromString(json["dateofbirth"].toString(), Qt::ISODate);
-    mUpdated = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
-    mCreated = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
+    mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
+    mCreateDate = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
 
     // samples
     mSamples.clear();
@@ -50,6 +50,8 @@ bool Subject::fromJson(QJsonObject json)
     mIndicators.clear();
 
     updateSubjectUI();
+
+    mLoaded = true;
     emit dataChanged();
     return true;
 }
@@ -107,23 +109,29 @@ void Subject::save()
 
 
 
-void Subject::load()
+void Subject::load(bool forceRefresh)
 {
-    Request* req = Request::get(QString("/subject/%1").arg(mId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    // Check if need refresh
+    qint64 diff = mLastInternalLoad.secsTo(QDateTime::currentDateTime());
+    if (!mLoaded || forceRefresh || diff > MIN_SYNC_DELAY)
     {
-        if (success)
+        mLastInternalLoad = QDateTime::currentDateTime();
+        Request* req = Request::get(QString("/subject/%1").arg(mId));
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
-            fromJson(json["data"].toObject());
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
+            if (success)
+            {
+                fromJson(json["data"].toObject());
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            req->deleteLater();
+        });
+    }
 }
 
 

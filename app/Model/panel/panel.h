@@ -7,6 +7,11 @@
 class Panel : public QObject
 {
     Q_OBJECT
+    // Regovar resource attributes
+    Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
+    // Panel attributes
     Q_PROPERTY(QString panelId READ panelId)
     Q_PROPERTY(QString versionId READ versionId)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
@@ -14,8 +19,6 @@ class Panel : public QObject
     Q_PROPERTY(QString fullname READ fullname NOTIFY dataChanged)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
     Q_PROPERTY(QVariantList entries READ entries NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime creationDate READ creationDate)
-    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
     // Common panel's versions properties
     Q_PROPERTY(QString description READ description WRITE setDescription NOTIFY dataChanged)
     Q_PROPERTY(QString owner READ owner WRITE setOwner NOTIFY dataChanged)
@@ -32,6 +35,10 @@ public:
     explicit Panel(QStringList* orderedVersions, QHash<QString, Panel*>* map, QObject* parent=nullptr);
 
     // Getters
+    inline bool loaded() const { return mLoaded; }
+    inline QDateTime updateDate() const { return mUpdateDate; }
+    inline QDateTime createDate() const { return mCreateDate; }
+
     inline QString panelId() const { return mPanelId; }
     inline QString versionId() const { return mVersionId; }
     inline QString name() const { return mName; }
@@ -39,8 +46,6 @@ public:
     inline QString fullname() const { return QString("%1 (%2)").arg(mName, mVersion); }
     inline QString comment() const { return mComment; }
     inline QVariantList entries() const { return mEntries; }
-    inline QDateTime creationDate() const { return mCreationDate; }
-    inline QDateTime updateDate() const { return mUpdateDate; }
     inline QString description() const { return mDescription; }
     inline QString owner() const { return mOwner; }
     inline bool shared() const { return mShared; }
@@ -62,7 +67,7 @@ public:
     //! Save subject information onto server
     Q_INVOKABLE void save();
     //! Load Subject information from server
-    Q_INVOKABLE void load();
+    Q_INVOKABLE void load(bool forceRefresh=true);
 
 
     //! Add a new version to the panel (append=true should be only used by factory)
@@ -79,14 +84,17 @@ Q_SIGNALS:
     void dataChanged();
 
 private:
+    bool mLoaded = false;
+    QDateTime mUpdateDate;
+    QDateTime mCreateDate;
+    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
+
     QString mPanelId;
     QString mVersionId;
     QString mName;
     QString mVersion;
     QString mComment;
     QVariantList mEntries;
-    QDateTime mCreationDate;
-    QDateTime mUpdateDate;
     QString mDescription;
     QString mOwner;
     bool mShared = false;

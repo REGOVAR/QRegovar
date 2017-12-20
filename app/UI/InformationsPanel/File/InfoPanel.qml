@@ -20,7 +20,7 @@ Rectangle
     {
         if (file)
         {
-            file.dataRefreshed.connect(updateViewFromModel);
+            file.dataChanged.connect(updateViewFromModel);
             updateViewFromModel();
         }
     }

@@ -7,7 +7,7 @@ import "../../Regovar"
 import "../../Framework"
 import "../Common"
 
-InfoPanel
+InformationsPanel
 {
     id: root
     icon: "j"
