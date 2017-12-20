@@ -50,6 +50,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     setComment(json["comment"].toString());
     setLastUpdate(QDateTime::fromString(json["update_date"].toString(), Qt::ISODate));
     mStatus = json["status"].toString();
+    mStats = json["statistics"].toObject();
 
     // Getting ref
     Reference* ref = regovar->referenceFromId(json["reference_id"].toInt());

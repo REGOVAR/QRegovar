@@ -14,7 +14,14 @@ Item
     {
         if (model)
         {
-            updateViewFromModel(model);
+            if ("samples" in model)
+            {
+                updateViewFromAnalysisModel(model);
+            }
+            else
+            {
+                updateViewFromSampleModel(model);
+            }
         }
     }
 
@@ -94,7 +101,18 @@ Item
     }
 
 
-    function updateViewFromModel(sample)
+    function updateViewFromAnalysisModel(model)
+    {
+        var data=[];
+        data.push({"label": qsTr("Total variants"), "value": Regovar.formatBigNumber(model.stats["total_variant"])});
+        data.push({"label": qsTr("Total transcript"), "value": Regovar.formatBigNumber(model.stats["total_transcript"])});
+        data.push({"label": qsTr("Overlapped genes"), "value": "-"});
+        data.push({"label": "...", "value": ""});
+        repeater.model = data;
+    }
+
+
+    function updateViewFromSampleModel(sample)
     {
         var data=[];
         if (sample)

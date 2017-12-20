@@ -32,6 +32,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QString refName READ refName NOTIFY dataChanged)
     Q_PROPERTY(Project* project READ project WRITE setProject NOTIFY dataChanged)
     Q_PROPERTY(QString status READ status NOTIFY dataChanged)
+    Q_PROPERTY(QJsonObject stats READ stats NOTIFY dataChanged)
     // Filtering properties
     Q_PROPERTY(QJsonArray filterJson READ filterJson NOTIFY filterChanged)      // Filter json formated shared with server
     Q_PROPERTY(QStringList order READ order NOTIFY orderChanged)                // List of field used for sorting result
@@ -96,6 +97,7 @@ public:
     inline Sample* trioMother() const { return mTrioMother; }
     inline Sample* trioFather() const { return mTrioFather; }
     inline QList<QObject*> samplesInputsFilesList() const { return mSamplesInputsFilesList; }
+    inline QJsonObject stats() const { return mStats; }
     // Panel & Treeview models
     inline AnnotationsTreeModel* annotations() const { return mAnnotationsTreeModel; }
     inline QList<QObject*> annotationsFlatList() const { return mAnnotationsFlatList; }
@@ -160,7 +162,6 @@ public:
     Q_INVOKABLE void setVariantSelection(QString id, bool isChecked);
     Q_INVOKABLE void addFile(File* file);
 
-
     void raiseNewInternalLoadingStatus(LoadingStatus newStatus);
     void resetSets();
 
@@ -218,6 +219,7 @@ private:
     bool mSampleColumnDisplayed = false;
     QList<File*> mFiles;
     DocumentsTreeModel* mDocumentsTreeModel = nullptr;
+    QJsonObject mStats;
 
     QString mStatus; // status of the analysis (server side)
     LoadingStatus mLoadingStatus; // internal (UI) status used to track and coordinates asynchrone initialisation of the analysis

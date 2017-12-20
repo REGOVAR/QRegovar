@@ -14,9 +14,13 @@ Item
     property var model
     onModelChanged:
     {
-        if (model)
+        if ("samples" in model)
         {
-            updateStatistics(model);
+            updateViewFromAnalysisModel(model);
+        }
+        else
+        {
+            updateViewFromSampleModel(model);
         }
     }
 
@@ -162,12 +166,38 @@ Item
     }
 
 
-    function updateViewFromModel(model)
+    function updateViewFromAnalysisModel(model)
     {
-        // todo
+        var stats = model.stats;
+        var variantTotal = stats["total_variant"];
+
+        // Compute : Variant classes
+        var variantClasses = ["ref", "snv", "mnv", "insertion", "deletion", "others"];
+        var vclassesNames = {"ref": qsTr("Reference"), "snv": qsTr("SNV"), "mnv": qsTr("MNV"), "insertion": qsTr("Insertion"), "deletion": qsTr("Deletion"), "others": qsTr("Others")};
+        var variantClassesChartModel = [];
+        variantClasses.forEach(function (vclass)
+        {
+            var count = stats["variants_classes"][vclass];
+            variantClassesChartModel.push({
+                "label": vclassesNames[vclass],
+                "percent": (count / variantTotal * 100.0).toFixed(1) + " %",
+                "count": Regovar.formatBigNumber(count),
+                "value": count / variantTotal * 100.0 });
+        });
+        // Populate legend
+        totalVariant.text = Regovar.formatBigNumber(variantTotal);
+        variantClassesRepeater.model = variantClassesChartModel;
+        // Populate Pie slices
+        variantClassesPieSeries.clear()
+        for (var idx=0; idx<variantClassesChartModel.length; idx++)
+        {
+            variantClassesPieSeries.append(variantClassesChartModel[idx]["percent"], variantClassesChartModel[idx]["value"]);
+            var slice = variantClassesPieSeries.at(idx);
+            slice.labelVisible = false;
+        }
     }
 
-    function updateStatistics(sample)
+    function updateViewFromSampleModel(sample)
     {
         if (sample)
         {

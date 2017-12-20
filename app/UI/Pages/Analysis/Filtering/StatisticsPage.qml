@@ -118,7 +118,7 @@ Rectangle
                 {
                     if (currentIndex == 0)
                     {
-                        root.statisticsModel = root.model.samples;
+                        root.statisticsModel = root.model;
                     }
                     else if (currentIndex-1 >= 0 && currentIndex-1 < root.model.samples.length)
                     {

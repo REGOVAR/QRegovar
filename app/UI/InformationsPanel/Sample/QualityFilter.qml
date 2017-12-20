@@ -14,9 +14,13 @@ Item
     property var model
     onModelChanged:
     {
-        if (model)
+        if ("samples" in model)
         {
-            updateStatistics(model);
+            updateViewFromAnalysisModel(model);
+        }
+        else
+        {
+            updateViewFromSampleModel(model);
         }
     }
 
@@ -161,18 +165,42 @@ Item
         }
     }
 
-
-    function updateViewFromModel(model)
+    function updateViewFromAnalysisModel(model)
     {
-        // todo
+        var stats = model.stats;
+        var variantTotal = stats["total_variant"];
+//        var filter = stats["filter"];
+//        var filterDesc = sample.filter_description;
+//        var filterChartModel = [];
+//        for (var key in filter)
+//        {
+//            var count = filter[key];
+//            filterChartModel.push({
+//                "label": key,
+//                "percent": (count / variantTotal * 100.0).toFixed(1) + "%",
+//                "count": Regovar.formatBigNumber(count),
+//                "value": count / variantTotal * 100.0 });
+//        }
+//        // Populate legend
+//        totalVariant.text = Regovar.formatBigNumber(variantTotal);
+//        variantClassesRepeater.model = filterChartModel;
+//        // Populate Pie slices
+//        filterPieSeries.clear()
+//        for (var idx=0; idx<filterChartModel.length; idx++)
+//        {
+//            filterPieSeries.append(filterChartModel[idx]["percent"], filterChartModel[idx]["value"]);
+//            var slice = filterPieSeries.at(idx);
+//            slice.labelVisible = false;
+//        }
     }
+
 
     function updateStatistics(sample)
     {
         if (sample)
         {
             var stats = sample.stats;
-            var variantTotal = stats["sample_total_variant"];
+            var variantTotal = stats["total_variant"];
             var filter = stats["filter"];
             var filterDesc = sample.filter_description;
             var filterChartModel = [];
