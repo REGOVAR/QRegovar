@@ -273,24 +273,6 @@ GenericScreen
                         horizontalAlignment: Text.AlignHCenter
                         wrapMode: Text.WordWrap
                     }
-                    Text
-                    {
-                        anchors.right: parent.right
-                        anchors.top : parent.top
-                        text: "ä"
-                        font.family: Regovar.theme.icons.name
-                        font.pixelSize: 30
-                        color: Regovar.theme.primaryColor.back.normal
-
-                        NumberAnimation on anchors.rightMargin
-                        {
-                            duration: 2000
-                            loops: Animation.Infinite
-                            from: 30
-                            to: 0
-                            easing.type: Easing.SineCurve
-                        }
-                    }
                 }
             }
 

@@ -59,7 +59,7 @@ Rectangle
         if (model)
         {
             sampleModel.name = nameField.text;
-            sampleModel.comment = commentField.text;
+            sampleModel.comment = comment.text;
             sampleModel.save();
         }
     }
@@ -140,7 +140,7 @@ Rectangle
             }
             TextArea
             {
-                id: commentField
+                id: comment
                 Layout.fillWidth: true
                 enabled: editionMode
             }

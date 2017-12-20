@@ -270,25 +270,6 @@ Dialog
                         horizontalAlignment: Text.AlignHCenter
                         wrapMode: Text.WordWrap
                     }
-                    Text
-                    {
-                        anchors.left: parent.left
-                        anchors.bottom : parent.bottom
-                        anchors.leftMargin:Math.max(0, remoteSwitchButton.width / 2 - width/2)
-                        text: "â"
-                        font.family: Regovar.theme.icons.name
-                        font.pixelSize: 30
-                        color: Regovar.theme.primaryColor.back.normal
-
-                        NumberAnimation on anchors.bottomMargin
-                        {
-                            duration: 2000
-                            loops: Animation.Infinite
-                            from: 30
-                            to: 0
-                            easing.type: Easing.SineCurve
-                        }
-                    }
                 }
             }
 
@@ -477,24 +458,6 @@ Dialog
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
                             wrapMode: Text.WordWrap
-                        }
-                        Text
-                        {
-                            anchors.right: parent.right
-                            anchors.top : parent.top
-                            text: "ä"
-                            font.family: Regovar.theme.icons.name
-                            font.pixelSize: 30
-                            color: Regovar.theme.primaryColor.back.normal
-
-                            NumberAnimation on anchors.rightMargin
-                            {
-                                duration: 2000
-                                loops: Animation.Infinite
-                                from: 30
-                                to: 0
-                                easing.type: Easing.SineCurve
-                            }
                         }
                     }
                 }

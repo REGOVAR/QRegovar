@@ -66,7 +66,7 @@ Item
                 RowLayout
                 {
                     width: parent.width
-                    spacing: 5
+                    spacing: 10
 
                     Text
                     {

@@ -89,24 +89,6 @@ Rectangle
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
             }
-            Text
-            {
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.top : parent.top
-                text: "Ä"
-                font.family: Regovar.theme.icons.name
-                font.pixelSize: 30
-                color: Regovar.theme.primaryColor.back.normal
-
-                NumberAnimation on anchors.topMargin
-                {
-                    duration: 2000
-                    loops: Animation.Infinite
-                    from: 30
-                    to: 0
-                    easing.type: Easing.SineCurve
-                }
-            }
         }
 
         Text
