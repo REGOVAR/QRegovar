@@ -18,7 +18,7 @@ struct TusUploadItem
     quint64 size = 0;
     quint64 offset = 0;
     bool prepareFlag = false;
-    bool paused = true;
+    bool paused = false;
 };
 
 class TusUploader : public QObject
@@ -46,7 +46,7 @@ public:
     void enqueue(QStringList paths);    //! Register file to the server, enqueue them and start upload as soon as possible
     void pause(QString fileId);         //! Suspend upload for the file
     void cancel(QString fileId);        //! Cancel upload for the file
-    void start(QString fileId);         //! Start/Resume upload for the file
+    void start(QString fileId);         //! Start/Resume upload for the file that have been paused
     void emitFileEnqueued(QHash<QString, QString>* serverMapping);
 
 

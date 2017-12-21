@@ -69,6 +69,44 @@ File* FilesManager::getFile(int id)
 }
 
 
+
+bool FilesManager::deleteFile(int id)
+{
+    if (mFiles.contains(id))
+    {
+        // Remove local instance of the file
+        File* file = mFiles[id];
+        mFiles.remove(id);
+        mRemoteFilesList.removeAll(file);
+        file->clearCache();
+
+        // Remove the file on the server
+        Request* req = Request::del(QString("/file/%1").arg(id));
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+        {
+            if (success)
+            {
+                // All is done, notify the view
+                emit remoteListChanged();
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            req->deleteLater();
+        });
+    }
+    else
+    {
+        return false;
+    }
+    return true;
+}
+
+
+
 void FilesManager::loadFilesBrowser()
 {
     Request* req = Request::get(QString("/file"));
@@ -200,6 +238,21 @@ void FilesManager::clearCache()
         QDir subDir(dir.absoluteFilePath(dirItem));
         subDir.removeRecursively();
     }
+}
+
+
+void FilesManager::pauseUpload(int fileId)
+{
+    mUploader->pause(QString::number(fileId));
+}
+void FilesManager::startUpload(int fileId)
+{
+    mUploader->start(QString::number(fileId));
+}
+void FilesManager::cancelUpload(int fileId)
+{
+    mUploader->cancel(QString::number(fileId));
+    deleteFile(fileId);
 }
 
 

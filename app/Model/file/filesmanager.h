@@ -40,12 +40,16 @@ public:
     // Method
     Q_INVOKABLE File* getOrCreate(int id);
     Q_INVOKABLE File* getFile(int id);
+    Q_INVOKABLE bool deleteFile(int id);
     Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void enqueueUploadFile(QStringList filesPaths);
     Q_INVOKABLE void cancelUploadFile(QList<int> filesId);
     Q_INVOKABLE void clearUploadsList();
     Q_INVOKABLE void refreshCacheStats();
     Q_INVOKABLE void clearCache();
+    Q_INVOKABLE void pauseUpload(int id);
+    Q_INVOKABLE void cancelUpload(int id);
+    Q_INVOKABLE void startUpload(int id);
     void processPushNotification(QString action, QJsonObject json);
     void updateUploadProgress();
     qint64 directorySize(const QString path);

@@ -43,6 +43,7 @@ bool Sample::fromJson(QJsonObject json)
     mStats = json["stats"].toObject();
     mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     mCreateDate = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
+    mLoadingProgress = json["loading_progress"].toDouble();
 
     mReference = regovar->referenceFromId(json["reference_id"].toInt());
 

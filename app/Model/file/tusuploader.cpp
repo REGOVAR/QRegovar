@@ -151,16 +151,44 @@ void TusUploader::emitFileEnqueued(QHash<QString, QString>* serverMapping)
 
 
 
-void TusUploader::pause(QString)
+void TusUploader::pause(QString fileId)
 {
+    for (TusUploadItem* item: mInProgress)
+    {
+        if (item->fileId == fileId)
+        {
+            item->paused = true;
+            break;
+        }
+    }
 }
 
-void TusUploader::cancel(QString)
+void TusUploader::start(QString fileId)
 {
+    for (TusUploadItem* item: mInProgress)
+    {
+        if (item->fileId == fileId)
+        {
+            item->paused = false;
+            resumeUpload(item);
+            break;
+        }
+    }
 }
 
-void TusUploader::start(QString)
+void TusUploader::cancel(QString fileId)
 {
+    for (TusUploadItem* item: mInProgress)
+    {
+        if (item->fileId == fileId)
+        {
+            // pause upload of this item
+            item->paused = true;
+            // remove it from the queue
+            mInProgress.removeOne(item);
+            break;
+        }
+    }
 }
 
 
@@ -193,7 +221,7 @@ void TusUploader::startNext()
             newUpload(item);
         }
         // If we already have the upload url, ask server to provide resume offset
-        else
+        else if (!item->paused)
         {
             resumeUpload(item);
         }
@@ -244,6 +272,7 @@ void TusUploader::resumeUpload(TusUploadItem* item)
 
 void TusUploader::patchUpload(TusUploadItem* item)
 {
+    if (item->paused) return;
     if (item->offset < item->size)
     {
         // Get next chunk
@@ -343,11 +372,12 @@ void TusUploader::resumeUploadFinished()
 
     if(reply->error() == QNetworkReply::NoError)
     {
+        // Synch upload progress information with the server
         TusUploadItem* item = mRequestHash[reply];
         QByteArray offset = reply->rawHeader("Upload-Offset");
         item->offset = offset.toInt();
-
         mRequestHash.remove(reply);
+
         emit uploadStarted(item);
         patchUpload(item);
     }

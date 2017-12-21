@@ -109,6 +109,8 @@ public:
     Q_INVOKABLE bool downloadLocalFile();
     //! Read file content as QString
     Q_INVOKABLE QString readFile();
+    //! Delete local cache file
+    Q_INVOKABLE bool clearCache();
 
     //! Helper to compute all-in-one property to display file in the UI.
     Q_INVOKABLE static QString extensionToIco(QString ext);

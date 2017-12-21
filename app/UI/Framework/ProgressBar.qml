@@ -7,38 +7,39 @@ ProgressBar
 {
     id: control
     value: 0.5
+    height: Regovar.theme.font.boxSize.normal
 
     background: Rectangle
     {
-        implicitWidth: 200
-        implicitHeight: 16
-        x: control.leftPadding
+        x: 0
         y: parent.height / 2 - height / 2
-        color: Regovar.theme.boxColor.back
+        width: control.width
+        height: Regovar.theme.font.boxSize.small - 4
+        color: Regovar.theme.boxColor.alt
         border.width: 1
         border.color: Regovar.theme.boxColor.border
-    }
-
-    contentItem: Item
-    {
-        implicitWidth: background.implicitWidth
-        implicitHeight: background.implicitHeight
+        clip: true
 
         Rectangle
         {
-            width: control.visualPosition * background.width
-            height: parent.height
-            color: Regovar.theme.secondaryColor.back.normal
-
-            Label
-            {
-                text: (control.value / control.to * 100).toFixed(1) + "%"
-                color: Regovar.theme.secondaryColor.front.normal
-                font.family: Regovar.theme.font.family
-                anchors.centerIn: parent
-                font.pixelSize: Regovar.theme.font.size.small
-
-            }
+            x: 1
+            y: 1
+            width: control.visualPosition * (parent.width - 2)
+            height: parent.height - 2
+            color: control.enabled ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.disable
+        }
+        Text
+        {
+            anchors.fill: parent
+            anchors.leftMargin: 4
+            text: (control.value / control.to * 100).toFixed(1) + "%"
+            color: Regovar.theme.secondaryColor.front.normal
+            font.family: Regovar.theme.font.family
+            font.pixelSize: Regovar.theme.font.size.small
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
         }
     }
+
+    contentItem: Item {}
 }

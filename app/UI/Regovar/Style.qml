@@ -77,6 +77,7 @@ QtObject
     property QtObject boxColor: QtObject
     {
         property color back: "#ffffff"
+        property color alt: "#e7e7e7"
         property color header1: "#fcfcfd"
         property color header2: "#e7e7e7"
         property color front: "#000000"

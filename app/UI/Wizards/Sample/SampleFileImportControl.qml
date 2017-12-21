@@ -29,35 +29,55 @@ Rectangle
     {
         if (model)
         {
+            // Disconnect former models
+            if (fileModel && fileModel !== model["file"])
+            {
+                fileModel.dataChanged.disconnect(updateFileProgress);
+                fileModel = null;
+            }
+            if (sampleModel && model["samples"].length > 0 && sampleModel !== model["samples"][0])
+            {
+                // disconnect former model
+                sampleModel.dataChanged.disconnect(updateSampleProgress);
+                sampleModel = null;
+            }
+
+            root.enabled = !model["canceled"];
             if (fileModel === null)
             {
-                root.fileModel = model["file"];
-                root.fileModel.dataChanged.connect(function()
-                {
-                    fileUploadProgress.to = root.fileModel.size;
-                    fileUploadProgress.value = root.fileModel.uploadOffset;
-                });
+                fileModel = model["file"];
+                fileModel.dataChanged.connect(updateFileProgress);
             }
-//            if (sampleModel === null && model["samples"].length > 0)
-//            {
-//                root.sampleModel = model["samples"][0];
-//                root.progress = root.sampleModel.statusUI["progress"];
-//                dataChanged
-//                var names = [];
-//                for (var k in model["samples"])
-//                {
-//                    var sample = model["samples"][k];
-//                    names.push(sample.name);
-//                }
-//            }
+            if (sampleModel === null && model["samples"].length > 0)
+            {
+                sampleModel = model["samples"][0];
+                sampleModel.dataChanged.connect(updateSampleProgress);
+
+
+                var names = [];
+                for (var k in model["samples"])
+                {
+                    var sample = model["samples"][k];
+                    names.push(sample.name);
+                }
+            }
         }
     }
 
+    function updateFileProgress()
+    {
+        fileUploadProgress.to = fileModel.size;
+        fileUploadProgress.value = fileModel.uploadOffset;
+    }
+    function updateSampleProgress()
+    {
+        sampleImportProgress.value = sampleModel.loadingProgress;
+    }
 
     ColumnLayout
     {
         anchors.fill: parent
-        anchors.margins: 5
+        anchors.margins: 10
         spacing: 5
 
         RowLayout
@@ -71,11 +91,29 @@ Rectangle
             }
             ButtonInline
             {
-                text: "pause"
+                property bool paused: false
+                onPausedChanged:
+                {
+                    if (paused)
+                        regovar.filesManager.pauseUpload(fileModel.id);
+                    else
+                        regovar.filesManager.startUpload(fileModel.id);
+                }
+
+                text: ""
+                icon: paused ? "x" : "y"
+                onClicked: paused = !paused
             }
             ButtonInline
             {
-                text: "cancel"
+                text: ""
+                icon: "h"
+                onClicked:
+                {
+                    regovar.filesManager.cancelUpload(fileModel.id);
+                    model["canceled"] = true;
+                    root.enabled = false;
+                }
             }
         }
         GridLayout
@@ -92,7 +130,6 @@ Rectangle
             {
                 id: fileUploadProgress
                 Layout.fillWidth: true
-                height: Regovar.theme.font.boxSize.normal
                 value: 0
             }
             Text
@@ -103,7 +140,6 @@ Rectangle
             {
                 id: sampleImportProgress
                 Layout.fillWidth: true
-                height: Regovar.theme.font.boxSize.normal
                 value: 0
             }
         }

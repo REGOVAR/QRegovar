@@ -25,6 +25,7 @@ class Sample : public QObject
     Q_PROPERTY(File* source READ source WRITE setSource NOTIFY dataChanged)
     Q_PROPERTY(Subject* subject READ subject WRITE setSubject NOTIFY dataChanged)
     Q_PROPERTY(Reference* reference READ reference WRITE setReference NOTIFY dataChanged)
+    Q_PROPERTY(double loadingProgress READ loadingProgress NOTIFY dataChanged)
     // special "shortcut" property for qml tableView
     Q_PROPERTY(QVariant nameUI READ nameUI WRITE setNameUI NOTIFY dataChanged)
     Q_PROPERTY(QVariant statusUI READ statusUI WRITE setStatusUI NOTIFY dataChanged)
@@ -63,6 +64,7 @@ public:
     inline File* source() const { return mSource; }
     inline Subject* subject() const { return mSubject; }
     inline Reference* reference() const { return mReference; }
+    inline double loadingProgress() const { return mLoadingProgress; }
     inline QStringList defaultAnnotationsDbUid() const { return mDefaultAnnotationsDbUid; }
     inline QVariant nameUI() const { return mNameUI; }
     inline QVariant statusUI() const { return mStatusUI; }
@@ -121,6 +123,7 @@ private:
     SampleStatus mStatus;
     Subject* mSubject = nullptr;
     Reference* mReference = nullptr;
+    double mLoadingProgress = 0;
     QJsonObject mStats;
 
 

@@ -149,7 +149,7 @@ Rectangle
         {
             if (!(localPath in fileUploadList))
             {
-                var itemModel = {"file": regovar.filesManager.getOrCreate(fileId), "samples": [], "sampleImportCalled": false};
+                var itemModel = {"file": regovar.filesManager.getOrCreate(fileId), "samples": [], "sampleImportCalled": false, "canceled": false};
                 itemModel["file"].load();
                 root.model.push(itemModel);
 
