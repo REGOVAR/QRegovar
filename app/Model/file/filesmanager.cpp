@@ -42,7 +42,7 @@ void FilesManager::setCacheMaxSize(int size)
 
 
 
-File* FilesManager::getOrCreateFile(int id)
+File* FilesManager::getOrCreate(int id)
 {
     if (!mFiles.contains(id))
     {
@@ -80,7 +80,7 @@ void FilesManager::loadFilesBrowser()
             for (const QJsonValue& data: json["data"].toArray())
             {
                 QJsonObject fileData = data.toObject();
-                File* file = getOrCreateFile(fileData["id"].toInt());
+                File* file = getOrCreate(fileData["id"].toInt());
                 file->fromJson(fileData);
                 mRemoteFilesList.append(file);
             }
@@ -109,17 +109,16 @@ void FilesManager::filesEnqueued(QHash<QString,QString> mapping)
 {
     // Occure when tusUploader ends to enqueue all files according to TUS upload protocol.
     // Then, manager have to update uploadFilesList to allow the user to see files upload progress
-    qDebug() << "Upload mapping Done !";
     for (const QString& key: mapping.keys())
     {
         // retrieve file id into the mapping url
         QStringList pathSplitted = mapping[key].split("/");
         int id = pathSplitted[pathSplitted.count()-1].toInt();
-        File* file = getOrCreateFile(id);
+        File* file = getOrCreate(id);
         file->load();
         mUploadsList.append(file);
-
-        qDebug() << key << " => " << mapping[key] << id;
+        emit fileUploadEnqueued(key, id);
+        // qDebug() << key << " => " << mapping[key] << id;
     }
     updateUploadProgress();
 }
@@ -211,7 +210,7 @@ void FilesManager::processPushNotification(QString action, QJsonObject json)
     {
         // update file informations
         int id = json["id"].toInt();
-        File* file = getOrCreateFile(id);
+        File* file = getOrCreate(id);
         file->fromJson(json);
         // update global upload progress
         if (mUploadsList.indexOf(file) != -1)

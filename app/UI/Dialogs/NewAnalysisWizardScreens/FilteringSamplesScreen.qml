@@ -87,22 +87,26 @@ GenericScreen
         }
     }
 
-    Text
+
+    // Help information on this page
+    Box
     {
-        id: header
+        id: helpInfoBox
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        text:  qsTr("Select the sample(s) you want to analyse.")
-        wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.normal
-        color: Regovar.theme.primaryColor.back.normal
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        mainColor: Regovar.theme.frontColor.success
+        icon: "k"
+        text: qsTr("Select the sample(s) you want to analyse.")
     }
 
     RowLayout
     {
-        anchors.top: header.bottom
-        anchors.topMargin: 30
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : parent.top
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? 10 : 0
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
@@ -266,7 +270,7 @@ GenericScreen
                     Text
                     {
                         text: qsTr("No sample selected for the analysis.\nClick on the adjacent button to add it.")
-                        font.pixelSize: Regovar.theme.font.size.header
+                        font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.primaryColor.back.normal
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter

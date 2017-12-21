@@ -55,7 +55,7 @@ bool Sample::fromJson(QJsonObject json)
     setStatus(json["status"].toString());
 
 
-    File* source = regovar->filesManager()->getOrCreateFile(json["file_id"].toInt());
+    File* source = regovar->filesManager()->getOrCreate(json["file_id"].toInt());
     setSource(source);
     setSourceUI(source->filenameUI());
 
@@ -74,6 +74,7 @@ bool Sample::fromJson(QJsonObject json)
     QJsonObject statusInfo;
     statusInfo.insert("status", mStatus);
     statusInfo.insert("label", statusToLabel(mStatus, json["loading_progress"].toDouble()));
+    statusInfo.insert("progress", json["loading_progress"].toDouble());
     setStatusUI(QVariant::fromValue(statusInfo));
 
     mLoaded = true;

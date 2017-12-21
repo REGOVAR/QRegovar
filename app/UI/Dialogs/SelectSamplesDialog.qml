@@ -7,7 +7,7 @@ import QtQuick.Controls 2.2 as Control
 
 import "../Regovar"
 import "../Framework"
-
+import "../Wizards/Sample"
 
 
 
@@ -22,17 +22,10 @@ Dialog
     standardButtons: Dialog.Ok | Dialog.Cancel
     width: 800
     height: 600
+
+    property bool importingFile: false
     property bool referencialSelectorEnabled: true
     signal samplesSelected(var samples)
-
-    onAccepted:
-    {
-        // sample/import/file
-        // => answer create sample object into regovar.analysesManager.newFiltering.samples
-        //
-        console.log("Ok clicked")
-    }
-    onRejected: console.log("Cancel clicked")
 
 
 
@@ -49,6 +42,8 @@ Dialog
             id: rootSampleView
             anchors.fill: root
             color: "transparent"
+            visible: !importingFile
+            enabled: !importingFile
 
 
             DialogHeader
@@ -129,10 +124,6 @@ Dialog
                 text: qsTr("Import sample\nfrom file")
                 onClicked:
                 {
-                    rootSampleView.enabled = false;
-                    okButton.enabled = false;
-                    cancelButton.enabled = false;
-                    rootImportView.visible = true;
                     localFilesDialog.open();
                 }
             }
@@ -295,209 +286,15 @@ Dialog
         }
 
 
-        Rectangle
+        SampleImportView
         {
-            id: rootImportView
-            color: "#aa000000"
+            id: sampleImportView
             anchors.fill: root
-            anchors.topMargin: sampleViewHeader.height
-            visible: false
+            // anchors.topMargin: sampleViewHeader.height
+            color: Regovar.theme.backgroundColor.main
+            visible: importingFile
+            enabled: importingFile
 
-
-
-//            DialogHeader
-//            {
-//                id: importViewHeader
-//                anchors.top : rootImportView.top
-//                anchors.left: rootImportView.left
-//                anchors.right: rootImportView.right
-//                iconText: "1"
-//                title: qsTr("Import samples from file")
-//                text: qsTr("Select the vcf file(s) from which you want to import samples.\nYou can select file that are already on the regovar server or upload news ones.")
-//            }
-
-            RowLayout
-            {
-                spacing: 10
-                anchors.fill: parent
-//                anchors.top : importViewHeader.bottom
-//                anchors.left: rootImportView.left
-//                anchors.right: rootImportView.right
-//                anchors.bottom: localSwitchButton.top
-                anchors.margins: 10
-
-
-
-                TableView
-                {
-                    id: inputsList
-                    clip: true
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-
-                    model: regovar.analysesManager.newFiltering.samplesInputsFilesList
-
-                    TableViewColumn
-                    {
-                        title: "Name"
-                        role: "filenameUI"
-                        delegate: Item
-                        {
-
-                            Text
-                            {
-                                anchors.leftMargin: 5
-                                anchors.left: parent.left
-                                anchors.verticalCenter: parent.verticalCenter
-                                verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                text: styleData.value.icon
-                                font.family: Regovar.theme.icons.name
-                            }
-                            Text
-                            {
-                                anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
-                                anchors.rightMargin: 5
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                verticalAlignment: Text.AlignVCenter
-                                anchors.fill: parent
-                                horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                text: styleData.value.filename
-                                elide: Text.ElideRight
-                            }
-                        }
-                    }
-                    TableViewColumn
-                    {
-                        title: "Status"
-                        role: "statusUI"
-                        delegate: Item
-                        {
-                            Text
-                            {
-                                anchors.leftMargin: 5
-                                anchors.left: parent.left
-                                anchors.verticalCenter: parent.verticalCenter
-                                verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                text: styleData.value.status == 0 ? "/" : styleData.value.status == 3 ? "l" : "n"
-                                font.family: Regovar.theme.icons.name
-
-//                                onTextChanged:
-//                                {
-//                                    if (styleData.value.status == 1) // 1 = Loading
-//                                    {
-//                                        statusIconAnimation2.start();
-//                                    }
-//                                    else
-//                                    {
-//                                        statusIconAnimation2.stop();
-//                                    }
-//                                }
-//                                NumberAnimation on rotation
-//                                {
-//                                    id: statusIconAnimation2
-//                                    duration: 1000
-//                                    loops: Animation.Infinite
-//                                    from: 0
-//                                    to: 360
-//                                }
-                            }
-                            Text
-                            {
-                                anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
-                                anchors.rightMargin: 5
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                anchors.verticalCenter: parent.verticalCenter
-                                horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                text: styleData.value.label
-                                elide: Text.ElideRight
-                            }
-                        }
-                    }
-                    TableViewColumn { title: "Size"; role: "sizeUI"; horizontalAlignment: Text.AlignRight }
-                    TableViewColumn
-                    {
-                        title: "Date"
-                        role: "updateDate"
-                        delegate: Item
-                        {
-                            Text
-                            {
-                                anchors.leftMargin: 5
-                                anchors.rightMargin: 5
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                anchors.verticalCenter: parent.verticalCenter
-                                horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                text:styleData.value.toLocaleDateString()
-                                elide: Text.ElideRight
-                            }
-
-                        }
-                    }
-                    TableViewColumn { title: "Source"; role: "sourceUI" }
-                    TableViewColumn { title: "Comment"; role: "comment" }
-
-                    Rectangle
-                    {
-                        id: fileHelpPanel
-                        anchors.fill: parent
-
-                        color: "#aaffffff"
-
-                        visible: regovar.analysesManager.newFiltering.samplesInputsFilesList.length == 0
-
-                        Text
-                        {
-                            text: qsTr("Click on the \"Add file\" button to select vcf file.")
-                            font.pixelSize: Regovar.theme.font.size.header
-                            color: Regovar.theme.primaryColor.back.normal
-                            anchors.fill: parent
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            wrapMode: Text.WordWrap
-                        }
-                    }
-                }
-
-
-
-
-                Column
-                {
-                    Layout.alignment: Qt.AlignTop
-                    spacing: 10
-                    Button
-                    {
-                        id: addButton
-                        text: qsTr("Add file")
-                        onClicked: { localFilesDialog.open(); }
-                    }
-                    Button
-                    {
-                        id: remButton
-                        text: qsTr("Remove file")
-                        onClicked:
-                        {
-                            // Get list of objects to remove
-                            var files= []
-                            inputsList.selection.forEach( function(rowIndex)
-                            {
-                                files = files.concat(regovar.analysesManager.newFiltering.samplesInputsFilesList[rowIndex]);
-                            });
-                            regovar.analysesManager.newFiltering.removeSampleInputs(files);
-                        }
-                    }
-                }
-            }
         }
 
 
@@ -513,8 +310,8 @@ Dialog
             onClicked:
             {
                 var samples=[];
-                // OK Clicked from "Remote sample" view
-                if (rootSampleView.visible)
+                // OK Clicked from "sample selection" view: import selected
+                if (!sampleDialog.importingFile)
                 {
                     selectedSamplesTable.selection.forEach( function(rowIndex)
                     {
@@ -522,17 +319,11 @@ Dialog
                     });
                     samplesSelected(samples);
                 }
-                // OK Clicked from "Remote files" view
-                else if (rootImportView.visible)
+                // Else, OK clicked from "import sample file" view: import already done on upload completed
+                else
                 {
-                    // import all file
-                    for(var idx=0; idx<regovar.analysesManager.newFiltering.samplesInputsFilesList.length; idx++)
-                    {
-                        var file = regovar.analysesManager.newFiltering.samplesInputsFilesList[idx];
-                        regovar.analysesManager.newFiltering.addSamplesFromFile(file.id);
-                    }
+                    samplesSelected(sampleImportView.getImportedSamples());
                 }
-
                 sampleDialog.accept();
             }
         }
@@ -563,33 +354,19 @@ Dialog
 
         onAccepted:
         {
+            // Switch to upload/import screen if needed
+            sampleDialog.importingFile = true;
+
             // Start tus upload for
-            console.log("Start upload of files : " + localFilesDialog.fileUrls);
-            var files = []
-            for (var idx=0; idx<localFilesDialog.fileUrls.length; idx++)
-            {
-                files = files.concat(localFilesDialog.fileUrls[idx]);
-            }
-
-            regovar.filesManager.enqueueUploadFile(files);
-
-            if (fileDialog.uploadBlocking)
-            {
-                uploadBlockingProgress.visible = true;
-
-                // Retrieve
-                // No need to send "fileSelected(files)" signal as the tus upload will auto add it to the inputsList
-                // TODO : find a better way to manage it to avoid multiuser problem and so on...
-            }
-
-            // TODO: when import done :
-            // regovar.analysesManager.newFiltering.addSampleInputs(files);
+            sampleImportView.importFiles(localFilesDialog.fileUrls);
         }
     }
 
 
     function reset()
     {
+        sampleDialog.importingFile = false;
+
         // init the dialog with the currently selected ref in the model
         var idx = 0;
         for (idx=0; idx<regovar.references.length; idx++)
@@ -600,10 +377,6 @@ Dialog
             }
             refCombo.currentIndex = idx;
         }
-
-        rootSampleView.visible = true;
-        rootImportView.visible = false;
-
     }
 }
 

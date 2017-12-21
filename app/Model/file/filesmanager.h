@@ -38,7 +38,7 @@ public:
     void setCacheMaxSize(int size);
 
     // Method
-    Q_INVOKABLE File* getOrCreateFile(int id);
+    Q_INVOKABLE File* getOrCreate(int id);
     Q_INVOKABLE File* getFile(int id);
     Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void enqueueUploadFile(QStringList filesPaths);
@@ -62,6 +62,7 @@ Q_SIGNALS:
     void uploadsChanged();
     void remoteListChanged();
     void filesTreeChanged();
+    void fileUploadEnqueued(QString localPath, int fileId);
 
 private:
     //! internal hash map of all files. Will keep ref to all file loaded even if they are no more displayed

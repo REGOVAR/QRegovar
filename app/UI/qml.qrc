@@ -195,5 +195,7 @@
         <file>InformationsPanel/Sample/QualityOverview.qml</file>
         <file>InformationsPanel/Sample/QualityFilter.qml</file>
         <file>InformationsPanel/Sample/StatsQualPanel.qml</file>
+        <file>Wizards/Sample/SampleFileImportControl.qml</file>
+        <file>Wizards/Sample/SampleImportView.qml</file>
     </qresource>
 </RCC>

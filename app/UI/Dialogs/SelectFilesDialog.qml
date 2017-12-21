@@ -409,27 +409,26 @@ Dialog
         //folder: shortcuts.home
         selectMultiple: true
 
-        onAccepted:
+        onAccepted: importFiles(localFilesDialog.fileUrls)
+    }
+
+    function importFiles(files)
+    {
+        console.log("Start upload of files : " + files);
+        var filesToImport = [];
+        for (var idx=0; idx<files; idx++)
         {
-            // Start tus upload for
-            console.log("Start upload of files : " + localFilesDialog.fileUrls);
-            var files = []
-            for (var idx=0; idx<localFilesDialog.fileUrls.length; idx++)
-            {
-                files = files.concat(localFilesDialog.fileUrls[idx]);
-            }
-
-            regovar.filesManager.enqueueUploadFile(files);
-
-            if (fileDialog.uploadBlocking)
-            {
-                uploadBlockingProgress.visible = true;
-
-                // Retrieve
-                // No need to send "fileSelected(files)" signal as the tus upload will auto add it to the inputsList
-                // TODO : find a better way to manage it to avoid multiuser problem and so on...
-            }
+            var file = files[idx];
+            if (file in fileUploadList) continue;
+            filesToImport.push(file);
+            fileUploadList.push(file);
         }
+
+        // Enqueue file to the TUS upload manager.
+        // When upload will start, the fileManager will emit uploadsChanged signal
+        // We will be able to retrieve created File & Sample entries in the model
+        // and update the view accordingly (see connection below)
+        regovar.filesManager.enqueueUploadFile(filesToImport);
     }
 }
 

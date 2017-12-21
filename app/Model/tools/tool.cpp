@@ -57,7 +57,7 @@ void Tool::run(int analysis_id, QJsonObject parameter)
             QJsonObject data = json["data"].toObject();
             if (mType == Exporter)
             {
-                File* file = regovar->filesManager()->getOrCreateFile(data["id"].toInt());
+                File* file = regovar->filesManager()->getOrCreate(data["id"].toInt());
                 file->fromJson(data);
                 FilteringAnalysis* analysis = regovar->analysesManager()->getOrCreateFilteringAnalysis(analysis_id);
                 analysis->addFile(file);

@@ -25,29 +25,29 @@ GenericScreen
     }
 
 
-    Text
+    // Help information on this page
+    Box
     {
-        id: header
+        id: helpInfoBox
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        mainColor: Regovar.theme.frontColor.success
+        icon: "k"
         text: qsTr("Choose which genome reference must be used for this analysis.")
-        wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.normal
-        color: Regovar.theme.primaryColor.back.normal
     }
-
-
-
 
     ScrollView
     {
         id: scrollArea
-        anchors.top : header.bottom
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : parent.bottom
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? 10 : 0
         anchors.left: root.left
         anchors.right: root.right
         anchors.bottom: root.bottom
-        anchors.topMargin: 30
 
         Column
         {
@@ -62,7 +62,7 @@ GenericScreen
                 {
                     Layout.alignment: Qt.AlignTop
                     Layout.minimumWidth: root.labelColWidth
-                    height: Regovar.theme.font.size.header
+                    height: Regovar.theme.font.size.helpInfoBox
                     text: qsTr("Reference")
                     color: Regovar.theme.frontColor.normal
                     font.pixelSize: Regovar.theme.font.size.normal

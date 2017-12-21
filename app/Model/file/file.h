@@ -136,13 +136,13 @@ private:
     QString mMd5Sum;
     QString mType;
     FileStatus mStatus;
-    qint64 mSize;
-    qint64 mUploadOffset;
+    qint64 mSize = 0;
+    qint64 mUploadOffset = 0;
     QString mTags;
 
     QString mLocalPath;
     bool mLocalFileReady = false;
-    qint64 mDownloadOffset;
+    qint64 mDownloadOffset = 0;
     FileStatus mLocalStatus;
 
 
