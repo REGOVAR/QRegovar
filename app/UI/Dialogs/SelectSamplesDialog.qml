@@ -211,7 +211,7 @@ Dialog
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value.subjectUI.sex
+                            text: styleData.value ? styleData.value.subjectUI.sex : ""
                             font.family: Regovar.theme.icons.name
                         }
                         Text
@@ -223,7 +223,7 @@ Dialog
                             anchors.verticalCenter: parent.verticalCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value.subjectUI.name
+                            text: styleData.value ? styleData.value.subjectUI.name : ""
                             elide: Text.ElideRight
                         }
 

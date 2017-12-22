@@ -43,7 +43,7 @@ GenericScreen
     ScrollView
     {
         id: scrollArea
-        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : parent.bottom
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : parent.top
         anchors.topMargin: Regovar.helpInfoBoxDisplayed ? 10 : 0
         anchors.left: root.left
         anchors.right: root.right

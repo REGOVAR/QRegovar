@@ -200,25 +200,25 @@ Rectangle
         }
     }
 
-    function updateViewFromModel(model)
+    function updateViewFromModel(data)
     {
-        if (model)
+        if (data)
         {
-            nameLabel.text = model.name;
-            nameField.text = model.name;
-            commentField.text = model.comment;
+            nameLabel.text = data.name;
+            nameField.text = data.name;
+            commentField.text = data.comment;
         }
     }
 
     function updateModelFromView()
     {
-        if (model)
+        if (root.model)
         {
-            model.name = nameField.text;
-            model.comment = commentField.text;
+            root.model.name = nameField.text;
+            root.model.comment = commentField.text;
 
-            model.save();
-            nameLabel.text = model.name;
+            root.model.save();
+            nameLabel.text = root.model.name;
         }
     }
 }
