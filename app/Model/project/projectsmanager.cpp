@@ -20,6 +20,7 @@ void ProjectsManager::refresh()
             mProjectsTreeView->refresh(json);
             mProjectsFlatList.clear();
             refreshFlatProjectsListRecursive(json["data"].toArray(), "");
+
         }
         else
         {
@@ -51,6 +52,7 @@ void ProjectsManager::refreshFlatProjectsListRecursive(QJsonArray data, QString 
             mProjectsFlatList << proj;
         }
     }
+    emit projectsFlatListChanged();
 }
 
 
@@ -137,6 +139,4 @@ void ProjectsManager::openProject(int id, bool reload_from_server)
 void ProjectsManager::setSearchQuery(QString)
 {
     // TODO : update project treeview according to filter
-    emit searchQueryChanged();
-    emit projectsTreeViewChanged();
 }

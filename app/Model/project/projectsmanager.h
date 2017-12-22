@@ -9,8 +9,8 @@ class ProjectsManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString searchQuery READ searchQuery WRITE setSearchQuery NOTIFY searchQueryChanged)
-    Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY projectsTreeViewChanged)
-    Q_PROPERTY(QList<QObject*> projectsFlatList READ projectsFlatList NOTIFY projectsTreeViewChanged)
+    Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY neverChanged)
+    Q_PROPERTY(QList<QObject*> projectsFlatList READ projectsFlatList NOTIFY projectsFlatListChanged)
     Q_PROPERTY(QList<QObject*> projectsOpenList READ projectsOpenList NOTIFY projectsOpenListChanged)
     Q_PROPERTY(Project* projectOpen READ projectOpen NOTIFY projectOpenChanged)
 
@@ -39,9 +39,10 @@ public Q_SLOTS:
     void refresh();
 
 Q_SIGNALS:
+    void neverChanged();
     // Property changed event
     void searchQueryChanged();
-    void projectsTreeViewChanged();
+    void projectsFlatListChanged();
     void projectsOpenListChanged();
     void projectOpenChanged();
     //! Event on project creation done (sync with server done)

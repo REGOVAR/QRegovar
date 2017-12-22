@@ -63,6 +63,8 @@ GenericScreen
                 regovar.analysesManager.newFiltering.project = regovar.projectsManager.projectsFlatList[currentIndex];
                 checkReady();
             }
+            property int projectId
+
             delegate: ItemDelegate
             {
                 width: projectField.width
@@ -79,6 +81,39 @@ GenericScreen
 
                 highlighted: projectField.highlightedIndex === index
             }
+
+            Connections
+            {
+                target: regovar.projectsManager
+                onProjectCreationDone:
+                {
+                    projectField.projectId = projectId;
+                    projectField.model.push(regovar.projectsManager.getOrCreateProject(projectId).fullPath);
+                    projectField.currentIndex = regovar.projectsManager.projectsFlatList.length - 1;
+                }
+            }
+            Connections
+            {
+                target: regovar.projectsManager
+                onProjectsFlatListChanged:
+                {
+                    projectField.currentIndex = 0;
+                    for (var idx=0; idx<regovar.projectsManager.projectsFlatList.length; idx++)
+                    {
+                        if (regovar.projectsManager.projectsFlatList[idx].id == projectField.projectId)
+                        {
+                            projectField.currentIndex = idx;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        Button
+        {
+            text: qsTr("New Project")
+            onClicked: regovar.openNewProjectWizard()
         }
     }
     RowLayout
