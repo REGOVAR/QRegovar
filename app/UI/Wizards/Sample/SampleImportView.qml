@@ -98,24 +98,6 @@ Rectangle
 
 
 
-    function getImportedSamples()
-    {
-        for (var k1 in root.model)
-        {
-            var itemModel = root.model[k1];
-            if (file == itemModel["sample"])
-            {
-                totalOffset += file.uploadOffset;
-                totalSize += file.size;
-
-                if (file.loaded && file.uploadOffset == file.size && !itemModel["sampleImportCalled"])
-                {
-                    itemModel["sampleImportCalled"] = true;
-                    regovar.analysesManager.newFiltering.addSamplesFromFile(file.id);
-                }
-            }
-        }
-    }
 
     function importFiles(files)
     {
@@ -149,7 +131,14 @@ Rectangle
         {
             if (!(localPath in fileUploadList))
             {
-                var itemModel = {"file": regovar.filesManager.getOrCreate(fileId), "samples": [], "sampleImportCalled": false, "canceled": false};
+                var itemModel = {
+                    "file": regovar.filesManager.getOrCreate(fileId),
+                    "samples": [],
+                    "sampleImportCalled": false,
+                    "canceled": false,
+                    "fileProgressTo": 0,
+                    "fileProgressValue": 0,
+                    "sampleProgress": 0};
                 itemModel["file"].load();
                 root.model.push(itemModel);
 
@@ -189,31 +178,6 @@ Rectangle
                 }
             }
             console.log("upload progress : " + totalOffset + "/" + totalSize + " (" + (totalOffset/totalSize*100).toFixed(1) + "%")
-        }
-    }
-
-
-    // Retrieve which samples have been imported from uploaded files.
-    Connections
-    {
-        target: regovar.analysesManager.newFiltering
-        onSamplesChanged:
-        {
-            for (var k1 in regovar.analysesManager.newFiltering.samples)
-            {
-                var sample = regovar.analysesManager.newFiltering.samples[k1];
-                for (var k2 in root.model)
-                {
-                    var itemModel = root.model[k2];
-                    if (itemModel["file"] == sample["source"])
-                    {
-                        if (!(sample in itemModel["samples"]))
-                        {
-                            itemModel["samples"].push(sample);
-                        }
-                    }
-                }
-            }
         }
     }
 }

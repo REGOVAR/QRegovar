@@ -67,6 +67,16 @@ bool Sample::fromJson(QJsonObject json)
         mSubject = regovar->subjectsManager()->getOrCreateSubject(subjectId);
     }
 
+    refreshUIAttributes();
+
+    mLoaded = true;
+    emit dataChanged();
+    return true;
+}
+
+
+void Sample::refreshUIAttributes()
+{
     QJsonObject nameInfo;
     nameInfo.insert("name", mName);
     nameInfo.insert("nickname", mNickname);
@@ -74,13 +84,9 @@ bool Sample::fromJson(QJsonObject json)
 
     QJsonObject statusInfo;
     statusInfo.insert("status", mStatus);
-    statusInfo.insert("label", statusToLabel(mStatus, json["loading_progress"].toDouble()));
-    statusInfo.insert("progress", json["loading_progress"].toDouble());
+    statusInfo.insert("label", statusToLabel(mStatus, mLoadingProgress));
+    statusInfo.insert("progress", mLoadingProgress);
     setStatusUI(QVariant::fromValue(statusInfo));
-
-    mLoaded = true;
-    emit dataChanged();
-    return true;
 }
 
 

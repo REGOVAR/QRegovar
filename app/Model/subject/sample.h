@@ -82,6 +82,7 @@ public:
     inline void setStatus(SampleStatus status) { mStatus = status; emit dataChanged(); }
     inline void setSubject(Subject* subject) { mSubject = subject; emit dataChanged(); }
     inline void setReference(Reference* reference) { mReference = reference; emit dataChanged(); }
+    inline void setLoadingProgress(double progress) { mLoadingProgress = progress; emit dataChanged(); }
     void setStatus(QString status);
     inline void setNameUI(QVariant data) { mNameUI = data; emit dataChanged(); }
     inline void setStatusUI(QVariant data) { mStatusUI = data; emit dataChanged(); }
@@ -100,6 +101,8 @@ public:
     Q_INVOKABLE void load(bool forceRefresh=true);
     //! Convert sample status into a string value
     QString statusToLabel(SampleStatus status, double progress);
+
+    void refreshUIAttributes();
 
 Q_SIGNALS:
     void dataChanged();

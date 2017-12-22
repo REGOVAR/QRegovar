@@ -25,55 +25,6 @@ Rectangle
     onModelChanged: refreshModel()
 
 
-    function refreshModel()
-    {
-        if (model)
-        {
-            // Disconnect former models
-            if (fileModel && fileModel !== model["file"])
-            {
-                fileModel.dataChanged.disconnect(updateFileProgress);
-                fileModel = null;
-            }
-            if (sampleModel && model["samples"].length > 0 && sampleModel !== model["samples"][0])
-            {
-                // disconnect former model
-                sampleModel.dataChanged.disconnect(updateSampleProgress);
-                sampleModel = null;
-            }
-
-            root.enabled = !model["canceled"];
-            if (fileModel === null)
-            {
-                fileModel = model["file"];
-                fileModel.dataChanged.connect(updateFileProgress);
-            }
-            if (sampleModel === null && model["samples"].length > 0)
-            {
-                sampleModel = model["samples"][0];
-                sampleModel.dataChanged.connect(updateSampleProgress);
-
-
-                var names = [];
-                for (var k in model["samples"])
-                {
-                    var sample = model["samples"][k];
-                    names.push(sample.name);
-                }
-            }
-        }
-    }
-
-    function updateFileProgress()
-    {
-        fileUploadProgress.to = fileModel.size;
-        fileUploadProgress.value = fileModel.uploadOffset;
-    }
-    function updateSampleProgress()
-    {
-        sampleImportProgress.value = sampleModel.loadingProgress;
-    }
-
     ColumnLayout
     {
         anchors.fill: parent
@@ -145,4 +96,88 @@ Rectangle
         }
     }
 
+    // Retrieve which samples have been imported from uploaded files.
+    Connections
+    {
+        target: regovar.analysesManager.newFiltering
+        onSamplesChanged:
+        {
+            for (var k1 in regovar.analysesManager.newFiltering.samples)
+            {
+                var sample = regovar.analysesManager.newFiltering.samples[k1];
+                if (sample.source === fileModel)
+                {
+
+                    if (sampleModel === null)
+                    {
+                        sampleModel = sample;
+                        sampleModel.dataChanged.connect(updateSampleProgress);
+                    }
+                    if (!(sample in model["samples"]))
+                    {
+                        model["samples"].push(sample);
+                        samplesNames.push(sample.name);
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    function refreshModel()
+    {
+        if (model)
+        {
+            // Disconnect former models
+            if (fileModel && fileModel !== model["file"])
+            {
+                fileModel.dataChanged.disconnect(updateFileProgress);
+                fileModel = null;
+            }
+            if (sampleModel && model["samples"].length > 0 && sampleModel !== model["samples"][0])
+            {
+                // disconnect former model
+                sampleModel.dataChanged.disconnect(updateSampleProgress);
+                sampleModel = null;
+            }
+
+            root.enabled = !model["canceled"];
+            fileUploadProgress.to = model["fileProgressTo"];
+            fileUploadProgress.value = model["fileProgressValue"];
+            sampleImportProgress.value = model["sampleProgress"];
+
+            if (fileModel === null)
+            {
+                fileModel = model["file"];
+                fileModel.dataChanged.connect(updateFileProgress);
+            }
+            if (sampleModel === null && model["samples"].length > 0)
+            {
+                sampleModel = model["samples"][0];
+                sampleModel.dataChanged.connect(updateSampleProgress);
+
+
+                var names = [];
+                for (var k in model["samples"])
+                {
+                    var sample = model["samples"][k];
+                    names.push(sample.name);
+                }
+            }
+        }
+    }
+
+    function updateFileProgress()
+    {
+        fileUploadProgress.to = fileModel.size;
+        fileUploadProgress.value = fileModel.uploadOffset;
+        model["fileProgressTo"] = fileModel.size;
+        model["fileProgressValue"] = fileModel.uploadOffset;
+    }
+    function updateSampleProgress()
+    {
+        sampleImportProgress.value = sampleModel.loadingProgress;
+        model["sampleProgress"] = sampleModel.loadingProgress;
+    }
 }

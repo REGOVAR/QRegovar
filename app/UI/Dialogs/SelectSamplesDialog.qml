@@ -319,11 +319,8 @@ Dialog
                     });
                     samplesSelected(samples);
                 }
-                // Else, OK clicked from "import sample file" view: import already done on upload completed
-                else
-                {
-                    samplesSelected(sampleImportView.getImportedSamples());
-                }
+                // Else, OK clicked from "import sample file" view: sample import done automaticaly on upload completed
+
                 sampleDialog.accept();
             }
         }

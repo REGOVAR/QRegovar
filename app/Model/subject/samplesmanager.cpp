@@ -71,7 +71,7 @@ void SamplesManager::processPushNotification(QString action, QJsonObject data)
     // Retrieve realtime progress data
     QString status = data["status"].toString();
     double progressValue = 0.0;
-    if (action == "import_vcf_processing")
+    if (action == "import_vcf_processing" || action == "import_vcf_start")
     {
         progressValue = data["progress"].toDouble();
     }
@@ -89,11 +89,19 @@ void SamplesManager::processPushNotification(QString action, QJsonObject data)
 
         Sample* sample = getOrCreate(sid);
         sample->setStatus(status);
+        sample->setLoadingProgress(progressValue);
+        sample->refreshUIAttributes();
+    }
 
-        QJsonObject statusInfo;
-        statusInfo.insert("status", sample->status());
-        statusInfo.insert("label", sample->statusToLabel(sample->status(), progressValue));
-        sample->setStatusUI(QVariant::fromValue(statusInfo));
-
+    // Notify view when new sample import start (import wizard)
+    if (action == "import_vcf_start")
+    {
+        QList<int> ids;
+        for (QJsonValue sample: data["samples"].toArray())
+        {
+            QJsonObject sampleData = sample.toObject();
+            ids << sampleData["id"].toInt();
+        }
+        emit sampleImportStart(ids);
     }
 }

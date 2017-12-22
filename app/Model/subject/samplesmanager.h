@@ -34,6 +34,7 @@ Q_SIGNALS:
     // Property changed event
     void referencialIdChanged();
     void samplesListChanged();
+    void sampleImportStart(QList<int> samplesIds);
 
 private:
     //! The id of the current referencial (update sample list on change)
