@@ -198,6 +198,7 @@ GenericScreen
                                 else
                                 {
                                     statusIconAnimation.stop();
+                                    rotation = 0;
                                 }
                             }
 

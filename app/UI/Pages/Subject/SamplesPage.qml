@@ -111,6 +111,7 @@ Rectangle
                             else
                             {
                                 statusIconAnimation.stop();
+                                rotation = 0;
                             }
                         }
                         NumberAnimation on rotation
