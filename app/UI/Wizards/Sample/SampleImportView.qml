@@ -49,44 +49,62 @@ Rectangle
         text: qsTr("This page allow you to start and monitore the import of new samples from local file.")
     }
 
-    ColumnLayout
+    GridLayout
     {
         anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : root.top
         anchors.left: root.left
         anchors.right: root.right
         anchors.bottom: root.bottom
         anchors.margins: 10
+        columns: 2
+        rowSpacing: 10
+        columnSpacing: 10
 
-        spacing: 10
 
         Text
         {
             Layout.fillWidth: true
-            text: "Import in progress"
+            text: qsTr("Import in progress")
         }
 
-        ScrollView
+        Button
         {
-            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
+            text: qsTr("Import samples\nfrom files")
+            onClicked: filesDialog.open()
+        }
+
+        Rectangle
+        {
+            Layout.columnSpan: 2
             Layout.fillHeight: true
-            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+            Layout.fillWidth: true
+            anchors.margins: 10
 
-            Column
+            color: Regovar.theme.backgroundColor.alt
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+
+
+            ScrollView
             {
-                id: importList
-                spacing: 5
+                id: importScrollView
+                anchors.fill: parent
+                horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-
-
+                Column
+                {
+                    id: importList
+                    x: 10
+                    y: 10
+                    width: importScrollView.width - 30
+                    spacing: 5
+                }
             }
         }
 
-        ButtonIcon
-        {
-            text: "Import additional sample from files"
-            onClicked: filesDialog.open()
-        }
     }
+
 
     Component
     {
@@ -149,7 +167,7 @@ Rectangle
             if (root.fileUploadingList.indexOf(localPath) != -1)
             {
                 // Create new file/sample  import control
-                var elmt = importFileControl.createObject(importList);
+                var elmt = importFileControl.createObject(importList, {"anchor.left": "parent.left", "anchor.right": "parent.right"});
                 elmt.fileModel = regovar.filesManager.getOrCreate(fileId);
                 elmt.fileModel.load();
             }

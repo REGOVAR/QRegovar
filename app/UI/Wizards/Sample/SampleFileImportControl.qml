@@ -46,7 +46,7 @@ Rectangle
             {
 
                 Layout.fillWidth: true
-                text: fileModel.name
+                text: fileModel ? fileModel.name : ""
             }
             ButtonInline
             {
@@ -122,12 +122,6 @@ Rectangle
                     sampleModel = regovar.samplesManager.getOrCreate(samplesIds[0]);
                     sampleModel.dataChanged.connect(updateSampleProgress);
                 }
-
-//                    if (!(sample in model["samples"]))
-//                    {
-//                        model["samples"].push(sample);
-//                        samplesNames.push(sample.name);
-//                    }
             }
         }
     }

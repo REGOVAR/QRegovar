@@ -290,7 +290,7 @@ Dialog
         {
             id: sampleImportView
             anchors.fill: root
-            // anchors.topMargin: sampleViewHeader.height
+            anchors.bottomMargin: okButton.height + 20
             color: Regovar.theme.backgroundColor.main
             visible: importingFile
             enabled: importingFile
