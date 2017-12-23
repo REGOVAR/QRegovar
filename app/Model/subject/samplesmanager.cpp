@@ -102,6 +102,6 @@ void SamplesManager::processPushNotification(QString action, QJsonObject data)
             QJsonObject sampleData = sample.toObject();
             ids << sampleData["id"].toInt();
         }
-        emit sampleImportStart(ids);
+        emit sampleImportStart(data["file_id"].toString().toInt(), ids);
     }
 }

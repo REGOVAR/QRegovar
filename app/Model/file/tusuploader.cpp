@@ -321,9 +321,11 @@ void TusUploader::patchUpload(TusUploadItem* item)
     else
     {
         // qDebug() << "UPLOAD DONE. " << item->path << "to" << item->uploadUrl;
-        item->file->close();
-        item->file->deleteLater();
-
+        if (item->file) // due to asynch request, sometime, file have been already clear by another request
+        {
+            item->file->close();
+            item->file->deleteLater();
+        }
 
         mInProgress.removeOne(item);
         emit uploadEnded(item);

@@ -17,12 +17,20 @@ Rectangle
     height: 100
 
     property File fileModel: null
+    onFileModelChanged:
+    {
+        if (fileModel)
+        {
+            fileModel.dataChanged.connect(updateFileProgress);
+        }
+    }
+
+    property double progress: 0
+    property bool sampleImportAsked: false
     property Sample sampleModel: null
     property var samplesNames: []
-    property double progress: 0
 
-    property var model
-    onModelChanged: refreshModel()
+
 
 
     ColumnLayout
@@ -62,7 +70,6 @@ Rectangle
                 onClicked:
                 {
                     regovar.filesManager.cancelUpload(fileModel.id);
-                    model["canceled"] = true;
                     root.enabled = false;
                 }
             }
@@ -93,91 +100,74 @@ Rectangle
                 Layout.fillWidth: true
                 value: 0
             }
+
         }
     }
 
     // Retrieve which samples have been imported from uploaded files.
     Connections
     {
-        target: regovar.analysesManager.newFiltering
-        onSamplesChanged:
+        target: regovar.samplesManager
+        onSampleImportStart:
         {
-            for (var k1 in regovar.analysesManager.newFiltering.samples)
+            if (fileModel && fileId == fileModel.id)
             {
-                var sample = regovar.analysesManager.newFiltering.samples[k1];
-                if (sample.source === fileModel)
+                if (samplesIds.length == 0)
                 {
-
-                    if (sampleModel === null)
-                    {
-                        sampleModel = sample;
-                        sampleModel.dataChanged.connect(updateSampleProgress);
-                    }
-                    if (!(sample in model["samples"]))
-                    {
-                        model["samples"].push(sample);
-                        samplesNames.push(sample.name);
-                    }
+                    // TODO: no sample found in the file. no import done
                 }
-            }
-        }
-    }
-
-
-
-    function refreshModel()
-    {
-        if (model)
-        {
-            // Disconnect former models
-            if (fileModel && fileModel !== model["file"])
-            {
-                fileModel.dataChanged.disconnect(updateFileProgress);
-                fileModel = null;
-            }
-            if (sampleModel && model["samples"].length > 0 && sampleModel !== model["samples"][0])
-            {
-                // disconnect former model
-                sampleModel.dataChanged.disconnect(updateSampleProgress);
-                sampleModel = null;
-            }
-
-            root.enabled = !model["canceled"];
-            fileUploadProgress.to = model["fileProgressTo"];
-            fileUploadProgress.value = model["fileProgressValue"];
-            sampleImportProgress.value = model["sampleProgress"];
-
-            if (fileModel === null)
-            {
-                fileModel = model["file"];
-                fileModel.dataChanged.connect(updateFileProgress);
-            }
-            if (sampleModel === null && model["samples"].length > 0)
-            {
-                sampleModel = model["samples"][0];
-                sampleModel.dataChanged.connect(updateSampleProgress);
-
-
-                var names = [];
-                for (var k in model["samples"])
+                else
                 {
-                    var sample = model["samples"][k];
-                    names.push(sample.name);
+                    // Get first sample as ref to be notified of import progress
+                    sampleModel = regovar.samplesManager.getOrCreate(samplesIds[0]);
+                    sampleModel.dataChanged.connect(updateSampleProgress);
                 }
+
+//                    if (!(sample in model["samples"]))
+//                    {
+//                        model["samples"].push(sample);
+//                        samplesNames.push(sample.name);
+//                    }
             }
         }
     }
 
     function updateFileProgress()
     {
-        fileUploadProgress.to = fileModel.size;
-        fileUploadProgress.value = fileModel.uploadOffset;
-        model["fileProgressTo"] = fileModel.size;
-        model["fileProgressValue"] = fileModel.uploadOffset;
+        if (fileModel)
+        {
+            fileUploadProgress.to = fileModel.size;
+            fileUploadProgress.value = fileModel.uploadOffset;
+
+            // Check if need to start sample import
+            if (!sampleImportAsked && fileModel.size !=0 && fileModel.size == fileModel.uploadOffset)
+            {
+                sampleImportAsked = true;
+                regovar.analysesManager.newFiltering.addSamplesFromFile(fileModel.id);
+            }
+        }
     }
+
     function updateSampleProgress()
     {
-        sampleImportProgress.value = sampleModel.loadingProgress;
-        model["sampleProgress"] = sampleModel.loadingProgress;
+        if (sampleModel)
+        {
+            sampleImportProgress.value = sampleModel.loadingProgress;
+        }
+    }
+
+    function clear()
+    {
+        console.log("clear SampleFileImportControl")
+        if (fileModel)
+        {
+            console.log(" > fileModel");
+            fileModel.dataChanged.disconnect(updateFileProgress);
+        }
+        if (sampleModel)
+        {
+            console.log(" > samplemodel");
+            sampleModel.dataChanged.disconnect(updateSampleProgress);
+        }
     }
 }

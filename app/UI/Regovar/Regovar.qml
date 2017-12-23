@@ -17,6 +17,8 @@ QtObject
      */
 
 
+
+
     //! Collection of sub windows
     property var openAnalysisWindows;
 

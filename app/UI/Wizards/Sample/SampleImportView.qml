@@ -13,14 +13,25 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    // List of file's paths selected by the fileDialog to allow us
-    // to map with uploding file when enqueued signal is raised by the model
-    property var fileUploadList: []
+    // FIXME: Workaround for Weird bug from QML ?
+    // See connection on regovar.filesManager.onFileUploadEnqueued below
+    property var fileUploadingList: []
+
     // List of file id of file which uploaded is done and for which we had start the
     // Sample import
     property var sampleImportStarted: []
     // List of file that are uploading and
     property var model: []
+
+    Component.onDestruction:
+    {
+        // Clean connection with model
+        console.log("Destroy SampleImportView : clear model connections")
+        for (var elmt in importList)
+        {
+            elmt.clear();
+        }
+    }
 
     // Help information on this page
     Box
@@ -62,17 +73,11 @@ Rectangle
 
             Column
             {
+                id: importList
                 spacing: 5
 
-                Repeater
-                {
-                    id: importRepeater
 
-                    SampleFileImportControl
-                    {
-                        model: modelData
-                    }
-                }
+
             }
         }
 
@@ -81,6 +86,12 @@ Rectangle
             text: "Import additional sample from files"
             onClicked: filesDialog.open()
         }
+    }
+
+    Component
+    {
+        id: importFileControl
+        SampleFileImportControl {}
     }
 
     FileDialog
@@ -103,6 +114,8 @@ Rectangle
     {
         console.log("Start upload of sample's files : " + files);
         var filesToImport = [];
+
+        // import only file that are not already importating
         for (var idx=0; idx<files.length; idx++)
         {
             var file = files[idx];
@@ -111,9 +124,9 @@ Rectangle
                 file = file.substr(8);
             }
 
-            if (file in fileUploadList) continue;
+            if (file in root.fileUploadingList) continue;
             filesToImport.push(file);
-            root.fileUploadList.push(file);
+            root.fileUploadingList.push(file);
         }
 
         // Enqueue file to the TUS upload manager.
@@ -129,55 +142,17 @@ Rectangle
         target: regovar.filesManager
         onFileUploadEnqueued:
         {
-            if (!(localPath in fileUploadList))
+            // FIXME: This test is necessary as for a weird raison, QML connection is raised 2 times:
+            // - one time with fileUploadingList as en empty object
+            // - and one time with the fileUploadingList in the good states...
+            // So to avoid to connect 2 times for a same file...
+            if (root.fileUploadingList.indexOf(localPath) != -1)
             {
-                var itemModel = {
-                    "file": regovar.filesManager.getOrCreate(fileId),
-                    "samples": [],
-                    "sampleImportCalled": false,
-                    "canceled": false,
-                    "fileProgressTo": 0,
-                    "fileProgressValue": 0,
-                    "sampleProgress": 0};
-                itemModel["file"].load();
-                root.model.push(itemModel);
-
-                importRepeater.model = root.model;
+                // Create new file/sample  import control
+                var elmt = importFileControl.createObject(importList);
+                elmt.fileModel = regovar.filesManager.getOrCreate(fileId);
+                elmt.fileModel.load();
             }
-        }
-    }
-
-    // On Upload progress update: check if upload 100% then start sample import
-    Connections
-    {
-        target: regovar.filesManager
-        onUploadsChanged:
-        {
-            // Get progress for all files currently uploading,
-            // + compute global progress for all uploads
-            // + start sample import for each file uploaded
-            var totalOffset = 0;
-            var totalSize = 0;
-            for (var k1 in regovar.filesManager.uploadsList)
-            {
-                var file = regovar.filesManager.uploadsList[k1];
-                for (var k2 in root.model)
-                {
-                    var itemModel = root.model[k2];
-                    if (file == itemModel["file"])
-                    {
-                        totalOffset += file.uploadOffset;
-                        totalSize += file.size;
-
-                        if (file.loaded && file.uploadOffset == file.size && !itemModel["sampleImportCalled"])
-                        {
-                            itemModel["sampleImportCalled"] = true;
-                            regovar.analysesManager.newFiltering.addSamplesFromFile(file.id);
-                        }
-                    }
-                }
-            }
-            console.log("upload progress : " + totalOffset + "/" + totalSize + " (" + (totalOffset/totalSize*100).toFixed(1) + "%")
         }
     }
 }

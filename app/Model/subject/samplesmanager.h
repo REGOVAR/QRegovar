@@ -23,7 +23,7 @@ public:
     void setReferenceId(int ref);
 
     // Methods
-    Sample* getOrCreate(int sampleId);
+    Q_INVOKABLE Sample* getOrCreate(int sampleId);
 
 public Q_SLOTS:
     // Called by NetworkManager when need to process WebSocket messages managed by SampleManager
@@ -34,7 +34,7 @@ Q_SIGNALS:
     // Property changed event
     void referencialIdChanged();
     void samplesListChanged();
-    void sampleImportStart(QList<int> samplesIds);
+    void sampleImportStart(int fileId, QList<int> samplesIds);
 
 private:
     //! The id of the current referencial (update sample list on change)
