@@ -42,7 +42,7 @@ void FilesManager::setCacheMaxSize(int size)
 
 
 
-File* FilesManager::getOrCreate(int id)
+File* FilesManager::getOrCreateFile(int id)
 {
     if (!mFiles.contains(id))
     {
@@ -118,7 +118,7 @@ void FilesManager::loadFilesBrowser()
             for (const QJsonValue& data: json["data"].toArray())
             {
                 QJsonObject fileData = data.toObject();
-                File* file = getOrCreate(fileData["id"].toInt());
+                File* file = getOrCreateFile(fileData["id"].toInt());
                 file->fromJson(fileData);
                 mRemoteFilesList.append(file);
             }
@@ -152,7 +152,7 @@ void FilesManager::filesEnqueued(QHash<QString,QString> mapping)
         // retrieve file id into the mapping url
         QStringList pathSplitted = mapping[key].split("/");
         int id = pathSplitted[pathSplitted.count()-1].toInt();
-        File* file = getOrCreate(id);
+        File* file = getOrCreateFile(id);
         file->load();
         mUploadsList.append(file);
         emit fileUploadEnqueued(key, id);
@@ -263,7 +263,7 @@ void FilesManager::processPushNotification(QString action, QJsonObject json)
     {
         // update file informations
         int id = json["id"].toInt();
-        File* file = getOrCreate(id);
+        File* file = getOrCreateFile(id);
         file->fromJson(json);
         // update global upload progress
         if (mUploadsList.indexOf(file) != -1)

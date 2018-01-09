@@ -182,8 +182,7 @@ bool File::downloadLocalFile()
             //if (mDownloadOffset == mSize)
             {
                 mLocalFileReady = true;
-                emit dataChanged();
-                emit dataChanged();
+                emit localFileReadyChanged();
                 emit dataChanged();
             }
 //            else
@@ -206,8 +205,7 @@ bool File::downloadLocalFile()
                     file->close();
                     mDownloadOffset = file->size();
                     mLocalFileReady = true;
-                    emit dataChanged();
-                    emit dataChanged();
+                    emit localFileReadyChanged();
                     emit dataChanged();
                 }
                 else

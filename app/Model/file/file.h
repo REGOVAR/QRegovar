@@ -28,7 +28,7 @@ class File : public QObject
     Q_PROPERTY(FileStatus status READ status WRITE setStatus NOTIFY dataChanged)
     // Local file attributes
     Q_PROPERTY(QString localFilePath READ localFilePath NOTIFY dataChanged)
-    Q_PROPERTY(bool localFileReady READ localFileReady NOTIFY dataChanged)
+    Q_PROPERTY(bool localFileReady READ localFileReady NOTIFY localFileReadyChanged)
     Q_PROPERTY(qint64 downloadOffset READ downloadOffset WRITE setDownloadOffset NOTIFY dataChanged)
     Q_PROPERTY(FileStatus localStatus READ localStatus WRITE setLocalStatus NOTIFY dataChanged)
 
@@ -121,6 +121,7 @@ public:
 
 Q_SIGNALS:
     void dataChanged();
+    void localFileReadyChanged();
 
 
 private:

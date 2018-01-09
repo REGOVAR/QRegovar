@@ -33,7 +33,7 @@ QtObject
     {
         model:  [
             { "icon": "a", "label": qsTr("Welcome"),     "page": "WelcomPage.qml", "sublevel": [], "subindex": -1},
-            { "icon": "z", "label": qsTr("Search"),      "page": "../Wizards/Sample/SampleImportView.qml", "sublevel": [], "subindex": -1}, // "Browse/SearchPage.qml"
+            { "icon": "z", "label": qsTr("Search"),      "page": "Browse/SearchPage.qml", "sublevel": [], "subindex": -1},
             { "icon": "c", "label": qsTr("Projects"),    "page": "", "sublevel": [
                 { "icon": "c", "label": qsTr("Browser"), "page": "Browse/ProjectsPage.qml", "sublevel": [], "subindex": -1, "projectId": -1}
                 ], "subindex": 0},

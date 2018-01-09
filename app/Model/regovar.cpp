@@ -300,7 +300,7 @@ Reference* Regovar::referenceFromId(int id)
 void Regovar::getFileInfo(int fileId, int analysisId)
 {
     emit fileInformationSearching(analysisId);
-    File* file = mFilesManager->getOrCreate(fileId);
+    File* file = mFilesManager->getOrCreateFile(fileId);
     file->load(false);
     emit fileInformationReady(file, analysisId);
 }

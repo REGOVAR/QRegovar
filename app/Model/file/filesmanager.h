@@ -38,7 +38,7 @@ public:
     void setCacheMaxSize(int size);
 
     // Method
-    Q_INVOKABLE File* getOrCreate(int id);
+    Q_INVOKABLE File* getOrCreateFile(int id);
     Q_INVOKABLE File* getFile(int id);
     Q_INVOKABLE bool deleteFile(int id);
     Q_INVOKABLE void loadFilesBrowser();
