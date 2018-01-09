@@ -147,7 +147,7 @@ public:
     inline void setWelcomIsLoading(bool flag) { mWelcomIsLoading=flag; emit welcomIsLoadingChanged(); }
 
     // Methods
-    Reference* referenceFromId(int id);
+    Q_INVOKABLE Reference* referenceFromId(int id);
     // Others
     Q_INVOKABLE inline void openNewProjectWizard() { emit newProjectWizardOpen(); }
     Q_INVOKABLE inline void openNewAnalysisWizard() { emit newAnalysisWizardOpen(); }

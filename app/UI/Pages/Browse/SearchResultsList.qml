@@ -162,7 +162,6 @@ ScrollView
                     firstname: model.modelData.firstname
                     lastname: model.modelData.lastname
                     sex: model.modelData.sex
-                    age: model.modelData.age
                     onClicked: regovar.subjectsManager.openSubject(subjectId)
                 }
             }
@@ -198,6 +197,9 @@ ScrollView
                     width: root.viewport.width
                     date: model.modelData.update_date
                     name: model.modelData.name
+                    refid: model.modelData.reference_id
+                    subject: model.modelData.subject_id > 0 ? regovar.subjectsManager.getOrCreateSubject(model.modelData.subject_id).subjectUI : null
+
                     onClicked: regovar.getSampleInfo(model.modelData.id)
                 }
             }

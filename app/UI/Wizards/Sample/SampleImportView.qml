@@ -168,7 +168,7 @@ Rectangle
             {
                 // Create new file/sample  import control
                 var elmt = importFileControl.createObject(importList, {"anchor.left": "parent.left", "anchor.right": "parent.right"});
-                elmt.fileModel = regovar.filesManager.getOrCreate(fileId);
+                elmt.fileModel = regovar.filesManager.getOrCreateFile(fileId);
                 elmt.fileModel.load();
             }
         }

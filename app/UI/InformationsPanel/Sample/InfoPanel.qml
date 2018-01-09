@@ -38,7 +38,7 @@ Rectangle
         if (sampleModel && sampleModel.loaded)
         {
             nameField.text = sampleModel.name;
-            commentField.text = sampleModel.comment;
+            comment.text = sampleModel.comment;
             creation.text = Regovar.formatDate(sampleModel.createDate);
             vcfFile.text = sampleModel.source.name;
             reference.text = sampleModel.reference.name;
@@ -46,7 +46,7 @@ Rectangle
         else
         {
             nameField.text = "";
-            commentField.text = "";
+            comment.text = "";
             creation.text = "";
             vcfFile.text = "";
             reference.text = "";

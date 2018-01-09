@@ -18,7 +18,7 @@ InformationsPanel
         var subject = "-";
         if ("subject" in data)
         {
-            subject = data.subject.identifier + " - " + data.subject.lastname + " " + data.subject.firstname;
+            subject = data["subject"].identifier + " - " + data["subject"].lastname + " " + data["subject"].firstname;
         }
         root.title += "<br/>Subject: " + subject + "<br/>Status: " + data.status;
 

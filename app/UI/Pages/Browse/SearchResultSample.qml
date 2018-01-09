@@ -13,9 +13,8 @@ Rectangle
     property real dateColWidth: 100
     property string date: ""
     property string name: ""
-    property string subjectIdentifiant: ""
-    property string subjectLastName: ""
-    property string subjectFirstName: ""
+    property int refid: 0
+    property var subject: null
 
 
 
@@ -58,15 +57,17 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
             text: "4"
         }
-
         Text
         {
             font.pixelSize: Regovar.theme.font.size.normal
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            font.family: "monospace"
-            text: "MD-02-75"+ " - "
+            text: name + (refid > 0 ? " (" + regovar.referenceFromId(refid).name + ")" : "")
+            elide: Text.ElideRight
         }
+
+
+        // IF Subject exist
         Text
         {
             Layout.minimumWidth: Regovar.theme.font.boxSize.normal
@@ -75,37 +76,30 @@ Rectangle
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            text: "{"
+            text: subject != null ? "{" : ""
             elide: Text.ElideRight
         }
         Text
         {
-            font.pixelSize: Regovar.theme.font.size.normal
-            color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-            verticalAlignment: Text.AlignVCenter
-            font.family: Regovar.theme.font.familly
-            text: "DUPONT Michel (64y)"
-        }
-        Text
-        {
             Layout.minimumWidth: Regovar.theme.font.boxSize.normal
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            text: "{"
+            text: subject != null ? subject["sex"]  : ""
+            elide: Text.ElideRight
         }
-
         Text
         {
             Layout.fillWidth: true
             font.pixelSize: Regovar.theme.font.size.normal
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: name
-            elide: Text.ElideRight
+            font.family: Regovar.theme.font.familly
+            text: subject != null ? subject["name"] : "" // + " (" + subject["age"] +")"
         }
+
     }
 
     MouseArea
