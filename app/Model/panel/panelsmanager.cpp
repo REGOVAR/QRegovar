@@ -40,10 +40,12 @@ void PanelsManager::commitNewPanel()
     {
         if (success)
         {
-            QJsonObject data = json["data"].toObject();
-            Panel* panel = getOrCreatePanel(data["id"].toString());
-            panel->fromJson(data);
-            updatePanelsLists();
+//            QJsonObject data = json["data"].toObject();
+//            Panel* panel = getOrCreatePanel(data["id"].toString());
+//            panel->fromJson(data);
+//            mPanelsTree->refresh(json);
+//            updatePanelsLists();
+            refresh();
             emit commitNewPanelDone(true);
         }
         else

@@ -74,6 +74,8 @@ public:
     Q_INVOKABLE bool addVersion(QJsonObject data, bool append=false);
     //! Add a new entry to the list (only used by the qml wizard)
     Q_INVOKABLE void addEntry(QJsonObject data);
+    //! Remove entry at the given index in the list (only used by the qml wizard)
+    Q_INVOKABLE inline void removeEntryAt(int idx) { if (mEntries.count() > idx) mEntries.removeAt(idx); emit dataChanged(); }
     //! Reset data (only used by Creation wizard to reset its model)
     Q_INVOKABLE void reset();
     //! Return panel version details if provided id match; otherwise return null

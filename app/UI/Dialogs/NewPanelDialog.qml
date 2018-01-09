@@ -158,10 +158,11 @@ Dialog
 
             TableView
             {
+                id: panelEntriesTable
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
-                model: regovar.panelsManager.newPanel.currentEntries
+                model: regovar.panelsManager.newPanel.entries
 
                 TableViewColumn
                 {
@@ -280,7 +281,7 @@ Dialog
 
     function removeSelectedEntry()
     {
-
+        regovar.panelsManager.newPanel.removeEntryAt(panelEntriesTable.currentRow);
     }
 
 

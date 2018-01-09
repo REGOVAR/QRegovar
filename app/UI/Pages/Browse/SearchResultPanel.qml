@@ -7,14 +7,14 @@ import "../../Framework"
 Rectangle
 {
     id: root
-    property int panelId
+    property string panelId
     property string name
     property string date: ""
     property string owner: ""
     property real dateColWidth: 100
 
     property bool isHover: false
-    signal clicked(var userId)
+    signal clicked(var panelId)
 
     height: Regovar.theme.font.boxSize.normal
     color: "transparent"

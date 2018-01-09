@@ -382,7 +382,7 @@ ScrollView
                     name: model.modelData.name
                     owner: model.modelData.owner
                     date: model.modelData.update_date
-                    onClicked: regovar.getPanelInfo(model.modelData.id)
+                    onClicked: regovar.getPanelInfo(panelId)
                 }
             }
         }
