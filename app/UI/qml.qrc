@@ -197,5 +197,6 @@
         <file>InformationsPanel/Sample/StatsQualPanel.qml</file>
         <file>Wizards/Sample/SampleFileImportControl.qml</file>
         <file>Wizards/Sample/SampleImportView.qml</file>
+        <file>Dialogs/NewPanelVersionDialog.qml</file>
     </qresource>
 </RCC>

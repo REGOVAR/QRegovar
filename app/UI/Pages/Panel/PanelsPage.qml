@@ -134,49 +134,25 @@ Rectangle
     NewPanelDialog { id: newPanelDialog }
 
 
-    Connections
-    {
-        target: regovar
-        onVariantInformationReady: onOpenVariantInfoDialogFinish(json)
-    }
-    Dialog
-    {
-        id: viewPanelDialog
-        title: qsTr("Panel informations")
-        visible: false
-        modality: Qt.NonModal
-        width: 500
-        height: 400
-
-        property alias data: infoPanel.model
-
-        contentItem: PanelInformations
-        {
-            id: infoPanel
-        }
-    }
-
-
 
     /// Retrive model of the selected panel in the treeview and display information.
     function openSelectedPanel()
     {
-
-        var item = regovar.panelsManager.panelsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
-        if (item !== undefined)
+        var itemId = regovar.panelsManager.panelsTree.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
+        if (itemId !== undefined && itemId != "")
         {
-            if (item.isAnalysis)
-                regovar.analysesManager.openAnalysis(item.type, item.id);
-            else
-                regovar.projectsManager.openProject(item.id);
+            regovar.getPanelInfo(itemId);
         }
     }
 
     /// Retrive model of the selected panel in the treeview and display wizard to create new version
     function updateSelectedPanel()
     {
-        var panelId = regovar.panelsManager.panelsTree.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
-        newPanelDialog.model = regovar.panelsManager.getOrCreatePanel(panelId);
-        newPanelDialog.open();
+        var item = regovar.panelsManager.panelsTree.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
+        if (item !== undefined)
+        {
+            newPanelDialog.model = regovar.panelsManager.getOrCreatePanel(panelId);
+            newPanelDialog.open();
+        }
     }
 }
