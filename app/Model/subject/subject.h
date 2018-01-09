@@ -35,8 +35,8 @@ public:
     enum Sex
     {
         Unknow=0,
-        Male,
         Female,
+        Male,
     };
     Q_ENUM(Sex)
 

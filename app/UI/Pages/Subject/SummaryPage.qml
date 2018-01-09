@@ -93,7 +93,7 @@ Rectangle
 
         Column
         {
-            Layout.rowSpan: 7
+            Layout.rowSpan: 8
             Layout.alignment: Qt.AlignTop
             spacing: 10
 
@@ -171,6 +171,23 @@ Rectangle
             enabled: editionMode
             placeholder: qsTr("YYYY-MM-DD")
             text: ""
+        }
+
+        Text
+        {
+            text: qsTr("Sex")
+            color: Regovar.theme.primaryColor.back.dark
+            font.pixelSize: Regovar.theme.font.size.normal
+            font.family: Regovar.theme.font.familly
+            verticalAlignment: Text.AlignVCenter
+            height: 35
+        }
+        ComboBox
+        {
+            id: sexField
+            Layout.fillWidth: true
+            enabled: editionMode
+            model: [qsTr("Unknow"), qsTr("Female"), qsTr("Male")]
         }
 
         Text
@@ -300,6 +317,7 @@ Rectangle
             dateOfBirthField.text = Regovar.formatShortDate(model.dateOfBirth);
             familyNumberField.text = model.familyNumber;
             commentField.text = model.comment;
+            sexField.currentIndex = model.sex;
         }
     }
 
@@ -313,6 +331,7 @@ Rectangle
             model.familyNumber = familyNumberField.text;
             model.comment = commentField.text;
             model.dateOfBirth = Regovar.dateFromShortString(dateOfBirthField.text);
+            model.sex = sexField.currentIndex;
 
             model.save();
             nameLabel.text = model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname;
