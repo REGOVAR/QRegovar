@@ -203,7 +203,7 @@ Dialog
                     if (idField.text.trim() != "")
                     {
                         loadingIndicator.visible = true;
-                        regovar.subjectsManager.newSubject(idField.text.trim(), firstnameField.text, lastnameField.text, sexField.currentIndex, dateOfBirthField.text, familyNumberField.text, commentField.text);
+                        regovar.subjectsManager.newSubject(idField.text.trim(), firstnameField.text.trim(), lastnameField.text.trim(), sexField.currentIndex, dateOfBirthField.text.trim(), familyNumberField.text.trim(), commentField.text.trim());
                     }
                 }
             }

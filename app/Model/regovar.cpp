@@ -494,6 +494,13 @@ void Regovar::raiseError(QJsonObject json)
 }
 
 
+QDateTime Regovar::dateFromShortString(QString date)
+{
+    QStringList dateElmt = date.split("-");
+    return QDateTime(QDate(dateElmt[0].toInt(), dateElmt[1].toInt(),  dateElmt[2].toInt()), QTime(12,0,0));
+}
+
+
 
 
 void Regovar::search(QString query)

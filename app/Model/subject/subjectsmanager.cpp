@@ -61,9 +61,9 @@ void SubjectsManager::newSubject(QString identifier, QString firstname, QString 
     body.insert("firstname", firstname);
     body.insert("lastname", lastname);
     body.insert("sex", sex == 1 ? "male" : sex == 2 ? "female" : "unknow");
-    body.insert("dateOfBirth", dateOfBirth);
-    body.insert("familyNumber", familyNumber);
+    body.insert("family_number", familyNumber);
     body.insert("comment", comment);
+    if (!dateOfBirth.isEmpty()) body.insert("dateofbirth", regovar->dateFromShortString(dateOfBirth).toString(Qt::ISODate));
 
     Request* req = Request::post(QString("/subject"), QJsonDocument(body).toJson());
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
