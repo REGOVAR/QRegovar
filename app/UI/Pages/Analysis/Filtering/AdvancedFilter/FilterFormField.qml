@@ -226,7 +226,10 @@ Rectangle
         {
             model.newConditionModel.type = AdvancedFilterModel.FieldBlock;
             model.newConditionModel.field = fieldSelector.selectedItem;
-            model.newConditionModel.op = model.newConditionModel.opList[operatorSelector.currentIndex];
+            if (model.newConditionModel.opList.length > 0)
+            {
+                model.newConditionModel.op = model.newConditionModel.opList[operatorSelector.currentIndex];
+            }
 
             if (model.newConditionModel.field.type == "int")
             {
@@ -238,6 +241,7 @@ Rectangle
             }
             else if (model.newConditionModel.field.type == "bool")
             {
+                model.newConditionModel.op = "==";
                 model.newConditionModel.value = fieldBoolInput.checked;
             }
             else
