@@ -232,7 +232,7 @@ Dialog
             Button
             {
                 text: root.currentStep == 1 ? qsTr("Next >") : qsTr("Finish")
-                enabled: panelNameField.text.trim() != "" && !newPanelEntryDialog.visible
+                enabled: panelNameField.text.trim() != "" && versionField.text.trim() != "" && !newPanelEntryDialog.visible
                 onClicked:
                 {
                     if (step1.visible)
@@ -296,6 +296,7 @@ Dialog
 
     function commit()
     {
+        regovar.panelsManager.newPanel.panelId = "";
         regovar.panelsManager.newPanel.name = panelNameField.text;
         regovar.panelsManager.newPanel.version = versionField.text;
         regovar.panelsManager.newPanel.owner = ownerField.text;
