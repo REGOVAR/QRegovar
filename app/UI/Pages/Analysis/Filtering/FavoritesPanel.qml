@@ -229,7 +229,7 @@ Rectangle
                                         anchors.bottom: parent.bottom
                                         anchors.bottomMargin: 2
 
-                                        text: qsTr("Saving") + " (" + (modelData.progress * 100) + "%)"
+                                        text: qsTr("Saving")
                                         font.pixelSize: Regovar.theme.font.size.small
                                         color: Regovar.theme.primaryColor.back.normal
                                         elide: Text.ElideRight
