@@ -52,9 +52,10 @@ QuickFilterBox
 
     onModelChanged:
     {
-//        if (model)
-//        {
-//            root.enabled = model.quickfilters.frequenceFilter.isVisible();
+        if (model)
+        {
+            root.enabled = model.quickfilters.phenotypeFilter.isVisible();
+        }
 //            gAll.model =  model.quickfilters.frequenceFilter._1000GAll;
 //            exacAll.model = model.quickfilters.frequenceFilter.exacAll;
 

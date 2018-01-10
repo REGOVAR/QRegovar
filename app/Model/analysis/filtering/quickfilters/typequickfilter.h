@@ -27,11 +27,11 @@ public:
     bool loadJson(QJsonArray filter) override;
     void init(QString fuid);
 
-    inline QuickFilterField* missense()   { return mFields[0]; }
-    inline QuickFilterField* nonsense()   { return mFields[1]; }
-    inline QuickFilterField* splicing()   { return mFields[2]; }
-    inline QuickFilterField* indel()      { return mFields[4]; }
-    inline QuickFilterField* synonymous() { return mFields[7]; }
+    inline QuickFilterField* missense()   { return mIsVisible ? mFields[0] : nullptr; }
+    inline QuickFilterField* nonsense()   { return mIsVisible ? mFields[1] : nullptr; }
+    inline QuickFilterField* splicing()   { return mIsVisible ? mFields[2] : nullptr; }
+    inline QuickFilterField* indel()      { return mIsVisible ? mFields[4] : nullptr; }
+    inline QuickFilterField* synonymous() { return mIsVisible ? mFields[7] : nullptr; }
 
 private:
     QList<QuickFilterField*> mFields;

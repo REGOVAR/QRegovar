@@ -20,15 +20,18 @@ QuickFilterBox
 
     onModelChanged:
     {
-        panelRepeater.model =model.quickfilters.panelFilter.panelsList;
-        panelAll.visible = panelRepeater.model.length > 1;
-        if (!panelAll.visible)
+        if (model)
         {
-            panelAll.height = 0;
+            root.enabled = model.quickfilters.panelFilter.isVisible();
+
+
+            panelRepeater.model = model.quickfilters.panelFilter.panelsList;
+            panelAll.visible = panelRepeater.model.length > 1;
+            if (!panelAll.visible)
+            {
+                panelAll.height = 0;
+            }
         }
-
-
-
     }
 
     function checkFinal()

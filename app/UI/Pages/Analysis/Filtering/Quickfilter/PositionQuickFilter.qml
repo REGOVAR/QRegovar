@@ -16,6 +16,14 @@ QuickFilterBox
 
     property bool internalUiUpdate: false
 
+    onModelChanged:
+    {
+        if (model)
+        {
+            root.enabled = model.quickfilters.positionFilter.isVisible();
+        }
+    }
+
     function checkFinal()
     {
         // Mode

@@ -33,6 +33,7 @@ QuickFilterBox
     {
         if (model)
         {
+            root.enabled = model.quickfilters.inSilicoPredFilter.isVisible();
             var m = model.quickfilters.inSilicoPredFilter;
             predSift.enabled = m.sift.isDisplayed;
             predPoly.enabled = m.polyphen.isDisplayed;

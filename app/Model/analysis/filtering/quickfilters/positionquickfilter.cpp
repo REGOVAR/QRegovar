@@ -53,7 +53,7 @@ void PositionQuickFilter::init(QString fuid)
 
 bool PositionQuickFilter::isVisible()
 {
-    return true;
+    return mIsVisible;
 }
 
 
