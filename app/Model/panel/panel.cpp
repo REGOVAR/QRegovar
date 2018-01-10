@@ -81,6 +81,9 @@ bool Panel::fromJson(QJsonObject json)
     if (json.contains("versions"))
     {
         // Loading Panels informations
+        mOrderedVersionsIds->clear();
+        mVersionsMap->clear();
+
         mPanelId = json["id"].toString();
         mName = json["name"].toString();
         mOwner = json["owner"].toString();
