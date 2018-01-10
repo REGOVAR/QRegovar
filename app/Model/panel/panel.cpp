@@ -112,7 +112,18 @@ bool Panel::fromJson(QJsonObject json)
         // Load entries
         for(const QJsonValue& entry: json["entries"].toArray())
         {
-            mEntries.append(entry.toObject());
+            // Compute details field
+            QJsonObject entryData = entry.toObject();
+
+            if (entryData.contains("id"))
+            {
+                entryData.insert("details", entryData["id"]);
+            }
+            else
+            {
+                entryData.insert("details", QString("Chr%1:%2-%3").arg(entryData["chr"].toInt()).arg(entryData["start"].toInt()).arg(entryData["end"].toInt()));
+            }
+            mEntries.append(entryData);
         }
     }
 

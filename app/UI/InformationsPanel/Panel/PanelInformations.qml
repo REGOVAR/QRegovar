@@ -10,14 +10,11 @@ import "../Common"
 InformationsPanel
 {
     id: root
-    icon: "j"
+    icon: "q"
     updateFromModel: function updateFromModel(data)
     {
         // Update title
-        var variant = "chr" + data["chr"] + ":" + data["pos"] + " " + data["ref"] + ">" + data["alt"];
-        var gene = data["genename"];
-        var ref = data["reference"];
-        root.title = "<span style=\"font-family: monospace;\">" + variant + "</span><br/><br/><i>Ref: </i>" + ref + "&nbsp;&nbsp;&nbsp;</span>\n\n<i>Gene: </i>" + gene;
+        root.title = "<h1>" + data.name + "</h1>";
 
         // Update tabs
         root.tabSharedModel = data;
@@ -25,7 +22,7 @@ InformationsPanel
         ttt.append(
             {   "title": qsTr("Informations"),
                 "icon": "j",
-                "source": "../InformationsPanel/Panel/InfoPanel.qmll"
+                "source": "../InformationsPanel/Panel/InfoPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Details"),

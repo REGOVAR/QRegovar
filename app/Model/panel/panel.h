@@ -81,7 +81,7 @@ public:
     //! Reset data (only used by Creation wizard to reset its model)
     Q_INVOKABLE void reset();
     //! Return panel version details if provided id match; otherwise return null
-    Q_INVOKABLE inline Panel* getVersion(QString versionId) const { return (mVersionsMap->contains(versionId)) ? mVersionsMap->value(versionId): nullptr; }
+    Q_INVOKABLE inline Panel* getVersion(QString versionId) const { return mVersionsMap->contains(versionId) ? mVersionsMap->value(versionId): nullptr; }
 
 
 Q_SIGNALS:
