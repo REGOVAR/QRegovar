@@ -110,6 +110,15 @@ void NetworkManager::onWebsocketReceived(QString message)
             analysis->processPushNotification(action, data);
         }
     }
+    else if (mWsFilterActionsList.indexOf(action) != -1)
+    {
+        int id = data["analysis_id"].toInt();
+        FilteringAnalysis* analysis = regovar->analysesManager()->getFilteringAnalysis(id);
+        if (analysis != nullptr)
+        {
+            analysis->processPushNotification(action, data);
+        }
+    }
     else if (mWsPipelinesActionsList.indexOf(action) != -1)
     {
         int id = data["id"].toInt();
