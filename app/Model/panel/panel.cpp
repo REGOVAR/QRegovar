@@ -135,15 +135,19 @@ QJsonObject Panel::toJson()
     // Versions
     // Notice: json export is used only for Update and Create one version of the panel
     // So, we don't format json with the list of all available version as done server side
-    result.insert("version", mVersion);
-    QJsonArray entries;
-
-    for(const QVariant& value: mEntries)
+    // Notice: in case of the user only update panel's information, we don't send version
+    // data to the server. To avoid to create wrong version
+    if (!mVersion.isEmpty())
     {
-        entries.append(value.toJsonObject());
-    }
-    result.insert("entries", entries);
+        result.insert("version", mVersion);
+        QJsonArray entries;
 
+        for(const QVariant& value: mEntries)
+        {
+            entries.append(value.toJsonObject());
+        }
+        result.insert("entries", entries);
+    }
     return result;
 }
 
