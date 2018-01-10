@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
+import org.regovar 1.0
 
 import "../Regovar"
 import "../Framework"
@@ -16,10 +17,10 @@ Dialog
     width: 600
     height: 400
 
-    // If panelId set with panel id or panel version id,
-    property string panelId: ""
-    property int currentStep: 1
+    property Panel model
+    onModelChanged: if (model) updateViewFromModel()
 
+    property int currentStep: 1
 
     contentItem: Rectangle
     {
@@ -35,8 +36,8 @@ Dialog
             anchors.left: parent.left
             anchors.right: parent.right
             iconText: "q"
-            title: qsTr("New panel")
-            text: qsTr("A panel is a set of regions of interest. Those regions are defined by a chromosome and a position interval.\nYou can also quickly define a region by a gene, a phenotype or disease existing in the database (and which are already linked to a region).")
+            title: qsTr("Editing panel")
+            text: ""
         }
 
 
@@ -93,23 +94,6 @@ Dialog
 
             Text
             {
-                text: qsTr("Version")
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
-                verticalAlignment: Text.AlignVCenter
-                height: 35
-            }
-            TextField
-            {
-                id: versionField
-                Layout.fillWidth: true
-                placeholder: qsTr("Optional name of this version. (let empty for automatic incrementation number).")
-                text: regovar.panelsManager.newPanel.version
-            }
-
-            Text
-            {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 text: qsTr("Description")
                 color: Regovar.theme.primaryColor.back.dark
@@ -144,7 +128,7 @@ Dialog
             }
         }
 
-        RowLayout
+        ColumnLayout
         {
             id: step2
             anchors.top: header.bottom
@@ -153,53 +137,86 @@ Dialog
             anchors.bottom: footer.top
             anchors.margins: 10
             visible: root.currentStep == 2
-
             spacing: 10
 
-            TableView
+            RowLayout
             {
-                id: panelEntriesTable
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-
-                model: regovar.panelsManager.newPanel.entries
-
-                TableViewColumn
+                Text
                 {
-                    title: qsTr("Label")
-                    width: 200
-                    role: "label"
-
+                    text: qsTr("New version*")
+                    color: Regovar.theme.primaryColor.back.dark
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.font.familly
+                    verticalAlignment: Text.AlignVCenter
+                    height: 35
+                    font.bold: true
                 }
-                TableViewColumn
+                TextField
                 {
-                    role: "details"
-                    title: qsTr("Details")
-                    width: 400
+                    id: versionField
+                    Layout.fillWidth: true
+                    placeholder: qsTr("Version name")
+                    text: regovar.panelsManager.newPanel.version
                 }
             }
 
-            Column
+
+            RowLayout
             {
-                Layout.alignment: Qt.AlignTop
+
                 spacing: 10
 
-                Button
+                TableView
                 {
-                    text: qsTr("Add entry")
-                    onClicked:
+                    id: panelEntriesTable
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+
+                    model: regovar.panelsManager.newPanel.entries
+
+                    TableViewColumn
                     {
-                        newPanelEntryDialog.x = root.x + 50;
-                        newPanelEntryDialog.y = root.y + 50;
-                        newPanelEntryDialog.open()
+                        title: qsTr("Label")
+                        width: 200
+                        role: "label"
+
                     }
-                    enabled: !newPanelEntryDialog.visible
+                    TableViewColumn
+                    {
+                        role: "details"
+                        title: qsTr("Details")
+                        width: 400
+                    }
                 }
-                Button
+
+                Column
                 {
-                    text: qsTr("Remove entry")
-                    onClicked: removeSelectedEntry()
-                    enabled: !newPanelEntryDialog.visible
+                    Layout.alignment: Qt.AlignTop
+                    spacing: 10
+
+                    Button
+                    {
+                        text: qsTr("Add entry")
+                        onClicked:
+                        {
+                            newPanelEntryDialog.x = root.x + 50;
+                            newPanelEntryDialog.y = root.y + 50;
+                            newPanelEntryDialog.open()
+                        }
+                        enabled: !newPanelEntryDialog.visible
+                    }
+                    Button
+                    {
+                        text: qsTr("Remove entry")
+                        onClicked: removeSelectedEntry()
+                        enabled: !newPanelEntryDialog.visible
+                    }
+                    Button
+                    {
+                        text: qsTr("Remove all")
+                        onClicked: removeAllEntries()
+                        enabled: !newPanelEntryDialog.visible
+                    }
                 }
             }
         }
@@ -216,23 +233,7 @@ Dialog
 
             Button
             {
-                id: previousButton
-                text: qsTr("< Previous")
-                visible: root.currentStep == 2
-                onClicked: root.currentStep = 1
-                enabled: !newPanelEntryDialog.visible
-            }
-
-            Button
-            {
-                text: qsTr("Cancel")
-                onClicked: root.close()
-                enabled: !newPanelEntryDialog.visible
-            }
-
-            Button
-            {
-                text: root.currentStep == 1 ? qsTr("Next >") : qsTr("Finish")
+                text: root.currentStep == 1 ? qsTr("Add new version") : qsTr("Edit panel infos")
                 enabled: panelNameField.text.trim() != "" && !newPanelEntryDialog.visible
                 onClicked:
                 {
@@ -242,12 +243,26 @@ Dialog
                     }
                     else
                     {
-                        if (panelNameField.text.trim() != "")
-                        {
-                            loadingIndicator.visible = true;
-                            root.commit();
-                        }
+                        root.currentStep = 1;
                     }
+                }
+            }
+
+            Button
+            {
+                text: qsTr("Cancel")
+                onClicked: root.close()
+                enabled: !newPanelEntryDialog.visible
+            }
+
+
+            Button
+            {
+                text: qsTr("Save")
+                onClicked:
+                {
+                    loadingIndicator.visible = true;
+                    root.commit();
                 }
             }
         }
@@ -283,28 +298,51 @@ Dialog
     {
         regovar.panelsManager.newPanel.removeEntryAt(panelEntriesTable.currentRow);
     }
-
-
-    // FIXME: for weird raison, property binding not working.
-    function reset()
+    function removeAllEntries()
     {
-        model = null;
-        panelNameField.text = "";
-        ownerField.text = "";
-        descriptionField.text = "";
-        versionField.text = "";
-        sharedField.checked = "";
+        regovar.panelsManager.newPanel.removeAllEntries();
+    }
+
+    function reset(newModel)
+    {
+        root.currentStep = 1;
+        root.model = null;
+        header.text = "";
+        if (newModel)
+        {
+            root.model = newModel;
+
+            var headVersion = model.getVersion(model.versionsIds[0]);
+            header.text = qsTr("Edit panel's informations and/or add new versions.");
+            //header.text += "\n" + qsTr("ID") + ": " + model.panelId;
+            header.text += "\n\n" + qsTr("Current name") + ": " + model.name;
+            header.text += "\n" + qsTr("Head version") + ": " + headVersion.version;
+        }
+    }
+
+    function updateViewFromModel()
+    {
+        panelNameField.text = model.name;
+        versionField.text = "v" + (model.versionsIds.length + 1)
+        ownerField.text = model.owner;
+        descriptionField.text = model.description;
+        sharedField.checked = model.shared;
         regovar.panelsManager.newPanel.reset();
+
+        // Init new version with entries of the current head version
+        var headVersion = model.getVersion(model.versionsIds[0]);
+        for(var idx in headVersion.entries)
+            regovar.panelsManager.newPanel.addEntry(headVersion.entries[idx]);
     }
 
     function commit()
     {
+        regovar.panelsManager.newPanel.panelId = model.panelId;
         regovar.panelsManager.newPanel.name = panelNameField.text;
+        regovar.panelsManager.newPanel.version = versionField.text;
         regovar.panelsManager.newPanel.owner = ownerField.text;
         regovar.panelsManager.newPanel.description = descriptionField.text;
-        regovar.panelsManager.newPanel.currentVersion = versionField.text;
         regovar.panelsManager.newPanel.shared = sharedField.checked;
         regovar.panelsManager.commitNewPanel();
     }
-
 }

@@ -83,7 +83,7 @@ Rectangle
         }
         Button
         {
-            text: qsTr("Update panel")
+            text: qsTr("Edit panel")
             onClicked: updateSelectedPanel()
             enabled: browser.currentIndex
         }
@@ -152,7 +152,7 @@ Rectangle
         var itemId = regovar.panelsManager.panelsTree.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
         if (itemId !== undefined && itemId != "")
         {
-            newPanelVersionDialog.model = regovar.panelsManager.getOrCreatePanel(itemId);
+            newPanelVersionDialog.reset(regovar.panelsManager.getOrCreatePanel(itemId));
             newPanelVersionDialog.open();
         }
 

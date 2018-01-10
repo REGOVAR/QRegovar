@@ -12,7 +12,7 @@ class Panel : public QObject
     Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
     Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
     // Panel attributes
-    Q_PROPERTY(QString panelId READ panelId)
+    Q_PROPERTY(QString panelId READ panelId WRITE setPanelId)
     Q_PROPERTY(QString versionId READ versionId)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
     Q_PROPERTY(QString version READ version WRITE setVersion NOTIFY dataChanged)
@@ -24,7 +24,7 @@ class Panel : public QObject
     Q_PROPERTY(QString owner READ owner WRITE setOwner NOTIFY dataChanged)
     Q_PROPERTY(bool shared READ shared WRITE setShared NOTIFY dataChanged)
     // List of others versions of this panel
-    Q_PROPERTY(QList<QObject*> versions READ versions NOTIFY dataChanged)
+    Q_PROPERTY(QStringList versionsIds READ versionsIds NOTIFY dataChanged)
 
 public:
     // Panel factory
@@ -49,9 +49,9 @@ public:
     inline QString description() const { return mDescription; }
     inline QString owner() const { return mOwner; }
     inline bool shared() const { return mShared; }
-    QList<QObject*> versions();
-    inline QStringList const versionsIds() { return *mOrderedVersionsIds; }
+    inline QStringList versionsIds() const { return *mOrderedVersionsIds; }
     // Setters
+    inline void setPanelId(QString id) { mPanelId = id; }
     inline void setName(QString name) { mName = name; emit dataChanged(); }
     inline void setVersion(QString version) { mVersion = version; emit dataChanged(); }
     inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
@@ -71,15 +71,17 @@ public:
 
 
     //! Add a new version to the panel (append=true should be only used by factory)
-    Q_INVOKABLE bool addVersion(QJsonObject data, bool append=false);
+    Q_INVOKABLE QString addVersion(QJsonObject data, bool append=false);
     //! Add a new entry to the list (only used by the qml wizard)
     Q_INVOKABLE void addEntry(QJsonObject data);
     //! Remove entry at the given index in the list (only used by the qml wizard)
     Q_INVOKABLE inline void removeEntryAt(int idx) { if (mEntries.count() > idx) mEntries.removeAt(idx); emit dataChanged(); }
+    //! Remove entry at the given index in the list (only used by the qml wizard)
+    Q_INVOKABLE inline void removeAllEntries() { mEntries.clear(); emit dataChanged(); }
     //! Reset data (only used by Creation wizard to reset its model)
     Q_INVOKABLE void reset();
     //! Return panel version details if provided id match; otherwise return null
-    inline Panel* getVersion(QString versionId) const { return (mVersionsMap->contains(versionId)) ? mVersionsMap->value(versionId): nullptr; }
+    Q_INVOKABLE inline Panel* getVersion(QString versionId) const { return (mVersionsMap->contains(versionId)) ? mVersionsMap->value(versionId): nullptr; }
 
 
 Q_SIGNALS:

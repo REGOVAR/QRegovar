@@ -29,7 +29,7 @@ Panel* Panel::buildPanel(QJsonObject json)
     if (panel->fromJson(json))
     {
         // Create all other versions of the same panel
-        for (QJsonValue data: json["versions"].toArray())
+        for (const QJsonValue& data: json["versions"].toArray())
         {
             panel->addVersion(data.toObject(), true);
         }
@@ -41,17 +41,6 @@ Panel* Panel::buildPanel(QJsonObject json)
 
 
 
-QList<QObject*> Panel::versions()
-{
-    QList<QObject*> result;
-
-//    for(QString id: mOrderedVersionsIds)
-//    {
-//        result.append(mVersionsMap[id]);
-//    }
-
-    return result;
-}
 
 
 
@@ -61,10 +50,7 @@ QList<QObject*> Panel::versions()
 
 
 
-
-
-
-bool Panel::addVersion(QJsonObject data, bool append)
+QString Panel::addVersion(QJsonObject data, bool append)
 {
     Panel* panel = new Panel(mOrderedVersionsIds, mVersionsMap);
     bool result = panel->fromJson(data);
@@ -80,7 +66,7 @@ bool Panel::addVersion(QJsonObject data, bool append)
             mOrderedVersionsIds->insert(0, panel->versionId());
         }
     }
-    return result;
+    return result ? panel->versionId() : "";
 }
 
 
@@ -89,13 +75,43 @@ bool Panel::addVersion(QJsonObject data, bool append)
 // Load only data for the current panelversion.
 bool Panel::fromJson(QJsonObject json)
 {
-    mPanelId = json["id"].toString();
-    mName = json["name"].toString();
-    mOwner = json["owner"].toString();
-    mDescription = json["description"].toString();
-    mShared = json["shared"].toBool();
-    mCreateDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
-    mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
+    // json may be for Panel or Panel's version
+    // a Panel contains a list of version
+
+    if (json.contains("versions"))
+    {
+        // Loading Panels informations
+        mPanelId = json["id"].toString();
+        mName = json["name"].toString();
+        mOwner = json["owner"].toString();
+        mDescription = json["description"].toString();
+        mShared = json["shared"].toBool();
+        mCreateDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
+        mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
+
+        // Create all other versions of the same panel
+        for (const QJsonValue& data: json["versions"].toArray())
+        {
+            QString versionId = addVersion(data.toObject(), true);
+            // Set panelId of the new version created
+            regovar->panelsManager()->getOrCreatePanel(versionId)->setPanelId(mPanelId);
+        }
+    }
+    else
+    {
+        // Load version informations
+        mVersionId = json["id"].toString();
+        mVersion = json["version"].toString();
+        mComment = json["comment"].toString();
+        mCreateDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
+        mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
+
+        // Load entries
+        for(const QJsonValue& entry: json["entries"].toArray())
+        {
+            mEntries.append(entry.toObject());
+        }
+    }
 
     mLoaded = true;
     emit dataChanged();

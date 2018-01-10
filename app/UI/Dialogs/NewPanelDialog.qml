@@ -16,8 +16,6 @@ Dialog
     width: 600
     height: 400
 
-    // If panelId set with panel id or panel version id,
-    property string panelId: ""
     property int currentStep: 1
 
 
@@ -76,6 +74,24 @@ Dialog
 
             Text
             {
+                text: qsTr("Version*")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+                height: 35
+                font.bold: true
+            }
+            TextField
+            {
+                id: versionField
+                Layout.fillWidth: true
+                placeholder: qsTr("Name of this version")
+                text: regovar.panelsManager.newPanel.version
+            }
+
+            Text
+            {
                 text: qsTr("Owner")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
@@ -87,25 +103,8 @@ Dialog
             {
                 id: ownerField
                 Layout.fillWidth: true
-                placeholder: qsTr("Full name of the panel's owner or referring.")
+                placeholder: qsTr("Full name of the panel's owner or referring")
                 text: regovar.panelsManager.newPanel.owner
-            }
-
-            Text
-            {
-                text: qsTr("Version")
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
-                verticalAlignment: Text.AlignVCenter
-                height: 35
-            }
-            TextField
-            {
-                id: versionField
-                Layout.fillWidth: true
-                placeholder: qsTr("Optional name of this version. (let empty for automatic incrementation number).")
-                text: regovar.panelsManager.newPanel.version
             }
 
             Text
@@ -139,7 +138,7 @@ Dialog
             {
                 id: sharedField
                 Layout.fillWidth: true
-                text: qsTr("Check it if you want to share this panel with the community.")
+                text: qsTr("Check it if you want to share this panel with the community")
                 checked: regovar.panelsManager.newPanel.shared
             }
         }
@@ -284,15 +283,13 @@ Dialog
         regovar.panelsManager.newPanel.removeEntryAt(panelEntriesTable.currentRow);
     }
 
-
-    // FIXME: for weird raison, property binding not working.
     function reset()
     {
-        model = null;
+        root.currentStep = 1;
         panelNameField.text = "";
+        versionField.text = "v1";
         ownerField.text = "";
         descriptionField.text = "";
-        versionField.text = "";
         sharedField.checked = "";
         regovar.panelsManager.newPanel.reset();
     }
@@ -300,9 +297,9 @@ Dialog
     function commit()
     {
         regovar.panelsManager.newPanel.name = panelNameField.text;
+        regovar.panelsManager.newPanel.version = versionField.text;
         regovar.panelsManager.newPanel.owner = ownerField.text;
         regovar.panelsManager.newPanel.description = descriptionField.text;
-        regovar.panelsManager.newPanel.currentVersion = versionField.text;
         regovar.panelsManager.newPanel.shared = sharedField.checked;
         regovar.panelsManager.commitNewPanel();
     }
