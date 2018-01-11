@@ -414,7 +414,7 @@ TreeView
         {
             var sid = analysis.samples[idx].id;
             var data = json[sid];
-            if (typeof(data) == "object")
+            if (typeof(data) == "object" && data !== null)
             {
                 if ("length" in data)
                 {

@@ -168,22 +168,6 @@ QJsonObject FilteringAnalysis::toJson()
     result.insert("id", mId);
     result.insert("name", mName);
     result.insert("comment", mComment);
-//    if (mParent != nullptr)
-//    {
-//        result.insert("parent_id", mParent->id());
-//    }
-//    // Analyses
-//    if (mAnalyses.count() > 0)
-//    {
-//        QJsonArray analyses;
-//        foreach (QObject* o, mAnalyses)
-//        {
-//            FilteringAnalysis* a = qobject_cast<FilteringAnalysis*>(o);
-//            analyses.append(a->id());
-//        }
-//        result.insert("analyses_ids", analyses);
-//    }
-    // TODO: Jobs
     // TODO: Indicators
 
     return result;
