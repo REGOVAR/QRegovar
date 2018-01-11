@@ -90,6 +90,7 @@ QtObject
     {
         property color main: "#efeff1"
         property color alt: "#e4e4e8"
+        property color overlay: "#aaffffff"
     }
 
     property QtObject frontColor: QtObject

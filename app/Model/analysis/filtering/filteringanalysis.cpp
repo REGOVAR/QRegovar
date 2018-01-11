@@ -50,6 +50,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     setComment(json["comment"].toString());
     mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     mStatus = json["status"].toString();
+    mComputingProgress = json["computing_progress"].toObject();
     mStats = json["statistics"].toObject();
 
     // Getting ref
@@ -892,7 +893,14 @@ void FilteringAnalysis::processPushNotification(QString action, QJsonObject data
     int analysisId = data["analysis_id"].toInt();
     if (analysisId != mId) return;
 
-    if (action == "wt_update")
+
+    if (action == "wt_creation")
+    {
+        mStatus = data["status"].toString();
+        mComputingProgress = data["computing_progress"].toObject();
+        emit statusChanged();
+    }
+    else if (action == "wt_update")
     {
         // get data to update
         double progress = data["progress"].toDouble();

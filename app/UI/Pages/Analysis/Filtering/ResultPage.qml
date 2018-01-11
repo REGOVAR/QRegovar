@@ -75,6 +75,7 @@ Rectangle
         anchors.bottom: root.bottom
         anchors.margins: 10
         anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
+        visible: root.model ? root.model.loaded : false
 
 
         Rectangle

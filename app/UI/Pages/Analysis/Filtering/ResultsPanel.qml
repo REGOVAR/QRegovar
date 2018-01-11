@@ -147,7 +147,7 @@ Rectangle
         anchors.margins: 10
         anchors.topMargin: 60
 
-        color: "#aaffffff"
+        color: Regovar.theme.backgroundColor.overlay
         visible: resultsTree.model ? resultsTree.model.isLoading : false
 
         MouseArea

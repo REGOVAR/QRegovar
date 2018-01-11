@@ -177,7 +177,7 @@ Rectangle
                 id: helpPanel
                 anchors.fill: parent
 
-                color: "#aaffffff"
+                color: Regovar.theme.backgroundColor.overlay
 
                 visible: root.model ? root.model.samples.length == 0 : true
 

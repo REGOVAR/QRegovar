@@ -264,7 +264,7 @@ GenericScreen
                     id: helpPanel
                     anchors.fill: parent
 
-                    color: "#aaffffff"
+                    color: Regovar.theme.backgroundColor.overlay
 
                     visible: regovar.analysesManager.newFiltering.samples.length == 0
 

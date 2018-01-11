@@ -30,7 +30,8 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(int refId READ refId NOTIFY dataChanged)
     Q_PROPERTY(QString refName READ refName NOTIFY dataChanged)
     Q_PROPERTY(Project* project READ project WRITE setProject NOTIFY dataChanged)
-    Q_PROPERTY(QString status READ status NOTIFY dataChanged)
+    Q_PROPERTY(QString status READ status NOTIFY statusChanged)
+    Q_PROPERTY(QJsonObject computingProgress READ computingProgress NOTIFY statusChanged)
     Q_PROPERTY(QJsonObject stats READ stats NOTIFY dataChanged)
     // Filtering properties
     Q_PROPERTY(QJsonArray filterJson READ filterJson NOTIFY filterChanged)      // Filter json formated shared with server
@@ -81,6 +82,7 @@ public:
     inline QString refName() const { return mRefName; }
     inline Project* project() const { return mProject; }
     inline QString status() const { return mStatus; }
+    inline QJsonObject computingProgress() const { return mComputingProgress; }
     inline QJsonArray filterJson() const { return mFilterJson; }
     inline QStringList fields() const { return mFields; }
     inline QStringList order() const { return mOrder; }
@@ -113,6 +115,7 @@ public:
     QList<QObject*> sets() const { return mSets; } // concat filters, samples, samples attributes and panel in one list
 
     // Setters
+    inline void setStatus(QString status) { mStatus = status; emit statusChanged(); }
     inline void setFilterJson(QJsonArray filterJson) { mFilterJson = filterJson; emit filterChanged(); }
     inline void setIsTrio(bool flag) { mIsTrio=flag; emit isTrioChanged(); }
     inline void setTrioChild(Sample* child) { mTrioChild=child; emit trioChildChanged(); }
@@ -164,6 +167,7 @@ public:
 Q_SIGNALS:
     void dataChanged();
 
+    void statusChanged();
     void isLoading();
     void loadingStatusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
     void annotationsChanged();
@@ -217,6 +221,7 @@ private:
     DocumentsTreeModel* mDocumentsTreeModel = nullptr;
     QJsonObject mStats;
 
+    QJsonObject mComputingProgress;
     QString mStatus; // status of the analysis (server side)
     LoadingStatus mLoadingStatus; // internal (UI) status used to track and coordinates asynchrone initialisation of the analysis
     ResultsTreeModel* mResults = nullptr;

@@ -13,7 +13,6 @@ Rectangle
 
     property FilteringAnalysis model
     property bool editionMode: false
-    property bool isLoading: true
 
     onModelChanged: updateViewFromModel()
 
@@ -209,7 +208,15 @@ Rectangle
                 font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.icons.name
                 verticalAlignment: Text.AlignVCenter
-                text: "n" // "l" error , "/" computing, "m" waiting sample importation done, "g" empty
+                text: "n"
+                NumberAnimation on rotation
+                {
+                    id: statusIconAnimation
+                    duration: 1000
+                    loops: Animation.Infinite
+                    from: 0
+                    to: 360
+                }
             }
 
             Text
@@ -458,11 +465,50 @@ Rectangle
 
     }
 
+    Rectangle
+    {
+        id: busyIndicator
+        anchors.fill: parent
+
+        color: Regovar.theme.backgroundColor.overlay
+        visible: root.model ? root.model.loaded : false
+
+        MouseArea
+        {
+            anchors.fill: parent
+        }
+
+        BusyIndicator
+        {
+            anchors.centerIn: parent
+        }
+    }
+
     function updateView1FromModel(model)
     {
         headerTitle.text = model.name;
         nameField.text = model.name;
         commentField.text = model.comment;
+    }
+
+    property var statusIconMap: ({"ready": "n", "error": "l", "computing": "/", "waiting": "m", "empty": "g"})
+    property var statusTextMap: ({"ready": qsTr("Ready"), "error": qsTr("Error"), "computing": qsTr("Computing database"), "waiting": qsTr("Waiting samples import"), "empty": qsTr("Closed")})
+    function updateStatusFromModel()
+    {
+        // update status
+        statusField.text = root.statusTextMap[root.model.status];
+        statusIcon.text = root.statusIconMap[root.model.status];
+        if (root.model.status == "computing")
+        {
+            statusIconAnimation.start();
+        }
+        else
+        {
+            statusIconAnimation.stop();
+            rotation = 0;
+        }
+
+        // update logs
     }
 
     function updateViewFromModel()
@@ -471,18 +517,17 @@ Rectangle
         {
             if (!root.model.loaded)
             {
-                root.isLoading = true;
                 root.model.dataChanged.connect(updateViewFromModel);
             }
             else
             {
-                root.isLoading = false;
                 root.model.dataChanged.disconnect(updateViewFromModel);
+                root.model.statusChanged.connect(updateStatusFromModel);
             }
 
             updateView1FromModel(root.model);
+            updateStatusFromModel();
             //creationDate.text = Regovar.formatShortDate(root.model.createDate);
-            statusField.text = root.model.status;
             refField.text = root.model.refName;
 
             // Type

@@ -268,7 +268,7 @@ Dialog
                     id: sampleHelpPanel
                     anchors.fill: parent
 
-                    color: "#aaffffff"
+                    color: Regovar.theme.backgroundColor.overlay
 
                     visible: regovar.samplesManager.samplesList.length == 0
 

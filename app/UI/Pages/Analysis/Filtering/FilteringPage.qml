@@ -21,8 +21,10 @@ Rectangle
     id: root
     property FilteringAnalysis model
 
+
     SplitView
     {
+        visible: root.model ? root.model.loaded : false
         anchors.fill: parent
 
         TabView
