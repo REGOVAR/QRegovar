@@ -72,7 +72,7 @@ GenericScreen
 //                    text: qsTr("Name")
 //                    color: Regovar.theme.frontColor.normal
 //                    font.pixelSize: Regovar.theme.font.size.normal
-//                    font.family: Regovar.theme.font.familly
+//                    font.family: Regovar.theme.font.family
 //                    verticalAlignment: Text.AlignVCenter
 //                    Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
 //                    onTextChanged: root.readyForNext = checkReadyreadyForNext();
@@ -96,7 +96,7 @@ GenericScreen
 //                    text: qsTr("Project")
 //                    color: Regovar.theme.frontColor.normal
 //                    font.pixelSize: Regovar.theme.font.size.normal
-//                    font.family: Regovar.theme.font.familly
+//                    font.family: Regovar.theme.font.family
 //                    verticalAlignment: Text.AlignVCenter
 //                    Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
 //                }
@@ -121,7 +121,7 @@ GenericScreen
 //                    text: qsTr("Comment")
 //                    color: Regovar.theme.frontColor.normal
 //                    font.pixelSize: Regovar.theme.font.size.normal
-//                    font.family: Regovar.theme.font.familly
+//                    font.family: Regovar.theme.font.family
 //                    verticalAlignment: Text.AlignVCenter
 //                    Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
 //                }

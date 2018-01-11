@@ -31,7 +31,7 @@ Button
         {
             id: textElmt
             font.pixelSize: Regovar.theme.font.size.title
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             color:  !control.enabled ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.secondaryColor.front.normal
             verticalAlignment: Text.AlignVCenter
             text: control.text

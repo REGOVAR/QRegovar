@@ -67,7 +67,7 @@ Dialog
                         font.weight: Font.Black
                         color: Regovar.theme.primaryColor.back.dark
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         verticalAlignment: Text.AlignVCenter
                         height:  Regovar.theme.font.boxSize.normal
                     }
@@ -87,7 +87,7 @@ Dialog
                     font.weight: Font.Black
                     color: Regovar.theme.primaryColor.back.dark
                     font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     height: Regovar.theme.font.boxSize.normal
                 }
@@ -107,7 +107,7 @@ Dialog
                             text: modelData.name
                             color: Regovar.theme.primaryColor.back.dark
                             font.pixelSize: Regovar.theme.font.size.normal
-                            font.family: Regovar.theme.font.familly
+                            font.family: Regovar.theme.font.family
                             verticalAlignment: Text.AlignVCenter
                             height:  Regovar.theme.font.boxSize.normal
                         }

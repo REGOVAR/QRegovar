@@ -44,7 +44,7 @@ Rectangle
             anchors.bottom: header.bottom
             anchors.margins: 10
             font.pixelSize: 22
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
 
@@ -73,7 +73,7 @@ Rectangle
             anchors.bottom: header.bottom
             anchors.margins: 10
             font.pixelSize: 22
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
 

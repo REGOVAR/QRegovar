@@ -58,7 +58,7 @@ Dialog
                 text: "Your text..."
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.WordWrap
                 elide: Text.ElideRight

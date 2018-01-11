@@ -31,7 +31,7 @@ Rectangle
             text: qsTr("Label")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
@@ -49,7 +49,7 @@ Rectangle
             text: qsTr("Chr*")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             height: 35
             font.bold: true
@@ -67,7 +67,7 @@ Rectangle
             text: qsTr("Start*")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             height: 35
             font.bold: true
@@ -86,7 +86,7 @@ Rectangle
             text: qsTr("End*")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             height: 35
             font.bold: true

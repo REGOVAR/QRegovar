@@ -21,7 +21,7 @@ GridLayout
         id: userLabel
         Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
         font.pixelSize: Regovar.theme.font.size.normal
-        font.family: Regovar.theme.font.familly
+        font.family: Regovar.theme.font.family
         color: Regovar.theme.primaryColor.back.dark
         text: userFullName
     }
@@ -39,7 +39,7 @@ GridLayout
         id: serverLabel
         Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
         font.pixelSize: Regovar.theme.font.size.small
-        font.family: Regovar.theme.font.familly
+        font.family: Regovar.theme.font.family
         color: Regovar.theme.primaryColor.back.dark
 
         text: serverStatus

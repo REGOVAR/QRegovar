@@ -12,7 +12,7 @@ Button
     {
         text: control.text
         font.pixelSize: Regovar.theme.font.size.normal
-        font.family: Regovar.theme.font.familly
+        font.family: Regovar.theme.font.family
         font.bold: false
         color: Regovar.theme.secondaryColor.front.normal
         horizontalAlignment: Text.AlignHCenter

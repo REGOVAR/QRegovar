@@ -58,7 +58,7 @@ Dialog
                 text: qsTr("Following instruction will executed server side to clear temp data:")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.WordWrap
                 elide: Text.ElideRight
@@ -76,7 +76,7 @@ Dialog
                 text: qsTr("After the clear, you will not be able to use 'filtering' feature for this analysis. You will have to regenerate \"temp\" data by clicking on \"prepare filtering\" button in the analysis overview page.")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.WordWrap
                 elide: Text.ElideRight

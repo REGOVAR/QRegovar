@@ -68,7 +68,7 @@ Dialog
                 font.bold: true
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }
@@ -84,7 +84,7 @@ Dialog
                 text: qsTr("Firstname")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }
@@ -100,7 +100,7 @@ Dialog
                 text: qsTr("Lastname")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }
@@ -116,7 +116,7 @@ Dialog
                 text: qsTr("Sex")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }
@@ -132,7 +132,7 @@ Dialog
                 text: qsTr("Date of birth")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }
@@ -148,7 +148,7 @@ Dialog
                 text: qsTr("Family number")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }
@@ -166,7 +166,7 @@ Dialog
                 text: qsTr("Comment")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }

@@ -96,7 +96,7 @@ Rectangle
             font.pixelSize: Regovar.theme.font.size.normal
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             text: subject != null ? subject["name"] : "" // + " (" + subject["age"] +")"
         }
 

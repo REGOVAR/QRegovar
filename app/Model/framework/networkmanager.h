@@ -85,7 +85,7 @@ private:
     // Internals list of push notification key, to know which manager handle them
     QStringList mWsFilesActionsList = {"file_upload"};
     QStringList mWsSamplesActionsList = {"import_vcf_start", "import_vcf_processing", "import_vcf_end"};
-    QStringList mWsFilteringActionsList = {"analysis_computing", "wt_update", "wt_creation" "filter_update"};
+    QStringList mWsFilteringActionsList = {"analysis_computing", "wt_update", "wt_creation", "filter_update"};
     QStringList mWsFilterActionsList = {"filter_update"};
     QStringList mWsPipelinesActionsList = {"pipeline_install", "pipeline_uninstall"};
     QStringList mWsJobsActionsList = {"job_"};

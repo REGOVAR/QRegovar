@@ -3,6 +3,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import org.regovar 1.0
+import QtQuick.Dialogs 1.2
 import "../../../Regovar"
 import "../../../Framework"
 
@@ -86,7 +87,7 @@ Rectangle
             font.bold: true
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
@@ -133,7 +134,7 @@ Rectangle
             text: qsTr("Indicator")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
@@ -160,7 +161,7 @@ Rectangle
             text: qsTr("Comment")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
@@ -192,7 +193,7 @@ Rectangle
             text: qsTr("Status")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
@@ -226,7 +227,7 @@ Rectangle
                 height: Regovar.theme.font.size.header
                 color: Regovar.theme.frontColor.normal
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
             }
 
@@ -234,6 +235,7 @@ Rectangle
             {
                 icon: "Y"
                 text: ""
+                onClicked: computingProgressLog.visible = true
                 ToolTip.text: qsTr("Display details")
                 ToolTip.visible: hovered
             }
@@ -244,7 +246,7 @@ Rectangle
             text: qsTr("Type")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
@@ -256,17 +258,16 @@ Rectangle
             text: "Filtering Trio"
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
         }
-
 
         Text
         {
             text: qsTr("Referencial")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
@@ -277,7 +278,7 @@ Rectangle
             height: Regovar.theme.font.size.header
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
         }
 
@@ -287,7 +288,7 @@ Rectangle
             text: qsTr("Annotations DB")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
@@ -300,19 +301,16 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
         }
 
-
         Text
         {
             Layout.alignment: Qt.AlignTop
             text: qsTr("Samples")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
-
-
         TableView
         {
             id: samplesTable
@@ -350,7 +348,7 @@ Rectangle
                     {
                         Layout.fillWidth: true
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         color: Regovar.theme.frontColor.normal
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
@@ -394,7 +392,7 @@ Rectangle
                     {
                         Layout.fillWidth: true
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         color: Regovar.theme.frontColor.normal
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
@@ -422,7 +420,7 @@ Rectangle
             text: qsTr("Events")
             color: Regovar.theme.primaryColor.back.dark
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
@@ -462,8 +460,8 @@ Rectangle
                 text: qsTr("Edit event")
             }
         }
-
     }
+
 
     Rectangle
     {
@@ -471,18 +469,146 @@ Rectangle
         anchors.fill: parent
 
         color: Regovar.theme.backgroundColor.overlay
-        visible: root.model ? root.model.loaded : false
 
         MouseArea
         {
             anchors.fill: parent
         }
-
         BusyIndicator
         {
             anchors.centerIn: parent
         }
     }
+
+
+    Dialog
+    {
+        id: computingProgressLog
+        title: qsTr("Status details")
+        visible: false
+
+        contentItem: Rectangle
+        {
+            implicitWidth: 350
+            implicitHeight: 400
+            color: Regovar.theme.backgroundColor.main
+
+            ColumnLayout
+            {
+                anchors.fill: parent
+
+
+                Text
+                {
+                    Layout.fillWidth: true
+                    height: Regovar.theme.font.boxSize.header
+                    font.pixelSize: Regovar.theme.font.size.header
+                    text: qsTr("Computing steps:")
+                }
+
+                Rectangle
+                {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+
+                    color: Regovar.theme.boxColor.back
+                    border.width: 1
+                    border.color: Regovar.theme.boxColor.border
+
+                    ListView
+                    {
+                        id: statusLogsList
+                        anchors.fill: parent
+                        anchors.margins: 1
+                        anchors.leftMargin: 10
+                        clip: true
+
+                        model: ListModel { id: statusLogs}
+                        property var logStatusIconMap: ({"waiting": "{", "computing": "/", "error": "l", "done": "n"})
+
+                        delegate:Rectangle
+                        {
+                            height: Regovar.theme.font.boxSize.header
+                            width: parent.width - 15
+
+                            RowLayout
+                            {
+                                anchors.fill: parent
+                                spacing: 10
+
+                                Text
+                                {
+                                    Layout.fillHeight: true
+                                    width: Regovar.theme.font.boxSize.normal
+                                    color: Regovar.theme.frontColor.normal
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    font.family: Regovar.theme.icons.name
+                                    verticalAlignment: Text.AlignVCenter
+                                    horizontalAlignment: Text.AlignHCenter
+                                    text: statusLogsList.logStatusIconMap[status]
+                                }
+                                Text
+                                {
+                                    Layout.fillHeight: true
+                                    width: Regovar.theme.font.boxSize.normal
+                                    color: Regovar.theme.frontColor.normal
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    font.family: Regovar.theme.font.family
+                                    verticalAlignment: Text.AlignVCenter
+                                    horizontalAlignment: Text.AlignRight
+                                    text: index + " -"
+                                }
+                                Text
+                                {
+                                    Layout.fillHeight: true
+                                    Layout.fillWidth: true
+                                    color: Regovar.theme.frontColor.normal
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    font.family: Regovar.theme.font.family
+                                    verticalAlignment: Text.AlignVCenter
+                                    horizontalAlignment: Text.AlignLeft
+                                    elide: Text.ElideRight
+                                    text: label
+                                }
+                                ProgressBar
+                                {
+                                    Layout.fillHeight: true
+                                    Layout.minimumWidth: 130
+                                    value: progress
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Rectangle
+                {
+                    id: computingMessage
+                    Layout.minimumHeight: 100
+                    Layout.fillWidth: true
+
+                    color: Regovar.theme.boxColor.back
+                    border.width: 1
+                    border.color: Regovar.theme.boxColor.border
+
+                    Text
+                    {
+                        id: computingMessageText
+                        anchors.fill: parent
+                        font.pixelSize: Regovar.theme.font.size.header
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        wrapMode: "WordWrap"
+                        elide: Text.ElideRight
+                    }
+                }
+
+            }
+        }
+    }
+
+
+
 
     function updateView1FromModel(model)
     {
@@ -495,12 +621,55 @@ Rectangle
     property var statusTextMap: ({"ready": qsTr("Ready"), "error": qsTr("Error"), "computing": qsTr("Computing database"), "waiting": qsTr("Waiting samples import"), "empty": qsTr("Closed")})
     function updateStatusFromModel()
     {
+        var globalProgress = 0;
+        // update logs
+        statusLogs.clear();
+        var data = root.model.computingProgress.log;
+        for (var idx in data)
+        {
+            statusLogs.append(data[idx]);
+            globalProgress += data[idx]["progress"];
+        }
+
+        // Update message
+        if (root.model.status == "error")
+        {
+            computingMessage.border.width = 2;
+            computingMessage.border.color = Regovar.theme.frontColor.danger;
+            computingMessageText.color = Regovar.theme.frontColor.danger;
+            computingMessageText.text = root.model.computingProgress.error_message;
+        }
+        else if (root.model.status == "done")
+        {
+            computingMessage.border.width = 2;
+            computingMessage.border.color = Regovar.theme.frontColor.success;
+            computingMessageText.color = Regovar.theme.frontColor.success;
+            computingMessageText.text = qsTr("Data are ready to be analysed")
+        }
+        else if (root.model.status == "empty")
+        {
+            computingMessage.border.width = 2;
+            computingMessage.border.color = Regovar.theme.frontColor.warning;
+            computingMessageText.color = Regovar.theme.frontColor.warning;
+            computingMessageText.text = qsTr("Analysis is closed. Variants data cannot be analysed. You have to re-open the analysis to \"prepare\" data.")
+        }
+        else
+        {
+            computingMessage.border.width = 1;
+            computingMessage.border.color = Regovar.theme.boxColor.border;
+            computingMessageText.color = Regovar.theme.frontColor.normal;
+            computingMessageText.text = qsTr("We are processing variant's data for your analysis. It might take some time...")
+
+        }
+
+
         // update status
         statusField.text = root.statusTextMap[root.model.status];
         statusIcon.text = root.statusIconMap[root.model.status];
         if (root.model.status == "computing")
         {
             statusIconAnimation.start();
+            statusField.text += " (" + Math.round(globalProgress/root.model.computingProgress.log.length)*100 + "%)";
         }
         else
         {
@@ -508,7 +677,6 @@ Rectangle
             rotation = 0;
         }
 
-        // update logs
     }
 
     function updateViewFromModel()
@@ -518,9 +686,11 @@ Rectangle
             if (!root.model.loaded)
             {
                 root.model.dataChanged.connect(updateViewFromModel);
+                return;
             }
             else
             {
+                busyIndicator.visible = false;
                 root.model.dataChanged.disconnect(updateViewFromModel);
                 root.model.statusChanged.connect(updateStatusFromModel);
             }

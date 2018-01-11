@@ -42,15 +42,15 @@ void Tool::clear()
     }
 }
 
-void Tool::run(int analysis_id)
+void Tool::run(int analysisId)
 {
-    run(analysis_id, QJsonObject());
+    run(analysisId, QJsonObject());
 }
-void Tool::run(int analysis_id, QJsonObject parameter)
+void Tool::run(int analysisId, QJsonObject parameter)
 {
     QString cmd = (mType == Exporter) ? "export" : "report";
-    Request* req = Request::post(QString("/analysis/%1/%2").arg(analysis_id).arg(cmd), QJsonDocument(parameter).toJson());
-    connect(req, &Request::responseReceived, [this, analysis_id, req](bool success, const QJsonObject& json)
+    Request* req = Request::post(QString("/analysis/%1/%2").arg(analysisId).arg(cmd), QJsonDocument(parameter).toJson());
+    connect(req, &Request::responseReceived, [this, analysisId, req](bool success, const QJsonObject& json)
     {
         if (success)
         {
@@ -59,7 +59,7 @@ void Tool::run(int analysis_id, QJsonObject parameter)
             {
                 File* file = regovar->filesManager()->getOrCreateFile(data["id"].toInt());
                 file->fromJson(data);
-                FilteringAnalysis* analysis = regovar->analysesManager()->getOrCreateFilteringAnalysis(analysis_id);
+                FilteringAnalysis* analysis = regovar->analysesManager()->getOrCreateFilteringAnalysis(analysisId);
                 analysis->addFile(file);
             }
             else if (mType == Reporter)

@@ -37,7 +37,7 @@ Rectangle
             anchors.right: connectionStatus.left
             anchors.margins: 10
             font.pixelSize: 22
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             color: Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
 

@@ -43,7 +43,7 @@ GenericScreen
             text: qsTr("Project")
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
         }
@@ -72,7 +72,7 @@ GenericScreen
             text: qsTr("Name")
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
             onTextChanged: checkReady();
@@ -141,7 +141,7 @@ GenericScreen
                         text: qsTr("Type")
                         color: Regovar.theme.frontColor.disable
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
                         Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -153,7 +153,7 @@ GenericScreen
                         text: "Hugodims pipeline v1.0"
                         color: Regovar.theme.frontColor.disable
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         verticalAlignment: Text.AlignVCenter
                     }
                 }
@@ -170,7 +170,7 @@ GenericScreen
                         text: qsTr("Inputs")
                         color: Regovar.theme.frontColor.disable
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
                         Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -214,7 +214,7 @@ GenericScreen
                         text: qsTr("Configuration")
                         color: Regovar.theme.frontColor.disable
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
                         Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)

@@ -365,7 +365,7 @@ Rectangle
                             Text
                             {
                                 font.pixelSize: 12
-                                font.family: Regovar.theme.font.familly
+                                font.family: Regovar.theme.font.family
                                 color: Regovar.theme.frontColor.normal
                                 verticalAlignment: Text.AlignVCenter
                                 text: name

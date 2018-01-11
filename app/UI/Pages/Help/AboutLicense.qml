@@ -51,7 +51,7 @@ Item
                     text: qsTr("GNU Affero General Public License v3.0")
                     color: Regovar.theme.primaryColor.back.dark
                     font.pixelSize: Regovar.theme.font.size.header
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     height: 35
                 }
@@ -62,7 +62,7 @@ Item
                 text: qsTr("Permissions")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.header
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }
@@ -71,7 +71,7 @@ Item
                 text: qsTr("Limitations")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.header
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }
@@ -80,7 +80,7 @@ Item
                 text: qsTr("Conditions")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.header
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }

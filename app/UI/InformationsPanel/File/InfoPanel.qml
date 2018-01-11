@@ -109,7 +109,7 @@ Rectangle
                 font.bold: true
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }
@@ -155,7 +155,7 @@ Rectangle
                 text: qsTr("Tag")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }
@@ -173,7 +173,7 @@ Rectangle
                 text: qsTr("Comment")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }
@@ -229,7 +229,7 @@ Rectangle
                     text: qsTr("Creation")
                     color: Regovar.theme.primaryColor.back.dark
                     font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     height: 35
                 }
@@ -246,7 +246,7 @@ Rectangle
                     text: qsTr("Size")
                     color: Regovar.theme.primaryColor.back.dark
                     font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     height: 35
                 }
@@ -263,7 +263,7 @@ Rectangle
                     text: qsTr("Status")
                     color: Regovar.theme.primaryColor.back.dark
                     font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     height: 35
                 }
@@ -280,7 +280,7 @@ Rectangle
                     text: qsTr("Md5")
                     color: Regovar.theme.primaryColor.back.dark
                     font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     height: 35
                 }
@@ -297,7 +297,7 @@ Rectangle
                     text: qsTr("Source")
                     color: Regovar.theme.primaryColor.back.dark
                     font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     height: 35
                 }
@@ -363,7 +363,7 @@ Rectangle
                     text: qsTr("Creation")
                     color: Regovar.theme.primaryColor.back.dark
                     font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     height: 35
                 }
@@ -380,7 +380,7 @@ Rectangle
                     text: qsTr("Size")
                     color: Regovar.theme.primaryColor.back.dark
                     font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     height: 35
                 }
@@ -397,7 +397,7 @@ Rectangle
                     text: qsTr("Status")
                     color: Regovar.theme.primaryColor.back.dark
                     font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     height: 35
                 }
@@ -414,7 +414,7 @@ Rectangle
                     text: qsTr("Md5")
                     color: Regovar.theme.primaryColor.back.dark
                     font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     height: 35
                 }
@@ -431,7 +431,7 @@ Rectangle
                     text: qsTr("Path")
                     color: Regovar.theme.primaryColor.back.dark
                     font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     height: 35
                 }

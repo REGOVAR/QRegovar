@@ -10,7 +10,7 @@ TextField
     id: control
     placeholderText: enabled ? control.placeholder : ""
     font.pixelSize: Regovar.theme.font.size.normal
-    font.family: Regovar.theme.font.familly
+    font.family: Regovar.theme.font.family
     color: Regovar.theme.frontColor.normal
 
     selectByMouse :true

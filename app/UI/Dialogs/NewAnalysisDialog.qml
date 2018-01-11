@@ -103,7 +103,7 @@ Dialog
                 text:  qsTr("New analysis") + " :" // (root.menuModel !== undefined) ? qsTr("Step") + " " + (menuSelectedIndex + 1) + "/" + root.menuModel.length : ""
                 color: Regovar.theme.primaryColor.front.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: Regovar.theme.font.boxSize.title
             }
@@ -153,7 +153,7 @@ Dialog
                                 // menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light :
                                 color: menuSelectedIndex >= index ? Regovar.theme.primaryColor.front.dark : Regovar.theme.primaryColor.back.light
                                 font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.font.familly
+                                font.family: Regovar.theme.font.family
                                 verticalAlignment: Text.AlignVCenter
                             }
                         }

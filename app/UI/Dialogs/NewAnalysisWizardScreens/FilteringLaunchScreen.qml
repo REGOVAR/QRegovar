@@ -47,7 +47,7 @@ GenericScreen
             text: qsTr("Project")
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
         }
@@ -132,7 +132,7 @@ GenericScreen
             text: qsTr("Name")
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             verticalAlignment: Text.AlignVCenter
             Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
             onTextChanged: checkReady();
@@ -209,7 +209,7 @@ GenericScreen
                         text: qsTr("Type")
                         color: Regovar.theme.frontColor.disable
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
                         Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -221,7 +221,7 @@ GenericScreen
                         text: "Filtering "
                         color: Regovar.theme.frontColor.disable
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         verticalAlignment: Text.AlignVCenter
                     }
                 }
@@ -237,7 +237,7 @@ GenericScreen
                         text: qsTr("Referencial")
                         color: Regovar.theme.frontColor.disable
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
                         Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -249,7 +249,7 @@ GenericScreen
                         text: regovar.analysesManager.newFiltering.refName
                         color: Regovar.theme.frontColor.disable
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         verticalAlignment: Text.AlignVCenter
                     }
                 }
@@ -266,7 +266,7 @@ GenericScreen
                         text: qsTr("Samples")
                         color: Regovar.theme.frontColor.disable
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
                         Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -339,7 +339,7 @@ GenericScreen
                         text: qsTr("Samples attributes")
                         color: Regovar.theme.frontColor.disable
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
                         Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
@@ -375,7 +375,7 @@ GenericScreen
                         text: qsTr("Annotations")
                         color: Regovar.theme.frontColor.disable
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.familly
+                        font.family: Regovar.theme.font.family
                         font.bold: true
                         verticalAlignment: Text.AlignVCenter
                         Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)

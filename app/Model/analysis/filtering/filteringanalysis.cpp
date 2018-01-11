@@ -889,15 +889,10 @@ void FilteringAnalysis::processPushNotification(QString action, QJsonObject data
 {
     // update done in regovar on the global remote list
 
-    // Check that we are concerned by the message
-    int analysisId = data["analysis_id"].toInt();
-    if (analysisId != mId) return;
-
-
     if (action == "wt_creation")
     {
         mStatus = data["status"].toString();
-        mComputingProgress = data["computing_progress"].toObject();
+        mComputingProgress = data;
         emit statusChanged();
     }
     else if (action == "wt_update")

@@ -98,7 +98,7 @@ TableView
             anchors.leftMargin: 5
             anchors.rightMargin: 5
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             color: Regovar.theme.frontColor.normal
             horizontalAlignment: styleData.textAlignment
             verticalAlignment: Text.AlignVCenter

@@ -28,7 +28,7 @@ Button
         {
             id: textElmt
             font.pixelSize: Regovar.theme.font.size.title
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             color: !control.enabled ? Regovar.theme.frontColor.disable :  control.hovered ? Regovar.theme.secondaryColor.front.normal : ( control.down ? Regovar.theme.secondaryColor.front.dark: Regovar.theme.secondaryColor.back.normal)
             verticalAlignment: Text.AlignVCenter
             height: Regovar.theme.font.boxSize.title

@@ -120,7 +120,7 @@ TreeView
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                     font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     color: Regovar.theme.frontColor.normal
                     horizontalAlignment: styleData.textAlignment
                     verticalAlignment: Text.AlignVCenter

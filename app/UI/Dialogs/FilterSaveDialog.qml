@@ -60,7 +60,7 @@ Dialog
                 font.weight: Font.Black
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height:  Regovar.theme.font.boxSize.normal
             }
@@ -76,7 +76,7 @@ Dialog
                 text: qsTr("Description")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.familly
+                font.family: Regovar.theme.font.family
                 verticalAlignment: Text.AlignVCenter
                 height: Regovar.theme.font.boxSize.normal
             }

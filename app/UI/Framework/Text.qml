@@ -7,7 +7,7 @@ Text
 {
     id: control
     font.pixelSize: Regovar.theme.font.size.normal
-    font.family: Regovar.theme.font.familly
+    font.family: Regovar.theme.font.family
     color: enabled ? Regovar.theme.frontColor.normal : disableColor
     property var disableColor: Regovar.theme.frontColor.disable
 }
@@ -16,7 +16,7 @@ Text
 //{
 //    id: control
 //    font.pixelSize: Regovar.theme.font.size.small
-//    font.family: Regovar.theme.font.familly
+//    font.family: Regovar.theme.font.family
 
 //    implicitHeight: Regovar.theme.font.size.small
 //    frameVisible: false

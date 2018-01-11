@@ -86,209 +86,199 @@ Rectangle
     }
 
 
-    ScrollView
+    RowLayout
     {
+        id: levelSelector
         anchors.top : header.bottom
         anchors.left: root.left
         anchors.right: root.right
-        anchors.bottom: root.bottom
         anchors.margins: 10
         anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
-        visible: root.model ? root.model.loaded : false
+        spacing: 10
 
-        Column
+        Text
         {
-            RowLayout
+            height: Regovar.theme.font.boxSize.header
+            elide: Text.ElideRight
+            text: qsTr("Select a sample:")
+            font.pixelSize: Regovar.theme.font.size.header
+            verticalAlignment: Text.AlignVCenter
+            color: Regovar.theme.primaryColor.back.normal
+        }
+        ComboBox
+        {
+            id: levelCombo
+            height: Regovar.theme.font.boxSize.header - 4
+            Layout.alignment: Qt.AlignVCenter
+            Layout.fillWidth: true
+            model: []
+            onCurrentIndexChanged:
             {
-                id: levelSelector
-                spacing: 10
-
-                Text
+                if (root.model && root.model.samples && root.model.samples.length > 0)
                 {
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    text: qsTr("Select a sample:")
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                }
-                ComboBox
-                {
-                    id: levelCombo
-                    height: Regovar.theme.font.boxSize.header - 4
-                    Layout.alignment: Qt.AlignVCenter
-                    Layout.fillWidth: true
-                    model: []
-                    onCurrentIndexChanged:
+                    if (currentIndex == 0)
                     {
-                        if (root.model && root.model.samples && root.model.samples.length > 0)
-                        {
-                            if (currentIndex == 0)
-                            {
-                                root.statisticsModel = root.model;
-                            }
-                            else if (currentIndex-1 >= 0 && currentIndex-1 < root.model.samples.length)
-                            {
-                                root.statisticsModel = root.model.samples[currentIndex-1];
-                            }
-                        }
+                        root.statisticsModel = root.model;
+                    }
+                    else if (currentIndex-1 >= 0 && currentIndex-1 < root.model.samples.length)
+                    {
+                        root.statisticsModel = root.model.samples[currentIndex-1];
                     }
                 }
             }
+        }
+    }
 
-            //
-            // Section1 Header : Statistics
-            //
+    //
+    // Section1 Header : Statistics
+    //
+    Row
+    {
+        id: section1Header
+        anchors.top : levelSelector.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.margins: 10
+        anchors.topMargin: 30
+        spacing: 10
+
+        Text
+        {
+            height: Regovar.theme.font.boxSize.header
+            text: "^"
+            font.family: Regovar.theme.icons.name
+            font.pixelSize: Regovar.theme.font.size.header
+            verticalAlignment: Text.AlignVCenter
+            color: Regovar.theme.primaryColor.back.normal
+        }
+        Text
+        {
+            height: Regovar.theme.font.boxSize.header
+            elide: Text.ElideRight
+            text: qsTr("Statistics")
+            font.bold: true
+            font.pixelSize: Regovar.theme.font.size.header
+            verticalAlignment: Text.AlignVCenter
+            color: Regovar.theme.primaryColor.back.normal
+        }
+    }
+    Rectangle
+    {
+        anchors.top: section1Header.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 10
+        anchors.topMargin: 0
+        height: 1
+        color: Regovar.theme.primaryColor.back.normal
+    }
+
+
+    //
+    // Section1 Content : Statistics
+    //
+    Rectangle
+    {
+        id: section1Content
+        anchors.top: section1Header.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 10
+        height: 290
+        color: "transparent"
+        clip: true
+
+        ScrollView
+        {
+            anchors.fill: parent
+            horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
+            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
             Row
             {
-                id: section1Header
-                anchors.top : levelSelector.bottom
-                anchors.left: root.left
-                anchors.right: root.right
-                anchors.margins: 10
-                anchors.topMargin: 30
                 spacing: 10
 
-                Text
-                {
-                    height: Regovar.theme.font.boxSize.header
-                    text: "^"
-                    font.family: Regovar.theme.icons.name
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                }
-                Text
-                {
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    text: qsTr("Statistics")
-                    font.bold: true
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                }
+                StatsOverview { id: statsOverview; model: root.statisticsModel}
+                StatsVariantClasses { id: statsVariantClasses; model: root.statisticsModel }
+                StatsVepConsequences { id: statsVepConsequences; model: root.statisticsModel }
+                StatsVepImpacts { id: statsVepImpacts; model: root.statisticsModel }
             }
-            Rectangle
-            {
-                anchors.top: section1Header.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: 10
-                anchors.topMargin: 0
-                height: 1
-                color: Regovar.theme.primaryColor.back.normal
-            }
+        }
+    }
 
 
-            //
-            // Section1 Content : Statistics
-            //
-            Rectangle
-            {
-                id: section1Content
-                anchors.top: section1Header.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: 10
-                height: 290
-                color: "transparent"
-                clip: true
+    //
+    // Section2 Header : Quality
+    //
+    Row
+    {
+        id: section2Header
+        anchors.top: section1Content.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.margins: 10
+        anchors.topMargin: 30
+        spacing: 10
 
-                ScrollView
-                {
-                    anchors.fill: parent
-                    horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
-                    verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+        Text
+        {
+            height: Regovar.theme.font.boxSize.header
+            text: "^"
+            font.family: Regovar.theme.icons.name
+            font.pixelSize: Regovar.theme.font.size.header
+            verticalAlignment: Text.AlignVCenter
+            color: Regovar.theme.primaryColor.back.normal
+        }
+        Text
+        {
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.header
+            elide: Text.ElideRight
+            text: qsTr("Quality")
+            font.bold: true
+            font.pixelSize: Regovar.theme.font.size.header
+            verticalAlignment: Text.AlignVCenter
+            color: Regovar.theme.primaryColor.back.normal
+        }
+    }
+    Rectangle
+    {
+        anchors.top: section2Header.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 10
+        anchors.topMargin: 0
+        height: 1
+        color: Regovar.theme.primaryColor.back.normal
+    }
 
-                    Row
-                    {
-                        spacing: 10
+    //
+    // Section2 Content : Quality
+    //
+    Rectangle
+    {
+        id: section2Content
+        anchors.top: section2Header.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 10
+        height: 290
+        color: "transparent"
+        clip: true
 
-                        StatsOverview { id: statsOverview; model: root.statisticsModel}
-                        StatsVariantClasses { id: statsVariantClasses; model: root.statisticsModel }
-                        StatsVepConsequences { id: statsVepConsequences; model: root.statisticsModel }
-                        StatsVepImpacts { id: statsVepImpacts; model: root.statisticsModel }
-                    }
-                }
-            }
+        ScrollView
+        {
+            anchors.fill: parent
+            horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
+            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-
-            //
-            // Section2 Header : Quality
-            //
             Row
             {
-                id: section2Header
-                anchors.top: section1Content.bottom
-                anchors.left: root.left
-                anchors.right: root.right
-                anchors.margins: 10
-                anchors.topMargin: 30
                 spacing: 10
 
-                Text
-                {
-                    height: Regovar.theme.font.boxSize.header
-                    text: "^"
-                    font.family: Regovar.theme.icons.name
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                }
-                Text
-                {
-                    Layout.fillWidth: true
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    text: qsTr("Quality")
-                    font.bold: true
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                }
+                QualityOverview { id: qualOverview; model: root.statisticsModel }
+                QualityFilter { id: qualFilter; model: root.statisticsModel }
             }
-            Rectangle
-            {
-                anchors.top: section2Header.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: 10
-                anchors.topMargin: 0
-                height: 1
-                color: Regovar.theme.primaryColor.back.normal
-            }
-
-            //
-            // Section2 Content : Quality
-            //
-            Rectangle
-            {
-                id: section2Content
-                anchors.top: section2Header.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: 10
-                height: 290
-                color: "transparent"
-                clip: true
-
-                ScrollView
-                {
-                    anchors.fill: parent
-                    horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
-                    verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
-                    Row
-                    {
-                        spacing: 10
-
-                        QualityOverview { id: qualOverview; model: root.statisticsModel }
-                        QualityFilter { id: qualFilter; model: root.statisticsModel }
-                    }
-                }
-            }
-
         }
     }
 }

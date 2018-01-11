@@ -34,7 +34,7 @@ ProgressBar
             anchors.leftMargin: 4
             text: (control.value / control.to * 100).toFixed(1) + "%"
             color: Regovar.theme.secondaryColor.front.normal
-            font.family: Regovar.theme.font.familly
+            font.family: Regovar.theme.font.family
             font.pixelSize: Regovar.theme.font.size.small
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter

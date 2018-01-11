@@ -66,7 +66,7 @@ GenericScreen
                     text: qsTr("Reference")
                     color: Regovar.theme.frontColor.normal
                     font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.familly
+                    font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
                     onTextChanged: checkReady();

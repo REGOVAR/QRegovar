@@ -24,7 +24,7 @@ QtObject
 
     property QtObject font: QtObject
     {
-        property string familly : "Sans"
+        property string family : "Sans"
 
         property QtObject size: QtObject
         {
@@ -174,7 +174,7 @@ QtObject
                 styleRoot.name = themeData.name;
                 styleRoot.description = themeData.description;
 
-                styleRoot.font.familly = themeData.font.familly;
+                styleRoot.font.family = themeData.font.family;
 
                 styleRoot.primaryColor.back.light = themeData.primaryColor.back.light;
                 styleRoot.primaryColor.back.normal = themeData.primaryColor.back.normal;
