@@ -71,14 +71,6 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     {
         mPanelsUsed << field.toString();
     }
-    if (settings["trio"].isBool())
-    {
-        mIsTrio = false;
-    }
-    else
-    {
-        mIsTrio = true;
-    }
 
     // Retrieve samples
     mSamples.clear();
@@ -91,8 +83,24 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
             mSamples.append(sample);
         }
     }
-    emit samplesChanged();
 
+    if (settings["trio"].isBool())
+    {
+        mIsTrio = false;
+    }
+    else
+    {
+        mIsTrio = true;
+//        "trio": {
+//                        "child_id": 3,
+//                        "child_index": true,
+//                        "child_sex": "M",
+//                        "father_id": 6,
+//                        "father_index": false,
+//                        "mother_id": 5,
+//                        "mother_index": false
+//                    }
+    }
 
     // Retrieve saved filters
     mFilters.clear();
@@ -100,7 +108,6 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     {
         mFilters.append(new SavedFilter(filterdata.toObject()));
     }
-    emit filtersChanged();
 
     // Retrieve samples attributes
     mAttributes.clear();
@@ -108,7 +115,6 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     {
         mAttributes.append(new Attribute(attributedata.toObject()));
     }
-    emit attributesChanged();
 
     // Retrieve fields
     for (const QJsonValue& field: json["fields"].toArray())
@@ -145,6 +151,9 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     setReference(ref, full_init);
 
     mLoaded = true;
+    emit samplesChanged();
+    emit filtersChanged();
+    emit attributesChanged();
     emit dataChanged();
     return true;
 }

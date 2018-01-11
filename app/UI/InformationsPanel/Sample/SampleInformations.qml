@@ -16,7 +16,7 @@ InformationsPanel
         // Update title
         root.title  = "<h1 style=\"font-family: monospace;\">" + data.name + "</h1>";
         var subject = "-";
-        if ("subject" in data)
+        if ("subject" in data && data["subject"])
         {
             subject = data["subject"].identifier + " - " + data["subject"].lastname + " " + data["subject"].firstname;
         }

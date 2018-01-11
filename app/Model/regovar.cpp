@@ -297,43 +297,43 @@ Reference* Regovar::referenceFromId(int id)
 
 
 
-void Regovar::getFileInfo(int fileId, int analysisId)
+void Regovar::getFileInfo(int fileId)
 {
-    emit fileInformationSearching(analysisId);
+    emit fileInformationSearching();
     File* file = mFilesManager->getOrCreateFile(fileId);
     file->load(false);
-    emit fileInformationReady(file, analysisId);
+    emit fileInformationReady(file);
 }
 
 
-void Regovar::getPanelInfo(QString panelId, int analysisId)
+void Regovar::getPanelInfo(QString panelId)
 {
-    emit panelInformationSearching(analysisId);
+    emit panelInformationSearching();
     Panel* panel = mPanelsManager->getOrCreatePanel(panelId);
     panel->load(false);
-    emit panelInformationReady(panel, analysisId);
+    emit panelInformationReady(panel);
 }
 
 
-void Regovar::getSampleInfo(int sampleId, int analysisId)
+void Regovar::getSampleInfo(int sampleId)
 {
-    emit sampleInformationSearching(analysisId);
+    emit sampleInformationSearching();
     Sample* sample= mSamplesManager->getOrCreate(sampleId);
     sample->load(false);
-    emit sampleInformationReady(sample, analysisId);
+    emit sampleInformationReady(sample);
 }
 
 
-void Regovar::getUserInfo(int userId, int analysisId)
+void Regovar::getUserInfo(int)
 {
-    emit userInformationSearching(analysisId);
+    emit userInformationSearching();
     //User* sample= mUserManager->getOrCreate(userId);
     //sample->load(false);
-    emit userInformationReady(mUser, analysisId);
+    emit userInformationReady(mUser);
 }
 
 
-void Regovar::getPipelineInfo(int pipelineId, int)
+void Regovar::getPipelineInfo(int pipelineId)
 {
     emit pipelineInformationSearching();
     QString sPipelineId = QString::number(pipelineId);
@@ -360,7 +360,7 @@ void Regovar::getPipelineInfo(int pipelineId, int)
 
 void Regovar::getGeneInfo(QString geneName, int analysisId)
 {
-    emit geneInformationSearching(analysisId);
+    emit geneInformationSearching();
     QString sAnalysisId = QString::number(analysisId);
     QString url;
     if (analysisId == -1)
@@ -373,11 +373,11 @@ void Regovar::getGeneInfo(QString geneName, int analysisId)
     {
         if (success)
         {
-            emit geneInformationReady(json["data"].toObject(), analysisId);
+            emit geneInformationReady(json["data"].toObject());
         }
         else
         {
-            emit geneInformationReady(QJsonValue::Null, analysisId);
+            emit geneInformationReady(QJsonValue::Null);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
@@ -387,21 +387,21 @@ void Regovar::getGeneInfo(QString geneName, int analysisId)
 }
 
 
-void Regovar::getPhenotypeInfo(QString phenotypeId, int analysisId)
+void Regovar::getPhenotypeInfo(QString phenotypeId)
 {
-    emit phenotypeInformationSearching(analysisId);
+    emit phenotypeInformationSearching();
     QString url = QString("/search/phenotype/%1").arg(phenotypeId);
 
     Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req, analysisId](bool success, const QJsonObject& json)
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)
         {
-            emit phenotypeInformationReady(json["data"].toObject(), analysisId);
+            emit phenotypeInformationReady(json["data"].toObject());
         }
         else
         {
-            emit phenotypeInformationReady(QJsonValue::Null, analysisId);
+            emit phenotypeInformationReady(QJsonValue::Null);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);
@@ -413,7 +413,7 @@ void Regovar::getPhenotypeInfo(QString phenotypeId, int analysisId)
 
 void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
 {
-    emit variantInformationSearching(analysisId);
+    emit variantInformationSearching();
     QString sRefId = QString::number(refId);
     QString sAnalysisId = QString::number(analysisId);
 
@@ -428,11 +428,11 @@ void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
     {
         if (success)
         {
-            emit variantInformationReady(json["data"].toObject(), analysisId);
+            emit variantInformationReady(json["data"].toObject());
         }
         else
         {
-            emit variantInformationReady(QJsonValue::Null, analysisId);
+            emit variantInformationReady(QJsonValue::Null);
             QJsonObject jsonError = json;
             jsonError.insert("method", Q_FUNC_INFO);
             regovar->raiseError(jsonError);

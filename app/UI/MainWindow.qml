@@ -180,7 +180,6 @@ GenericWindow
         height: 400
         minimumHeight : 300
         minimumWidth : 300
-        flags: Qt.Dialog
 
         FileInformations
         {
@@ -191,7 +190,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onFileInformationSearching: { if (analysisId == -1) { fileInfoPanel.reset(); fileInfoDialog.show(); }}
+            onFileInformationSearching: { fileInfoPanel.reset(); fileInfoDialog.show(); }
         }
     }
 
@@ -206,7 +205,6 @@ GenericWindow
         height: 400
         minimumHeight : 300
         minimumWidth : 300
-        flags: Qt.Dialog
 
         GeneInformations
         {
@@ -217,7 +215,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onGeneInformationSearching: { if (analysisId == -1) { geneInfoPanel.reset(); geneInfoDialog.show(); }}
+            onGeneInformationSearching: { geneInfoPanel.reset(); geneInfoDialog.show(); }
         }
     }
 
@@ -232,7 +230,6 @@ GenericWindow
         height: 400
         minimumHeight : 300
         minimumWidth : 300
-        flags: Qt.Dialog
 
         PanelInformations
         {
@@ -243,7 +240,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onPanelInformationSearching: { if (analysisId == -1) { panelInfoPanel.reset(); panelInfoDialog.show(); }}
+            onPanelInformationSearching: { panelInfoPanel.reset(); panelInfoDialog.show(); }
         }
     }
 
@@ -258,7 +255,6 @@ GenericWindow
         height: 400
         minimumHeight : 300
         minimumWidth : 300
-        flags: Qt.Dialog
 
         PhenotypeInformations
         {
@@ -269,7 +265,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onPhenotypeInformationSearching: { if (analysisId == -1) { phenotypeInfoPanel.reset(); phenotypeInfoDialog.show(); }}
+            onPhenotypeInformationSearching: { phenotypeInfoPanel.reset(); phenotypeInfoDialog.show(); }
         }
     }
 
@@ -284,7 +280,6 @@ GenericWindow
         height: 400
         minimumHeight : 300
         minimumWidth : 300
-        flags: Qt.Dialog
 
         PipelineInformations
         {
@@ -295,7 +290,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onPipelineInformationSearching: { if (analysisId == -1) { pipelineInfoPanel.reset(); pipelineInfoDialog.show(); }}
+            onPipelineInformationSearching: { pipelineInfoPanel.reset(); pipelineInfoDialog.show(); }
         }
     }
 
@@ -310,7 +305,6 @@ GenericWindow
         height: 400
         minimumHeight : 300
         minimumWidth : 300
-        flags: Qt.Dialog
 
         SampleInformations
         {
@@ -321,7 +315,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onSampleInformationSearching: { if (analysisId == -1) { sampleInfoPanel.reset(); sampleInfoDialog.show(); }}
+            onSampleInformationSearching: { sampleInfoPanel.reset(); sampleInfoDialog.show(); }
         }
     }
 
@@ -336,7 +330,6 @@ GenericWindow
         height: 400
         minimumHeight : 300
         minimumWidth : 300
-        flags: Qt.Dialog
 
         UserInformations
         {
@@ -347,7 +340,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onUserInformationSearching: { if (analysisId == -1) { userInfoPanel.reset(); userInfoDialog.show(); }}
+            onUserInformationSearching: { userInfoPanel.reset(); userInfoDialog.show(); }
         }
     }
 
@@ -362,7 +355,6 @@ GenericWindow
         height: 400
         minimumHeight : 300
         minimumWidth : 300
-        flags: Qt.Dialog
 
         VariantInformations
         {
@@ -373,7 +365,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onVariantInformationSearching: { if (analysisId == -1) { variantInfoPanel.reset(); variantInfoDialog.show(); }}
+            onVariantInformationSearching: { variantInfoPanel.reset(); variantInfoDialog.show(); }
         }
     }
 }

@@ -426,17 +426,17 @@ ScrollView
 
     function displayresults(results)
     {
-        projectsResult.visible = "project" in results && results["project"].length > 0;
-        analysessResult.visible = "analysis" in results && results["analysis"].length > 0;
-        filesResult.visible = "file" in results && results["file"].length > 0;
-        subjectsResult.visible = "subject" in results && results["subject"].length > 0;
-        samplesResult.visible = "sample" in results && results["sample"].length > 0;
-        phenotypesResult.visible = "phenotype" in results && results["phenotype"].length > 0;
-        genesResult.visible = "gene" in results && results["gene"].length > 0;
-        variantsResult.visible = "variant" in results && results["variant"].length > 0;
-        pipelinesResult.visible = "pipeline" in results && results["pipeline"].length > 0;
-        panelsResult.visible = "panel" in results && results["panel"].length > 0;
-        usersResult.visible = "user" in results && results["user"].length > 0;
+        projectsResult.visible = "project" in results && results["project"];
+        analysessResult.visible = "analysis" in results && results["analysis"];
+        filesResult.visible = "file" in results && results["file"];
+        subjectsResult.visible = "subject" in results && results["subject"];
+        samplesResult.visible = "sample" in results && results["sample"];
+        phenotypesResult.visible = "phenotype" in results && results["phenotype"];
+        genesResult.visible = "gene" in results && results["gene"];
+        variantsResult.visible = "variant" in results && results["variant"];
+        pipelinesResult.visible = "pipeline" in results && results["pipeline"];
+        panelsResult.visible = "panel" in results && results["panel"];
+        usersResult.visible = "user" in results && results["user"];
 
         if (projectsResult.visible)
         {

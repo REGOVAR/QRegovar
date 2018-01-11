@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 1.4
+import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import org.regovar 1.0
 import "../../../Regovar"
@@ -12,34 +13,10 @@ Rectangle
 
     property FilteringAnalysis model
     property bool editionMode: false
+    property bool isLoading: true
 
-    onModelChanged:
-    {
-        if (model)
-        {
-            model.dataChanged.connect(function() { refreshFromModel(); })
-            refreshFromModel();
-        }
-    }
+    onModelChanged: updateViewFromModel()
 
-    onVisibleChanged: refreshFromModel()
-
-
-    function refreshFromModel()
-    {
-        if (model)
-        {
-            headerTitle.text = model.name;
-            nameField.text = model.name;
-            commentField.text = model.comment;
-            statusField.text = model.status;
-            typeField.text = model.type;
-            refField.text = model.refName;
-            samplesRepeater.model = model.samples;
-            annotationsRepeater.model = model.selectedAnnotationsDB;
-            //eventsTreeView.model = ...
-        }
-    }
 
 
     Rectangle
@@ -133,13 +110,48 @@ Rectangle
             Button
             {
                 text: editionMode ? qsTr("Save") : qsTr("Edit")
-                onClicked:  editionMode = !editionMode
+                onClicked:
+                {
+                    editionMode = !editionMode;
+                    if (!editionMode)
+                    {
+                        // when click on save : update model
+                        updateModelFromView();
+                    }
+                }
             }
 
             Button
             {
                 visible: editionMode
                 text: qsTr("Cancel")
+                onClicked: { updateView1FromModel(model); editionMode = false; }
+            }
+        }
+
+        Text
+        {
+            text: qsTr("Indicator")
+            color: Regovar.theme.primaryColor.back.dark
+            font.pixelSize: Regovar.theme.font.size.normal
+            font.family: Regovar.theme.font.familly
+            verticalAlignment: Text.AlignVCenter
+            height: 35
+        }
+        Rectangle
+        {
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.normal
+            color: "transparent"
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            Text
+            {
+                anchors.centerIn: parent
+                text: qsTr("Not yet implemented")
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.frontColor.disable
+                verticalAlignment: Text.AlignVCenter
             }
         }
 
@@ -163,21 +175,6 @@ Rectangle
         }
 
 
-        Text
-        {
-            text: qsTr("Priority")
-            color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
-            verticalAlignment: Text.AlignVCenter
-            height: 35
-        }
-        ComboBox
-        {
-            enabled: editionMode
-            model: ["Urgent", "High", "Normal", "Low"]
-            currentIndex: 1
-        }
 
 
 
@@ -200,15 +197,39 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
-        Text
+        Row
         {
-            id: statusField
-            Layout.fillWidth: true
-            height: Regovar.theme.font.size.header
-            color: Regovar.theme.frontColor.normal
-            font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
-            verticalAlignment: Text.AlignVCenter
+            spacing: 10
+            Text
+            {
+                id: statusIcon
+                Layout.fillWidth: true
+                height: Regovar.theme.font.size.header
+                color: Regovar.theme.frontColor.normal
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.icons.name
+                verticalAlignment: Text.AlignVCenter
+                text: "n" // "l" error , "/" computing, "m" waiting sample importation done, "g" empty
+            }
+
+            Text
+            {
+                id: statusField
+                Layout.fillWidth: true
+                height: Regovar.theme.font.size.header
+                color: Regovar.theme.frontColor.normal
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.familly
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            ButtonInline
+            {
+                icon: "Y"
+                text: ""
+                ToolTip.text: qsTr("Display details")
+                ToolTip.visible: hovered
+            }
         }
 
         Text
@@ -253,6 +274,24 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
         }
 
+        Text
+        {
+            Layout.alignment: Qt.AlignTop
+            text: qsTr("Annotations DB")
+            color: Regovar.theme.primaryColor.back.dark
+            font.pixelSize: Regovar.theme.font.size.normal
+            font.family: Regovar.theme.font.familly
+            verticalAlignment: Text.AlignVCenter
+            height: 35
+        }
+        Text
+        {
+            id: annotationsField
+            Layout.fillWidth: true
+            font.pixelSize: Regovar.theme.font.size.normal
+            color: Regovar.theme.frontColor.normal
+            verticalAlignment: Text.AlignVCenter
+        }
 
 
         Text
@@ -265,79 +304,97 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
-        Column
+
+
+        TableView
         {
+            id: samplesTable
             Layout.fillWidth: true
+            height: 50
 
-            Repeater
+            // Generic Column component use to display new one when user select a new annotation
+            Component
             {
-                id: samplesRepeater
+                id: columnComponent
+                TableViewColumn { width: 100 }
+            }
 
-                Row
+            TableViewColumn
+            {
+                role: "sample"
+                title: "Sample"
+                width: 150
+
+                delegate: RowLayout
                 {
-                    Text
+                    anchors.fill: parent
+                    anchors.leftMargin: 5
+                    anchors.rightMargin: 5
+                    spacing: 10
+
+                    ButtonInline
                     {
-                        verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        width: Regovar.theme.font.size.normal
-                        text: modelData.subjectUI.sex == "M" ? "9" :modelData.subjectUI.sex == "F" ? "<" : ""
-                        font.family: Regovar.theme.icons.name
-                        color: Regovar.theme.frontColor.normal
-                    }
-                    Text
-                    {
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        text: modelData.subjectUI.lastname + " " + modelData.subjectUI.firstname + " (" + modelData.subjectUI.age + ")"
-                        elide: Text.ElideRight
-                        color: Regovar.theme.frontColor.normal
+                        icon: "z"
+                        text: ""
+                        onClicked: regovar.getSampleInfo(styleData.value.id)
                     }
 
                     Text
                     {
-                        width: Regovar.theme.font.boxSize.normal
+                        Layout.fillWidth: true
                         font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.icons.name
+                        font.family: Regovar.theme.font.familly
                         color: Regovar.theme.frontColor.normal
+                        horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        text: "{"
-                    }
-                    Text
-                    {
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.frontColor.normal
-                        verticalAlignment: Text.AlignVCenter
-                        font.family: "monospace"
-                        text: modelData.name
+                        elide: Text.ElideRight
+                        text: styleData.value.name
                     }
                 }
             }
-        }
-
-        Text
-        {
-            Layout.alignment: Qt.AlignTop
-            text: qsTr("Annotations")
-            color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.familly
-            verticalAlignment: Text.AlignVCenter
-            height: 35
-        }
-        Column
-        {
-            Layout.fillWidth: true
-
-            Repeater
+            TableViewColumn
             {
-                id: annotationsRepeater
+                role: "subject"
+                title: "Subject"
+                width: 300
 
-                Text
+                delegate: RowLayout
                 {
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    color: Regovar.theme.frontColor.normal
-                    verticalAlignment: Text.AlignVCenter
-                    text: modelData
+                    anchors.fill: parent
+                    anchors.leftMargin: 5
+                    anchors.rightMargin: 5
+                    spacing: 10
+
+                    ButtonInline
+                    {
+                        icon: "z"
+                        text: ""
+                        onClicked: regovar.subjectsManager.openSubject(styleData.value.id)
+                        visible: styleData.value
+                    }
+
+                    Text
+                    {
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        font.family: Regovar.theme.icons.name
+                        color: Regovar.theme.frontColor.normal
+                        verticalAlignment: Text.AlignVCenter
+                        text: styleData.value ? (styleData.value.sex == "male" ? "9" : styleData.value.sex == "female" ? "<" : "b") : ""
+                        visible: styleData.value
+                    }
+
+                    Text
+                    {
+                        Layout.fillWidth: true
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        font.family: Regovar.theme.font.familly
+                        color: Regovar.theme.frontColor.normal
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
+                        elide: Text.ElideRight
+                        text: styleData.value ? styleData.value.name : ""
+                        visible: styleData.value
+                    }
                 }
             }
         }
@@ -362,9 +419,9 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
             height: 35
         }
-        TreeView
+        TableView
         {
-            id: eventsTreeView
+            id: eventsTable
             Layout.fillWidth: true
             Layout.fillHeight: true
 
@@ -372,7 +429,7 @@ Rectangle
             TableViewColumn
             {
                 title: "Date"
-                role: "filenameUI"
+                role: "data"
             }
             TableViewColumn
             {
@@ -399,6 +456,133 @@ Rectangle
             }
         }
 
+    }
+
+    function updateView1FromModel(model)
+    {
+        headerTitle.text = model.name;
+        nameField.text = model.name;
+        commentField.text = model.comment;
+    }
+
+    function updateViewFromModel()
+    {
+        if (root.model)
+        {
+            if (!root.model.loaded)
+            {
+                root.isLoading = true;
+                root.model.dataChanged.connect(updateViewFromModel);
+            }
+            else
+            {
+                root.isLoading = false;
+                root.model.dataChanged.disconnect(updateViewFromModel);
+            }
+
+            updateView1FromModel(root.model);
+            //creationDate.text = Regovar.formatShortDate(root.model.createDate);
+            statusField.text = root.model.status;
+            refField.text = root.model.refName;
+
+            // Type
+            var type = qsTr("Unknow");
+            if (root.model.type == "Filtering")
+            {
+                type = qsTr("Variants filtering");
+                if (root.model.isTrio)
+                {
+                    type += " (" + qsTr("trio analysis") + ")";
+                }
+                else if (root.model.samples.length == 1)
+                {
+                    type += " (" + qsTr("singleton analysis") + ")";
+                }
+                else
+                {
+                    type += " (" + qsTr("custom analysis") + ")";
+                }
+            }
+            typeField.text = type;
+
+            // Annotations
+            var annotations = "";
+            for (var idx in root.model.selectedAnnotationsDB)
+            {
+                annotations += root.model.selectedAnnotationsDB[idx] + ", ";
+            }
+            annotationsField.text = annotations.substring(0, annotations.length-2);
+
+            // Samples
+            // Add columns
+            var colCount = 2;
+            if (root.model.isTrio)
+            {
+                insertColumn("trio", qsTr("Trio"), 0);
+                colCount += 1;
+            }
+            for (idx in root.model.attributes)
+            {
+                insertColumn("attr_" + idx, model.attributes[idx].name, colCount);
+                colCount += 1;
+            }
+
+            // Create table model
+            var samplesModel = [];
+            samplesTable.height = Math.min(root.model.samples.length, 5) * Regovar.theme.font.boxSize.normal;
+            for (idx in root.model.samples)
+            {
+                var sample = root.model.samples[idx];
+                var item = {
+                    "sample": {"id": sample.id, "name": sample.name},
+                    "subject": sample.subject ? sample.subject.subjectUI : false,
+                };
+                if (root.model.isTrio)
+                {
+                    if (root.model.child === sample)
+                    {
+                        item["trio"] = qsTr("Child");
+                    }
+                    else if (root.model.mother === sample)
+                    {
+                        item["trio"] = qsTr("Mother");
+                    }
+                    else
+                    {
+                        item["trio"] = qsTr("Father");
+                    }
+                }
+                for (idx in root.model.attributes)
+                {
+                    item["attr_" + idx] = root.model.attributes[idx].getValue(sample.id);
+                }
+                samplesModel.push(item);
+            }
+
+            samplesTable.model = samplesModel;
+
+            // Events ...
+        }
+    }
+
+
+    function updateModelFromView()
+    {
+        if (model)
+        {
+            model.name = nameField.text;
+            model.comment = commentField.text;
+
+            model.save();
+            headerTitle.text = model.name;
+        }
+    }
+
+
+    function insertColumn(role, title, position)
+    {
+        var col = columnComponent.createObject(samplesTable, {"role": role, "title": title, "width": 100});
+        samplesTable.insertColumn(position, col);
     }
 }
 

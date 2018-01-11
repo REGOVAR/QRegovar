@@ -204,7 +204,7 @@ Item
 
     function updateViewFromSampleModel(sample)
     {
-        if (sample)
+        if (sample && sample.stats && sample.stats.length > 0)
         {
             var stats = sample.stats;
             var variantTotal = stats["sample_total_variant"];

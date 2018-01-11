@@ -178,13 +178,17 @@ QtObject
     // TOOLS
     function formatBigNumber(value)
     {
-        var n = value.toString();
-        var p = n.indexOf('.');
-        n = n.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, function($0, i)
+        if (value)
         {
-            return p<0 || i<p ? ($0+' ') : $0;
-        });
-        return n;
+            var n = value.toString();
+            var p = n.indexOf('.');
+            n = n.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, function($0, i)
+            {
+                return p<0 || i<p ? ($0+' ') : $0;
+            });
+            return n;
+        }
+        return "";
     }
 
 

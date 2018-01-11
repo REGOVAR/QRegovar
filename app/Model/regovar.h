@@ -152,13 +152,13 @@ public:
     Q_INVOKABLE inline void openNewProjectWizard() { emit newProjectWizardOpen(); }
     Q_INVOKABLE inline void openNewAnalysisWizard() { emit newAnalysisWizardOpen(); }
     Q_INVOKABLE inline void openNewSubjectWizard() { emit newSubjectWizardOpen(); }
-    Q_INVOKABLE void getFileInfo(int fileId, int analysisId=-1);
+    Q_INVOKABLE void getFileInfo(int fileId);
     Q_INVOKABLE void getGeneInfo(QString geneName, int analysisId=-1);
-    Q_INVOKABLE void getPanelInfo(QString panelId, int analysisId=-1);
-    Q_INVOKABLE void getPhenotypeInfo(QString phenotypeId, int analysisId=-1);
-    Q_INVOKABLE void getPipelineInfo(int pipelineId, int analysisId=-1);
-    Q_INVOKABLE void getSampleInfo(int sampleId, int analysisId=-1);
-    Q_INVOKABLE void getUserInfo(int userId, int analysisId=-1);
+    Q_INVOKABLE void getPanelInfo(QString panelId);
+    Q_INVOKABLE void getPhenotypeInfo(QString phenotypeId);
+    Q_INVOKABLE void getPipelineInfo(int pipelineId);
+    Q_INVOKABLE void getSampleInfo(int sampleId);
+    Q_INVOKABLE void getUserInfo(int userId);
     Q_INVOKABLE void getVariantInfo(int refId, QString variantId, int analysisId=-1);
     Q_INVOKABLE void search(QString query);
     Q_INVOKABLE void loadWelcomData();
@@ -203,23 +203,23 @@ Q_SIGNALS:
     void newAnalysisWizardOpen();
     void newSubjectWizardOpen();
     // Infos panels events
-    void fileInformationSearching(int analysisId=-1);
-    void geneInformationSearching(int analysisId=-1);
-    void panelInformationSearching(int analysisId=-1);
-    void phenotypeInformationSearching(int analysisId=-1);
-    void pipelineInformationSearching(int analysisId=-1);
-    void sampleInformationSearching(int analysisId=-1);
-    void userInformationSearching(int analysisId=-1);
-    void variantInformationSearching(int analysisId=-1);
+    void fileInformationSearching();
+    void geneInformationSearching();
+    void panelInformationSearching();
+    void phenotypeInformationSearching();
+    void pipelineInformationSearching();
+    void sampleInformationSearching();
+    void userInformationSearching();
+    void variantInformationSearching();
 
-    void fileInformationReady(File* file, int analysisId=-1);
-    void panelInformationReady(Panel* panel, int analysisId=-1);
-    void sampleInformationReady(Sample* sample, int analysisId=-1);
-    void userInformationReady(User* user, int analysisId=-1);
-    void pipelineInformationReady(QJsonValue json, int analysisId=-1);
-    void geneInformationReady(QJsonValue json, int analysisId=-1);
-    void phenotypeInformationReady(QJsonValue json, int analysisId=-1);
-    void variantInformationReady(QJsonValue json, int analysisId=-1);
+    void fileInformationReady(File* file);
+    void panelInformationReady(Panel* panel);
+    void sampleInformationReady(Sample* sample);
+    void userInformationReady(User* user);
+    void pipelineInformationReady(QJsonValue json);
+    void geneInformationReady(QJsonValue json);
+    void phenotypeInformationReady(QJsonValue json);
+    void variantInformationReady(QJsonValue json);
 
     void errorOccured(QString errCode, QString message, QString techData);
     void onClose();
