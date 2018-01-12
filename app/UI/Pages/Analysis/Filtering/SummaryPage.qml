@@ -452,12 +452,14 @@ Rectangle
             {
                 id: addFile
                 text: qsTr("Add event")
+                enabled: false
             }
 
             Button
             {
                 id: editFile
                 text: qsTr("Edit event")
+                enabled: false
             }
         }
     }

@@ -154,7 +154,7 @@ Rectangle
                         horizontalAlignment: styleData.textAlignment
                         font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.icons.name
-                        text: styleData.value.icon
+                        text: styleData.value ? styleData.value.icon : ""
                     }
                     Text
                     {
@@ -166,7 +166,7 @@ Rectangle
                         horizontalAlignment: styleData.textAlignment
                         font.pixelSize: Regovar.theme.font.size.normal
                         elide: Text.ElideRight
-                        text: styleData.value.filename
+                        text: styleData.value ? styleData.value.filename : "?"
                     }
                 }
             }
