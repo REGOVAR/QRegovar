@@ -3,7 +3,7 @@
     "description": "This is Halloween !",
     "font": 
     {
-        "familly": "Sans",
+        "family": "Sans",
         "size": 
         {
             "header":  16,

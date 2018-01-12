@@ -3,7 +3,7 @@
     "description": "Default theme for Regovar",
     "font": 
     {
-        "familly": "Sans"
+        "family": "Sans"
     },
     "primaryColor":
     {

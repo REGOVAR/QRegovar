@@ -85,24 +85,7 @@ QuickFilterBox
             checked: true
             onCheckedChanged:
             {
-                // Update other checkboxes
-                if (!internalUiUpdate && checked)
-                {
-                    internalUiUpdate = true;
-                    gAll.checked = false;
-                    exacAll.checked = false;
-                    for (var i = 0; i < container.children.length; ++i)
-                    {
-                        var item = container.children[i];
-                        if (item.objectName == "QuickFilterFieldControl")
-                        {
-                            item.checked = false;
-                        }
-                    }
-                    internalUiUpdate = false;
-                }
-
-                checkFinal();
+                // Todo
             }
         }
 

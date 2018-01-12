@@ -3,7 +3,7 @@
     "description": "I can still see you.",
     "font": 
     {
-        "familly": "Sans"
+        "family": "Sans"
     },
     "primaryColor":
     {
