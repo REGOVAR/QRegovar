@@ -546,6 +546,27 @@ Rectangle
                                     verticalAlignment: Text.AlignVCenter
                                     horizontalAlignment: Text.AlignHCenter
                                     text: statusLogsList.logStatusIconMap[status]
+                                    onTextChanged:
+                                    {
+                                        if (status == "computing")
+                                        {
+                                            stepIconAnimation.start();
+                                        }
+                                        else
+                                        {
+                                            stepIconAnimation.stop();
+                                            rotation = 0;
+                                        }
+                                    }
+
+                                    NumberAnimation on rotation
+                                    {
+                                        id: stepIconAnimation
+                                        duration: 1000
+                                        loops: Animation.Infinite
+                                        from: 0
+                                        to: 360
+                                    }
                                 }
                                 Text
                                 {
@@ -669,12 +690,12 @@ Rectangle
         if (root.model.status == "computing")
         {
             statusIconAnimation.start();
-            statusField.text += " (" + Math.round(globalProgress/root.model.computingProgress.log.length)*100 + "%)";
+            statusField.text += " (" + (globalProgress/root.model.computingProgress.log.length*100).toFixed(1) + "%)";
         }
         else
         {
             statusIconAnimation.stop();
-            rotation = 0;
+            statusIcon.rotation = 0;
         }
 
     }
