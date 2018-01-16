@@ -11,6 +11,7 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
+    property var checkChanges: []
     property FilteringAnalysis model
     onModelChanged:
     {
@@ -65,10 +66,6 @@ Rectangle
                 anchors.margins: 10
                 anchors.topMargin: 5
 
-
-                signal checked(string uid, bool isChecked)
-                onChecked: root.model.setField(uid, isChecked);
-
                 // Default delegate for all column
                 itemDelegate: Item
                 {
@@ -82,6 +79,7 @@ Rectangle
                         elide: Text.ElideRight
                     }
                 }
+
 
                 TableViewColumn
                 {
@@ -101,17 +99,40 @@ Rectangle
                                 var annot = annotationsSelector.model.getAnnotation(styleData.index);
                                 if (annot)
                                 {
-                                    annotationsSelector.checked(annot.uid, checked);
+                                    // add or remove annotation id to the list of changes
+                                    if (root.checkChanges.indexOf(annot.uid) != -1)
+                                    {
+                                        root.checkChanges.pop(annot.uid);
+                                    }
+                                    else
+                                    {
+                                        root.checkChanges.push(annot.uid);
+                                    }
+
+                                    // Check if any change can be applyed
+                                    applyButton.enabled = root.checkChanges.length > 0;
+                                    //cancelButton.enabled = root.checkChanges.length > 0;
+                                }
+                                else
+                                {
+                                    console.log("TODO: checking annotation database: need to check/uncheck all fields");
                                 }
                             }
 
                             Component.onCompleted:
                             {
                                 var idx = styleData.index;
-                                var data = annotationsSelector.model.data(idx, Qt.UserRole + 2)
-                                if (data)
+                                if (idx.valid)
                                 {
-                                    checked = data;
+                                    var data = annotationsSelector.model.data(idx, Qt.UserRole + 2)
+                                    if (data)
+                                    {
+                                        checked = data;
+                                    }
+                                    else
+                                    {
+                                        checked = false;
+                                    }
                                 }
                             }
                         }
@@ -128,6 +149,36 @@ Rectangle
                         text: styleData.value ? styleData.value : "-"
                         elide: Text.ElideRight
                     }
+                }
+            }
+        }
+
+        Rectangle
+        {
+            Layout.fillWidth: true
+            height: 1
+            color: Regovar.theme.primaryColor.back.light
+        }
+
+        Rectangle
+        {
+            Layout.fillWidth: true
+            height: applyButton.height + 20
+            color: "transparent"
+
+
+            ButtonIcon
+            {
+                id: applyButton
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.margins: 10
+                text: qsTr("Apply changes")
+                icon: "n"
+                enabled: false
+                onClicked:
+                {
+                    root.model.switchFields(root.checkChanges);
                 }
             }
         }

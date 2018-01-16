@@ -123,7 +123,7 @@ public:
     inline void setTrioFather(Sample* father) { mTrioFather=father; emit trioFatherChanged(); }
     inline void setIsLoading(bool flag) { mIsLoading=flag; emit isLoadingChanged(); }
     inline void setCurrentFilterName(QString name) { mCurrentFilterName=name; emit currentFilterNameChanged(); }
-    Q_INVOKABLE void setField(QString uid, bool isDisplayed, int order=-1, bool internalUpdate=false);
+    Q_INVOKABLE void switchFields(QStringList uids, bool internalUpdate=false);
     void setReference(Reference* ref, bool continueInit=false);
     void setProject(Project* project) { mProject = project; emit dataChanged(); }
 

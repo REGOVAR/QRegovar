@@ -798,35 +798,22 @@ void FilteringAnalysis::deleteAttribute(QStringList names)
 // Result
 
 //! Add or remove a field to the display result and update or set the order
-void FilteringAnalysis::setField(QString uid, bool isDisplayed, int position, bool internalUpdate)
+void FilteringAnalysis::switchFields(QStringList uids, bool internalUpdate)
 {
-    Annotation* annot = mAnnotationsTreeModel->getAnnotation(uid);
-
-    if (annot == nullptr)
+    for (const QString& uid: uids)
     {
-        qDebug() << "TODO : on check db : need to check/uncheck all fields";
-        return;
-    }
+        Annotation* annot = mAnnotationsTreeModel->getAnnotation(uid);
+        if (annot == nullptr) continue;
 
-    if (isDisplayed)
-    {
-        if (position < 0)
+        if (mFields.contains(uid))
         {
             mFields.removeAll(uid);
-            mFields << uid;
         }
         else
         {
-            position = qMin(position, mFields.count()-1);
-            mFields.removeAll(uid);
-            mFields.insert(position, uid);
+            mFields << uid;
         }
     }
-    else
-    {
-        mFields.removeAll(uid);
-    }
-
 
     if (!internalUpdate)
     {
@@ -983,7 +970,7 @@ void FilteringAnalysis::loadSettings()
     if (fields.count() > 0)
     {
         mFields.clear();
-        for (const QString& fuid: fields) { setField(fuid, true, -1, true); }
+        switchFields(fields, true);
 
         // Update columns to display in the QML view according to selected annoations
         refreshDisplayedAnnotationColumns();

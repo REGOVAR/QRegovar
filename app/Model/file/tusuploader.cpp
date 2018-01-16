@@ -9,7 +9,7 @@
 
 TusUploader::TusUploader(QObject *parent) : QObject(parent)
 {
-    mChunkSize = 50 * 1024;
+    mChunkSize = 8000000; // 1000 x 1000 * 8 = 1Mo;
     mBandWidthLimit = 0; // Not implemented
     mMaxUpload = 2;
     mTusVersion = "1.0.0";
