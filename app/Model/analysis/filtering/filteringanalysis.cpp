@@ -585,9 +585,9 @@ void FilteringAnalysis::setFilterOrder(int column, bool order)
     {
         mOrder.clear();
         FieldColumnInfos* info = qobject_cast<FieldColumnInfos*>(mDisplayedAnnotations[column]);
-        if (info->isAnnotation())
+        if (info->isAnnotation() && !mOrder.contains(info->uid()) &&!mOrder.contains(QString("-%1").arg(info->uid())))
         {
-            mOrder << QString("%1%2").arg(order ? "-" : "").arg(info->annotation()->uid());
+            mOrder << QString("%1%2").arg(order ? "-" : "").arg(info->uid());
             // Force Variant table to refresh
             mResults->applyFilter(mFilterJson);
         }
