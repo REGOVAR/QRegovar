@@ -11,12 +11,11 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property var checkChanges: []
     property FilteringAnalysis model
     onModelChanged:
     {
         console.log("===> AnnotationPanel model set up")
-        annotationsSelector.model = root.model.annotations
+        annotationsSelector.model = root.model.annotationsTree
     }
 
     ColumnLayout
@@ -88,6 +87,7 @@ Rectangle
 
                     delegate: Item
                     {
+
                         CheckBox
                         {
                             anchors.left: parent.left
@@ -99,19 +99,8 @@ Rectangle
                                 var annot = annotationsSelector.model.getAnnotation(styleData.index);
                                 if (annot)
                                 {
-                                    // add or remove annotation id to the list of changes
-                                    if (root.checkChanges.indexOf(annot.uid) != -1)
-                                    {
-                                        root.checkChanges.pop(annot.uid);
-                                    }
-                                    else
-                                    {
-                                        root.checkChanges.push(annot.uid);
-                                    }
-
-                                    // Check if any change can be applyed
-                                    applyButton.enabled = root.checkChanges.length > 0;
-                                    //cancelButton.enabled = root.checkChanges.length > 0;
+                                    root.model.setDisplayedAnnotationTemp(annot.uid, checked);
+                                    applyButton.enabled = true;
                                 }
                                 else
                                 {
@@ -119,19 +108,22 @@ Rectangle
                                 }
                             }
 
-                            Component.onCompleted:
+                            onVisibleChanged:
                             {
-                                var idx = styleData.index;
-                                if (idx.valid)
+                                if (visible)
                                 {
-                                    var data = annotationsSelector.model.data(idx, Qt.UserRole + 2)
-                                    if (data)
+                                    var idx = styleData.index;
+                                    if (idx.valid)
                                     {
-                                        checked = data;
-                                    }
-                                    else
-                                    {
-                                        checked = false;
+                                        var annot = annotationsSelector.model.getAnnotation(idx)
+                                        if (annot)
+                                        {
+                                            checked = annot.isDisplayedTemp;
+                                        }
+                                        else
+                                        {
+                                            checked = false;
+                                        }
                                     }
                                 }
                             }
@@ -176,10 +168,7 @@ Rectangle
                 text: qsTr("Apply changes")
                 icon: "n"
                 enabled: false
-                onClicked:
-                {
-                    root.model.switchFields(root.checkChanges);
-                }
+                onClicked: { root.model.applyChangeForDisplayedAnnotations(); applyButton.enabled = false; }
             }
         }
     }

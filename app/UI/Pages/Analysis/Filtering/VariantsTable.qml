@@ -28,9 +28,10 @@ TreeView
     {
         if (analysis)
         {
-            analysis.resultColumnsChanged.connect(function() { refreshResultColumns(); });
+            analysis.displayedAnnotationsChanged.connect(function() {refreshResultColumns();});
         }
     }
+
 
     sortIndicatorVisible: true
     onSortIndicatorColumnChanged: analysis.setFilterOrder(sortIndicatorColumn, sortIndicatorOrder)
@@ -39,24 +40,11 @@ TreeView
     onHeaderResized: analysis.saveHeaderWidth(headerPosition, newSize)
     onModelChanged: if (model) { refreshResultColumns(); }
 
-    // Default delegate for all column
-    itemDelegate: Item
-    {
-        Text
-        {
-            anchors.leftMargin: 5
-            anchors.fill: parent
-            verticalAlignment: Text.AlignVCenter
-            font.pixelSize: Regovar.theme.font.size.normal
-            elide: Text.ElideRight
-            text: styleData.value ? String(styleData.value) : "-"
-        }
-    }
 
     MouseArea
     {
         anchors.fill: parent
-        anchors.topMargin: 24 // 24 = Header height (see UI/Framework/TreeView.qml)
+        anchors.topMargin: Regovar.theme.font.boxSize.normal // = Header height (see UI/Framework/TreeView.qml)
 
         acceptedButtons: Qt.RightButton
         onClicked: resultsTree.openVariantInfoDialog(mouse.x, mouse.y + 24) // compense header's margin
@@ -379,29 +367,6 @@ TreeView
 
 
 
-    Connections
-    {
-        target: regovar
-        onVariantInformationReady: onOpenVariantInfoDialogFinish(json)
-    }
-    Dialog
-    {
-        id: variantInfoDialog
-        title: qsTr("Variant Informations")
-        visible: false
-        modality: Qt.NonModal
-        width: 500
-        height: 400
-
-        property alias data: infoPanel.model
-
-        contentItem: VariantInformations
-        {
-            id: infoPanel
-        }
-    }
-
-
 
 
     function mapToList(json)
@@ -463,16 +428,8 @@ TreeView
             variantId = variantId.split("_")[0];
         }
 
-        // 3- get variant information
+        // 3- get variant information in a stand alone info dialog
         regovar.getVariantInfo(analysis.refId, variantId, analysis.id);
-
-        // 4-... call to server are asynch.
-        // See connection to the signal openResultContextMenuFinish
-
-    }
-    function onOpenVariantInfoDialogFinish(json)
-    {
-        variantInfoDialog.data = json;
     }
 
 
@@ -481,31 +438,27 @@ TreeView
     {
         // Remove old columns
         var position, col;
-        for (var idx=resultsTree.columnCount; idx> 0; idx-- )
+        for (var idx=resultsTree.columnCount; idx> 1; idx-- )
         {
             col = resultsTree.getColumn(idx-1);
             if (col !== null)
             {
-                console.log("  remove column " + col.role + " at " + (idx-1));
-                // remove columb from UI
                 resultsTree.removeColumn(idx-1);
             }
         }
 
         // Add columns
-        var columns = analysis.resultColumns;
+        var columns = analysis.displayedAnnotations;
         for (idx=0; idx < columns.length; idx++)
         {
-            var uid = columns[idx];
-            resultsTree.insertField(uid, idx);
+            resultsTree.insertField(columns[idx], idx+1);
         }
-        //analysis.results.reset();
 
         // Restore sort column indicator
         for (idx=0; idx<analysis.order.length; idx++)
         {
             var orderDirection = 0;
-            uid = analysis.order[idx];
+            var uid = analysis.order[idx];
             if (uid[0] == "-")
             {
                 uid = uid.substr(1);
@@ -518,23 +471,20 @@ TreeView
     }
 
 
-    function insertField(uid, position, forceRefresh)
+    function insertField(info, position, forceRefresh)
     {
         if (analysis === undefined || analysis === null)
         {
             return;
         }
 
-        //console.log("trying to insert field : " + uid + " at " + position);
         var col;
-        var info = analysis.getColumnInfo(uid);
-        //console.log("  info = " + info);
 
-        if (uid === "_Samples")
+        if (info.uid === "_Samples")
         {
             col = columnComponent_Samples.createObject(resultsTree);
         }
-        else if (uid === "_RowHead")
+        else if (info.uid === "_RowHead")
         {
             col = columnComponent_RowHead.createObject(resultsTree);
         }
@@ -568,12 +518,6 @@ TreeView
 
         //console.log("  display column " + uid + " at " + position);
         resultsTree.insertColumn(position, col);
-
-
-        if (forceRefresh)
-        {
-            analysis.results.reset();
-        }
     }
 }
 

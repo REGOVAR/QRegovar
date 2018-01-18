@@ -100,6 +100,31 @@ Rectangle
         anchors.margins: 10
         model: regovar.projectsManager.projectsTreeView
 
+        onDoubleClicked:
+        {
+            var item = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
+            if (item !== undefined)
+            {
+                if (item.isAnalysis)
+                {
+                    regovar.analysesManager.openAnalysis(item.type, item.id);
+                }
+                else
+                {
+                    if (isExpanded(index))
+                    {
+                        // if already expanded, open details
+                        regovar.projectsManager.openProject(item.id);
+                    }
+                    else
+                    {
+                        // if project entry collapsed, expand it
+                        expand(index)
+                    }
+                }
+            }
+        }
+
         // Default delegate for all column
         itemDelegate: Item
         {

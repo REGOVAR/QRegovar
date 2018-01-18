@@ -21,7 +21,7 @@ class NewAdvancedFilterModel;
 class Set;
 class ResultsTreeModel;
 class DocumentsTreeModel;
-
+class AnnotationsTreeModel;
 
 class FilteringAnalysis : public Analysis
 {
@@ -44,9 +44,10 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(Sample* mother READ trioMother WRITE setTrioMother NOTIFY trioMotherChanged)
     Q_PROPERTY(Sample* father READ trioFather WRITE setTrioFather NOTIFY trioFatherChanged)
     // Panel & Treeview models
-    Q_PROPERTY(AnnotationsTreeModel* annotations READ annotations NOTIFY annotationsChanged)
-    Q_PROPERTY(QList<QObject*> annotationsFlatList READ annotationsFlatList NOTIFY annotationsFlatListChanged)
-    Q_PROPERTY(QList<QObject*> allAnnotations READ allAnnotations NOTIFY allAnnotationsChanged)
+    Q_PROPERTY(AnnotationsTreeModel* annotationsTree READ annotationsTree NOTIFY annotationsChanged)
+    Q_PROPERTY(QList<QObject*> annotationsFlatList READ annotationsFlatList NOTIFY annotationsChanged)
+    Q_PROPERTY(QList<QObject*> allAnnotations READ allAnnotations NOTIFY annotationsChanged)
+    Q_PROPERTY(QList<QObject*> displayedAnnotations READ displayedAnnotations NOTIFY displayedAnnotationsChanged)
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsChanged)
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY filterChanged)
     Q_PROPERTY(AdvancedFilterModel* advancedfilter READ advancedfilter NOTIFY filterChanged)
@@ -56,7 +57,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QList<QObject*> samplesInputsFilesList READ samplesInputsFilesList NOTIFY samplesInputsFilesListChanged)
     // "Shortcuts properties" for QML
     // Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
-    Q_PROPERTY(QStringList resultColumns READ resultColumns NOTIFY resultColumnsChanged)
+
     Q_PROPERTY(QStringList selectedAnnotationsDB READ selectedAnnotationsDB NOTIFY selectedAnnotationsDBChanged)
     Q_PROPERTY(QStringList panelsUsed READ panelsUsed NOTIFY panelsUsedChanged)
     Q_PROPERTY(QString currentFilterName READ currentFilterName WRITE setCurrentFilterName NOTIFY currentFilterNameChanged)
@@ -97,7 +98,8 @@ public:
     inline QList<QObject*> samplesInputsFilesList() const { return mSamplesInputsFilesList; }
     inline QJsonObject stats() const { return mStats; }
     // Panel & Treeview models
-    inline AnnotationsTreeModel* annotations() const { return mAnnotationsTreeModel; }
+    inline QHash<QString, FieldColumnInfos*>* annotationsMap() { return &mAnnotations; }
+    inline AnnotationsTreeModel* annotationsTree() const { return mAnnotationsTreeModel; }
     inline QList<QObject*> annotationsFlatList() const { return mAnnotationsFlatList; }
     inline QList<QObject*> allAnnotations() const { return mAllAnnotations; }
     inline ResultsTreeModel* results() const { return mResults; }
@@ -107,7 +109,7 @@ public:
     inline NewAdvancedFilterModel* newConditionModel() const { return mNewConditionModel; }
     // "Shortcuts properties" for QML
     QList<QObject*> samples4qml();      // convert QList<Sample*> to QList<QObject*>
-    QStringList resultColumns();
+    inline QList<QObject*> displayedAnnotations() { return mDisplayedAnnotations; }
     QStringList selectedAnnotationsDB();
     inline QStringList panelsUsed() const { return mPanelsUsed; }
     inline bool isLoading() const { return mIsLoading; }
@@ -123,7 +125,6 @@ public:
     inline void setTrioFather(Sample* father) { mTrioFather=father; emit trioFatherChanged(); }
     inline void setIsLoading(bool flag) { mIsLoading=flag; emit isLoadingChanged(); }
     inline void setCurrentFilterName(QString name) { mCurrentFilterName=name; emit currentFilterNameChanged(); }
-    Q_INVOKABLE void switchFields(QStringList uids, bool internalUpdate=false);
     void setReference(Reference* ref, bool continueInit=false);
     void setProject(Project* project) { mProject = project; emit dataChanged(); }
 
@@ -160,6 +161,9 @@ public:
     Q_INVOKABLE void removeSampleInputs(QList<QObject*> inputs);
     Q_INVOKABLE void setVariantSelection(QString id, bool isChecked);
     Q_INVOKABLE void addFile(File* file);
+    Q_INVOKABLE void applyChangeForDisplayedAnnotations();
+    Q_INVOKABLE void setDisplayedAnnotationTemp(QString uid, bool check);
+
 
     void raiseNewInternalLoadingStatus(LoadingStatus newStatus);
     void resetSets();
@@ -171,13 +175,11 @@ Q_SIGNALS:
     void isLoading();
     void loadingStatusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
     void annotationsChanged();
-    void annotationsFlatListChanged();
-    void allAnnotationsChanged();
+    void displayedAnnotationsChanged();
     void filterChanged();
     //void fieldsChanged();
     void resultsChanged();
     void samplesChanged();
-    void resultColumnsChanged();
     void orderChanged();
     void displayFilterSavingFormPopup();
     void displayFilterNewCondPopup(QString conditionUid);
@@ -230,11 +232,19 @@ private:
     NewAdvancedFilterModel* mNewConditionModel = nullptr;
     QList<QObject*> mSamplesInputsFilesList;
 
-    QHash<QString, FieldColumnInfos*> mAnnotations;
-    QList<QObject*> mAnnotationsFlatList;
+    /// List<AnnotationDB*>: List of all annotation databases available for the reference used for this analysis. Init when reference is set.
     QList<QObject*> mAllAnnotations;
+    /// Map with all UI informations by annotations needed by the VariantTable to display annotation's columns
+    QHash<QString, FieldColumnInfos*> mAnnotations;
+    /// List<Annotation*>: one dimension list with all annotations available (use by UI in dropdown list form when need to select annotation condition by example)
+    QList<QObject*> mAnnotationsFlatList;
+    /// Treeview model used by UI to display the "Select Annotation's panel in the filtering view"
     AnnotationsTreeModel* mAnnotationsTreeModel = nullptr;
-    QList<FieldColumnInfos*> mDisplayedAnnotationColumns;
+    /// QList<FieldColumnInfos*>: ordered list of columns displayed in the VariantTable. Contains Annotation column but also pure UI column like RowHead and SampleName
+    QList<QObject*> mDisplayedAnnotations;
+
+
+
 
     bool mIsTrio = false;
     QStringList mAnnotationsDBUsed;
@@ -251,7 +261,7 @@ private:
     // Methods
     void loadAnnotations();
     void initResults();
-    void refreshDisplayedAnnotationColumns();
+    void initDisplayedAnnotations();
     void saveSettings();
     void loadSettings();
 

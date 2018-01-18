@@ -4,6 +4,9 @@
 #include "Model/framework/treemodel.h"
 #include "annotation.h"
 #include "fieldcolumninfos.h"
+#include "filteringanalysis.h"
+
+class FilteringAnalysis;
 
 class AnnotationsTreeModel : public TreeModel
 {
@@ -22,7 +25,7 @@ public:
     };
 
     // Constructor
-    explicit AnnotationsTreeModel(QObject* parent=nullptr);
+    explicit AnnotationsTreeModel(FilteringAnalysis* analysis=nullptr);
 
     // Getters
     inline bool isLoading() { return mIsLoading; }
@@ -31,12 +34,12 @@ public:
     inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingChanged(); }
 
     // Methods
-    Q_INVOKABLE Annotation* getAnnotation(QString uid) ;
-    Q_INVOKABLE Annotation* getAnnotation(const QModelIndex &index);
+    Q_INVOKABLE FieldColumnInfos* getAnnotation(QString uid) ;
+    Q_INVOKABLE FieldColumnInfos* getAnnotation(const QModelIndex &index);
 
     QHash<int, QByteArray> roleNames() const override;
-    inline QHash<QString, Annotation*>* annotations() { return &mAnnotations;}
-    inline void addAnnotation(QString uid, Annotation* annotation) {mAnnotations.insert(uid, annotation); }
+    //inline QHash<QString, Annotation*>* annotations() { return &mAnnotations;}
+    //inline void addAnnotation(QString uid, Annotation* annotation) {mAnnotations.insert(uid, annotation); }
     bool fromJson(QJsonObject data, QStringList dbUids);
     void addEntry(QString dbName, QString dbVersion, QString dbDescription, bool isDbSelected, FieldColumnInfos* data);
     void setupModelData(QJsonArray data, TreeItem *parent, QStringList dbUids);
@@ -48,7 +51,7 @@ private:
     bool mIsLoading = false;
     int mRefId = -1;
     QString mRefName;
-    QHash<QString, Annotation*> mAnnotations;
+    FilteringAnalysis* mAnalysis;
 };
 
 #endif // ANNOTATIONSTREEMODEL_H

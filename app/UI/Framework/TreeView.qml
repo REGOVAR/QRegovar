@@ -42,7 +42,7 @@ TreeView
         headerDelegate:  Item
         {
             id: headerRoot
-            height: 24
+            height: Regovar.theme.font.boxSize.normal
             Component.onCompleted: formerPosition = position
 
             // Manage user changing position of header
@@ -167,8 +167,9 @@ TreeView
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: styleData.textAlignment
             font.pixelSize: Regovar.theme.font.size.normal
-            text: (styleData.value !== undefined && styleData.value !== null) ? styleData.value : "" // + " (" + styleData.row + "," + styleData.column + ")"
+            text: (styleData.value !== undefined && styleData.value !== null) ? String(styleData.value) : "" // + " (" + styleData.row + "," + styleData.column + ")"
             elide: Text.ElideRight
+            clip: true
         }
     }
 

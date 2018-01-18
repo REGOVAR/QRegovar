@@ -100,6 +100,8 @@ Rectangle
         anchors.margins: 10
         model: regovar.subjectsManager.subjectsList
 
+        onDoubleClicked: openSelectedSubject()
+
 
         TableViewColumn
         {

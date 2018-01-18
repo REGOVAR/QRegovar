@@ -6,8 +6,9 @@
 
 
 
-AnnotationsTreeModel::AnnotationsTreeModel(QObject* parent) : TreeModel(parent)
+AnnotationsTreeModel::AnnotationsTreeModel(FilteringAnalysis* analysis) : TreeModel(analysis)
 {
+    mAnalysis = analysis;
     // With QML TreeView, the rootItem must know all column's roles to allow correct display for
     // other rows. So that's why we create columns for all existings roles.
     QHash<int, QVariant> rootData;
@@ -34,12 +35,12 @@ bool AnnotationsTreeModel::fromJson(QJsonObject data, QStringList dbUids)
     setupModelData(data["db"].toArray(), mRootItem, dbUids);
     endResetModel();
 
-    qDebug() << "Annotation loaded for ref" << mRefName << ":" << mAnnotations.count();
+    qDebug() << "Annotation loaded for ref" << mRefName << ":" << mAnalysis->annotationsMap()->count();
     return true;
 }
 
 
-Annotation* AnnotationsTreeModel::getAnnotation(const QModelIndex &index)
+FieldColumnInfos* AnnotationsTreeModel::getAnnotation(const QModelIndex &index)
 {
     TreeItem* item = getItem(index);
     if (item != nullptr)
@@ -50,11 +51,11 @@ Annotation* AnnotationsTreeModel::getAnnotation(const QModelIndex &index)
 }
 
 
-Annotation* AnnotationsTreeModel::getAnnotation(QString uid)
+FieldColumnInfos* AnnotationsTreeModel::getAnnotation(QString uid)
 {
-    if (mAnnotations.contains(uid))
+    if (mAnalysis->annotationsMap()->contains(uid))
     {
-        return mAnnotations[uid];
+        return mAnalysis->annotationsMap()->value(uid);
     }
     else
     {
@@ -116,11 +117,6 @@ void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent, QSt
                     QString uid = a["uid"].toString();
                     QString name = a["name"].toString();
                     QString description = a["description"].toString();
-                    QString type = a["type"].toString();
-                    QJsonObject meta = a["meta"].toObject();
-                    Annotation* annot = new Annotation(this, uid, dbUid, name, description, type, meta, dbName, dbVersion[""].toString());
-
-                    mAnnotations.insert(uid, annot);
 
                     QHash<int, QVariant> annotColData;
                     dbColData.insert(IdRole, QVariant(uid));
@@ -185,7 +181,6 @@ void AnnotationsTreeModel::addEntry(QString dbName, QString dbVersion, QString d
 
     // create fields entry
     QString uid = data->annotation()->uid();
-    mAnnotations.insert(uid, data->annotation()); // need that ?
 
     QHash<int, QVariant> annotColData;
     annotColData.insert(IdRole, QVariant(uid));
