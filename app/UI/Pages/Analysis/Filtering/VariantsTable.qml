@@ -29,6 +29,7 @@ TreeView
         if (analysis)
         {
             analysis.displayedAnnotationsChanged.connect(function() {refreshResultColumns();});
+            //refreshResultColumns();
         }
     }
 
@@ -38,7 +39,7 @@ TreeView
     onSortIndicatorOrderChanged: analysis.setFilterOrder(sortIndicatorColumn, sortIndicatorOrder)
     onHeaderMoved: analysis.saveHeaderPosition(oldPosition, newPosition)
     onHeaderResized: analysis.saveHeaderWidth(headerPosition, newSize)
-    onModelChanged: if (model) { refreshResultColumns(); }
+
 
 
     MouseArea
@@ -451,7 +452,7 @@ TreeView
         var columns = analysis.displayedAnnotations;
         for (idx=0; idx < columns.length; idx++)
         {
-            resultsTree.insertField(columns[idx], idx+1);
+            resultsTree.insertField(columns[idx], idx);
         }
 
         // Restore sort column indicator

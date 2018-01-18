@@ -411,7 +411,7 @@ void FilteringAnalysis::applyChangeForDisplayedAnnotations()
             mDisplayedAnnotations.removeAll(info);
             info->setIsDisplayed(info->isDisplayedTemp());
         }
-        else
+        else if (info->isDisplayedTemp())
         {
             if (info->isAnnotation() && info->annotation()->type() == "sample_array" && !mAnnotations["_Samples"]->isDisplayed())
             {
@@ -977,22 +977,24 @@ void FilteringAnalysis::loadSettings()
     }
     settings.endArray();
 
+    // Force load of last selected fields if exists.
+    // Otherwise use last fields config saved on the server
     if (fields.count() > 0)
     {
-
         mFields.clear();
         for (QString uid: fields)
         {
             mFields << uid;
         }
-
-        // Update columns to display in the QML view according to selected annoations
-        initDisplayedAnnotations();
-        saveSettings();
-
-        // Force Variant table to refresh
-        mResults->applyFilter(mFilterJson);
     }
+
+    // Update columns to display in the QML view according to selected annoations
+    initDisplayedAnnotations();
+    saveSettings();
+
+    // Force Variant table to refresh
+    mResults->applyFilter(mFilterJson);
+
 }
 
 

@@ -117,7 +117,7 @@ Rectangle
                 spacing: 5
                 Text
                 {
-                    text: root.iconMap[setSelector.model[setSelector.currentIndex].type]
+                    text: (setSelector.model) ?  root.iconMap[setSelector.model[setSelector.currentIndex].type] : ""
                     font.family: Regovar.theme.icons.name
                     color: Regovar.theme.boxColor.front
                     verticalAlignment: Text.AlignVCenter
@@ -128,7 +128,7 @@ Rectangle
                 Text
                 {
                     Layout.fillWidth: true
-                    text: setSelector.model[setSelector.currentIndex].label
+                    text: (setSelector.model) ? setSelector.model[setSelector.currentIndex].label : ""
                     color: Regovar.theme.boxColor.front
                     elide: Text.ElideRight
                     verticalAlignment: Text.AlignVCenter
