@@ -19,25 +19,24 @@ QuickFilterBox
     function checkFinal()
     {
         // Mode
-        predAll.checked = (!predSift.checked && !predPoly.checked && !predCadd.checked);
+        predAll.checked = (!predSift.checked && !predPoly.checked && !predCadd.checked && !predImpact.checked);
         // send final combination to the model to update the filter
         var pf = model.quickfilters.inSilicoPredFilter;
         pf.sift.isActive = predSift.checked;
         pf.polyphen.isActive = predPoly.checked;
         pf.cadd.isActive = predCadd.checked;
-
-
+        pf.impact.isActive = predImpact.checked;
     }
 
     onModelChanged:
     {
         if (model)
         {
-            root.enabled = model.quickfilters.inSilicoPredFilter.isVisible();
             var m = model.quickfilters.inSilicoPredFilter;
             predSift.enabled = m.sift.isDisplayed;
             predPoly.enabled = m.polyphen.isDisplayed;
             predCadd.enabled = m.cadd.isDisplayed;
+            predImpact.enabled = m.impact.isDisplayed;
 
             root.enabled = model.quickfilters.inSilicoPredFilter.isVisible();
         }
@@ -56,7 +55,7 @@ QuickFilterBox
         {
             id: content
             width: parent.width-60
-            rows: 4
+            rows: 5
             columns: 3
             columnSpacing: 10
 
@@ -209,7 +208,45 @@ QuickFilterBox
                 }
                 text: "10"
             }
+
+
+            CheckBox
+            {
+                id: predImpact
+                text: qsTr("Impact")
+                checked: false
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            predAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
+            }
+            ComboBox
+            {
+                enabled: predImpact.enabled
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+                model: ["modifier", "low", "moderate", "high"]
+                onCurrentTextChanged:
+                {
+                    if (root.model)
+                    {
+                        predImpact.checked = true;
+                        root.model.quickfilters.inSilicoPredFilter.impact.value = currentText;
+                    }
+                }
+            }
         }
+
         // FIXME : Qt BUG, margin value not take in account when panel resized by the Splitter
         Rectangle { width:20; height: 10; color: "transparent"; }
     }

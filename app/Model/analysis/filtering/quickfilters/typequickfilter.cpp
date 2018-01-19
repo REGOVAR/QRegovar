@@ -120,6 +120,18 @@ void TypeQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
                     }
                 }
             }
+            if (db->name().toLower() == "snpeff")
+            {
+                for (Annotation* annot: db->fields())
+                {
+                    if (annot && annot->name().toLower() == "annotation")
+                    {
+                        init(annot->uid());
+                        mIsVisible = true;
+                        return;
+                    }
+                }
+            }
         }
     }
 }

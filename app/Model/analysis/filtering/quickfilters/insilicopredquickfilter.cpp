@@ -10,7 +10,7 @@ InSilicoPredQuickFilter::InSilicoPredQuickFilter(int) : QuickFilterBlockInterfac
 
 
 
-void InSilicoPredQuickFilter::init(QString siftUid, QString polyUid, QString caddUid)
+void InSilicoPredQuickFilter::init(QString siftUid, QString polyUid, QString caddUid, QString impactUid)
 {
     mOperators.clear();
     mOperators.append("<");
@@ -35,6 +35,12 @@ void InSilicoPredQuickFilter::init(QString siftUid, QString polyUid, QString cad
     mFields << new QuickFilterField(caddUid, "", mOperators, ">", 15);
     mFields[2]->setIsDisplayed(!caddUid.isEmpty());
     mFields[2]->setIsActive(false);
+
+    // SnpEff Impact
+    mFields << new QuickFilterField(impactUid, "", mOperators, "==", "modifier");
+    mFields[3]->setIsDisplayed(!impactUid.isEmpty());
+    mFields[3]->setIsActive(false);
+
 }
 
 
@@ -42,7 +48,12 @@ void InSilicoPredQuickFilter::init(QString siftUid, QString polyUid, QString cad
 
 bool InSilicoPredQuickFilter::isVisible()
 {
-    return mIsVisible;
+    bool result = false;
+    for (QuickFilterField* qf: mFields)
+    {
+        result = result || qf->isDisplayed();
+    }
+    return result;
 }
 
 
@@ -68,6 +79,11 @@ QJsonArray InSilicoPredQuickFilter::toJson()
     if (mFields[2]->isActive())
     {
         conditions.append(mFields[2]->toJson());
+    }
+    // Impact
+    if (mFields[3]->isActive())
+    {
+        conditions.append(mFields[3]->toJson());
     }
 
     if (conditions.count() == 0)
@@ -105,6 +121,7 @@ void InSilicoPredQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
     QString siftUid = "";
     QString polyUid = "";
     QString caddUid = "";
+    QString impactUid = "";
 
 
     mIsVisible = false;
@@ -130,11 +147,21 @@ void InSilicoPredQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
                     // TODO: retrieve CADD
                 }
             }
+            if (db->name().toLower() == "snpeff")
+            {
+                for (Annotation* annot: db->fields())
+                {
+                    if (annot && annot->name().toLower() == "annotation_impact")
+                    {
+                        impactUid = annot->uid();
+                        mIsVisible = true;
+                    }
+                }
+            }
         }
     }
 
-    init(siftUid, polyUid, caddUid);
-    mIsVisible = siftUid.isEmpty() || polyUid.isEmpty() || caddUid.isEmpty();
+    init(siftUid, polyUid, caddUid, impactUid);
 }
 
 
