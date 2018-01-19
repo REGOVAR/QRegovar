@@ -22,9 +22,39 @@ Rectangle
     property FilteringAnalysis model
 
 
+    Row
+    {
+        anchors.centerIn: parent
+
+        Text
+        {
+            height: Regovar.theme.font.boxSize.header
+            width: Regovar.theme.font.boxSize.header
+            font.pixelSize: Regovar.theme.font.size.header
+            font.family: Regovar.theme.icons.name
+            color: Regovar.theme.primaryColor.back.normal
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            text: "j"
+        }
+
+        Text
+        {
+            height: Regovar.theme.font.boxSize.header
+            font.pixelSize: Regovar.theme.font.size.header
+            color: Regovar.theme.primaryColor.back.normal
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Your analysis is not ready.")
+        }
+    }
+
+
+
+
+
     SplitView
     {
-        visible: root.model ? root.model.loaded : false
+        visible: root.model ? root.model.loaded && root.model.status == "ready" : false
         anchors.fill: parent
 
         TabView
@@ -74,4 +104,8 @@ Rectangle
             Layout.fillWidth: true
         }
     }
+
+
+
+
 }
