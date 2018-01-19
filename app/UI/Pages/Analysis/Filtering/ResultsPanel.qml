@@ -26,9 +26,6 @@ Rectangle
         {
             resultsTree.analysis = root.model;
             resultsTree.model = root.model.results;
-
-
-            resultsTree.rowHeight = (root.model.samples.length === 1) ? 25 : root.model.samples.length * 18;
         }
     }
 

@@ -492,7 +492,7 @@ Rectangle
         contentItem: Rectangle
         {
             implicitWidth: 350
-            implicitHeight: 400
+            implicitHeight: 450
             color: Regovar.theme.backgroundColor.main
 
             ColumnLayout
@@ -505,6 +505,8 @@ Rectangle
                     Layout.fillWidth: true
                     height: Regovar.theme.font.boxSize.header
                     font.pixelSize: Regovar.theme.font.size.header
+                    verticalAlignment: Text.AlignVCenter
+                    color: Regovar.theme.primaryColor.back.normal
                     text: qsTr("Computing steps:")
                 }
 

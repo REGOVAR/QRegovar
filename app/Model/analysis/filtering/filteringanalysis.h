@@ -48,6 +48,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QList<QObject*> annotationsFlatList READ annotationsFlatList NOTIFY annotationsChanged)
     Q_PROPERTY(QList<QObject*> allAnnotations READ allAnnotations NOTIFY annotationsChanged)
     Q_PROPERTY(QList<QObject*> displayedAnnotations READ displayedAnnotations NOTIFY displayedAnnotationsChanged)
+    Q_PROPERTY(int samplesByRow READ samplesByRow NOTIFY displayedAnnotationsChanged)
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsChanged)
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY filterChanged)
     Q_PROPERTY(AdvancedFilterModel* advancedfilter READ advancedfilter NOTIFY filterChanged)
@@ -98,7 +99,7 @@ public:
     inline QList<QObject*> samplesInputsFilesList() const { return mSamplesInputsFilesList; }
     inline QJsonObject stats() const { return mStats; }
     // Panel & Treeview models
-    inline QHash<QString, FieldColumnInfos*>* annotationsMap() { return &mAnnotations; }
+    inline QHash<QString, FieldColumnInfos*> annotationsMap() { return mAnnotations; }
     inline AnnotationsTreeModel* annotationsTree() const { return mAnnotationsTreeModel; }
     inline QList<QObject*> annotationsFlatList() const { return mAnnotationsFlatList; }
     inline QList<QObject*> allAnnotations() const { return mAllAnnotations; }
@@ -109,7 +110,8 @@ public:
     inline NewAdvancedFilterModel* newConditionModel() const { return mNewConditionModel; }
     // "Shortcuts properties" for QML
     QList<QObject*> samples4qml();      // convert QList<Sample*> to QList<QObject*>
-    inline QList<QObject*> displayedAnnotations() { return mDisplayedAnnotations; }
+    inline QList<QObject*> displayedAnnotations() const { return mDisplayedAnnotations; }
+    inline int samplesByRow() const { return mSamplesByRow; }
     QStringList selectedAnnotationsDB();
     inline QStringList panelsUsed() const { return mPanelsUsed; }
     inline bool isLoading() const { return mIsLoading; }
@@ -218,7 +220,6 @@ private:
     QList<Sample*> mSamples;
     QList<QObject*> mFilters;
     QList<QObject*> mAttributes;
-    bool mSampleColumnDisplayed = false;
     QList<File*> mFiles;
     DocumentsTreeModel* mDocumentsTreeModel = nullptr;
     QJsonObject mStats;
@@ -242,7 +243,8 @@ private:
     AnnotationsTreeModel* mAnnotationsTreeModel = nullptr;
     /// QList<FieldColumnInfos*>: ordered list of columns displayed in the VariantTable. Contains Annotation column but also pure UI column like RowHead and SampleName
     QList<QObject*> mDisplayedAnnotations;
-
+    /// Indicates how many sample shall be displayed by row in the UI TableVariant
+    int mSamplesByRow;
 
 
 

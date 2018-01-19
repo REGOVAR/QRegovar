@@ -322,6 +322,7 @@ void FilteringAnalysis::asynchLoadingCoordination(LoadingStatus oldSatus, Loadin
 void FilteringAnalysis::loadAnnotations()
 {
     // Init list of displayed columns according to analysis settings
+    mResults->setIsLoading(true);
     mAnnotations.clear();
     mAnnotationsFlatList.clear();
     mAnnotations.insert("_RowHead", new FieldColumnInfos(nullptr, true, "", this));
@@ -377,6 +378,7 @@ void FilteringAnalysis::initDisplayedAnnotations()
         if (info) info->setIsDisplayed(false);
     }
     mAnnotations["_RowHead"]->setIsDisplayed(true);
+    mSamplesByRow = 1;
 
 
     // Set which annotation are displayed respecting order. Add if needed special UI column like sample's name list
@@ -388,6 +390,7 @@ void FilteringAnalysis::initDisplayedAnnotations()
             {
                 mAnnotations["_Samples"]->setIsDisplayed(true);
                 mDisplayedAnnotations.append(mAnnotations["_Samples"]);
+                mSamplesByRow = mSamples.count();
             }
             mDisplayedAnnotations.append(mAnnotations[uid]);
             mAnnotations[uid]->setIsDisplayed(true);
@@ -399,8 +402,8 @@ void FilteringAnalysis::initDisplayedAnnotations()
 /// Apply pending changes regarding which annotations are displayed in the UI and reload results TreeView
 void FilteringAnalysis::applyChangeForDisplayedAnnotations()
 {
-    mAnnotations["_Samples"]->setIsDisplayed(false);
-    mDisplayedAnnotations.removeAll(mAnnotations["_Samples"]);
+    mResults->setIsLoading(true);
+    bool needSamplesColumn = false;
 
     // loop over all annotations to check which ones need to be displayed or hiden
     for (FieldColumnInfos* info: mAnnotations.values())
@@ -413,10 +416,9 @@ void FilteringAnalysis::applyChangeForDisplayedAnnotations()
         }
         else if (info->isDisplayedTemp())
         {
-            if (info->isAnnotation() && info->annotation()->type() == "sample_array" && !mAnnotations["_Samples"]->isDisplayed())
+            if (info->isAnnotation() && info->annotation()->type() == "sample_array")
             {
-                mAnnotations["_Samples"]->setIsDisplayed(true);
-                mDisplayedAnnotations << mAnnotations["_Samples"];
+                needSamplesColumn = true;
             }
             if (!mDisplayedAnnotations.contains(info))
             {
@@ -425,6 +427,29 @@ void FilteringAnalysis::applyChangeForDisplayedAnnotations()
             }
         }
     }
+
+    // Add or remove UI Samples names columns according to annotations
+    if (needSamplesColumn)
+    {
+        if (!mDisplayedAnnotations.contains(mAnnotations["_Samples"]))
+        {
+            for (int idx=0; idx<mDisplayedAnnotations.count(); idx++)
+            {
+                mDisplayedAnnotations.insert(idx, mAnnotations["_Samples"]);
+                break;
+            }
+        }
+        mAnnotations["_Samples"]->setIsDisplayed(true);
+        mSamplesByRow = mSamples.count();
+    }
+    else
+    {
+        mAnnotations["_Samples"]->setIsDisplayed(false);
+        mDisplayedAnnotations.removeAll(mAnnotations["_Samples"]);
+        mSamplesByRow = 1;
+    }
+
+
 
     // save columns settings on the local computer
     saveSettings();

@@ -30,7 +30,7 @@ public:
     inline int loaded() { return mLoaded; }
 
     // Setters
-    Q_INVOKABLE inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingChanged(); }
+    Q_INVOKABLE inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingChanged(); qDebug() << "ISLOADING" << isLoading;}
     inline void setTotal(int total) { mTotal = total; emit totalChanged(); }
     inline void setLoaded(int loaded) { mLoaded = loaded; emit loadedChanged(); }
 

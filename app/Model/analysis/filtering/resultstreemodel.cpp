@@ -52,7 +52,7 @@ QHash<int, QByteArray> ResultsTreeModel::roleNames() const
     roles[roleId] = "is_selected";
     ++roleId;
     // Build role from annotations all annotations available list
-    for (const QString& uid: mFilteringAnalysis->annotationsMap()->keys())
+    for (const QString& uid: mFilteringAnalysis->annotationsMap().keys())
     {
         roles[roleId] = uid.toUtf8();
         ++roleId;

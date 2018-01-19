@@ -419,9 +419,6 @@ TreeView
             return;
         }
 
-        // 1- display context menu as "loading indicator"
-        variantInfoDialog.open();
-
         // 2- retrieve variant id
         var variantId = resultsTree.model.data(index, Qt.UserRole +1); // enum value of ResultsTreeModel.ColumnRole.id
         if (variantId.indexOf("_") >= 0)
@@ -437,6 +434,8 @@ TreeView
 
     function refreshResultColumns()
     {
+        resultsTree.rowHeight = (resultsTree.analysis.samplesByRow === 1) ? 25 : resultsTree.analysis.samplesByRow * 18;
+
         // Remove old columns
         var position, col;
         for (var idx=resultsTree.columnCount; idx> 1; idx-- )

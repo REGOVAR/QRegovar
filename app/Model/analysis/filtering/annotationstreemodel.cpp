@@ -35,7 +35,7 @@ bool AnnotationsTreeModel::fromJson(QJsonObject data, QStringList dbUids)
     setupModelData(data["db"].toArray(), mRootItem, dbUids);
     endResetModel();
 
-    qDebug() << "Annotation loaded for ref" << mRefName << ":" << mAnalysis->annotationsMap()->count();
+    qDebug() << "Annotation loaded for ref" << mRefName << ":" << mAnalysis->annotationsMap().count();
     return true;
 }
 
@@ -53,9 +53,9 @@ FieldColumnInfos* AnnotationsTreeModel::getAnnotation(const QModelIndex &index)
 
 FieldColumnInfos* AnnotationsTreeModel::getAnnotation(QString uid)
 {
-    if (mAnalysis->annotationsMap()->contains(uid))
+    if (mAnalysis->annotationsMap().contains(uid))
     {
-        return mAnalysis->annotationsMap()->value(uid);
+        return mAnalysis->annotationsMap().value(uid);
     }
     else
     {
