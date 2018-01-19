@@ -29,7 +29,7 @@ TreeView
         if (analysis)
         {
             analysis.displayedAnnotationsChanged.connect(function() {refreshResultColumns();});
-            //refreshResultColumns();
+            refreshResultColumns();
         }
     }
 
