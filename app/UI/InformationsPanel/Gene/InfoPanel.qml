@@ -31,36 +31,32 @@ ScrollView
         }
     }
 
-
-    ScrollView
+    Column
     {
-        anchors.fill: parent
+        x: 10
+        y: 10
+        width: root.width - 30
 
-        Column
+        TextEdit
         {
-            x: 10
-            y: 10
-
-            TextEdit
-            {
-                width: root.width - 30
-                text: formatInfo(geneData)
-                textFormat: TextEdit.RichText
-                font.pixelSize: Regovar.theme.font.size.normal + 2
-                color: Regovar.theme.frontColor.normal
-                readOnly: true
-                selectByMouse: true
-                selectByKeyboard: true
-                wrapMode: TextEdit.Wrap
-                onLinkActivated: Qt.openUrlExternally(link)
-            }
-            Item
-            {
-                width: 1
-                height: 10
-            }
+            width: root.width - 30
+            text: formatInfo(geneData)
+            textFormat: TextEdit.RichText
+            font.pixelSize: Regovar.theme.font.size.normal + 2
+            color: Regovar.theme.frontColor.normal
+            readOnly: true
+            selectByMouse: true
+            selectByKeyboard: true
+            wrapMode: TextEdit.Wrap
+            onLinkActivated: Qt.openUrlExternally(link)
+        }
+        Item
+        {
+            width: 1
+            height: 10
         }
     }
+
 
     function formatInfo(data)
     {
