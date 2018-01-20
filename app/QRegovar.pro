@@ -40,7 +40,6 @@ HEADERS += \
     Model/file/file.h \
     Model/file/filestreeitem.h \
     Model/file/filestreemodel.h \
-    Model/file/filesystemmodel.h \
     Model/file/tusuploader.h \
     Model/project/project.h \
     Model/project/projectstreeitem.h \
@@ -97,7 +96,6 @@ SOURCES += main.cpp \
     Model/file/file.cpp \
     Model/file/filestreeitem.cpp \
     Model/file/filestreemodel.cpp \
-    Model/file/filesystemmodel.cpp \
     Model/file/tusuploader.cpp \
     Model/project/project.cpp \
     Model/project/projectstreeitem.cpp \

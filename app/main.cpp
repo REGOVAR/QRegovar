@@ -1,15 +1,16 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QApplication>
 #include <QSettings>
 #include <QtQml>
 #include <QtCore>
+#include <QIcon>
 //#include <QtWebEngine/qtwebengineglobal.h>
 
 #include "Model/regovar.h" // include regovar singleton which wrap all models and is the interface with the server
 #include "Model/framework/treemodel.h"
 #include "Model/framework/treeitem.h"
 #include "Model/project/project.h"
-#include "Model/file/filesystemmodel.cpp"
 #include "Model/analysis/filtering/filteringanalysis.h"
 #include "Model/analysis/pipeline/pipelineanalysis.h"
 #include "Model/subject/reference.h"
@@ -21,7 +22,7 @@
 int main(int argc, char *argv[])
 {
     //QGuiApplication app(argc, argv);
-    QApplication app(argc, argv); // use it to allow QtChart module use with QML
+    QApplication app(argc, argv); // use it instead of QGuiApplication to allow QtChart module use with QML
 
     app.setApplicationName("Regovar");
     app.setOrganizationName("Regovar");
