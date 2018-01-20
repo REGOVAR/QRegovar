@@ -102,19 +102,21 @@ Rectangle
 
         onDoubleClicked:
         {
-            var item = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
-            if (item !== undefined)
+            var id = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
+            var type = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 258);
+
+            if (id && type)
             {
-                if (item.isAnalysis)
+                if (type != "folder")
                 {
-                    regovar.analysesManager.openAnalysis(item.type, item.id);
+                    regovar.analysesManager.openAnalysis(type, id);
                 }
                 else
                 {
                     if (isExpanded(index))
                     {
                         // if already expanded, open details
-                        regovar.projectsManager.openProject(item.id);
+                        regovar.projectsManager.openProject(id);
                     }
                     else
                     {
@@ -122,20 +124,6 @@ Rectangle
                         expand(index)
                     }
                 }
-            }
-        }
-
-        // Default delegate for all column
-        itemDelegate: Item
-        {
-            Text
-            {
-                anchors.leftMargin: 5
-                anchors.fill: parent
-                verticalAlignment: Text.AlignVCenter
-                font.pixelSize: Regovar.theme.font.size.normal
-                text: styleData.value.text
-                elide: Text.ElideRight
             }
         }
 
@@ -149,14 +137,6 @@ Rectangle
         {
             role: "date"
             title: "Date"
-            delegate: Text
-            {
-                anchors.fill: parent
-                anchors.margins: 5
-                verticalAlignment: Text.AlignVCenter
-                text: Regovar.formatDate(styleData.value.text)
-                elide: Text.ElideRight
-            }
         }
         TableViewColumn
         {
@@ -169,14 +149,19 @@ Rectangle
     /// Retrive model of the selected project in the treeview and set the Regovar.currentProject with it.
     function openSelectedProject()
     {
+        var id = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
+        var type = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 258);
 
-        var item = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
-        if (item !== undefined)
+        if (id && type)
         {
-            if (item.isAnalysis)
-                regovar.analysesManager.openAnalysis(item.type, item.id);
+            if (type != "folder")
+            {
+                regovar.analysesManager.openAnalysis(type, id);
+            }
             else
-                regovar.projectsManager.openProject(item.id);
+            {
+                regovar.projectsManager.openProject(id);
+            }
         }
     }
 }

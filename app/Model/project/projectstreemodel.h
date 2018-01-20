@@ -11,7 +11,9 @@ class ProjectsTreeModel : public TreeModel
 public:
     enum JsonModelRoles
     {
-        NameRole = Qt::UserRole + 1,
+        IdRole = Qt::UserRole + 1,
+        TypeRole,
+        NameRole,
         CommentRole,
         DateRole,
     };
@@ -28,7 +30,7 @@ public:
     // Methods
     QHash<int, QByteArray> roleNames() const override;
     void refresh(QJsonObject json);
-    QVariant newProjectsTreeItem(int id, bool isAnalaysis, const QString& text);
+    TreeItem* newProjectsTreeItem(bool isFolder, const QJsonObject& rowData, TreeItem* parent);
     void setupModelData(QJsonArray data, TreeItem *parent);
     void setupModelAnalysisData(QJsonArray data, TreeItem *parent);
 

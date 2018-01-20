@@ -42,7 +42,6 @@ HEADERS += \
     Model/file/filestreemodel.h \
     Model/file/tusuploader.h \
     Model/project/project.h \
-    Model/project/projectstreeitem.h \
     Model/project/projectstreemodel.h \
     Model/subject/attribute.h \
     Model/subject/sample.h \
@@ -98,7 +97,6 @@ SOURCES += main.cpp \
     Model/file/filestreemodel.cpp \
     Model/file/tusuploader.cpp \
     Model/project/project.cpp \
-    Model/project/projectstreeitem.cpp \
     Model/project/projectstreemodel.cpp \
     Model/subject/attribute.cpp \
     Model/subject/sample.cpp \

@@ -1,7 +1,7 @@
 #include <QDebug>
 #include "projectstreemodel.h"
-#include "projectstreeitem.h"
 #include "Model/framework/request.h"
+#include "Model/framework/treeitem.h"
 
 
 
@@ -37,6 +37,8 @@ void ProjectsTreeModel::refresh(QJsonObject json)
 QHash<int, QByteArray> ProjectsTreeModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
+    roles[IdRole] = "id";
+    roles[TypeRole] = "type";
     roles[NameRole] = "name";
     roles[DateRole] = "date";
     roles[CommentRole] = "comment";
@@ -45,33 +47,32 @@ QHash<int, QByteArray> ProjectsTreeModel::roleNames() const
 
 
 
-QVariant ProjectsTreeModel::newProjectsTreeItem(int id, bool isAnalysis, const QString& text)
+TreeItem* ProjectsTreeModel::newProjectsTreeItem(bool isFolder, const QJsonObject& rowData, TreeItem* parent)
 {
-    ProjectsTreeItem *t = new ProjectsTreeItem(this);
-    t->setText(text);
-    t->setId(id);
-    t->setIsAnalysis(isAnalysis);
-    QVariant v;
-    v.setValue(t);
-    return v;
+    int id = rowData["id"].toInt();
+    // add columns info to the item
+    QHash<int, QVariant> columnData;
+    columnData.insert(IdRole, id);
+    columnData.insert(TypeRole, isFolder ? "folder" : rowData["type"].toVariant());
+    columnData.insert(NameRole, rowData["name"].toVariant());
+    columnData.insert(CommentRole, rowData["comment"].toVariant());
+    QDateTime date = QDateTime::fromString(rowData["update_date"].toString(), Qt::ISODate);
+    columnData.insert(DateRole, QVariant(date.toString("yyyy-MM-dd HH:mm")));
+
+    TreeItem* result = new TreeItem(parent);
+    result->setParent(parent);
+    result->setData(columnData);
+
+    return result;
 }
 
-void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
+void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
 {
     for (const QJsonValue& json: data)
     {
         QJsonObject p = json.toObject();
-        int id = p["id"].toInt();
-
-        // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
-        QHash<int, QVariant> columnData;
-        columnData.insert(NameRole, newProjectsTreeItem(id, false, p["name"].toString()));
-        columnData.insert(CommentRole, newProjectsTreeItem(id, false, p["comment"].toString()));
-        QDateTime date = QDateTime::fromString(p["update_date"].toString(), Qt::ISODate);
-        columnData.insert(DateRole, newProjectsTreeItem(id, false, date.toString("yyyy-MM-dd HH:mm")));
-
         // Create treeview item with column's data and parent item
-        TreeItem* item = new TreeItem(columnData, parent);
+        TreeItem* item = newProjectsTreeItem(true, p, parent);
         parent->appendChild(item);
 
         // If folder, need to retrieve subitems recursively
@@ -87,21 +88,12 @@ void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
     }
 }
 
-void ProjectsTreeModel::setupModelAnalysisData(QJsonArray data, TreeItem *parent)
+void ProjectsTreeModel::setupModelAnalysisData(QJsonArray data, TreeItem* parent)
 {
     for (const QJsonValue& json: data)
     {
-        QJsonObject p = json.toObject();
-        int id = p["id"].toInt();
-
-        // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
-        QHash<int, QVariant> columnData;
-        columnData.insert(NameRole, newProjectsTreeItem(id, true, p["name"].toString()));
-        columnData.insert(CommentRole, newProjectsTreeItem(id, true, p["comment"].toString()));
-        columnData.insert(DateRole, newProjectsTreeItem(id, true, p["update_date"].toString()));
-
         // Create treeview item with column's data and parent item
-        TreeItem* item = new TreeItem(columnData, parent);
+        TreeItem* item = newProjectsTreeItem(false, json.toObject(), parent);
         parent->appendChild(item);
     }
 }

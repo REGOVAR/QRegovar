@@ -167,11 +167,11 @@ bool AnalysesManager::openAnalysis(QString type, int id, bool reload_from_server
 {
     // Get analysis
     Analysis* analysis = nullptr;
-    if (type == "Filtering")
+    if (type == "analysis")
     {
         analysis = getOrCreateFilteringAnalysis(id);
     }
-    if (type == "Pipeline")
+    if (type == "pipeline")
     {
         analysis = getOrCreatePipelineAnalysis(id);
     }
