@@ -149,6 +149,14 @@ Rectangle
         {
             role: "date"
             title: "Date"
+            delegate: Text
+            {
+                anchors.fill: parent
+                anchors.margins: 5
+                verticalAlignment: Text.AlignVCenter
+                text: Regovar.formatDate(styleData.value.text)
+                elide: Text.ElideRight
+            }
         }
         TableViewColumn
         {
