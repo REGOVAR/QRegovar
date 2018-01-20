@@ -3,6 +3,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.3
 //import org.regovar 1.0
 
 import "../../Regovar"
@@ -118,15 +119,47 @@ Rectangle
             role: "firstname"
             title: "Firstname"
         }
-//        TableViewColumn
-//        {
-//            role: "sex"
-//            title: "Sex"
-//        }
         TableViewColumn
         {
-            role: "dateofbirth"
+            role: "sex"
+            title: "Sex"
+            delegate: RowLayout
+            {
+                anchors.fill: parent
+                anchors.margins: 5
+                Text
+                {
+                    Layout.fillHeight: true
+                    width: Regovar.theme.font.boxSize.normal
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.family: Regovar.theme.icons.name
+                    text: ["b", "<", "9"][modelData.sex]
+
+                }
+                Text
+                {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignLeft
+                    text: [qsTr("Unknow"), qsTr("Female"), qsTr("Male")][modelData.sex]
+                    elide: Text.ElideRight
+                }
+            }
+        }
+        TableViewColumn
+        {
+            role: "dateOfBirth"
             title: "Date of birth"
+            delegate: Text
+            {
+                anchors.fill: parent
+                anchors.margins: 5
+                verticalAlignment: Text.AlignVCenter
+                text: Regovar.formatShortDate(modelData.dateOfBirth)
+                elide: Text.ElideRight
+            }
         }
         TableViewColumn
         {
