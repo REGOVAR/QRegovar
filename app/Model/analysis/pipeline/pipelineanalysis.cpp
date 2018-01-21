@@ -5,7 +5,7 @@
 
 PipelineAnalysis::PipelineAnalysis(QObject* parent) : Analysis(parent)
 {
-    mType = "Pipeline";
+    mType = AnalysesManager::PIPELINE; //
 }
 
 PipelineAnalysis::PipelineAnalysis(int id, QObject* parent) : PipelineAnalysis(parent)

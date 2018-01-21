@@ -4,6 +4,12 @@
 #include "filtering/filteringanalysis.h"
 #include "pipeline/pipelineanalysis.h"
 
+
+QString AnalysesManager::FILTERING = QString("analysis");
+QString AnalysesManager::PIPELINE = QString("pipeline");
+
+
+
 AnalysesManager::AnalysesManager(QObject *parent) : QObject(parent)
 {
     // Force the manager as Parent of these analysis to avoid garbage collector to destroy them unexpectedly
@@ -52,7 +58,7 @@ void AnalysesManager::resetNewPipeline()
 
 bool AnalysesManager::newAnalysis(QString type)
 {
-    if (type == "filtering")
+    if (type == FILTERING)
     {
         // Samples
         QJsonArray ids;
@@ -122,7 +128,7 @@ bool AnalysesManager::newAnalysis(QString type)
                 QJsonObject data = json["data"].toObject();
                 int id = data["id"].toInt();
                 // Open new analysis
-                bool result = openAnalysis("Filtering", id, false);
+                bool result = openAnalysis(FILTERING, id, false);
 
                 if (result)
                 {
@@ -151,7 +157,7 @@ bool AnalysesManager::newAnalysis(QString type)
             req->deleteLater();
         });
     }
-    else if (type == "pipeline")
+    else if (type == PIPELINE)
     {
 
     }
@@ -167,14 +173,18 @@ bool AnalysesManager::openAnalysis(QString type, int id, bool reload_from_server
 {
     // Get analysis
     Analysis* analysis = nullptr;
-    if (type == "analysis")
+    if (type == FILTERING)
     {
         analysis = getOrCreateFilteringAnalysis(id);
     }
-    if (type == "pipeline")
+    if (type == PIPELINE)
     {
         analysis = getOrCreatePipelineAnalysis(id);
     }
+
+    if (analysis == nullptr)
+        return false;
+
     // Refresh / get all information of the analysis
     if (reload_from_server)
     {

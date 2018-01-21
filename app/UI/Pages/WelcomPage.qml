@@ -230,7 +230,7 @@ Rectangle
                                         name: model.modelData.name
                                         fullpath: model.modelData.fullpath
 
-                                        onClicked: regovar.analysesManager.openAnalysis("Filtering", model.modelData.id)
+                                        onClicked: regovar.analysesManager.openAnalysis("analysis", model.modelData.id)
                                         anchors.left: analysesColumn.left
                                         anchors.right: analysesColumn.right
                                     }

@@ -170,7 +170,7 @@ void Regovar::loadWelcomData()
             // Get referencial available
             for (const QJsonValue& jsonVal: data["references"].toArray())
             {
-                Reference* ref = new Reference();
+                Reference* ref = new Reference(this);
                 ref->fromJson(jsonVal.toObject());
                 if (ref->id() > 0) mReferences.append(ref);
             }

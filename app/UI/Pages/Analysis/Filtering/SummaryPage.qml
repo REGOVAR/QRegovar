@@ -727,7 +727,7 @@ Rectangle
 
             // Type
             var type = qsTr("Unknow");
-            if (root.model.type == "Filtering")
+            if (root.model.type == regovar.analysesManager.filteringType)
             {
                 type = qsTr("Variants filtering");
                 if (root.model.isTrio)

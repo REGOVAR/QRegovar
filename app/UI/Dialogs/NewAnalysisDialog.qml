@@ -63,7 +63,7 @@ Dialog
                         { "title" : qsTr("Configure"), "source":"../Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml"},
                         { "title" : qsTr("Launch"), "source":"../Dialogs/NewAnalysisWizardScreens/PipelineLaunch.qml"}
                     ];
-                    root.analysisModel["type"] = "pipeline";
+                    root.analysisModel["type"] = regovar.analysesManager.pipelineType;
                 }
                 else if (choice == 2)
                 {
@@ -76,7 +76,7 @@ Dialog
                         { "title" : qsTr("Annotations"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringAnnotationsScreen.qml"},
                         { "title" : qsTr("Launch"), "source":"../Dialogs/NewAnalysisWizardScreens/FilteringLaunchScreen.qml"}
                     ];
-                    root.analysisModel["type"] = "filtering";
+                    root.analysisModel["type"] = regovar.analysesManager.filteringType;
                 }
 
                 menuSelectedIndex = 1;
