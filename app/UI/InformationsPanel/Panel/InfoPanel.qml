@@ -7,45 +7,40 @@ import "../../Regovar"
 import "../../Framework"
 
 
-Rectangle
+ScrollView
 {
     id: root
-    color: Regovar.theme.backgroundColor.main
 
     property var model
     onModelChanged: updateFromModel(model)
     Component.onCompleted: updateFromModel(model)
 
-    ScrollView
+    Column
     {
-        anchors.fill: parent
+        x: 10
+        y: 10
 
-        Column
+        TextEdit
         {
-            x: 10
-            y: 10
-
-            TextEdit
-            {
-                id: infoText
-                width: root.width - 30
-                text: ""
-                textFormat: TextEdit.RichText
-                font.pixelSize: Regovar.theme.font.size.normal + 2
-                color: Regovar.theme.frontColor.normal
-                readOnly: true
-                selectByMouse: true
-                selectByKeyboard: true
-                wrapMode: TextEdit.Wrap
-                onLinkActivated: Qt.openUrlExternally(link)
-            }
-            Item
-            {
-                width: 1
-                height: 10
-            }
+            id: infoText
+            width: root.width - 30
+            text: ""
+            textFormat: TextEdit.RichText
+            font.pixelSize: Regovar.theme.font.size.normal + 2
+            color: Regovar.theme.frontColor.normal
+            readOnly: true
+            selectByMouse: true
+            selectByKeyboard: true
+            wrapMode: TextEdit.Wrap
+            onLinkActivated: Qt.openUrlExternally(link)
+        }
+        Item
+        {
+            width: 1
+            height: 10
         }
     }
+
 
     function updateFromModel(data)
     {

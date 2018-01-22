@@ -25,12 +25,12 @@ InformationsPanel
         ttt.append(
             {   "title": qsTr("Informations"),
                 "icon": "j",
-                "source": "../InformationsPanel/Pipeline/InfoPanel.qmll"
+                "source": "qrc:/qml/InformationsPanel/Pipeline/InfoPanel.qmll"
             });
         ttt.append({
                 "title": qsTr("Events"),
                 "icon": "^",
-                "source": "../InformationsPanel/Pipeline/StatsPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Pipeline/StatsPanel.qml"
             });
         root.tabsModel = ttt;
         root.loading = false;

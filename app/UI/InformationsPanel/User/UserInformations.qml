@@ -25,17 +25,17 @@ InformationsPanel
         ttt.append(
             {   "title": qsTr("Informations"),
                 "icon": "j",
-                "source": "../InformationsPanel/User/InfoPanel.qmll"
+                "source": "qrc:/qml/InformationsPanel/User/InfoPanel.qmll"
             });
         ttt.append({
                 "title": qsTr("Regovar statistics"),
                 "icon": "í",
-                "source": "../InformationsPanel/User/StatsPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/User/StatsPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Events"),
                 "icon": "è",
-                "source": "../InformationsPanel/Common/EventsPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Common/EventsPanel.qml"
             });
         root.tabsModel = ttt;
         root.loading = false;

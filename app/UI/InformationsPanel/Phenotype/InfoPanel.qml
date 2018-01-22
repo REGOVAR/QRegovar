@@ -12,7 +12,6 @@ import "../Common"
 ScrollView
 {
     id: root
-    anchors.fill: parent
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
     property var diseases

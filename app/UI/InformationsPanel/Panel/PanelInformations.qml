@@ -22,17 +22,17 @@ InformationsPanel
         ttt.append(
             {   "title": qsTr("Informations"),
                 "icon": "j",
-                "source": "../InformationsPanel/Panel/InfoPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Panel/InfoPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Details"),
                 "icon": "o",
-                "source": "../InformationsPanel/Panel/VersionDetailsPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Panel/VersionDetailsPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Events"),
                 "icon": "H",
-                "source": "../InformationsPanel/Common/EventsPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Common/EventsPanel.qml"
             });
         root.tabsModel = ttt;
         root.loading = false;

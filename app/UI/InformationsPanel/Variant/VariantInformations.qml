@@ -25,22 +25,22 @@ InformationsPanel
         ttt.append(
             {   "title": qsTr("Informations"),
                 "icon": "j",
-                "source": "../InformationsPanel/Variant/InfoPanel.qmll"
+                "source": "qrc:/qml/InformationsPanel/Variant/InfoPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Gene"),
                 "icon": "j",
-                "source": "../InformationsPanel/Gene/InfoPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Gene/InfoPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Phenotype"),
                 "icon": "K",
-                "source": "../InformationsPanel/Phenotype/InfoPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Phenotype/InfoPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Regovar statistics"),
                 "icon": "í",
-                "source": "../InformationsPanel/Variant/StatsPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Variant/StatsPanel.qml"
             });
         root.tabsModel = ttt;
         root.loading = false;

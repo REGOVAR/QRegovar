@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import org.regovar 1.0
 
@@ -7,10 +8,10 @@ import "../../Regovar"
 import "../../Framework"
 
 
-Rectangle
+ScrollView
 {
     id: root
-    color: Regovar.theme.backgroundColor.main
+    horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
     property var model
     onModelChanged:  if (model) { updateFromModel(model); }

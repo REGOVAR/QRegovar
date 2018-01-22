@@ -28,22 +28,22 @@ InformationsPanel
         ttt.append(
             {   "title": qsTr("Informations"),
                 "icon": "j",
-                "source": "../InformationsPanel/Sample/InfoPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Sample/InfoPanel.qml"
             });
         ttt.append(
             {   "title": qsTr("Stats & Quality"),
                 "icon": "^",
-                "source": "../InformationsPanel/Sample/StatsQualPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Sample/StatsQualPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Usage"),
                 "icon": "ê",
-                "source": "../InformationsPanel/Common/RelationsPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Common/RelationsPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Events"),
                 "icon": "è",
-                "source": "../InformationsPanel/Common/EventsPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Common/EventsPanel.qml"
             });
         root.tabsModel = ttt;
         root.loading = false;

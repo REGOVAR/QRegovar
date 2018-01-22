@@ -26,17 +26,17 @@ InformationsPanel
         ttt.append(
             {   "title": qsTr("Informations"),
                 "icon": "è",
-                "source": "../InformationsPanel/Phenotype/InfoPanel.qmll"
+                "source": "qrc:/qml/InformationsPanel/Phenotype/InfoPanel.qmll"
             });
         ttt.append({
                 "title": qsTr("Online tools"),
                 "icon": "K",
-                "source": "../InformationsPanel/Phenotype/OnlineToolsPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Phenotype/OnlineToolsPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Regovar statistics"),
                 "icon": "í",
-                "source": "../InformationsPanel/Phenotype/StatsPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Phenotype/StatsPanel.qml"
             });
         root.tabsModel = ttt;
         root.loading = false;

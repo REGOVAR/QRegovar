@@ -12,7 +12,6 @@ import "../Common"
 ScrollView
 {
     id: root
-    anchors.fill: parent
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
     property var geneData
@@ -63,6 +62,10 @@ ScrollView
         if (!data) return "";
 
         var text = "<table>";
+        text += "<tr><td><b>Name:</b></td><td>" + data["name"] + "</td></tr>";
+        text += "<tr><td><b>Symbol:</b></td><td>" + data["symbol"] + "</td></tr>";
+        text += "<tr><td><b>HGNC Id:</b></td><td><a href=\"https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=" + data["hgnc_id"] + "\">" + data["hgnc_id"] + "</a></td></tr>";
+        text += "<tr><td><b>Location:</b></td><td>" + data["location"] + "</td></tr>";
         text += "<tr><td><b>Locus type:</b></td><td>" + data["locus_type"] + "</td></tr>";
         // Former names/symbols
         text += "<tr><td><b>Former names:</b></td><td>";
