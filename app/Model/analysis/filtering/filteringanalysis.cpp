@@ -412,7 +412,8 @@ void FilteringAnalysis::applyChangeForDisplayedAnnotations()
         if (!info->isDisplayedTemp() && mDisplayedAnnotations.contains(info))
         {
             mDisplayedAnnotations.removeAll(info);
-            info->setIsDisplayed(info->isDisplayedTemp());
+            mFields.removeAll(info->uid());
+            info->setIsDisplayed(false);
         }
         else if (info->isDisplayedTemp())
         {
@@ -423,6 +424,7 @@ void FilteringAnalysis::applyChangeForDisplayedAnnotations()
             if (!mDisplayedAnnotations.contains(info))
             {
                 mDisplayedAnnotations << info;
+                mFields.append(info->uid());
                 info->setIsDisplayed(true);
             }
         }

@@ -85,7 +85,7 @@ ScrollView
                     date: model.modelData.update_date
                     name: model.modelData.name
                     projectName: model.modelData.project.name
-                    onClicked: regovar.analysesManager.openAnalysis(model.modelData.type, model.modelData.id)
+                    onClicked: regovar.analysesManager.openAnalysis("analysis", model.modelData.id)
                 }
             }
         }
