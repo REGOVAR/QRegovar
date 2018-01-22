@@ -91,16 +91,16 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     }
     else
     {
+        QJsonObject trio = settings["trio"].toObject();
         mIsTrio = true;
-//        "trio": {
-//                        "child_id": 3,
-//                        "child_index": true,
-//                        "child_sex": "M",
-//                        "father_id": 6,
-//                        "father_index": false,
-//                        "mother_id": 5,
-//                        "mother_index": false
-//                    }
+        mTrioChild = regovar->samplesManager()->getOrCreate(trio["child_id"].toInt());
+        mTrioMother = regovar->samplesManager()->getOrCreate(trio["mother_id"].toInt());
+        mTrioFather = regovar->samplesManager()->getOrCreate(trio["father_id"].toInt());
+        mTrioChild->setIsIndex(trio["child_index"].toBool());
+        mTrioMother->setIsIndex(trio["mother_index"].toBool());
+        mTrioFather->setIsIndex(trio["father_index"].toBool());
+        mSamples.move(mSamples.indexOf(mTrioChild), 0);
+        mSamples.move(mSamples.indexOf(mTrioMother), 1);
     }
 
     // Retrieve saved filters
