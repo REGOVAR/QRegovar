@@ -243,6 +243,7 @@ QtObject
             var minutes = date.getMinutes();
             minutes = (minutes > 9 ? "" : "0") + minutes;
 
+            if (isNaN(year)) return "";
             return year + "-" +  month + "-" + day + " " + hours + ":" + minutes;
         }
         else
@@ -262,6 +263,7 @@ QtObject
             month = (month > 9 ? "" : "0") + month;
             var year = date.getFullYear();
 
+            if (isNaN(year)) return "";
             return year + "-" +  month + "-" + day;
         }
         else
