@@ -33,14 +33,19 @@ InformationsPanel
                 "source": "qrc:/qml/InformationsPanel/Gene/InfoPanel.qml"
             });
         ttt.append({
+                "title": qsTr("Online Tools"),
+                "icon": "è",
+                "source": "qrc:/qml/InformationsPanel/Variant/OnlineToolsPanel.qml"
+            });
+        ttt.append({
                 "title": qsTr("Phenotype"),
                 "icon": "K",
                 "source": "qrc:/qml/InformationsPanel/Phenotype/InfoPanel.qml"
             });
         ttt.append({
-                "title": qsTr("Regovar statistics"),
+                "title": qsTr("Annotations"),
                 "icon": "í",
-                "source": "qrc:/qml/InformationsPanel/Variant/StatsPanel.qml"
+                "source": "qrc:/qml/InformationsPanel/Variant/AnnotationsPanel.qml"
             });
         root.tabsModel = ttt;
         root.loading = false;

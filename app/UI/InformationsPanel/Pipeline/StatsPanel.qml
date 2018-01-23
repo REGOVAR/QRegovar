@@ -15,38 +15,25 @@ Rectangle
     property var model
     onModelChanged:  if (model) { updateFromModel(model); }
 
-    property string varId
-    onVarIdChanged:
-    {
-        if (varId)
-        {
-            // Display loading feedback
-
-            // request informations
-
-        }
-        else
-        {
-            // Display help message
-        }
-    }
-
     function updateFromModel(data)
     {
     }
 
 
 
-    Text
+    Rectangle
     {
-        text: "Stats !"
-        width: Regovar.theme.font.boxSize.header
-        height: Regovar.theme.font.boxSize.header
+        id: empty
+        anchors.fill: parent
+        anchors.margins: 10
+        color: "transparent"
 
-        color: Regovar.theme.primaryColor.front.normal
-        font.pixelSize: Regovar.theme.font.size.header
-        verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.AlignHCenter
+        Text
+        {
+            anchors.centerIn: parent
+            text: qsTr("Not yet implemented")
+            font.pixelSize: Regovar.theme.font.size.title
+            color: Regovar.theme.primaryColor.back.light
+        }
     }
-
 }

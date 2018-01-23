@@ -99,7 +99,6 @@
         <file>InformationsPanel/User/StatsPanel.qml</file>
         <file>InformationsPanel/User/UserInformations.qml</file>
         <file>InformationsPanel/Variant/InfoPanel.qml</file>
-        <file>InformationsPanel/Variant/StatsPanel.qml</file>
         <file>InformationsPanel/Variant/VariantInformations.qml</file>
         <file>MainMenu/MainMenu.qml</file>
         <file>MainMenu/MenuEntryL1.qml</file>
@@ -198,5 +197,7 @@
         <file>Wizards/Sample/SampleFileImportControl.qml</file>
         <file>Wizards/Sample/SampleImportView.qml</file>
         <file>Dialogs/NewPanelVersionDialog.qml</file>
+        <file>InformationsPanel/Variant/OnlineToolsPanel.qml</file>
+        <file>InformationsPanel/Variant/AnnotationsPanel.qml</file>
     </qresource>
 </RCC>
