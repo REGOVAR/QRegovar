@@ -75,13 +75,16 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
 
     // Retrieve samples
     mSamples.clear();
-    for (const QJsonValue& spJson: json["samples"].toArray())
+    if (full_init)
     {
-        QJsonObject sampleData = spJson.toObject();
-        Sample* sample = regovar->samplesManager()->getOrCreate(sampleData["id"].toInt());
-        if(sample->fromJson(sampleData))
+        for (const QJsonValue& spJson: json["samples_ids"].toArray())
         {
-            mSamples.append(sample);
+            QJsonObject sampleData = spJson.toObject();
+            Sample* sample = regovar->samplesManager()->getOrCreate(sampleData["id"].toInt());
+            if(sample->fromJson(sampleData))
+            {
+                mSamples.append(sample);
+            }
         }
     }
 
@@ -99,8 +102,11 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
         mTrioChild->setIsIndex(trio["child_index"].toBool());
         mTrioMother->setIsIndex(trio["mother_index"].toBool());
         mTrioFather->setIsIndex(trio["father_index"].toBool());
-        mSamples.move(mSamples.indexOf(mTrioChild), 0);
-        mSamples.move(mSamples.indexOf(mTrioMother), 1);
+        if (full_init)
+        {
+            mSamples.move(mSamples.indexOf(mTrioChild), 0);
+            mSamples.move(mSamples.indexOf(mTrioMother), 1);
+        }
     }
 
     // Retrieve saved filters

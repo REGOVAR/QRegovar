@@ -107,22 +107,22 @@ Rectangle
         TableViewColumn
         {
             role: "identifier"
-            title: "Identifier"
+            title: qsTr("Identifier")
         }
         TableViewColumn
         {
             role: "lastname"
-            title: "Lastname"
+            title: qsTr("Lastname")
         }
         TableViewColumn
         {
             role: "firstname"
-            title: "Firstname"
+            title: qsTr("Firstname")
         }
         TableViewColumn
         {
             role: "sex"
-            title: "Sex"
+            title: qsTr("Sex")
             delegate: RowLayout
             {
                 anchors.fill: parent
@@ -151,7 +151,7 @@ Rectangle
         TableViewColumn
         {
             role: "dateOfBirth"
-            title: "Date of birth"
+            title: qsTr("Date of birth")
             delegate: Text
             {
                 anchors.fill: parent
@@ -164,7 +164,7 @@ Rectangle
         TableViewColumn
         {
             role: "comment"
-            title: "Comment"
+            title: qsTr("Comment")
         }
     }
 

@@ -19,6 +19,7 @@ class Project : public QObject
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
     Q_PROPERTY(QString fullPath READ fullPath NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> analyses READ analyses NOTIFY dataChanged)
+    Q_PROPERTY(QList<QObject*> subjects READ subjects NOTIFY dataChanged)
 
 
 public:
@@ -39,6 +40,7 @@ public:
     inline QString comment() const { return mComment; }
     inline QString fullPath() const { return mFullPath; }
     inline QList<QObject*> analyses() const { return mAnalyses; }
+    inline QList<QObject*> subjects() const { return mSubjects; }
 
     // Setters
     inline void setParent(Project* parent) { mParent = parent; emit dataChanged(); }
@@ -81,6 +83,7 @@ private:
     QString mComment;
     QString mName;
     QList<QObject*> mAnalyses;
+    QList<QObject*> mSubjects;
 
     // Methods
     inline void setUpdateDate(QDateTime date) { mUpdateDate = date; emit dataChanged(); }

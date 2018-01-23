@@ -161,8 +161,16 @@ Rectangle
                 }
                 TableViewColumn
                 {
-                    role: "lastUpdate"
+                    role: "updateDate"
                     title: "Date"
+                    delegate: Text
+                    {
+                        anchors.fill: parent
+                        anchors.margins: 5
+                        verticalAlignment: Text.AlignVCenter
+                        text: Regovar.formatShortDate(modelData.dateOfBirth)
+                        elide: Text.ElideRight
+                    }
                 }
                 TableViewColumn
                 {
@@ -223,7 +231,7 @@ Rectangle
                     font.pixelSize: Regovar.theme.font.size.header
                     verticalAlignment: Text.AlignVCenter
                     color: Regovar.theme.primaryColor.back.normal
-                    text: currentAnalysis ? Regovar.formatDate(currentAnalysis.lastUpdate) : ""
+                    text: currentAnalysis ? Regovar.formatDate(currentAnalysis.updateDate) : ""
                 }
 
                 Rectangle

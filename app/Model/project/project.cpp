@@ -38,12 +38,23 @@ bool Project::fromJson(QJsonObject json)
     mName = json["name"].toString();
 
     // Analyses
-    // TODO: lazy loading of analyses
     for (const QJsonValue& jsonVal: json["analyses"].toArray())
     {
-        FilteringAnalysis* analysis = new FilteringAnalysis();
+        QJsonObject aJson = jsonVal.toObject();
+        int id = aJson["id"].toInt();
+        FilteringAnalysis* analysis =  regovar->analysesManager()->getOrCreateFilteringAnalysis(id);
         analysis->fromJson(jsonVal.toObject(), false);
         mAnalyses.append(analysis);
+    }
+
+    // Subjects
+    for (const QJsonValue& jsonVal: json["subjects"].toArray())
+    {
+        QJsonObject aJson = jsonVal.toObject();
+        int id = aJson["id"].toInt();
+        Subject* subject =  regovar->subjectsManager()->getOrCreateSubject(id);
+        subject->fromJson(jsonVal.toObject());
+        mSubjects.append(subject);
     }
 
     mLoaded = true;

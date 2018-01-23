@@ -18,7 +18,7 @@ Subject::Subject(int id, QObject* parent) : QObject(parent)
 
 
 
-bool Subject::fromJson(QJsonObject json)
+bool Subject::fromJson(QJsonObject json, bool full_init)
 {
     mId = json["id"].toInt();
     mIdentifier = json["identifier"].toString();
@@ -32,8 +32,19 @@ bool Subject::fromJson(QJsonObject json)
     mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     mCreateDate = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
 
-    // samples
+
+    updateSubjectUI();
+
+    if (!full_init) return true;
+
     mSamples.clear();
+    mAnalyses.clear();
+    mProjects.clear();
+    mJobs.clear();
+    mFiles.clear();
+    mIndicators.clear();
+
+    // samples
     for (const QJsonValue& val: json["samples"].toArray())
     {
         QJsonObject sampleData = val.toObject();
@@ -42,14 +53,6 @@ bool Subject::fromJson(QJsonObject json)
         mSamples.append(sample);
     }
 
-    //
-    mAnalyses.clear();
-    mProjects.clear();
-    mJobs.clear();
-    mFiles.clear();
-    mIndicators.clear();
-
-    updateSubjectUI();
 
     mLoaded = true;
     emit dataChanged();
