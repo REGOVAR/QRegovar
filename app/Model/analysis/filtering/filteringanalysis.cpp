@@ -931,6 +931,10 @@ void FilteringAnalysis::processPushNotification(QString action, QJsonObject data
                 if (filter->id() == colId)
                 {
                     filter->setProgress(progress);
+                    if (progress == 1)
+                    {
+                        filter->setCount(data["count"].toInt());
+                    }
                     emit filtersChanged();
                     break;
                 }

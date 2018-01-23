@@ -116,6 +116,7 @@ void ProjectsManager::openProject(int id, bool reload_from_server)
     {
         project->load();
     }
+
     // Set ref index
     mProjectOpenIndex = mProjectsOpenList.indexOf(project);
     if (mProjectOpenIndex == -1)

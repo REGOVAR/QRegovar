@@ -237,7 +237,7 @@ Rectangle
             }
             else if (model.newConditionModel.field.type == "float")
             {
-                model.newConditionModel.fieldValue = parseFloat(fieldInput.text, 10);
+                model.newConditionModel.value = parseFloat(fieldInput.text, 10);
             }
             else if (model.newConditionModel.field.type == "bool")
             {

@@ -104,6 +104,11 @@ void NetworkManager::onWebsocketReceived(QString message)
     else if (mWsFilteringActionsList.indexOf(action) != -1)
     {
         int id = data["id"].toInt();
+        if (id == 0)
+        {
+            id = data["analysis_id"].toInt();
+        }
+
         FilteringAnalysis* analysis = regovar->analysesManager()->getFilteringAnalysis(id);
         if (analysis != nullptr)
         {
