@@ -77,7 +77,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     mSamples.clear();
     if (full_init)
     {
-        for (const QJsonValue& spJson: json["samples_ids"].toArray())
+        for (const QJsonValue& spJson: json["samples"].toArray())
         {
             QJsonObject sampleData = spJson.toObject();
             Sample* sample = regovar->samplesManager()->getOrCreate(sampleData["id"].toInt());
