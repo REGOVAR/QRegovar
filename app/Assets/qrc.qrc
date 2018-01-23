@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>logo.png</file>
         <file>regovar.png</file>
-        <file>a240 Subject Analyses.png</file>
         <file>license.html</file>
         <file>filteringIcon.png</file>
         <file>pipelineIcon.png</file>
