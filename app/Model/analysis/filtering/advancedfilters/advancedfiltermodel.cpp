@@ -171,7 +171,11 @@ void AdvancedFilterModel::loadJson(QJsonArray filterJson)
             }
             else if (mField->type() == "bool")
             {
-                mFieldValue = QVariant(valueJson[1].toBool());
+                QString name = mFieldValue.typeName();
+                if (name == "QString")
+                {
+                    mFieldValue = QVariant(valueJson[1].toString().toLower() == "true" ? true : false);
+                }
             }
             else if (mField->type() == "list")
             {
