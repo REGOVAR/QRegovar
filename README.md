@@ -6,9 +6,7 @@ The official heavy client (in Qt) of the Regovar project
 
 Implementation of [beta](https://github.com/REGOVAR/QRegovar/milestone/1) in progress (75%)
 
-![mokcup](https://raw.githubusercontent.com/REGOVAR/QRegovar/master/docs/mockup/mockup.gif)
-
-
+![mokcup](https://raw.githubusercontent.com/REGOVAR/QRegovar/781c155b1a0d640f757ea5677d223f3d9e347ab7/docs/mockup/mockup.gif)
 
 # Credits
 Thanks for their help :
