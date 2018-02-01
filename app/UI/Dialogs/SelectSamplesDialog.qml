@@ -74,28 +74,36 @@ Dialog
                     color: Regovar.theme.primaryColor.back.normal
                 }
 
+                Text
+                {
+                    text: regovar.referenceFromId(regovar.samplesManager.referencialId).name
+                    enabled: referencialSelectorEnabled
+                    color: Regovar.theme.primaryColor.back.normal
+                    visible: !referencialSelectorEnabled
+                }
+
                 ComboBox
                 {
                     id: refCombo
-                    enabled: referencialSelectorEnabled
-                    model:regovar.references
+                    visible: referencialSelectorEnabled
+                    model: regovar.references
                     textRole: "name"
 
-                    delegate: Control.ItemDelegate
-                    {
-                        x: 1
-                        width: refCombo.width -2
-                        height: Regovar.theme.font.boxSize.normal
-                        contentItem: Text
-                        {
-                            text: modelData.name
-                            color: enabled ? Regovar.theme.boxColor.front : Regovar.theme.frontColor.disable
-                            font: refCombo.font
-                            elide: Text.ElideRight
-                            verticalAlignment: Text.AlignVCenter
-                        }
-                        highlighted: refCombo.highlightedIndex === index
-                    }
+//                    delegate: Control.ItemDelegate
+//                    {
+//                        x: 1
+//                        width: refCombo.width -2
+//                        height: Regovar.theme.font.boxSize.normal
+//                        contentItem: Text
+//                        {
+//                            text: modelData.name
+//                            color: enabled ? Regovar.theme.boxColor.front : Regovar.theme.frontColor.disable
+//                            font: refCombo.font
+//                            elide: Text.ElideRight
+//                            verticalAlignment: Text.AlignVCenter
+//                        }
+//                        highlighted: refCombo.highlightedIndex === index
+//                    }
 
                     onCurrentIndexChanged:
                     {

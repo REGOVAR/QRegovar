@@ -23,6 +23,8 @@ AnalysesManager::AnalysesManager(QObject *parent) : QObject(parent)
 
 void AnalysesManager::resetNewFiltering(int refId)
 {
+    if (refId == mNewFiltering->refId()) return;
+
     // clear data in newAnalyses wrappers
     mNewFiltering->removeSamples(mNewFiltering->samples4qml());
     mNewFiltering->samples().clear();
