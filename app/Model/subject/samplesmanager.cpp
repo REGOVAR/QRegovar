@@ -49,6 +49,7 @@ void SamplesManager::setReferenceId(int refId)
                     QJsonObject sampleData = splData.toObject();
                     Sample* sample = regovar->samplesManager()->getOrCreate(sampleData["id"].toInt());
                     sample->fromJson(sampleData);
+                    if (!mSamplesList.contains(sample)) mSamplesList.append(sample);
                 }
             }
             emit referencialIdChanged();
