@@ -37,6 +37,7 @@ void ProjectsManager::refreshFlatProjectsListRecursive(QJsonArray data, QString 
     {
         QJsonObject p = json.toObject();
         QString name = p["name"].toString();
+        int id = p["id"].toInt();
 
 
         // If folder, need to retrieve subitems recursively
@@ -47,7 +48,7 @@ void ProjectsManager::refreshFlatProjectsListRecursive(QJsonArray data, QString 
         else
         {
             p.insert("fullpath", prefix + name);
-            Project* proj = new Project();
+            Project* proj =getOrCreateProject(id);
             proj->fromJson(p);
             mProjectsFlatList << proj;
         }
