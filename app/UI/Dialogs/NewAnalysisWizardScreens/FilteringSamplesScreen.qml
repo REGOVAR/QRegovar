@@ -300,6 +300,7 @@ GenericScreen
                 Layout.fillWidth: true
                 rowSpacing: 5
                 columnSpacing: 5
+                visible: trioActivated.checked
 
                 rows:3
                 columns: 5
