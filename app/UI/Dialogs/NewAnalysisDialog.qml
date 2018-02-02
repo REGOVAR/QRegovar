@@ -100,7 +100,7 @@ Dialog
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.margins: 5
-                text:  qsTr("New analysis") + " :" // (root.menuModel !== undefined) ? qsTr("Step") + " " + (menuSelectedIndex + 1) + "/" + root.menuModel.length : ""
+                text:  qsTr("New analysis:")
                 color: Regovar.theme.primaryColor.front.dark
                 font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.family
@@ -148,6 +148,11 @@ Dialog
                             }
                             Text
                             {
+                                onPaintedWidthChanged:
+                                {
+                                    naviguationPanel.width = Math.max(naviguationPanel.width, paintedWidth + 15 + Regovar.theme.font.boxSize.normal);
+                                }
+
                                 height: Regovar.theme.font.boxSize.header
                                 text: modelData["title"]
                                 // menuItem.isHover ?  Regovar.theme.secondaryColor.front.normal : menuItem.isSelected ? Regovar.theme.secondaryColor.back.light :
