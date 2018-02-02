@@ -491,13 +491,14 @@ Rectangle
 
         contentItem: Rectangle
         {
-            implicitWidth: 350
-            implicitHeight: 450
+            implicitWidth: 400
+            implicitHeight: 500
             color: Regovar.theme.backgroundColor.main
 
             ColumnLayout
             {
                 anchors.fill: parent
+                anchors.margins: 10
 
 
                 Text
