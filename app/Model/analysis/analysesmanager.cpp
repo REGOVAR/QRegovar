@@ -241,3 +241,43 @@ PipelineAnalysis* AnalysesManager::getPipelineAnalysis(int id)
     }
     return nullptr;
 }
+
+
+void AnalysesManager::deleteFilteringAnalysis(int id)
+{
+    Request* req = Request::del(QString("/analysis/%1").arg(id));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            regovar->projectsManager()->refresh();
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
+
+void AnalysesManager::deletePipelineAnalysis(int id)
+{
+    Request* req = Request::del(QString("/job/%1").arg(id));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            regovar->projectsManager()->refresh();
+            regovar->loadWelcomData();
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}

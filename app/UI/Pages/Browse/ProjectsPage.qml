@@ -87,6 +87,12 @@ Rectangle
             text: qsTr("Open")
             onClicked:  openSelectedProject()
         }
+        Button
+        {
+            id: deleteProject
+            text: qsTr("Delete")
+            onClicked:  deleteSelectedProject()
+        }
     }
 
 
@@ -146,6 +152,49 @@ Rectangle
         }
     }
 
+
+
+    QuestionDialog
+    {
+        id: deleteProjectConfirmDialog
+        width: 400
+        property var model
+        onModelChanged:
+        {
+            if (model)
+            {
+                var txt = qsTr("Do you confirm the deletion of the project '{}' ?\nAll it's analyses will be also deleted.");
+                txt = txt.replace('{}', model.name);
+                text = txt;
+            }
+        }
+        title: qsTr("Delete project")
+        onYes:
+        {
+            regovar.projectsManager.deleteProject(model.id);
+        }
+    }
+    QuestionDialog
+    {
+        id: deleteAnalysisConfirmDialog
+        width: 400
+        property var model
+        onModelChanged:
+        {
+            if (model)
+            {
+                var txt = qsTr("Do you confirm the deletion of the analysis '{}' ?");
+                txt = txt.replace('{}', model.name);
+                text = txt;
+            }
+        }
+        title: qsTr("Delete analysis")
+        onYes:
+        {
+            regovar.analysesManager.deleteFilteringAnalysis(model.id);
+        }
+    }
+
     /// Retrive model of the selected project in the treeview and set the Regovar.currentProject with it.
     function openSelectedProject()
     {
@@ -161,6 +210,28 @@ Rectangle
             else
             {
                 regovar.projectsManager.openProject(id);
+            }
+        }
+    }
+
+
+    /// Retrive model of the selected project in the treeview and delete it.
+    function deleteSelectedProject()
+    {
+        var id = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
+        var type = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 258);
+
+        if (id && type)
+        {
+            if (type != "folder")
+            {
+                deleteAnalysisConfirmDialog.model = regovar.analysesManager.getOrCreateFilteringAnalysis(id);
+                deleteAnalysisConfirmDialog.visible = true;
+            }
+            else
+            {
+                deleteProjectConfirmDialog.model = regovar.projectsManager.getOrCreateProject(id);
+                deleteProjectConfirmDialog.visible = true;
             }
         }
     }

@@ -71,9 +71,15 @@ void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
     for (const QJsonValue& json: data)
     {
         QJsonObject p = json.toObject();
+
+        int id = p["id"].toInt();
+        if (id == 0)  continue; // trash project not displayed in the browser
+
         // Create treeview item with column's data and parent item
         TreeItem* item = newProjectsTreeItem(true, p, parent);
         parent->appendChild(item);
+
+
 
         // If folder, need to retrieve subitems recursively
         if (p["is_folder"].toBool())

@@ -120,6 +120,11 @@ void Regovar::init()
 
     // Load misc data
     loadWelcomData();
+
+    // Timer to update "welcom data" every 30s
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(loadWelcomData()));
+    timer->start(30000);
 }
 
 
@@ -142,6 +147,7 @@ void Regovar::loadWelcomData()
             mConfig->fromJson(data);
 
             // Last analyses
+            while(!mLastAnalyses.empty()) mLastAnalyses.pop_back();
             for (const QJsonValue& val: data["last_analyses"].toArray())
             {
                 QJsonObject item = val.toObject();
@@ -150,6 +156,7 @@ void Regovar::loadWelcomData()
                 mLastAnalyses.append(item);
             }
             // Last subjects
+            while(!mLastSubjects.empty()) mLastSubjects.pop_back();
             for (const QJsonValue& val: data["last_subjects"].toArray())
             {
                 QJsonObject item = val.toObject();
@@ -158,6 +165,7 @@ void Regovar::loadWelcomData()
                 mLastSubjects.append(item);
             }
             // Last events
+            while(!mLastSubjects.empty()) mLastSubjects.pop_back();
             for (const QJsonValue& val: data["last_events"].toArray())
             {
                 QJsonObject item = val.toObject();

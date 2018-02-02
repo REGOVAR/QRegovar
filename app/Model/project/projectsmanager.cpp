@@ -38,7 +38,7 @@ void ProjectsManager::refreshFlatProjectsListRecursive(QJsonArray data, QString 
         QJsonObject p = json.toObject();
         QString name = p["name"].toString();
         int id = p["id"].toInt();
-
+        if (id == 0) continue; // do not display trash project in the flat list
 
         // If folder, need to retrieve subitems recursively
         if (p["is_folder"].toBool())
@@ -133,7 +133,25 @@ void ProjectsManager::openProject(int id, bool reload_from_server)
     emit projectOpenChanged();
 }
 
-
+void ProjectsManager::deleteProject(int id)
+{
+    Request* req = Request::del(QString("/project/%1").arg(id));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            refresh();
+            regovar->loadWelcomData();
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
 
 
 

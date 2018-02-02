@@ -32,6 +32,7 @@ public:
     Q_INVOKABLE Project* getOrCreateProject(int id);
     Q_INVOKABLE void newProject(QString name, QString comment);
     Q_INVOKABLE void openProject(int id, bool reload_from_server=true);
+    Q_INVOKABLE void deleteProject(int id);
 
 
 public Q_SLOTS:

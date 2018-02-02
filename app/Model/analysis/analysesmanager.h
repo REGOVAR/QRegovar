@@ -37,6 +37,9 @@ public:
     Q_INVOKABLE FilteringAnalysis* getFilteringAnalysis(int id);
     Q_INVOKABLE PipelineAnalysis* getPipelineAnalysis(int id);
 
+    Q_INVOKABLE void deleteFilteringAnalysis(int id);
+    Q_INVOKABLE void deletePipelineAnalysis(int id);
+
     Q_INVOKABLE void resetNewFiltering(int refId);
     Q_INVOKABLE void resetNewPipeline();
     Q_INVOKABLE bool newAnalysis(QString type);

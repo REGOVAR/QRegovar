@@ -124,13 +124,13 @@ Rectangle
             height: 100
             spacing: 30
 
-            ButtonWelcom
-            {
-                Layout.alignment: Qt.AlignHCenter
-                text: qsTr("New project")
-                onClicked: regovar.openNewProjectWizard()
-                enabled: regovar.networkManager.status == 0
-            }
+//            ButtonWelcom
+//            {
+//                Layout.alignment: Qt.AlignHCenter
+//                text: qsTr("New project")
+//                onClicked: regovar.openNewProjectWizard()
+//                enabled: regovar.networkManager.status == 0
+//            }
             ButtonWelcom
             {
                 Layout.alignment: Qt.AlignHCenter
