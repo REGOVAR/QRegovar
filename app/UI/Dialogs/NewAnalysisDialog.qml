@@ -10,7 +10,7 @@ import "NewAnalysisWizardScreens"
 Dialog
 {
     id: root
-    modality: Qt.WindowModal
+    modality: Qt.NonModal
 
     title: qsTr("Create new analysis")
 

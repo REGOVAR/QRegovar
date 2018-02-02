@@ -4,6 +4,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.2 as Control
+import org.regovar 1.0
 
 import "../Regovar"
 import "../Framework"
@@ -76,7 +77,7 @@ Dialog
 
                 Text
                 {
-                    text: regovar.referenceFromId(regovar.samplesManager.referencialId).name
+                    text: regovar.samplesManager.referencialId > 0 ? regovar.referenceFromId(regovar.samplesManager.referencialId).name : ""
                     enabled: referencialSelectorEnabled
                     color: Regovar.theme.primaryColor.back.normal
                     visible: !referencialSelectorEnabled
@@ -113,10 +114,10 @@ Dialog
 
                 TextField
                 {
+                    id: searchBox
                     Layout.fillWidth: true
                     anchors.leftMargin: 10 + (referencialSelectorEnabled ? refCombo.width + 10 : 0)
                     placeholder: qsTr("Search sample by identifiant or vcf filename, subject's name, date of birth, sex, comment, ...")
-                    enabled: false
                 }
             }
 
@@ -148,6 +149,25 @@ Dialog
                 anchors.bottomMargin: okButton.height + 20
 
                 model: regovar.samplesManager.samplesList
+
+//                SampleSortFilterProxyModel
+//                {
+//                    source: regovar.samplesManager.samplesList
+
+//                    sortOrder: selectedSamplesTable.sortIndicatorOrder
+//                    sortRole: regovar.samplesManager.samplesList.count > 0 ? selectedSamplesTable.getColumn(selectedSamplesTable.sortIndicatorColumn).role : ""
+//                    filterString: "*" + searchBox.text + "*"
+
+////                    sortCaseSensitivity: Qt.CaseInsensitive
+////                    filterCaseSensitivity: Qt.CaseInsensitive
+//                }
+
+
+
+
+
+
+
                 selectionMode: SelectionMode.ExtendedSelection
                 property var statusIcons: ["m", "/", "n", "h"]
 
