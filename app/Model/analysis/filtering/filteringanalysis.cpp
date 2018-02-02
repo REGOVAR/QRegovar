@@ -291,7 +291,7 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
             raiseNewInternalLoadingStatus(Error);
         }
         emit annotationsChanged();
-        emit selectedAnnotationsDBChanged();
+        emit dataChanged();
         req->deleteLater();
     });
 }

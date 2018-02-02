@@ -59,7 +59,7 @@ class FilteringAnalysis : public Analysis
     // "Shortcuts properties" for QML
     // Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
 
-    Q_PROPERTY(QStringList selectedAnnotationsDB READ selectedAnnotationsDB NOTIFY selectedAnnotationsDBChanged)
+    Q_PROPERTY(QStringList selectedAnnotationsDB READ selectedAnnotationsDB NOTIFY dataChanged)
     Q_PROPERTY(QStringList panelsUsed READ panelsUsed NOTIFY panelsUsedChanged)
     Q_PROPERTY(QString currentFilterName READ currentFilterName WRITE setCurrentFilterName NOTIFY currentFilterNameChanged)
     Q_PROPERTY(QList<QObject*> sets READ sets NOTIFY setsChanged)
@@ -141,7 +141,6 @@ public:
     Q_INVOKABLE inline FieldColumnInfos* getColumnInfo(QString uid) { return mAnnotations.contains(uid) ? mAnnotations[uid] : nullptr; }
     Q_INVOKABLE inline void emitDisplayFilterSavingFormPopup() { emit displayFilterSavingFormPopup(); }
     Q_INVOKABLE inline void emitDisplayFilterNewCondPopup(QString conditionUid) { emit displayFilterNewCondPopup(conditionUid); }
-    Q_INVOKABLE inline void emitSelectedAnnotationsDBChanged() { emit selectedAnnotationsDBChanged(); }
     Q_INVOKABLE inline void emitDisplayClearFilterPopup() { emit displayClearFilterPopup(); }
     Q_INVOKABLE void editFilter(int filterId, QString filterName, QString filterDescription, bool saveAdvancedFilter);
     Q_INVOKABLE void loadFilter(QString filter);
@@ -186,7 +185,6 @@ Q_SIGNALS:
     void displayFilterSavingFormPopup();
     void displayFilterNewCondPopup(QString conditionUid);
     void displayClearFilterPopup();
-    void selectedAnnotationsDBChanged();
     void isTrioChanged();
     void trioChildChanged();
     void trioMotherChanged();

@@ -112,7 +112,6 @@ GenericScreen
                     onCheckedChanged:
                     {
                         if (modelData.selected != checked) modelData.selected = checked;
-                        //regovar.analysesManager.newFiltering.emitSelectedAnnotationsDBChanged();
                     }
                     enabled: modelData.name == "Regovar" || modelData.name == "Variant" ? false : true
                 }

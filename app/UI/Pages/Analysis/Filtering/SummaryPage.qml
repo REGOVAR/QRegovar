@@ -15,8 +15,16 @@ Rectangle
     property FilteringAnalysis model
     property bool editionMode: false
 
-    onModelChanged: updateViewFromModel()
-
+    onModelChanged:
+    {
+        if (model)
+        {
+            busyIndicator.visible = true;
+            root.model.dataChanged.connect(updateViewFromModel);
+            root.model.statusChanged.connect(updateStatusFromModel);
+        }
+        updateViewFromModel();
+    }
 
 
     Rectangle
@@ -299,6 +307,8 @@ Rectangle
             font.pixelSize: Regovar.theme.font.size.normal
             color: Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.WordWrap
+            elide: Text.ElideRight
         }
 
         Text
@@ -709,16 +719,9 @@ Rectangle
     {
         if (root.model)
         {
-            if (!root.model.loaded)
-            {
-                root.model.dataChanged.connect(updateViewFromModel);
-                return;
-            }
-            else
+            if (root.model.loaded)
             {
                 busyIndicator.visible = false;
-                root.model.dataChanged.disconnect(updateViewFromModel);
-                root.model.statusChanged.connect(updateStatusFromModel);
             }
 
             updateView1FromModel(root.model);
@@ -752,6 +755,7 @@ Rectangle
             {
                 annotations += root.model.selectedAnnotationsDB[idx] + ", ";
             }
+
             annotationsField.text = annotations.substring(0, annotations.length-2);
 
             // Samples
