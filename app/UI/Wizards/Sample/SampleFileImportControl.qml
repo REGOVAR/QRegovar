@@ -13,7 +13,7 @@ Rectangle
     border.width: 1
     border.color: Regovar.theme.boxColor.border
 
-    width: 300
+    width: parent.width
     height: 100
 
     property File fileModel: null
@@ -47,6 +47,7 @@ Rectangle
 
                 Layout.fillWidth: true
                 text: fileModel ? fileModel.name : ""
+                elide: Text.ElideRight
             }
             ButtonInline
             {
