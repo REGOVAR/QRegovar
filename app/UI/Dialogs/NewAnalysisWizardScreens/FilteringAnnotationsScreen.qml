@@ -13,6 +13,7 @@ GenericScreen
 
     readyForNext: true //checkReadyreadyForNext();
     property real labelColWidth: 100
+    signal internalCheckAllForced()
 
     function checkReadyreadyForNext()
     {
@@ -42,9 +43,6 @@ GenericScreen
         color: Regovar.theme.primaryColor.back.normal
     }
 
-
-
-
     ColumnLayout
     {
         anchors.top: header.bottom
@@ -54,12 +52,35 @@ GenericScreen
         anchors.bottom: parent.bottom
         spacing: 10
 
-        Text
+        RowLayout
         {
-            text: qsTr("Selected annotations databases")
-            font.pixelSize: Regovar.theme.font.size.normal
-            color: Regovar.theme.frontColor.normal
+            Layout.fillWidth: true
+            spacing: 10
+            Text
+            {
+                Layout.fillWidth: true
+                text: qsTr("Selected annotations databases")
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.frontColor.normal
+                elide: Text.ElideRight
+            }
+
+            Button
+            {
+                text: qsTr("Check all")
+                onClicked:
+                {
+                    for(var idx in regovar.analysesManager.newFiltering.allAnnotations)
+                    {
+                        var item = regovar.analysesManager.newFiltering.allAnnotations[idx];
+                        item.selected = true;
+                    }
+                    root.internalCheckAllForced();
+                }
+            }
         }
+
+
         TableView
         {
             id: samplesList
@@ -75,13 +96,23 @@ GenericScreen
                 role: "name"
                 delegate: CheckBox
                 {
+                    Connections
+                    {
+                        target: root
+                        onInternalCheckAllForced:
+                        {
+                            checked = true;
+                        }
+                    }
+
+                    objectName: "dbCheckbox"
                     text: modelData.name
                     checked: modelData.selected
                     font.bold: modelData.isDefault
                     onCheckedChanged:
                     {
                         if (modelData.selected != checked) modelData.selected = checked;
-                        regovar.analysesManager.newFiltering.emitSelectedAnnotationsDBChanged();
+                        //regovar.analysesManager.newFiltering.emitSelectedAnnotationsDBChanged();
                     }
                     enabled: modelData.name == "Regovar" || modelData.name == "Variant" ? false : true
                 }
