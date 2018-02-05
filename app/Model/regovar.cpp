@@ -12,6 +12,7 @@
 #include "tools/tool.h"
 #include <QDateTime>
 #include <QApplication>
+#include <QTimer>
 
 
 
@@ -120,11 +121,6 @@ void Regovar::init()
 
     // Load misc data
     loadWelcomData();
-
-    // Timer to update "welcom data" every 30s
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(loadWelcomData()));
-    timer->start(30000);
 }
 
 
@@ -178,9 +174,15 @@ void Regovar::loadWelcomData()
             // Get referencial available
             for (const QJsonValue& jsonVal: data["references"].toArray())
             {
-                Reference* ref = new Reference(this);
-                ref->fromJson(jsonVal.toObject());
-                if (ref->id() > 0) mReferences.append(ref);
+                QJsonObject refD = jsonVal.toObject();
+                int id = refD["id"].toInt();
+                Reference* ref = referenceFromId(id);
+                if (ref == nullptr)
+                {
+                    ref = new Reference(this);
+                    ref->fromJson(jsonVal.toObject());
+                    if (ref->id() > 0) mReferences.append(ref);
+                }
             }
             emit referencesChanged();
 
@@ -209,6 +211,8 @@ void Regovar::loadWelcomData()
             }
             emit configChanged();
 
+            // Timer to update "welcom data" in 30s
+            //QTimer::singleShot(30000, regovar, SLOT(loadWelcomData()));
 
         }
         else

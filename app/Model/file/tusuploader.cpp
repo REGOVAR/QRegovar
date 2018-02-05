@@ -1,7 +1,6 @@
 #include "tusuploader.h"
 
 #include <QFileInfo>
-#include <QTimer>
 #include <QBuffer>
 #include "Model/framework/request.h"
 
