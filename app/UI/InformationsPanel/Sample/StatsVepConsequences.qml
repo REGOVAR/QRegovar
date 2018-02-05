@@ -192,11 +192,17 @@ Item
                 var slice = vepConsequencePieSeries.at(idx);
                 slice.labelVisible = false;
             }
+
+            empty.visible = false;
+            content.enabled = true;
         }
         else
         {
             vepConsequencePieSeries.clear();
             vepConsequenceRepeater.model = [];
+
+            empty.visible = true;
+            content.enabled = false;
         }
     }
 

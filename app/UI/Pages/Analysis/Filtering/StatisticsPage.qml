@@ -18,6 +18,16 @@ Rectangle
     property FilteringAnalysis model
     onModelChanged: updateViewFromModel(model)
     property var statisticsModel
+    onStatisticsModelChanged:
+    {
+        statsOverview.model = statisticsModel;
+        statsVariantClasses.model = statisticsModel;
+        statsVepConsequences.model = statisticsModel;
+        statsVepImpacts.model = statisticsModel;
+
+        qualOverview.model = statisticsModel;
+        qualFilter.model = statisticsModel;
+    }
 
     function updateViewFromModel(model)
     {
@@ -198,10 +208,10 @@ Rectangle
             {
                 spacing: 10
 
-                StatsOverview { id: statsOverview; model: root.statisticsModel}
-                StatsVariantClasses { id: statsVariantClasses; model: root.statisticsModel }
-                StatsVepConsequences { id: statsVepConsequences; model: root.statisticsModel }
-                StatsVepImpacts { id: statsVepImpacts; model: root.statisticsModel }
+                StatsOverview { id: statsOverview; }
+                StatsVariantClasses { id: statsVariantClasses; }
+                StatsVepConsequences { id: statsVepConsequences; }
+                StatsVepImpacts { id: statsVepImpacts; }
             }
         }
     }
@@ -276,8 +286,8 @@ Rectangle
             {
                 spacing: 10
 
-                QualityOverview { id: qualOverview; model: root.statisticsModel }
-                QualityFilter { id: qualFilter; model: root.statisticsModel }
+                QualityOverview { id: qualOverview; }
+                QualityFilter { id: qualFilter; }
             }
         }
     }
