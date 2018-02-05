@@ -212,7 +212,7 @@ void Regovar::loadWelcomData()
             emit configChanged();
 
             // Timer to update "welcom data" in 30s
-            //QTimer::singleShot(30000, regovar, SLOT(loadWelcomData()));
+            QTimer::singleShot(30000, regovar, SLOT(loadWelcomData()));
 
         }
         else

@@ -627,7 +627,7 @@ Rectangle
                     border.width: 1
                     border.color: Regovar.theme.boxColor.border
 
-                    Text
+                    TextEdit
                     {
                         id: computingMessageText
                         anchors.fill: parent
@@ -635,7 +635,9 @@ Rectangle
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         wrapMode: "WordWrap"
-                        elide: Text.ElideRight
+                        readOnly: true
+                        selectByMouse: true
+                        selectByKeyboard: true
                     }
                 }
 
