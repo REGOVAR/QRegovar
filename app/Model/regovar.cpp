@@ -92,7 +92,7 @@ void Regovar::init()
     mSettings = new Settings();
 
     // Create models
-    mUser = new User(1, "Olivier", "Gueudelot");
+    mUser = new User(1, "MyFirstname", "MyLastname");
     mConfig = new RegovarInfo();
     mAdmin = new Admin();
 

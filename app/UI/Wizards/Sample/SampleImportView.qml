@@ -27,9 +27,9 @@ Rectangle
     {
         // Clean connection with model
         console.log("Destroy SampleImportView : clear model connections")
-        for (var elmt in importList)
+        for (var idx in importList)
         {
-            elmt.clear();
+            importList[idx].clear();
         }
     }
 

@@ -29,7 +29,7 @@ QuickFilterBox
         modeRec.checked = (modeHtz.checked || modeHtzComp.checked);
         modeAll.checked = (!modeDom.checked && !modeRec.checked && !modeHtz.checked && !modeHtzComp.checked);
         // Segregation
-        segAll.checked = (!segDen.checked && !segInh.checked);
+        segAll.checked = (!segDen.checked && !segMDen.checked && !segInh.checked);
         // Localisation
         locAll.checked = (!locAut.checked && !locMit.checked && !locXlk.checked);
 
@@ -39,6 +39,7 @@ QuickFilterBox
         tm.setFilter("rec_hom", modeHtz.checked);
         tm.setFilter("rec_htzcomp", modeHtzComp.checked);
         tm.setFilter("denovo", segDen.checked);
+        tm.setFilter("maybe_denovo", segMDen.checked);
         tm.setFilter("inherited", segInh.checked);
         tm.setFilter("aut", locAut.checked);
         tm.setFilter("xlk", locXlk.checked);
@@ -240,6 +241,7 @@ QuickFilterBox
                         if (checked)
                         {
                             segDen.checked = false;
+                            segMDen.checked = false;
                             segInh.checked = false;
                         }
                         checkFinal();
@@ -257,6 +259,32 @@ QuickFilterBox
                 anchors.left: parent.left
                 anchors.leftMargin: 30
                 text: qsTr("De novo")
+                checked: false
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            segAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
+            }
+        }
+        RowLayout
+        {
+            width: content.width
+            CheckBox
+            {
+                id: segMDen
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("Maybe De novo")
                 checked: false
                 onCheckedChanged:
                 {
