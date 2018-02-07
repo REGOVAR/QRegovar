@@ -18,7 +18,7 @@
 #include "Model/tools/tool.h"
 #include "Model/tools/toolparameter.h"
 
-#include "Model/sortfilterproxymodel/samplesortfilterproxymodel.h"
+#include "Model/sortfilterproxymodel/samplesproxymodel.h"
 
 
 int main(int argc, char *argv[])
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Tool>("org.regovar", 1, 0, "Tool");
     qmlRegisterType<ToolParameter>("org.regovar", 1, 0, "ToolParameter");
 
-    qmlRegisterType<SampleSortFilterProxyModel>("org.regovar", 1, 0, "SampleSortFilterProxyModel");
+    qmlRegisterType<SamplesProxyModel>("org.regovar", 1, 0, "SamplesProxyModel");
 
 
     // Must be called before creating any webwidget/webqml

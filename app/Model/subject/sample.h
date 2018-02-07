@@ -30,6 +30,7 @@ class Sample : public QObject
     Q_PROPERTY(QVariant nameUI READ nameUI WRITE setNameUI NOTIFY dataChanged)
     Q_PROPERTY(QVariant statusUI READ statusUI WRITE setStatusUI NOTIFY dataChanged)
     Q_PROPERTY(QVariant sourceUI READ sourceUI WRITE setSourceUI NOTIFY dataChanged)
+    Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
     // Property only used client side by the newAnalysis wizard
     Q_PROPERTY(bool isIndex READ isIndex WRITE setIsIndex NOTIFY dataChanged)
     Q_PROPERTY(QString sex READ sex WRITE setSex NOTIFY dataChanged)
@@ -69,6 +70,7 @@ public:
     inline QVariant nameUI() const { return mNameUI; }
     inline QVariant statusUI() const { return mStatusUI; }
     inline QVariant sourceUI() const { return mSourceUI; }
+    inline QString searchField() const { return mSearchField; }
     inline bool isIndex() const { return mIsIndex; }
     inline QString sex() const { return mSex; }
     inline QJsonObject stats() const { return mStats; }
@@ -108,6 +110,7 @@ Q_SIGNALS:
     void dataChanged();
 
 public Q_SLOTS:
+    void updateSearchField();
 
 private:
 
@@ -137,6 +140,7 @@ private:
     QVariant mSourceUI;
     bool mIsIndex = false;
     QString mSex;
+    QString mSearchField;
 };
 
 #endif // SAMPLE_H

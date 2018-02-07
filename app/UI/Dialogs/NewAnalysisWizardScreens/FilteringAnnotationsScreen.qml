@@ -24,7 +24,7 @@ GenericScreen
     {
         if (z==100)
         {
-            samplesList.model = regovar.analysesManager.newFiltering.allAnnotations;
+            annotationsList.model = regovar.analysesManager.newFiltering.allAnnotations;
         }
     }
 
@@ -83,7 +83,7 @@ GenericScreen
 
         TableView
         {
-            id: samplesList
+            id: annotationsList
             clip: true
             Layout.fillWidth: true
             Layout.fillHeight: true

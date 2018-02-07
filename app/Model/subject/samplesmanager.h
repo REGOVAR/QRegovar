@@ -3,27 +3,47 @@
 
 #include <QtCore>
 #include "sample.h"
+#include "Model/sortfilterproxymodel/samplesproxymodel.h"
 
-class SamplesManager : public QObject
+
+
+class SamplesManager : public QAbstractListModel
 {
-    Q_OBJECT
+    enum Roles
+    {
+        Id = Qt::UserRole + 1,
+        Name,
+        Nickname,
+        IsMosaic,
+        Comment,
+        Status,
+        Source,
+        Subject,
+        Reference,
+        SearchField
+    };
 
+    Q_OBJECT
     Q_PROPERTY(int referencialId READ referencialId WRITE setReferenceId NOTIFY referencialIdChanged)
-    Q_PROPERTY(QList<QObject*> samplesList READ samplesList NOTIFY samplesListChanged)
+    Q_PROPERTY(SamplesProxyModel* proxy READ proxy NOTIFY proxyChanged)
 
 public:
     explicit SamplesManager(QObject* parent = nullptr);
     explicit SamplesManager(int refId, QObject* parent = nullptr);
 
-    // Getters
+    // Property Get/Set
     inline int referencialId() const { return mRefId; }
-    inline QList<QObject*> samplesList() const { return mSamplesList; }
-
-    // Setters
+    inline SamplesProxyModel* proxy() const { return mProxy; }
     void setReferenceId(int ref);
 
     // Methods
-    Q_INVOKABLE Sample* getOrCreate(int sampleId);
+    Q_INVOKABLE Sample* getOrCreate(int sampleId, bool internalRefresh=false);
+
+    // QAbstractListModel methods
+    int rowCount(const QModelIndex& parent = QModelIndex()) const;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    QHash<int, QByteArray> roleNames() const;
+
 
 public Q_SLOTS:
     // Called by NetworkManager when need to process WebSocket messages managed by SampleManager
@@ -32,6 +52,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     // Property changed event
+    void proxyChanged();
     void referencialIdChanged();
     void samplesListChanged();
     void sampleImportStart(int fileId, QList<int> samplesIds);
@@ -40,9 +61,11 @@ private:
     //! The id of the current referencial (update sample list on change)
     int mRefId = -1;
     //! List of samples
-    QList<QObject*> mSamplesList;
-    //! internal collection of all loaded samples
+    QList<Sample*> mSamplesList;
+    //! Internal collection of all loaded samples
     QHash<int, Sample*> mSamples;
+    //! The QSortFilterProxyModel to use by table view to browse samples of the manager
+    SamplesProxyModel* mProxy;
 
 };
 

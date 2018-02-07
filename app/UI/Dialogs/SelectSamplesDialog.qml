@@ -115,9 +115,11 @@ Dialog
                 TextField
                 {
                     id: searchBox
+                    iconLeft: "z"
                     Layout.fillWidth: true
                     anchors.leftMargin: 10 + (referencialSelectorEnabled ? refCombo.width + 10 : 0)
-                    placeholder: qsTr("Search sample by identifiant or vcf filename, subject's name, date of birth, sex, comment, ...")
+                    placeholder: qsTr("Search sample by identifiant or vcf filename, subject's name, identifier, comment, ...")
+                    onTextEdited: regovar.samplesManager.proxy.setFilterString(text)
                 }
             }
 
@@ -148,14 +150,22 @@ Dialog
                 anchors.margins: 10
                 anchors.bottomMargin: okButton.height + 20
 
-                model: regovar.samplesManager.samplesList
+                model: regovar.samplesManager.proxy
+
+                sortIndicatorVisible: true
+                onSortIndicatorColumnChanged: regovar.samplesManager.proxy.setSortOrder(sortIndicatorColumn, sortIndicatorOrder)
+                onSortIndicatorOrderChanged:
+                {
+                    regovar.samplesManager.proxy.setSortOrder(sortIndicatorColumn, sortIndicatorOrder);
+                }
+
 
 //                SampleSortFilterProxyModel
 //                {
-//                    source: regovar.samplesManager.samplesList
+//                    source: regovar.samplesManager
 
 //                    sortOrder: selectedSamplesTable.sortIndicatorOrder
-//                    sortRole: regovar.samplesManager.samplesList.count > 0 ? selectedSamplesTable.getColumn(selectedSamplesTable.sortIndicatorColumn).role : ""
+//                    sortRole: regovar.samplesManager.rowCount() > 0 ? selectedSamplesTable.getColumn(selectedSamplesTable.sortIndicatorColumn).role : ""
 //                    filterString: "*" + searchBox.text + "*"
 
 ////                    sortCaseSensitivity: Qt.CaseInsensitive
@@ -176,7 +186,7 @@ Dialog
                 TableViewColumn
                 {
                     title: "Status"
-                    role: "statusUI"
+                    role: "status"
                     delegate: Item
                     {
 
@@ -240,7 +250,7 @@ Dialog
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.subjectUI.sex : ""
+                            text: styleData.value ? styleData.value.sex : ""
                             font.family: Regovar.theme.icons.name
                         }
                         Text
@@ -252,7 +262,7 @@ Dialog
                             anchors.verticalCenter: parent.verticalCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.subjectUI.name : ""
+                            text: styleData.value ? styleData.value.name : ""
                             elide: Text.ElideRight
                         }
 
@@ -261,7 +271,7 @@ Dialog
                 TableViewColumn
                 {
                     title: qsTr("Source")
-                    role: "sourceUI"
+                    role: "source"
                     delegate: Item
                     {
 
@@ -298,7 +308,7 @@ Dialog
 
                     color: Regovar.theme.backgroundColor.overlay
 
-                    visible: regovar.samplesManager.samplesList.length == 0
+                    visible: regovar.samplesManager.length == 0
 
                     Text
                     {
@@ -344,7 +354,7 @@ Dialog
                 {
                     selectedSamplesTable.selection.forEach( function(rowIndex)
                     {
-                        samples = samples.concat(regovar.samplesManager.samplesList[rowIndex]);
+                        samples = samples.concat(regovar.samplesManager[rowIndex]);
                     });
                     samplesSelected(samples);
                 }

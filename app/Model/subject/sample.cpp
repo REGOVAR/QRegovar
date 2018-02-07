@@ -6,20 +6,34 @@
 
 Sample::Sample(QObject *parent) : QObject(parent)
 {
+    connect(this, &Sample::dataChanged, this, &Sample::updateSearchField);
 }
 
 Sample::Sample(int id, QObject* parent) : QObject(parent)
 {
+    connect(this, &Sample::dataChanged, this, &Sample::updateSearchField);
     mId = id;
 }
 Sample::Sample(QJsonObject json, QObject* parent) : QObject(parent)
 {
+    connect(this, &Sample::dataChanged, this, &Sample::updateSearchField);
     fromJson(json);
 }
 
 
 
-
+void Sample::updateSearchField()
+{
+    mSearchField = mName + " " + mNickname + " " + mComment + " " + statusToLabel(mStatus, mLoadingProgress);
+    if (mSubject != nullptr)
+    {
+        mSearchField +=  " " + mSubject->identifier() + " " + mSubject->firstname() + " " + mSubject->lastname() + " " + mSex;
+    }
+    if (mSource != nullptr)
+    {
+        mSearchField += " " + mSource->name();
+    }
+}
 
 void Sample::setStatus(QString status)
 {
