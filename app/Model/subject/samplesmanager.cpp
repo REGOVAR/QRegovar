@@ -21,14 +21,17 @@ SamplesManager::SamplesManager(int refId, QObject* parent) : QAbstractListModel(
 
 Sample* SamplesManager::getOrCreate(int sampleId, bool internalRefresh)
 {
-    if (mSamples.contains(sampleId))
+    // convert sample id with ref id to get sample's internal unique id
+    int id = mRefId * 10000000 + sampleId;
+
+    if (mSamples.contains(id))
     {
-        return mSamples[sampleId];
+        return mSamples[id];
     }
     // else
     if (!internalRefresh) beginInsertRows(QModelIndex(), rowCount(), rowCount());
     Sample* newSample = new Sample(sampleId, this);
-    mSamples.insert(sampleId, newSample);
+    mSamples.insert(id, newSample);
     mSamplesList.append(newSample);
     if (!internalRefresh)
     {
