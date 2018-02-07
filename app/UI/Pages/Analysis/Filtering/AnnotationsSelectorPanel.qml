@@ -58,91 +58,110 @@ Rectangle
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            TreeView
+            ColumnLayout
             {
-                id: annotationsSelector
                 anchors.fill: parent
                 anchors.margins: 10
                 anchors.topMargin: 5
+                spacing: 10
 
-                // Default delegate for all column
-                itemDelegate: Item
+
+                TextField
                 {
-                    Text
-                    {
-                        anchors.leftMargin: 5
-                        anchors.fill: parent
-                        verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
-                        elide: Text.ElideRight
-                    }
+                    id: searchBox
+                    iconLeft: "z"
+                    Layout.fillWidth: true
+                    placeholder: qsTr("Search annotation...")
+                    onTextEdited: root.model.annotationsTree.proxy.setFilterString(text)
                 }
 
-
-                TableViewColumn
+                TreeView
                 {
-                    role: "name"
-                    title: "Name"
+                    id: annotationsSelector
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
 
-                    delegate: Item
+                    // Default delegate for all column
+                    itemDelegate: Item
                     {
-
-                        CheckBox
+                        Text
                         {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            text: styleData.value ? styleData.value : "-"
-                            onClicked:
-                            {
-                                var annot = annotationsSelector.model.getAnnotation(styleData.index);
-                                if (annot)
-                                {
-                                    root.model.setDisplayedAnnotationTemp(annot.uid, checked);
-                                    applyButton.enabled = true;
-                                }
-                                else
-                                {
-                                    console.log("TODO: checking annotation database: need to check/uncheck all fields");
-                                }
-                            }
+                            anchors.leftMargin: 5
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: (styleData.value == undefined || styleData.value.value == null) ? "-"  : styleData.value.value
+                            elide: Text.ElideRight
+                        }
+                    }
 
-                            onVisibleChanged:
+
+                    TableViewColumn
+                    {
+                        role: "name"
+                        title: "Name"
+
+                        delegate: Item
+                        {
+
+                            CheckBox
                             {
-                                if (visible)
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: styleData.value ? styleData.value : "-"
+                                onClicked:
                                 {
-                                    var idx = styleData.index;
-                                    if (idx.valid)
+                                    var annot = annotationsSelector.model.getAnnotation(styleData.index);
+                                    if (annot)
                                     {
-                                        var annot = annotationsSelector.model.getAnnotation(idx)
-                                        if (annot)
+                                        root.model.setDisplayedAnnotationTemp(annot.uid, checked);
+                                        applyButton.enabled = true;
+                                    }
+                                    else
+                                    {
+                                        console.log("TODO: checking annotation database: need to check/uncheck all fields");
+                                    }
+                                }
+
+                                onVisibleChanged:
+                                {
+                                    if (visible)
+                                    {
+                                        var idx = styleData.index;
+                                        if (idx.valid)
                                         {
-                                            checked = annot.isDisplayedTemp;
-                                        }
-                                        else
-                                        {
-                                            checked = false;
+                                            var annot = annotationsSelector.model.getAnnotation(idx)
+                                            if (annot)
+                                            {
+                                                checked = annot.isDisplayedTemp;
+                                            }
+                                            else
+                                            {
+                                                checked = false;
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                }
 
-                TableViewColumn
-                {
-                    role: "description"
-                    title: "Description"
-                    width: 250
-                    delegate: Text
+                    TableViewColumn
                     {
-                        text: styleData.value ? styleData.value : "-"
-                        elide: Text.ElideRight
+                        role: "description"
+                        title: "Description"
+                        width: 250
+                        delegate: Text
+                        {
+                            text: styleData.value ? styleData.value : "-"
+                            elide: Text.ElideRight
+                        }
                     }
                 }
             }
+
+
         }
 
         Rectangle

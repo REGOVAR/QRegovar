@@ -68,7 +68,8 @@ HEADERS += \
     Model/analysis/filtering/quickfilters/phenotypequickfilter.h \
     Model/analysis/filtering/quickfilters/panelquickfilter.h \
     Model/settings.h \
-    Model/sortfilterproxymodel/samplesproxymodel.h
+    Model/sortfilterproxymodel/samplesproxymodel.h \
+    Model/sortfilterproxymodel/annotationsproxymodel.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -124,7 +125,8 @@ SOURCES += main.cpp \
     Model/analysis/filtering/quickfilters/phenotypequickfilter.cpp \
     Model/analysis/filtering/quickfilters/panelquickfilter.cpp \
     Model/settings.cpp \
-    Model/sortfilterproxymodel/samplesproxymodel.cpp
+    Model/sortfilterproxymodel/samplesproxymodel.cpp \
+    Model/sortfilterproxymodel/annotationsproxymodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
