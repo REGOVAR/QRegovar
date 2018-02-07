@@ -14,7 +14,7 @@ ResultsTreeModel::ResultsTreeModel(FilteringAnalysis* parent) : TreeModel(parent
     mRootItem = new TreeItem(rootData);
 
     mAnalysisId = -1;
-    mPagination = 100; // TODO : load from settings
+    mPagination = 1000; // TODO : load from settings
 }
 
 
@@ -23,6 +23,7 @@ void ResultsTreeModel::initAnalysisData(int analysisId)
     qDebug() << "Init results tree model of filtering analysis" << analysisId << ":";
     mAnalysisId = analysisId;
     mRoles = roleNames();
+    mAutoLoadingNext = false;
 
     // With QML TreeView, the rootItem must know all column's roles to allow correct display for
     // other rows. So that's why we create columns for all existings roles.
@@ -127,56 +128,6 @@ bool ResultsTreeModel::hasChildren(const QModelIndex &parent) const
     return false;
 }
 
-//void ResultsTreeModel::fetchMore(const QModelIndex &parent)
-//{
-//    if (parent == QModelIndex())
-//        return ;
-
-//    TreeItem* item = getItem(parent);
-
-//    int count       = item->virtualChildCount();
-//    int parentRow   = parent.row();
-//    QStringList ids = mRecords[parent.row()].value("childs").toString().split(",");
-
-
-//    qDebug()<<ids;
-
-//    beginInsertRows(parent,0, count-1);
-//    mChilds[parentRow].clear();
-
-//    cvar::VariantQuery temp = mCurrentQuery;
-//    temp.setCondition(QString("%2.id IN (%1)").arg(ids.join(",")).arg(mCurrentQuery.table()));
-//    temp.setGroupBy({});
-//    temp.setNoLimit();
-
-//    QSqlQuery query = cutevariant->sqliteManager()->variants(temp);
-
-//    while (query.next())
-//    {
-//        mChilds[parentRow].append(query.record());
-//    }
-
-
-//    qDebug()<<query.lastError().text();
-//    qDebug()<<query.lastQuery();
-
-//    endInsertRows();
-//}
-
-////---------------------------------------------------------------------------
-//void ResultsTreeModel::sort(int column, Qt::SortOrder order)
-//{
-
-//    if (column < columnCount()) {
-//        QString col = headerData(column, Qt::Horizontal, Qt::DisplayRole).toString();
-//        qDebug()<<col;
-//        mCurrentQuery.setOrderBy({col});
-//        mCurrentQuery.setSortOrder(order);
-//        load();
-//    }
-
-//}
-////---------------------------------------------------------------------------
 
 
 
@@ -190,6 +141,7 @@ void ResultsTreeModel::applyFilter(QJsonArray filter)
     if (mAnalysisId == -1) return;
 
     setIsLoading(true);
+    mAutoLoadingNext = false; // abord previous "load all" if still in progress
 
     // Save last applied filter
     regovar->analysesManager()->getFilteringAnalysis(mAnalysisId)->setFilterJson(filter);
@@ -237,44 +189,55 @@ void ResultsTreeModel::loadNext()
 {
     qDebug() << "RESULTS TREEVIEW LOADNEXT !!!!!!!!!!!!!";
     // Find how many entries to load
-//    int remainder = mTotal - mLoaded;
-//    int itemsToFetch = qMin(mPagination, remainder);
+    int remainder = mTotal - mLoaded;
+    int itemsToFetch = qMin(mPagination, remainder);
 
-//    // Notify view/model that we are loading new data
-//    beginInsertRows(QModelIndex(), mLoaded, mLoaded+itemsToFetch-1);
-//    setIsLoading(true);
+    // Notify view/model that we are loading new data
+    beginInsertRows(QModelIndex(), mLoaded, mLoaded+itemsToFetch-1);
+    setIsLoading(true);
 
-//    // Request the server to retrieve new entries
-//    QJsonObject body;
-//    body.insert("filter", mFilteringAnalysis->advancedfilter()->toJson());
-//    body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
-//    body.insert("limit", QJsonValue::fromVariant(QVariant(mPagination)));
-//    body.insert("offset", QJsonValue::fromVariant(QVariant(mLoaded)));
+    // Request the server to retrieve new entries
+    QJsonObject body;
+    // No need to resend the filter as it is the same, just fields and pagination information are needed
+    body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
+    body.insert("limit", QJsonValue::fromVariant(QVariant(mPagination)));
+    body.insert("offset", QJsonValue::fromVariant(QVariant(mLoaded)));
 
-//    Request* request = Request::post(QString("/analysis/%1/filtering").arg(mAnalysisId), QJsonDocument(body).toJson());
-//    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
-//    {
-//        if (success)
-//        {
-//            setupModelData(json["data"].toArray(), mRootItem);
+    Request* request = Request::post(QString("/analysis/%1/filtering").arg(mAnalysisId), QJsonDocument(body).toJson());
+    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            QJsonObject data = json["data"].toObject();
+            setupModelData(data["results"].toArray(), mRootItem);
 
-//            qDebug() << Q_FUNC_INFO << "Results TreeViewModel load next." << mLoaded << "results loaded";
-//        }
-//        else
-//        {
-//            QJsonObject jsonError = json;
-//            jsonError.insert("method", Q_FUNC_INFO);
-//            regovar->raiseError(jsonError);
-//        }
+            qDebug() << Q_FUNC_INFO << "Results TreeViewModel load next." << mLoaded << "results loaded";
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
 
-//        // Notify view/model that update is finished
-//        endInsertRows();
-//        setIsLoading(false);
+        // Notify view/model that update is finished
+        endInsertRows();
+        setIsLoading(false);
 
-//        request->deleteLater();
-//    });
+        request->deleteLater();
+    });
 }
 
+
+//! Load next result according to the mResultsPagination value (default is 100)
+void ResultsTreeModel::loadAll()
+{
+    if (mAutoLoadingNext) return; // load all already in progress
+
+    qDebug() << "RESULTS TREEVIEW LOADALL !!!!!!!!!!!!!";
+    mAutoLoadingNext = true;
+    loadNext();
+}
 
 
 

@@ -150,20 +150,23 @@ Rectangle
 
         Text
         {
-            text: root.model ? qsTr("Loaded entries: ") + Regovar.formatBigNumber(root.model.results.length) + " / " + Regovar.formatBigNumber(root.model.results.total) : ""
+            text: root.model ? qsTr("Loaded entries: ") + Regovar.formatBigNumber(root.model.results.loaded) + " / " + Regovar.formatBigNumber(root.model.results.total) : ""
             font.pixelSize: Regovar.theme.font.size.small
         }
         ButtonInline
         {
             text: qsTr("Load next 1000")
-            enabled: resultsTree.model ? !resultsTree.model.isLoading && root.model.results.length < root.model.results.total : false
-
+            visible: root.model.results.loaded < root.model.results.total
+            enabled: resultsTree.model ? !resultsTree.model.isLoading : false
+            onClicked: resultsTree.model.loadNext()
         }
-        ButtonInline
-        {
-            text: qsTr("Load all")
-            enabled: resultsTree.model ? !resultsTree.model.isLoading && root.model.results.length < root.model.results.total : false
-        }
+//        ButtonInline
+//        {
+//            text: qsTr("Load all")
+//            visible: root.model.results.loaded < root.model.results.total
+//            enabled: resultsTree.model ? !resultsTree.model.isLoading : false
+//            onClicked: resultsTree.model.loadAll()
+//        }
     }
 
 

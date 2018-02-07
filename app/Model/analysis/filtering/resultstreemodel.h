@@ -40,8 +40,10 @@ public:
     Q_INVOKABLE void applyFilter(QJsonArray filter);
     //! To use when new columns have been added, to add info in the model without reseting it
     Q_INVOKABLE void reload();
-    //! Load next result according to the mResultsPagination value (default is 100)
+    //! Load next results according to the mResultsPagination value (default is 1000)
     Q_INVOKABLE void loadNext();
+    //! Load all results
+    Q_INVOKABLE void loadAll();
 
 
     void initAnalysisData(int analysisId);
@@ -62,6 +64,9 @@ private:
     int mLoaded = 0;
     int mPagination = 0;
     QHash<int, QByteArray> mRoles;
+
+    bool mAutoLoadingNext = false;
+    int mPaginationMax = 0;
 };
 
 #endif // RESULTSTREEMODEL_H
