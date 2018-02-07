@@ -25,6 +25,7 @@ class SamplesManager : public QAbstractListModel
 
     Q_OBJECT
     Q_PROPERTY(int referencialId READ referencialId WRITE setReferenceId NOTIFY referencialIdChanged)
+    Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
     Q_PROPERTY(SamplesProxyModel* proxy READ proxy NOTIFY proxyChanged)
 
 public:
@@ -54,7 +55,7 @@ Q_SIGNALS:
     // Property changed event
     void proxyChanged();
     void referencialIdChanged();
-    void samplesListChanged();
+    void countChanged();
     void sampleImportStart(int fileId, QList<int> samplesIds);
 
 private:

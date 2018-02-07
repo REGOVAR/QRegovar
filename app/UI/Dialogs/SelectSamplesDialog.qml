@@ -154,25 +154,7 @@ Dialog
 
                 sortIndicatorVisible: true
                 onSortIndicatorColumnChanged: regovar.samplesManager.proxy.setSortOrder(sortIndicatorColumn, sortIndicatorOrder)
-                onSortIndicatorOrderChanged:
-                {
-                    regovar.samplesManager.proxy.setSortOrder(sortIndicatorColumn, sortIndicatorOrder);
-                }
-
-
-//                SampleSortFilterProxyModel
-//                {
-//                    source: regovar.samplesManager
-
-//                    sortOrder: selectedSamplesTable.sortIndicatorOrder
-//                    sortRole: regovar.samplesManager.rowCount() > 0 ? selectedSamplesTable.getColumn(selectedSamplesTable.sortIndicatorColumn).role : ""
-//                    filterString: "*" + searchBox.text + "*"
-
-////                    sortCaseSensitivity: Qt.CaseInsensitive
-////                    filterCaseSensitivity: Qt.CaseInsensitive
-//                }
-
-
+                onSortIndicatorOrderChanged:  regovar.samplesManager.proxy.setSortOrder(sortIndicatorColumn, sortIndicatorOrder)
 
 
 
@@ -308,7 +290,7 @@ Dialog
 
                     color: Regovar.theme.backgroundColor.overlay
 
-                    visible: regovar.samplesManager.length == 0
+                    visible: regovar.samplesManager.count == 0
 
                     Text
                     {

@@ -132,8 +132,38 @@ Rectangle
         anchors.top: controlPanel.bottom
         anchors.left: root.left
         anchors.right: root.right
+        anchors.bottom: loadingBar.top
+        anchors.margins: 10
+    }
+
+    RowLayout
+    {
+        id: loadingBar
+        anchors.left: root.left
+        anchors.right: root.right
         anchors.bottom: root.bottom
         anchors.margins: 10
+        height: Regovar.theme.font.boxSize.small
+        spacing: 10
+
+        Item { Layout.fillWidth: true }
+
+        Text
+        {
+            text: root.model ? qsTr("Loaded entries: ") + Regovar.formatBigNumber(root.model.results.length) + " / " + Regovar.formatBigNumber(root.model.results.total) : ""
+            font.pixelSize: Regovar.theme.font.size.small
+        }
+        ButtonInline
+        {
+            text: qsTr("Load next 1000")
+            enabled: resultsTree.model ? !resultsTree.model.isLoading && root.model.results.length < root.model.results.total : false
+
+        }
+        ButtonInline
+        {
+            text: qsTr("Load all")
+            enabled: resultsTree.model ? !resultsTree.model.isLoading && root.model.results.length < root.model.results.total : false
+        }
     }
 
 
@@ -141,9 +171,10 @@ Rectangle
     Rectangle
     {
         id: busyIndicator
-        anchors.fill: rightPanel
-        anchors.margins: 10
-        anchors.topMargin: 60
+        anchors.top: header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.bottom: loadingBar.top
 
         color: Regovar.theme.backgroundColor.overlay
         visible: resultsTree.model ? resultsTree.model.isLoading : false

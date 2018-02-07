@@ -30,7 +30,11 @@ Sample* SamplesManager::getOrCreate(int sampleId, bool internalRefresh)
     Sample* newSample = new Sample(sampleId, this);
     mSamples.insert(sampleId, newSample);
     mSamplesList.append(newSample);
-    if (!internalRefresh) endInsertRows();
+    if (!internalRefresh)
+    {
+        endInsertRows();
+        emit countChanged();
+    }
     return newSample;
 }
 
@@ -65,7 +69,7 @@ void SamplesManager::setReferenceId(int refId)
             }
             endResetModel();
             emit referencialIdChanged();
-            emit samplesListChanged();
+            emit countChanged();
         }
         else
         {
@@ -122,9 +126,8 @@ void SamplesManager::processPushNotification(QString action, QJsonObject data)
 
 
 
-int SamplesManager::rowCount(const QModelIndex& parent) const
+int SamplesManager::rowCount(const QModelIndex&) const
 {
-    Q_UNUSED(parent);
     return mSamplesList.count();
 }
 
@@ -148,9 +151,9 @@ QVariant SamplesManager::data(const QModelIndex& index, int role) const
         return sample->statusUI();
     else if (role == Source)
         return sample->sourceUI();
-    else if (role == Subject)
+    else if (role == Subject && sample->subject() != nullptr)
         return sample->subject()->subjectUI();
-    else if (role == Reference)
+    else if (role == Reference && sample->reference() != nullptr)
         return sample->reference()->name();
     else if (role == SearchField)
         return sample->searchField();
