@@ -9,8 +9,7 @@
 // is_dom           148e67ffc504d1d0baf8ec988a2b7c4e
 // is_rec_hom       b0fab8b285474229afbbc13fac198dfe
 // is_rec_htzcomp   8cb83d0127aa912f2d290139d298e082
-// is_denovo_gvcf   1cee86ec543af0336df75ff1fdc8aeba
-// is_denovo_vcf    b66e0d6698447b62073f993897b369bf
+// is_denovo        92a9da3488b1127623c4e3ac7b6f67e2
 // is_inherited     7ea7055963560e3ba97bd5a0081fa66c
 // is_aut           9b3a9330bc8b5b3c1ebc271876535d8e
 // is_xlk           76117d8b774f5e902ba0580bc302afb0
@@ -26,8 +25,7 @@ TransmissionQuickFilter::TransmissionQuickFilter(int) : QuickFilterBlockInterfac
     mFilters["rec_hom"] = new QuickFilterField("b0fab8b285474229afbbc13fac198dfe", tr("Homozigous"), opList, "==", QVariant(true), false);
     mFilters["rec_htzcomp"] = new QuickFilterField("8cb83d0127aa912f2d290139d298e082", tr("Htz comp"), opList, "==", QVariant(true), false);
     // Inheritance
-    mFilters["denovo"] = new QuickFilterField("1cee86ec543af0336df75ff1fdc8aeba", tr("De novo (GVCF)"), opList, "==", QVariant(true), false);
-    mFilters["maybe_denovo"] = new QuickFilterField("b66e0d6698447b62073f993897b369bf", tr("Maybe De novo (VCF)"), opList, "==", QVariant(true), false);
+    mFilters["denovo"] = new QuickFilterField("92a9da3488b1127623c4e3ac7b6f67e2", tr("De novo"), opList, "==", QVariant(true), false);
     mFilters["inherited"] = new QuickFilterField("b66e0d6698447b62073f993897b369bf", tr("Inherited"), opList, "==", QVariant(false), false);
     // Location
     mFilters["aut"] = new QuickFilterField("9b3a9330bc8b5b3c1ebc271876535d8e", tr("Autosomal"), opList, "==", QVariant(true), false);
