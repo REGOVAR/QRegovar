@@ -1,55 +1,34 @@
 import QtQuick 2.9
+import org.regovar 1.0
 
 import "../Regovar"
 
-
-//Text
-//{
-//    text: subMenuModel.get(index).label
-//    height: header.height
-//    verticalAlignment: Text.AlignVCenter
-//    font.pixelSize: Regovar.theme.font.size.normal
-//}
 
 Rectangle
 {
     id: root
     height: 30
     width: parent.width
-    state: indexToState()
 
-
+//    property alias icon: icon.text
     property alias label: label.text
-    property string currentState: indexToState()
-    property int selectedIndex: -1
-    property MenuModel model
-
-
-    function indexToState()
-    {
-        return (root.selectedIndex !== index) ? "normal" : "selected";
-    }
-
-
+    property int sublevelListMaxHeight
+    property bool selected
+    onSelectedChanged: setState()
+    property RootMenuModel menuModel
+    property MenuEntryModel model
     onModelChanged:
     {
-        root.selectedIndex = model.selectedIndex[2];
+        if (model)
+        {
+            selected = Qt.binding(function() { return model.selected; });
+            setState();
+        }
     }
 
-
-    // Update view states only from main model update to avoid binding loop
-    // and inconsistency between views and model
-    Connections
+    function setState()
     {
-        target: model
-        onSelectedIndexChanged:
-        {
-            // When main model change, notify views that index have changed
-            root.selectedIndex = model.selectedIndex[2];
-            // Force update of the state
-            root.currentState = indexToState();
-            root.state = root.currentState;
-        }
+        state = selected ? "selected" : "normal";
     }
 
 
@@ -58,7 +37,6 @@ Rectangle
         id: label
         anchors.fill: root
         anchors.leftMargin: 50
-        text: subMenuModel.get(index).label
         verticalAlignment: Text.AlignVCenter
         font.pixelSize: Regovar.theme.font.size.normal
     }
@@ -66,20 +44,9 @@ Rectangle
     {
         anchors.fill: root
         hoverEnabled: true
-        onEntered:
-        {
-            root.state = "hover"
-        }
-        onExited:
-        {
-            root.state = parent.currentState
-
-        }
-        onClicked:
-        {
-            // Notify model that entry {index} of the level 1 is selected
-            model.select(2, index);
-        }
+        onEntered: root.state = "hover"
+        onExited: setState()
+        onClicked: menuModel.select(2, index)
     }
 
     states:
@@ -88,7 +55,7 @@ Rectangle
         {
             name: "normal"
             PropertyChanges { target: root; color: "transparent"}
-            PropertyChanges { target: label; color: Regovar.theme.primaryColor.back.normal}
+            PropertyChanges { target: label; color: Regovar.theme.primaryColor.back.dark}
         },
         State
         {

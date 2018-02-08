@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.0
+import org.regovar 1.0
 
 import "MainMenu"
 import "Dialogs"
@@ -13,12 +14,13 @@ ApplicationWindow
 
     // The id of this window that allow "Regovar model" to retrieve corresponding "Analysis model" among open models/windows
     property int winId
+    // Internal map to store qml page associated with their menuModel Uid
+    property var pages
+    // The uid of the page currently displayed
+    property int currentUid: -1
 
-    //! Menu model
-    property MenuModel menuModel
 
-
-    property var previousIndex : [0,-1,-1]
+    property alias menuModel: mainMenu.model
 
 
 
@@ -29,15 +31,11 @@ ApplicationWindow
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        width: 300
 
-        model: menuModel
-
-        onSelectedIndexChanged:
-        {
-            openPage()
-        }
+        onOpenPage: root.openPage(menuEntry.uid);
     }
+
+
 
     Item
     {
@@ -90,62 +88,67 @@ ApplicationWindow
 
     function buildPages(model, sharedModel)
     {
-        for (var idx in model)
+        for (var idx=0; idx<model.entries.length; idx++)
         {
-            if (model[idx].qml === undefined)
+            var menuEntry = model.entries[idx];
+            var uid = menuEntry.uid;
+            if (!(uid in root.pages))
             {
-                if (model[idx].page !== "" && model[idx].page[0] !== "@")
+                if (menuEntry.qmlPage !== "")
                 {
-                    var comp = Qt.createComponent("Pages/" + model[idx].page);
+                    var comp = Qt.createComponent("Pages/" + menuEntry.qmlPage);
                     if (comp.status == Component.Ready)
                     {
                         var elmt = comp.createObject(stack, {"visible": false});
-                        model[idx].qml = elmt;
+                        root.pages[uid] = elmt;
                         if (sharedModel)
                         {
                             elmt.model = sharedModel;
                         }
 
-                        console.log ("load Pages/" + model[idx].page)
+                        console.log ("load " + uid + ": Pages/" + menuEntry.qmlPage)
                     }
                     else if (comp.status == Component.Error)
                     {
-                        console.log("Error loading component:", comp.errorString());
+                        console.log("Error loading component: ", comp.errorString());
                     }
                 }
                 else
                 {
-                    model[idx].qml = false;
+                    root.pages[uid] = false;
                 }
 
-                if (model[idx]["sublevel"].length > 0)
+                if (menuEntry.entries.length > 0)
                 {
-                    buildPages(model[idx]["sublevel"], sharedModel);
+                    buildPages(menuEntry, sharedModel);
                 }
             }
         }
     }
 
 
-    //! Open qml page according to the selected indexes
-    function openPage()
+    //! Open qml page according to the provided
+    function openPage(uid)
     {
-        var oldQmlPage = pageIdxToQml(previousIndex);
-        var newQmlPage = pageIdxToQml(menuModel.selectedIndex);
-
-        oldQmlPage.visible = false;
-        newQmlPage.visible = true;
-        newQmlPage.anchors.fill = stack;
-        previousIndex = menuModel.selectedIndex;
+        if (currentUid in pages)
+        {
+            pages[currentUid].visible = false;
+        }
+        if (uid)
+        {
+            currentUid = uid;
+            pages[currentUid].visible = true;
+            pages[currentUid].anchors.fill = stack;
+        }
     }
 
     onMenuModelChanged:
     {
-        if (menuModel !== undefined)
+        if (menuModel)
         {
-            var pages = {};
-            buildPages(menuModel.model, null);
-            openPage();
+            root.pages = {};
+            buildPages(root.menuModel, null);
+            openPage(root.menuModel.selectedUid);
         }
     }
 }

@@ -95,6 +95,7 @@ void Regovar::init()
     mUser = new User(1, "MyFirstname", "MyLastname");
     mConfig = new RegovarInfo();
     mAdmin = new Admin();
+    mMainMenu = new RootMenuModel(this);
 
     // Init network manager
     mNetworkManager = new NetworkManager();
@@ -107,12 +108,12 @@ void Regovar::init()
     mFilesManager->setCacheMaxSize(mSettings->localCacheMaxSize());
 
     // Init others managers
-    mProjectsManager = new ProjectsManager();
-    mSubjectsManager = new SubjectsManager();
+    mProjectsManager = new ProjectsManager(this);
+    mSubjectsManager = new SubjectsManager(this);
     mSamplesManager = new SamplesManager(mSettings->defaultReference());
-    mAnalysesManager = new AnalysesManager();
-    mPanelsManager = new PanelsManager();
-    mToolsManager = new ToolsManager();
+    mAnalysesManager = new AnalysesManager(this);
+    mPanelsManager = new PanelsManager(this);
+    mToolsManager = new ToolsManager(this);
 
     // Init sub models
     mProjectsManager->refresh();

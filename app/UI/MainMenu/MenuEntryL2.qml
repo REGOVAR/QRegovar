@@ -1,63 +1,41 @@
 import QtQuick 2.9
 import QtQuick.Layouts 1.3
+import org.regovar 1.0
 
 import "../Regovar"
 
 Rectangle
 {
     id: root
-    width: 200
-    height: header.height + sublevelList.height
-    state: indexToState()
+    height: headerHeight
+    clip: true
+
+    property int headerHeight: 40
+    property int sublevelListHeight: 0
 
     property alias icon: icon.text
     property alias label: label.text
-    property string currentState: indexToState()
-    property int selectedIndex: -1
-    property int sublevelListMaxHeight
-    property MenuModel model
-
-
-    function indexToState()
+    property bool selected
+    onSelectedChanged: setState()
+    property RootMenuModel menuModel
+    property MenuEntryModel model
+    onModelChanged:
     {
-        return (root.selectedIndex !== index) ? "normal" : ((sublevelModel.count > 0) ? "expanded" : "selected");
-    }
-
-
-
-    Component.onCompleted:
-    {
-        // Get sublevel if exists
-        var lvl0 = model.selectedIndex[0];
-        var lvl1 = model.selectedIndex[1];
-        var lvl2 = model.selectedIndex[2];
-        sublevelModel.append(model.model[lvl0].sublevel[lvl1].sublevel)
-        root.sublevelListMaxHeight = sublevelModel.count * 30 // see MenuEntryL3.height
-        sublevelList.height = 0
-        root.selectedIndex = lvl1;
-    }
-
-    // Update view states only from main model update to avoid binding loop
-    // and inconsistency between views and model
-    Connections
-    {
-        target: model
-        onSelectedIndexChanged:
+        if (model)
         {
-            if (root.selectedIndex !== model.selectedIndex[1])
-            {
-                // When main model change, notify views that index have changed
-                root.selectedIndex = model.selectedIndex[1];
-                // Force update of the state
-                root.currentState = indexToState();
-                root.state = root.currentState;
-            }
+            selected = Qt.binding(function() { return model.selected; });
+            sublevelListHeight = model.entries.length * 30 // see MenuEntryL3.height
+            sublevelListRepeater.model = model.entries;
+            setState();
         }
     }
 
+    function setState()
+    {
+        state = !selected ? "normal" : model.entries.length > 0 ? "expanded" : "selected";
+    }
 
 
-    ListModel { id: sublevelModel }
 
 
     RowLayout
@@ -66,14 +44,14 @@ Rectangle
         anchors.left: root.left
         anchors.right: root.right
         id: header
-        height: 40
+        height: root.headerHeight
         spacing: 0
 
         Text
         {
             id: icon
-            Layout.minimumWidth: header.height
-            height: header.height
+            Layout.minimumWidth: root.headerHeight
+            height: root.headerHeight
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             font.family: Regovar.theme.icons.name
@@ -83,7 +61,7 @@ Rectangle
         {
             id: label
             Layout.fillWidth: true
-            height: header.height
+            height: root.headerHeight
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Regovar.theme.font.size.header
             elide: Text.ElideRight
@@ -91,15 +69,14 @@ Rectangle
         Text
         {
             id: subLevelIndicator
-            Layout.minimumWidth: header.height
-            height: header.height
+            Layout.minimumWidth: root.headerHeight
+            height: root.headerHeight
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             font.family: Regovar.theme.icons.name
             font.pixelSize: Regovar.theme.font.size.header
             text: "{"
         }
-
     }
 
     MouseArea
@@ -107,39 +84,29 @@ Rectangle
         id: mouseArea
         anchors.fill: header
         hoverEnabled: true
-        onEntered:
-        {
-            root.state = "hover"
-        }
-        onExited:
-        {
-            root.state = parent.currentState
-
-        }
-        onClicked:
-        {
-            // Notify model that entry {index} of the level 1 is selected
-            model.select(1, index);
-        }
+        onEntered: root.state = "hover"
+        onExited:  setState()
+        onClicked: menuModel.select(1, index)
     }
 
     Column
     {
         id: sublevelList
+        height: sublevelListHeight
         anchors.top: header.bottom
         anchors.left: header.left
         anchors.right: header.right
 
-        clip: true
-
         Repeater
         {
-            model: sublevelModel
+            id: sublevelListRepeater
 
             MenuEntryL3
             {
-                model: root.model
-                label: sublevelModel.get(index).label
+                width: subLevel.width
+                menuModel: root.menuModel
+                model: modelData
+                label: modelData.label
             }
         }
     }
@@ -161,7 +128,7 @@ Rectangle
             PropertyChanges { target: subLevelIndicator; color: Regovar.theme.primaryColor.front.normal}
             PropertyChanges { target: subLevelIndicator; rotation: 0}
             PropertyChanges { target: mouseArea; enabled: true}
-            PropertyChanges { target: sublevelList; height: 0}
+            PropertyChanges { target: root; height: headerHeight}
         },
         State
         {
@@ -187,7 +154,7 @@ Rectangle
             PropertyChanges { target: label; color: Regovar.theme.primaryColor.back.dark}
             PropertyChanges { target: subLevelIndicator; color: Regovar.theme.primaryColor.back.dark}
             PropertyChanges { target: subLevelIndicator; rotation: 90}
-            PropertyChanges { target: sublevelList; height: sublevelListMaxHeight}
+            PropertyChanges { target: root; height: headerHeight + sublevelListHeight}
             PropertyChanges { target: mouseArea; enabled: false}
         }
     ]
@@ -211,15 +178,24 @@ Rectangle
         {
             from: "normal"
             to: "expanded"
+            ColorAnimation { duration: 0 }
             NumberAnimation { target: subLevelIndicator; property: "rotation"; duration: 200; easing.type: Easing.InOutQuad }
-            NumberAnimation { target: sublevelList; property: "height"; duration: 200; easing.type: Easing.InOutQuad }
+            NumberAnimation { target: root; property: "height"; duration: 200; easing.type: Easing.InOutQuad }
+        },
+        Transition
+        {
+            from: "hover"
+            to: "expanded"
+            ColorAnimation { duration: 0 }
+            NumberAnimation { target: subLevelIndicator; property: "rotation"; duration: 200; easing.type: Easing.InOutQuad }
+            NumberAnimation { target: root; property: "height"; duration: 200; easing.type: Easing.InOutQuad }
         },
         Transition
         {
             from: "expanded"
             to: "normal"
             NumberAnimation { target: subLevelIndicator; property: "rotation"; duration: 200; easing.type: Easing.InOutQuad }
-            NumberAnimation { target: sublevelList; property: "height"; duration: 200; easing.type: Easing.InOutQuad }
+            NumberAnimation { target: root; property: "height"; duration: 200; easing.type: Easing.InOutQuad }
         }
     ]
 }

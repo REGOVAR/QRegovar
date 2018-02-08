@@ -23,7 +23,7 @@ GenericWindow
 
     onClosing: regovar.close()
 
-    menuModel: Regovar.menuModel
+    menuModel: regovar.mainMenu
     title: "Regovar - " + menuModel.mainTitle
 
     Settings

@@ -1,47 +1,33 @@
 import QtQuick 2.9
+import org.regovar 1.0
 
 import "../Regovar"
 
 Rectangle
 {
     id: root
-    width: 250
     height: 50
-    state: indexToState()
 
     property alias icon: icon.text
     property alias label: label.text
-    property string currentState: indexToState()
-    property int selectedIndex: -1
-    property MenuModel model
+    property bool selected
+    onSelectedChanged: setState()
 
-
-    function indexToState()
+    property RootMenuModel menuModel
+    property MenuEntryModel model
+    onModelChanged:
     {
-        return (root.selectedIndex !== index) ? "normal" : "selected"
-    }
-
-
-    // Update view states only from main model update to avoid binding loop
-    // and inconsistency between views and model
-    Connections
-    {
-        target: model
-        onSelectedIndexChanged:
+        if (model)
         {
-            if (root.selectedIndex !== model.selectedIndex[0])
-            {
-                // When main model change, notify views that index have changed
-                root.selectedIndex = model.selectedIndex[0];
-                // Force update of the state
-                root.currentState = indexToState();
-                root.state = root.currentState;
-            }
+            selected = Qt.binding(function() { return model.selected; });
+            setState();
         }
     }
 
-
-
+    function setState()
+    {
+        state = selected ? "selected" : "normal";
+    }
 
 
     Row
@@ -64,7 +50,6 @@ Rectangle
             id: label
             height: root.height
             verticalAlignment: Text.AlignVCenter
-            //font.bold: true
             font.pixelSize: Regovar.theme.font.size.title
         }
     }
@@ -85,20 +70,15 @@ Rectangle
         hoverEnabled: true
         onEntered:
         {
-            root.state = "hover"
-            model.subLevelPanelDisplayed = false
+            root.state = "hover";
+            menuModel.hiddeSubLevelPanel();
         }
         onExited:
         {
-            root.state = parent.currentState
-            model.subLevelPanelDisplayed = model._subLevelPanelDisplayed
-
+            setState();
+            menuModel.restoreSubLevelPanel();
         }
-        onClicked:
-        {
-            // Notify model that entry {index} of the level 0 is selected
-            model.select(0, index);
-        }
+        onClicked: menuModel.select(0, index)
     }
 
     states: [

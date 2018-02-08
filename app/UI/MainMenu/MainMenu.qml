@@ -1,148 +1,36 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import org.regovar 1.0
 
 import "../Regovar"
 
 Item
 {
-    id: mainMenu
+    id: root
     state: "level0"
-
-    property MenuModel model
-
-    property var previousIndex: [0, -1,-1]
-    property var selectedIndex
-    property bool collapsable: false
     clip: true
+    width: 250
 
+    signal openPage(var menuEntry)
 
+    property real expandWidth: 250
     property bool subLevelPanelDisplayed: false
-    onSubLevelPanelDisplayedChanged: mainMenu.state = mainMenu.subLevelPanelDisplayed ? "level1" : "level0"
-
-
+    onSubLevelPanelDisplayedChanged: state = subLevelPanelDisplayed ? "level1" : "level0"
+    property RootMenuModel model
     onModelChanged:
     {
-        if (model !== undefined)
+        if (model)
         {
-            // Properties binding with the model... not working :(
-//            mainMenu.subLevelPanelDisplayed = Qt.binding(function()
-//            {
-//                return model.subLevelPanelDisplayed;
-//            });
-//            mainMenu.selectedIndex = Qt.binding(function()
-//            {
-//                return model.selectedIndex;
-//            });
+            subLevelPanelDisplayed = Qt.binding(function() { return model.subLevelPanelDisplayed;});
+            subLevelRepeater.model = Qt.binding(function() { return model.subEntries;})
 
-            // signals connections with the model
-            model.onSelectedIndexChanged.connect(function()
-            {
-                mainMenu.selectedIndex = model.selectedIndex;
-            });
-            model.onSubLevelPanelDisplayedChanged.connect(function()
-            {
-                mainMenu.subLevelPanelDisplayed = model.subLevelPanelDisplayed;
-            });
-
-            menuModel.append(model.model);
-        }
-    }
-
-    onSelectedIndexChanged:
-    {
-        var lvl0 = model.selectedIndex[0];
-        var lvl1 = model.selectedIndex[1];
-        // Check if need to open menu sub level
-        if (model.model[lvl0]["page"] === "")
-        {
-            // Open sublevel and select subentry
-            if (lvl1 >= 0)
-            {
-                openLevel2();
-            }
-            else
-            {
-                closeLevel2();
-            }
-        }
-        else if (model.model[lvl0]["page"] === "@close")
-        {
-            regovar.close();
-        }
-        else
-        {
-            closeLevel2();
-        }
-
-        previousIndex = model.selectedIndex;
-    }
-
-
-
-    Behavior on width
-    {
-        NumberAnimation
-        {
-            duration : 150
+            model.openPage.connect(function (menuEntry) { root.openPage(menuEntry); });
         }
     }
 
 
 
 
-    // --------------------------------------------------
-    // View internals models
-    // --------------------------------------------------
-    ListModel
-    {
-        id: menuModel
-    }
-    ListModel
-    {
-        id: subMenuModel
-    }
-
-
-
-    // --------------------------------------------------
-    // Methods
-    // --------------------------------------------------
-    function openLevel2()
-    {
-        var lvl0 = model.selectedIndex[0];
-        var lvl1 = model.selectedIndex[1];
-        var lvl2 = model.selectedIndex[2];
-
-
-
-        if (lvl0 !== previousIndex[0] || lvl1 !== previousIndex[1])
-        {
-            model.subLevelPanelDisplayed = true;
-            model._subLevelPanelDisplayed = true;
-            subMenuModel.clear();
-            subMenuModel.append(model.model[lvl0].sublevel);
-
-        }
-        return true;
-    }
-    function closeLevel2()
-    {
-
-        model.subLevelPanelDisplayed = false
-        model._subLevelPanelDisplayed = false
-        subMenuModel.clear()
-        return true;
-    }
-
-
-
-
-
-
-
-    // --------------------------------------------------
-    // The view (root level)
-    // --------------------------------------------------
     Rectangle
     {
         id: back
@@ -150,34 +38,34 @@ Item
         anchors.fill: mainMenu
         z: 0
     }
+
     Column
     {
         Repeater
         {
-            model: menuModel
+            model: root.model ? root.model.entries : []
 
             MenuEntryL1
             {
                 id: menuItem
-                model: mainMenu.model
-                icon: menuModel.get(index).icon
-                label: menuModel.get(index).label
+                width: root.width
+                menuModel: root.model
+                model: modelData
+                label: modelData.label
+                icon: modelData.icon
             }
         }
     }
 
-
-    // --------------------------------------------------
-    // The view (level 2)
-    // --------------------------------------------------
     Rectangle
     {
         id: subLevel
         color: Regovar.theme.primaryColor.back.normal
-        anchors.top: mainMenu.top
-        anchors.bottom: mainMenu.bottom
-        anchors.right: mainMenu.right
-        width: 0
+        anchors.top: root.top
+        anchors.bottom: root.bottom
+        anchors.left: root.left
+        anchors.leftMargin: root.width
+        width: root.width - 50
         clip: true
         z: 10
 
@@ -187,14 +75,12 @@ Item
             hoverEnabled: true
         }
 
-
         Column
         {
             anchors.fill: subLevel
             Row
             {
                 id: menuL2Header
-                FontLoader { id: iconsFont; source: "../Icons.ttf" }
 
                 Text
                 {
@@ -203,11 +89,10 @@ Item
                     height: 49
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    font.family: iconsFont.name
+                    font.family: Regovar.theme.icons.name
                     font.pixelSize: 22
                     text: "]"
                     color: Regovar.theme.primaryColor.back.dark
-
                 }
                 Text
                 {
@@ -216,10 +101,9 @@ Item
                     verticalAlignment: Text.AlignVCenter
                     font.bold: true
                     font.pixelSize: 22
-                    text : model.mainTitle
+                    text : model.title
                     color: Regovar.theme.primaryColor.back.dark
                 }
-
             }
 
             Rectangle
@@ -231,14 +115,16 @@ Item
 
             Repeater
             {
-                model: subMenuModel
+                id: subLevelRepeater
 
                 MenuEntryL2
                 {
                     id: menu2Item
-                    model: mainMenu.model
-                    icon:  (subMenuModel.get(index) !== undefined) ? subMenuModel.get(index).icon : ""
-                    label: (subMenuModel.get(index) !== undefined) ? subMenuModel.get(index).label : ""
+                    width: subLevel.width
+                    menuModel: root.model
+                    model: modelData
+                    label: modelData.label
+                    icon: modelData.icon
                 }
             }
         }
@@ -246,7 +132,6 @@ Item
 
     Rectangle
     {
-        visible: mainMenu.collapsable
         anchors.bottom: mainMenu.bottom
         anchors.left: mainMenu.left
         width: 50
@@ -269,14 +154,15 @@ Item
 
         MouseArea
         {
-            enabled: mainMenu.collapsable
             anchors.fill: parent
             hoverEnabled: true
             onEntered: collapseIcon.color = Regovar.theme.secondaryColor.back.normal
             onExited: collapseIcon.color = Regovar.theme.primaryColor.back.light
             onClicked:
             {
-                if (mainMenu.width == 250)
+                root.model.collapsed = !root.model.collapsed;
+
+                if (root.model.collapsed)
                 {
                     mainMenu.width = 50;
                     collapseIcon.text = "s";
@@ -284,7 +170,7 @@ Item
                 }
                 else
                 {
-                    mainMenu.width = 250;
+                    mainMenu.width = expandWidth;
                     collapseIcon.text = "t";
                     subLevel.visible = true;
                 }
@@ -303,26 +189,31 @@ Item
 
 
 
+    Behavior on width
+    {
+        NumberAnimation
+        {
+            duration : 150
+        }
+    }
+
     states: [
         State
         {
             name: "level0"
             PropertyChanges { target: mainMenu; width: 250}
-            PropertyChanges { target: subLevel; width: 0}
-            PropertyChanges { target: mainMenu; subLevelPanelDisplayed: false}
+            PropertyChanges { target: subLevel; anchors.leftMargin: root.width }
         },
         State
         {
             name: "level1"
             PropertyChanges { target: mainMenu; width: 250}
-            PropertyChanges { target: subLevel; width: 200}
-            PropertyChanges { target: mainMenu; subLevelPanelDisplayed: true}
+            PropertyChanges { target: subLevel; anchors.leftMargin: 50}
         },
         State
         {
             name: "minified"
             PropertyChanges { target: mainMenu; width: 50}
-            PropertyChanges { target: subLevel; width: 0}
         }
     ]
 
@@ -336,7 +227,7 @@ Item
             NumberAnimation
             {
                 target: subLevel
-                property: "width"
+                property: "anchors.leftMargin"
                 duration: 250
                 easing.type: Easing.OutQuad
             }
@@ -348,7 +239,7 @@ Item
             NumberAnimation
             {
                 target: subLevel
-                property: "width"
+                property: "anchors.leftMargin"
                 duration: 150
                 easing.type: Easing.OutQuad
             }
