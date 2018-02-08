@@ -2,6 +2,7 @@
 #define ANALYSIS_H
 
 #include <QtCore>
+#include "Model/mainmenu/rootmenumodel.h"
 
 
 
@@ -9,6 +10,7 @@
 class Analysis : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(RootMenuModel* menuModel READ menuModel NOTIFY menuModelChanged)
     // Regovar resource attributes
     Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
     Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
@@ -24,6 +26,7 @@ public:
     explicit Analysis(QObject *parent = nullptr);
 
     // Getters
+    inline RootMenuModel* menuModel() const { return mMenuModel; }
     inline bool loaded() const { return mLoaded; }
     inline QDateTime updateDate() const { return mUpdateDate; }
     inline QDateTime createDate() const { return mCreateDate; }
@@ -53,11 +56,13 @@ public:
 
 
 Q_SIGNALS:
+    void menuModelChanged();
     void dataChanged();
 
 
 
 protected:
+    RootMenuModel* mMenuModel = nullptr;
     // Regovar resource
     bool mLoaded = false;
     QDateTime mUpdateDate;

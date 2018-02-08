@@ -75,17 +75,6 @@ ApplicationWindow
     }
 
 
-    //! Retrieve the Qml component corresponding to the provided index
-    function pageIdxToQml(idx)
-    {
-        var model = menuModel.model[idx[0]];
-        if (idx[1] >= 0)  model =  model["sublevel"][idx[1]];
-        if (idx[2] >= 0)  model =  model["sublevel"][idx[2]];
-
-        return model.qml;
-    }
-
-
     function buildPages(model, sharedModel)
     {
         for (var idx=0; idx<model.entries.length; idx++)

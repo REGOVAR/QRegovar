@@ -18,34 +18,17 @@ ApplicationWindow
     title: "Analysis"
 
     // The id of this window that allow "Regovar model" to retrieve corresponding "Analysis model" among open models/windows
-    property int winId: -1
+    property int winId
+    // Internal map to store qml page associated with their menuModel Uid
+    property var pages
+    // The uid of the page currently displayed
+    property int currentUid: -1
+
+
+    property alias menuModel: mainMenu.model
 
     //! Analysis model dedicated to the window
     property FilteringAnalysis model
-    onModelChanged:
-    {
-        if (model)
-        {
-            title = model.name
-        }
-    }
-
-    //! Load root's pages of regovar
-    property var menuPageMapping
-
-    //! Menu model
-    property MenuModel menuModel: MenuModel
-    {
-        model:  [
-            { "icon": "a", "label": qsTr("Analysis"),   "page": "Analysis/Filtering/SummaryPage.qml", "sublevel": [], "subindex": -1},
-            { "icon": "^", "label": qsTr("Statistics"), "page": "Analysis/Filtering/StatisticsPage.qml", "sublevel": [], "subindex": -1},
-            { "icon": "3", "label": qsTr("Filtering"),  "page": "Analysis/Filtering/FilteringPage.qml", "sublevel": [], "subindex": -1},
-            { "icon": "n", "label": qsTr("Result"),     "page": "Analysis/Filtering/ResultPage.qml", "sublevel": [], "subindex": -1},
-            { "icon": "e", "label": qsTr("Help "),      "page": "Analysis/Filtering/HelpPage.qml", "sublevel": [], "subindex": -1},
-            { "icon": "h", "label": qsTr("Close"),      "page": "@close", "sublevel": [], "subindex": -1}
-        ]
-    }
-    property var previousIndex : [0,-1,-1]
 
     Settings
     {
@@ -62,20 +45,9 @@ ApplicationWindow
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        width: 250
-        collapsable: true
 
-        model: menuModel
-
-        onSelectedIndexChanged:
-        {
-            openPage()
-        }
+        onOpenPage: root.openPage(menuEntry.uid);
     }
-
-
-
-
 
     Item
     {
@@ -86,8 +58,6 @@ ApplicationWindow
         anchors.left: mainMenu.right
         anchors.right: parent.right
     }
-
-
 
     ErrorDialog
     {
@@ -112,96 +82,88 @@ ApplicationWindow
     }
 
 
-    //! Convert MainMenu index into one string key for internal map with qml pages
-    function pageIdxKey(idx)
+
+    function buildPages(model, sharedModel)
     {
-        var key = idx[0];
-        if (idx[1] >= 0)  key += "-" + idx[1];
-        if (idx[2] >= 0)  key += "-" + idx[2];
-
-        return key;
-    }
-
-
-    property var components
-    function buildPages(pages, model, baseIndex)
-    {
-        for (var idx in model)
+        for (var idx=0; idx<model.entries.length; idx++)
         {
-            if (model[idx].page !== "" && model[idx].page[0] !== "@")
+            var menuEntry = model.entries[idx];
+            var uid = menuEntry.uid;
+            if (!(uid in root.pages))
             {
-                var comp = Qt.createComponent("Pages/" + model[idx].page);
-                if (comp.status == Component.Ready)
+                if (menuEntry.qmlPage !== "" && menuEntry.qmlPage[0] !== "@")
                 {
-                    var elmt = comp.createObject(stack, {"visible": false});
-                    var uid = baseIndex+idx
-                    pages[uid] = elmt;
+                    var comp = Qt.createComponent("Pages/" + menuEntry.qmlPage);
+                    if (comp.status == Component.Ready)
+                    {
+                        var elmt = comp.createObject(stack, {"visible": false});
+                        root.pages[uid] = elmt;
+                        if (sharedModel)
+                        {
+                            elmt.model = sharedModel;
+                        }
+
+                        console.log ("load " + uid + ": Pages/" + menuEntry.qmlPage)
+                    }
+                    else if (comp.status == Component.Error)
+                    {
+                        console.log("Error loading component: ", comp.errorString());
+                    }
                 }
-                else if (comp.status == Component.Error)
+                else if (menuEntry.qmlPage === "@close")
                 {
-                    console.log("Error loading component:", comp.errorString());
+                    root.pages[uid] = "@close";
+                }
+                else
+                {
+                    root.pages[uid] = false;
                 }
 
-            }
-            else if ( model[idx].page[0] === "@")
-            {
-                if (model[idx].page === "@close")
+                if (menuEntry.entries.length > 0)
                 {
-                    pages[baseIndex+idx] = "@close";
+                    buildPages(menuEntry, sharedModel);
                 }
             }
-            else
-            {
-                pages[baseIndex+idx] = false;
-            }
-
-            if (model[idx]["sublevel"].length > 0)
-            {
-                buildPages(pages, model[idx]["sublevel"], baseIndex+idx + "-");
-            }
-
         }
     }
 
 
-    //! Open qml page according to the selected indexes
-    function openPage()
+    //! Open qml page according to the provided
+    function openPage(uid)
     {
-        if (root.menuPageMapping !== undefined)
+        if (currentUid in pages)
         {
-            var newIdx = pageIdxKey(menuModel.selectedIndex);
-            var oldIdx = pageIdxKey(previousIndex);
-            if (root.menuPageMapping[newIdx] == "@close")
+            pages[currentUid].visible = false;
+        }
+        if (uid)
+        {
+            if (pages[currentUid] == "@close")
             {
                 root.close();
             }
-            else if (root.menuPageMapping[oldIdx])
-            {
-                root.menuPageMapping[oldIdx].visible = false;
-                root.menuPageMapping[newIdx].visible = true;
-                root.menuPageMapping[newIdx].anchors.fill = stack;
-                if (root.menuPageMapping[newIdx].model == null)
-                {
-                    root.menuPageMapping[newIdx].model = root.model;
-                }
-                previousIndex = menuModel.selectedIndex;
-            }
+
+            currentUid = uid;
+            pages[currentUid].visible = true;
+            pages[currentUid].anchors.fill = stack;
         }
     }
+
+
+
+
 
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
         model = regovar.openWindowModels[winId];
+        menuModel = model.menuModel;
         title = model.name;
 
-        if (menuModel !== undefined)
+        if (menuModel)
         {
-            components = {}
-            var pages = {};
-            buildPages(pages, menuModel.model, "");
-            root.menuPageMapping = pages;
-            openPage();
+            root.pages = {};
+            buildPages(root.menuModel, model);
+            openPage(root.menuModel.selectedUid);
         }
     }
 }

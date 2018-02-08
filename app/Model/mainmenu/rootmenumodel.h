@@ -59,6 +59,10 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
     QHash<int, QByteArray> roleNames() const;
 
+    void initMain();
+    void initFilteringAnalysis();
+    void initPipelineAnalysis();
+
 Q_SIGNALS:
     void selectedUidChanged();
     void indexChanged();

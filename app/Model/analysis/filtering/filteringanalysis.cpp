@@ -14,6 +14,7 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
     mAdvancedFilter = new AdvancedFilterModel(this);
     mNewConditionModel = new NewAdvancedFilterModel(this);
     mDocumentsTreeModel = new DocumentsTreeModel(this);
+    mMenuModel->initFilteringAnalysis();
     mLoadingStatus = Empty;
 
 
@@ -21,6 +22,7 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
             this, SLOT(asynchLoadingCoordination(LoadingStatus,LoadingStatus)));
 
 
+    // Init model
     setIsLoading(true);
 }
 

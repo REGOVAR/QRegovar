@@ -2,6 +2,12 @@
 
 RootMenuModel::RootMenuModel(QObject* parent): QAbstractListModel(parent)
 {
+}
+
+
+
+void RootMenuModel::initMain()
+{
     // Create lvl3 menu entries
     MenuEntryModel* applicationEntry = new MenuEntryModel("I", tr("Application"), "", this);
     applicationEntry->addEntry(new MenuEntryModel("", tr("Regovar"), "Settings/ApplicationRegovarPage.qml", this));
@@ -39,7 +45,21 @@ RootMenuModel::RootMenuModel(QObject* parent): QAbstractListModel(parent)
 
     select(0,0);
 }
+void RootMenuModel::initFilteringAnalysis()
+{
+    // Create lvl1 menu entries
+    mEntries.append(new MenuEntryModel("a", tr("Analysis"), "Analysis/Filtering/SummaryPage.qml", this));
+    mEntries.append(new MenuEntryModel("^", tr("Statistics"), "Analysis/Filtering/StatisticsPage.qml", this));
+    mEntries.append(new MenuEntryModel("3", tr("Filtering"), "Analysis/Filtering/FilteringPage.qml", this));
+    mEntries.append(new MenuEntryModel("n", tr("Result"), "Analysis/Filtering/ResultPage.qml", this));
+    mEntries.append(new MenuEntryModel("e", tr("Help"), "Analysis/Filtering/HelpPage.qml", this));
+    mEntries.append(new MenuEntryModel("h", tr("Close"), "@close", this));
+    select(0,0);
+}
+void RootMenuModel::initPipelineAnalysis()
+{
 
+}
 
 
 //! Update selected state of menu entries
