@@ -20,6 +20,20 @@ Rectangle
 {
     id: root
     property FilteringAnalysis model
+    onModelChanged:
+    {
+        if (model)
+        {
+            model.loaded.connect(function() { updateViewFromModel(model); });
+            updateViewFromModel(model);
+        }
+    }
+
+    function updateViewFromModel(model)
+    {
+        rootSplitView.visible = model ? model.loaded && model.status === "ready" : false;
+        lefPanel.tabSharedModel = model;
+    }
 
 
     Row
@@ -54,14 +68,14 @@ Rectangle
 
     SplitView
     {
-        visible: root.model ? root.model.loaded && root.model.status == "ready" : false
+        id: rootSplitView
+        visible: false
         anchors.fill: parent
 
         TabView
         {
             id: lefPanel
             width: 275
-            tabSharedModel: root.model
 
             tabsModel: ListModel
             {

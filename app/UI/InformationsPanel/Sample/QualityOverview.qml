@@ -10,13 +10,6 @@ Item
     height: 250
 
     property var model
-    onModelChanged:
-    {
-        if (model)
-        {
-            updateViewFromModel(model);
-        }
-    }
 
     //
     // Header

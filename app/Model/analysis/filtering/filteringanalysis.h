@@ -199,6 +199,7 @@ Q_SIGNALS:
     void fileAdded(int fileId);
     void documentsChanged();
     void panelsUsedChanged();
+    void loaded();
 
 
 

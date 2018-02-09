@@ -164,6 +164,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     emit filtersChanged();
     emit attributesChanged();
     emit dataChanged();
+    emit loaded();
     return true;
 }
 

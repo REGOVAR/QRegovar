@@ -115,7 +115,7 @@ Item
                     verticalAlignment: Text.AlignVCenter
                     font.bold: true
                     font.pixelSize: 22
-                    text : model.title
+                    text : model ? model.title : ""
                     color: Regovar.theme.primaryColor.back.dark
                 }
             }

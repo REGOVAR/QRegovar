@@ -16,18 +16,15 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property FilteringAnalysis model
-    onModelChanged: updateViewFromModel(model)
-    property var statisticsModel
-    onStatisticsModelChanged:
+    onModelChanged:
     {
-        statsOverview.model = statisticsModel;
-        statsVariantClasses.model = statisticsModel;
-        statsVepConsequences.model = statisticsModel;
-        statsVepImpacts.model = statisticsModel;
-
-        qualOverview.model = statisticsModel;
-        qualFilter.model = statisticsModel;
+        if (model)
+        {
+            model.samplesChanged.connect(function() { updateViewFromModel(root.model); });
+            updateViewFromModel(model);
+        }
     }
+    property var statisticsModel
 
     function updateViewFromModel(model)
     {
@@ -36,13 +33,24 @@ Rectangle
             var comboModel = ["All"];
             for (var idx=0; idx<model.samples.length; idx++)
             {
-
                 comboModel.push(model.samples[idx].name);
             }
 
             levelCombo.model = comboModel;
-            levelCombo.currentIndex = 0;
+            refreshGraphs(model);
         }
+    }
+
+    function refreshGraphs(sampleModel)
+    {
+        root.statisticsModel = sampleModel;
+
+        statsOverview.model = statisticsModel;
+        statsVariantClasses.model = statisticsModel;
+        statsVepConsequences.model = statisticsModel;
+        statsVepImpacts.model = statisticsModel;
+        qualOverview.model = statisticsModel;
+        qualFilter.model = statisticsModel;
     }
 
     Rectangle
@@ -76,7 +84,6 @@ Rectangle
                 Layout.fillHeight: true
             }
         }
-
     }
 
     // Help information on this page
@@ -121,23 +128,25 @@ Rectangle
             height: Regovar.theme.font.boxSize.header - 4
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: true
-            model: []
+
             onCurrentIndexChanged:
             {
                 if (root.model && root.model.samples && root.model.samples.length > 0)
                 {
                     if (currentIndex == 0)
                     {
-                        root.statisticsModel = root.model;
+                        root.refreshGraphs(root.model);
                     }
                     else if (currentIndex-1 >= 0 && currentIndex-1 < root.model.samples.length)
                     {
-                        root.statisticsModel = root.model.samples[currentIndex-1];
+                        root.refreshGraphs(root.model.samples[currentIndex-1]);
                     }
                 }
             }
         }
     }
+
+
 
     //
     // Section1 Header : Statistics

@@ -10,13 +10,7 @@ Item
     height: 250
 
     property var model
-    onModelChanged:
-    {
-        if (model)
-        {
-            updateViewFromModel(model);
-        }
-    }
+
 
     //
     // Header
@@ -62,26 +56,3 @@ Item
         }
     }
 }
-/*
-    ChartView
-    {
-        height: 150
-        width: 150
-        antialiasing: true
-        animationOptions: ChartView.AllAnimations
-        backgroundColor: Regovar.theme.boxColor.back
-        legend.visible: false
-        margins.top: 0
-        margins.bottom: 0
-        margins.left: 0
-        margins.right: 0
-
-
-        PieSeries
-        {
-            PieSlice { label: "Frameshift"; value: 67;  }
-            PieSlice { label: "Coding sequence"; value: 20 }
-            PieSlice { label: "Stop lost"; value: 13 }
-        }
-    }
-*/
