@@ -66,6 +66,7 @@ Item
                 model: modelData
                 label: modelData.label
                 icon: modelData.icon
+                onClicked: menuL2Title.text = modelData.label;
             }
         }
     }
@@ -109,7 +110,7 @@ Item
                 }
                 Text
                 {
-                    id: label
+                    id: menuL2Title
                     height: 49
                     verticalAlignment: Text.AlignVCenter
                     font.bold: true

@@ -406,7 +406,7 @@ Rectangle
                 visible: !regovar.welcomIsLoading || regovar.networkManager.status != 0
                 icon: "d"
                 text: qsTr("Check local settings")
-                onClicked: Regovar.menuModel.selectedIndex = [4, 1, -1]
+                onClicked: regovar.mainMenu.select(5,1,2)
             }
         }
     }

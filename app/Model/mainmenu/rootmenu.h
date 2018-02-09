@@ -20,7 +20,6 @@ class RootMenu: public QAbstractListModel
     Q_PROPERTY(bool subLevelPanelDisplayed READ subLevelPanelDisplayed WRITE setSubLevelPanelDisplayed NOTIFY subLevelPanelDisplayedChanged)
 
     Q_PROPERTY(float width READ width WRITE setWidth NOTIFY widthChanged)
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
     Q_PROPERTY(QList<QObject*> entries READ entries NOTIFY entriesChanged)
 
 
@@ -34,7 +33,6 @@ public:
     inline bool collapsed() const { return mCollapsed; }
     inline bool subLevelPanelDisplayed() const { return mSubLevelPanelDisplayed; }
     inline float width() const { return mWidth; }
-    inline QString title() const { return mTitle; }
     inline QList<QObject*> entries() const { return mEntries; }
 
     // Setters
@@ -42,7 +40,6 @@ public:
     inline void setCollapsed(bool flag) { mCollapsed = flag; emit collapsedChanged(); }
     inline void setSubLevelPanelDisplayed(bool flag) { mSubLevelPanelDisplayed = flag; mSubLevelPanelDisplayedTemp = flag; emit subLevelPanelDisplayedChanged(); }
     inline void setWidth(float w) { mWidth = w; emit widthChanged(); }
-    inline void setTitle(QString title) { mTitle = title; emit titleChanged(); }
 
     // Methods
     Q_INVOKABLE QStringList select(int lvl0, int lvl1, int lvl2);
@@ -69,7 +66,6 @@ Q_SIGNALS:
     void collapsedChanged();
     void subLevelPanelDisplayedChanged();
     void widthChanged();
-    void titleChanged();
     void entriesChanged();
     void subEntriesChanged();
     void openPage(MenuEntry* menuEntry);
@@ -81,7 +77,6 @@ private:
     bool mSubLevelPanelDisplayed = false;
     bool mSubLevelPanelDisplayedTemp = false;
     float mWidth = 150;
-    QString mTitle;
     QList<QObject*> mEntries;
 
     MenuEntry* mProjectBrowserEntry = nullptr;

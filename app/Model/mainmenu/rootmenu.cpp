@@ -121,6 +121,7 @@ QStringList RootMenu::select(int level, int index, bool notify)
 }
 
 
+
 void RootMenu::openMenuEntry(MenuEntry* menuEntry)
 {
     if (menuEntry->qmlPage().isEmpty() && menuEntry->entries().count() > 0)

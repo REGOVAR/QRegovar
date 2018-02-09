@@ -8,6 +8,7 @@ Rectangle
     id: root
     height: 50
 
+    signal clicked()
     property alias icon: icon.text
     property alias label: label.text
     property bool selected
@@ -78,7 +79,7 @@ Rectangle
             setState();
             menuModel.restoreSubLevelPanel();
         }
-        onClicked: menuModel.select(0, index)
+        onClicked: { menuModel.select(0, index); root.clicked(); }
     }
 
     states: [
