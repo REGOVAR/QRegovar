@@ -49,42 +49,42 @@ GenericWindow
     }
 
 
-    Connections
-    {
-        target: regovar.projectsManager
-        onProjectsOpenListChanged:
-        {
-            console.log ("MainMenu: Reload projects open list");
-            Regovar.reloadProjectsOpenEntries();
-            buildPages(menuModel.model[2]["sublevel"], Regovar.currentopeningProject);
-            // select currentEntry
-            Regovar.menuModel.selectedIndex=[2, regovar.projectsManager.projectsOpenList.length, 0];
-        }
-    }
+//    Connections
+//    {
+//        target: regovar.projectsManager
+//        onProjectsOpenListChanged:
+//        {
+//            console.log ("MainMenu: Reload projects open list");
+//            Regovar.reloadProjectsOpenEntries();
+//            buildPages(menuModel.model[2]["sublevel"], Regovar.currentopeningProject);
+//            // select currentEntry
+//            Regovar.menuModel.selectedIndex=[2, regovar.projectsManager.projectsOpenList.length, 0];
+//        }
+//    }
 
-    Connections
-    {
-        target: regovar.subjectsManager
-        onSubjectsOpenListChanged:
-        {
-            console.log ("RefreshMenu (subjects)");
-            // Step 1 : update main menu entries
-            var entryModel = Regovar.refreshSubjectsEntries();
-            // Step 2 : Build pages for the new entry
-            if (entryModel)
-            {
-                buildPages(menuModel.model[3]["sublevel"], entryModel);
-            }
-        }
-    }
-    Connections
-    {
-        target: regovar.subjectsManager
-        onSubjectOpenChanged:
-        {
-            Regovar.menuModel.selectedIndex=[3, idx+1, 0];
-        }
-    }
+//    Connections
+//    {
+//        target: regovar.subjectsManager
+//        onSubjectsOpenListChanged:
+//        {
+//            console.log ("RefreshMenu (subjects)");
+//            // Step 1 : update main menu entries
+//            var entryModel = Regovar.refreshSubjectsEntries();
+//            // Step 2 : Build pages for the new entry
+//            if (entryModel)
+//            {
+//                buildPages(menuModel.model[3]["sublevel"], entryModel);
+//            }
+//        }
+//    }
+//    Connections
+//    {
+//        target: regovar.subjectsManager
+//        onSubjectOpenChanged:
+//        {
+//            Regovar.menuModel.selectedIndex=[3, idx+1, 0];
+//        }
+//    }
 
 
 

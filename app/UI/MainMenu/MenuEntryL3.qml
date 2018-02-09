@@ -15,8 +15,8 @@ Rectangle
     property int sublevelListMaxHeight
     property bool selected
     onSelectedChanged: setState()
-    property RootMenuModel menuModel
-    property MenuEntryModel model
+    property RootMenu menuModel
+    property MenuEntry model
     onModelChanged:
     {
         if (model)

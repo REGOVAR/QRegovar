@@ -6,7 +6,7 @@
 #include <QAuthenticator>
 #include <QQmlApplicationEngine>
 
-#include "Model/mainmenu/rootmenumodel.h"
+#include "Model/mainmenu/rootmenu.h"
 #include "framework/networkmanager.h"
 #include "project/projectsmanager.h"
 #include "subject/subjectsmanager.h"
@@ -96,7 +96,7 @@ class Regovar : public QObject
     Q_PROPERTY(ToolsManager* toolsManager READ toolsManager NOTIFY neverChanged)
 
     // Others
-    Q_PROPERTY(RootMenuModel* mainMenu READ mainMenu NOTIFY neverChanged)
+    Q_PROPERTY(RootMenu* mainMenu READ mainMenu NOTIFY neverChanged)
     Q_PROPERTY(Settings* settings READ settings NOTIFY settingsChanged)
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
     Q_PROPERTY(User* user READ user NOTIFY userChanged)
@@ -138,7 +138,7 @@ public:
     inline ToolsManager* toolsManager() const { return mToolsManager; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
-    inline RootMenuModel* mainMenu() const { return mMainMenu; }
+    inline RootMenu* mainMenu() const { return mMainMenu; }
     inline Settings* settings() const { return mSettings; }
     inline QList<QObject*> openWindowModels() const { return mOpenWindowModels; }
 
@@ -260,7 +260,7 @@ private:
     QList<FilteringAnalysis*> mOpenAnalyses;
 
     //! Model of the main menu
-    RootMenuModel* mMainMenu;
+    RootMenu* mMainMenu;
 
     //! list of references supported by the server
     QList<QObject*> mReferences;

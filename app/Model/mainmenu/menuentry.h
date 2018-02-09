@@ -1,16 +1,14 @@
-#ifndef MENUENTRYMODEL_H
-#define MENUENTRYMODEL_H
+#ifndef MENUENTRY_H
+#define MENUENTRY_H
 
 
 #include <QtCore>
-#include "rootmenumodel.h"
-
-class RootMenuModel;
+#include "rootmenu.h"
 
 
+class RootMenu;
 
-
-class MenuEntryModel: public QAbstractListModel
+class MenuEntry: public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(int uid READ uid NOTIFY uidChanged)
@@ -22,11 +20,9 @@ class MenuEntryModel: public QAbstractListModel
     Q_PROPERTY(bool selected READ selected WRITE setSelected NOTIFY selectedChanged)
 
 public:
-
-
     // Constructor
-    MenuEntryModel(RootMenuModel* rootMenu=nullptr);
-    MenuEntryModel(QString icon, QString label, QString qml, RootMenuModel* rootMenu=nullptr);
+    MenuEntry(RootMenu* rootMenu=nullptr);
+    MenuEntry(QString icon, QString label, QString qml, RootMenu* rootMenu=nullptr);
 
     // Getters
     inline int uid() const { return mUid; }
@@ -60,7 +56,7 @@ Q_SIGNALS:
     void indexChanged();
     void selectedChanged();
 
-private:
+protected:
     //! Icon of the menu entry (only displayed for lvl 1 & lvl 2 entries
     QString mIcon;
     //! Displayed label of the menu entry
@@ -72,14 +68,14 @@ private:
     //! Current sub entry selected (displayed)
     int mIndex = -1;
     //! True when the menu entry is selected; false otherwise.
-    //! shall not be set directly by the view (updated by RootMenuModel.select(lvl, idx) method
+    //! shall not be set directly by the view (updated by RootMenu.select(lvl, idx) method
     bool mSelected = false;
 
-    RootMenuModel* mRootMenu;
+    RootMenu* mRootMenu;
 
     static int sUID;
     int mUid = 0;
 };
 
-#endif // MENUENTRYMODEL_H
+#endif // MENUENTRY_H
 

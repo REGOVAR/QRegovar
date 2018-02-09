@@ -2,5 +2,5 @@
 
 Analysis::Analysis(QObject* parent) : QObject(parent)
 {
-    mMenuModel = new RootMenuModel(this);
+    mMenuModel = new RootMenu(this);
 }

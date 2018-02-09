@@ -95,7 +95,7 @@ void Regovar::init()
     mUser = new User(1, "MyFirstname", "MyLastname");
     mConfig = new RegovarInfo();
     mAdmin = new Admin();
-    mMainMenu = new RootMenuModel(this);
+    mMainMenu = new RootMenu(this);
     mMainMenu->initMain();
 
     // Init network manager

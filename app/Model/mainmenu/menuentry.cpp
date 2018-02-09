@@ -1,8 +1,8 @@
-#include "menuentrymodel.h"
+#include "menuentry.h"
 
-int MenuEntryModel::sUID = 0;
+int MenuEntry::sUID = 0;
 
-MenuEntryModel::MenuEntryModel(RootMenuModel* rootMenu) : QAbstractListModel(rootMenu)
+MenuEntry::MenuEntry(RootMenu* rootMenu) : QAbstractListModel(rootMenu)
 {
     mRootMenu = rootMenu;
     mUid = sUID;
@@ -10,7 +10,7 @@ MenuEntryModel::MenuEntryModel(RootMenuModel* rootMenu) : QAbstractListModel(roo
 }
 
 
-MenuEntryModel::MenuEntryModel(QString icon, QString label, QString qml, RootMenuModel* rootMenu) : QAbstractListModel(rootMenu)
+MenuEntry::MenuEntry(QString icon, QString label, QString qml, RootMenu* rootMenu) : QAbstractListModel(rootMenu)
 {
     mRootMenu = rootMenu;
     mIcon = icon;
@@ -22,7 +22,7 @@ MenuEntryModel::MenuEntryModel(QString icon, QString label, QString qml, RootMen
 
 
 //! Update selected state of menu entries
-QStringList MenuEntryModel::select(int level, int index)
+QStringList MenuEntry::select(int level, int index)
 {
     QStringList arianePath;
 
@@ -30,7 +30,7 @@ QStringList MenuEntryModel::select(int level, int index)
     {
         for(int idx=0; idx<mEntries.count(); idx++)
         {
-            MenuEntryModel* m = qobject_cast<MenuEntryModel*>(mEntries[idx]);
+            MenuEntry* m = qobject_cast<MenuEntry*>(mEntries[idx]);
             if (m != nullptr)
             {
                 m->setSelected(idx == index);
@@ -45,7 +45,7 @@ QStringList MenuEntryModel::select(int level, int index)
     }
     else
     {
-        MenuEntryModel* m = qobject_cast<MenuEntryModel*>(mEntries[mIndex]);
+        MenuEntry* m = qobject_cast<MenuEntry*>(mEntries[mIndex]);
         m->select(level-1, index);
     }
 
@@ -53,7 +53,7 @@ QStringList MenuEntryModel::select(int level, int index)
 }
 
 
-void MenuEntryModel::addEntry(QObject* entry)
+void MenuEntry::addEntry(QObject* entry)
 {
     mEntries.append(entry);
     if (mIndex == -1)
@@ -61,21 +61,22 @@ void MenuEntryModel::addEntry(QObject* entry)
         select(0,0);
     }
     emit entriesChanged();
+    emit mRootMenu->subEntriesChanged();
 }
 
 
 
-int MenuEntryModel::rowCount(const QModelIndex&) const
+int MenuEntry::rowCount(const QModelIndex&) const
 {
     return mEntries.count();
 }
 
-QVariant MenuEntryModel::data(const QModelIndex&, int) const
+QVariant MenuEntry::data(const QModelIndex&, int) const
 {
     return "not used";
 }
 
-QHash<int, QByteArray> MenuEntryModel::roleNames() const
+QHash<int, QByteArray> MenuEntry::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[Qt::DisplayRole] = "label";

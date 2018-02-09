@@ -17,15 +17,15 @@ Rectangle
     property alias label: label.text
     property bool selected
     onSelectedChanged: setState()
-    property RootMenuModel menuModel
-    property MenuEntryModel model
+    property RootMenu menuModel
+    property MenuEntry model
     onModelChanged:
     {
         if (model)
         {
             selected = Qt.binding(function() { return model.selected; });
-            sublevelListHeight = model.entries.length * 30 // see MenuEntryL3.height
-            sublevelListRepeater.model = model.entries;
+            sublevelListHeight = model.entries.length * 30; // see MenuEntryL3.height
+            sublevelListRepeater.model = model;
             setState();
         }
     }
@@ -34,7 +34,6 @@ Rectangle
     {
         state = !selected ? "normal" : model.entries.length > 0 ? "expanded" : "selected";
     }
-
 
 
 

@@ -16,16 +16,22 @@ Item
     property real expandWidth: 250
     property bool subLevelPanelDisplayed: false
     onSubLevelPanelDisplayedChanged: state = subLevelPanelDisplayed ? "level1" : "level0"
-    property RootMenuModel model
+    property RootMenu model
     onModelChanged:
     {
         if (model)
         {
+            model.subEntriesChanged.connect(refreshSubEntries);
             subLevelPanelDisplayed = Qt.binding(function() { return model.subLevelPanelDisplayed;});
-            subLevelRepeater.model = Qt.binding(function() { return model.subEntries;})
+            refreshSubEntries();
 
             model.openPage.connect(function (menuEntry) { root.openPage(menuEntry); });
         }
+    }
+
+    function refreshSubEntries()
+    {
+        subLevelRepeater.model = model.entries[model.index].entries;
     }
 
 

@@ -70,8 +70,10 @@ HEADERS += \
     Model/settings.h \
     Model/sortfilterproxymodel/samplesproxymodel.h \
     Model/sortfilterproxymodel/annotationsproxymodel.h \
-    Model/mainmenu/rootmenumodel.h \
-    Model/mainmenu/menuentrymodel.h
+    Model/mainmenu/rootmenu.h \
+    Model/mainmenu/menuentry.h \
+    Model/mainmenu/projectmenuentry.h \
+    Model/mainmenu/subjectmenuentry.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -129,8 +131,10 @@ SOURCES += main.cpp \
     Model/settings.cpp \
     Model/sortfilterproxymodel/samplesproxymodel.cpp \
     Model/sortfilterproxymodel/annotationsproxymodel.cpp \
-    Model/mainmenu/rootmenumodel.cpp \
-    Model/mainmenu/menuentrymodel.cpp
+    Model/mainmenu/rootmenu.cpp \
+    Model/mainmenu/menuentry.cpp \
+    Model/mainmenu/projectmenuentry.cpp \
+    Model/mainmenu/subjectmenuentry.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
