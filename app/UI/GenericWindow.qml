@@ -135,7 +135,7 @@ ApplicationWindow
             pages[currentUid].visible = false;
         }
         // Display new page
-        if (menuEntry.uid)
+        if (menuEntry && menuEntry.uid)
         {
             currentUid = menuEntry.uid;
             pages[currentUid].visible = true;
@@ -149,7 +149,7 @@ ApplicationWindow
         {
             root.pages = {};
             buildPages(menuModel, null);
-            openPage(menuModel.selectedEntry); // we assume that the first entry of the menu is the one open by default
+            openPage(menuModel.selectedEntry);
         }
     }
 }

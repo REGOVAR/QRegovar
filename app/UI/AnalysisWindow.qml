@@ -46,7 +46,7 @@ ApplicationWindow
         anchors.bottom: parent.bottom
         anchors.left: parent.left
 
-        onOpenPage: root.openPage(menuEntry.uid);
+        onOpenPage: root.openPage(menuEntry);
     }
 
     Item
@@ -129,20 +129,20 @@ ApplicationWindow
 
 
     //! Open qml page according to the provided
-    function openPage(uid)
+    function openPage(menuEntry)
     {
         if (currentUid in pages)
         {
             pages[currentUid].visible = false;
         }
-        if (uid)
+        if (menuEntry && menuEntry.uid)
         {
+            currentUid = menuEntry.uid;
             if (pages[currentUid] == "@close")
             {
                 root.close();
             }
 
-            currentUid = uid;
             pages[currentUid].visible = true;
             pages[currentUid].anchors.fill = stack;
         }
