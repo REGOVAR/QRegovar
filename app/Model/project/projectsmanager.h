@@ -11,8 +11,6 @@ class ProjectsManager : public QObject
     Q_PROPERTY(QString searchQuery READ searchQuery WRITE setSearchQuery NOTIFY searchQueryChanged)
     Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY neverChanged)
     Q_PROPERTY(QList<QObject*> projectsFlatList READ projectsFlatList NOTIFY projectsFlatListChanged)
-    Q_PROPERTY(QList<QObject*> projectsOpenList READ projectsOpenList NOTIFY projectsOpenListChanged)
-    Q_PROPERTY(Project* projectOpen READ projectOpen NOTIFY projectOpenChanged)
 
 public:
     // Constructor
@@ -22,8 +20,6 @@ public:
     inline QString searchQuery() const { return mSearchQuery; }
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeView; }
     inline QList<QObject*> projectsFlatList() const { return mProjectsFlatList; }
-    inline QList<QObject*> projectsOpenList() const { return mProjectsOpenList; }
-    inline Project* projectOpen() const { return mProjectOpen; }
 
     // Setters
     void setSearchQuery(QString val);
@@ -44,8 +40,6 @@ Q_SIGNALS:
     // Property changed event
     void searchQueryChanged();
     void projectsFlatListChanged();
-    void projectsOpenListChanged();
-    void projectOpenChanged();
     //! Event on project creation done (sync with server done)
     void projectCreationDone(bool success, int projectId);
 
@@ -56,14 +50,8 @@ private:
     ProjectsTreeModel* mProjectsTreeView = nullptr;
     //! The flat list of project (=mProjectsTreeView but as list. Use for project's combobox selection)
     QList<QObject*> mProjectsFlatList;
-    //! list of project open
-    QList<QObject*> mProjectsOpenList;
     //! Query use to search projects in the browser
     QString mSearchQuery;
-    //! The model of the project currently open
-    Project* mProjectOpen = nullptr;
-    //! The index of the open project in the list
-    int mProjectOpenIndex = -1;
 
 
     int mSelectedProject;

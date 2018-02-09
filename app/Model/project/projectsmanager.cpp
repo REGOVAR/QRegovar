@@ -118,19 +118,8 @@ void ProjectsManager::openProject(int id, bool reload_from_server)
         project->load();
     }
 
-    // Update main menu with the project's entry
+    // Notify the view via the update main menu with the project's entry
     regovar->mainMenu()->openMenuEntry(project);
-//    mProjectOpenIndex = mProjectsOpenList.indexOf(project);
-//    if (mProjectOpenIndex == -1)
-//    {
-//        mProjectsOpenList.insert(0, project);
-//        mProjectOpenIndex = 0;
-//        mProjectOpen = qobject_cast<Project*>(mProjectsOpenList[mProjectOpenIndex]);
-//        emit projectsOpenListChanged();
-//    }
-    // Update ref object
-    mProjectOpen = project;
-    emit projectOpenChanged();
 }
 
 void ProjectsManager::deleteProject(int id)

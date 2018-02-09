@@ -52,11 +52,9 @@ GenericWindow
 //    Connections
 //    {
 //        target: regovar.projectsManager
-//        onProjectsOpenListChanged:
+//        onProjectsOpen:
 //        {
-//            console.log ("MainMenu: Reload projects open list");
-//            Regovar.reloadProjectsOpenEntries();
-//            buildPages(menuModel.model[2]["sublevel"], Regovar.currentopeningProject);
+//            buildPages(root.menuModel, project);
 //            // select currentEntry
 //            Regovar.menuModel.selectedIndex=[2, regovar.projectsManager.projectsOpenList.length, 0];
 //        }

@@ -104,7 +104,6 @@
         <file>MainMenu/MenuEntryL1.qml</file>
         <file>MainMenu/MenuEntryL2.qml</file>
         <file>MainMenu/MenuEntryL3.qml</file>
-        <file>MainMenu/MenuModel.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilter/FieldBlock.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilter/FilterFormField.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilter/FilterFormLogical.qml</file>

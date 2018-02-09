@@ -21,16 +21,23 @@ Item
     {
         if (model)
         {
-            model.subEntriesChanged.connect(refreshSubEntries);
             subLevelPanelDisplayed = Qt.binding(function() { return model.subLevelPanelDisplayed;});
             refreshSubEntries();
 
-            model.openPage.connect(function (menuEntry) { root.openPage(menuEntry); });
+            model.openPage.connect(function (menuEntry)
+            {
+                // force refresh of list. as qml not able to detect change that occure on QList
+                refreshSubEntries();
+                // open the page
+                root.openPage(menuEntry);
+            });
         }
     }
 
     function refreshSubEntries()
     {
+        // Refresh the model of the menu repeater
+        topLevelRepeater.model = model.entries;
         subLevelRepeater.model = model.entries[model.index].entries;
     }
 
@@ -49,7 +56,7 @@ Item
     {
         Repeater
         {
-            model: root.model ? root.model.entries : []
+            id: topLevelRepeater
 
             MenuEntryL1
             {

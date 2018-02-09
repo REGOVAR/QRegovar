@@ -13,7 +13,7 @@ class MenuEntry;
 class RootMenu: public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(int selectedUid READ selectedUid NOTIFY selectedUidChanged)
+    Q_PROPERTY(MenuEntry* selectedEntry READ selectedEntry NOTIFY selectedEntryChanged)
 
     Q_PROPERTY(int index READ index WRITE setIndex NOTIFY indexChanged)
     Q_PROPERTY(bool collapsed READ collapsed WRITE setCollapsed NOTIFY collapsedChanged)
@@ -29,7 +29,7 @@ public:
     RootMenu(QObject* parent=nullptr);
 
     // Getters
-    inline int selectedUid() const { return mSelectedUid; }
+    inline MenuEntry* selectedEntry() const { return mSelectedEntry; }
     inline int index() const { return mIndex; }
     inline bool collapsed() const { return mCollapsed; }
     inline bool subLevelPanelDisplayed() const { return mSubLevelPanelDisplayed; }
@@ -45,12 +45,14 @@ public:
     inline void setTitle(QString title) { mTitle = title; emit titleChanged(); }
 
     // Methods
-    Q_INVOKABLE QStringList select(int level, int index);
+    Q_INVOKABLE QStringList select(int lvl0, int lvl1, int lvl2);
+    Q_INVOKABLE QStringList select(int level, int index, bool notify=true);
     Q_INVOKABLE inline void hiddeSubLevelPanel() { mSubLevelPanelDisplayed = false; emit subLevelPanelDisplayedChanged(); }
     Q_INVOKABLE inline void restoreSubLevelPanel() { setSubLevelPanelDisplayed(mSubLevelPanelDisplayedTemp); }
     Q_INVOKABLE void openMenuEntry(MenuEntry* menuEntry);
     Q_INVOKABLE void openMenuEntry(Project* project);
     Q_INVOKABLE void openMenuEntry(Subject* subject);
+    Q_INVOKABLE MenuEntry* getEntry(int idx);
 
     // QAbstractListModel methods
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
@@ -62,7 +64,7 @@ public:
     void initPipelineAnalysis();
 
 Q_SIGNALS:
-    void selectedUidChanged();
+    void selectedEntryChanged();
     void indexChanged();
     void collapsedChanged();
     void subLevelPanelDisplayedChanged();
@@ -73,7 +75,7 @@ Q_SIGNALS:
     void openPage(MenuEntry* menuEntry);
 
 private:
-    int mSelectedUid = -1;
+    MenuEntry* mSelectedEntry = nullptr;
     int mIndex = -1;
     bool mCollapsed = false;
     bool mSubLevelPanelDisplayed = false;

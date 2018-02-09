@@ -11,7 +11,7 @@ class RootMenu;
 class MenuEntry: public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(int uid READ uid NOTIFY uidChanged)
+    Q_PROPERTY(int uid READ uid NOTIFY neverChanged)
     Q_PROPERTY(QString icon READ icon WRITE setIcon NOTIFY dataChanged)
     Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY dataChanged)
     Q_PROPERTY(QString qmlPage READ qmlPage WRITE setQmlPage NOTIFY dataChanged)
@@ -19,10 +19,17 @@ class MenuEntry: public QAbstractListModel
     Q_PROPERTY(int index READ index WRITE setIndex NOTIFY indexChanged)
     Q_PROPERTY(bool selected READ selected WRITE setSelected NOTIFY selectedChanged)
 
+    Q_PROPERTY(Project* project READ project NOTIFY neverChanged)
+    Q_PROPERTY(Subject* subject READ subject NOTIFY neverChanged)
+
 public:
     // Constructor
     MenuEntry(RootMenu* rootMenu=nullptr);
-    MenuEntry(QString icon, QString label, QString qml, RootMenu* rootMenu=nullptr);
+    MenuEntry(QString icon, QString label, QString qml, RootMenu* rootMenu);
+    MenuEntry(QString icon, QString label, QString qml, RootMenu* rootMenu, Project* project);
+    MenuEntry(QString icon, QString label, QString qml, RootMenu* rootMenu, Subject* subject);
+    MenuEntry(Project* project, RootMenu* rootMenu);
+    MenuEntry(Subject* subject, RootMenu* rootMenu);
 
     // Getters
     inline int uid() const { return mUid; }
@@ -32,6 +39,8 @@ public:
     inline QList<QObject*> entries() const { return mEntries; }
     inline int index() const { return mIndex; }
     inline bool selected() const { return mSelected; }
+    inline Project* project() const { return mProject; }
+    inline Subject* subject() const { return mSubject; }
 
     // Setters
     inline void setIcon(QString icon) { mIcon=icon; emit dataChanged(); }
@@ -41,8 +50,9 @@ public:
     inline void setSelected(bool flag) { mSelected=flag; emit selectedChanged(); }
 
     // Methods
-    Q_INVOKABLE QStringList select(int level, int index);
+    Q_INVOKABLE QStringList select(int level, int index, bool notify=true);
     Q_INVOKABLE void addEntry(QObject* entry);
+    Q_INVOKABLE MenuEntry* getEntry(int idx);
 
     // QAbstractListModel methods
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
@@ -50,11 +60,14 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
 Q_SIGNALS:
-    void uidChanged();
+    void neverChanged();
     void dataChanged();
     void entriesChanged();
     void indexChanged();
     void selectedChanged();
+
+public Q_SLOTS:
+    void refresh();
 
 protected:
     //! Icon of the menu entry (only displayed for lvl 1 & lvl 2 entries
@@ -71,7 +84,10 @@ protected:
     //! shall not be set directly by the view (updated by RootMenu.select(lvl, idx) method
     bool mSelected = false;
 
-    RootMenu* mRootMenu;
+    Project* mProject = nullptr;
+    Subject* mSubject = nullptr;
+
+    RootMenu* mRootMenu = nullptr;
 
     static int sUID;
     int mUid = 0;

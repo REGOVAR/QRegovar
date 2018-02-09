@@ -25,7 +25,7 @@ Rectangle
         {
             selected = Qt.binding(function() { return model.selected; });
             sublevelListHeight = model.entries.length * 30; // see MenuEntryL3.height
-            sublevelListRepeater.model = model;
+            sublevelListRepeater.model = model.entries;
             setState();
         }
     }

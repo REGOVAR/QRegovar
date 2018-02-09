@@ -97,19 +97,8 @@ void SubjectsManager::openSubject(int id)
     Subject* subject = getOrCreateSubject(id);
     // Refresh / get all information of the subject
     subject->load();
-    // Set ref index
-    mSubjectOpenIndex = mSubjectsOpenList.indexOf(subject);
-    if (mSubjectOpenIndex == -1)
-    {
-        mSubjectsOpenList.insert(0, subject);
-        mSubjectOpenIndex = 0;
-        mSubjectOpen = qobject_cast<Subject*>(mSubjectsOpenList[mSubjectOpenIndex]);
-        emit subjectsOpenListChanged();
-    }
-    // Set ref object
-    mSubjectOpen = qobject_cast<Subject*>(mSubjectsOpenList[mSubjectOpenIndex]);
-    // notify view
-    emit subjectOpenChanged(mSubjectOpenIndex);
+    // Notify the view via the update main menu with the subject's entry
+    regovar->mainMenu()->openMenuEntry(subject);
 }
 
 

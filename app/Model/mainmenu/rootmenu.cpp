@@ -1,7 +1,5 @@
 #include "rootmenu.h"
 
-#include "projectmenuentry.h"
-#include "subjectmenuentry.h"
 
 RootMenu::RootMenu(QObject* parent): QAbstractListModel(parent)
 {
@@ -65,13 +63,35 @@ void RootMenu::initPipelineAnalysis()
 }
 
 
+QStringList RootMenu::select(int lvl0, int lvl1, int lvl2)
+{
+    MenuEntry* entry = nullptr;
+    if (lvl0 >= 0 && lvl0 < mEntries.count())
+    {
+        select(0, lvl0, false);
+        entry = getEntry(lvl0);
+        if (lvl1 >= 0 && lvl1 < entry->rowCount())
+        {
+            entry->select(0, lvl1, false);
+            entry = entry->getEntry(lvl1);
+            if (lvl2 >= 0 && lvl2 < entry->rowCount())
+            {
+                entry->select(0, lvl2, false);
+                entry = entry->getEntry(lvl2);
+            }
+        }
+    }
+    openMenuEntry(entry);
+}
+
 //! Update selected state of menu entries
-QStringList RootMenu::select(int level, int index)
+QStringList RootMenu::select(int level, int index, bool notify)
 {
     QStringList arianePath;
 
     if (level == 0)
     {
+        MenuEntry* toOpen;
         for(int idx=0; idx<mEntries.count(); idx++)
         {
             MenuEntry* m = qobject_cast<MenuEntry*>(mEntries[idx]);
@@ -82,17 +102,18 @@ QStringList RootMenu::select(int level, int index)
                 {
                     arianePath.append(m->label());
                     setSubLevelPanelDisplayed(m->entries().count() > 0);
-                    openMenuEntry(m);
+                    toOpen = m; // don't open now, need to update all menu model first
                 }
             }
         }
         mIndex = index;
+        if (notify) openMenuEntry(toOpen);
         emit subEntriesChanged();
     }
     else
     {
         MenuEntry* m = qobject_cast<MenuEntry*>(mEntries[mIndex]);
-        m->select(level-1, index);
+        m->select(level-1, index, notify);
         setSubLevelPanelDisplayed(true);
     }
 
@@ -108,34 +129,73 @@ void RootMenu::openMenuEntry(MenuEntry* menuEntry)
     }
     else
     {
-        mSelectedUid = menuEntry->uid();
+        mSelectedEntry = menuEntry;
         emit openPage(menuEntry);
     }
 }
 void RootMenu::openMenuEntry(Project* project)
 {
-    if (mProjectBrowserEntry != nullptr
-        && project != nullptr
-        && !mProjectBrowserEntry->entries().contains(project))
+    if (mProjectBrowserEntry != nullptr && project != nullptr)
     {
-        ProjectMenuEntry* entry = new ProjectMenuEntry(project, this);
-        mProjectBrowserEntry->addEntry(entry);
-        mProjectBrowserEntry->entries().move(mProjectBrowserEntry->entries().count()-1, 1);
+        // Try to retrieve the menu entry corresponding to this project (maybe already exists)
+        MenuEntry* entry = nullptr;
+        for (QObject* o: mProjectBrowserEntry->entries())
+        {
+            MenuEntry* pm = qobject_cast<MenuEntry*>(o);
+            if (pm != nullptr && pm->project() == project)
+            {
+                entry = pm;
+                break;
+            }
+        }
+        // Create it if not exists
+        if (entry == nullptr)
+        {
+            entry = new MenuEntry(project, this);
+            mProjectBrowserEntry->addEntry(entry);
+            mProjectBrowserEntry->entries().move(mProjectBrowserEntry->entries().count()-1, 1);
+        }
+        // /!\ the selected entry of the menu is the selected sub entries, not the entry tiself
+        mSelectedEntry = entry->getEntry(entry->index());
+        mProjectBrowserEntry->select(0, mProjectBrowserEntry->entries().indexOf(entry));
+        emit openPage(mSelectedEntry);
     }
 }
 void RootMenu::openMenuEntry(Subject* subject)
 {
-    if (mSubjectBrowserEntry != nullptr
-        && subject != nullptr
-        && !mSubjectBrowserEntry->entries().contains(subject))
+    if (mSubjectBrowserEntry != nullptr && subject != nullptr)
     {
-        SubjectMenuEntry* entry = new SubjectMenuEntry(subject, this);
-        mSubjectBrowserEntry->addEntry(entry);
-        mSubjectBrowserEntry->entries().move(mSubjectBrowserEntry->entries().count()-1, 1);
+        // Try to retrieve the menu entry corresponding to this subject (maybe already exists)
+        MenuEntry* entry = nullptr;
+        for (QObject* o: mSubjectBrowserEntry->entries())
+        {
+            MenuEntry* pm = qobject_cast<MenuEntry*>(o);
+            if (pm != nullptr && pm->subject() == subject)
+            {
+                entry = pm;
+                break;
+            }
+        }
+        // Create it if not exists
+        if (entry == nullptr)
+        {
+            entry = new MenuEntry(subject, this);
+            mSubjectBrowserEntry->addEntry(entry);
+            mSubjectBrowserEntry->entries().move(mSubjectBrowserEntry->entries().count()-1, 1);
+        }
+        mSelectedEntry = entry->getEntry(entry->index());
+        mSubjectBrowserEntry->select(0, mSubjectBrowserEntry->entries().indexOf(entry));
+        emit openPage(mSelectedEntry);
     }
 }
 
 
+MenuEntry* RootMenu::getEntry(int idx)
+{
+    MenuEntry* result = nullptr;
+    if (idx >= 0 && idx < mEntries.count()) result = qobject_cast<MenuEntry*>(mEntries[idx]);
+    return result;
+}
 
 int RootMenu::rowCount(const QModelIndex&) const
 {

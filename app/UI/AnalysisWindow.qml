@@ -163,7 +163,7 @@ ApplicationWindow
         {
             root.pages = {};
             buildPages(root.menuModel, model);
-            openPage(root.menuModel.selectedUid);
+            openPage(root.menuModel.selectedEntry);
         }
     }
 }

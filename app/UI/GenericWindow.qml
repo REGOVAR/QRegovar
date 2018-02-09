@@ -32,7 +32,7 @@ ApplicationWindow
         anchors.bottom: parent.bottom
         anchors.left: parent.left
 
-        onOpenPage: root.openPage(menuEntry.uid);
+        onOpenPage: root.openPage(menuEntry);
     }
 
 
@@ -94,6 +94,14 @@ ApplicationWindow
                         {
                             elmt.model = sharedModel;
                         }
+                        else if (menuEntry.project)
+                        {
+                            elmt.model = menuEntry.project;
+                        }
+                        else if (menuEntry.subject)
+                        {
+                            elmt.model = menuEntry.subject;
+                        }
 
                         console.log ("load " + uid + ": Pages/" + menuEntry.qmlPage)
                     }
@@ -106,26 +114,30 @@ ApplicationWindow
                 {
                     root.pages[uid] = false;
                 }
+            }
 
-                if (menuEntry.entries.length > 0)
-                {
-                    buildPages(menuEntry, sharedModel);
-                }
+            if (menuEntry.entries.length > 0)
+            {
+                buildPages(menuEntry, sharedModel);
             }
         }
     }
 
 
     //! Open qml page according to the provided
-    function openPage(uid)
+    function openPage(menuEntry)
     {
+        // Check if new pages need to be build
+        buildPages(mainMenu.model, null);
+        // hide former page
         if (currentUid in pages)
         {
             pages[currentUid].visible = false;
         }
-        if (uid)
+        // Display new page
+        if (menuEntry.uid)
         {
-            currentUid = uid;
+            currentUid = menuEntry.uid;
             pages[currentUid].visible = true;
             pages[currentUid].anchors.fill = stack;
         }
@@ -136,8 +148,8 @@ ApplicationWindow
         if (menuModel)
         {
             root.pages = {};
-            buildPages(root.menuModel, null);
-            openPage(root.menuModel.selectedUid);
+            buildPages(menuModel, null);
+            openPage(menuModel.selectedEntry); // we assume that the first entry of the menu is the one open by default
         }
     }
 }
