@@ -336,7 +336,10 @@ Dialog
                 {
                     selectedSamplesTable.selection.forEach( function(rowIndex)
                     {
-                        samples = samples.concat(regovar.samplesManager[rowIndex]);
+                        var idx = regovar.samplesManager.proxy.getModelIndex(rowIndex);
+                        var id = regovar.samplesManager.data(idx, 257); // 257 = Qt::UserRole+1
+
+                        samples = samples.concat(regovar.samplesManager.getOrCreate(id));
                     });
                     samplesSelected(samples);
                 }

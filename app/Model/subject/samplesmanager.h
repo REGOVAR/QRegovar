@@ -3,7 +3,7 @@
 
 #include <QtCore>
 #include "sample.h"
-#include "Model/sortfilterproxymodel/samplesproxymodel.h"
+#include "Model/framework/genericproxymodel.h"
 
 
 
@@ -26,7 +26,7 @@ class SamplesManager : public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(int referencialId READ referencialId WRITE setReferenceId NOTIFY referencialIdChanged)
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
-    Q_PROPERTY(SamplesProxyModel* proxy READ proxy NOTIFY neverChanged)
+    Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
 public:
     explicit SamplesManager(QObject* parent = nullptr);
@@ -34,7 +34,7 @@ public:
 
     // Property Get/Set
     inline int referencialId() const { return mRefId; }
-    inline SamplesProxyModel* proxy() const { return mProxy; }
+    inline GenericProxyModel* proxy() const { return mProxy; }
     void setReferenceId(int ref);
 
     // Methods
@@ -66,7 +66,7 @@ private:
     //! Internal collection of all loaded samples
     QHash<int, Sample*> mSamples;
     //! The QSortFilterProxyModel to use by table view to browse samples of the manager
-    SamplesProxyModel* mProxy = nullptr;
+    GenericProxyModel* mProxy = nullptr;
 
 };
 

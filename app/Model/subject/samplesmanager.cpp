@@ -4,14 +4,14 @@
 
 SamplesManager::SamplesManager(QObject* parent) : QAbstractListModel(parent)
 {
-    mProxy = new SamplesProxyModel(this);
+    mProxy = new GenericProxyModel(this);
     mProxy->setSourceModel(this);
     mProxy->setFilterRole(SearchField);
     mProxy->setSortRole(Name);
 }
 SamplesManager::SamplesManager(int refId, QObject* parent) : QAbstractListModel(parent)
 {
-    mProxy = new SamplesProxyModel(this);
+    mProxy = new GenericProxyModel(this);
     mProxy->setSourceModel(this);
     mProxy->setFilterRole(SearchField);
     mProxy->setSortRole(Name);

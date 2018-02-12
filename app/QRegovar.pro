@@ -68,7 +68,6 @@ HEADERS += \
     Model/analysis/filtering/quickfilters/phenotypequickfilter.h \
     Model/analysis/filtering/quickfilters/panelquickfilter.h \
     Model/settings.h \
-    Model/sortfilterproxymodel/samplesproxymodel.h \
     Model/sortfilterproxymodel/annotationsproxymodel.h \
     Model/mainmenu/rootmenu.h \
     Model/mainmenu/menuentry.h \
@@ -128,7 +127,6 @@ SOURCES += main.cpp \
     Model/analysis/filtering/quickfilters/phenotypequickfilter.cpp \
     Model/analysis/filtering/quickfilters/panelquickfilter.cpp \
     Model/settings.cpp \
-    Model/sortfilterproxymodel/samplesproxymodel.cpp \
     Model/sortfilterproxymodel/annotationsproxymodel.cpp \
     Model/mainmenu/rootmenu.cpp \
     Model/mainmenu/menuentry.cpp \
