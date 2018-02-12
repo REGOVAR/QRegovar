@@ -142,8 +142,8 @@ TableView
             horizontalAlignment: styleData.textAlignment
             font.pixelSize: Regovar.theme.font.size.normal
             text: (styleData.value !== undefined && styleData.value !== null) ? String(styleData.value).replace("\n", " ") : "" // + " (" + styleData.row + "," + styleData.column + ")"
-            // elide: Text.ElideRight
-            // clip: true
+            elide: Text.ElideRight
+            clip: true
         }
     }
 }
