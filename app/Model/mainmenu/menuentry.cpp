@@ -30,7 +30,7 @@ MenuEntry::MenuEntry(Project* project, RootMenu* rootMenu): MenuEntry(rootMenu)
     mProject = project;
     mQmlPage = "";
     mIcon = "6";
-    connect(project, Project::dataChanged, this, MenuEntry::refresh);
+    connect(project, &Project::dataChanged, this, &MenuEntry::refresh);
 
     // Create lvl3 menu entries
     mEntries.append(new MenuEntry("a", tr("Summary"), "Project/SummaryPage.qml", mRootMenu, project));
@@ -46,7 +46,7 @@ MenuEntry::MenuEntry(Subject* subject, RootMenu* rootMenu): MenuEntry(rootMenu)
     mSubject = subject;
     mQmlPage = "";
     mIcon = subject->sex() == Subject::Sex::Male ? "9" : subject->sex() == Subject::Sex::Female ? "9" : "b";
-    connect(subject, Subject::dataChanged, this, MenuEntry::refresh);
+    connect(subject, &Subject::dataChanged, this, &MenuEntry::refresh);
 
     // Create lvl3 menu entries
     mEntries.append(new MenuEntry("", tr("Summary"), "Subject/SummaryPage.qml", mRootMenu, subject));
