@@ -34,6 +34,7 @@ bool Subject::fromJson(QJsonObject json, bool full_init)
 
 
     updateSubjectUI();
+    updateSearchField();
 
     if (!full_init) return true;
 
@@ -220,4 +221,13 @@ QString Subject::computeAge(QDate d1, QDate d2)
     if (m > 0) age += QString::number(m) + (m > 1 ? tr("months") : tr("month")) + " ";
     if (d > 0) age += QString::number(d) + (d > 1 ? tr("days") : tr("day"));
     return age.trimmed();
+}
+
+
+
+
+void Subject::updateSearchField()
+{
+    mSearchField = mIdentifier + " " + mFirstname + " " + mLastname + " " + mDateOfBirth.toString("yyyy-MM-dd HH:mm");
+    mSearchField += " " + mComment + " " + mFamilyNumber + mSex == Male ? "Male" : Female ? "Female" : "";
 }

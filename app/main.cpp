@@ -10,6 +10,7 @@
 #include "Model/regovar.h" // include regovar singleton which wrap all models and is the interface with the server
 #include "Model/framework/treemodel.h"
 #include "Model/framework/treeitem.h"
+#include "Model/framework/genericproxymodel.h"
 #include "Model/project/project.h"
 #include "Model/analysis/filtering/filteringanalysis.h"
 #include "Model/analysis/pipeline/pipelineanalysis.h"
@@ -20,8 +21,6 @@
 #include "Model/mainmenu/rootmenu.h"
 #include "Model/mainmenu/menuentry.h"
 
-#include "Model/sortfilterproxymodel/samplesproxymodel.h"
-#include "Model/sortfilterproxymodel/projectsproxymodel.h"
 
 
 int main(int argc, char *argv[])
@@ -36,6 +35,8 @@ int main(int argc, char *argv[])
 
     // Register custom classes to use it with QML
     qmlRegisterType<TreeModel>("org.regovar", 1, 0, "TreeModel");
+    qmlRegisterType<GenericProxyModel>("org.regovar", 1, 0, "GenericProxyModel");
+
     qmlRegisterType<Annotation>("org.regovar", 1, 0, "AnnotationModel");
     qmlRegisterType<FilteringAnalysis>("org.regovar", 1, 0, "FilteringAnalysis");
     qmlRegisterType<PipelineAnalysis>("org.regovar", 1, 0, "PipelineAnalysis");
@@ -66,8 +67,6 @@ int main(int argc, char *argv[])
     qmlRegisterType<Tool>("org.regovar", 1, 0, "Tool");
     qmlRegisterType<ToolParameter>("org.regovar", 1, 0, "ToolParameter");
 
-    qmlRegisterType<SamplesProxyModel>("org.regovar", 1, 0, "SamplesProxyModel");
-    qmlRegisterType<ProjectsProxyModel>("org.regovar", 1, 0, "ProjectsProxyModel");
 
 
     // Must be called before creating any webwidget/webqml

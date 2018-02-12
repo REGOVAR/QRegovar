@@ -48,6 +48,7 @@ Rectangle
             anchors.margins: 10
             iconLeft: "z"
             placeholder: qsTr("Search subjects or samples by names, comments...")
+            onTextEdited: regovar.subjectsManager.proxy.setFilterString(text)
         }
     }
 
@@ -99,7 +100,7 @@ Rectangle
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
-        model: regovar.subjectsManager.subjectsList
+        model: regovar.subjectsManager.proxy
 
         onDoubleClicked: openSelectedSubject()
 
@@ -171,6 +172,8 @@ Rectangle
     /// Retrive model of the selected Subject in the tableview and ask model to open it
     function openSelectedSubject()
     {
-        regovar.subjectsManager.openSubject(browser.model[browser.currentRow].id);
+        var idx = regovar.subjectsManager.proxy.getModelIndex(browser.currentRow);
+        var id = regovar.subjectsManager.data(idx, 257);// 257 = Qt::UserRole+1
+        regovar.subjectsManager.openSubject(id);
     }
 }

@@ -1,20 +1,19 @@
-#include "projectsproxymodel.h"
+#include "genericproxymodel.h"
 
-
-ProjectsProxyModel::ProjectsProxyModel(QObject* parent):  QSortFilterProxyModel(parent)
+GenericProxyModel::GenericProxyModel(QObject* parent):  QSortFilterProxyModel(parent)
 {
     setSortOrder(0, 1);
 }
 
 
-void ProjectsProxyModel::setFilterString(QString string)
+void GenericProxyModel::setFilterString(QString string)
 {
     this->setFilterCaseSensitivity(Qt::CaseInsensitive);
     this->setFilterFixedString(string);
 }
 
 
-void ProjectsProxyModel::setSortOrder(int column, int order)
+void GenericProxyModel::setSortOrder(int column, int order)
 {
     if(order == 0)
     {
@@ -27,9 +26,8 @@ void ProjectsProxyModel::setSortOrder(int column, int order)
 }
 
 
-int ProjectsProxyModel::getModelIndex(int row)
+QModelIndex GenericProxyModel::getModelIndex(int row)
 {
     QModelIndex sourceIndex = mapToSource(this->index(row, 0));
-    return sourceIndex.row();
+    return sourceIndex;
 }
-

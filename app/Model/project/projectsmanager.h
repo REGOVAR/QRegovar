@@ -4,7 +4,7 @@
 #include <QtCore>
 #include "project.h"
 #include "projectstreemodel.h"
-#include "Model/sortfilterproxymodel/projectsproxymodel.h"
+#include "Model/framework/genericproxymodel.h"
 
 class ProjectsManager : public QObject
 {
@@ -13,7 +13,7 @@ class ProjectsManager : public QObject
     Q_PROPERTY(QString searchQuery READ searchQuery WRITE setSearchQuery NOTIFY searchQueryChanged)
     Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY neverChanged)
     Q_PROPERTY(QList<QObject*> projectsFlatList READ projectsFlatList NOTIFY projectsFlatListChanged)
-    Q_PROPERTY(ProjectsProxyModel* proxy READ proxy NOTIFY proxyChanged)
+    Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
 public:
     // Constructor
@@ -23,7 +23,7 @@ public:
     inline QString searchQuery() const { return mSearchQuery; }
     inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeModel; }
     inline QList<QObject*> projectsFlatList() const { return mProjectsFlatList; }
-    inline ProjectsProxyModel* proxy() const { return mProxy; }
+    inline GenericProxyModel* proxy() const { return mProxy; }
 
     // Setters
     void setSearchQuery(QString val);
@@ -42,7 +42,6 @@ public Q_SLOTS:
 Q_SIGNALS:
     void neverChanged();
     // Property changed event
-    void proxyChanged();
     void searchQueryChanged();
     void projectsFlatListChanged();
     //! Event on project creation done (sync with server done)
@@ -58,7 +57,7 @@ private:
     //! Query use to search projects in the browser
     QString mSearchQuery;
     //! The QSortFilterProxyModel to use by tree view to browse project/analyse of the manager
-    ProjectsProxyModel* mProxy = nullptr;
+    GenericProxyModel* mProxy = nullptr;
 
 
     int mSelectedProject;

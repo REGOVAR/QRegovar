@@ -3,24 +3,34 @@
 
 #include <QtCore>
 #include "subject.h"
+#include "Model/framework/genericproxymodel.h"
 
-class SubjectsManager : public QObject
+class SubjectsManager : public QAbstractListModel
 {
+    enum Roles
+    {
+        Id = Qt::UserRole + 1,
+        Identifier,
+        Firstname,
+        Lastname,
+        Comment,
+        Sex,
+        DateOfBirth,
+        FamilyNumber,
+        SearchField
+    };
+
     Q_OBJECT
 
-    Q_PROPERTY(QString searchQuery READ searchQuery WRITE setSearchQuery NOTIFY searchQueryChanged)
-    Q_PROPERTY(QList<QObject*> subjectsList READ subjectsList NOTIFY subjectsListChanged)
+    Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
 public:
     // Constructor
     explicit SubjectsManager(QObject* parent = nullptr);
 
     // Getters
-    inline QString searchQuery() const { return mSearchQuery; }
-    inline QList<QObject*> subjectsList() const { return mSubjectsList; }
+    inline GenericProxyModel* proxy() const { return mProxy; }
 
-    // Setters
-    void setSearchQuery(QString val);
 
     // Methods
     Q_INVOKABLE Subject* getOrCreateSubject(int id);
@@ -29,18 +39,25 @@ public:
     //! refresh models with data from server
     Q_INVOKABLE void refresh();
 
+    // QAbstractListModel methods
+    int rowCount(const QModelIndex& parent = QModelIndex()) const;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    QHash<int, QByteArray> roleNames() const;
+
 Q_SIGNALS:
+    void neverChanged();
     // Property changed event
     void searchQueryChanged();
-    void subjectsListChanged();
     //! Event on subject creation done (sync with server done)
     void subjectCreationDone(bool success, int subjectId);
 
 private:
     //! List of subjects
-    QList<QObject*> mSubjectsList;
+    QHash<int, Subject*> mSubjects;
     //! Query use to search subjects in the browser
     QString mSearchQuery;
+    //! The QSortFilterProxyModel to use by table view to browse subject of the manager
+    GenericProxyModel* mProxy = nullptr;
 };
 
 #endif // SUBJECTSMANAGER_H

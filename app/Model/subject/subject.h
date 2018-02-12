@@ -30,6 +30,7 @@ class Subject : public QObject
     Q_PROPERTY(QList<QObject*> indicators READ indicators NOTIFY dataChanged)
     // Special "shortcut" properties for qml display
     Q_PROPERTY(QJsonObject subjectUI READ subjectUI NOTIFY dataChanged)
+    Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
 
 public:
     enum Sex
@@ -64,6 +65,7 @@ public:
     inline QList<QObject*> files() const { return mFiles; }
     inline QList<QObject*> indicators() const { return mIndicators; }
     inline QJsonObject subjectUI() const { return mSubjectUI; }
+    inline QString searchField() const { return mSearchField; }
 
     // Setters
     inline void setIdentifier(QString val) { mIdentifier = val; updateSubjectUI(); emit dataChanged(); }
@@ -94,6 +96,8 @@ public:
 Q_SIGNALS:
     void dataChanged();
 
+public Q_SLOTS:
+    void updateSearchField();
 
 private:
     bool mLoaded = false;
@@ -116,6 +120,7 @@ private:
     QList<QObject*> mFiles;
     QList<QObject*> mIndicators;
     QJsonObject mSubjectUI;
+    QString mSearchField;
 };
 
 #endif // SUBJECT_H

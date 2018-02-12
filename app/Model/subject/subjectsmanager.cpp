@@ -2,8 +2,12 @@
 #include "Model/framework/request.h"
 #include "Model/regovar.h"
 
-SubjectsManager::SubjectsManager(QObject *parent) : QObject(parent)
+SubjectsManager::SubjectsManager(QObject *parent) : QAbstractListModel(parent)
 {
+    mProxy = new GenericProxyModel(this);
+    mProxy->setSourceModel(this);
+    mProxy->setFilterRole(SearchField);
+    mProxy->setSortRole(Identifier);
 }
 
 
@@ -15,7 +19,7 @@ void SubjectsManager::refresh()
     {
         if (success)
         {
-            mSubjectsList.clear();
+            beginResetModel();
             QJsonArray data = json["data"].toArray();
             for (const QJsonValue& subjectVal: data)
             {
@@ -23,7 +27,7 @@ void SubjectsManager::refresh()
                 Subject* subject = getOrCreateSubject(subjectData["id"].toInt());
                 subject->fromJson(subjectData);
             }
-            emit subjectsListChanged();
+            endResetModel();
         }
         else
         {
@@ -38,17 +42,15 @@ void SubjectsManager::refresh()
 Subject* SubjectsManager::getOrCreateSubject(int id)
 {
     // Try to find subject in already know subjects
-    for (QObject* o: mSubjectsList)
+    if (mSubjects.contains(id))
     {
-        Subject* s = qobject_cast<Subject*>(o);
-        if (s->id() == id)
-        {
-            return s;
-        }
+        return mSubjects[id];
     }
     // else
+    beginInsertRows(QModelIndex(), rowCount(), rowCount());
     Subject* newSubject = new Subject(id);
-    mSubjectsList.append(newSubject);
+    mSubjects.insert(id, newSubject);
+    endInsertRows();
     return newSubject;
 }
 
@@ -102,9 +104,51 @@ void SubjectsManager::openSubject(int id)
 }
 
 
-void SubjectsManager::setSearchQuery(QString)
+
+
+int SubjectsManager::rowCount(const QModelIndex&) const
 {
-    // TODO : update mSubjectsList according to filter
-    emit searchQueryChanged();
-    emit subjectsListChanged();
+    return mSubjects.count();
+}
+
+QVariant SubjectsManager::data(const QModelIndex& index, int role) const
+{
+    if (index.row() < 0 || index.row() >= mSubjects.count())
+        return QVariant();
+
+    const Subject* subject = mSubjects.values().at(index.row());
+    if (role == Identifier || role == Qt::DisplayRole)
+        return subject->identifier();
+    else if (role == Id)
+        return subject->id();
+    else if (role == Firstname)
+        return subject->firstname();
+    else if (role == Lastname)
+        return subject->lastname();
+    else if (role == Comment)
+        return subject->comment();
+    else if (role == Sex)
+        return subject->sex() == Subject::Sex::Male ? tr("Male") : Subject::Sex::Female ? tr("Female") : tr("Unknow");
+    else if (role == DateOfBirth)
+        return subject->dateOfBirth().toString("yyyy-MM-dd HH:mm");
+    else if (role == FamilyNumber)
+        return subject->familyNumber();
+    else if (role == SearchField)
+        return subject->searchField();
+    return QVariant();
+}
+
+QHash<int, QByteArray> SubjectsManager::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[Id] = "id";
+    roles[Identifier] = "identifier";
+    roles[Firstname] = "firstname";
+    roles[Lastname] = "lastname";
+    roles[Comment] = "comment";
+    roles[Sex] = "sex";
+    roles[DateOfBirth] = "dateOfBirth";
+    roles[FamilyNumber] = "familyNumber";
+    roles[SearchField] = "searchField";
+    return roles;
 }

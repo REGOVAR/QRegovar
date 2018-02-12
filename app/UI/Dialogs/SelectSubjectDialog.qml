@@ -68,7 +68,7 @@ Dialog
             anchors.bottom : okButton.top
             anchors.margins: 10
 
-            model: regovar.subjectsManager.subjectsList
+            model: regovar.subjectsManager
             property var statusIcons: ["m", "/", "n", "h"]
 
             TableViewColumn
@@ -86,11 +86,11 @@ Dialog
                 role: "firstname"
                 title: "Firstname"
             }
-    //        TableViewColumn
-    //        {
-    //            role: "sex"
-    //            title: "Sex"
-    //        }
+//            TableViewColumn
+//            {
+//                role: "sex"
+//                title: "Sex"
+//            }
             TableViewColumn
             {
                 role: "dateofbirth"

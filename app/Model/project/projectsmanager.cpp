@@ -5,7 +5,7 @@
 ProjectsManager::ProjectsManager(QObject* parent) : QObject(parent)
 {
     mProjectsTreeModel = new ProjectsTreeModel(this);
-    mProxy = new ProjectsProxyModel(this);
+    mProxy = new GenericProxyModel(this);
     mProxy->setSourceModel(mProjectsTreeModel);
     mProxy->setFilterRole(ProjectsTreeModel::Roles::SearchField);
     mProxy->setSortRole(ProjectsTreeModel::Roles::Name);
