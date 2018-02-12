@@ -42,8 +42,8 @@ public:
     inline void setWidth(float w) { mWidth = w; emit widthChanged(); }
 
     // Methods
-    Q_INVOKABLE QStringList select(int lvl0, int lvl1, int lvl2);
-    Q_INVOKABLE QStringList select(int level, int index, bool notify=true);
+    Q_INVOKABLE void goTo(int lvl0, int lvl1, int lvl2);
+    Q_INVOKABLE void select(int level, int index, bool notify=true);
     Q_INVOKABLE inline void hiddeSubLevelPanel() { mSubLevelPanelDisplayed = false; emit subLevelPanelDisplayedChanged(); }
     Q_INVOKABLE inline void restoreSubLevelPanel() { setSubLevelPanelDisplayed(mSubLevelPanelDisplayedTemp); }
     Q_INVOKABLE void openMenuEntry(MenuEntry* menuEntry);

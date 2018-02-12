@@ -63,7 +63,7 @@ void RootMenu::initPipelineAnalysis()
 }
 
 
-QStringList RootMenu::select(int lvl0, int lvl1, int lvl2)
+void RootMenu::goTo(int lvl0, int lvl1, int lvl2)
 {
     MenuEntry* entry = nullptr;
     if (lvl0 >= 0 && lvl0 < mEntries.count())
@@ -85,9 +85,8 @@ QStringList RootMenu::select(int lvl0, int lvl1, int lvl2)
 }
 
 //! Update selected state of menu entries
-QStringList RootMenu::select(int level, int index, bool notify)
+void RootMenu::select(int level, int index, bool notify)
 {
-    QStringList arianePath;
 
     if (level == 0)
     {
@@ -100,7 +99,6 @@ QStringList RootMenu::select(int level, int index, bool notify)
                 m->setSelected(idx == index);
                 if (idx == index)
                 {
-                    arianePath.append(m->label());
                     setSubLevelPanelDisplayed(m->entries().count() > 0);
                     toOpen = m; // don't open now, need to update all menu model first
                 }
@@ -116,8 +114,6 @@ QStringList RootMenu::select(int level, int index, bool notify)
         m->select(level-1, index, notify);
         setSubLevelPanelDisplayed(true);
     }
-
-    return arianePath;
 }
 
 

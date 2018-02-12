@@ -93,7 +93,7 @@ Rectangle
             if (text != "" && root.visible)
             {
                 regovar.search(text);
-                Regovar.menuModel.selectedIndex=[1,-1,-1];
+                regovar.mainMenu.goTo(1,-1,-1);
             }
         }
 
@@ -318,60 +318,76 @@ Rectangle
                     }
 
 
-
-
-                    Repeater
+                    Rectangle
                     {
-                        model : ListModel
+                        id: empty
+                        width: panel.width
+                        color: "transparent"
+                        border.width: 1
+                        border.color: Regovar.theme.boxColor.border
+
+                        Text
                         {
-                            ListElement { date: "2017-06-25 14:56"; name: "Article published"; icon:"j"; color:"" }
-                            ListElement { date: "2017-06-25 14:56"; name: "Pause analysis \"Hugodims\""; icon:"m"; color:"red" }
-                            ListElement { date: "2017-06-25 14:56"; name: "Start new analysis \"Hugodims\""; icon:""; color:"" }
-                            ListElement { date: "2017-06-25 14:56"; name: "Creation of the project : DPNI"; icon:""; color:"" }
-                        }
-
-                        RowLayout
-                        {
-                            spacing: 0
-                            height: Regovar.theme.font.boxSize.normal
-
-                            Text
-                            {
-                                width: 150
-                                font.pixelSize: 12
-                                font.family: "monospace"
-                                verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: Text.AlignLeft
-                                text: date
-                                color: Regovar.theme.frontColor.disable
-                            }
-
-                            Rectangle
-                            {
-                                width: Regovar.theme.font.boxSize.normal
-                                height: Regovar.theme.font.boxSize.normal
-                                color: "transparent"
-                            }
-                            Text
-                            {
-                                Layout.minimumWidth: Regovar.theme.font.boxSize.normal
-                                font.pixelSize: 12
-                                font.family: Regovar.theme.icons.name
-                                verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: Text.AlignLeft
-                                text: icon
-                                color: color
-                            }
-                            Text
-                            {
-                                font.pixelSize: 12
-                                font.family: Regovar.theme.font.family
-                                color: Regovar.theme.frontColor.normal
-                                verticalAlignment: Text.AlignVCenter
-                                text: name
-                            }
+                            anchors.centerIn: parent
+                            text: qsTr("Not yet implemented")
+                            font.pixelSize: Regovar.theme.font.size.title
+                            color: Regovar.theme.primaryColor.back.light
                         }
                     }
+
+
+//                    Repeater
+//                    {
+//                        model : ListModel
+//                        {
+//                            ListElement { date: "2017-06-25 14:56"; name: "Article published"; icon:"j"; color:"" }
+//                            ListElement { date: "2017-06-25 14:56"; name: "Pause analysis \"Hugodims\""; icon:"m"; color:"red" }
+//                            ListElement { date: "2017-06-25 14:56"; name: "Start new analysis \"Hugodims\""; icon:""; color:"" }
+//                            ListElement { date: "2017-06-25 14:56"; name: "Creation of the project : DPNI"; icon:""; color:"" }
+//                        }
+
+//                        RowLayout
+//                        {
+//                            spacing: 0
+//                            height: Regovar.theme.font.boxSize.normal
+
+//                            Text
+//                            {
+//                                width: 150
+//                                font.pixelSize: 12
+//                                font.family: "monospace"
+//                                verticalAlignment: Text.AlignVCenter
+//                                horizontalAlignment: Text.AlignLeft
+//                                text: date
+//                                color: Regovar.theme.frontColor.disable
+//                            }
+
+//                            Rectangle
+//                            {
+//                                width: Regovar.theme.font.boxSize.normal
+//                                height: Regovar.theme.font.boxSize.normal
+//                                color: "transparent"
+//                            }
+//                            Text
+//                            {
+//                                Layout.minimumWidth: Regovar.theme.font.boxSize.normal
+//                                font.pixelSize: 12
+//                                font.family: Regovar.theme.icons.name
+//                                verticalAlignment: Text.AlignVCenter
+//                                horizontalAlignment: Text.AlignLeft
+//                                text: icon
+//                                color: color
+//                            }
+//                            Text
+//                            {
+//                                font.pixelSize: 12
+//                                font.family: Regovar.theme.font.family
+//                                color: Regovar.theme.frontColor.normal
+//                                verticalAlignment: Text.AlignVCenter
+//                                text: name
+//                            }
+//                        }
+//                    }
                 }
             }
         }
@@ -406,7 +422,7 @@ Rectangle
                 visible: !regovar.welcomIsLoading || regovar.networkManager.status != 0
                 icon: "d"
                 text: qsTr("Check local settings")
-                onClicked: regovar.mainMenu.select(5,1,2)
+                onClicked: regovar.mainMenu.goTo(5,1,2)
             }
         }
     }

@@ -39,6 +39,7 @@ Item
         // Refresh the model of the menu repeater
         topLevelRepeater.model = model.entries;
         subLevelRepeater.model = model.entries[model.index].entries;
+        menuL2Title.text = model.entries[model.index].label;
     }
 
 
@@ -66,7 +67,6 @@ Item
                 model: modelData
                 label: modelData.label
                 icon: modelData.icon
-                onClicked: menuL2Title.text = modelData.label;
             }
         }
     }
@@ -115,7 +115,6 @@ Item
                     verticalAlignment: Text.AlignVCenter
                     font.bold: true
                     font.pixelSize: 22
-                    text : model ? model.title : ""
                     color: Regovar.theme.primaryColor.back.dark
                 }
             }

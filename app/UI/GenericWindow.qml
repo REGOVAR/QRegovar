@@ -20,7 +20,16 @@ ApplicationWindow
     property int currentUid: -1
 
 
-    property alias menuModel: mainMenu.model
+    property alias menuModel: mainMenu.model    
+    onMenuModelChanged:
+    {
+        if (menuModel)
+        {
+            root.pages = {};
+            buildPages(menuModel, null);
+            openPage(menuModel.selectedEntry);
+        }
+    }
 
 
 
@@ -140,16 +149,6 @@ ApplicationWindow
             currentUid = menuEntry.uid;
             pages[currentUid].visible = true;
             pages[currentUid].anchors.fill = stack;
-        }
-    }
-
-    onMenuModelChanged:
-    {
-        if (menuModel)
-        {
-            root.pages = {};
-            buildPages(menuModel, null);
-            openPage(menuModel.selectedEntry);
         }
     }
 }
