@@ -15,7 +15,7 @@ Rectangle
     onModelChanged:
     {
         console.log("===> AnnotationPanel model set up")
-        annotationsSelector.model = root.model.annotationsTree
+        annotationsSelector.model = root.model.annotationsTree//.proxy
     }
 
     ColumnLayout
@@ -72,7 +72,7 @@ Rectangle
                     iconLeft: "z"
                     Layout.fillWidth: true
                     placeholder: qsTr("Search annotation...")
-                    onTextEdited: root.model.annotationsTree.proxy.setFilterString(text)
+                   // onTextEdited: root.model.annotationsTree.proxy.setFilterString(text)
                 }
 
                 TreeView

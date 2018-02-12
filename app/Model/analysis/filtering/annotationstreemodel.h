@@ -5,7 +5,7 @@
 #include "annotation.h"
 #include "fieldcolumninfos.h"
 #include "filteringanalysis.h"
-#include "Model/sortfilterproxymodel/annotationsproxymodel.h"
+#include "Model/framework/genericproxymodel.h"
 
 class FilteringAnalysis;
 
@@ -13,7 +13,7 @@ class AnnotationsTreeModel : public TreeModel
 {
     Q_OBJECT
     Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
-    Q_PROPERTY(AnnotationsProxyModel* proxy READ proxy NOTIFY proxyChanged)
+    Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
 public:
 
@@ -32,7 +32,7 @@ public:
 
     // Getters
     inline bool isLoading() const { return mIsLoading; }
-    inline AnnotationsProxyModel* proxy() const { return mProxy; }
+    inline GenericProxyModel* proxy() const { return mProxy; }
 
     // Setters
     inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingChanged(); }
@@ -50,15 +50,21 @@ public:
     void setupModelData(QJsonArray data, TreeItem *parent, QStringList dbUids);
 
 Q_SIGNALS:
+    void neverChanged();
+    // Property changed event
     void isLoadingChanged();
-    void proxyChanged();
 
 private:
+    //! Flag to know if the model is loading or not
     bool mIsLoading = false;
+    //! The common reference id to the annotations
     int mRefId = -1;
+    //! The common reference name to the annotations
     QString mRefName;
-    FilteringAnalysis* mAnalysis;
-    AnnotationsProxyModel* mProxy;
+    //! A ref to the root analysis
+    FilteringAnalysis* mAnalysis = nullptr;
+    //! The QSortFilterProxyModel to use by tree view to browse project/analyse of the manager
+    GenericProxyModel* mProxy = nullptr;
 };
 
 #endif // ANNOTATIONSTREEMODEL_H

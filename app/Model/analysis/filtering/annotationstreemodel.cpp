@@ -20,11 +20,11 @@ AnnotationsTreeModel::AnnotationsTreeModel(FilteringAnalysis* analysis) : TreeMo
     mRootItem = new TreeItem(rootData);
 
 
-    mProxy = new AnnotationsProxyModel(this);
+    mProxy = new GenericProxyModel(this);
     mProxy->setSourceModel(this);
     mProxy->setFilterRole(SearchField);
     mProxy->setSortRole(Name);
-    emit proxyChanged();
+    mProxy->setRecursiveFilteringEnabled(true);
 }
 
 
@@ -115,6 +115,8 @@ void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent, QSt
                 dbColData.insert(Name, QVariant(dbName));
                 dbColData.insert(Version, QVariant(dbVersion[""]));
                 dbColData.insert(Description, QVariant(dbDescription));
+                QString search = dbName + " " + dbDescription + " " + dbVersion[""].toString();
+                dbColData.insert(SearchField,  QVariant(search));
                 TreeItem* dbItem = new TreeItem(dbColData, parent);
                 parent->appendChild(dbItem);
 
@@ -132,6 +134,8 @@ void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent, QSt
                     annotColData.insert(Name, QVariant(name));
                     annotColData.insert(Version, QVariant(dbVersion[""]));
                     annotColData.insert(Description, QVariant(description));
+                    QString search2 = name + " " + description + " " + dbName + " " + dbDescription + " " + dbVersion[""].toString();
+                    dbColData.insert(SearchField,  QVariant(search2));
                     TreeItem* annotItem = new TreeItem(annotColData, dbItem);
                     dbItem->appendChild(annotItem);
 
