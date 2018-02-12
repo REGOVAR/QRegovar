@@ -210,14 +210,14 @@ Dialog
                                 // TODO: File upload play/pause/cancel button
 //                                ButtonInline
 //                                {
-//                                    icon: "y"
+//                                    iconTxt: "y"
 //                                    text: ""
 //                                    ToolTip.text: qsTr("Pause upload of this file")
 //                                    ToolTip.visible: hovered
 //                                }
 //                                ButtonInline
 //                                {
-//                                    icon: "h"
+//                                    iconTxt: "h"
 //                                    text: ""
 //                                    ToolTip.text: qsTr("Cancel upload of this file")
 //                                    ToolTip.visible: hovered

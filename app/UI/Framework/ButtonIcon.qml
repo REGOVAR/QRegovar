@@ -10,7 +10,7 @@ Button
     property string iconTxt: ""
     onIconTxtChanged:
     {
-        if (iconTxt != null && iconTxt != undefined && v != "")
+        if (iconTxt != null && iconTxt != undefined && iconTxt != "")
         {
             iconText.visible = true
             iconText.width = Regovar.theme.font.boxSize.normal

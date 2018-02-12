@@ -61,13 +61,13 @@ Rectangle
                 }
 
                 text: ""
-                icon: paused ? "x" : "y"
+                iconTxt: paused ? "x" : "y"
                 onClicked: paused = !paused
             }
             ButtonInline
             {
                 text: ""
-                icon: "h"
+                iconTxt: "h"
                 onClicked:
                 {
                     regovar.filesManager.cancelUpload(fileModel.id);

@@ -241,7 +241,7 @@ Rectangle
 
             ButtonInline
             {
-                icon: "Y"
+                iconTxt: "Y"
                 text: ""
                 onClicked: computingProgressLog.visible = true
                 ToolTip.text: qsTr("Display details")
@@ -349,7 +349,7 @@ Rectangle
 
                     ButtonInline
                     {
-                        icon: "z"
+                        iconTxt: "z"
                         text: ""
                         onClicked: regovar.getSampleInfo(styleData.value.id)
                     }
@@ -382,7 +382,7 @@ Rectangle
 
                     ButtonInline
                     {
-                        icon: "z"
+                        iconTxt: "z"
                         text: ""
                         onClicked: regovar.subjectsManager.openSubject(styleData.value.id)
                         visible: styleData.value

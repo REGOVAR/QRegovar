@@ -105,7 +105,7 @@ QuickFilterBox
 
             ButtonInline
             {
-                icon: "z"
+                iconTxt: "z"
                 text: ""
             }
         }
@@ -126,7 +126,7 @@ QuickFilterBox
 
             ButtonInline
             {
-                icon: "z"
+                iconTxt: "z"
                 text: ""
             }
         }
@@ -147,7 +147,7 @@ QuickFilterBox
 
             ButtonInline
             {
-                icon: "z"
+                iconTxt: "z"
                 text: ""
             }
         }

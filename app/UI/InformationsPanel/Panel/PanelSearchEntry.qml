@@ -15,13 +15,13 @@ Row
 
     ButtonInline
     {
-        icon: "à"
+        iconTxt: "à"
         text: ""
         onClicked: root.added()
     }
     ButtonInline
     {
-        icon: "z"
+        iconTxt: "z"
         text: ""
         onClicked: root.showDetails()
     }

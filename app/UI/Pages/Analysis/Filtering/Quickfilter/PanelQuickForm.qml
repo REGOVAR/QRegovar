@@ -130,7 +130,7 @@ QuickFilterBox
 
         ButtonInline
         {
-            icon: "à"
+            iconTxt: "à"
             text: qsTr("Add panel")
         }
     }

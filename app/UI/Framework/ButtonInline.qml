@@ -7,16 +7,16 @@ Button
     id: control
     text: "Button"
 
-    property string icon: ""
+    property string iconTxt: ""
 
 
     contentItem: Row
     {
-        spacing: (icon != "" && control.text != "") ? 5 : 0
+        spacing: (iconTxt != "" && control.text != "") ? 5 : 0
         Text
         {
             id: iconText
-            text: icon
+            text: iconTxt
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.icons.name
             font.bold: false
@@ -24,8 +24,8 @@ Button
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             height: parent.height
-            width: icon ? Regovar.theme.font.size.normal : 0
-            visible: icon != ""
+            width: iconTxt ? Regovar.theme.font.size.normal : 0
+            visible: iconTxt != ""
         }
         Text
         {

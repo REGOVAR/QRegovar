@@ -224,7 +224,7 @@ Rectangle
                     sharedUrl.color = test2 ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.danger;
 
                     testConnectionButton.enabled = true;
-                    testConnectionButton.icon = "x";
+                    testConnectionButton.iconTxt = "x";
                 }
             }
         }

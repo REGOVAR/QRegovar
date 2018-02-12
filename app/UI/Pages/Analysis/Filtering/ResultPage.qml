@@ -118,7 +118,7 @@ Rectangle
                         ButtonInline
                         {
                             text: qsTr("Download all")
-                            icon: "é"
+                            iconTxt: "é"
                         }
                     }
 
