@@ -8,10 +8,31 @@ Implementation of [beta](https://github.com/REGOVAR/QRegovar/milestone/1) in pro
 
 ![mokcup](https://raw.githubusercontent.com/REGOVAR/QRegovar/781c155b1a0d640f757ea5677d223f3d9e347ab7/docs/mockup/mockup.gif)
 
+# How to build
+
+## On Ubuntu 16.04 LTS (Xenial)
+
+You first need a few Qt 5.10 packages that are not yet distributed through the official Ubuntu repositories (note that by doing so, you are trusting [Stephan Binner](https://launchpad.net/~beineri) who is kindling providing compiled packages that are not provided upstream):
+
+```sh
+sudo add-apt-repository ppa:beineri/opt-qt-5.10.0-xenial
+sudo apt update
+sudo apt install qt510creator qt510charts-no-lgpl qt510graphicaleffects qt510websockets
+```
+
+Then, source a Qt 5.10 environment and use QtCreator to compile QRegovar:
+
+```sh
+source /opt/qt510/bin/qt510-env.sh
+qtcreator
+```
+
+Open the `app/QRegovar.pro` file, and press `ctrl + R` to build and run QRegovar.
+
 # Credits
-Thanks for their help :
+
+Thanks for their help:
 
  * [Fontastic](http://app.fontastic.me/)
  * [Freepik](https://www.flaticon.com/)
  * [Inkscape](https://inkscape.org/en/)
-
