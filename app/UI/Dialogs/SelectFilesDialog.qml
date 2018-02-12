@@ -312,7 +312,7 @@ Dialog
 
             visible: !uploadBlockingProgress.visible
 
-            icon: "à"
+            iconTxt: "à"
             text: qsTr("Upload local files")
             onClicked: localFilesDialog.open()
         }

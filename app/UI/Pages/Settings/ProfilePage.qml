@@ -174,7 +174,7 @@ Rectangle
                 x:10
                 y:10
                 text: qsTr("Change my password")
-                icon: "n"
+                iconTxt: "n"
                 onClicked:
                 {
                     confirmPasswordButton.enabled = false;

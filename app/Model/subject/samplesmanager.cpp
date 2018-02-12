@@ -22,7 +22,7 @@ SamplesManager::SamplesManager(int refId, QObject* parent) : QAbstractListModel(
 Sample* SamplesManager::getOrCreate(int sampleId, bool internalRefresh)
 {
     // convert sample id with ref id to get sample's internal unique id
-    int id = mRefId * 10000000 + sampleId;
+    int id = mRefId * 100000000 + sampleId;
 
     if (mSamples.contains(id))
     {
@@ -175,6 +175,7 @@ QHash<int, QByteArray> SamplesManager::roleNames() const
     roles[Source] = "source";
     roles[Subject] = "subject";
     roles[Reference] = "reference";
+    roles[SearchField] = "searchField";
     return roles;
 }
 

@@ -9,17 +9,19 @@ class ProjectsTreeModel : public TreeModel
     Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
 
 public:
-    enum JsonModelRoles
+    enum Roles
     {
-        IdRole = Qt::UserRole + 1,
-        TypeRole,
-        NameRole,
-        CommentRole,
-        DateRole,
+        Id = Qt::UserRole + 1,
+        Type,
+        Name,
+        Comment,
+        Date,
+        Status,
+        SearchField
     };
 
     // Constructor
-    explicit ProjectsTreeModel();
+    explicit ProjectsTreeModel(QObject* parent=nullptr);
 
     // Getters
     inline bool isLoading() { return mIsLoading; }

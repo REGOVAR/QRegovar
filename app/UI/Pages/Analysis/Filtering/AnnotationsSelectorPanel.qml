@@ -185,7 +185,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.margins: 10
                 text: qsTr("Apply changes")
-                icon: "n"
+                iconTxt: "n"
                 enabled: false
                 onClicked: { root.model.applyChangeForDisplayedAnnotations(); applyButton.enabled = false; }
             }

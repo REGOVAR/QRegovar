@@ -47,6 +47,7 @@ Rectangle
             anchors.margins: 10
             iconLeft: "z"
             placeholder: qsTr("Search projects by names, dates, comments...")
+            onTextEdited: regovar.projectsManager.proxy.setFilterString(text)
         }
     }
 
@@ -104,12 +105,13 @@ Rectangle
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
-        model: regovar.projectsManager.projectsTreeView
+        model: regovar.projectsManager.proxy //regovar.projectsManager.projectsTreeView
 
         onDoubleClicked:
         {
-            var id = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
-            var type = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 258);
+            var idx = regovar.projectsManager.proxy.mapToSource(browser.currentIndex);
+            var id = regovar.projectsManager.projectsTreeView.data(idx, 257); // 257 = Qt::UserRole+1
+            var type = regovar.projectsManager.projectsTreeView.data(idx, 258);
 
             if (id && type)
             {
@@ -198,8 +200,9 @@ Rectangle
     /// Retrive model of the selected project in the treeview and set the Regovar.currentProject with it.
     function openSelectedProject()
     {
-        var id = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
-        var type = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 258);
+        var idx = regovar.projectsManager.proxy.mapToSource(browser.currentIndex);
+        var id = regovar.projectsManager.projectsTreeView.data(idx, 257); // 257 = Qt::UserRole+1
+        var type = regovar.projectsManager.projectsTreeView.data(idx, 258);
 
         if (id && type)
         {
@@ -218,8 +221,9 @@ Rectangle
     /// Retrive model of the selected project in the treeview and delete it.
     function deleteSelectedProject()
     {
-        var id = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
-        var type = regovar.projectsManager.projectsTreeView.data(browser.currentIndex, 258);
+        var idx = regovar.projectsManager.proxy.mapToSource(browser.currentIndex);
+        var id = regovar.projectsManager.projectsTreeView.data(idx, 257); // 257 = Qt::UserRole+1
+        var type = regovar.projectsManager.projectsTreeView.data(idx, 258);
 
         if (id && type)
         {

@@ -130,7 +130,7 @@ Rectangle
                 {
                     id: exportButton
                     text: qsTr("Export")
-                    icon: "_"
+                    iconTxt: "_"
                     enabled: exportTool.isExpanded
                     onClicked: regovar.toolsManager.exporters[exportTool.currentIndex].run(model.id)
                 }
@@ -139,7 +139,7 @@ Rectangle
                 {
                     id: reportButton
                     text: qsTr("Report")
-                    icon: "Y"
+                    iconTxt: "Y"
                     enabled: reportTool.isExpanded
                     onClicked: regovar.toolsManager.reporters[reportTool.currentIndex].run(model.id)
                 }

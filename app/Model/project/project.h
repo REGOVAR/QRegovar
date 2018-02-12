@@ -22,6 +22,8 @@ class Project : public QObject
     Q_PROPERTY(QList<QObject*> subjects READ subjects NOTIFY dataChanged)
 
 
+
+
 public:
     // Constructors
     explicit Project(QObject* parent=nullptr);

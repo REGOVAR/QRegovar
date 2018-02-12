@@ -5,7 +5,7 @@
 
 
 
-ProjectsTreeModel::ProjectsTreeModel() : TreeModel(nullptr)
+ProjectsTreeModel::ProjectsTreeModel(QObject* parent) : TreeModel(parent)
 {
     // With QML TreeView, the rootItem must know all column's roles to allow correct display for
     // other rows. So that's why we create columns for all existings roles.
@@ -37,11 +37,13 @@ void ProjectsTreeModel::refresh(QJsonObject json)
 QHash<int, QByteArray> ProjectsTreeModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[IdRole] = "id";
-    roles[TypeRole] = "type";
-    roles[NameRole] = "name";
-    roles[DateRole] = "date";
-    roles[CommentRole] = "comment";
+    roles[Id] = "id";
+    roles[Type] = "type";
+    roles[Name] = "name";
+    roles[Comment] = "comment";
+    roles[Date] = "date";
+    roles[Status] = "status";
+    roles[SearchField] = "searchField";
     return roles;
 }
 
@@ -50,14 +52,22 @@ QHash<int, QByteArray> ProjectsTreeModel::roleNames() const
 TreeItem* ProjectsTreeModel::newProjectsTreeItem(bool isFolder, const QJsonObject& rowData, TreeItem* parent)
 {
     int id = rowData["id"].toInt();
+
     // add columns info to the item
     QHash<int, QVariant> columnData;
-    columnData.insert(IdRole, id);
-    columnData.insert(TypeRole, isFolder ? "folder" : rowData["type"].toVariant());
-    columnData.insert(NameRole, rowData["name"].toVariant());
-    columnData.insert(CommentRole, rowData["comment"].toVariant());
+    columnData.insert(Id, id);
+    columnData.insert(Type, isFolder ? "folder" : rowData["type"].toVariant());
+    columnData.insert(Name, rowData["name"].toVariant());
+    columnData.insert(Comment, rowData["comment"].toVariant());
     QDateTime date = QDateTime::fromString(rowData["update_date"].toString(), Qt::ISODate);
-    columnData.insert(DateRole, QVariant(date.toString("yyyy-MM-dd HH:mm")));
+    columnData.insert(Date, QVariant(date.toString("yyyy-MM-dd HH:mm")));
+    columnData.insert(Status, isFolder ? QVariant() : rowData["status"].toVariant());
+    QString search = rowData["name"].toString() + " " + rowData["comment"].toString() + " " + date.toString("yyyy-MM-dd HH:mm");
+    if (isFolder)
+    {
+        search += " " + rowData["status"].toString();
+    }
+    columnData.insert(SearchField, QVariant(search));
 
     TreeItem* result = new TreeItem(parent);
     result->setParent(parent);

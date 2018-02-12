@@ -23,6 +23,7 @@ Project::Project(int id, QObject* parent) : QObject(parent)
 
 
 
+
 bool Project::fromJson(QJsonObject json)
 {
     mId = json["id"].toInt();

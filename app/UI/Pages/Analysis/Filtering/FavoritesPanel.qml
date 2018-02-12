@@ -286,7 +286,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.margins: 10
                 text: qsTr("Import filter")
-                icon: "é"
+                iconTxt: "é"
                 enabled: false
             }
         }

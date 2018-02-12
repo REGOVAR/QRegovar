@@ -223,7 +223,7 @@ Rectangle
                 Layout.rowSpan: 2
                 Layout.alignment: Qt.AlignTop
                 text: qsTr("Clear cache !")
-                icon: "h"
+                iconTxt: "h"
                 onClicked:
                 {
                     regovar.filesManager.clearCache();

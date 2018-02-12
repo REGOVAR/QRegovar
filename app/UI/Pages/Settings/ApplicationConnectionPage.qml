@@ -202,7 +202,7 @@ Rectangle
             Layout.column: 0
             Layout.columnSpan: 2
             text: qsTr("Test connection !")
-            icon: "x"
+            iconTxt: "x"
             onClicked:
             {
                 testConnectionButton.enabled = false;

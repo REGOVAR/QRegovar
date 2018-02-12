@@ -105,7 +105,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.margins: 10
                 text: qsTr("Apply filter")
-                icon: "x"
+                iconTxt: "x"
                 onClicked:
                 {
                     var qf = model.quickfilters.toJson();
@@ -122,7 +122,7 @@ Rectangle
                 anchors.left: applyButton.right
                 anchors.margins: 10
                 text: qsTr("Save filter")
-                icon: "5"
+                iconTxt: "5"
                 enabled: model && model.currentFilterName == ""
                 onClicked:
                 {

@@ -4,20 +4,25 @@
 
 ProjectsManager::ProjectsManager(QObject* parent) : QObject(parent)
 {
-    mProjectsTreeView = new ProjectsTreeModel();
+    mProjectsTreeModel = new ProjectsTreeModel(this);
+    mProxy = new ProjectsProxyModel(this);
+    mProxy->setSourceModel(mProjectsTreeModel);
+    mProxy->setFilterRole(ProjectsTreeModel::Roles::SearchField);
+    mProxy->setSortRole(ProjectsTreeModel::Roles::Name);
+    mProxy->setRecursiveFilteringEnabled(true);
 }
 
 
 void ProjectsManager::refresh()
 {
-    mProjectsTreeView->setIsLoading(true);
+    mProjectsTreeModel->setIsLoading(true);
 
     Request* request = Request::get("/project/browserTree");
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
         if (success)
         {
-            mProjectsTreeView->refresh(json);
+            mProjectsTreeModel->refresh(json);
             mProjectsFlatList.clear();
             refreshFlatProjectsListRecursive(json["data"].toArray(), "");
 
@@ -26,7 +31,7 @@ void ProjectsManager::refresh()
         {
             qCritical() << Q_FUNC_INFO << "Unable to build projects tree model (due to request error)";
         }
-        mProjectsTreeView->setIsLoading(false);
+        mProjectsTreeModel->setIsLoading(false);
         request->deleteLater();
     });
 }

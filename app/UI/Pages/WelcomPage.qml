@@ -420,7 +420,7 @@ Rectangle
                 anchors.horizontalCenter: connectionLostText.horizontalCenter
                 anchors.margins: 20
                 visible: !regovar.welcomIsLoading || regovar.networkManager.status != 0
-                icon: "d"
+                iconTxt: "d"
                 text: qsTr("Check local settings")
                 onClicked: regovar.mainMenu.goTo(5,1,2)
             }

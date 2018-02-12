@@ -7,10 +7,10 @@ Button
     id: control
     text: "Button"
 
-    property string icon: ""
-    onIconChanged:
+    property string iconTxt: ""
+    onIconTxtChanged:
     {
-        if (icon != null && icon != undefined && icon != "")
+        if (iconTxt != null && iconTxt != undefined && v != "")
         {
             iconText.visible = true
             iconText.width = Regovar.theme.font.boxSize.normal
@@ -23,7 +23,7 @@ Button
         Text
         {
             id: iconText
-            text: icon
+            text: iconTxt
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.icons.name
             font.bold: false
