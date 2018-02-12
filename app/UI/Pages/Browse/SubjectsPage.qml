@@ -104,7 +104,6 @@ Rectangle
 
         onDoubleClicked: openSelectedSubject()
 
-
         TableViewColumn
         {
             role: "identifier"
@@ -124,43 +123,11 @@ Rectangle
         {
             role: "sex"
             title: qsTr("Sex")
-            delegate: RowLayout
-            {
-                anchors.fill: parent
-                anchors.margins: 5
-                Text
-                {
-                    Layout.fillHeight: true
-                    width: Regovar.theme.font.boxSize.normal
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.family: Regovar.theme.icons.name
-                    text: ["b", "<", "9"][modelData.sex]
-
-                }
-                Text
-                {
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignLeft
-                    text: [qsTr("Unknow"), qsTr("Female"), qsTr("Male")][modelData.sex]
-                    elide: Text.ElideRight
-                }
-            }
         }
         TableViewColumn
         {
             role: "dateOfBirth"
             title: qsTr("Date of birth")
-            delegate: Text
-            {
-                anchors.fill: parent
-                anchors.margins: 5
-                verticalAlignment: Text.AlignVCenter
-                text: Regovar.formatShortDate(modelData.dateOfBirth)
-                elide: Text.ElideRight
-            }
         }
         TableViewColumn
         {

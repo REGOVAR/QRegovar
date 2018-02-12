@@ -55,8 +55,9 @@ Dialog
             anchors.left: root.left
             anchors.right: root.right
             anchors.margins: 10
+            iconLeft: "z"
             placeholder: qsTr("Search subjects by identifier, firstname, lastname, date of birth, sex, comment, ...")
-            text: regovar.subjectsManager.searchQuery
+            onTextEdited: regovar.subjectsManager.proxy.setFilterString(text)
         }
 
         TableView
@@ -68,8 +69,10 @@ Dialog
             anchors.bottom : okButton.top
             anchors.margins: 10
 
-            model: regovar.subjectsManager
+            model: regovar.subjectsManager.proxy
             property var statusIcons: ["m", "/", "n", "h"]
+
+            onDoubleClicked: openSelectedSubject()
 
             TableViewColumn
             {
@@ -86,11 +89,11 @@ Dialog
                 role: "firstname"
                 title: "Firstname"
             }
-//            TableViewColumn
-//            {
-//                role: "sex"
-//                title: "Sex"
-//            }
+            TableViewColumn
+            {
+                role: "sex"
+                title: "Sex"
+            }
             TableViewColumn
             {
                 role: "dateofbirth"
@@ -111,13 +114,7 @@ Dialog
             anchors.margins: 10
 
             text: qsTr("Ok")
-            onClicked:
-            {
-
-                var subject=subjectsList.model[subjectsList.currentRow];
-                subjectSelected(subject);
-                subjectDialog.accept();
-            }
+            onClicked: openSelectedSubject()
         }
 
         Button
@@ -129,6 +126,17 @@ Dialog
             text: qsTr("Cancel")
             onClicked: subjectDialog.reject()
         }
+    }
+
+    /// Retrive model of the selected Subject in the tableview and return it (via event subjectSelected)
+    function openSelectedSubject()
+    {
+        var idx = regovar.subjectsManager.proxy.getModelIndex(subjectsList.currentRow);
+        var id = regovar.subjectsManager.data(idx, 257);// 257 = Qt::UserRole+1
+        var subject = regovar.subjectsManager.getOrCreateSubject(id);
+
+        subjectSelected(subject);
+        subjectDialog.accept();
     }
 }
 
