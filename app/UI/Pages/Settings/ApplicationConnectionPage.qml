@@ -206,7 +206,7 @@ Rectangle
             onClicked:
             {
                 testConnectionButton.enabled = false;
-                testConnectionButton.icon = "/";
+                testConnectionButton.iconTxt = "/";
                 regovar.networkManager.testServerUrl(regovarUrl.text, sharedUrl.text);
             }
 

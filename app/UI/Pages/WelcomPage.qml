@@ -322,6 +322,7 @@ Rectangle
                     {
                         id: empty
                         width: panel.width
+                        height: Regovar.theme.font.boxSize.normal
                         color: "transparent"
                         border.width: 1
                         border.color: Regovar.theme.boxColor.border
@@ -330,8 +331,8 @@ Rectangle
                         {
                             anchors.centerIn: parent
                             text: qsTr("Not yet implemented")
-                            font.pixelSize: Regovar.theme.font.size.title
-                            color: Regovar.theme.primaryColor.back.light
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            color: Regovar.theme.primaryColor.back.dark
                         }
                     }
 

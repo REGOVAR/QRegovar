@@ -111,7 +111,7 @@ Item
             url: "https://www.python.org/"
         }
         ListElement {
-            name: "Qt 5.9 / QML"
+            name: "Qt 5.10 / QML"
             comment: qsTr("Regovar client UI framework")
             icon: "qrc:/credits/t_qt.png"
             url: "https://www.qt.io/"

@@ -130,7 +130,7 @@ QVariant SubjectsManager::data(const QModelIndex& index, int role) const
     else if (role == Sex)
         return subject->sex() == Subject::Sex::Male ? tr("Male") : Subject::Sex::Female ? tr("Female") : tr("Unknow");
     else if (role == DateOfBirth)
-        return subject->dateOfBirth().toString("yyyy-MM-dd HH:mm");
+        return subject->dateOfBirth().toString("yyyy-MM-dd");
     else if (role == FamilyNumber)
         return subject->familyNumber();
     else if (role == SearchField)
