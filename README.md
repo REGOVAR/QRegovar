@@ -8,9 +8,19 @@ Implementation of [beta](https://github.com/REGOVAR/QRegovar/milestone/1) in pro
 
 ![mokcup](https://raw.githubusercontent.com/REGOVAR/QRegovar/781c155b1a0d640f757ea5677d223f3d9e347ab7/docs/mockup/mockup.gif)
 
+
 # How to build
 
-## On Ubuntu 16.04 LTS (Xenial)
+## Windows
+
+We need only Qt 5.10. 
+
+Download the open source package on the [Qt web site](https://www.qt.io/download). Follow instruction to install it Qt (next, next, next). 
+
+Then open the `app/QRegovar.pro` with QtCreator and press `ctrl + R` to build and run QRegovar.
+
+
+##  On Ubuntu 16.04 LTS (Xenial)
 
 You first need a few Qt 5.10 packages that are not yet distributed through the official Ubuntu repositories (note that by doing so, you are trusting [Stephan Binner](https://launchpad.net/~beineri) who is kindling providing compiled packages that are not provided upstream):
 
