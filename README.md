@@ -15,7 +15,7 @@ Implementation of [beta](https://github.com/REGOVAR/QRegovar/milestone/1) in pro
 
 We need only Qt 5.10. 
 
-Download the open source package on the [Qt web site](https://www.qt.io/download). Follow instruction to install it Qt (next, next, next). 
+Download the open source package on the [Qt web site](https://www.qt.io/download). Follow instruction to install it (next, next, next). 
 
 Then open the `app/QRegovar.pro` with QtCreator and press `ctrl + R` to build and run QRegovar.
 
