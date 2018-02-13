@@ -340,6 +340,7 @@ void FilteringAnalysis::loadAnnotations()
     mAnnotations["_Samples"]->setUIUid("_Samples");
 
     // Update annotations databases
+    mAnnotationsTreeModel->clear();
     for (QObject* o: mAllAnnotations)
     {
         AnnotationDB* db = qobject_cast<AnnotationDB*>(o);

@@ -80,7 +80,7 @@ Rectangle
                 id: annotationField
                 Layout.fillWidth: true
                 enabled: editionMode
-                model: [qsTr("None"), qsTr("Benign"), qsTr("Probably Benign"), qsTr("Probably damaging"), qsTr("Damaging")]
+                model: [qsTr("None"), qsTr("Class 1"), qsTr("Class 2"), qsTr("Class 3"), qsTr("Class 4"), qsTr("Class 5")]
             }
 
             Column

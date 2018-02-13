@@ -20,7 +20,9 @@ public:
     enum Roles
     {
         Id = Qt::UserRole + 1,
-        Checked,
+        DbId,
+        Order,
+        Selected,
         Name,
         Version,
         Description,

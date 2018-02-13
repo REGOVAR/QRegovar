@@ -23,7 +23,7 @@ AnnotationsTreeModel::AnnotationsTreeModel(FilteringAnalysis* analysis) : TreeMo
     mProxy = new GenericProxyModel(this);
     mProxy->setSourceModel(this);
     mProxy->setFilterRole(SearchField);
-    mProxy->setSortRole(Name);
+    mProxy->setSortRole(Order);
     mProxy->setRecursiveFilteringEnabled(true);
 }
 
@@ -31,18 +31,18 @@ AnnotationsTreeModel::AnnotationsTreeModel(FilteringAnalysis* analysis) : TreeMo
 
 
 
-bool AnnotationsTreeModel::fromJson(QJsonObject data, QStringList dbUids)
+bool AnnotationsTreeModel::fromJson(QJsonObject, QStringList)
 {
-    // TODO : manage error
-    clear();
-    mRefId = data["ref_id"].toInt();
-    mRefName = data["ref_name"].toString();
+//    NEVER USED ???
+//    clear();
+//    mRefId = data["ref_id"].toInt();
+//    mRefName = data["ref_name"].toString();
 
-    beginResetModel();
-    setupModelData(data["db"].toArray(), mRootItem, dbUids);
-    endResetModel();
+//    beginResetModel();
+//    setupModelData(data["db"].toArray(), mRootItem, dbUids);
+//    endResetModel();
 
-    qDebug() << "Annotation loaded for ref" << mRefName << ":" << mAnalysis->annotationsMap().count();
+//    qDebug() << "Annotation loaded for ref" << mRefName << ":" << mAnalysis->annotationsMap().count();
     return true;
 }
 
@@ -76,7 +76,9 @@ QHash<int, QByteArray> AnnotationsTreeModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[Id] = "id";
-    roles[Checked] = "Checked";
+    roles[DbId] = "dbid";
+    roles[Order] = "order";
+    roles[Selected] = "selected";
     roles[Name] = "name";
     roles[Version] = "version";
     roles[Description] = "description";
@@ -91,60 +93,62 @@ QHash<int, QByteArray> AnnotationsTreeModel::roleNames() const
 
 
 
-void AnnotationsTreeModel::setupModelData(QJsonArray data, TreeItem *parent, QStringList dbUids)
+void AnnotationsTreeModel::setupModelData(QJsonArray, TreeItem*, QStringList)
 {
-    for (const QJsonValue& dbv: data)
-    {
-        QJsonObject db = dbv.toObject();
+//    NEVER USED ???
+//    for (const QJsonValue& dbv: data)
+//    {
+//        QJsonObject db = dbv.toObject();
 
-        QString dbName = db["name"].toString();
-        QString dbDescription = db["description"].toString();
-        QJsonObject dbVersion = db["version"].toObject();
+//        QString dbName = db["name"].toString();
+//        QString dbDescription = db["description"].toString();
+//        QJsonObject dbVersion = db["version"].toObject();
 
 
-        // Version sublevel
-        for (const QString& dbUid: dbVersion.keys())
-        {
-            // Keep only annotations used in the analyses
-            if (dbUids.contains(dbUid) || (dbUid == "" && dbName == "Variant"))
-            {
-                // Create DB entry
-                QHash<int, QVariant> dbColData;
-                dbColData.insert(Id, QVariant(dbUid));
-                dbColData.insert(Checked, QVariant(false));
-                dbColData.insert(Name, QVariant(dbName));
-                dbColData.insert(Version, QVariant(dbVersion[""]));
-                dbColData.insert(Description, QVariant(dbDescription));
-                QString search = dbName + " " + dbDescription + " " + dbVersion[""].toString();
-                dbColData.insert(SearchField,  QVariant(search));
-                TreeItem* dbItem = new TreeItem(dbColData, parent);
-                parent->appendChild(dbItem);
+//        // Version sublevel
+//        for (const QString& dbUid: dbVersion.keys())
+//        {
+//            // Keep only annotations used in the analyses
+//            if (dbUids.contains(dbUid) || (dbUid == "" && dbName == "Variant"))
+//            {
+//                // Create DB entry
+//               //addEntry(dbName, dbVersion[""], dbDescription, false, )
+//                QHash<int, QVariant> dbColData;
+//                dbColData.insert(Id, QVariant(dbUid));
+//                dbColData.insert(Checked, QVariant(false));
+//                dbColData.insert(Name, QVariant(dbName));
+//                dbColData.insert(Version, QVariant(dbVersion[""]));
+//                dbColData.insert(Description, QVariant(dbDescription));
+//                QString search = dbName + " " + dbDescription + " " + dbVersion[""].toString();
+//                dbColData.insert(SearchField,  QVariant(search));
+//                TreeItem* dbItem = new TreeItem(dbColData, parent);
+//                parent->appendChild(dbItem);
 
-                for (const QJsonValue& json: db["fields"].toArray())
-                {
-                    QJsonObject a = json.toObject();
+//                for (const QJsonValue& json: db["fields"].toArray())
+//                {
+//                    QJsonObject a = json.toObject();
 
-                    QString uid = a["uid"].toString();
-                    QString name = a["name"].toString();
-                    QString description = a["description"].toString();
+//                    QString uid = a["uid"].toString();
+//                    QString name = a["name"].toString();
+//                    QString description = a["description"].toString();
 
-                    QHash<int, QVariant> annotColData;
-                    dbColData.insert(Id, QVariant(uid));
-                    dbColData.insert(Checked, QVariant(false));
-                    annotColData.insert(Name, QVariant(name));
-                    annotColData.insert(Version, QVariant(dbVersion[""]));
-                    annotColData.insert(Description, QVariant(description));
-                    QString search2 = name + " " + description + " " + dbName + " " + dbDescription + " " + dbVersion[""].toString();
-                    dbColData.insert(SearchField,  QVariant(search2));
-                    TreeItem* annotItem = new TreeItem(annotColData, dbItem);
-                    dbItem->appendChild(annotItem);
+//                    QHash<int, QVariant> annotColData;
+//                    dbColData.insert(Id, QVariant(uid));
+//                    dbColData.insert(Checked, QVariant(false));
+//                    annotColData.insert(Name, QVariant(name));
+//                    annotColData.insert(Version, QVariant(dbVersion[""]));
+//                    annotColData.insert(Description, QVariant(description));
+//                    QString search2 = name + " " + description + " " + dbName + " " + dbDescription + " " + dbVersion[""].toString();
+//                    dbColData.insert(SearchField,  QVariant(search2));
+//                    TreeItem* annotItem = new TreeItem(annotColData, dbItem);
+//                    dbItem->appendChild(annotItem);
 
-                    // qDebug() << " - " << name << "(" << type << ", " << uid << ")";
-                }
-            }
-        }
-    }
-    qDebug() << "Annotations Model Ready";
+//                    // qDebug() << " - " << name << "(" << type << ", " << uid << ")";
+//                }
+//            }
+//        }
+//    }
+//    qDebug() << "Annotations Model Ready";
 }
 
 
@@ -153,7 +157,7 @@ void AnnotationsTreeModel::addEntry(QString dbName, QString dbVersion, QString d
 {
     QString fullName = dbName;
     QString dbUid = data->annotation()->dbUid();
-    if (dbVersion != "_regovar_")
+    if (!dbVersion.isEmpty())
     {
         fullName += " (" + dbVersion + ")";
     }
@@ -161,11 +165,11 @@ void AnnotationsTreeModel::addEntry(QString dbName, QString dbVersion, QString d
     TreeItem* parentDB = nullptr;
 
     // Retrieve root item for the annotation db
-    for(int idx=0; idx < mRootItem->childCount(); idx++)
+    int dbIdx=0;
+    for(dbIdx; dbIdx < mRootItem->childCount(); dbIdx++)
     {
-        TreeItem* item = mRootItem->child(idx);
-        QString itemDbName = item->data(Name).toString();
-        if (fullName == itemDbName)
+        TreeItem* item = mRootItem->child(dbIdx);
+        if (item->data(DbId).toString() == dbUid)
         {
             parentDB = item;
             break;
@@ -176,14 +180,19 @@ void AnnotationsTreeModel::addEntry(QString dbName, QString dbVersion, QString d
     {
         // Create DB entry
         QHash<int, QVariant> dbColData4Db;
-        dbColData4Db.insert(Id, QVariant(dbUid));
-        dbColData4Db.insert(Checked, QVariant(isDbSelected));
+        dbColData4Db.insert(Id, QVariant());
+        dbColData4Db.insert(DbId, QVariant(dbUid));
+        dbColData4Db.insert(Order, QVariant(dbIdx));
+        dbColData4Db.insert(Selected, QVariant(isDbSelected));
         dbColData4Db.insert(Name, QVariant(fullName));
         dbColData4Db.insert(Version, QVariant(dbVersion));
         dbColData4Db.insert(Description, QVariant(dbDescription));
+        dbColData4Db.insert(SearchField,  QVariant(dbName + " " + dbDescription + " " + dbVersion));
 
+        beginInsertRows(QModelIndex(), rowCount(), rowCount());
         parentDB = new TreeItem(dbColData4Db, mRootItem);
         mRootItem->appendChild(parentDB);
+        endInsertRows();
     }
 
     if (isDbSelected)
@@ -196,9 +205,17 @@ void AnnotationsTreeModel::addEntry(QString dbName, QString dbVersion, QString d
 
     QHash<int, QVariant> annotColData;
     annotColData.insert(Id, QVariant(uid));
-    annotColData.insert(Checked, QVariant(data->isDisplayed()));
+    annotColData.insert(DbId, QVariant(dbUid));
+    annotColData.insert(Order, QVariant(data->annotation()->order()));
+    annotColData.insert(Selected, QVariant(data->isDisplayed()));
     annotColData.insert(Name, QVariant(data->annotation()->name()));
     annotColData.insert(Description, QVariant(data->annotation()->description()));
+    annotColData.insert(SearchField,  QVariant(dbName + " " + dbDescription + " " + dbVersion + " " + data->annotation()->name() + " " + data->annotation()->description()));
+
+    // retrieve index of the parent item
+    beginInsertRows(index(dbIdx, 0, QModelIndex()), parentDB->childCount(), parentDB->childCount());
     TreeItem* annotItem = new TreeItem(annotColData, parentDB);
     parentDB->appendChild(annotItem);
+    endInsertRows();
+
 }

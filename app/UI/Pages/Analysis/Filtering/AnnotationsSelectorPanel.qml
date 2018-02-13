@@ -15,7 +15,7 @@ Rectangle
     onModelChanged:
     {
         console.log("===> AnnotationPanel model set up")
-        annotationsSelector.model = root.model.annotationsTree//.proxy
+        annotationsSelector.model = root.model.annotationsTree.proxy
     }
 
     ColumnLayout
@@ -72,7 +72,7 @@ Rectangle
                     iconLeft: "z"
                     Layout.fillWidth: true
                     placeholder: qsTr("Search annotation...")
-                   // onTextEdited: root.model.annotationsTree.proxy.setFilterString(text)
+                    onTextEdited: root.model.annotationsTree.proxy.setFilterString(text)
                 }
 
                 TreeView
@@ -112,7 +112,8 @@ Rectangle
                                 text: styleData.value ? styleData.value : "-"
                                 onClicked:
                                 {
-                                    var annot = annotationsSelector.model.getAnnotation(styleData.index);
+                                    var idx = root.model.annotationsTree.proxy.mapToSource(styleData.index);
+                                    var annot = root.model.annotationsTree.getAnnotation(idx);
                                     if (annot)
                                     {
                                         root.model.setDisplayedAnnotationTemp(annot.uid, checked);
@@ -128,10 +129,10 @@ Rectangle
                                 {
                                     if (visible)
                                     {
-                                        var idx = styleData.index;
+                                        var idx = root.model.annotationsTree.proxy.mapToSource(styleData.index);
                                         if (idx.valid)
                                         {
-                                            var annot = annotationsSelector.model.getAnnotation(idx)
+                                            var annot = root.model.annotationsTree.getAnnotation(idx)
                                             if (annot)
                                             {
                                                 checked = annot.isDisplayedTemp;
