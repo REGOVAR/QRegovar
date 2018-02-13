@@ -69,7 +69,6 @@ GenericScreen
                     font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
-                    onTextChanged: checkReady();
                 }
 
                 Column

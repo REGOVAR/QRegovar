@@ -238,11 +238,31 @@ GenericScreen
         }
     }
 
-    NewSubjectDialog { id: newSubjectDialog }
+    NewSubjectDialog
+    {
+        id: newSubjectDialog
+    }
+    Connections
+    {
+        target: regovar.subjectsManager
+        onSubjectCreationDone:
+        {
+            if (success)
+            {
+                var subject = regovar.subjectsManager.getOrCreateSubject(subjectId);
+                subject.addSample(samplesSubjectsTable.model[samplesSubjectsTable.currentRow])
+            }
+
+        }
+    }
+
 
     SelectSubjectDialog
     {
         id: selectSubjectDialog
-        onSubjectSelected: subject.addSample(samplesSubjectsTable.model[samplesSubjectsTable.currentRow])
+        onSubjectSelected:
+        {
+            subject.addSample(samplesSubjectsTable.model[samplesSubjectsTable.currentRow])
+        }
     }
 }
