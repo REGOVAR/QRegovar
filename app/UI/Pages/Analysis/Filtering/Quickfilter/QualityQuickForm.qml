@@ -24,6 +24,15 @@ QuickFilterBox
     {
         if (model)
         {
+            model.quickfilters.filterChanged.connect(updateViewFromModel);
+            updateViewFromModel();
+        }
+    }
+
+    function updateViewFromModel()
+    {
+        if (model && model.quickfilters && model.quickfilters.qualityFilter)
+        {
             depth.model = model.quickfilters.qualityFilter.depth;
             root.enabled = model.quickfilters.qualityFilter.isVisible();
         }
@@ -32,7 +41,6 @@ QuickFilterBox
     content: QuickFilterFieldControl
     {
         id: depth
-
         anchors.left: parent.left
         anchors.right: parent.right
     }

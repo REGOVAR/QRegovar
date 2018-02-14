@@ -21,16 +21,16 @@ TransmissionQuickFilter::TransmissionQuickFilter(int) : QuickFilterBlockInterfac
     QStringList opList;
     opList.append("==");
     // Transmission
-    mFilters["dom"] = new QuickFilterField("148e67ffc504d1d0baf8ec988a2b7c4e", tr("Dominant"), opList, "==", QVariant(true), false);
-    mFilters["rec_hom"] = new QuickFilterField("b0fab8b285474229afbbc13fac198dfe", tr("Homozigous"), opList, "==", QVariant(true), false);
-    mFilters["rec_htzcomp"] = new QuickFilterField("8cb83d0127aa912f2d290139d298e082", tr("Htz comp"), opList, "==", QVariant(true), false);
+    mFilters["dom"] = new QuickFilterField("148e67ffc504d1d0baf8ec988a2b7c4e", tr("Dominant"), opList, "=", QVariant(true), false);
+    mFilters["rec_hom"] = new QuickFilterField("b0fab8b285474229afbbc13fac198dfe", tr("Homozigous"), opList, "=", QVariant(true), false);
+    mFilters["rec_htzcomp"] = new QuickFilterField("8cb83d0127aa912f2d290139d298e082", tr("Htz comp"), opList, "=", QVariant(true), false);
     // Inheritance
-    mFilters["denovo"] = new QuickFilterField("92a9da3488b1127623c4e3ac7b6f67e2", tr("De novo"), opList, "==", QVariant(true), false);
-    mFilters["inherited"] = new QuickFilterField("b66e0d6698447b62073f993897b369bf", tr("Inherited"), opList, "==", QVariant(false), false);
+    mFilters["denovo"] = new QuickFilterField("92a9da3488b1127623c4e3ac7b6f67e2", tr("De novo"), opList, "=", QVariant(true), false);
+    mFilters["inherited"] = new QuickFilterField("b66e0d6698447b62073f993897b369bf", tr("Inherited"), opList, "=", QVariant(false), false);
     // Location
-    mFilters["aut"] = new QuickFilterField("9b3a9330bc8b5b3c1ebc271876535d8e", tr("Autosomal"), opList, "==", QVariant(true), false);
-    mFilters["xlk"] = new QuickFilterField("76117d8b774f5e902ba0580bc302afb0", tr("X-linked"), opList, "==", QVariant(true), false);
-    mFilters["mit"] = new QuickFilterField("0bfb15c0aad2926202f1ca0ee4e44c59", tr("Mito"), opList, "==", QVariant(true), false);
+    mFilters["aut"] = new QuickFilterField("9b3a9330bc8b5b3c1ebc271876535d8e", tr("Autosomal"), opList, "=", QVariant(true), false);
+    mFilters["xlk"] = new QuickFilterField("76117d8b774f5e902ba0580bc302afb0", tr("X-linked"), opList, "=", QVariant(true), false);
+    mFilters["mit"] = new QuickFilterField("0bfb15c0aad2926202f1ca0ee4e44c59", tr("Mito"), opList, "=", QVariant(true), false);
 }
 
 

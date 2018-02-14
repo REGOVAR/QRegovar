@@ -22,6 +22,15 @@ QuickFilterBox
     {
         if (model)
         {
+            model.quickfilters.filterChanged.connect(updateViewFromModel);
+            updateViewFromModel();
+        }
+    }
+
+    function updateViewFromModel()
+    {
+        if (model && model.quickfilters && model.quickfilters.panelFilter)
+        {
             root.enabled = model.quickfilters.panelFilter.isVisible();
 
 
@@ -33,6 +42,7 @@ QuickFilterBox
             }
         }
     }
+
 
     function checkFinal()
     {

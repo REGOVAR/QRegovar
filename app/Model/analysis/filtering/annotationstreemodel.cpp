@@ -165,8 +165,8 @@ void AnnotationsTreeModel::addEntry(QString dbName, QString dbVersion, QString d
     TreeItem* parentDB = nullptr;
 
     // Retrieve root item for the annotation db
-    int dbIdx=0;
-    for(dbIdx; dbIdx < mRootItem->childCount(); dbIdx++)
+    int dbIdx;
+    for(dbIdx=0; dbIdx < mRootItem->childCount(); dbIdx++)
     {
         TreeItem* item = mRootItem->child(dbIdx);
         if (item->data(DbId).toString() == dbUid)

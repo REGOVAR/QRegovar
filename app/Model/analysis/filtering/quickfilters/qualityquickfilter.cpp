@@ -13,7 +13,7 @@ QualityQuickFilter::QualityQuickFilter(int) : QuickFilterBlockInterface()
     mOperators.append(">");
     mOperators.append("≠");
 
-    mDepth = new QuickFilterField("401b1e5614706ec81bf83e24958f01e5", tr("Depth"), mOperators, "==", 30);
+    mDepth = new QuickFilterField("401b1e5614706ec81bf83e24958f01e5", tr("Depth"), mOperators, "≥", 30);
 }
 
 

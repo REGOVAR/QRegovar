@@ -28,6 +28,8 @@ void QuickFilterModel::init(int refId, int analysisId)
     mQuickFilters[InSilicoPredFilter] = new InSilicoPredQuickFilter(refId);
     mQuickFilters[PanelFilter] = new PanelQuickFilter(analysisId);
     mQuickFilters[PhenotypeFilter] = new PhenotypeQuickFilter(refId);
+
+    emit filterChanged();
 }
 
 
@@ -81,6 +83,7 @@ void QuickFilterModel::checkAnnotationsDB(QList<QObject*> dbs)
     mQuickFilters[InSilicoPredFilter]->checkAnnotationsDB(dbs);
     mQuickFilters[PanelFilter]->checkAnnotationsDB(dbs);
     mQuickFilters[PhenotypeFilter]->checkAnnotationsDB(dbs);
+    emit filterChanged();
 }
 
 void QuickFilterModel::loadFilter(QJsonArray json)
@@ -89,6 +92,7 @@ void QuickFilterModel::loadFilter(QJsonArray json)
     {
         filter->loadJson(json);
     }
+    emit filterChanged();
 }
 
 
@@ -98,6 +102,7 @@ void QuickFilterModel::clear()
     {
         filter->clear();
     }
+    emit filterChanged();
 }
 
 

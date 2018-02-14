@@ -50,9 +50,19 @@ QuickFilterBox
         internalUiUpdate = false;
     }
 
+
     onModelChanged:
     {
         if (model)
+        {
+            model.quickfilters.filterChanged.connect(updateViewFromModel);
+            updateViewFromModel();
+        }
+    }
+
+    function updateViewFromModel()
+    {
+        if (model && model.quickfilters && model.quickfilters.frequenceFilter)
         {
             root.enabled = model.quickfilters.frequenceFilter.isVisible();
             gAll.model =  model.quickfilters.frequenceFilter._1000GAll;

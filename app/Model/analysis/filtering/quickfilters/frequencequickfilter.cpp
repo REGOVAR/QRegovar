@@ -27,20 +27,20 @@ void FrequenceQuickFilter::init(QString _1000gUid, QString exacUid, QStringList 
     // 1000G
     if (!_1000gUid.isEmpty())
     {
-        m1000GAll = new QuickFilterField(_1000gUid, tr("1000G MAF"), mOperators, "<=", "0.01");
+        m1000GAll = new QuickFilterField(_1000gUid, tr("1000G MAF"), mOperators, "≤", "0.01");
     }
     for (const QString& fuid: _1000g)
     {
-        m1000GFields << new QuickFilterField(fuid, mFieldsNames[fuid], mOperators, "<=", "0.01");
+        m1000GFields << new QuickFilterField(fuid, mFieldsNames[fuid], mOperators, "≤", "0.01");
     }
     // Exac
     if (!_1000gUid.isEmpty())
     {
-        mExacAll = new QuickFilterField(exacUid, tr("ExAC MAF"), mOperators, "<=", "0.01");
+        mExacAll = new QuickFilterField(exacUid, tr("ExAC MAF"), mOperators, "≤", "0.01");
     }
     for (const QString& fuid: exac)
     {
-        mExacFields << new QuickFilterField(fuid, mFieldsNames[fuid], mOperators, "<=", "0.01");
+        mExacFields << new QuickFilterField(fuid, mFieldsNames[fuid], mOperators, "≤", "0.01");
     }
 }
 

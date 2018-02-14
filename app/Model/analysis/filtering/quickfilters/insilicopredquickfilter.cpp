@@ -21,23 +21,23 @@ void InSilicoPredQuickFilter::init(QString siftUid, QString polyUid, QString cad
     mOperators.append("≠");
 
     // Sift
-    mFields << new QuickFilterField(siftUid, "", mOperators, "==", "tolerated");
+    mFields << new QuickFilterField(siftUid, "", mOperators, "=", "tolerated");
     mFields[0]->setIsDisplayed(!siftUid.isEmpty());
     mFields[0]->setIsActive(false);
 
 
     // Polyphen
-    mFields << new QuickFilterField(polyUid, "", mOperators, "==", "benign");
+    mFields << new QuickFilterField(polyUid, "", mOperators, "=", "benign");
     mFields[1]->setIsDisplayed(!polyUid.isEmpty());
     mFields[1]->setIsActive(false);
 
     // CADD
-    mFields << new QuickFilterField(caddUid, "", mOperators, ">", 15);
+    mFields << new QuickFilterField(caddUid, "", mOperators, "≥", 15);
     mFields[2]->setIsDisplayed(!caddUid.isEmpty());
     mFields[2]->setIsActive(false);
 
     // SnpEff Impact
-    mFields << new QuickFilterField(impactUid, "", mOperators, "==", "modifier");
+    mFields << new QuickFilterField(impactUid, "", mOperators, "=", "modifier");
     mFields[3]->setIsDisplayed(!impactUid.isEmpty());
     mFields[3]->setIsActive(false);
 

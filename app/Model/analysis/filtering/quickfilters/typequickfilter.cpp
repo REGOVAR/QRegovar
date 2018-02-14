@@ -12,22 +12,22 @@ void TypeQuickFilter::init(QString fuid)
     QStringList ops;
     ops << "=";
     // Missence
-    mFields << new QuickFilterField(fuid, "", ops, "==", "missense_variant");
+    mFields << new QuickFilterField(fuid, "", ops, "=", "missense_variant");
 
     // Nonsence
-    mFields << new QuickFilterField(fuid, "", ops, "==", "stop_gained");
+    mFields << new QuickFilterField(fuid, "", ops, "=", "stop_gained");
 
     // Splicing
-    mFields << new QuickFilterField(fuid, "", ops, "==", "splice_acceptor_variant");
-    mFields << new QuickFilterField(fuid, "", ops, "==", "splice_donor_variant", true);
+    mFields << new QuickFilterField(fuid, "", ops, "=", "splice_acceptor_variant");
+    mFields << new QuickFilterField(fuid, "", ops, "=", "splice_donor_variant", true);
 
     // Indel
-    mFields << new QuickFilterField(fuid, "", ops, "==", "frameshift_variant");
-    mFields << new QuickFilterField(fuid, "", ops, "==", "inframe_insertion", true);
-    mFields << new QuickFilterField(fuid, "", ops, "==", "inframe_deletion", true);
+    mFields << new QuickFilterField(fuid, "", ops, "=", "frameshift_variant");
+    mFields << new QuickFilterField(fuid, "", ops, "=", "inframe_insertion", true);
+    mFields << new QuickFilterField(fuid, "", ops, "=", "inframe_deletion", true);
 
     // Synonymous
-    mFields << new QuickFilterField(fuid, "", ops, "==", "synonymous_variant");
+    mFields << new QuickFilterField(fuid, "", ops, "=", "synonymous_variant");
 }
 
 

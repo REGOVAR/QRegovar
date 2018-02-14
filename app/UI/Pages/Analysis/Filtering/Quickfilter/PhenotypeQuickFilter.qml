@@ -50,9 +50,19 @@ QuickFilterBox
 //        internalUiUpdate = false;
     }
 
+
     onModelChanged:
     {
         if (model)
+        {
+            model.quickfilters.filterChanged.connect(updateViewFromModel);
+            updateViewFromModel();
+        }
+    }
+
+    function updateViewFromModel()
+    {
+        if (model && model.quickfilters && model.quickfilters.phenotypeFilter)
         {
             root.enabled = model.quickfilters.phenotypeFilter.isVisible();
         }

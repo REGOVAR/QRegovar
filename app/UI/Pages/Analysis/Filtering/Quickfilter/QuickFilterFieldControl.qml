@@ -16,6 +16,7 @@ RowLayout
     property bool initializing: false
     property alias checkBox: fieldCheck
     property alias checked: fieldCheck.checked
+    property alias currentIndex: fieldOperator.currentIndex
     property real indentation: 25
     property real labelWidth: 50;
     onLabelWidthChanged:
@@ -30,8 +31,9 @@ RowLayout
         initializing = true;
         fieldCheck.text = model.label;
         fieldCheck.checked = Qt.binding(function() { return model.isActive; });
+        var idx = model.opList.indexOf(model.op);
         fieldOperator.model = model.opList;
-        fieldOperator.currentIndex = model.opList.indexOf(model.op);
+        fieldOperator.currentIndex = idx;
         fieldValue.text = Qt.binding(function() { return model.value; });
         initializing = false;
     }

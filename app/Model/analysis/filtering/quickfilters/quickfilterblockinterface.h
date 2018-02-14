@@ -9,18 +9,16 @@
 class QuickFilterField : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged)
-    Q_PROPERTY(QString op READ op WRITE setOp NOTIFY opChanged)
-    Q_PROPERTY(QStringList opList READ opList)
-    Q_PROPERTY(QVariant value READ value WRITE setValue NOTIFY valueChanged)
-    Q_PROPERTY(bool isActive READ isActive WRITE setIsActive NOTIFY isActiveChanged)
-    Q_PROPERTY(bool isDisplayed READ isDisplayed WRITE setIsDisplayed NOTIFY isDisplayedChanged)
+    Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY dataChanged)
+    Q_PROPERTY(QString op READ op WRITE setOp NOTIFY dataChanged)
+    Q_PROPERTY(QStringList opList READ opList NOTIFY dataChanged)
+    Q_PROPERTY(QVariant value READ value WRITE setValue NOTIFY dataChanged)
+    Q_PROPERTY(bool isActive READ isActive WRITE setIsActive NOTIFY dataChanged)
+    Q_PROPERTY(bool isDisplayed READ isDisplayed WRITE setIsDisplayed NOTIFY dataChanged)
 
 public:
     QuickFilterField(QObject* parent=nullptr);
-    QuickFilterField(QString fuid, QString label, QStringList opList, QString op="==", QVariant value=0, bool isActive=false, QObject* parent=nullptr);
-    QuickFilterField(const QuickFilterField& other);
-    ~QuickFilterField();
+    QuickFilterField(QString fuid, QString label, QStringList opList, QString op="=", QVariant value=0, bool isActive=false, QObject* parent=nullptr);
 
     Q_INVOKABLE void clear();
     Q_INVOKABLE QJsonArray toJson();
@@ -35,14 +33,15 @@ public:
     inline QString fuid() { return mFuid; }
 
     // Setters
-    inline void setLabel(QString label) { if (label != mLabel) { mLabel= label;  emit labelChanged(); }}
+    inline void setLabel(QString label) { if (label != mLabel) { mLabel= label;  emit dataChanged(); }}
     void setOp(QString op);
-    inline void setValue(QVariant value) { if (value != mValue) { mValue = value; emit valueChanged(); }}
-    inline void setIsActive(bool isActive) { if (isActive != mIsActive) { mIsActive = isActive; emit isActiveChanged(); }}
-    inline void setIsDisplayed(bool isDisplayed) { if (isDisplayed != mIsDisplayed) { mIsDisplayed = isDisplayed; emit isDisplayedChanged(); }}
+    inline void setValue(QVariant value) { if (value != mValue) { mValue = value; emit dataChanged(); }}
+    inline void setIsActive(bool isActive) { if (isActive != mIsActive) { mIsActive = isActive; emit dataChanged(); }}
+    inline void setIsDisplayed(bool isDisplayed) { if (isDisplayed != mIsDisplayed) { mIsDisplayed = isDisplayed; emit dataChanged(); }}
 
 
 Q_SIGNALS:
+    void dataChanged();
     void labelChanged();
     void opChanged();
     void valueChanged();

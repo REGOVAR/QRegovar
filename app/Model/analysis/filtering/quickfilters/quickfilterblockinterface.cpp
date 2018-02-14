@@ -41,34 +41,12 @@ QuickFilterField::QuickFilterField(QString fuid, QString label, QStringList opLi
 
 
 
-QuickFilterField::QuickFilterField(const QuickFilterField& other) : QObject(other.parent())
-{
-    mIsDisplayed = other.mIsDisplayed;
-    mFuid = other.mFuid;
-    mLabel = other.mLabel;
-    mOperator = other.mOperator;
-    mOperatorsValues = other.mOperatorsValues;
-    mDefaultOperator = other.mDefaultOperator;
-    mValue = other.mValue;
-    mDefaultValue = other.mDefaultValue;
-    mIsActive = other.mIsActive;
-    mDefaultIsActive = other.mDefaultIsActive;
-}
-
-
-QuickFilterField::~QuickFilterField()
-{
-}
-
-
 void QuickFilterField::clear()
 {
     mOperator = mDefaultOperator;
     mValue = mDefaultValue;
     mIsActive = mDefaultIsActive;
-    emit opChanged();
-    emit valueChanged();
-    emit isActiveChanged();
+    emit dataChanged();
 }
 
 QJsonArray QuickFilterField::toJson()
@@ -81,7 +59,7 @@ QJsonArray QuickFilterField::toJson()
     opRight.append(mValue.toString());
 
     QJsonArray result;
-    result.append(mOperator);
+    result.append(mOpMapping.contains(mOperator) ? mOpMapping[mOperator] : "==");
     result.append(opLeft);
     result.append(opRight);
     return result;
@@ -91,14 +69,10 @@ QJsonArray QuickFilterField::toJson()
 
 void QuickFilterField::setOp(QString op)
 {
-    if (mOpMapping.contains(op))
-    {
-        op = mOpMapping[op];
-    }
-    if (op != mOperator)
+    if (op != mOperator && mOpMapping.contains(op))
     {
         mOperator = op;
-        emit opChanged();
+        emit dataChanged();
     }
 }
 

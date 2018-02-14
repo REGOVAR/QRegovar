@@ -20,6 +20,15 @@ QuickFilterBox
     {
         if (model)
         {
+            model.quickfilters.filterChanged.connect(updateViewFromModel);
+            updateViewFromModel();
+        }
+    }
+
+    function updateViewFromModel()
+    {
+        if (model && model.quickfilters && model.quickfilters.typeFilter)
+        {
             root.enabled = model.quickfilters.typeFilter.isVisible();
         }
     }

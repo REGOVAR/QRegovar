@@ -32,6 +32,15 @@ QuickFilterBox
     {
         if (model)
         {
+            model.quickfilters.filterChanged.connect(updateViewFromModel);
+            updateViewFromModel();
+        }
+    }
+
+    function updateViewFromModel()
+    {
+        if (model && model.quickfilters && model.quickfilters.inSilicoPredFilter)
+        {
             var m = model.quickfilters.inSilicoPredFilter;
             predSift.enabled = m.sift.isDisplayed;
             predPoly.enabled = m.polyphen.isDisplayed;
