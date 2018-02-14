@@ -121,16 +121,9 @@ Rectangle
                 }
                 else
                 {
-                    if (isExpanded(index))
-                    {
-                        // if already expanded, open details
-                        regovar.projectsManager.openProject(id);
-                    }
-                    else
-                    {
-                        // if project entry collapsed, expand it
-                        expand(index)
-                    }
+                    // if already expanded, open details
+                    regovar.projectsManager.openProject(id);
+                    expand(index);
                 }
             }
         }
