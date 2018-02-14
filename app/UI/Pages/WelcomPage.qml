@@ -283,7 +283,7 @@ Rectangle
                                     {
                                         width: 500
                                         indent: 1
-                                        date: model.modelData.update_date
+                                        date: model.modelData.updateDate
                                         identifier: model.modelData.identifier
                                         firstname: model.modelData.firstname
                                         lastname: model.modelData.lastname

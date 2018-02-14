@@ -82,7 +82,7 @@ class Regovar : public QObject
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
     Q_PROPERTY(QJsonArray lastAnalyses READ lastAnalyses NOTIFY lastDataChanged)
     Q_PROPERTY(QJsonArray lastEvent READ lastEvent NOTIFY lastDataChanged)
-    Q_PROPERTY(QJsonArray lastSubjects READ lastSubjects NOTIFY lastDataChanged)
+    Q_PROPERTY(QList<QObject*> lastSubjects READ lastSubjects NOTIFY lastDataChanged)
     Q_PROPERTY(bool welcomIsLoading READ welcomIsLoading WRITE setWelcomIsLoading NOTIFY welcomIsLoadingChanged)
 
     // Managers
@@ -125,7 +125,7 @@ public:
     inline bool searchInProgress() const { return mSearchInProgress; }
     inline QJsonArray lastAnalyses() const { return mLastAnalyses; }
     inline QJsonArray lastEvent() const { return mLastEvents; }
-    inline QJsonArray lastSubjects() const { return mLastSubjects; }
+    inline QList<QObject*> lastSubjects() const { return mLastSubjects; }
     inline bool welcomIsLoading() const { return mWelcomIsLoading; }
     //--
     inline NetworkManager* networkManager() const { return mNetworkManager; }
@@ -254,7 +254,7 @@ private:
     //! Welcom last data
     QJsonArray mLastEvents;
     QJsonArray mLastAnalyses;
-    QJsonArray mLastSubjects;
+    QList<QObject*> mLastSubjects;
 
     //! List of open Filtering Analyses
     QList<FilteringAnalysis*> mOpenAnalyses;

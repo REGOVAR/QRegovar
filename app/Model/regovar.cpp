@@ -154,23 +154,23 @@ void Regovar::loadWelcomData()
                 mLastAnalyses.append(item);
             }
             // Last subjects
-            while(!mLastSubjects.empty()) mLastSubjects.pop_back();
+            mLastSubjects.clear();
             for (const QJsonValue& val: data["last_subjects"].toArray())
             {
                 QJsonObject item = val.toObject();
-                QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
-                item["update_date"] = date.toString("yyyy-MM-dd hh:mm");
-                mLastSubjects.append(item);
+                Subject* sbj = subjectsManager()->getOrCreateSubject(item["id"].toInt());
+                sbj->fromJson(item);
+                mLastSubjects.append(sbj);
             }
             // Last events
-            while(!mLastSubjects.empty()) mLastSubjects.pop_back();
-            for (const QJsonValue& val: data["last_events"].toArray())
-            {
-                QJsonObject item = val.toObject();
-                QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
-                item["update_date"] = date.toString("yyyy-MM-dd hh:mm");
-                mLastSubjects.append(item);
-            }
+//            while(!mLastSubjects.empty()) mLastSubjects.pop_back();
+//            for (const QJsonValue& val: data["last_events"].toArray())
+//            {
+//                QJsonObject item = val.toObject();
+//                QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
+//                item["update_date"] = date.toString("yyyy-MM-dd hh:mm");
+//                //mLastSubjects.append(item);
+//            }
             emit lastDataChanged();
 
             // Get referencial available
