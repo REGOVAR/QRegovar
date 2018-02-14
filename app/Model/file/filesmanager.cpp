@@ -261,7 +261,7 @@ void FilesManager::processPushNotification(QString action, QJsonObject json)
 {
     if (action == "file_upload")
     {
-        // update file informations
+        // update file information
         int id = json["id"].toInt();
         File* file = getOrCreateFile(id);
         file->fromJson(json);

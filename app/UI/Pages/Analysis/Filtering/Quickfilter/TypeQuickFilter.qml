@@ -18,7 +18,10 @@ QuickFilterBox
 
     onModelChanged:
     {
-        root.enabled = model.quickfilters.typeFilter.isVisible();
+        if (model)
+        {
+            root.enabled = model.quickfilters.typeFilter.isVisible();
+        }
     }
 
     function checkFinal()

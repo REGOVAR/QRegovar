@@ -80,7 +80,7 @@ bool Panel::fromJson(QJsonObject json)
 
     if (json.contains("versions"))
     {
-        // Loading Panels informations
+        // Loading Panels information
         mOrderedVersionsIds->clear();
         mVersionsMap->clear();
 
@@ -102,7 +102,7 @@ bool Panel::fromJson(QJsonObject json)
     }
     else
     {
-        // Load version informations
+        // Load version information
         mVersionId = json["id"].toString();
         mVersion = json["version"].toString();
         mComment = json["comment"].toString();

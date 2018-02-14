@@ -7,7 +7,7 @@ import "../../Regovar"
 import "../../Framework"
 import "../Common"
 
-InformationsPanel
+InformationPanel
 {
     id: root
     icon: "4"
@@ -26,24 +26,24 @@ InformationsPanel
         root.tabSharedModel = data;
         var ttt = listModel.createObject(root);
         ttt.append(
-            {   "title": qsTr("Informations"),
+            {   "title": qsTr("Information"),
                 "icon": "j",
-                "source": "qrc:/qml/InformationsPanel/Sample/InfoPanel.qml"
+                "source": "qrc:/qml/InformationPanel/Sample/InfoPanel.qml"
             });
         ttt.append(
             {   "title": qsTr("Stats & Quality"),
                 "icon": "^",
-                "source": "qrc:/qml/InformationsPanel/Sample/StatsQualPanel.qml"
+                "source": "qrc:/qml/InformationPanel/Sample/StatsQualPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Usage"),
                 "icon": "ê",
-                "source": "qrc:/qml/InformationsPanel/Common/RelationsPanel.qml"
+                "source": "qrc:/qml/InformationPanel/Common/RelationsPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Events"),
                 "icon": "è",
-                "source": "qrc:/qml/InformationsPanel/Common/EventsPanel.qml"
+                "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
             });
         root.tabsModel = ttt;
         root.loading = false;

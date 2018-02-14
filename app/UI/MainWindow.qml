@@ -4,14 +4,14 @@ import QtQuick.Window 2.3
 
 import "Regovar"
 import "Dialogs"
-import "InformationsPanel/File"
-import "InformationsPanel/Gene"
-import "InformationsPanel/Panel"
-import "InformationsPanel/Phenotype"
-import "InformationsPanel/Pipeline"
-import "InformationsPanel/Sample"
-import "InformationsPanel/User"
-import "InformationsPanel/Variant"
+import "InformationPanel/File"
+import "InformationPanel/Gene"
+import "InformationPanel/Panel"
+import "InformationPanel/Phenotype"
+import "InformationPanel/Pipeline"
+import "InformationPanel/Sample"
+import "InformationPanel/User"
+import "InformationPanel/Variant"
 
 GenericWindow
 {
@@ -171,7 +171,7 @@ GenericWindow
     Window
     {
         id: fileInfoDialog
-        title: qsTr("File Informations")
+        title: qsTr("File Information")
         visible: false
         modality: Qt.NonModal
         width: 500
@@ -179,7 +179,7 @@ GenericWindow
         minimumHeight : 300
         minimumWidth : 300
 
-        FileInformations
+        FileInformation
         {
             id: fileInfoPanel
             anchors.fill: parent
@@ -196,7 +196,7 @@ GenericWindow
     Window
     {
         id: geneInfoDialog
-        title: qsTr("Gene Informations")
+        title: qsTr("Gene Information")
         visible: false
         modality: Qt.NonModal
         width: 500
@@ -204,7 +204,7 @@ GenericWindow
         minimumHeight : 300
         minimumWidth : 300
 
-        GeneInformations
+        GeneInformation
         {
             id: geneInfoPanel
             anchors.fill: parent
@@ -221,7 +221,7 @@ GenericWindow
     Window
     {
         id: panelInfoDialog
-        title: qsTr("Panel Informations")
+        title: qsTr("Panel Information")
         visible: false
         modality: Qt.NonModal
         width: 500
@@ -229,7 +229,7 @@ GenericWindow
         minimumHeight : 300
         minimumWidth : 300
 
-        PanelInformations
+        PanelInformation
         {
             id: panelInfoPanel
             anchors.fill: parent
@@ -246,7 +246,7 @@ GenericWindow
     Window
     {
         id: phenotypeInfoDialog
-        title: qsTr("Phenotype Informations")
+        title: qsTr("Phenotype Information")
         visible: false
         modality: Qt.NonModal
         width: 500
@@ -254,7 +254,7 @@ GenericWindow
         minimumHeight : 300
         minimumWidth : 300
 
-        PhenotypeInformations
+        PhenotypeInformation
         {
             id: phenotypeInfoPanel
             anchors.fill: parent
@@ -271,7 +271,7 @@ GenericWindow
     Window
     {
         id: pipelineInfoDialog
-        title: qsTr("Pipeline Informations")
+        title: qsTr("Pipeline Information")
         visible: false
         modality: Qt.NonModal
         width: 500
@@ -279,7 +279,7 @@ GenericWindow
         minimumHeight : 300
         minimumWidth : 300
 
-        PipelineInformations
+        PipelineInformation
         {
             id: pipelineInfoPanel
             anchors.fill: parent
@@ -296,7 +296,7 @@ GenericWindow
     Window
     {
         id: sampleInfoDialog
-        title: qsTr("Sample Informations")
+        title: qsTr("Sample Information")
         visible: false
         modality: Qt.NonModal
         width: 500
@@ -304,7 +304,7 @@ GenericWindow
         minimumHeight : 300
         minimumWidth : 300
 
-        SampleInformations
+        SampleInformation
         {
             id: sampleInfoPanel
             anchors.fill: parent
@@ -321,7 +321,7 @@ GenericWindow
     Window
     {
         id: userInfoDialog
-        title: qsTr("User Informations")
+        title: qsTr("User Information")
         visible: false
         modality: Qt.NonModal
         width: 500
@@ -329,7 +329,7 @@ GenericWindow
         minimumHeight : 300
         minimumWidth : 300
 
-        UserInformations
+        UserInformation
         {
             id: userInfoPanel
             anchors.fill: parent
@@ -346,7 +346,7 @@ GenericWindow
     Window
     {
         id: variantInfoDialog
-        title: qsTr("Variant Informations")
+        title: qsTr("Variant Information")
         visible: false
         modality: Qt.NonModal
         width: 500
@@ -354,7 +354,7 @@ GenericWindow
         minimumHeight : 300
         minimumWidth : 300
 
-        VariantInformations
+        VariantInformation
         {
             id: variantInfoPanel
             anchors.fill: parent

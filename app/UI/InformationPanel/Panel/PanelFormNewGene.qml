@@ -4,8 +4,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 import "../../Regovar"
 import "../../Framework"
-import "../../InformationsPanel/Gene"
-import "../../InformationsPanel/Phenotype"
+import "../../InformationPanel/Gene"
+import "../../InformationPanel/Phenotype"
 
 
 Rectangle
@@ -185,7 +185,7 @@ Rectangle
 //    Dialog
 //    {
 //        id: geneInfoDialog
-//        title: qsTr("Gene Informations")
+//        title: qsTr("Gene Information")
 //        visible: false
 //        modality: Qt.NonModal
 //        width: 500
@@ -193,7 +193,7 @@ Rectangle
 
 //        property alias data: geneInfoPanel.model
 
-//        contentItem: GeneInformations
+//        contentItem: GeneInformation
 //        {
 //            id: geneInfoPanel
 //        }
@@ -207,7 +207,7 @@ Rectangle
 //    Dialog
 //    {
 //        id: phenotypeInfoDialog
-//        title: qsTr("Gene Informations")
+//        title: qsTr("Gene Information")
 //        visible: false
 //        modality: Qt.NonModal
 //        width: 500
@@ -215,7 +215,7 @@ Rectangle
 
 //        property alias data: phenotypeInfoPanel.model
 
-//        contentItem: PhenotypeInformations
+//        contentItem: PhenotypeInformation
 //        {
 //            id: phenotypeInfoPanel
 //        }

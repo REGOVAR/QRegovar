@@ -23,7 +23,7 @@ ScrollView
         {
             // Display loading feedback
 
-            // request informations
+            // request information
 
         }
         else

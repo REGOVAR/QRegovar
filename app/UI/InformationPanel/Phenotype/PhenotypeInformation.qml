@@ -7,7 +7,8 @@ import "../../Regovar"
 import "../../Framework"
 import "../Common"
 
-InformationsPanel
+
+InformationPanel
 {
     id: root
     icon: "j"
@@ -23,19 +24,19 @@ InformationsPanel
         root.tabSharedModel = data;
         var ttt = listModel.createObject(root);
         ttt.append(
-            {   "title": qsTr("Informations"),
-                "icon": "j",
-                "source": "qrc:/qml/InformationsPanel/User/InfoPanel.qmll"
+            {   "title": qsTr("Information"),
+                "icon": "è",
+                "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qmll"
+            });
+        ttt.append({
+                "title": qsTr("Online tools"),
+                "icon": "K",
+                "source": "qrc:/qml/InformationPanel/Phenotype/OnlineToolsPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Regovar statistics"),
                 "icon": "í",
-                "source": "qrc:/qml/InformationsPanel/User/StatsPanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Events"),
-                "icon": "è",
-                "source": "qrc:/qml/InformationsPanel/Common/EventsPanel.qml"
+                "source": "qrc:/qml/InformationPanel/Phenotype/StatsPanel.qml"
             });
         root.tabsModel = ttt;
         root.loading = false;
@@ -50,6 +51,6 @@ InformationsPanel
     Connections
     {
         target: regovar
-        onUserInformationReady: root.model = json
+        onPhenotypeInformationReady: root.model = json
     }
 }

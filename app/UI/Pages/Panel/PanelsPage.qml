@@ -8,7 +8,7 @@ import QtQuick.Controls.Styles 1.4
 import "../../Regovar"
 import "../../Framework"
 import "../../Dialogs"
-import "../../InformationsPanel/Panel"
+import "../../InformationPanel/Panel"
 
 Rectangle
 {

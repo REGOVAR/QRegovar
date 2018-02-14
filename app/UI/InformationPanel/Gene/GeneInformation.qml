@@ -7,7 +7,7 @@ import "../../Regovar"
 import "../../Framework"
 import "../Common"
 
-InformationsPanel
+InformationPanel
 {
     id: root
     icon: "ì"
@@ -22,29 +22,29 @@ InformationsPanel
         root.tabSharedModel = data;
         var ttt = listModel.createObject(root);
         ttt.append(
-            {   "title": qsTr("Informations"),
+            {   "title": qsTr("Information"),
                 "icon": "j",
-                "source": "qrc:/qml/InformationsPanel/Gene/InfoPanel.qml"
+                "source": "qrc:/qml/InformationPanel/Gene/InfoPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Online Tools"),
                 "icon": "è",
-                "source": "qrc:/qml/InformationsPanel/Gene/OnlineToolsPanel.qml"
+                "source": "qrc:/qml/InformationPanel/Gene/OnlineToolsPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Pubmed") + " (" + data["pubmed"].length + ")",
                 "icon": "Y",
-                "source": "qrc:/qml/InformationsPanel/Gene/ReferencePanel.qml"
+                "source": "qrc:/qml/InformationPanel/Gene/ReferencePanel.qml"
             });
         ttt.append({
                 "title": qsTr("Phenotype"),
                 "icon": "K",
-                "source": "qrc:/qml/InformationsPanel/Phenotype/InfoPanel.qml"
+                "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Regovar statistics"),
                 "icon": "í",
-                "source": "qrc:/qml/InformationsPanel/Variant/StatsPanel.qml"
+                "source": "qrc:/qml/InformationPanel/Variant/StatsPanel.qml"
             });
         root.tabsModel = ttt;
         root.loading = false;

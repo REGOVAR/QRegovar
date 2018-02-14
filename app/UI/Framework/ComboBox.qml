@@ -47,6 +47,8 @@ ComboBox
         color: !enabled ? Regovar.theme.frontColor.disable : control.pressed ? Regovar.theme.secondaryColor.back.light : Regovar.theme.boxColor.front
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
+        font.pixelSize: Regovar.theme.font.size.normal
+        font.family: Regovar.theme.font.family
         elide: Text.ElideRight
     }
 
@@ -73,6 +75,20 @@ ComboBox
             implicitHeight: contentHeight
             model: control.popup.visible ? control.delegateModel : null
             currentIndex: control.highlightedIndex
+
+            delegate:Text
+            {
+                leftPadding: 5
+                rightPadding: 5
+
+                text: control.displayText
+                color: Regovar.theme.boxColor.front
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.family
+                elide: Text.ElideRight
+            }
 
             ScrollIndicator.vertical: ScrollIndicator { }
         }

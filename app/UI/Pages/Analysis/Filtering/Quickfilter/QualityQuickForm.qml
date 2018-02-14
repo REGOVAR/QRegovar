@@ -22,8 +22,11 @@ QuickFilterBox
 
     onModelChanged:
     {
-        depth.model = model.quickfilters.qualityFilter.depth;
-        root.enabled = model.quickfilters.qualityFilter.isVisible();
+        if (model)
+        {
+            depth.model = model.quickfilters.qualityFilter.depth;
+            root.enabled = model.quickfilters.qualityFilter.isVisible();
+        }
     }
 
     content: QuickFilterFieldControl

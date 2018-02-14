@@ -6,7 +6,7 @@ import org.regovar 1.0
 import "../../../Regovar"
 import "../../../Framework"
 
-import "../../../InformationsPanel/Sample"
+import "../../../InformationPanel/Sample"
 
 
 

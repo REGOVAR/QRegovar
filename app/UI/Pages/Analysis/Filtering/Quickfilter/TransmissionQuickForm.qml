@@ -19,7 +19,10 @@ QuickFilterBox
 
     onModelChanged:
     {
-        root.enabled = model.quickfilters.transmissionFilter.isVisible();
+        if (model)
+        {
+            root.enabled = model.quickfilters.transmissionFilter.isVisible();
+        }
     }
 
 

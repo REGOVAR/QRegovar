@@ -251,7 +251,7 @@ Rectangle
         }
 
 
-        // ===== User informations =====
+        // ===== User information =====
         Row
         {
             Layout.fillWidth: true
@@ -275,7 +275,7 @@ Rectangle
                 height: Regovar.theme.font.boxSize.title
 
                 elide: Text.ElideRight
-                text: qsTr("User informations")
+                text: qsTr("User information")
                 font.bold: true
                 font.pixelSize: Regovar.theme.font.size.header
                 verticalAlignment: Text.AlignVCenter

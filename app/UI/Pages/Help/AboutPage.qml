@@ -21,8 +21,8 @@ Rectangle
         {
             ListElement
             {
-                title: qsTr("Informations")
-                source: "../Pages/Help/AboutInformations.qml"
+                title: qsTr("Information")
+                source: "../Pages/Help/AboutInformation.qml"
             }
             ListElement
             {

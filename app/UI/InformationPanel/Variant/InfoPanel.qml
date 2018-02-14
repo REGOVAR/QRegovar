@@ -57,7 +57,7 @@ Rectangle
         spacing: 10
 
 
-        // Editable informations
+        // Editable information
         GridLayout
         {
             Layout.fillWidth: true

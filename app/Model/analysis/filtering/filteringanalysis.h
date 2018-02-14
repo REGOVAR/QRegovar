@@ -234,7 +234,7 @@ private:
 
     /// List<AnnotationDB*>: List of all annotation databases available for the reference used for this analysis. Init when reference is set.
     QList<QObject*> mAllAnnotations;
-    /// Map with all UI informations by annotations needed by the VariantTable to display annotation's columns
+    /// Map with all UI information by annotations needed by the VariantTable to display annotation's columns
     QHash<QString, FieldColumnInfos*> mAnnotations;
     /// List<Annotation*>: one dimension list with all annotations available (use by UI in dropdown list form when need to select annotation condition by example)
     QList<QObject*> mAnnotationsFlatList;

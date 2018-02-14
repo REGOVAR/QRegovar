@@ -13,7 +13,7 @@
 class Annotation : public QObject
 {
     Q_OBJECT
-    // Readonly annotation's informations
+    // Readonly annotation's information
     Q_PROPERTY(QString uid READ uid)
     Q_PROPERTY(QString dbUid READ dbUid)
     Q_PROPERTY(QString name READ name)

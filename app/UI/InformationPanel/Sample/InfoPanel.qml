@@ -27,7 +27,7 @@ Rectangle
             {
                 sampleModel.dataChanged.disconnect(updateViewFromModel);
             }
-            // connect to new model and display informations
+            // connect to new model and display information
             sampleModel = sample;
             sampleModel.dataChanged.connect(updateViewFromModel);
             updateViewFromModel();
@@ -73,7 +73,7 @@ Rectangle
         spacing: 10
 
 
-        // Editable informations
+        // Editable information
         GridLayout
         {
             Layout.fillWidth: true

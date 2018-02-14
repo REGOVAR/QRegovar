@@ -313,7 +313,7 @@ Dialog
             root.model = newModel;
 
             var headVersion = model.getVersion(model.versionsIds[0]);
-            header.text = qsTr("Edit panel's informations and/or add new versions.");
+            header.text = qsTr("Edit panel's information and/or add new versions.");
             //header.text += "\n" + qsTr("ID") + ": " + model.panelId;
             header.text += "\n\n" + qsTr("Current name") + ": " + model.name;
             header.text += "\n" + qsTr("Head version") + ": " + headVersion.version;

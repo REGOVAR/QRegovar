@@ -189,7 +189,7 @@ void Request::received()
             {
                 regovar->networkManager()->setStatus(NetworkManager::ServerStatus::error);
                 mJson.insert("code", "E000002");
-                mJson.insert("msg",  tr("An unexpected error occured server side. More informations available on server logs."));
+                mJson.insert("msg",  tr("An unexpected error occured server side. More information available on server logs."));
             }
             mSuccess = false;
             emit responseReceived(mSuccess, mJson);

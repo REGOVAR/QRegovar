@@ -11,7 +11,7 @@ import QtQml.Models 2.2
 import "../../../Regovar"
 import "../../../Framework"
 import "../../../MainMenu"
-import "../../../InformationsPanel/Variant"
+import "../../../InformationPanel/Variant"
 
 import org.regovar 1.0
 

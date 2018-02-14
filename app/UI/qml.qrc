@@ -68,38 +68,38 @@
         <file>Framework/TextFieldForm.qml</file>
         <file>Framework/TreeView.qml</file>
         <file>Framework/Text.qml</file>
-        <file>InformationsPanel/Common/RelationsPanel.qml</file>
-        <file>InformationsPanel/Common/InformationsPanel.qml</file>
-        <file>InformationsPanel/Common/EventsPanel.qml</file>
-        <file>InformationsPanel/Common/Section.qml</file>
-        <file>InformationsPanel/Common/OnlineToolAction.qml</file>
-        <file>InformationsPanel/File/FileInformations.qml</file>
-        <file>InformationsPanel/File/InfoPanel.qml</file>
-        <file>InformationsPanel/Gene/GeneInformations.qml</file>
-        <file>InformationsPanel/Gene/InfoPanel.qml</file>
-        <file>InformationsPanel/Gene/ReferencePanel.qml</file>
-        <file>InformationsPanel/Gene/OnlineToolsPanel.qml</file>
-        <file>InformationsPanel/Gene/StatsPanel.qml</file>
-        <file>InformationsPanel/Panel/InfoPanel.qml</file>
-        <file>InformationsPanel/Panel/PanelInformations.qml</file>
-        <file>InformationsPanel/Panel/VersionDetailsPanel.qml</file>
-        <file>InformationsPanel/Panel/PanelFormNewGene.qml</file>
-        <file>InformationsPanel/Panel/PanelFormNewCustom.qml</file>
-        <file>InformationsPanel/Panel/PanelSearchEntry.qml</file>
-        <file>InformationsPanel/Phenotype/InfoPanel.qml</file>
-        <file>InformationsPanel/Phenotype/OnlineToolsPanel.qml</file>
-        <file>InformationsPanel/Phenotype/PhenotypeInformations.qml</file>
-        <file>InformationsPanel/Phenotype/StatsPanel.qml</file>
-        <file>InformationsPanel/Pipeline/InfoPanel.qml</file>
-        <file>InformationsPanel/Pipeline/PipelineInformations.qml</file>
-        <file>InformationsPanel/Pipeline/StatsPanel.qml</file>
-        <file>InformationsPanel/Sample/InfoPanel.qml</file>
-        <file>InformationsPanel/Sample/SampleInformations.qml</file>
-        <file>InformationsPanel/User/InfoPanel.qml</file>
-        <file>InformationsPanel/User/StatsPanel.qml</file>
-        <file>InformationsPanel/User/UserInformations.qml</file>
-        <file>InformationsPanel/Variant/InfoPanel.qml</file>
-        <file>InformationsPanel/Variant/VariantInformations.qml</file>
+        <file>InformationPanel/Common/RelationsPanel.qml</file>
+        <file>InformationPanel/Common/InformationPanel.qml</file>
+        <file>InformationPanel/Common/EventsPanel.qml</file>
+        <file>InformationPanel/Common/Section.qml</file>
+        <file>InformationPanel/Common/OnlineToolAction.qml</file>
+        <file>InformationPanel/File/FileInformation.qml</file>
+        <file>InformationPanel/File/InfoPanel.qml</file>
+        <file>InformationPanel/Gene/GeneInformation.qml</file>
+        <file>InformationPanel/Gene/InfoPanel.qml</file>
+        <file>InformationPanel/Gene/ReferencePanel.qml</file>
+        <file>InformationPanel/Gene/OnlineToolsPanel.qml</file>
+        <file>InformationPanel/Gene/StatsPanel.qml</file>
+        <file>InformationPanel/Panel/InfoPanel.qml</file>
+        <file>InformationPanel/Panel/PanelInformation.qml</file>
+        <file>InformationPanel/Panel/VersionDetailsPanel.qml</file>
+        <file>InformationPanel/Panel/PanelFormNewGene.qml</file>
+        <file>InformationPanel/Panel/PanelFormNewCustom.qml</file>
+        <file>InformationPanel/Panel/PanelSearchEntry.qml</file>
+        <file>InformationPanel/Phenotype/InfoPanel.qml</file>
+        <file>InformationPanel/Phenotype/OnlineToolsPanel.qml</file>
+        <file>InformationPanel/Phenotype/PhenotypeInformation.qml</file>
+        <file>InformationPanel/Phenotype/StatsPanel.qml</file>
+        <file>InformationPanel/Pipeline/InfoPanel.qml</file>
+        <file>InformationPanel/Pipeline/PipelineInformation.qml</file>
+        <file>InformationPanel/Pipeline/StatsPanel.qml</file>
+        <file>InformationPanel/Sample/InfoPanel.qml</file>
+        <file>InformationPanel/Sample/SampleInformation.qml</file>
+        <file>InformationPanel/User/InfoPanel.qml</file>
+        <file>InformationPanel/User/StatsPanel.qml</file>
+        <file>InformationPanel/User/UserInformation.qml</file>
+        <file>InformationPanel/Variant/InfoPanel.qml</file>
+        <file>InformationPanel/Variant/VariantInformation.qml</file>
         <file>MainMenu/MainMenu.qml</file>
         <file>MainMenu/MenuEntryL1.qml</file>
         <file>MainMenu/MenuEntryL2.qml</file>
@@ -152,7 +152,7 @@
         <file>Pages/Browse/SearchResultsList.qml</file>
         <file>Pages/Browse/SubjectsPage.qml</file>
         <file>Pages/Help/AboutCredits.qml</file>
-        <file>Pages/Help/AboutInformations.qml</file>
+        <file>Pages/Help/AboutInformation.qml</file>
         <file>Pages/Help/AboutLicense.qml</file>
         <file>Pages/Help/AboutPage.qml</file>
         <file>Pages/Help/InfoCard.qml</file>
@@ -186,17 +186,17 @@
         <file>Pages/Settings/ApplicationConnectionPage.qml</file>
         <file>Pages/Settings/ApplicationCachePage.qml</file>
         <file>Pages/Panel/PanelsPage.qml</file>
-        <file>InformationsPanel/Sample/StatsOverview.qml</file>
-        <file>InformationsPanel/Sample/StatsVariantClasses.qml</file>
-        <file>InformationsPanel/Sample/StatsVepConsequences.qml</file>
-        <file>InformationsPanel/Sample/StatsVepImpacts.qml</file>
-        <file>InformationsPanel/Sample/QualityOverview.qml</file>
-        <file>InformationsPanel/Sample/QualityFilter.qml</file>
-        <file>InformationsPanel/Sample/StatsQualPanel.qml</file>
+        <file>InformationPanel/Sample/StatsOverview.qml</file>
+        <file>InformationPanel/Sample/StatsVariantClasses.qml</file>
+        <file>InformationPanel/Sample/StatsVepConsequences.qml</file>
+        <file>InformationPanel/Sample/StatsVepImpacts.qml</file>
+        <file>InformationPanel/Sample/QualityOverview.qml</file>
+        <file>InformationPanel/Sample/QualityFilter.qml</file>
+        <file>InformationPanel/Sample/StatsQualPanel.qml</file>
         <file>Wizards/Sample/SampleFileImportControl.qml</file>
         <file>Wizards/Sample/SampleImportView.qml</file>
         <file>Dialogs/NewPanelVersionDialog.qml</file>
-        <file>InformationsPanel/Variant/OnlineToolsPanel.qml</file>
-        <file>InformationsPanel/Variant/AnnotationsPanel.qml</file>
+        <file>InformationPanel/Variant/OnlineToolsPanel.qml</file>
+        <file>InformationPanel/Variant/AnnotationsPanel.qml</file>
     </qresource>
 </RCC>

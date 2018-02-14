@@ -152,7 +152,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     // 5 : load results
     // Chaining of loading step is done thanks to signals (see asynchLoading slot)
 
-    // The "true" loading of the filter must be done only after that annotation* informations have been loaded
+    // The "true" loading of the filter must be done only after that annotation* information have been loaded
     // so for the init, we just save json filter, without loading/signal
     mFilterJson = json["filter"].toArray();
 

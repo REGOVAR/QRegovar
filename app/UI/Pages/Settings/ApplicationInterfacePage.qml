@@ -248,7 +248,7 @@ Rectangle
             Layout.column: 1
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignTop
-            text: qsTr("Display or hide help and informations boxes in the application.")
+            text: qsTr("Display or hide help and information boxes in the application.")
             font.pixelSize: Regovar.theme.font.size.normal
             color: Regovar.theme.primaryColor.back.normal
             height: Regovar.theme.font.boxSize.normal
