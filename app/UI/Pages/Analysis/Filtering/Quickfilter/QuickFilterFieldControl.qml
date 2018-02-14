@@ -43,6 +43,7 @@ RowLayout
         anchors.left: parent.left
         anchors.leftMargin: root.indentation
         onWidthChanged: root.labelWidth = width;
+        text: ""
     }
     Binding { target: model; property: "isActive"; value: fieldCheck.checked; }
 
@@ -72,6 +73,7 @@ RowLayout
 
         onTextEdited: fieldCheck.checked = true
         onTextChanged: fieldCheck.checked = true
+        placeholderText: qsTr("Value ?")
     }
     Binding { target: model; property: "value"; value: fieldValue.text; }
 
