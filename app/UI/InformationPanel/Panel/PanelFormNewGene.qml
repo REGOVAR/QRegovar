@@ -97,7 +97,11 @@ Rectangle
                         {
                             width: scrollarea.viewport.width
                             model: modelData
-                            onAdded: regovar.panelsManager.newPanel.addEntry({"label" : modelData["symbol"], "id": modelData["id"], "details": modelData["id"]});
+                            onAdded:
+                            {
+                                regovar.panelsManager.newPanel.addEntry({"label" : modelData["symbol"], "id": modelData["id"], "details": modelData["id"]});
+                                enabled = false;
+                            }
                             onShowDetails:
                             {
                                 regovar.getGeneInfo(modelData["symbol"]);
@@ -133,7 +137,11 @@ Rectangle
                         {
                             width: scrollarea.viewport.width
                             model: modelData
-                            onAdded: regovar.panelsManager.newPanel.addEntry({"label" : modelData["label"], "id": modelData["id"], "details": modelData["id"]});
+                            onAdded:
+                            {
+                                regovar.panelsManager.newPanel.addEntry({"label" : modelData["label"], "id": modelData["id"], "details": modelData["id"]});
+                                enabled = false;
+                            }
                             onShowDetails:
                             {
                                 phenotypeInfoDialog.open();

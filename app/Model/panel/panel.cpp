@@ -219,8 +219,42 @@ void Panel::load(bool forceRefresh)
 
 void Panel::addEntry(QJsonObject data)
 {
-    mEntries.append(data);
-    emit dataChanged();
+    // Check if data already exists in the panel
+    bool append = true;
+    if (data.contains("id"))
+    {
+        for(QVariant v: mEntries)
+        {
+            QJsonObject j = v.toJsonObject();
+            if (j.contains("id") && j["id"] == data["id"])
+            {
+                append = false;
+                break;
+            }
+        }
+    }
+    else if (data.contains("chr") && data.contains("start") && data.contains("end"))
+    {
+        for(QVariant v: mEntries)
+        {
+            QJsonObject j = v.toJsonObject();
+            if (j.contains("chr") && j["chr"] == data["chr"])
+            {
+                if (j["start"] == data["start"] && j["end"] == data["end"])
+                {
+                    append = false;
+                    break;
+                }
+            }
+        }
+    }
+
+
+    if (append)
+    {
+        mEntries.append(data);
+        emit dataChanged();
+    }
 }
 
 
