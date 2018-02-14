@@ -116,7 +116,7 @@ Rectangle
         {
             role: "shared"
             title: "Shared"
-            width: 50
+            width: 100
         }
         TableViewColumn
         {
