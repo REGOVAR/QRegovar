@@ -48,6 +48,7 @@ MenuEntry::MenuEntry(Subject* subject, RootMenu* rootMenu): MenuEntry(rootMenu)
     mIcon = subject->sex() == Subject::Sex::Male ? "9" : subject->sex() == Subject::Sex::Female ? "9" : "b";
     connect(subject, &Subject::dataChanged, this, &MenuEntry::refresh);
 
+
     // Create lvl3 menu entries
     mEntries.append(new MenuEntry("", tr("Summary"), "Subject/SummaryPage.qml", mRootMenu, subject));
     mEntries.append(new MenuEntry("", tr("Phenotype"), "Subject/PhenotypesPage.qml", mRootMenu, subject));

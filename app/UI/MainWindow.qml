@@ -174,8 +174,8 @@ GenericWindow
         title: qsTr("File Information")
         visible: false
         modality: Qt.NonModal
-        width: 500
-        height: 400
+        width: 700
+        height: 500
         minimumHeight : 300
         minimumWidth : 300
 
@@ -199,8 +199,8 @@ GenericWindow
         title: qsTr("Gene Information")
         visible: false
         modality: Qt.NonModal
-        width: 500
-        height: 400
+        width: 700
+        height: 500
         minimumHeight : 300
         minimumWidth : 300
 
@@ -224,8 +224,8 @@ GenericWindow
         title: qsTr("Panel Information")
         visible: false
         modality: Qt.NonModal
-        width: 500
-        height: 400
+        width: 700
+        height: 500
         minimumHeight : 300
         minimumWidth : 300
 
@@ -249,8 +249,8 @@ GenericWindow
         title: qsTr("Phenotype Information")
         visible: false
         modality: Qt.NonModal
-        width: 500
-        height: 400
+        width: 700
+        height: 500
         minimumHeight : 300
         minimumWidth : 300
 
@@ -274,8 +274,8 @@ GenericWindow
         title: qsTr("Pipeline Information")
         visible: false
         modality: Qt.NonModal
-        width: 500
-        height: 400
+        width: 700
+        height: 500
         minimumHeight : 300
         minimumWidth : 300
 
@@ -299,8 +299,8 @@ GenericWindow
         title: qsTr("Sample Information")
         visible: false
         modality: Qt.NonModal
-        width: 500
-        height: 400
+        width: 700
+        height: 500
         minimumHeight : 300
         minimumWidth : 300
 
@@ -324,8 +324,8 @@ GenericWindow
         title: qsTr("User Information")
         visible: false
         modality: Qt.NonModal
-        width: 500
-        height: 400
+        width: 700
+        height: 500
         minimumHeight : 300
         minimumWidth : 300
 
@@ -349,8 +349,8 @@ GenericWindow
         title: qsTr("Variant Information")
         visible: false
         modality: Qt.NonModal
-        width: 500
-        height: 400
+        width: 700
+        height: 500
         minimumHeight : 300
         minimumWidth : 300
 

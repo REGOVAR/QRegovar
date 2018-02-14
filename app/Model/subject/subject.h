@@ -106,12 +106,12 @@ private:
     QDateTime mLastInternalLoad = QDateTime::currentDateTime();
 
     int mId = -1;
-    QString mIdentifier;
-    QString mFirstname;
-    QString mLastname;
-    QString mComment;
-    QString mFamilyNumber;
-    Sex mSex;
+    QString mIdentifier = "";
+    QString mFirstname = "";
+    QString mLastname = "";
+    QString mComment = "";
+    QString mFamilyNumber = "";
+    Sex mSex = Sex::Unknow;
     QDate mDateOfBirth;
     QList<QObject*> mSamples;
     QList<QObject*> mAnalyses;
@@ -120,7 +120,7 @@ private:
     QList<QObject*> mFiles;
     QList<QObject*> mIndicators;
     QJsonObject mSubjectUI;
-    QString mSearchField;
+    QString mSearchField = "";
 };
 
 #endif // SUBJECT_H
