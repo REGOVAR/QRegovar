@@ -17,6 +17,8 @@ We need only Qt 5.10.
 
 Download the open source package on the [Qt web site](https://www.qt.io/download). Follow instruction to install it (next, next, next). 
 
+QtCreator ask to configure the project. Accept the default parameters.
+
 Then open the `app/QRegovar.pro` with QtCreator and press `ctrl + R` to build and run QRegovar.
 
 
@@ -36,6 +38,7 @@ Then, source a Qt 5.10 environment and use QtCreator to compile QRegovar:
 source /opt/qt510/bin/qt510-env.sh
 qtcreator
 ```
+QtCreator ask to configure the project. Accept the default parameters.
 
 Open the `app/QRegovar.pro` file, and press `ctrl + R` to build and run QRegovar.
 
