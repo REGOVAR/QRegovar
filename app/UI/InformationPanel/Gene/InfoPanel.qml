@@ -62,7 +62,7 @@ ScrollView
     {
         if (!data) return "";
 
-        var text = "<b>HGNC informations:</b><table>";
+        var text = "<b>HGNC information:</b><table>";
         text += "<tr><td><b>Name:</b></td><td>" + data["name"] + "</td></tr>";
         text += "<tr><td><b>Symbol:</b></td><td>" + data["symbol"] + "</td></tr>";
         text += "<tr><td><b>HGNC Id:</b></td><td><a href=\"https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=" + data["hgnc_id"] + "\">" + data["hgnc_id"] + "</a></td></tr>";
