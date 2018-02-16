@@ -1,6 +1,6 @@
 QT += qml quick widgets websockets charts network
 
-CONFIG += c++11
+CONFIG += c++11 qtquickcompiler
 
 #Application version
 VERSION_MAJOR = 0
