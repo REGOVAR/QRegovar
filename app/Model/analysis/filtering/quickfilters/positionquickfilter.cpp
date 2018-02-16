@@ -28,6 +28,11 @@ void PositionQuickFilter::init(QString fuid)
     mFields << new QuickFilterField(fuid, "", ops, "=", "upstream_gene_variant", true);
     mFields << new QuickFilterField(fuid, "", ops, "=", "downstream_gene_variant", true);
 
+    // Splice
+    mFields << new QuickFilterField(fuid, "", ops, "=", "splice_acceptor_variant");
+    mFields << new QuickFilterField(fuid, "", ops, "=", "splice_donor_variant", true);
+    mFields << new QuickFilterField(fuid, "", ops, "=", "splice_region_variant", true);
+
  // vep consequence not used : (check also with TypeQuickFilter)
     // transcript_ablation
     // start_lost
@@ -85,6 +90,13 @@ QJsonArray PositionQuickFilter::toJson()
         conditions.append(mFields[7]->toJson());
         conditions.append(mFields[8]->toJson());
     }
+    // Splice
+    if (mFields[9]->isActive())
+    {
+        conditions.append(mFields[9]->toJson());
+        conditions.append(mFields[10]->toJson());
+        conditions.append(mFields[11]->toJson());
+    }
 
     if (conditions.count() == 0)
     {
@@ -114,6 +126,7 @@ void PositionQuickFilter::clear()
     mFields[3]->clear();
     mFields[4]->clear();
     mFields[6]->clear();
+    mFields[9]->clear();
 }
 
 

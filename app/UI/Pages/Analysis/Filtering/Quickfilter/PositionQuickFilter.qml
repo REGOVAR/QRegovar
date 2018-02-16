@@ -36,7 +36,7 @@ QuickFilterBox
     function checkFinal()
     {
         // Mode
-        posAll.checked = (!posExo.checked && !posIntro.checked && !posUtr.checked && !posInter.checked);
+        posAll.checked = (!posExo.checked && !posIntro.checked && !posUtr.checked && !posInter.checked && !posSpl.checked);
 
         // send final combination to the model to update the filter
         var pf = model.quickfilters.positionFilter;
@@ -44,6 +44,7 @@ QuickFilterBox
         pf.intronic.isActive = posIntro.checked;
         pf.utr.isActive = posUtr.checked;
         pf.intergenic.isActive = posInter.checked;
+        pf.splice.isActive = posSpl.checked;
     }
 
     content: Column
@@ -77,6 +78,7 @@ QuickFilterBox
                             posIntro.checked = false;
                             posUtr.checked = false;
                             posInter.checked = false;
+                            posSpl.checked = false;
                         }
 
                         checkFinal();
@@ -185,7 +187,34 @@ QuickFilterBox
                         internalUiUpdate = true;
                         if (checked)
                         {
-                            posUtr.checked = false;
+                            posAll.checked = false;
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
+
+            }
+        }
+        RowLayout
+        {
+            width: content.width
+            CheckBox
+            {
+                id: posSpl
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                text: qsTr("Splice")
+                checked: false
+                onCheckedChanged:
+                {
+                    if (!internalUiUpdate)
+                    {
+                        // Update other checkboxes
+                        internalUiUpdate = true;
+                        if (checked)
+                        {
+                            posAll.checked = false;
                         }
                         checkFinal();
                         internalUiUpdate = false;

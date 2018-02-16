@@ -15,6 +15,7 @@ class PositionQuickFilter : public QuickFilterBlockInterface
     Q_PROPERTY(QuickFilterField* intronic READ intronic)
     Q_PROPERTY(QuickFilterField* utr READ utr)
     Q_PROPERTY(QuickFilterField* intergenic READ intergenic)
+    Q_PROPERTY(QuickFilterField* splice READ splice)
 
 public:
     explicit PositionQuickFilter(int analysisId);
@@ -31,6 +32,7 @@ public:
     inline QuickFilterField* intronic() { return mFields[3]; }
     inline QuickFilterField* utr() { return mFields[4]; }
     inline QuickFilterField* intergenic() { return mFields[6]; }
+    inline QuickFilterField* splice() { return mFields[9]; }
 
 private:
     QList<QuickFilterField*> mFields;
