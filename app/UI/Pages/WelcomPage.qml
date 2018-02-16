@@ -97,7 +97,7 @@ Rectangle
             }
         }
 
-        placeholder: regovar.networkManager.status == 0 ? qsTr("Search anything, project, sample, phenotype, analysis, variant, report...") : ""
+        placeholder: regovar.networkManager.status == 0 ? qsTr("Search anything, sample, phenotype, analysis, variant, report...") : ""
         focus: true
     }
 

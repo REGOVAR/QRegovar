@@ -22,8 +22,8 @@ void RootMenu::initMain()
     administrationEntry->addEntry(new MenuEntry("", tr("Annotations"), "Settings/AdminAnnotationsPage.qml", this));
 
     // Create lvl2 menu entries
-    mProjectBrowserEntry = new MenuEntry("c", tr("Projects"), "", this);
-    mProjectBrowserEntry->addEntry(new MenuEntry("c", tr("Browser"), "Browse/ProjectsPage.qml", this));
+    mAnalysisBrowserEntry = new MenuEntry("c", tr("Analysis"), "", this);
+    mAnalysisBrowserEntry->addEntry(new MenuEntry("c", tr("Browser"), "Browse/ProjectsPage.qml", this));
     mSubjectBrowserEntry = new MenuEntry("b", tr("Subjects"), "", this);
     mSubjectBrowserEntry->addEntry(new MenuEntry("z", tr("Browser"), "Browse/SubjectsPage.qml", this));
     MenuEntry* settingsEntry = new MenuEntry("d", tr("Settings"), "", this);
@@ -38,7 +38,7 @@ void RootMenu::initMain()
     // Create lvl1 menu entries
     mEntries.append(new MenuEntry("a", tr("Welcome"), "WelcomPage.qml", this));
     mEntries.append(new MenuEntry("z", tr("Search"), "Browse/SearchPage.qml", this));
-    mEntries.append(mProjectBrowserEntry);
+    mEntries.append(mAnalysisBrowserEntry);
     mEntries.append(mSubjectBrowserEntry);
     mEntries.append(new MenuEntry("q", tr("Panels"), "Panel/PanelsPage.qml", this));
     mEntries.append(settingsEntry);
@@ -132,11 +132,11 @@ void RootMenu::openMenuEntry(MenuEntry* menuEntry)
 }
 void RootMenu::openMenuEntry(Project* project)
 {
-    if (mProjectBrowserEntry != nullptr && project != nullptr)
+    if (mAnalysisBrowserEntry != nullptr && project != nullptr)
     {
         // Try to retrieve the menu entry corresponding to this project (maybe already exists)
         MenuEntry* entry = nullptr;
-        for (QObject* o: mProjectBrowserEntry->entries())
+        for (QObject* o: mAnalysisBrowserEntry->entries())
         {
             MenuEntry* pm = qobject_cast<MenuEntry*>(o);
             if (pm != nullptr && pm->project() == project)
@@ -149,12 +149,12 @@ void RootMenu::openMenuEntry(Project* project)
         if (entry == nullptr)
         {
             entry = new MenuEntry(project, this);
-            mProjectBrowserEntry->addEntry(entry);
-            mProjectBrowserEntry->entries().move(mProjectBrowserEntry->entries().count()-1, 1);
+            mAnalysisBrowserEntry->addEntry(entry);
+            mAnalysisBrowserEntry->entries().move(mAnalysisBrowserEntry->entries().count()-1, 1);
         }
         // /!\ the selected entry of the menu is the selected sub entries, not the entry tiself
         mSelectedEntry = entry->getEntry(entry->index());
-        mProjectBrowserEntry->select(0, mProjectBrowserEntry->entries().indexOf(entry));
+        mAnalysisBrowserEntry->select(0, mAnalysisBrowserEntry->entries().indexOf(entry));
         emit openPage(mSelectedEntry);
     }
 }

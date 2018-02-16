@@ -46,7 +46,7 @@ Rectangle
             anchors.right: connectionStatus.left
             anchors.margins: 10
             iconLeft: "z"
-            placeholder: qsTr("Search projects by names, dates, comments...")
+            placeholder: qsTr("Search analyses by names, dates, comments...")
             onTextEdited: regovar.projectsManager.proxy.setFilterString(text)
         }
     }
@@ -64,7 +64,7 @@ Rectangle
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("Use the tree below to browse all available projects. You can filter the tree using the search field.")
+        text: qsTr("Use the tree below to browse all available analyses. You can filter the tree using the search field.")
     }
 
     Column
@@ -79,7 +79,7 @@ Rectangle
         Button
         {
             id: newProject
-            text: qsTr("New Project")
+            text: qsTr("New folder")
              onClicked: regovar.openNewProjectWizard()
         }
         Button
@@ -158,12 +158,12 @@ Rectangle
         {
             if (model)
             {
-                var txt = qsTr("Do you confirm the deletion of the project '{}' ?\nAll it's analyses will be also deleted.");
+                var txt = qsTr("Do you confirm the deletion of the folder '{}' ?\nAll it's analyses will be also deleted.");
                 txt = txt.replace('{}', model.name);
                 text = txt;
             }
         }
-        title: qsTr("Delete project")
+        title: qsTr("Delete folder")
         onYes:
         {
             regovar.projectsManager.deleteProject(model.id);

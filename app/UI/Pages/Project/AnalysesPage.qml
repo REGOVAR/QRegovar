@@ -57,7 +57,7 @@ Rectangle
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("This page list all analyses that have been done in the current project.")
+        text: qsTr("This page list all analyses that have been done in the current folder.")
     }
 
 

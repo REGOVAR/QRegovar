@@ -67,7 +67,7 @@ Rectangle
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("This page gives you an overview of the project.")
+        text: qsTr("This page gives you an overview of the folder and its content.")
     }
 
     GridLayout
@@ -97,7 +97,7 @@ Rectangle
             id: nameField
             Layout.fillWidth: true
             enabled: editionMode
-            placeholder: qsTr("Name of the project")
+            placeholder: qsTr("Name of the folder")
             text: ""
         }
 

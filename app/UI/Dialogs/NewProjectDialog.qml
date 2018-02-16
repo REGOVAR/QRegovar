@@ -11,7 +11,7 @@ Window
     id: root
     modality: Qt.NonModal
 
-    title: qsTr("Create new project")
+    title: qsTr("Create new folder")
 
     width: 500
     height: 400
@@ -42,8 +42,8 @@ Window
             anchors.left: parent.left
             anchors.right: parent.right
             iconText: "c"
-            title: qsTr("New project")
-            text: qsTr("Creating a new project will allow you to organize your analyses and find them more easily afterwards.\nTo create a project, the name is mandatory.")
+            title: qsTr("New folder")
+            text: qsTr("Creating a new folder will allow you to organize your analyses and find them more easily afterwards.\nTo create a folder, the name is mandatory.")
         }
 
 
@@ -75,7 +75,7 @@ Window
             {
                 id: nameField
                 Layout.fillWidth: true
-                placeholder: qsTr("Name of the project")
+                placeholder: qsTr("Name of the folder")
             }
 
             Text

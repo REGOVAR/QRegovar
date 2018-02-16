@@ -44,7 +44,7 @@ GenericScreen
         {
             height: Regovar.theme.font.size.header
             Layout.minimumWidth: root.labelColWidth
-            text: qsTr("Project")
+            text: qsTr("Folder")
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.family
@@ -112,7 +112,7 @@ GenericScreen
 
         Button
         {
-            text: qsTr("New Project")
+            text: qsTr("New folder")
             onClicked: regovar.openNewProjectWizard()
         }
     }

@@ -21,7 +21,7 @@ GenericScreen
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        text: qsTr("You're almost done! Choose a name and select the project you want to save your analysis to. Below is a summary of the configuration of the analysis.\nIf all is good. press the \"Launch\" button. The Regovar server will prepare your data, and you will then be able to dynamically filter the variants.")
+        text: qsTr("You're almost done! Choose a name and select the folder you want to save your analysis to. Below is a summary of the configuration of the analysis.\nIf all is good. press the \"Launch\" button. The Regovar server will prepare your data, and you will then be able to dynamically filter the variants.")
         wrapMode: Text.WordWrap
         font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.normal
@@ -40,7 +40,7 @@ GenericScreen
         {
             height: Regovar.theme.font.size.header
             Layout.minimumWidth: root.labelColWidth
-            text: qsTr("Project")
+            text: qsTr("Folder")
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.family
@@ -52,7 +52,7 @@ GenericScreen
         {
             Layout.fillWidth: true
             id: projectField
-            model: ["Select a project", "DPNI", "Panel onchogénétique", "Hugodims"]
+            model: ["Select a folder", "DPNI", "Panel onchogénétique", "Hugodims"]
             onCurrentIndexChanged: checkReady();
         }
     }

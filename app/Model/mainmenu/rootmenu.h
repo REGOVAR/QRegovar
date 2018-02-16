@@ -79,7 +79,7 @@ private:
     float mWidth = 150;
     QList<QObject*> mEntries;
 
-    MenuEntry* mProjectBrowserEntry = nullptr;
+    MenuEntry* mAnalysisBrowserEntry = nullptr;
     MenuEntry* mSubjectBrowserEntry = nullptr;
 
 };
