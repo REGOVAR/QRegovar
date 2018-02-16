@@ -39,6 +39,7 @@ bool Project::fromJson(QJsonObject json)
     mName = json["name"].toString();
 
     // Analyses
+    mAnalyses.clear();
     for (const QJsonValue& jsonVal: json["analyses"].toArray())
     {
         QJsonObject aJson = jsonVal.toObject();
@@ -49,6 +50,7 @@ bool Project::fromJson(QJsonObject json)
     }
 
     // Subjects
+    mSubjects.clear();
     for (const QJsonValue& jsonVal: json["subjects"].toArray())
     {
         QJsonObject aJson = jsonVal.toObject();

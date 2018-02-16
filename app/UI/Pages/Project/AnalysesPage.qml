@@ -129,6 +129,14 @@ Rectangle
                 anchors.margins: 10
                 anchors.leftMargin: 0
                 model: (root.model) ? root.model.analyses : []
+                onDoubleClicked:
+                {
+                    var analysis = browser.model[currentRow];
+                    if (analysis)
+                    {
+                        regovar.analysesManager.openAnalysis(analysis.type, analysis.id);
+                    }
+                }
 
                 // Default delegate for all column
                 itemDelegate: Item

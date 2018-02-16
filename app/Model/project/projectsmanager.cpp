@@ -25,6 +25,7 @@ void ProjectsManager::refresh()
             mProjectsTreeModel->refresh(json);
             mProjectsFlatList.clear();
             refreshFlatProjectsListRecursive(json["data"].toArray(), "");
+            emit projectsFlatListChanged();
 
         }
         else
@@ -58,7 +59,6 @@ void ProjectsManager::refreshFlatProjectsListRecursive(QJsonArray data, QString 
             mProjectsFlatList << proj;
         }
     }
-    emit projectsFlatListChanged();
 }
 
 
@@ -135,7 +135,6 @@ void ProjectsManager::deleteProject(int id)
         if (success)
         {
             refresh();
-            regovar->loadWelcomData();
         }
         else
         {

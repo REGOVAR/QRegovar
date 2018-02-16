@@ -121,7 +121,7 @@ QuickFilterBox
                 id: typStp
                 anchors.left: parent.left
                 anchors.leftMargin: 30
-                text: qsTr("Nonsense (Stop)")
+                text: qsTr("Nonsense")
                 checked: false
                 onCheckedChanged:
                 {
