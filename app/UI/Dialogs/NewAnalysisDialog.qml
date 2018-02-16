@@ -1,13 +1,13 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
-import QtQuick.Dialogs 1.2
+import QtQuick.Window 2.3
 import QtQuick.Layouts 1.3
 
 import "../Regovar"
 import "../Framework"
 import "NewAnalysisWizardScreens"
 
-Dialog
+Window
 {
     id: root
     modality: Qt.NonModal
@@ -37,7 +37,7 @@ Dialog
     }
 
 
-    contentItem: Rectangle
+    Rectangle
     {
         anchors.fill : parent
         color: Regovar.theme.backgroundColor.alt

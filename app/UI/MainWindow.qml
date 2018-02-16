@@ -136,7 +136,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onNewProjectWizardOpen: { newProjectDialog.reset(); newProjectDialog.open(); }
+            onNewProjectWizardOpen: { newProjectDialog.reset(); newProjectDialog.show(); }
         }
     }
 
@@ -147,7 +147,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onNewAnalysisWizardOpen: { newAnalysisDialog.reset(); newAnalysisDialog.open(); }
+            onNewAnalysisWizardOpen: { newAnalysisDialog.reset(); newAnalysisDialog.show(); }
         }
     }
 
@@ -158,7 +158,7 @@ GenericWindow
         Connections
         {
             target: regovar
-            onNewSubjectWizardOpen: { newSubjectDialog.reset(); newSubjectDialog.open(); }
+            onNewSubjectWizardOpen: { newSubjectDialog.reset(); newSubjectDialog.show(); }
         }
     }
 

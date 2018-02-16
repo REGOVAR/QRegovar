@@ -1,15 +1,15 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
-import QtQuick.Dialogs 1.2
+import QtQuick.Window 2.3
 import QtQuick.Layouts 1.3
 
 import "../Regovar"
 import "../Framework"
 
-Dialog
+Window
 {
     id: newSubjectPopup
-    modality: Qt.WindowModal
+    modality: Qt.NonModal
 
     title: qsTr("Create new subject")
 
@@ -29,7 +29,7 @@ Dialog
 
 
 
-    contentItem: Rectangle
+    Rectangle
     {
         id: root
         anchors.fill : parent
