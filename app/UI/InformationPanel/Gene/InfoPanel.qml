@@ -38,6 +38,7 @@ ScrollView
 
         TextEdit
         {
+            clip: true
             width: root.width - 30
             text: formatInfo(geneData)
             textFormat: TextEdit.RichText
