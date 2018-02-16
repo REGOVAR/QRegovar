@@ -118,8 +118,4 @@ Rectangle
             Layout.fillWidth: true
         }
     }
-
-
-
-
 }

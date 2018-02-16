@@ -148,6 +148,13 @@ ApplicationWindow
         }
     }
 
+    onClosing:
+    {
+        for (var idx in pages)
+        {
+            pages[idx].destroy();
+        }
+    }
 
 
 

@@ -242,23 +242,33 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
 
     // Create new QML window
     QQmlComponent *c = new QQmlComponent(mQmlEngine, qmlUrl, QQmlComponent::PreferSynchronous);
-    QObject* o = c->create();
-    QQuickWindow *i = qobject_cast<QQuickWindow*>(o);
-    QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
-
-    // Call init qml method to retrieve its model
-    QMetaObject::invokeMethod(i, "initFromCpp", Q_ARG(QVariant, lastId));
-
-    // Setup qml window's parent
-    i->setVisible(true);
-    QObject* root = mQmlEngine->rootObjects()[0];
-    QQuickWindow* rootWin = qobject_cast<QQuickWindow*>(root);
-    if (!rootWin)
+    if (c->isReady())
     {
-        qFatal("Error: Your root item has to be a window.");
+        QObject* o = c->create(mQmlEngine->rootContext());
+        QQuickWindow *i = qobject_cast<QQuickWindow*>(o);
+        QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
+
+        // Call init qml method to retrieve its model
+        QMetaObject::invokeMethod(i, "initFromCpp", Q_ARG(QVariant, lastId));
+
+        // Setup qml window's parent
+        QObject* root = mQmlEngine->rootObjects()[0];
+        QQuickWindow* rootWin = qobject_cast<QQuickWindow*>(root);
+        if (!rootWin)
+        {
+            qFatal("Error: Your root item has to be a window.");
+            return false;
+        }
+        i->setParent(0);
+        i->setVisible(true);
+    }
+    else
+    {
+        emit errorOccured("", tr("Enable to create new QML windows"), c->errorString());
         return false;
     }
-    i->setParent(0);
+
+
     return true;
 }
 

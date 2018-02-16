@@ -177,9 +177,9 @@ Item
     property var previousIndex
     onTabsModelChanged: forceRefreshTabs()
 
+    Component.onDestruction: clear(true)
 
-
-    function clear()
+    function clear(clearModel)
     {
         // Hide current page
         if (menuPageMapping[previousIndex])
@@ -197,8 +197,13 @@ Item
         }
 
         // Clear model
-        tabsModel.clear();
+        if (clearModel)
+        {
+            tabsModel.clear();
+        }
     }
+
+
 
 
 
@@ -208,6 +213,7 @@ Item
         // Create new pages
         if (tabsModel !== undefined)
         {
+            clear(false);
             var pages = [];
             for (var idx=0; idx<tabsModel.count; idx++)
             {
