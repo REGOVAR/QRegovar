@@ -127,40 +127,41 @@ GenericScreen
                 color: Regovar.theme.frontColor.normal
             }
 
-            Rectangle
-            {
-                Layout.fillWidth: true
-                height: Regovar.theme.font.boxSize.normal + 5
+            // TODO: feature #142 in developpment
+//            Rectangle
+//            {
+//                Layout.fillWidth: true
+//                height: Regovar.theme.font.boxSize.normal + 5
 
-                color: Regovar.theme.boxColor.back
-                border.width: 1
-                border.color: Regovar.theme.boxColor.border
+//                color: Regovar.theme.boxColor.back
+//                border.width: 1
+//                border.color: Regovar.theme.boxColor.border
 
-                RowLayout
-                {
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.leftMargin: 5
-                    anchors.rightMargin: 5
-                    spacing: 5
+//                RowLayout
+//                {
+//                    anchors.left: parent.left
+//                    anchors.right: parent.right
+//                    anchors.verticalCenter: parent.verticalCenter
+//                    anchors.leftMargin: 5
+//                    anchors.rightMargin: 5
+//                    spacing: 5
 
-                    Text
-                    {
-                        Layout.fillWidth: true
-                        text: qsTr("Warning your files are still downloading.") + " (" + regovar.analysesManager.newFiltering.samplesInputsFilesList.length + ")"
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.frontColor.normal
-                        elide: Text.ElideRight
-                    }
+//                    Text
+//                    {
+//                        Layout.fillWidth: true
+//                        text: qsTr("Warning your files are still downloading.") + " (" + regovar.analysesManager.newFiltering.samplesInputsFilesList.length + ")"
+//                        font.pixelSize: Regovar.theme.font.size.normal
+//                        color: Regovar.theme.frontColor.normal
+//                        elide: Text.ElideRight
+//                    }
 
-                    ProgressBar
-                    {
-                        width: 150
-                        value: 0.3
-                    }
-                }
-            }
+//                    ProgressBar
+//                    {
+//                        width: 150
+//                        value: 0.3
+//                    }
+//                }
+//            }
 
 
 
