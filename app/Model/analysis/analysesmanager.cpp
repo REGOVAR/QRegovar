@@ -198,7 +198,24 @@ bool AnalysesManager::openAnalysis(QString type, int id, bool reload_from_server
 }
 
 
-
+bool AnalysesManager::loadJson(QJsonArray json)
+{
+    for (const QJsonValue& data: json)
+    {
+        QJsonObject item = data.toObject();
+        if (item.contains("pipeline_id"))
+        {
+            // Load job analysis
+            // TODO
+        }
+        else
+        {
+            // Load filtering analysis
+            FilteringAnalysis* fa = getOrCreateFilteringAnalysis(item["id"].toInt());
+            fa->fromJson(item, false);
+        }
+    }
+}
 
 
 

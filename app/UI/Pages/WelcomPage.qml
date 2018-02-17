@@ -226,10 +226,9 @@ Rectangle
                                     {
                                         indent: 0
                                         width: analysesScrollArea.width - 30 // 15 right margin + 15 ScrollBar width
-                                        date: model.modelData.update_date
+                                        date: model.modelData.updateDate
                                         name: model.modelData.name
                                         fullpath: model.modelData.fullpath
-
                                         onClicked: regovar.analysesManager.openAnalysis("analysis", model.modelData.id)
                                         anchors.left: analysesColumn.left
                                         anchors.right: analysesColumn.right

@@ -15,7 +15,10 @@ SamplesManager::SamplesManager(int refId, QObject* parent) : QAbstractListModel(
     mProxy->setSourceModel(this);
     mProxy->setFilterRole(SearchField);
     mProxy->setSortRole(Name);
-    setReferenceId(refId);
+    if (refId > 0)
+    {
+        setReferenceId(refId);
+    }
 }
 
 
@@ -56,23 +59,7 @@ void SamplesManager::setReferenceId(int refId)
     {
         if (success)
         {
-            beginResetModel();
-            mSamplesList.clear();
-            for (const QJsonValue& sbjData: json["data"].toArray())
-            {
-                QJsonObject subject = sbjData.toObject();
-                // TODO subject info
-                for (const QJsonValue& splData: subject["samples"].toArray())
-                {
-                    QJsonObject sampleData = splData.toObject();
-                    Sample* sample = getOrCreate(sampleData["id"].toInt(), true);
-                    sample->fromJson(sampleData);
-                    if (!mSamplesList.contains(sample)) mSamplesList.append(sample);
-                }
-            }
-            endResetModel();
-            emit referencialIdChanged();
-            emit countChanged();
+            loadJson(json["data"].toArray());
         }
         else
         {
@@ -82,6 +69,27 @@ void SamplesManager::setReferenceId(int refId)
         }
         req->deleteLater();
     });
+}
+bool SamplesManager::loadJson(QJsonArray json)
+{
+    beginResetModel();
+    mSamplesList.clear();
+    for (const QJsonValue& sbjData: json)
+    {
+        QJsonObject subject = sbjData.toObject();
+        // TODO subject info
+        for (const QJsonValue& splData: subject["samples"].toArray())
+        {
+            QJsonObject sampleData = splData.toObject();
+            Sample* sample = getOrCreate(sampleData["id"].toInt(), true);
+            sample->fromJson(sampleData);
+            if (!mSamplesList.contains(sample)) mSamplesList.append(sample);
+        }
+    }
+    endResetModel();
+    emit referencialIdChanged();
+    emit countChanged();
+    return true;
 }
 
 

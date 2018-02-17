@@ -64,6 +64,9 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
         return false;
     }
 
+
+    if (!full_init) return true;
+
     // Parse settings
     QJsonObject settings = json["settings"].toObject();
     for (const QJsonValue& field: settings["annotations_db"].toArray())
@@ -77,16 +80,13 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
 
     // Retrieve samples
     mSamples.clear();
-    if (full_init)
+    for (const QJsonValue& spJson: json["samples"].toArray())
     {
-        for (const QJsonValue& spJson: json["samples"].toArray())
+        QJsonObject sampleData = spJson.toObject();
+        Sample* sample = regovar->samplesManager()->getOrCreate(sampleData["id"].toInt());
+        if(sample->fromJson(sampleData))
         {
-            QJsonObject sampleData = spJson.toObject();
-            Sample* sample = regovar->samplesManager()->getOrCreate(sampleData["id"].toInt());
-            if(sample->fromJson(sampleData))
-            {
-                mSamples.append(sample);
-            }
+            mSamples.append(sample);
         }
     }
 

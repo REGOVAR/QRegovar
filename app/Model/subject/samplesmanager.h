@@ -39,6 +39,7 @@ public:
 
     // Methods
     Q_INVOKABLE Sample* getOrCreate(int sampleId, bool internalRefresh=false);
+    bool loadJson(QJsonArray json);
 
     // QAbstractListModel methods
     int rowCount(const QModelIndex& parent = QModelIndex()) const;

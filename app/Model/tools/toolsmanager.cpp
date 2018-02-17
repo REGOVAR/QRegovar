@@ -7,18 +7,15 @@
 
 ToolsManager::ToolsManager(QObject* parent) : QObject(parent)
 {
-    Request* req = Request::get(QString("/config/tools"));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+}
+
+
+bool ToolsManager::loadJson(QJsonObject json)
+{
+    // Get custom export tools deployed
+    for (const QJsonValue& val: json["exporters"].toArray())
     {
-        if (success)
-        {
-            QJsonObject data = json["data"].toObject();
-            // Get custom export tools deployed
-            for (const QJsonValue& val: data["exporters"].toArray())
-            {
-                mExporters.append(new Tool(Tool::Exporter, val.toObject()));
-            }
-            // TODO: Get custom report tools deployed
-        }
-    });
+        mExporters.append(new Tool(Tool::Exporter, val.toObject()));
+    }
+    // TODO: Get custom report tools deployed
 }

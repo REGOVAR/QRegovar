@@ -19,15 +19,7 @@ void SubjectsManager::refresh()
     {
         if (success)
         {
-            beginResetModel();
-            QJsonArray data = json["data"].toArray();
-            for (const QJsonValue& subjectVal: data)
-            {
-                QJsonObject subjectData = subjectVal.toObject();
-                Subject* subject = getOrCreateSubject(subjectData["id"].toInt());
-                subject->fromJson(subjectData);
-            }
-            endResetModel();
+            loadJson(json["data"].toArray());
         }
         else
         {
@@ -35,6 +27,18 @@ void SubjectsManager::refresh()
         }
         request->deleteLater();
     });
+}
+bool SubjectsManager::loadJson(QJsonArray json)
+{
+    beginResetModel();
+    for (const QJsonValue& subjectVal: json)
+    {
+        QJsonObject subjectData = subjectVal.toObject();
+        Subject* subject = getOrCreateSubject(subjectData["id"].toInt());
+        subject->fromJson(subjectData);
+    }
+    endResetModel();
+    return true;
 }
 
 

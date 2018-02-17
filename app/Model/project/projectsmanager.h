@@ -33,6 +33,7 @@ public:
     Q_INVOKABLE void newProject(QString name, QString comment);
     Q_INVOKABLE void openProject(int id, bool reload_from_server=true);
     Q_INVOKABLE void deleteProject(int id);
+    bool loadJson(QJsonArray json, QString prefix="");
 
 
 public Q_SLOTS:
@@ -61,9 +62,6 @@ private:
 
 
     int mSelectedProject;
-
-    // Internal method
-    void refreshFlatProjectsListRecursive(QJsonArray data, QString prefix);
 };
 
 #endif // PROJECTSMANAGER_H
