@@ -14,6 +14,7 @@ QualityQuickFilter::QualityQuickFilter(int) : QuickFilterBlockInterface()
     mOperators.append("≠");
 
     mDepth = new QuickFilterField("401b1e5614706ec81bf83e24958f01e5", tr("Depth"), mOperators, "≥", 30);
+    mVaf = new QuickFilterField("8b33223f51dd82f69ce32a5032cdff48", tr("VAF"), mOperators, "≥", 0.2);
 }
 
 
@@ -26,11 +27,27 @@ bool QualityQuickFilter::isVisible()
 
 QJsonArray QualityQuickFilter::toJson()
 {
+    QJsonArray filters;
+
     if (mDepth->isActive())
     {
-        return mDepth->toJson();
+        filters.append(mDepth->toJson());
     }
-    return QJsonArray();
+    if (mVaf->isActive())
+    {
+        filters.append(mVaf->toJson());
+    }
+
+    if (filters.count() > 1)
+    {
+        QJsonArray result;
+        result.append("AND");
+        result.append(filters);
+        return result;
+    }
+    else if (filters.count() == 1)
+        return filters[0].toArray();
+    return filters;
 }
 
 
@@ -45,6 +62,7 @@ void QualityQuickFilter::setFilter(QString, bool, QVariant)
 void QualityQuickFilter::clear()
 {
     mDepth->clear();
+    mVaf->clear();
 }
 
 void QualityQuickFilter::checkAnnotationsDB(QList<QObject*>)
