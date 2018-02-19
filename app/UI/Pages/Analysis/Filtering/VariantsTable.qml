@@ -504,7 +504,7 @@ TreeView
                 col = columnComponent_list.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
             else if (annot.type == "sample_array")
             {
-                if (annot.name == "GT")
+                if (annot.name == "Genotype")
                     col = columnComponent_SampleArrayGT.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
                 else if (annot.meta["type"] == "enum")
                     col = columnComponent_SampleArrayEnum.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
