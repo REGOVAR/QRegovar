@@ -229,6 +229,7 @@ Rectangle
                                         date: model.modelData.updateDate
                                         name: model.modelData.name
                                         fullpath: model.modelData.fullpath
+                                        status: model.modelData.status
                                         onClicked: regovar.analysesManager.openAnalysis("analysis", model.modelData.id)
                                         anchors.left: analysesColumn.left
                                         anchors.right: analysesColumn.right

@@ -394,7 +394,7 @@ Rectangle
                         font.family: Regovar.theme.icons.name
                         color: Regovar.theme.frontColor.normal
                         verticalAlignment: Text.AlignVCenter
-                        text: styleData.value ? (styleData.value.sex == "male" ? "9" : styleData.value.sex == "female" ? "<" : "b") : ""
+                        text: styleData.value ? Regovar.sexToIcon(styleData.value.sex) : ""
                         visible: styleData.value
                     }
 
@@ -537,9 +537,7 @@ Rectangle
                         anchors.margins: 1
                         anchors.leftMargin: 10
                         clip: true
-
                         model: ListModel { id: statusLogs}
-                        property var logStatusIconMap: ({"waiting": "{", "computing": "/", "error": "l", "done": "n"})
 
                         delegate:Rectangle
                         {
@@ -560,7 +558,7 @@ Rectangle
                                     font.family: Regovar.theme.icons.name
                                     verticalAlignment: Text.AlignVCenter
                                     horizontalAlignment: Text.AlignHCenter
-                                    text: statusLogsList.logStatusIconMap[status]
+                                    text: Regovar.filteringAnalysisStatusToIcon(status)
                                     onTextChanged:
                                     {
                                         if (status == "computing")

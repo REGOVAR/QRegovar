@@ -207,12 +207,6 @@ void Regovar::loadWelcomData()
             mProjectsManager->loadJson(data["projects"].toArray());
 
 
-            emit referencesChanged();
-
-
-
-
-
             // Last analyses
             mLastAnalyses.clear();
             for (const QJsonValue& val: data["last_analyses"].toArray())
@@ -229,20 +223,21 @@ void Regovar::loadWelcomData()
                 mLastSubjects.append(sbj);
             }
             // Last events
-//            while(!mLastSubjects.empty()) mLastSubjects.pop_back();
-//            for (const QJsonValue& val: data["last_events"].toArray())
-//            {
-//                QJsonObject item = val.toObject();
-//                QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
-//                item["update_date"] = date.toString("yyyy-MM-dd hh:mm");
-//                //mLastSubjects.append(item);
-//            }
+        //            while(!mLastSubjects.empty()) mLastSubjects.pop_back();
+        //            for (const QJsonValue& val: data["last_events"].toArray())
+        //            {
+        //                QJsonObject item = val.toObject();
+        //                QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
+        //                item["update_date"] = date.toString("yyyy-MM-dd hh:mm");
+        //                //mLastSubjects.append(item);
+        //            }
             emit lastDataChanged();
+            emit referencesChanged();
             emit referencesChanged();
             emit configChanged();
 
-            // Timer to update "welcom data" in 30s
-            QTimer::singleShot(30000, regovar, SLOT(loadWelcomData()));
+            // Timer to refresh "last data" every 30s
+            // QTimer::singleShot(30000, regovar, SLOT(refreshLastData()));
 
         }
         else
@@ -255,10 +250,6 @@ void Regovar::loadWelcomData()
         setWelcomIsLoading(true);
     });
 }
-
-
-
-
 
 
 

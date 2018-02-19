@@ -14,6 +14,7 @@ Rectangle
     property string projectName: ""
     property int indent: 1
     property var fullpath: []
+    property string status: ""
 
     property bool isHover: false
     signal clicked()
@@ -52,7 +53,30 @@ Rectangle
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: "I"
+            horizontalAlignment: Text.AlignHCenter
+            text: Regovar.filteringAnalysisStatusToIcon(status)
+
+            onTextChanged:
+            {
+                if (status == "computing")
+                {
+                    statusIconAnimation.start();
+                }
+                else
+                {
+                    statusIconAnimation.stop();
+                    rotation = 0;
+                }
+            }
+
+            NumberAnimation on rotation
+            {
+                id: statusIconAnimation
+                duration: 1000
+                loops: Animation.Infinite
+                from: 0
+                to: 360
+            }
             elide: Text.ElideRight
         }
 
