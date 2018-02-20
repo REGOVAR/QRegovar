@@ -16,6 +16,13 @@ Rectangle
     property File fileModel: null
     property var model
     onModelChanged: setFileModel(model)
+    Component.onDestruction:
+    {
+        if (fileModel)
+        {
+            fileModel.dataChanged.disconnect(updateViewFromModel);
+        }
+    }
 
     function setFileModel(file)
     {

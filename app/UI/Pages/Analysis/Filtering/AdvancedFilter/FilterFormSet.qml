@@ -28,12 +28,12 @@ Rectangle
             operatorSelector.model = opModel;
             setSelector.model = model.sets;
 
-            model.newConditionModel.resetWizard.connect(function()
-            {
-                operatorSelector.currentIndex = 0;
-                setSelector.currentIndex = 0;
-            });
+            model.newConditionModel.resetWizard.connect(resetView);
         }
+    }
+    Component.onDestruction:
+    {
+        model.newConditionModel.resetWizard.disconnect(resetView);
     }
     onZChanged:
     {
@@ -41,6 +41,12 @@ Rectangle
         {
             updateModelFromView();
         }
+    }
+
+    function resetView()
+    {
+        operatorSelector.currentIndex = 0;
+        setSelector.currentIndex = 0;
     }
 
     ColumnLayout

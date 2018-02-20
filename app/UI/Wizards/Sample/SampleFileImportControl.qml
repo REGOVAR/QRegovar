@@ -24,6 +24,10 @@ Rectangle
             fileModel.dataChanged.connect(updateFileProgress);
         }
     }
+    Component.onDestruction:
+    {
+        fileModel.dataChanged.disconnect(updateFileProgress);
+    }
 
     property double progress: 0
     property bool sampleImportAsked: false

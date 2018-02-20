@@ -253,14 +253,14 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
     // Update quickfilter
     mQuickFilters->init(ref->id(), mId);
 
-    emit dataChanged();
-
     if (!continueInit) return;
 
     // STEP 1 : Load all available complient annotations DB
+    qDebug() << QTime::currentTime().toString() << "REQUEST annotations : SEND";
     Request* req = Request::get(QString("/annotation/%1").arg(mRefId));
     connect(req, &Request::responseReceived, [this, req, continueInit](bool success, const QJsonObject& json)
     {
+        qDebug() << QTime::currentTime().toString() << "REQUEST annotations : RECEIVED";
         mAllAnnotations.clear();
         if (success)
         {
@@ -282,6 +282,10 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
                     mAllAnnotations.append(adb);
                 }
             }
+            qDebug() << QTime::currentTime().toString() << "REQUEST annotations : DONE";
+            // Annotations ready
+            emit annotationsChanged();
+            emit dataChanged();
 
             // continue by loading annotation's fields of selected DB
             raiseNewInternalLoadingStatus(LoadingAnnotations);
@@ -293,8 +297,6 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
             regovar->raiseError(jsonError);
             raiseNewInternalLoadingStatus(Error);
         }
-        emit annotationsChanged();
-        emit dataChanged();
         req->deleteLater();
     });
 }
@@ -330,6 +332,8 @@ void FilteringAnalysis::asynchLoadingCoordination(LoadingStatus oldSatus, Loadin
 
 void FilteringAnalysis::loadAnnotations()
 {
+    qDebug() << QTime::currentTime().toString() << "LOAD annotations : step 1";
+
     // Init list of displayed columns according to analysis settings
     mResults->setIsLoading(true);
     mAnnotations.clear();
@@ -365,21 +369,26 @@ void FilteringAnalysis::loadAnnotations()
     }
 
     // prepare quick filter (they need to check that they are complient with available annotations
+    qDebug() << QTime::currentTime().toString() << "LOAD annotations : step 2";
     mQuickFilters->checkAnnotationsDB(mAllAnnotations);
 
-    // set filter with the last applied filter
-    loadFilter(mFilterJson);
+//    // set filter with the last applied filter
+//    qDebug() << QTime::currentTime().toString() << "LOAD annotations : step 3";
+//    loadFilter(mFilterJson);
 
-    // Init columns displayed in the results table
-    initDisplayedAnnotations();
+//    // Init columns displayed in the results table
+//    qDebug() << QTime::currentTime().toString() << "LOAD annotations : step 4";
+//    initDisplayedAnnotations();
 
     // Load results(asynch)
+    qDebug() << QTime::currentTime().toString() << "LOAD annotations : DONE";
     raiseNewInternalLoadingStatus(LoadingResults);
 }
 
 /// Set list of displayed columns
 void FilteringAnalysis::initDisplayedAnnotations()
 {
+    qDebug() << QTime::currentTime().toString() << "LOAD QML Displayed columns : Step 1";
     // Reset all
     mDisplayedAnnotations.clear();
     mDisplayedAnnotations.append(mAnnotations["_RowHead"]);
@@ -392,6 +401,7 @@ void FilteringAnalysis::initDisplayedAnnotations()
 
 
     // Set which annotation are displayed respecting order. Add if needed special UI column like sample's name list
+    qDebug() << QTime::currentTime().toString() << "LOAD QML Displayed columns : Step 2";
     for (const QString& uid: mFields)
     {
         if (mAnnotations.contains(uid))
@@ -406,6 +416,7 @@ void FilteringAnalysis::initDisplayedAnnotations()
             mAnnotations[uid]->setIsDisplayed(true);
         }
     }
+    qDebug() << QTime::currentTime().toString() << "LOAD QML Displayed columns : DONE -> notify QML to refresh table columns";
     emit displayedAnnotationsChanged();
 }
 
@@ -518,6 +529,7 @@ QStringList FilteringAnalysis::selectedAnnotationsDB()
 
 void FilteringAnalysis::initResults()
 {
+    qDebug() << QTime::currentTime().toString() << "INIT Result : Step 1";
     mResults->initAnalysisData(mId);
     mResults->applyFilter(mAdvancedFilter->toJson());
     raiseNewInternalLoadingStatus(Ready);
@@ -994,6 +1006,7 @@ void FilteringAnalysis::saveSettings()
 /// Restore Tableariant columns settings stored on the local computer
 void FilteringAnalysis::loadSettings()
 {
+    qDebug() << QTime::currentTime().toString() << "LOAD local settings";
     QSettings settings;
 
     // Reload Analysis result headers states
@@ -1028,12 +1041,14 @@ void FilteringAnalysis::loadSettings()
             mFields << uid;
         }
     }
+    qDebug() << QTime::currentTime().toString() << "LOAD local settings DONE";
 
     // Update columns to display in the QML view according to selected annoations
     initDisplayedAnnotations();
     saveSettings();
 
     // Force Variant table to refresh
+    qDebug() << QTime::currentTime().toString() << "APPLY FILTER : SEND";
     mResults->applyFilter(mFilterJson);
 
 }

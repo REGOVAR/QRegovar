@@ -14,18 +14,23 @@ Rectangle
     property FilteringAnalysis model
     onModelChanged:
     {
-        model.newConditionModel.resetWizard.connect(function()
-        {
-            andCond.checked = true;
-        });
+        model.newConditionModel.resetWizard.connect(resetView);
     }
-
+    Component.onDestruction:
+    {
+        model.newConditionModel.resetWizard.disconnect(resetView);
+    }
     onZChanged:
     {
         if (z == 100)
         {
             updateModelFromView();
         }
+    }
+
+    function resetView()
+    {
+        andCond.checked = true;
     }
 
     ColumnLayout

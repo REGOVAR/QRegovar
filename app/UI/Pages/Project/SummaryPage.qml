@@ -15,10 +15,13 @@ Rectangle
     {
         if(model)
         {
-            model.dataChanged.connect(function() {updateViewFromModel(model)});
+            model.dataChanged.connect(updateViewFromModel);
         }
-
-        updateViewFromModel(model)
+        updateViewFromModel();
+    }
+    Component.onDestruction:
+    {
+        model.dataChanged.disconnect(updateViewFromModel);
     }
 
 
@@ -200,13 +203,13 @@ Rectangle
         }
     }
 
-    function updateViewFromModel(data)
+    function updateViewFromModel()
     {
-        if (data)
+        if (root.model)
         {
-            nameLabel.text = data.name;
-            nameField.text = data.name;
-            commentField.text = data.comment;
+            nameLabel.text = root.model.name;
+            nameField.text = root.model.name;
+            commentField.text = root.model.comment;
         }
     }
 

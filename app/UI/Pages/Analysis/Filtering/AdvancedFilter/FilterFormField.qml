@@ -17,13 +17,12 @@ Rectangle
         if (model)
         {
             fieldSelector.model = model.annotationsFlatList;
-            model.newConditionModel.resetWizard.connect(function()
-            {
-                fieldSelector.selectedItem = null;
-                fieldSelector.text = "";
-                updateFilterControls();
-            });
+            model.newConditionModel.resetWizard.connect(resetView);
         }
+    }
+    Component.onDestruction:
+    {
+        model.newConditionModel.resetWizard.disconnect(resetView);
     }
     onZChanged:
     {
@@ -31,6 +30,13 @@ Rectangle
         {
             updateModelFromView();
         }
+    }
+
+    function resetView()
+    {
+        fieldSelector.selectedItem = null;
+        fieldSelector.text = "";
+        updateFilterControls();
     }
 
 

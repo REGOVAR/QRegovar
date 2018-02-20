@@ -255,11 +255,44 @@ TreeItem* ResultsTreeModel::newResultsTreeViewItem(const QJsonObject& rowData)
 
 
     // add columns info to the item
+    // For optimisation, we do maximum of format conversion one time here. (instead of doing it in QML dynamicaly)
+    // QML shall only have to display text type
     columnData.insert(mRoles.key("id"), QVariant(rowId));
     columnData.insert(mRoles.key("is_selected"), QVariant(isSelected));
     for (const QString& fuid: mFilteringAnalysis->fields())
     {
-        columnData.insert(mRoles.key(fuid.toUtf8()), rowData[fuid].toVariant());
+        QString type = mFilteringAnalysis->getColumnInfo(fuid)->annotation()->type();
+        QString data;
+        if (type == "int")
+        {
+            data = regovar->formatNumber(rowData[fuid].toInt());
+        }
+        if (type == "float")
+        {
+            data = regovar->formatNumber(rowData[fuid].toDouble());
+        }
+        else if (type == "bool")
+        {
+            data = rowData[fuid].toBool() ? "n" : "h";
+        }
+        else if (type == "list")
+        {
+            data = rowData[fuid].toString() + " _l";
+        }
+        else if (type == "sample_array")
+        {
+//            QJsonObject meta = mFilteringAnalysis->getColumnInfo(fuid)->annotation()->meta();
+//            if (!meta.isEmpty() && meta["type"] == "enum")
+//                data = regovar->formatNumber(rowData[fuid].toInt());
+//            else
+            data = "todo";
+        }
+        // else if (type == "sequence")
+        else
+        {
+            data = rowData[fuid].toString();
+        }
+        columnData.insert(mRoles.key(fuid.toUtf8()), QVariant(data));
     }
 
     ResultsTreeItem* result = new ResultsTreeItem(mFilteringAnalysis);

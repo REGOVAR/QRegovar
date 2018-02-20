@@ -18,10 +18,13 @@ Rectangle
     {
         if(model)
         {
-            model.dataChanged.connect(function() {updateViewFromModel()});
+            model.dataChanged.connect(updateViewFromModel);
         }
-
         updateViewFromModel();
+    }
+    Component.onDestruction:
+    {
+        model.dataChanged.disconnect(updateViewFromModel);
     }
 
     Rectangle

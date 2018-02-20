@@ -15,29 +15,34 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
+    property var statisticsModel
     property FilteringAnalysis model
     onModelChanged:
     {
         if (model)
         {
-            model.samplesChanged.connect(function() { updateViewFromModel(root.model); });
-            updateViewFromModel(model);
+            model.samplesChanged.connect(updateViewFromModel);
+            updateViewFromModel();
         }
     }
-    property var statisticsModel
-
-    function updateViewFromModel(model)
+    Component.onDestruction:
     {
-        if (model)
+        model.samplesChanged.disconnect(updateViewFromModel);
+    }
+
+
+    function updateViewFromModel()
+    {
+        if (root.model)
         {
             var comboModel = ["All"];
-            for (var idx=0; idx<model.samples.length; idx++)
+            for (var idx=0; idx<root.model.samples.length; idx++)
             {
-                comboModel.push(model.samples[idx].name);
+                comboModel.push(root.model.samples[idx].name);
             }
 
             levelCombo.model = comboModel;
-            refreshGraphs(model);
+            refreshGraphs(root.model);
         }
     }
 

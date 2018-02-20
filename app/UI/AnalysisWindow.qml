@@ -152,7 +152,8 @@ ApplicationWindow
     {
         for (var idx in pages)
         {
-            pages[idx].destroy();
+            if (pages[idx][0] != "@")
+                pages[idx].destroy();
         }
     }
 

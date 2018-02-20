@@ -25,6 +25,11 @@ Rectangle
         }
         updateViewFromModel();
     }
+    Component.onDestruction:
+    {
+        root.model.dataChanged.disconnect(updateViewFromModel);
+        root.model.statusChanged.disconnect(updateStatusFromModel);
+    }
 
 
     Rectangle

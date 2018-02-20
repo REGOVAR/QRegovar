@@ -543,6 +543,19 @@ QDateTime Regovar::dateFromShortString(QString date)
     return QDateTime(QDate(dateElmt[0].toInt(), dateElmt[1].toInt(),  dateElmt[2].toInt()), QTime(12,0,0));
 }
 
+QString Regovar::formatNumber(int value)
+{
+
+    QString n = QString::number(value);
+
+    return n + " _i";
+}
+QString Regovar::formatNumber(double value)
+{
+
+    QString n = QString::number(value);
+    return n + " _f";
+}
 
 
 

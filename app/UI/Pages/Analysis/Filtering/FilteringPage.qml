@@ -24,15 +24,19 @@ Rectangle
     {
         if (model)
         {
-            model.loaded.connect(function() { updateViewFromModel(model); });
+            model.loaded.connect(updateViewFromModel);
             updateViewFromModel(model);
         }
     }
-
-    function updateViewFromModel(model)
+    Component.onDestruction:
     {
-        rootSplitView.visible = model ? model.loaded && model.status === "ready" : false;
-        lefPanel.tabSharedModel = model;
+        model.loaded.disconnect(updateViewFromModel);
+    }
+
+    function updateViewFromModel()
+    {
+        rootSplitView.visible = root.model ? root.model.loaded && root.model.status === "ready" : false;
+        lefPanel.tabSharedModel = root.model;
     }
 
 

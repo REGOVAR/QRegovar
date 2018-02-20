@@ -19,6 +19,8 @@ import org.regovar 1.0
 TreeView
 {
     id: resultsTree
+    //smooth: false
+    //layer.enabled: false
 
     signal checked(string id, bool isChecked)
     onChecked: analysis.setVariantSelection(id, isChecked);
@@ -28,9 +30,13 @@ TreeView
     {
         if (analysis)
         {
-            analysis.displayedAnnotationsChanged.connect(function() {refreshResultColumns();});
+            analysis.displayedAnnotationsChanged.connect(refreshResultColumns);
             refreshResultColumns();
         }
+    }
+    Component.onDestruction:
+    {
+        analysis.displayedAnnotationsChanged.disconnect(refreshResultColumns);
     }
 
 
@@ -48,7 +54,7 @@ TreeView
         anchors.topMargin: Regovar.theme.font.boxSize.normal // = Header height (see UI/Framework/TreeView.qml)
 
         acceptedButtons: Qt.RightButton
-        onClicked: resultsTree.openVariantInfoDialog(mouse.x, mouse.y + 24) // compense header's margin
+        onClicked: resultsTree.openVariantInfoDialog(mouse.x, mouse.y + Regovar.theme.font.boxSize.normal) // compense header's margin
     }
 
 
@@ -76,8 +82,10 @@ TreeView
                     verticalAlignment: Text.AlignVCenter
                     font.pixelSize: Regovar.theme.font.size.normal
                     elide: Text.ElideRight
+                    renderType: Text.NativeRendering
+                    textFormat: Text.PlainText
                     font.family: "monospace"
-                    text: styleData.value ? Regovar.formatBigNumber(styleData.value) : "-"
+                    text: styleData.value ? styleData.value : "-"
                 }
             }
         }
@@ -100,7 +108,9 @@ TreeView
                     verticalAlignment: Text.AlignVCenter
                     font.pixelSize: Regovar.theme.font.size.normal
                     elide: Text.ElideRight
-                    text: styleData.value ? resultsTree.listToVal(styleData.value) : "-"
+                    renderType: Text.NativeRendering
+                    textFormat: Text.PlainText
+                    text: styleData.value ? styleData.value : "-"
                 }
             }
         }
@@ -123,9 +133,12 @@ TreeView
                     verticalAlignment: Text.AlignVCenter
                     font.pixelSize: Regovar.theme.font.size.normal
                     elide: Text.ElideRight
+                    renderType: Text.NativeRendering
+                    textFormat: Text.PlainText
 
                     font.family: "monospace"
-                    text: styleData.value ? /*Regovar.formatSequence(*/styleData.value/*)*/ : "-"
+                    text: styleData.value ? styleData.value : "-"
+
                 }
             }
         }
@@ -149,8 +162,10 @@ TreeView
                     font.pixelSize: Regovar.theme.font.size.normal
                     font.family: Regovar.theme.icons.name
                     horizontalAlignment: Text.AlignLeft
-                    text: (styleData.value) ? "n" : "h"
-                    color: (styleData.value) ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.lighter(Regovar.theme.frontColor.normal )
+                    text: styleData.value ? styleData.value : ""
+                    color: styleData.value ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.lighter(Regovar.theme.frontColor.normal )
+                    renderType: Text.NativeRendering
+                    textFormat: Text.PlainText
                 }
             }
         }
@@ -167,23 +182,23 @@ TreeView
             width: 60
 
 
-            delegate: Item
-            {
-                anchors.margins: 0
-                CheckBox
-                {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 5
-                    anchors.verticalCenter: parent.verticalCenter
-                    checked: Boolean(styleData.value)
-                    text: "" // resultsTree.model.data(styleData.index, Qt.UserRole +1)
-                    onClicked:
-                    {
-                        var id = resultsTree.model.data(styleData.index, Qt.UserRole +1);
-                        resultsTree.checked(id, checked);
-                    }
-                }
-            }
+//            delegate: Item
+//            {
+//                //anchors.margins: 0
+//                CheckBox
+//                {
+//                    anchors.left: parent.left
+//                    anchors.leftMargin: 5
+//                    anchors.verticalCenter: parent.verticalCenter
+//                    checked: Boolean(styleData.value)
+//                    text: "" // resultsTree.model.data(styleData.index, Qt.UserRole +1)
+//                    onClicked:
+//                    {
+//                        var id = resultsTree.model.data(styleData.index, Qt.UserRole +1);
+//                        resultsTree.checked(id, checked);
+//                    }
+//                }
+//            }
         }
     }
 
@@ -252,6 +267,9 @@ TreeView
                                 font.pixelSize: 10
                                 anchors.centerIn: parent
                                 visible: !gt_valid(model.value)
+                                elide: Text.ElideRight
+                                renderType: Text.NativeRendering
+                                textFormat: Text.PlainText
                             }
                         }
                     }
@@ -286,6 +304,9 @@ TreeView
                             height: 12
                             font.pixelSize: 12
                             text: (model) ? String(model.value) : "-"
+                            elide: Text.ElideRight
+                            renderType: Text.NativeRendering
+                            textFormat: Text.PlainText
                         }
                     }
                 }
@@ -319,6 +340,8 @@ TreeView
                             font.pixelSize: 12
                             text: String(model.value)
                             elide: Text.ElideRight
+                            renderType: Text.NativeRendering
+                            textFormat: Text.PlainText
                         }
                     }
                 }
@@ -353,6 +376,9 @@ TreeView
                             text : modelData.name
                             font.pixelSize: 10
                             color: Regovar.theme.frontColor.disable
+                            elide: Text.ElideRight
+                            renderType: Text.NativeRendering
+                            textFormat: Text.PlainText
                         }
                     }
                 }
@@ -372,6 +398,7 @@ TreeView
 
     function mapToList(json)
     {
+
         var newModel = listModel.createObject(resultsTree);
 
         var l = analysis.samples.length;
@@ -434,6 +461,11 @@ TreeView
 
     function refreshResultColumns()
     {
+        if (analysis === undefined || analysis === null)
+        {
+            return;
+        }
+
         resultsTree.rowHeight = (resultsTree.analysis.samplesByRow === 1) ? 25 : resultsTree.analysis.samplesByRow * 18;
 
         // Remove old columns
@@ -468,17 +500,15 @@ TreeView
             resultsTree.sortIndicatorColumn = columns.indexOf(uid);
             resultsTree.sortIndicatorOrder = orderDirection;
         }
+
+        resultsTree.resizeColumnsToContents();
     }
 
 
     function insertField(info, position, forceRefresh)
     {
-        if (analysis === undefined || analysis === null)
-        {
-            return;
-        }
-
         var col;
+
 
         if (info.uid === "_Samples")
         {
@@ -491,8 +521,9 @@ TreeView
         else
         {
             var annot = info.annotation;
+            col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
 
-
+/*
             // Getting QML column according to the type of the fields
             if (annot.type == "int")
                 col = columnComponent_number.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
@@ -513,7 +544,7 @@ TreeView
             }
             else
                 col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
-
+*/
         }
 
         //console.log("  display column " + uid + " at " + position);

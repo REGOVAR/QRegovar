@@ -17,6 +17,13 @@ Rectangle
     property Sample sampleModel: null
     property var model
     onModelChanged: setSampleModel(model)
+    Component.onDestruction:
+    {
+        if (sampleModel)
+        {
+            sampleModel.dataChanged.disconnect(updateViewFromModel);
+        }
+    }
 
     function setSampleModel(sample)
     {

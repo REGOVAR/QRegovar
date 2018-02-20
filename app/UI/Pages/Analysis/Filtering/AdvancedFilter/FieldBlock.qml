@@ -33,6 +33,11 @@ Rectangle
             updateViewFromModel();
         }
     }
+    Component.onDestruction:
+    {
+        model.filterChanged.disconnect(updateViewFromModel);
+    }
+
     function updateViewFromModel()
     {
         if (model)

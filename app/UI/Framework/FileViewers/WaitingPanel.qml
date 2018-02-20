@@ -16,6 +16,13 @@ Rectangle
         file.localFileReadyChanged.connect(waitingDoneHandler);
         msg.text = qsTr("The document {0} is uploading...").replace("{0}", file.name);
     }
+    Component.onDestruction:
+    {
+        if (file)
+        {
+            file.localFileReadyChanged.disconnect(waitingDoneHandler);
+        }
+    }
 
 
     Text

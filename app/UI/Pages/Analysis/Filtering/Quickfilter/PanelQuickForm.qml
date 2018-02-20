@@ -26,6 +26,10 @@ QuickFilterBox
             updateViewFromModel();
         }
     }
+    Component.onDestruction:
+    {
+        model.quickfilters.filterChanged.disconnect(updateViewFromModel);
+    }
 
     function updateViewFromModel()
     {

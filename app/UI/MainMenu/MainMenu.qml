@@ -24,14 +24,20 @@ Item
             subLevelPanelDisplayed = Qt.binding(function() { return model.subLevelPanelDisplayed;});
             refreshSubEntries();
 
-            model.openPage.connect(function (menuEntry)
-            {
-                // force refresh of list. as qml not able to detect change that occure on QList
-                refreshSubEntries();
-                // open the page
-                root.openPage(menuEntry);
-            });
+            model.openPage.connect(onOpenPage);
         }
+    }
+    Component.onDestruction:
+    {
+        model.openPage.disconnect(onOpenPage);
+    }
+
+    function onOpenPage(menuEntry)
+    {
+        // force refresh of list. as qml not able to detect change that occure on QList
+        refreshSubEntries();
+        // open the page
+        root.openPage(menuEntry);
     }
 
     function refreshSubEntries()
