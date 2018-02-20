@@ -12,13 +12,9 @@ void PositionQuickFilter::init(QString fuid)
     QStringList ops;
     ops << "=";
     // Exonic
-    mFields << new QuickFilterField(fuid, "", ops, "=", "coding_sequence_variant");
-    mFields << new QuickFilterField(fuid, "", ops, "=", "missense_variant", true);
-    mFields << new QuickFilterField(fuid, "", ops, "=", "stop_gained", true);
-
+    mFields << new QuickFilterField("aeba63be9600e56a88e401e8e6a5103d", tr("Exonic"), ops, "=", QVariant(true));
     // Intronic
     mFields << new QuickFilterField(fuid, "", ops, "=", "intron_variant");
-
     // UTR
     mFields << new QuickFilterField(fuid, "", ops, "=", "5_prime_UTR_variant");
     mFields << new QuickFilterField(fuid, "", ops, "=", "3_prime_UTR_variant", true);
@@ -69,33 +65,31 @@ QJsonArray PositionQuickFilter::toJson()
     if (mFields[0]->isActive())
     {
         conditions.append(mFields[0]->toJson());
-        conditions.append(mFields[1]->toJson());
-        conditions.append(mFields[2]->toJson());
     }
     // Intronic
-    if (mFields[3]->isActive())
+    if (mFields[1]->isActive())
     {
-        conditions.append(mFields[3]->toJson());
+        conditions.append(mFields[1]->toJson());
     }
     // UTR
+    if (mFields[2]->isActive())
+    {
+        conditions.append(mFields[2]->toJson());
+        conditions.append(mFields[3]->toJson());
+    }
+    // Intergenic
     if (mFields[4]->isActive())
     {
         conditions.append(mFields[4]->toJson());
         conditions.append(mFields[5]->toJson());
-    }
-    // Intergenic
-    if (mFields[6]->isActive())
-    {
         conditions.append(mFields[6]->toJson());
-        conditions.append(mFields[7]->toJson());
-        conditions.append(mFields[8]->toJson());
     }
     // Splice
-    if (mFields[9]->isActive())
+    if (mFields[7]->isActive())
     {
+        conditions.append(mFields[7]->toJson());
+        conditions.append(mFields[8]->toJson());
         conditions.append(mFields[9]->toJson());
-        conditions.append(mFields[10]->toJson());
-        conditions.append(mFields[11]->toJson());
     }
 
     if (conditions.count() == 0)
@@ -123,10 +117,10 @@ void PositionQuickFilter::setFilter(QString, bool, QVariant)
 void PositionQuickFilter::clear()
 {
     mFields[0]->clear();
-    mFields[3]->clear();
+    mFields[1]->clear();
+    mFields[2]->clear();
     mFields[4]->clear();
-    mFields[6]->clear();
-    mFields[9]->clear();
+    mFields[7]->clear();
 }
 
 
