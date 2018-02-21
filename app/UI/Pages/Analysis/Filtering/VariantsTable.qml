@@ -5,7 +5,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import QtQuick.Dialogs 1.2
-import org.regovar 1.0
+import Regovar.Core 1.0
 import QtQml.Models 2.2
 
 import "../../../Regovar"
@@ -13,7 +13,8 @@ import "../../../Framework"
 import "../../../MainMenu"
 import "../../../InformationPanel/Variant"
 
-import org.regovar 1.0
+import Regovar.Core 1.0
+
 
 
 TreeView
@@ -426,15 +427,7 @@ TreeView
         return newModel;
     }
 
-    function listToVal(json)
-    {
-        var result = "";
-        for (var idx=0; idx<json.length; idx++)
-        {
-            result += ", " + json[idx];
-        }
-        return result.substring(2, result.length);
-    }
+
 
     function openVariantInfoDialog(x, y)
     {

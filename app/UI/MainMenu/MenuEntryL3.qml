@@ -1,5 +1,5 @@
 import QtQuick 2.9
-import org.regovar 1.0
+import Regovar.Core 1.0
 
 import "../Regovar"
 

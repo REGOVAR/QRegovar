@@ -1,7 +1,7 @@
 pragma Singleton
 import QtQuick 2.9
 import Qt.labs.settings 1.0
-import org.regovar 1.0
+import Regovar.Core 1.0
 
 
 import "../MainMenu"

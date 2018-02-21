@@ -45,6 +45,8 @@ public:
     //! Load all results
     Q_INVOKABLE void loadAll();
 
+    // Q_INVOKABLE QVariantList getData(int index);
+
 
     void initAnalysisData(int analysisId);
     void setupModelData(QJsonArray data, TreeItem *parent);

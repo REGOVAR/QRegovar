@@ -23,48 +23,48 @@ TreeView
 
     style: TreeViewStyle
     {
-//        frame: Rectangle
-//        {
-//            color: Regovar.theme.boxColor.back
-//            border.width: 1
-//            border.color: Regovar.theme.boxColor.border
-//        }
+        frame: Rectangle
+        {
+            color: Regovar.theme.boxColor.back
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+        }
 
-//        rowDelegate: Rectangle
-//        {
-//            height: control.rowHeight
-//            color:  styleData.hasActiveFocus ? Regovar.theme.secondaryColor.back.light :
-//                    (
-//                        styleData.selected ? Regovar.theme.secondaryColor.back.light :
-//                        (
-//                            styleData.alternate ? Regovar.theme.boxColor.back : Regovar.theme.backgroundColor.main
-//                        )
-//                    )
-//        }
+        rowDelegate: Rectangle
+        {
+            height: control.rowHeight
+            color:  styleData.hasActiveFocus ? Regovar.theme.secondaryColor.back.light :
+                    (
+                        styleData.selected ? Regovar.theme.secondaryColor.back.light :
+                        (
+                            styleData.alternate ? Regovar.theme.boxColor.back : Regovar.theme.backgroundColor.main
+                        )
+                    )
+        }
 
-//        headerDelegate:  Item
-//        {
-//            id: headerRoot
-//            height: Regovar.theme.font.boxSize.normal
-//            Component.onCompleted: formerPosition = position
+        headerDelegate:  Item
+        {
+            id: headerRoot
+            height: Regovar.theme.font.boxSize.normal
+            Component.onCompleted: formerPosition = position
 
-//            // Manage user changing position of header
-//            property int formerPosition: 0
-//            property int position: styleData.column
-//            property bool myPressed: styleData.pressed
-//            onMyPressedChanged:
-//            {
-//                if (!myPressed)
-//                {
-//                    if (formerPosition != position)
-//                    {
-//                        headerMoved(formerPosition, position);
-//                        formerPosition = position;
-//                    }
-//                }
-//            }
+            // Manage user changing position of header
+            property int formerPosition: 0
+            property int position: styleData.column
+            property bool myPressed: styleData.pressed
+            onMyPressedChanged:
+            {
+                if (!myPressed)
+                {
+                    if (formerPosition != position)
+                    {
+                        headerMoved(formerPosition, position);
+                        formerPosition = position;
+                    }
+                }
+            }
 
-//            // Manage user changing size of header
+            // Manage user changing size of header
 //            onWidthChanged:
 //            {
 //                if (visible && width >= 0)
@@ -73,109 +73,110 @@ TreeView
 //                }
 //            }
 
-//            LinearGradient
-//            {
-//                anchors.fill: headerRoot
-//                anchors.margins: 1
-//                start: Qt.point(0, 0)
-//                end: Qt.point(0, 24)
-//                gradient: Gradient
-//                {
-//                    GradientStop { position: 0.0; color: Regovar.theme.boxColor.header1  }
-//                    GradientStop { position: 1.0; color: Regovar.theme.boxColor.header2  }
-//                }
-//            }
-//            // Right border
-//            Rectangle
-//            {
-//                width: 1
-//                anchors.top: headerRoot.top
-//                anchors.right: headerRoot.right
-//                anchors.bottom: headerRoot.bottom
-//                color: Regovar.theme.boxColor.border
-//            }
-//            // Top border
-//            Rectangle
-//            {
-//                height: 1
-//                anchors.left: headerRoot.left
-//                anchors.right: headerRoot.right
-//                anchors.top: headerRoot.top
-//                color: Regovar.theme.boxColor.border
-//            }
-//            // Bottom border
-//            Rectangle
-//            {
-//                height: 1
-//                anchors.left: headerRoot.left
-//                anchors.right: headerRoot.right
-//                anchors.bottom: headerRoot.bottom
-//                color: Regovar.theme.boxColor.border
-//            }
-//            RowLayout
-//            {
-//                anchors.fill: headerRoot
-//                anchors.leftMargin: 5
-//                anchors.rightMargin: 5
-//                // Label
-//                Text
-//                {
-//                    Layout.fillHeight: true
-//                    Layout.fillWidth: true
-//                    font.pixelSize: Regovar.theme.font.size.normal
-//                    font.family: Regovar.theme.font.family
-//                    color: Regovar.theme.frontColor.normal
-//                    horizontalAlignment: styleData.textAlignment
-//                    verticalAlignment: Text.AlignVCenter
-//                    elide: Text.ElideRight
-//                    text: styleData.value
-//                }
+            LinearGradient
+            {
+                anchors.fill: headerRoot
+                anchors.margins: 1
+                start: Qt.point(0, 0)
+                end: Qt.point(0, 24)
+                gradient: Gradient
+                {
+                    GradientStop { position: 0.0; color: Regovar.theme.boxColor.header1  }
+                    GradientStop { position: 1.0; color: Regovar.theme.boxColor.header2  }
+                }
+            }
+            // Right border
+            Rectangle
+            {
+                width: 1
+                anchors.top: headerRoot.top
+                anchors.right: headerRoot.right
+                anchors.bottom: headerRoot.bottom
+                color: Regovar.theme.boxColor.border
+            }
+            // Top border
+            Rectangle
+            {
+                height: 1
+                anchors.left: headerRoot.left
+                anchors.right: headerRoot.right
+                anchors.top: headerRoot.top
+                color: Regovar.theme.boxColor.border
+            }
+            // Bottom border
+            Rectangle
+            {
+                height: 1
+                anchors.left: headerRoot.left
+                anchors.right: headerRoot.right
+                anchors.bottom: headerRoot.bottom
+                color: Regovar.theme.boxColor.border
+            }
+            RowLayout
+            {
+                anchors.fill: headerRoot
+                anchors.leftMargin: 5
+                anchors.rightMargin: 5
+                // Label
+                Text
+                {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.font.family
+                    color: Regovar.theme.frontColor.normal
+                    horizontalAlignment: styleData.textAlignment
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                    text: styleData.value
+                }
 
-//                // Sorting indicator
-//                Text
-//                {
-//                    Layout.fillHeight: true
-//                    visible: control.sortIndicatorVisible && control.sortIndicatorColumn == headerRoot.position
-//                    width: control.sortIndicatorVisible && control.sortIndicatorColumn == headerRoot.position ? Regovar.theme.font.boxSize.normal : 0
-//                    font.pixelSize: Regovar.theme.font.size.normal
-//                    font.family: Regovar.theme.icons.name
-//                    color: Regovar.theme.frontColor.normal
-//                    horizontalAlignment: styleData.textAlignment
-//                    verticalAlignment: Text.AlignVCenter
-//                    text: control.sortIndicatorOrder == 0 ? "|" : "["
-//                }
-//            }
+                // Sorting indicator
+                Text
+                {
+                    Layout.fillHeight: true
+                    visible: control.sortIndicatorVisible && control.sortIndicatorColumn == headerRoot.position
+                    width: control.sortIndicatorVisible && control.sortIndicatorColumn == headerRoot.position ? Regovar.theme.font.boxSize.normal : 0
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.icons.name
+                    color: Regovar.theme.frontColor.normal
+                    horizontalAlignment: styleData.textAlignment
+                    verticalAlignment: Text.AlignVCenter
+                    text: control.sortIndicatorOrder == 0 ? "|" : "["
+                }
+            }
         }
 
-//        branchDelegate: Text
-//        {
-//            anchors.leftMargin: 5
+        branchDelegate: Text
+        {
+            anchors.leftMargin: 5
 
-//            font.pixelSize: 16 // Regovar.theme.font.size.normal
-//            text: styleData.isExpanded ? "[" : "{"
-//            font.family: Regovar.theme.icons.name
-//            visible: styleData.hasChildren
-//            enabled: styleData.hasChildren
-//        }
-//    }
+            font.pixelSize: 16 // Regovar.theme.font.size.normal
+            text: styleData.isExpanded ? "[" : "{"
+            font.family: Regovar.theme.icons.name
+            visible: styleData.hasChildren
+            enabled: styleData.hasChildren
+        }
+    }
 
     // Default delegate for all column
-//    itemDelegate: Item
-//    {
-//        Text
-//        {
-//            anchors.leftMargin: 5
-//            anchors.rightMargin: 5
-//            anchors.fill: parent
-//            verticalAlignment: Text.AlignVCenter
-//            horizontalAlignment: styleData.textAlignment
-//            font.pixelSize: Regovar.theme.font.size.normal
-//            text: styleData.value ? styleData.value.toString() : ""
-//            elide: Text.ElideRight
-//            renderType: Text.NativeRendering
-//            textFormat: Text.PlainText
-//        }
-//    }
+    itemDelegate: Item
+    {
+        Text
+        {
+            anchors.leftMargin: 5
+            anchors.rightMargin: 5
+            anchors.fill: parent
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: styleData.textAlignment
+            font.pixelSize: Regovar.theme.font.size.normal
+            text: styleData.value ? styleData.value.toString() : ""
+            elide: Text.ElideRight
+            renderType: Text.NativeRendering
+            textFormat: Text.PlainText
+            wrapMode: Text.WrapAnywhere
+        }
+    }
 
     onDoubleClicked: isExpanded(index) ? collapse(index) : expand(index)
 

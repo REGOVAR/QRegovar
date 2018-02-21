@@ -2,7 +2,7 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import QtCharts 2.0
-import org.regovar 1.0
+import Regovar.Core 1.0
 import "../../../Regovar"
 import "../../../Framework"
 

@@ -4,7 +4,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.2 as Control
-import org.regovar 1.0
+import Regovar.Core 1.0
 
 import "../Regovar"
 import "../Framework"

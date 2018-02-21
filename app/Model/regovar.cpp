@@ -545,16 +545,15 @@ QDateTime Regovar::dateFromShortString(QString date)
 
 QString Regovar::formatNumber(int value)
 {
-
+    // TODO: nice formating with printf
     QString n = QString::number(value);
-
-    return n + " _i";
+    return n;
 }
 QString Regovar::formatNumber(double value)
 {
-
+    // TODO: nice formating with printf
     QString n = QString::number(value);
-    return n + " _f";
+    return n;
 }
 
 
