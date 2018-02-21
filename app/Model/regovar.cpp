@@ -13,6 +13,7 @@
 #include <QDateTime>
 #include <QApplication>
 #include <QTimer>
+#include <QLocale>
 
 #include "Model/analysis/filtering/filteringanalysis.h"
 
@@ -545,15 +546,19 @@ QDateTime Regovar::dateFromShortString(QString date)
 
 QString Regovar::formatNumber(int value)
 {
-    // TODO: nice formating with printf
-    QString n = QString::number(value);
-    return n;
+    QLocale cLocale = QLocale::c();
+    cLocale.setNumberOptions(QLocale::DefaultNumberOptions);
+    QString ss = cLocale.toString(value);
+    ss.replace(cLocale.groupSeparator(), ' ');
+    return ss;
 }
 QString Regovar::formatNumber(double value)
 {
-    // TODO: nice formating with printf
-    QString n = QString::number(value);
-    return n;
+    QLocale cLocale = QLocale::c();
+    cLocale.setNumberOptions(QLocale::DefaultNumberOptions);
+    QString ss = cLocale.toString(value);
+    ss.replace(cLocale.groupSeparator(), ' ');
+    return ss;
 }
 
 
