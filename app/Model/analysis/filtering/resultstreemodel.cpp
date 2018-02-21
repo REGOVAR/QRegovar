@@ -325,7 +325,32 @@ TreeItem* ResultsTreeModel::newResultsTreeViewItem(const QJsonObject& rowData)
                 }
                 else if (metaType == "int")
                 {
-                    data += regovar->formatNumber(v.toInt()) + "\n";
+                    if (mFilteringAnalysis->getColumnInfo(fuid)->annotation()->name() == "Genotype")
+                    {
+                        // display :
+                        // None => "?"
+                        // -50  => "ERR"
+                        // -1   => "-"
+                        // 0    => ref/ref
+                        // 1    => alt/alt
+                        // 2    => ref/alt
+                        // 3    => alt1/alt2
+                        if (v.isNull()) data += "f";
+                        else
+                        {
+                            if (v.toInt() == -50) data += "l";
+                            else if (v.toInt() == -1) data += "ð";
+                            else if (v.toInt() == 0) data += "í";
+                            else if (v.toInt() == 1) data += "ï";
+                            else if (v.toInt() == 2) data += "ñ";
+                            else if (v.toInt() == 3) data += "ò";
+                        }
+                        data += "\n";
+                    }
+                    else
+                    {
+                        data += regovar->formatNumber(v.toInt()) + "\n";
+                    }
                 }
                 else if (metaType == "float")
                 {

@@ -66,10 +66,10 @@ TreeView
         TableViewColumn { width: 100 }
     }
 
-    // Number formating
+    // Icon formating
     Component
     {
-        id: columnComponent_number
+        id: columnComponent_icon
         TableViewColumn
         {
             width: 100
@@ -81,90 +81,37 @@ TreeView
                     anchors.rightMargin: 5
                     anchors.fill: parent
                     verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: styleData.textAlignment
                     font.pixelSize: Regovar.theme.font.size.normal
+                    text: styleData.value ? styleData.value.toString() : ""
                     elide: Text.ElideRight
                     renderType: Text.NativeRendering
                     textFormat: Text.PlainText
-                    font.family: "monospace"
-                    text: styleData.value ? styleData.value : "-"
-                }
-            }
-        }
-    }
-
-    // List formating
-    Component
-    {
-        id: columnComponent_list
-        TableViewColumn
-        {
-            width: 100
-            delegate: Item
-            {
-                Text
-                {
-                    anchors.leftMargin: 5
-                    anchors.rightMargin: 5
-                    anchors.fill: parent
-                    verticalAlignment: Text.AlignVCenter
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    elide: Text.ElideRight
-                    renderType: Text.NativeRendering
-                    textFormat: Text.PlainText
-                    text: styleData.value ? styleData.value : "-"
-                }
-            }
-        }
-    }
-
-    // Sequence formating
-    Component
-    {
-        id: columnComponent_sequence
-        TableViewColumn
-        {
-            width: 100
-            delegate: Item
-            {
-                Text
-                {
-                    anchors.leftMargin: 5
-                    anchors.rightMargin: 5
-                    anchors.fill: parent
-                    verticalAlignment: Text.AlignVCenter
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    elide: Text.ElideRight
-                    renderType: Text.NativeRendering
-                    textFormat: Text.PlainText
-
-                    font.family: "monospace"
-                    text: styleData.value ? styleData.value : "-"
-
-                }
-            }
-        }
-    }
-
-    // Boolean formating
-    Component
-    {
-        id: columnComponent_bool
-        TableViewColumn
-        {
-            width: 30
-            delegate: Item
-            {
-                Text
-                {
-                    anchors.leftMargin: 5
-                    anchors.rightMargin: 5
-                    anchors.fill: parent
-                    verticalAlignment: Text.AlignVCenter
-                    font.pixelSize: Regovar.theme.font.size.normal
                     font.family: Regovar.theme.icons.name
-                    horizontalAlignment: Text.AlignLeft
-                    text: styleData.value ? styleData.value : ""
-                    color: styleData.value ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.lighter(Regovar.theme.frontColor.normal )
+                }
+            }
+        }
+    }
+
+    // NoWrap formating
+    Component
+    {
+        id: columnComponent_nowrap
+        TableViewColumn
+        {
+            width: 100
+            delegate: Item
+            {
+                Text
+                {
+                    anchors.leftMargin: 5
+                    anchors.rightMargin: 5
+                    anchors.fill: parent
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: styleData.textAlignment
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    text: styleData.value ? styleData.value.toString() : ""
+                    elide: Text.ElideRight
                     renderType: Text.NativeRendering
                     textFormat: Text.PlainText
                 }
@@ -200,153 +147,6 @@ TreeView
 //                    }
 //                }
 //            }
-        }
-    }
-
-    // Custom Column component for GT annotations
-    Component
-    {
-        id: columnComponent_SampleArrayGT
-        TableViewColumn
-        {
-            width: 30
-
-            delegate: Item
-            {
-                ColumnLayout
-                {
-                    anchors.fill: parent
-                    anchors.leftMargin: 5
-                    spacing: 1
-                    Repeater
-                    {
-
-                        model: resultsTree.mapToList(styleData.value)
-
-
-                        Rectangle
-                        {
-                            // display :
-                            // None => "?"
-                            // -50  => "ERR"
-                            // -1   => "-"
-                            // 0    => ref/ref
-                            // 1    => alt/alt
-                            // 2    => ref/alt
-                            // 3    => alt1/alt2
-
-                            width: 12
-                            height: 12
-                            border.width: gt_valid(model.value) ? 1 : 0
-                            border.color: gt_valid(model.value) ? Regovar.theme.primaryColor.back.dark : "transparent"
-                            color: gt_valid(model.value) ? Regovar.theme.boxColor.back : "transparent"
-
-                            function gt_valid(value)
-                            {
-                                // !model.value || model.value == -50 || model.value == -1
-                                return value !== undefined && value !== null && value !== "" && value >=0;
-                            }
-
-
-                            Rectangle
-                            {
-                                anchors.fill: parent
-                                anchors.margins: 1
-                                anchors.rightMargin: 6
-                                color: (model.value == 1 || model.value == 3) ? Regovar.theme.primaryColor.back.dark : "transparent"
-                            }
-                            Rectangle
-                            {
-                                anchors.fill: parent
-                                anchors.margins: 1
-                                anchors.leftMargin: 6
-                                color: !gt_valid(model.value) ||  model.value == 0 ? "transparent" : model.value == 3 ? Regovar.theme.primaryColor.back.light : Regovar.theme.primaryColor.back.dark
-                            }
-                            Text
-                            {
-                                text : model.value == -50 ? "ERR" : model.value == -1 ? "-" : model.value == "" ? "?" : "? (" + model.value + ")"
-                                font.pixelSize: 10
-                                anchors.centerIn: parent
-                                visible: !gt_valid(model.value)
-                                elide: Text.ElideRight
-                                renderType: Text.NativeRendering
-                                textFormat: Text.PlainText
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    // Custom Column Component for generic type Annotations
-    Component
-    {
-        id: columnComponent_SampleArrayString
-        TableViewColumn
-        {
-            width: 60
-
-            delegate: Item
-            {
-                ColumnLayout
-                {
-                    anchors.fill: parent
-                    anchors.leftMargin: 5
-                    anchors.rightMargin: 5
-                    spacing: 1
-                    Repeater
-                    {
-
-                        model: styleData.value ? resultsTree.mapToList(styleData.value) : null
-
-
-                        Text
-                        {
-                            height: 12
-                            font.pixelSize: 12
-                            text: (model) ? String(model.value) : "-"
-                            elide: Text.ElideRight
-                            renderType: Text.NativeRendering
-                            textFormat: Text.PlainText
-                        }
-                    }
-                }
-            }
-        }
-    }
-    // Custom Column Component for SampleArray Enum Annotations
-    Component
-    {
-        id: columnComponent_SampleArrayEnum
-        TableViewColumn
-        {
-            width: 60
-
-            delegate: Item
-            {
-                ColumnLayout
-                {
-                    anchors.fill: parent
-                    anchors.leftMargin: 5
-                    anchors.rightMargin: 5
-                    spacing: 1
-                    Repeater
-                    {
-
-                        model: styleData.value ? resultsTree.mapToList(styleData.value) : null
-                        Text
-                        {
-                            Layout.fillWidth: true
-                            height: 12
-                            font.pixelSize: 12
-                            text: String(model.value)
-                            elide: Text.ElideRight
-                            renderType: Text.NativeRendering
-                            textFormat: Text.PlainText
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -387,46 +187,6 @@ TreeView
         }
     }
 
-    Component
-    {
-        id: listModel
-        ListModel { }
-    }
-
-
-
-
-
-    function mapToList(json)
-    {
-
-        var newModel = listModel.createObject(resultsTree);
-
-        var l = analysis.samples.length;
-        // /!\ It's important to respect the same order as in the analysis.samples list.
-        for (var idx=0; idx<l; idx++)
-        {
-            var sid = analysis.samples[idx].id;
-            var data = json[sid];
-            if (typeof(data) == "object" && data !== null)
-            {
-                if ("length" in data)
-                {
-                    var datares = ""
-                    for (var idx2=0; idx2<data.length; idx2++)
-                    {
-                        datares += data[idx2] + ", ";
-                    }
-                    data = datares;
-                }
-            }
-
-            newModel.append({ "id": sid, "value" : data});
-        }
-
-        return newModel;
-    }
-
 
 
     function openVariantInfoDialog(x, y)
@@ -449,8 +209,6 @@ TreeView
         // 3- get variant information in a stand alone info dialog
         regovar.getVariantInfo(analysis.refId, variantId, analysis.id);
     }
-
-
 
     function refreshResultColumns()
     {
@@ -497,7 +255,6 @@ TreeView
         resultsTree.resizeColumnsToContents();
     }
 
-
     function insertField(info, position, forceRefresh)
     {
         var col;
@@ -514,30 +271,21 @@ TreeView
         else
         {
             var annot = info.annotation;
-            col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+            // col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
 
-/*
             // Getting QML column according to the type of the fields
-            if (annot.type == "int")
-                col = columnComponent_number.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
-            else if (annot.type == "bool")
-                col = columnComponent_bool.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
-            else if (annot.type == "sequence")
-                col = columnComponent_sequence.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
-            else if (annot.type == "list")
-                col = columnComponent_list.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+            if (annot.type == "bool")
+                col = columnComponent_icon.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
             else if (annot.type == "sample_array")
             {
                 if (annot.name == "Genotype")
-                    col = columnComponent_SampleArrayGT.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
-                else if (annot.meta["type"] == "enum")
-                    col = columnComponent_SampleArrayEnum.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+                    col = columnComponent_icon.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
                 else
-                    col = columnComponent_SampleArrayString.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+                    col = columnComponent_nowrap.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
             }
             else
                 col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
-*/
+
         }
 
         //console.log("  display column " + uid + " at " + position);
