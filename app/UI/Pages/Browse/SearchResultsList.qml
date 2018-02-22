@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
-import org.regovar 1.0
+import Regovar.Core 1.0
 
 import "../../Regovar"
 import "../../Framework"
@@ -200,7 +200,7 @@ ScrollView
                     refid: model.modelData.reference_id
                     subject: model.modelData.subject_id > 0 ? regovar.subjectsManager.getOrCreateSubject(model.modelData.subject_id).subjectUI : null
 
-                    onClicked: regovar.getSampleInfo(model.modelData.id)
+                    onClicked: regovar.getSampleInfo(model.modelData.reference_id, model.modelData.id)
                 }
             }
         }

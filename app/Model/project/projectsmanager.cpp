@@ -22,11 +22,7 @@ void ProjectsManager::refresh()
     {
         if (success)
         {
-            mProjectsTreeModel->refresh(json);
-            mProjectsFlatList.clear();
-            refreshFlatProjectsListRecursive(json["data"].toArray(), "");
-            emit projectsFlatListChanged();
-
+            loadJson(json["data"].toArray());
         }
         else
         {
@@ -36,12 +32,21 @@ void ProjectsManager::refresh()
         request->deleteLater();
     });
 }
-
-void ProjectsManager::refreshFlatProjectsListRecursive(QJsonArray data, QString prefix)
+bool ProjectsManager::loadJson(QJsonArray json, QString prefix)
 {
-    for (const QJsonValue& json: data)
+    // Non recursive part
+    if (prefix.isEmpty())
     {
-        QJsonObject p = json.toObject();
+        // Update tree model
+        mProjectsTreeModel->refresh(json);
+
+        mProjectsFlatList.clear();
+    }
+
+    // Update flat list (recursive part)
+    for (const QJsonValue& data: json)
+    {
+        QJsonObject p = data.toObject();
         QString name = p["name"].toString();
         int id = p["id"].toInt();
         if (id == 0) continue; // do not display trash project in the flat list
@@ -49,16 +54,18 @@ void ProjectsManager::refreshFlatProjectsListRecursive(QJsonArray data, QString 
         // If folder, need to retrieve subitems recursively
         if (p["is_folder"].toBool())
         {
-            refreshFlatProjectsListRecursive(p["children"].toArray(), prefix + name + "/");
+            loadJson(p["children"].toArray(), prefix + name + "/");
         }
         else
         {
             p.insert("fullpath", prefix + name);
-            Project* proj =getOrCreateProject(id);
+            Project* proj = getOrCreateProject(id);
             proj->fromJson(p);
             mProjectsFlatList << proj;
         }
     }
+    if (prefix.isEmpty())
+        emit projectsFlatListChanged();
 }
 
 
@@ -73,7 +80,7 @@ Project* ProjectsManager::getOrCreateProject(int id)
         return mProjects[id];
     }
     // else
-    Project* newProject = new Project(id);
+    Project* newProject = new Project(id, this);
     mProjects.insert(id, newProject);
     return newProject;
 }

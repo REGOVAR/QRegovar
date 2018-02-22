@@ -56,7 +56,7 @@ Rectangle
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: sex == "male" ? "9" : sex == "female" ? "<" : "b"
+            text: Regovar.sexToIcon(sex)
         }
 
         Text

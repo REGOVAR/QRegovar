@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import org.regovar 1.0
+import Regovar.Core 1.0
 
 import "../../Regovar"
 import "../../Framework"
@@ -16,6 +16,13 @@ Rectangle
     property File fileModel: null
     property var model
     onModelChanged: setFileModel(model)
+    Component.onDestruction:
+    {
+        if (fileModel)
+        {
+            fileModel.dataChanged.disconnect(updateViewFromModel);
+        }
+    }
 
     function setFileModel(file)
     {

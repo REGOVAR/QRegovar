@@ -80,7 +80,7 @@ class Regovar : public QObject
     Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
-    Q_PROPERTY(QJsonArray lastAnalyses READ lastAnalyses NOTIFY lastDataChanged)
+    Q_PROPERTY(QList<QObject*> lastAnalyses READ lastAnalyses NOTIFY lastDataChanged)
     Q_PROPERTY(QJsonArray lastEvent READ lastEvent NOTIFY lastDataChanged)
     Q_PROPERTY(QList<QObject*> lastSubjects READ lastSubjects NOTIFY lastDataChanged)
     Q_PROPERTY(bool welcomIsLoading READ welcomIsLoading WRITE setWelcomIsLoading NOTIFY welcomIsLoadingChanged)
@@ -123,7 +123,7 @@ public:
     inline QString searchRequest() { return mSearchRequest; }
     inline QJsonObject searchResult() const { return mSearchResult; }
     inline bool searchInProgress() const { return mSearchInProgress; }
-    inline QJsonArray lastAnalyses() const { return mLastAnalyses; }
+    inline QList<QObject*> lastAnalyses() const { return mLastAnalyses; }
     inline QJsonArray lastEvent() const { return mLastEvents; }
     inline QList<QObject*> lastSubjects() const { return mLastSubjects; }
     inline bool welcomIsLoading() const { return mWelcomIsLoading; }
@@ -160,7 +160,7 @@ public:
     Q_INVOKABLE void getPanelInfo(QString panelId);
     Q_INVOKABLE void getPhenotypeInfo(QString phenotypeId);
     Q_INVOKABLE void getPipelineInfo(int pipelineId);
-    Q_INVOKABLE void getSampleInfo(int sampleId);
+    Q_INVOKABLE void getSampleInfo(int refId, int sampleId);
     Q_INVOKABLE void getUserInfo(int userId);
     Q_INVOKABLE void getVariantInfo(int refId, QString variantId, int analysisId=-1);
     Q_INVOKABLE void search(QString query);
@@ -173,6 +173,8 @@ public:
     Q_INVOKABLE QString sizeToHumanReadable(qint64 size, qint64 uploadOffset=-1);
     Q_INVOKABLE void raiseError(QJsonObject raiseError);
     Q_INVOKABLE QDateTime dateFromShortString(QString date);
+    Q_INVOKABLE QString formatNumber(int value);
+    Q_INVOKABLE QString formatNumber(double value);
     bool openNewWindow(QUrl qmlUrl, QObject* model);
 
 
@@ -253,7 +255,7 @@ private:
 
     //! Welcom last data
     QJsonArray mLastEvents;
-    QJsonArray mLastAnalyses;
+    QList<QObject*> mLastAnalyses;
     QList<QObject*> mLastSubjects;
 
     //! List of open Filtering Analyses

@@ -5,7 +5,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import QtQuick.Dialogs 1.2
-import org.regovar 1.0
+import Regovar.Core 1.0
 import QtQml.Models 2.2
 
 import "../../../Regovar"
@@ -13,12 +13,15 @@ import "../../../Framework"
 import "../../../MainMenu"
 import "../../../InformationPanel/Variant"
 
-import org.regovar 1.0
+import Regovar.Core 1.0
+
 
 
 TreeView
 {
     id: resultsTree
+    //smooth: false
+    //layer.enabled: false
 
     signal checked(string id, bool isChecked)
     onChecked: analysis.setVariantSelection(id, isChecked);
@@ -28,9 +31,13 @@ TreeView
     {
         if (analysis)
         {
-            analysis.displayedAnnotationsChanged.connect(function() {refreshResultColumns();});
+            analysis.displayedAnnotationsChanged.connect(refreshResultColumns);
             refreshResultColumns();
         }
+    }
+    Component.onDestruction:
+    {
+        analysis.displayedAnnotationsChanged.disconnect(refreshResultColumns);
     }
 
 
@@ -38,7 +45,7 @@ TreeView
     onSortIndicatorColumnChanged: analysis.setFilterOrder(sortIndicatorColumn, sortIndicatorOrder)
     onSortIndicatorOrderChanged: analysis.setFilterOrder(sortIndicatorColumn, sortIndicatorOrder)
     onHeaderMoved: analysis.saveHeaderPosition(oldPosition, newPosition)
-    onHeaderResized: analysis.saveHeaderWidth(headerPosition, newSize)
+    //onHeaderResized: analysis.saveHeaderWidth(headerPosition, newSize)
 
 
 
@@ -48,7 +55,7 @@ TreeView
         anchors.topMargin: Regovar.theme.font.boxSize.normal // = Header height (see UI/Framework/TreeView.qml)
 
         acceptedButtons: Qt.RightButton
-        onClicked: resultsTree.openVariantInfoDialog(mouse.x, mouse.y + 24) // compense header's margin
+        onClicked: resultsTree.openVariantInfoDialog(mouse.x, mouse.y + Regovar.theme.font.boxSize.normal) // compense header's margin
     }
 
 
@@ -59,10 +66,10 @@ TreeView
         TableViewColumn { width: 100 }
     }
 
-    // Number formating
+    // Icon formating
     Component
     {
-        id: columnComponent_number
+        id: columnComponent_icon
         TableViewColumn
         {
             width: 100
@@ -74,83 +81,40 @@ TreeView
                     anchors.rightMargin: 5
                     anchors.fill: parent
                     verticalAlignment: Text.AlignVCenter
-                    font.pixelSize: Regovar.theme.font.size.normal
+                    horizontalAlignment: styleData.textAlignment
+                    font.pixelSize: Regovar.theme.font.size.header
+                    text: styleData.value ? styleData.value.toString() : ""
                     elide: Text.ElideRight
-                    font.family: "monospace"
-                    text: styleData.value ? Regovar.formatBigNumber(styleData.value) : "-"
-                }
-            }
-        }
-    }
-
-    // List formating
-    Component
-    {
-        id: columnComponent_list
-        TableViewColumn
-        {
-            width: 100
-            delegate: Item
-            {
-                Text
-                {
-                    anchors.leftMargin: 5
-                    anchors.rightMargin: 5
-                    anchors.fill: parent
-                    verticalAlignment: Text.AlignVCenter
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    elide: Text.ElideRight
-                    text: styleData.value ? resultsTree.listToVal(styleData.value) : "-"
-                }
-            }
-        }
-    }
-
-    // Sequence formating
-    Component
-    {
-        id: columnComponent_sequence
-        TableViewColumn
-        {
-            width: 100
-            delegate: Item
-            {
-                Text
-                {
-                    anchors.leftMargin: 5
-                    anchors.rightMargin: 5
-                    anchors.fill: parent
-                    verticalAlignment: Text.AlignVCenter
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    elide: Text.ElideRight
-
-                    font.family: "monospace"
-                    text: styleData.value ? /*Regovar.formatSequence(*/styleData.value/*)*/ : "-"
-                }
-            }
-        }
-    }
-
-    // Boolean formating
-    Component
-    {
-        id: columnComponent_bool
-        TableViewColumn
-        {
-            width: 30
-            delegate: Item
-            {
-                Text
-                {
-                    anchors.leftMargin: 5
-                    anchors.rightMargin: 5
-                    anchors.fill: parent
-                    verticalAlignment: Text.AlignVCenter
-                    font.pixelSize: Regovar.theme.font.size.normal
+                    renderType: Text.NativeRendering
+                    textFormat: Text.PlainText
                     font.family: Regovar.theme.icons.name
-                    horizontalAlignment: Text.AlignLeft
-                    text: (styleData.value) ? "n" : "h"
-                    color: (styleData.value) ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.lighter(Regovar.theme.frontColor.normal )
+                }
+            }
+        }
+    }
+
+    // NoWrap formating
+    Component
+    {
+        id: columnComponent_nowrap
+        TableViewColumn
+        {
+            width: 100
+            delegate: Item
+            {
+                Text
+                {
+                    anchors.leftMargin: 5
+                    anchors.rightMargin: 5
+                    anchors.fill: parent
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: styleData.textAlignment
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    text: styleData.value ? styleData.value.toString() : ""
+                    elide: Text.ElideRight
+                    renderType: Text.NativeRendering
+                    textFormat: Text.PlainText
+
                 }
             }
         }
@@ -167,162 +131,23 @@ TreeView
             width: 60
 
 
-            delegate: Item
-            {
-                anchors.margins: 0
-                CheckBox
-                {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 5
-                    anchors.verticalCenter: parent.verticalCenter
-                    checked: Boolean(styleData.value)
-                    text: "" // resultsTree.model.data(styleData.index, Qt.UserRole +1)
-                    onClicked:
-                    {
-                        var id = resultsTree.model.data(styleData.index, Qt.UserRole +1);
-                        resultsTree.checked(id, checked);
-                    }
-                }
-            }
-        }
-    }
-
-    // Custom Column component for GT annotations
-    Component
-    {
-        id: columnComponent_SampleArrayGT
-        TableViewColumn
-        {
-            width: 30
-
-            delegate: Item
-            {
-                ColumnLayout
-                {
-                    anchors.fill: parent
-                    anchors.leftMargin: 5
-                    spacing: 1
-                    Repeater
-                    {
-
-                        model: resultsTree.mapToList(styleData.value)
-
-
-                        Rectangle
-                        {
-                            // display :
-                            // None => "?"
-                            // -50  => "ERR"
-                            // -1   => "-"
-                            // 0    => ref/ref
-                            // 1    => alt/alt
-                            // 2    => ref/alt
-                            // 3    => alt1/alt2
-
-                            width: 12
-                            height: 12
-                            border.width: gt_valid(model.value) ? 1 : 0
-                            border.color: gt_valid(model.value) ? Regovar.theme.primaryColor.back.dark : "transparent"
-                            color: gt_valid(model.value) ? Regovar.theme.boxColor.back : "transparent"
-
-                            function gt_valid(value)
-                            {
-                                // !model.value || model.value == -50 || model.value == -1
-                                return value !== undefined && value !== null && value !== "" && value >=0;
-                            }
-
-
-                            Rectangle
-                            {
-                                anchors.fill: parent
-                                anchors.margins: 1
-                                anchors.rightMargin: 6
-                                color: (model.value == 1 || model.value == 3) ? Regovar.theme.primaryColor.back.dark : "transparent"
-                            }
-                            Rectangle
-                            {
-                                anchors.fill: parent
-                                anchors.margins: 1
-                                anchors.leftMargin: 6
-                                color: !gt_valid(model.value) ||  model.value == 0 ? "transparent" : model.value == 3 ? Regovar.theme.primaryColor.back.light : Regovar.theme.primaryColor.back.dark
-                            }
-                            Text
-                            {
-                                text : model.value == -50 ? "ERR" : model.value == -1 ? "-" : model.value == "" ? "?" : "? (" + model.value + ")"
-                                font.pixelSize: 10
-                                anchors.centerIn: parent
-                                visible: !gt_valid(model.value)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    // Custom Column Component for generic type Annotations
-    Component
-    {
-        id: columnComponent_SampleArrayString
-        TableViewColumn
-        {
-            width: 60
-
-            delegate: Item
-            {
-                ColumnLayout
-                {
-                    anchors.fill: parent
-                    anchors.leftMargin: 5
-                    anchors.rightMargin: 5
-                    spacing: 1
-                    Repeater
-                    {
-
-                        model: styleData.value ? resultsTree.mapToList(styleData.value) : null
-
-
-                        Text
-                        {
-                            height: 12
-                            font.pixelSize: 12
-                            text: (model) ? String(model.value) : "-"
-                        }
-                    }
-                }
-            }
-        }
-    }
-    // Custom Column Component for SampleArray Enum Annotations
-    Component
-    {
-        id: columnComponent_SampleArrayEnum
-        TableViewColumn
-        {
-            width: 60
-
-            delegate: Item
-            {
-                ColumnLayout
-                {
-                    anchors.fill: parent
-                    anchors.leftMargin: 5
-                    anchors.rightMargin: 5
-                    spacing: 1
-                    Repeater
-                    {
-
-                        model: styleData.value ? resultsTree.mapToList(styleData.value) : null
-                        Text
-                        {
-                            Layout.fillWidth: true
-                            height: 12
-                            font.pixelSize: 12
-                            text: String(model.value)
-                            elide: Text.ElideRight
-                        }
-                    }
-                }
-            }
+//            delegate: Item
+//            {
+//                //anchors.margins: 0
+//                CheckBox
+//                {
+//                    anchors.left: parent.left
+//                    anchors.leftMargin: 5
+//                    anchors.verticalCenter: parent.verticalCenter
+//                    checked: Boolean(styleData.value)
+//                    text: "" // resultsTree.model.data(styleData.index, Qt.UserRole +1)
+//                    onClicked:
+//                    {
+//                        var id = resultsTree.model.data(styleData.index, Qt.UserRole +1);
+//                        resultsTree.checked(id, checked);
+//                    }
+//                }
+//            }
         }
     }
 
@@ -332,82 +157,30 @@ TreeView
         id: columnComponent_Samples
         TableViewColumn
         {
-            role: "samplesNames"
             title: qsTr("Samples")
             width: 70
 
             delegate: Item
             {
-                ColumnLayout
+                Text
                 {
-                    anchors.fill: parent
                     anchors.leftMargin: 5
-                    spacing: 1
-                    Repeater
-                    {
-                        model: analysis.samples
-                        Text
-                        {
-                            height: 12
-                            verticalAlignment: Text.AlignVCenter
-                            text : modelData.name
-                            font.pixelSize: 10
-                            color: Regovar.theme.frontColor.disable
-                        }
-                    }
+                    anchors.rightMargin: 5
+                    anchors.fill: parent
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: styleData.textAlignment
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    elide: Text.ElideRight
+                    renderType: Text.NativeRendering
+                    textFormat: Text.PlainText
+                    color: Regovar.theme.frontColor.disable
+                    text : analysis.results.samplesNames
                 }
             }
         }
     }
 
-    Component
-    {
-        id: listModel
-        ListModel { }
-    }
 
-
-
-
-
-    function mapToList(json)
-    {
-        var newModel = listModel.createObject(resultsTree);
-
-        var l = analysis.samples.length;
-        // /!\ It's important to respect the same order as in the analysis.samples list.
-        for (var idx=0; idx<l; idx++)
-        {
-            var sid = analysis.samples[idx].id;
-            var data = json[sid];
-            if (typeof(data) == "object" && data !== null)
-            {
-                if ("length" in data)
-                {
-                    var datares = ""
-                    for (var idx2=0; idx2<data.length; idx2++)
-                    {
-                        datares += data[idx2] + ", ";
-                    }
-                    data = datares;
-                }
-            }
-
-            newModel.append({ "id": sid, "value" : data});
-        }
-
-        return newModel;
-    }
-
-    function listToVal(json)
-    {
-        var result = "";
-        for (var idx=0; idx<json.length; idx++)
-        {
-            result += ", " + json[idx];
-        }
-        return result.substring(2, result.length);
-    }
 
     function openVariantInfoDialog(x, y)
     {
@@ -430,11 +203,14 @@ TreeView
         regovar.getVariantInfo(analysis.refId, variantId, analysis.id);
     }
 
-
-
     function refreshResultColumns()
     {
-        resultsTree.rowHeight = (resultsTree.analysis.samplesByRow === 1) ? 25 : resultsTree.analysis.samplesByRow * 18;
+        if (analysis === undefined || analysis === null)
+        {
+            return;
+        }
+
+        resultsTree.rowHeight = (resultsTree.analysis.samplesByRow === 1) ? Regovar.theme.font.boxSize.normal : resultsTree.analysis.samplesByRow * Regovar.theme.font.boxSize.normal;
 
         // Remove old columns
         var position, col;
@@ -468,17 +244,14 @@ TreeView
             resultsTree.sortIndicatorColumn = columns.indexOf(uid);
             resultsTree.sortIndicatorOrder = orderDirection;
         }
-    }
 
+        resultsTree.resizeColumnsToContents();
+    }
 
     function insertField(info, position, forceRefresh)
     {
-        if (analysis === undefined || analysis === null)
-        {
-            return;
-        }
-
         var col;
+
 
         if (info.uid === "_Samples")
         {
@@ -491,25 +264,17 @@ TreeView
         else
         {
             var annot = info.annotation;
-
+            // col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
 
             // Getting QML column according to the type of the fields
-            if (annot.type == "int")
-                col = columnComponent_number.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
-            else if (annot.type == "bool")
-                col = columnComponent_bool.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
-            else if (annot.type == "sequence")
-                col = columnComponent_sequence.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
-            else if (annot.type == "list")
-                col = columnComponent_list.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
+            if (annot.type == "bool")
+                col = columnComponent_icon.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});
             else if (annot.type == "sample_array")
             {
-                if (annot.name == "GT")
-                    col = columnComponent_SampleArrayGT.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
-                else if (annot.meta["type"] == "enum")
-                    col = columnComponent_SampleArrayEnum.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+                if (annot.name == "Genotype")
+                    col = columnComponent_icon.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
                 else
-                    col = columnComponent_SampleArrayString.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
+                    col = columnComponent_nowrap.createObject(resultsTree, {"role": annot.uid, "title": annot.name});
             }
             else
                 col = columnComponent.createObject(resultsTree, {"role": annot.uid, "title": annot.name, "width": info.width});

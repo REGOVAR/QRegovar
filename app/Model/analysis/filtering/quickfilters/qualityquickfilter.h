@@ -14,6 +14,7 @@ class QualityQuickFilter : public QuickFilterBlockInterface
     Q_OBJECT
 
     Q_PROPERTY(QuickFilterField* depth READ depth NOTIFY depthChanged)
+    Q_PROPERTY(QuickFilterField* vaf READ vaf NOTIFY vafChanged)
 
 public:
     QualityQuickFilter(int analysisId);
@@ -27,14 +28,17 @@ public:
 
     // Getters
     inline QuickFilterField* depth() { return mDepth; }
+    inline QuickFilterField* vaf() { return mVaf; }
 
 
 Q_SIGNALS:
     void depthChanged();
+    void vafChanged();
 
 
 private:
     QuickFilterField* mDepth = nullptr;
+    QuickFilterField* mVaf = nullptr;
     QStringList mOperators;
 };
 

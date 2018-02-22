@@ -13,7 +13,9 @@
 #include <QDateTime>
 #include <QApplication>
 #include <QTimer>
+#include <QLocale>
 
+#include "Model/analysis/filtering/filteringanalysis.h"
 
 
 
@@ -117,9 +119,9 @@ void Regovar::init()
     mToolsManager = new ToolsManager(this);
 
     // Init sub models
-    mProjectsManager->refresh();
-    mSubjectsManager->refresh();
-    mPanelsManager->refresh();
+//    mProjectsManager->refresh();
+//    mSubjectsManager->refresh();
+//    mPanelsManager->refresh();
 
     // Load misc data
     loadWelcomData();
@@ -142,54 +144,9 @@ void Regovar::loadWelcomData()
         if (success)
         {
             QJsonObject data = json["data"].toObject();
+
+            // Get server config and release information
             mConfig->fromJson(data);
-
-            // Last analyses
-            while(!mLastAnalyses.empty()) mLastAnalyses.pop_back();
-            for (const QJsonValue& val: data["last_analyses"].toArray())
-            {
-                QJsonObject item = val.toObject();
-                QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
-                item["update_date"] = date.toString("yyyy-MM-dd hh:mm");
-                mLastAnalyses.append(item);
-            }
-            // Last subjects
-            mLastSubjects.clear();
-            for (const QJsonValue& val: data["last_subjects"].toArray())
-            {
-                QJsonObject item = val.toObject();
-                Subject* sbj = subjectsManager()->getOrCreateSubject(item["id"].toInt());
-                sbj->fromJson(item);
-                mLastSubjects.append(sbj);
-            }
-            // Last events
-//            while(!mLastSubjects.empty()) mLastSubjects.pop_back();
-//            for (const QJsonValue& val: data["last_events"].toArray())
-//            {
-//                QJsonObject item = val.toObject();
-//                QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
-//                item["update_date"] = date.toString("yyyy-MM-dd hh:mm");
-//                //mLastSubjects.append(item);
-//            }
-            emit lastDataChanged();
-
-            // Get referencial available
-            for (const QJsonValue& jsonVal: data["references"].toArray())
-            {
-                QJsonObject refD = jsonVal.toObject();
-                int id = refD["id"].toInt();
-                Reference* ref = referenceFromId(id);
-                if (ref == nullptr)
-                {
-                    ref = new Reference(this);
-                    ref->fromJson(jsonVal.toObject());
-                    if (ref->id() > 0) mReferences.append(ref);
-                }
-            }
-            emit referencesChanged();
-
-
-            // Get milestones data
             QJsonObject milestones;
             for (const QJsonValue& val: data["milestones"].toArray())
             {
@@ -211,10 +168,75 @@ void Regovar::loadWelcomData()
                 milestones.insert("html_url", "https://github.com/REGOVAR/QRegovar/milestones");
                 mConfig->setRelease(milestones);
             }
+
+            // Get files import/export tools available on Regovar server
+            mToolsManager->loadJson(data["tools"].toObject());
+
+            // Get references
+            for (const QJsonValue& jsonVal: data["references"].toArray())
+            {
+                QJsonObject refD = jsonVal.toObject();
+                int id = refD["id"].toInt();
+                Reference* ref = referenceFromId(id);
+                if (ref == nullptr)
+                {
+                    ref = new Reference(this);
+                    ref->fromJson(jsonVal.toObject());
+                    if (ref->id() > 0) mReferences.append(ref);
+                }
+            }
+
+            // Get panels
+            mPanelsManager->loadJson(data["panels"].toArray());
+
+            // Get pipelines
+            // mPi->loadJson(data["jobs"].toArray());
+
+            // Get samples
+            mSamplesManager->loadJson(data["samples"].toArray());
+
+            // Get subjects (Must be loaded after samples)
+            mSubjectsManager->loadJson(data["subjects"].toArray());
+
+            // Get analyses
+            mAnalysesManager->loadJson(data["analyses"].toArray());
+
+            // Gets jobs
+            // mAnalysesManager->loadJson(data["jobs"].toArray());
+
+            // Get projects (must be load after analyses + jobs)
+            mProjectsManager->loadJson(data["projects"].toArray());
+
+
+            // Last analyses
+            mLastAnalyses.clear();
+            for (const QJsonValue& val: data["last_analyses"].toArray())
+            {
+                FilteringAnalysis* fa = mAnalysesManager->getOrCreateFilteringAnalysis(val.toInt());
+                mLastAnalyses.append(fa);
+            }
+            // Last subjects
+            mLastSubjects.clear();
+            for (const QJsonValue& val: data["last_subjects"].toArray())
+            {
+                Subject* sbj = mSubjectsManager->getOrCreateSubject(val.toInt());
+                mLastSubjects.append(sbj);
+            }
+            // Last events
+        //            while(!mLastSubjects.empty()) mLastSubjects.pop_back();
+        //            for (const QJsonValue& val: data["last_events"].toArray())
+        //            {
+        //                QJsonObject item = val.toObject();
+        //                QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
+        //                item["update_date"] = date.toString("yyyy-MM-dd hh:mm");
+        //                //mLastSubjects.append(item);
+        //            }
+            emit lastDataChanged();
+            emit referencesChanged();
             emit configChanged();
 
-            // Timer to update "welcom data" in 30s
-            QTimer::singleShot(30000, regovar, SLOT(loadWelcomData()));
+            // Timer to refresh "last data" every 30s
+            // QTimer::singleShot(30000, regovar, SLOT(refreshLastData()));
 
         }
         else
@@ -227,10 +249,6 @@ void Regovar::loadWelcomData()
         setWelcomIsLoading(true);
     });
 }
-
-
-
-
 
 
 
@@ -339,10 +357,10 @@ void Regovar::getPanelInfo(QString panelId)
 }
 
 
-void Regovar::getSampleInfo(int sampleId)
+void Regovar::getSampleInfo(int refId, int sampleId)
 {
     emit sampleInformationSearching();
-    Sample* sample= mSamplesManager->getOrCreate(sampleId);
+    Sample* sample = mSamplesManager->getOrCreate(refId, sampleId);
     sample->load(false);
     emit sampleInformationReady(sample);
 }
@@ -524,6 +542,22 @@ QDateTime Regovar::dateFromShortString(QString date)
     return QDateTime(QDate(dateElmt[0].toInt(), dateElmt[1].toInt(),  dateElmt[2].toInt()), QTime(12,0,0));
 }
 
+QString Regovar::formatNumber(int value)
+{
+    QLocale cLocale = QLocale::c();
+    cLocale.setNumberOptions(QLocale::DefaultNumberOptions);
+    QString ss = cLocale.toString(value);
+    ss.replace(cLocale.groupSeparator(), ' ');
+    return ss;
+}
+QString Regovar::formatNumber(double value)
+{
+    QLocale cLocale = QLocale::c();
+    cLocale.setNumberOptions(QLocale::DefaultNumberOptions);
+    QString ss = cLocale.toString(value);
+    ss.replace(cLocale.groupSeparator(), ' ');
+    return ss;
+}
 
 
 

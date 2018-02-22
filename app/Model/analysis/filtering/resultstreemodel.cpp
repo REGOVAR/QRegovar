@@ -32,6 +32,7 @@ void ResultsTreeModel::initAnalysisData(int analysisId)
     {
         rootData.insert(roleId, QString(mRoles[roleId]));
     }
+    mRootItem->deleteLater();
     mRootItem = new TreeItem(rootData);
 
     beginResetModel();
@@ -52,6 +53,9 @@ QHash<int, QByteArray> ResultsTreeModel::roleNames() const
     ++roleId;
     roles[roleId] = "is_selected";
     ++roleId;
+    roles[roleId] = "columns_data";
+    ++roleId;
+
     // Build role from annotations all annotations available list
     for (const QString& uid: mFilteringAnalysis->annotationsMap().keys())
     {
@@ -150,18 +154,29 @@ void ResultsTreeModel::applyFilter(QJsonArray filter)
     body.insert("filter", filter);
     body.insert("fields", QJsonArray::fromStringList(mFilteringAnalysis->fields()));
     body.insert("order", QJsonArray::fromStringList(mFilteringAnalysis->order()));
+    body.insert("limit", QJsonValue::fromVariant(QVariant(mPagination)));
 
     Request* request = Request::post(QString("/analysis/%1/filtering").arg(mAnalysisId), QJsonDocument(body).toJson());
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
         if (success)
         {
+            // Update samples names
+            mSamplesNames = "";
+            for (Sample* sample: mFilteringAnalysis->samples())
+            {
+                mSamplesNames += sample->name() + "\n";
+            }
+            mSamplesNames = mSamplesNames.left(mSamplesNames.count() - 1);
+            emit samplesNamesChanged();
+
+            // Update treeview model
             beginResetModel();
             clear();
-
             QJsonObject data = json["data"].toObject();
             setLoaded(0);
             setTotal(data["wt_total_variants"].toInt()); // , data["wt_total_results"].toInt()
+            // Set content (rows)
             setupModelData(data["results"].toArray(), mRootItem);
             endResetModel();
             qDebug() << Q_FUNC_INFO << "Results TreeViewModel reset." << mLoaded << "results loaded";
@@ -241,7 +256,22 @@ void ResultsTreeModel::loadAll()
 
 
 
+//QJsonObject ResultsTreeModel::getData(int idx)
+//{
+//    QJsonObject result;
 
+//    result.insert("index", idx);
+//    QJsonArray jd;
+
+//    for(int role: mRoles.keys())
+//    {
+//        jd.append(data(index(idx, 0), role).toJsonValue());
+//    }
+//    result.insert("data", jd);
+
+
+//    return result;
+//}
 
 
 
@@ -255,12 +285,108 @@ TreeItem* ResultsTreeModel::newResultsTreeViewItem(const QJsonObject& rowData)
 
 
     // add columns info to the item
+    // For optimisation, we do maximum of format conversion one time here. (instead of doing it in QML dynamicaly)
+    // QML shall only have to display text type
     columnData.insert(mRoles.key("id"), QVariant(rowId));
     columnData.insert(mRoles.key("is_selected"), QVariant(isSelected));
-    for (const QString& fuid: mFilteringAnalysis->fields())
+
+    QStringList dataAsList;
+    for (QObject* o: mFilteringAnalysis->displayedAnnotations())
     {
-        columnData.insert(mRoles.key(fuid.toUtf8()), rowData[fuid].toVariant());
+        FieldColumnInfos* info = qobject_cast<FieldColumnInfos*>(o);
+        if (info->annotation() == nullptr) continue;
+
+        QString type = info->annotation()->type();
+        QString fuid = info->annotation()->uid();
+        QString data;
+        if (type == "int")
+        {
+            data = regovar->formatNumber(rowData[fuid].toInt());
+        }
+        else if (type == "float")
+        {
+            data = regovar->formatNumber(rowData[fuid].toDouble());
+        }
+        else if (type == "bool")
+        {
+            data = rowData[fuid].toBool() ? "n" : "h";
+        }
+        else if (type == "list")
+        {
+            for (QJsonValue v: rowData[fuid].toArray())
+            {
+                data += v.toString() + ", ";
+            }
+            data = data.left(data.count() - 2);
+        }
+        else if (type == "sample_array")
+        {
+
+            QJsonObject meta = mFilteringAnalysis->getColumnInfo(fuid)->annotation()->meta();
+            QString metaType = !meta.isEmpty() ? meta["type"].toString() : "";
+            for (Sample* sample: mFilteringAnalysis->samples())
+            {
+                QString k = QString::number(sample->id());
+                QJsonValue v = rowData[fuid][k];
+                if (v.isNull())
+                {
+                    data += "\n";
+                }
+                else if (metaType == "int")
+                {
+                    if (mFilteringAnalysis->getColumnInfo(fuid)->annotation()->name() == "Genotype")
+                    {
+                        // display :
+                        // None => "?"
+                        // -50  => "ERR"
+                        // -1   => "-"
+                        // 0    => ref/ref
+                        // 1    => alt/alt
+                        // 2    => ref/alt
+                        // 3    => alt1/alt2
+                        if (v.isNull()) data += "f";
+                        else
+                        {
+                            if (v.toInt() == -50) data += "l";
+                            else if (v.toInt() == -1) data += "ð";
+                            else if (v.toInt() == 0) data += "í";
+                            else if (v.toInt() == 1) data += "ï";
+                            else if (v.toInt() == 2) data += "ñ";
+                            else if (v.toInt() == 3) data += "ò";
+                        }
+                        data += "\n";
+                    }
+                    else
+                    {
+                        data += regovar->formatNumber(v.toInt()) + "\n";
+                    }
+                }
+                else if (metaType == "float")
+                {
+                    data += regovar->formatNumber(v.toDouble()) + "\n";
+                }
+                else if (metaType == "bool")
+                {
+                    data += (v.toBool() ? "n" : "h");
+                    data += "\n";
+                }
+                else // if (metaType == "enum")
+                {
+                    data += v.toString() + "\n";
+                }
+            }
+            data = data.left(data.count() - 1);
+
+        }
+        // else if (type == "sequence")
+        else
+        {
+            data = rowData[fuid].toString();
+        }
+        dataAsList << data;
+        columnData.insert(mRoles.key(fuid.toUtf8()), QVariant(data));
     }
+    columnData.insert(mRoles.key("columns_data"), QVariant(dataAsList));
 
     ResultsTreeItem* result = new ResultsTreeItem(mFilteringAnalysis);
     result->setUid(rowId);

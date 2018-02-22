@@ -2,6 +2,8 @@
 #include "projectstreemodel.h"
 #include "Model/framework/request.h"
 #include "Model/framework/treeitem.h"
+#include "Model/project/project.h"
+#include "Model/analysis/filtering/filteringanalysis.h"
 
 
 
@@ -21,11 +23,11 @@ ProjectsTreeModel::ProjectsTreeModel(QObject* parent) : TreeModel(parent)
 
 
 
-void ProjectsTreeModel::refresh(QJsonObject json)
+void ProjectsTreeModel::refresh(QJsonArray json)
 {
     beginResetModel();
     clear();
-    setupModelData(json["data"].toArray(), mRootItem);
+    setupModelData(json, mRootItem);
     endResetModel();
 }
 
@@ -49,24 +51,21 @@ QHash<int, QByteArray> ProjectsTreeModel::roleNames() const
 
 
 
-TreeItem* ProjectsTreeModel::newProjectsTreeItem(bool isFolder, const QJsonObject& rowData, TreeItem* parent)
+TreeItem* ProjectsTreeModel::newFolderTreeItem(const QJsonObject& data, TreeItem* parent)
 {
-    int id = rowData["id"].toInt();
+    int id = data["id"].toInt();
+    Project* project = regovar->projectsManager()->getOrCreateProject(id);
+    project->fromJson(data);
 
     // add columns info to the item
     QHash<int, QVariant> columnData;
     columnData.insert(Id, id);
-    columnData.insert(Type, isFolder ? "folder" : rowData["type"].toVariant());
-    columnData.insert(Name, rowData["name"].toVariant());
-    columnData.insert(Comment, rowData["comment"].toVariant());
-    QDateTime date = QDateTime::fromString(rowData["update_date"].toString(), Qt::ISODate);
-    columnData.insert(Date, QVariant(date.toString("yyyy-MM-dd HH:mm")));
-    columnData.insert(Status, isFolder ? QVariant() : rowData["status"].toVariant());
-    QString search = rowData["name"].toString() + " " + rowData["comment"].toString() + " " + date.toString("yyyy-MM-dd HH:mm");
-    if (isFolder)
-    {
-        search += " " + rowData["status"].toString();
-    }
+    columnData.insert(Type, "folder");
+    columnData.insert(Name, project->name());
+    columnData.insert(Comment, project->comment());
+    columnData.insert(Date, QVariant(project->updateDate().toString("yyyy-MM-dd HH:mm")));
+    columnData.insert(Status, QVariant());
+    QString search = project->name() + " " + project->comment() + " " + project->updateDate().toString("yyyy-MM-dd HH:mm");
     columnData.insert(SearchField, QVariant(search));
 
     TreeItem* result = new TreeItem(parent);
@@ -75,6 +74,29 @@ TreeItem* ProjectsTreeModel::newProjectsTreeItem(bool isFolder, const QJsonObjec
 
     return result;
 }
+
+TreeItem* ProjectsTreeModel::newAnalysisTreeItem(const int id, TreeItem* parent)
+{
+    FilteringAnalysis* analysis = regovar->analysesManager()->getOrCreateFilteringAnalysis(id);
+
+    // add columns info to the item
+    QHash<int, QVariant> columnData;
+    columnData.insert(Id, id);
+    columnData.insert(Type, analysis->type());
+    columnData.insert(Name, analysis->name());
+    columnData.insert(Comment, analysis->comment());
+    columnData.insert(Date, QVariant(analysis->updateDate().toString("yyyy-MM-dd HH:mm")));
+    columnData.insert(Status, analysis->status());
+    QString search = analysis->name() + " " + analysis->comment() + " " + analysis->updateDate().toString("yyyy-MM-dd HH:mm") + " " + analysis->status();
+    columnData.insert(SearchField, QVariant(search));
+
+    TreeItem* result = new TreeItem(parent);
+    result->setParent(parent);
+    result->setData(columnData);
+
+    return result;
+}
+
 
 void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
 {
@@ -86,30 +108,21 @@ void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
         if (id == 0)  continue; // trash project not displayed in the browser
 
         // Create treeview item with column's data and parent item
-        TreeItem* item = newProjectsTreeItem(true, p, parent);
+        TreeItem* item = newFolderTreeItem(p, parent);
         parent->appendChild(item);
 
-
-
-        // If folder, need to retrieve subitems recursively
-        if (p["is_folder"].toBool())
+        // If project, need to build subtree for analyses and jobs
+        if (p.contains("analyses") && p["analyses"].toArray().count() > 0)
         {
-            setupModelData(p["children"].toArray(), item);
+            for (const QJsonValue& id: p["analyses"].toArray())
+            {
+                // Create treeview item with column's data and parent item
+                if (!id.isNull())
+                {
+                    TreeItem* subItem = newAnalysisTreeItem(id.toInt(), item);
+                    item->appendChild(subItem);
+                }
+            }
         }
-        // If project, need to build subtree for analyses and subjects
-        else if (p["analyses"].toArray().count() > 0)
-        {
-            setupModelAnalysisData(p["analyses"].toArray(), item);
-        }
-    }
-}
-
-void ProjectsTreeModel::setupModelAnalysisData(QJsonArray data, TreeItem* parent)
-{
-    for (const QJsonValue& json: data)
-    {
-        // Create treeview item with column's data and parent item
-        TreeItem* item = newProjectsTreeItem(false, json.toObject(), parent);
-        parent->appendChild(item);
     }
 }

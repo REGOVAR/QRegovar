@@ -247,7 +247,7 @@ GenericScreen
         target: regovar.subjectsManager
         onSubjectCreationDone:
         {
-            if (success)
+            if (success && visible)
             {
                 var subject = regovar.subjectsManager.getOrCreateSubject(subjectId);
                 subject.addSample(samplesSubjectsTable.model[samplesSubjectsTable.currentRow])

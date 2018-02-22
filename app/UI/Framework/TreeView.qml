@@ -18,6 +18,9 @@ TreeView
     signal headerResized(var headerPosition, var newSize)
     signal headerMoved(var oldPosition, var newPosition)
 
+    // cacheBuffer: 100
+    //maximumFlickVelocity: 1
+
     style: TreeViewStyle
     {
         frame: Rectangle
@@ -62,13 +65,13 @@ TreeView
             }
 
             // Manage user changing size of header
-            onWidthChanged:
-            {
-                if (visible && width >= 0)
-                {
-                    headerResized(styleData.column, width);
-                }
-            }
+//            onWidthChanged:
+//            {
+//                if (visible && width >= 0)
+//                {
+//                    headerResized(styleData.column, width);
+//                }
+//            }
 
             LinearGradient
             {
@@ -167,9 +170,11 @@ TreeView
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: styleData.textAlignment
             font.pixelSize: Regovar.theme.font.size.normal
-            text: (styleData.value !== undefined && styleData.value !== null) ? String(styleData.value) : "" // + " (" + styleData.row + "," + styleData.column + ")"
+            text: styleData.value ? styleData.value.toString() : ""
             elide: Text.ElideRight
-            clip: true
+            renderType: Text.NativeRendering
+            textFormat: Text.PlainText
+            wrapMode: Text.WrapAnywhere
         }
     }
 

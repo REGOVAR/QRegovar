@@ -31,10 +31,10 @@ public:
 
     // Methods
     QHash<int, QByteArray> roleNames() const override;
-    void refresh(QJsonObject json);
-    TreeItem* newProjectsTreeItem(bool isFolder, const QJsonObject& rowData, TreeItem* parent);
+    void refresh(QJsonArray json);
     void setupModelData(QJsonArray data, TreeItem *parent);
-    void setupModelAnalysisData(QJsonArray data, TreeItem *parent);
+    TreeItem* newFolderTreeItem(const QJsonObject& data, TreeItem* parent);
+    TreeItem* newAnalysisTreeItem(const int id, TreeItem* parent);
 
 Q_SIGNALS:
     void isLoadingChanged();

@@ -156,6 +156,7 @@ Item {
                 width: screensListView.width
                 height: screensListView.height
                 source: model.source
+                asynchronous: true
 
             }
         }

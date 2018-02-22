@@ -113,7 +113,7 @@ Item
                     width: parent.hasIcon ? (smallHeader ? Regovar.theme.font.boxSize.normal : Regovar.theme.font.boxSize.title) : 0
 
                     text: (parent.hasIcon) ? model.icon : ""
-                    color: parent.isSelected ? Regovar.theme.primaryColor.back.dark : Regovar.theme.primaryColor.back.light
+                    color: parent.isSelected ? Regovar.theme.primaryColor.back.dark : Regovar.theme.primaryColor.back.normal
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: smallHeader ? Regovar.theme.font.size.normal : Regovar.theme.font.size.title
@@ -129,7 +129,7 @@ Item
                     anchors.bottom: parent.bottom
 
                     text: (parent.hasLabel) ? model.title : ""
-                    color: parent.isSelected ? Regovar.theme.primaryColor.back.dark : Regovar.theme.primaryColor.back.light
+                    color: parent.isSelected ? Regovar.theme.primaryColor.back.dark : Regovar.theme.primaryColor.back.normal
                     verticalAlignment: Text.AlignVCenter
                     font.pixelSize: smallHeader ? Regovar.theme.font.size.normal : Regovar.theme.font.size.title
                 }

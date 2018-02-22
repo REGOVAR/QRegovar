@@ -2,7 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import org.regovar 1.0
+import Regovar.Core 1.0
 import QtQuick.Dialogs 1.2
 import "../../../Regovar"
 import "../../../Framework"
@@ -24,6 +24,11 @@ Rectangle
             root.model.statusChanged.connect(updateStatusFromModel);
         }
         updateViewFromModel();
+    }
+    Component.onDestruction:
+    {
+        root.model.dataChanged.disconnect(updateViewFromModel);
+        root.model.statusChanged.disconnect(updateStatusFromModel);
     }
 
 
@@ -351,7 +356,7 @@ Rectangle
                     {
                         iconTxt: "z"
                         text: ""
-                        onClicked: regovar.getSampleInfo(styleData.value.id)
+                        onClicked: regovar.getSampleInfo(root.model.refId, styleData.value.id)
                     }
 
                     Text
@@ -394,7 +399,7 @@ Rectangle
                         font.family: Regovar.theme.icons.name
                         color: Regovar.theme.frontColor.normal
                         verticalAlignment: Text.AlignVCenter
-                        text: styleData.value ? (styleData.value.sex == "male" ? "9" : styleData.value.sex == "female" ? "<" : "b") : ""
+                        text: styleData.value ? Regovar.sexToIcon(styleData.value.sex) : ""
                         visible: styleData.value
                     }
 
@@ -537,9 +542,7 @@ Rectangle
                         anchors.margins: 1
                         anchors.leftMargin: 10
                         clip: true
-
                         model: ListModel { id: statusLogs}
-                        property var logStatusIconMap: ({"waiting": "{", "computing": "/", "error": "l", "done": "n"})
 
                         delegate:Rectangle
                         {
@@ -560,7 +563,7 @@ Rectangle
                                     font.family: Regovar.theme.icons.name
                                     verticalAlignment: Text.AlignVCenter
                                     horizontalAlignment: Text.AlignHCenter
-                                    text: statusLogsList.logStatusIconMap[status]
+                                    text: Regovar.filteringAnalysisStatusToIcon(status)
                                     onTextChanged:
                                     {
                                         if (status == "computing")

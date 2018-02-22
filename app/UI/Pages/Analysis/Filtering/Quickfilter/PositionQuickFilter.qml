@@ -3,7 +3,7 @@ import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
-import org.regovar 1.0
+import Regovar.Core 1.0
 
 import "../../../../Regovar"
 import "../../../../Framework"
@@ -23,6 +23,10 @@ QuickFilterBox
             model.quickfilters.filterChanged.connect(updateViewFromModel);
             updateViewFromModel();
         }
+    }
+    Component.onDestruction:
+    {
+        model.quickfilters.filterChanged.disconnect(updateViewFromModel);
     }
 
     function updateViewFromModel()

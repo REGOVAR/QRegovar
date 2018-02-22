@@ -5,7 +5,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
-import org.regovar 1.0
+import Regovar.Core 1.0
 
 import "../../../Regovar"
 import "../../../Framework"
@@ -14,7 +14,7 @@ import "../../../Dialogs"
 
 
 import "Quickfilter"
-import org.regovar 1.0
+import Regovar.Core 1.0
 
 Rectangle
 {
@@ -24,15 +24,22 @@ Rectangle
     {
         if (model)
         {
-            model.loaded.connect(function() { updateViewFromModel(model); });
+            model.loaded.connect(updateViewFromModel);
             updateViewFromModel(model);
         }
     }
-
-    function updateViewFromModel(model)
+    Component.onDestruction:
     {
-        rootSplitView.visible = model ? model.loaded && model.status === "ready" : false;
-        lefPanel.tabSharedModel = model;
+        model.loaded.disconnect(updateViewFromModel);
+    }
+
+    function updateViewFromModel()
+    {
+        if (!rootSplitView.visible)
+        {
+            rootSplitView.visible = root.model ? root.model.loaded && root.model.status === "ready" : false;
+            lefPanel.tabSharedModel = root.model;
+        }
     }
 
 

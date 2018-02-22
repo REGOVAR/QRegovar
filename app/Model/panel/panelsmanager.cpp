@@ -86,10 +86,7 @@ void PanelsManager::refresh()
     {
         if (success)
         {
-            // Refreshing treeModel with provided json will Create/update internal collection of panel
-            mPanelsTree->refresh(json);
-            // Refresh public model used by QML
-            updatePanelsLists();
+            loadJson(json["data"].toArray());
         }
         else
         {
@@ -98,6 +95,13 @@ void PanelsManager::refresh()
         mPanelsTree->setIsLoading(false);
         request->deleteLater();
     });
+}
+bool PanelsManager::loadJson(QJsonArray data)
+{
+    // Refreshing treeModel with provided json will Create/update internal collection of panel
+    mPanelsTree->refresh(data);
+    // Refresh public model used by QML
+    updatePanelsLists();
 }
 
 

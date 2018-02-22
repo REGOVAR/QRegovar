@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.0
-import org.regovar 1.0
+import Regovar.Core 1.0
 
 import "MainMenu"
 import "Dialogs"
@@ -54,6 +54,11 @@ ApplicationWindow
         anchors.bottom: parent.bottom
         anchors.left: mainMenu.right
         anchors.right: parent.right
+
+        Keys.onPressed:
+        {
+            if (event.key == Qt.Key_F5) regovar.loadWelcomData();
+        }
     }
 
     CloseDialog

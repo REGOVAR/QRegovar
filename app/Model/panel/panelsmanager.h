@@ -29,6 +29,8 @@ public:
     //! refresh models with data from server
     Q_INVOKABLE void refresh();
 
+    bool loadJson(QJsonArray data);
+
 
 Q_SIGNALS:
     void panelsChanged();

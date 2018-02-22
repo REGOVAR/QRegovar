@@ -2,7 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
-import org.regovar 1.0
+import Regovar.Core 1.0
 
 import "../../../../Regovar"
 
@@ -33,6 +33,11 @@ Rectangle
             updateViewFromModel();
         }
     }
+    Component.onDestruction:
+    {
+        model.filterChanged.disconnect(updateViewFromModel);
+    }
+
     function updateViewFromModel()
     {
         if (model)

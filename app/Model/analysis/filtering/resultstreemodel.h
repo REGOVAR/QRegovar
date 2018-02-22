@@ -14,6 +14,7 @@ class ResultsTreeModel : public TreeModel
     Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
     Q_PROPERTY(int total READ total WRITE setTotal NOTIFY totalChanged)
     Q_PROPERTY(int loaded READ loaded WRITE setLoaded NOTIFY loadedChanged)
+    Q_PROPERTY(QString samplesNames READ samplesNames NOTIFY samplesNamesChanged)
 
 public:
     explicit ResultsTreeModel(FilteringAnalysis* parent=nullptr);
@@ -25,9 +26,10 @@ public:
     bool hasChildren(const QModelIndex &parent) const override;
 
     // Getters
-    inline bool isLoading() { return mIsLoading; }
-    inline int total() { return mTotal; }
-    inline int loaded() { return mLoaded; }
+    inline bool isLoading() const { return mIsLoading; }
+    inline int total() const { return mTotal; }
+    inline int loaded() const { return mLoaded; }
+    inline QString samplesNames() const { return mSamplesNames; }
 
     // Setters
     Q_INVOKABLE inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingChanged(); qDebug() << "ISLOADING" << isLoading;}
@@ -45,6 +47,8 @@ public:
     //! Load all results
     Q_INVOKABLE void loadAll();
 
+    // Q_INVOKABLE QVariantList getData(int index);
+
 
     void initAnalysisData(int analysisId);
     void setupModelData(QJsonArray data, TreeItem *parent);
@@ -55,6 +59,7 @@ Q_SIGNALS:
     void isLoadingChanged();
     void totalChanged();
     void loadedChanged();
+    void samplesNamesChanged();
 
 private:
     FilteringAnalysis* mFilteringAnalysis = nullptr;
@@ -64,6 +69,7 @@ private:
     int mLoaded = 0;
     int mPagination = 0;
     QHash<int, QByteArray> mRoles;
+    QString mSamplesNames;
 
     bool mAutoLoadingNext = false;
     int mPaginationMax = 0;

@@ -16,6 +16,8 @@ public:
     inline QList<QObject*> exporters() const { return mExporters; }
     inline QList<QObject*> reporters() const { return mReporters; }
 
+    bool loadJson(QJsonObject json);
+
 
 Q_SIGNALS:
     //! special signal used for QML property that never changed to avoid to declare to many useless signal

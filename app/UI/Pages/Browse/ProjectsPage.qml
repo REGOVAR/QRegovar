@@ -3,7 +3,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-//import org.regovar 1.0
+//import Regovar.Core 1.0
 
 import "../../Regovar"
 import "../../Framework"
@@ -48,6 +48,7 @@ Rectangle
             iconLeft: "z"
             placeholder: qsTr("Search analyses by names, dates, comments...")
             onTextEdited: regovar.projectsManager.proxy.setFilterString(text)
+            onTextChanged: regovar.projectsManager.proxy.setFilterString(text)
         }
     }
 

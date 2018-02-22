@@ -14,7 +14,6 @@ class ResultsTreeItem : public TreeItem
 public:
     // Constructors
     explicit ResultsTreeItem(FilteringAnalysis* analysis=nullptr, TreeItem* parent=nullptr);
-    explicit ResultsTreeItem(QString uid, QVariant text, FilteringAnalysis* analysis=nullptr, int childCount=0, TreeItem* parent=nullptr);
 
     // Getters
     inline QString uid() { return mUid; }

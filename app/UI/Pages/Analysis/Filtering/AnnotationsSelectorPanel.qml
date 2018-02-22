@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
-import org.regovar 1.0
+import Regovar.Core 1.0
 
 import "../../../Regovar"
 import "../../../Framework"
@@ -72,7 +72,8 @@ Rectangle
                     iconLeft: "z"
                     Layout.fillWidth: true
                     placeholder: qsTr("Search annotation...")
-                    onTextEdited: root.model.annotationsTree.proxy.setFilterString(text)
+                    onTextEdited: root.model.annotationsTree.proxy.setFilterString(text);
+                    onTextChanged: root.model.annotationsTree.proxy.setFilterString(text);
                 }
 
                 TreeView

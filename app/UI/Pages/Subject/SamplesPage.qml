@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
-import org.regovar 1.0
+import Regovar.Core 1.0
 import "../../Regovar"
 import "../../Framework"
 import "../../Dialogs"
@@ -60,6 +60,12 @@ Rectangle
             Layout.fillHeight: true
             model: root.model ? root.model.samples : []
             selectionMode: SelectionMode.ExtendedSelection
+
+            onDoubleClicked:
+            {
+                var sample = root.model.samples[tableView.currentRow];
+                regovar.getSampleInfo(sample.reference.id, sample.id);
+            }
 
 
             property var statusIcons: ["m", "/", "n", "h"]
@@ -224,7 +230,11 @@ Rectangle
             {
                 id: editButton
                 text: qsTr("Open sample")
-                onClicked: regovar.getSampleInfo(root.model.samples[tableView.currentRow].id)
+                onClicked:
+                {
+                    var sample = root.model.samples[tableView.currentRow];
+                    regovar.getSampleInfo(sample.reference.id, sample.id);
+                }
                 Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
             }
             Button

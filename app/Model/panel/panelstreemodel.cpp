@@ -25,11 +25,11 @@ PanelsTreeModel::PanelsTreeModel(QObject* parent) : TreeModel(parent)
 
 
 
-void PanelsTreeModel::refresh(QJsonObject json)
+void PanelsTreeModel::refresh(QJsonArray json)
 {
     beginResetModel();
     clear();
-    setupModelData(json["data"].toArray(), mRootItem);
+    setupModelData(json, mRootItem);
     endResetModel();
 }
 

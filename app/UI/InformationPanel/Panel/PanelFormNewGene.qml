@@ -31,6 +31,7 @@ Rectangle
     }
 
     Component.onCompleted: regovar.panelsManager.searchPanelEntryDone.connect(onSearchPanelEntryDone);
+    Component.onDestruction: regovar.panelsManager.searchPanelEntryDone.disconnect(onSearchPanelEntryDone);
 
 
     GridLayout

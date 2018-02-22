@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
-import org.regovar 1.0
+import Regovar.Core 1.0
 
 import "../../Regovar"
 
@@ -15,6 +15,13 @@ Rectangle
     {
         file.localFileReadyChanged.connect(waitingDoneHandler);
         msg.text = qsTr("The document {0} is uploading...").replace("{0}", file.name);
+    }
+    Component.onDestruction:
+    {
+        if (file)
+        {
+            file.localFileReadyChanged.disconnect(waitingDoneHandler);
+        }
     }
 
 
