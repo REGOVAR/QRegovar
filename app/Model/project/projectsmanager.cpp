@@ -59,7 +59,7 @@ bool ProjectsManager::loadJson(QJsonArray json, QString prefix)
         else
         {
             p.insert("fullpath", prefix + name);
-            Project* proj =getOrCreateProject(id);
+            Project* proj = getOrCreateProject(id);
             proj->fromJson(p);
             mProjectsFlatList << proj;
         }
@@ -80,7 +80,7 @@ Project* ProjectsManager::getOrCreateProject(int id)
         return mProjects[id];
     }
     // else
-    Project* newProject = new Project(id);
+    Project* newProject = new Project(id, this);
     mProjects.insert(id, newProject);
     return newProject;
 }

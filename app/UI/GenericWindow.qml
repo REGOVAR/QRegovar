@@ -54,6 +54,11 @@ ApplicationWindow
         anchors.bottom: parent.bottom
         anchors.left: mainMenu.right
         anchors.right: parent.right
+
+        Keys.onPressed:
+        {
+            if (event.key == Qt.Key_F5) regovar.loadWelcomData();
+        }
     }
 
     CloseDialog
