@@ -25,7 +25,7 @@ SamplesManager::SamplesManager(int refId, QObject* parent) : QAbstractListModel(
 Sample* SamplesManager::getOrCreate(int refId, int sampleId, bool internalRefresh)
 {
     // convert sample id with ref id to get sample's internal unique id
-    u_int32_t id = refId * 100000000 + sampleId;
+    int32_t id = refId * 100000000 + sampleId;
 
     if (mSamples.contains(id))
     {
