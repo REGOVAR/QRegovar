@@ -45,7 +45,7 @@ TreeView
     onSortIndicatorColumnChanged: analysis.setFilterOrder(sortIndicatorColumn, sortIndicatorOrder)
     onSortIndicatorOrderChanged: analysis.setFilterOrder(sortIndicatorColumn, sortIndicatorOrder)
     onHeaderMoved: analysis.saveHeaderPosition(oldPosition, newPosition)
-    onHeaderResized: analysis.saveHeaderWidth(headerPosition, newSize)
+    //onHeaderResized: analysis.saveHeaderWidth(headerPosition, newSize)
 
 
 
@@ -82,7 +82,7 @@ TreeView
                     anchors.fill: parent
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: styleData.textAlignment
-                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.pixelSize: Regovar.theme.font.size.header
                     text: styleData.value ? styleData.value.toString() : ""
                     elide: Text.ElideRight
                     renderType: Text.NativeRendering
@@ -114,6 +114,7 @@ TreeView
                     elide: Text.ElideRight
                     renderType: Text.NativeRendering
                     textFormat: Text.PlainText
+
                 }
             }
         }
@@ -156,32 +157,24 @@ TreeView
         id: columnComponent_Samples
         TableViewColumn
         {
-            role: "samplesNames"
             title: qsTr("Samples")
             width: 70
 
             delegate: Item
             {
-                ColumnLayout
+                Text
                 {
-                    anchors.fill: parent
                     anchors.leftMargin: 5
-                    spacing: 1
-                    Repeater
-                    {
-                        model: analysis.samples
-                        Text
-                        {
-                            height: 12
-                            verticalAlignment: Text.AlignVCenter
-                            text : modelData.name
-                            font.pixelSize: 10
-                            color: Regovar.theme.frontColor.disable
-                            elide: Text.ElideRight
-                            renderType: Text.NativeRendering
-                            textFormat: Text.PlainText
-                        }
-                    }
+                    anchors.rightMargin: 5
+                    anchors.fill: parent
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: styleData.textAlignment
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    elide: Text.ElideRight
+                    renderType: Text.NativeRendering
+                    textFormat: Text.PlainText
+                    color: Regovar.theme.frontColor.disable
+                    text : analysis.results.samplesNames
                 }
             }
         }
@@ -217,7 +210,7 @@ TreeView
             return;
         }
 
-        resultsTree.rowHeight = (resultsTree.analysis.samplesByRow === 1) ? 25 : resultsTree.analysis.samplesByRow * 18;
+        resultsTree.rowHeight = (resultsTree.analysis.samplesByRow === 1) ? Regovar.theme.font.boxSize.normal : resultsTree.analysis.samplesByRow * Regovar.theme.font.boxSize.normal;
 
         // Remove old columns
         var position, col;

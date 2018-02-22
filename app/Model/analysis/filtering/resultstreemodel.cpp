@@ -161,9 +161,18 @@ void ResultsTreeModel::applyFilter(QJsonArray filter)
     {
         if (success)
         {
+            // Update samples names
+            mSamplesNames = "";
+            for (Sample* sample: mFilteringAnalysis->samples())
+            {
+                mSamplesNames += sample->name() + "\n";
+            }
+            mSamplesNames = mSamplesNames.left(mSamplesNames.count() - 1);
+            emit samplesNamesChanged();
+
+            // Update treeview model
             beginResetModel();
             clear();
-
             QJsonObject data = json["data"].toObject();
             setLoaded(0);
             setTotal(data["wt_total_variants"].toInt()); // , data["wt_total_results"].toInt()

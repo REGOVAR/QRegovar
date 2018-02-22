@@ -229,11 +229,13 @@ void FilesManager::clearCache()
     QDir dir(mCacheDir);
 
     dir.setFilter(QDir::NoDotAndDotDot | QDir::Files);
-    foreach( QString dirItem, dir.entryList() )
+    for(const QString dirItem: dir.entryList())
+    {
         dir.remove( dirItem );
+    }
 
     dir.setFilter(QDir::NoDotAndDotDot | QDir::Dirs);
-    foreach( QString dirItem, dir.entryList() )
+    for(const QString dirItem: dir.entryList())
     {
         QDir subDir(dir.absoluteFilePath(dirItem));
         subDir.removeRecursively();
