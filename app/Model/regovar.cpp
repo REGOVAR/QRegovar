@@ -213,7 +213,6 @@ void Regovar::loadWelcomData()
             for (const QJsonValue& val: data["last_analyses"].toArray())
             {
                 FilteringAnalysis* fa = mAnalysesManager->getOrCreateFilteringAnalysis(val.toInt());
-                //Analysis* test = new Analysis();
                 mLastAnalyses.append(fa);
             }
             // Last subjects
@@ -233,7 +232,6 @@ void Regovar::loadWelcomData()
         //                //mLastSubjects.append(item);
         //            }
             emit lastDataChanged();
-            emit referencesChanged();
             emit referencesChanged();
             emit configChanged();
 
