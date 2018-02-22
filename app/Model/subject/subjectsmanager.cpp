@@ -52,7 +52,7 @@ Subject* SubjectsManager::getOrCreateSubject(int id)
     }
     // else
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    Subject* newSubject = new Subject(id);
+    Subject* newSubject = new Subject(id, this);
     mSubjects.insert(id, newSubject);
     endInsertRows();
     return newSubject;
@@ -120,25 +120,33 @@ QVariant SubjectsManager::data(const QModelIndex& index, int role) const
     if (index.row() < 0 || index.row() >= mSubjects.count())
         return QVariant();
 
-    const Subject* subject = mSubjects.values().at(index.row());
-    if (role == Identifier || role == Qt::DisplayRole)
-        return subject->identifier();
-    else if (role == Id)
-        return subject->id();
-    else if (role == Firstname)
-        return subject->firstname();
-    else if (role == Lastname)
-        return subject->lastname();
-    else if (role == Comment)
-        return subject->comment();
-    else if (role == Sex)
-        return subject->sex() == Subject::Sex::Male ? tr("Male") : Subject::Sex::Female ? tr("Female") : tr("Unknow");
-    else if (role == DateOfBirth)
-        return subject->dateOfBirth().toString("yyyy-MM-dd");
-    else if (role == FamilyNumber)
-        return subject->familyNumber();
-    else if (role == SearchField)
-        return subject->searchField();
+    Subject* subject = mSubjects.values().at(index.row());
+    if (subject->loaded())
+    {
+        if (role == Identifier || role == Qt::DisplayRole)
+            return subject->identifier();
+        else if (role == Id)
+            return subject->id();
+        else if (role == Firstname)
+            return subject->firstname();
+        else if (role == Lastname)
+            return subject->lastname();
+        else if (role == Comment)
+            return subject->comment();
+        else if (role == Sex)
+            return subject->sex() == Subject::Sex::Male ? tr("Male") : Subject::Sex::Female ? tr("Female") : tr("Unknow");
+        else if (role == DateOfBirth)
+            return subject->dateOfBirth().toString("yyyy-MM-dd");
+        else if (role == FamilyNumber)
+            return subject->familyNumber();
+        else if (role == SearchField)
+            return subject->searchField();
+    }
+    else
+    {
+        subject->load();
+        return QVariant(tr("Data not loaded. Please refresh"));
+    }
     return QVariant();
 }
 

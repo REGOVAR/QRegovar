@@ -200,7 +200,7 @@ ScrollView
                     refid: model.modelData.reference_id
                     subject: model.modelData.subject_id > 0 ? regovar.subjectsManager.getOrCreateSubject(model.modelData.subject_id).subjectUI : null
 
-                    onClicked: regovar.getSampleInfo(model.modelData.id)
+                    onClicked: regovar.getSampleInfo(model.modelData.reference_id, model.modelData.id)
                 }
             }
         }

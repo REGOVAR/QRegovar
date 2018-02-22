@@ -160,7 +160,7 @@ public:
     Q_INVOKABLE void getPanelInfo(QString panelId);
     Q_INVOKABLE void getPhenotypeInfo(QString phenotypeId);
     Q_INVOKABLE void getPipelineInfo(int pipelineId);
-    Q_INVOKABLE void getSampleInfo(int sampleId);
+    Q_INVOKABLE void getSampleInfo(int refId, int sampleId);
     Q_INVOKABLE void getUserInfo(int userId);
     Q_INVOKABLE void getVariantInfo(int refId, QString variantId, int analysisId=-1);
     Q_INVOKABLE void search(QString query);

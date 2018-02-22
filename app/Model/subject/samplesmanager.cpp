@@ -22,10 +22,10 @@ SamplesManager::SamplesManager(int refId, QObject* parent) : QAbstractListModel(
 }
 
 
-Sample* SamplesManager::getOrCreate(int sampleId, bool internalRefresh)
+Sample* SamplesManager::getOrCreate(int refId, int sampleId, bool internalRefresh)
 {
     // convert sample id with ref id to get sample's internal unique id
-    int id = mRefId * 100000000 + sampleId;
+    u_int32_t id = refId * 100000000 + sampleId;
 
     if (mSamples.contains(id))
     {
@@ -35,7 +35,7 @@ Sample* SamplesManager::getOrCreate(int sampleId, bool internalRefresh)
     if (!internalRefresh) beginInsertRows(QModelIndex(), rowCount(), rowCount());
     Sample* newSample = new Sample(sampleId, this);
     mSamples.insert(id, newSample);
-    mSamplesList.append(newSample);
+    if (!mSamplesList.contains(newSample)) mSamplesList.append(newSample);
     if (!internalRefresh)
     {
         endInsertRows();
@@ -74,14 +74,12 @@ bool SamplesManager::loadJson(QJsonArray json)
 {
     beginResetModel();
     mSamplesList.clear();
-    for (const QJsonValue& sbjData: json)
+    for (const QJsonValue& sampleJson: json)
     {
-        QJsonObject subject = sbjData.toObject();
-        // TODO subject info
-        for (const QJsonValue& splData: subject["samples"].toArray())
+        QJsonObject sampleData = sampleJson.toObject();
+        if (sampleData.contains("reference_id"))
         {
-            QJsonObject sampleData = splData.toObject();
-            Sample* sample = getOrCreate(sampleData["id"].toInt(), true);
+            Sample* sample = getOrCreate(sampleData["reference_id"].toInt(), sampleData["id"].toInt(), true);
             sample->fromJson(sampleData);
             if (!mSamplesList.contains(sample)) mSamplesList.append(sample);
         }
@@ -114,8 +112,9 @@ void SamplesManager::processPushNotification(QString action, QJsonObject data)
     {
         QJsonObject obj = json.toObject();
         int sid = obj["id"].toInt();
+        int refId = obj["reference_id"].toInt();
 
-        Sample* sample = getOrCreate(sid);
+        Sample* sample = getOrCreate(refId, sid);
         sample->setStatus(status);
         sample->setLoadingProgress(progressValue);
         sample->refreshUIAttributes();

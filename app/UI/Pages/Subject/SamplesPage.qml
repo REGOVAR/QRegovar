@@ -61,6 +61,12 @@ Rectangle
             model: root.model ? root.model.samples : []
             selectionMode: SelectionMode.ExtendedSelection
 
+            onDoubleClicked:
+            {
+                var sample = root.model.samples[tableView.currentRow];
+                regovar.getSampleInfo(sample.reference.id, sample.id);
+            }
+
 
             property var statusIcons: ["m", "/", "n", "h"]
 
@@ -224,7 +230,11 @@ Rectangle
             {
                 id: editButton
                 text: qsTr("Open sample")
-                onClicked: regovar.getSampleInfo(root.model.samples[tableView.currentRow].id)
+                onClicked:
+                {
+                    var sample = root.model.samples[tableView.currentRow];
+                    regovar.getSampleInfo(sample.reference.id, sample.id);
+                }
                 Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
             }
             Button

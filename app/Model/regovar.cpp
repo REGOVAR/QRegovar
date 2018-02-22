@@ -359,10 +359,10 @@ void Regovar::getPanelInfo(QString panelId)
 }
 
 
-void Regovar::getSampleInfo(int sampleId)
+void Regovar::getSampleInfo(int refId, int sampleId)
 {
     emit sampleInformationSearching();
-    Sample* sample= mSamplesManager->getOrCreate(sampleId);
+    Sample* sample = mSamplesManager->getOrCreate(refId, sampleId);
     sample->load(false);
     emit sampleInformationReady(sample);
 }

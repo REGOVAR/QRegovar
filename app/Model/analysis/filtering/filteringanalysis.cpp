@@ -83,7 +83,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     for (const QJsonValue& spJson: json["samples"].toArray())
     {
         QJsonObject sampleData = spJson.toObject();
-        Sample* sample = regovar->samplesManager()->getOrCreate(sampleData["id"].toInt());
+        Sample* sample = regovar->samplesManager()->getOrCreate(mRefId, sampleData["id"].toInt());
         if(sample->fromJson(sampleData))
         {
             mSamples.append(sample);
@@ -98,9 +98,9 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     {
         QJsonObject trio = settings["trio"].toObject();
         mIsTrio = true;
-        mTrioChild = regovar->samplesManager()->getOrCreate(trio["child_id"].toInt());
-        mTrioMother = regovar->samplesManager()->getOrCreate(trio["mother_id"].toInt());
-        mTrioFather = regovar->samplesManager()->getOrCreate(trio["father_id"].toInt());
+        mTrioChild = regovar->samplesManager()->getOrCreate(mRefId, trio["child_id"].toInt());
+        mTrioMother = regovar->samplesManager()->getOrCreate(mRefId, trio["mother_id"].toInt());
+        mTrioFather = regovar->samplesManager()->getOrCreate(mRefId, trio["father_id"].toInt());
         mTrioChild->setIsIndex(trio["child_index"].toBool());
         mTrioMother->setIsIndex(trio["mother_index"].toBool());
         mTrioFather->setIsIndex(trio["father_index"].toBool());
@@ -783,7 +783,7 @@ void FilteringAnalysis::addSamplesFromFile(int fileId)
             for (const QJsonValue& sampleValue: json["data"].toArray())
             {
                 QJsonObject sampleData = sampleValue.toObject();
-                Sample* sample = regovar->samplesManager()->getOrCreate(sampleData["id"].toInt());
+                Sample* sample = regovar->samplesManager()->getOrCreate(mRefId, sampleData["id"].toInt());
                 if (sample->fromJson(sampleData))
                 {
                     if (!mSamplesIds.contains(sample->id()))

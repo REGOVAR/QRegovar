@@ -356,7 +356,7 @@ Rectangle
                     {
                         iconTxt: "z"
                         text: ""
-                        onClicked: regovar.getSampleInfo(styleData.value.id)
+                        onClicked: regovar.getSampleInfo(root.model.refId, styleData.value.id)
                     }
 
                     Text
