@@ -936,6 +936,10 @@ void FilteringAnalysis::processPushNotification(QString action, QJsonObject data
         mStatus = data["status"].toString();
         mComputingProgress = data;
         emit statusChanged();
+        if (mStatus == "ready")
+        {
+            load(true);
+        }
     }
     else if (action == "wt_update")
     {

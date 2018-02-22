@@ -35,8 +35,11 @@ Rectangle
 
     function updateViewFromModel()
     {
-        rootSplitView.visible = root.model ? root.model.loaded && root.model.status === "ready" : false;
-        lefPanel.tabSharedModel = root.model;
+        if (!rootSplitView.visible)
+        {
+            rootSplitView.visible = root.model ? root.model.loaded && root.model.status === "ready" : false;
+            lefPanel.tabSharedModel = root.model;
+        }
     }
 
 
