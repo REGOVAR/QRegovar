@@ -48,6 +48,7 @@ Rectangle
             iconLeft: "z"
             placeholder: qsTr("Search analyses by names, dates, comments...")
             onTextEdited: regovar.projectsManager.proxy.setFilterString(text)
+            onTextChanged: regovar.projectsManager.proxy.setFilterString(text)
         }
     }
 

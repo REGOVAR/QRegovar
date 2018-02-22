@@ -64,7 +64,7 @@ Rectangle
             placeholder: qsTr("Search subjects, samples, analyses, panels...")
             onEditingFinished:
             {
-                if (formerSearch != text)
+                if (formerSearch != text && text != "")
                 {
                     regovar.search(text);
                     formerSearch = text;

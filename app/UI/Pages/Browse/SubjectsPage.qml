@@ -49,6 +49,7 @@ Rectangle
             iconLeft: "z"
             placeholder: qsTr("Search subjects or samples by names, comments...")
             onTextEdited: regovar.subjectsManager.proxy.setFilterString(text)
+            onTextChanged: regovar.subjectsManager.proxy.setFilterString(text)
         }
     }
 

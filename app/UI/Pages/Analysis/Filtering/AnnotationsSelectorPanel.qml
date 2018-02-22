@@ -72,7 +72,8 @@ Rectangle
                     iconLeft: "z"
                     Layout.fillWidth: true
                     placeholder: qsTr("Search annotation...")
-                    onTextEdited: root.model.annotationsTree.proxy.setFilterString(text)
+                    onTextEdited: root.model.annotationsTree.proxy.setFilterString(text);
+                    onTextChanged: root.model.annotationsTree.proxy.setFilterString(text);
                 }
 
                 TreeView
