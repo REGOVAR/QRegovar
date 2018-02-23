@@ -57,7 +57,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(NewAdvancedFilterModel* newConditionModel READ newConditionModel NOTIFY newConditionModelChanged)
     Q_PROPERTY(QList<QObject*> samplesInputsFilesList READ samplesInputsFilesList NOTIFY samplesInputsFilesListChanged)
     // "Shortcuts properties" for QML
-    // Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
+    Q_PROPERTY(bool loading READ loading WRITE setLoading NOTIFY loadingChanged)
 
     Q_PROPERTY(QStringList selectedAnnotationsDB READ selectedAnnotationsDB NOTIFY dataChanged)
     Q_PROPERTY(QStringList panelsUsed READ panelsUsed NOTIFY panelsUsedChanged)
@@ -114,7 +114,7 @@ public:
     inline int samplesByRow() const { return mSamplesByRow; }
     QStringList selectedAnnotationsDB();
     inline QStringList panelsUsed() const { return mPanelsUsed; }
-    inline bool isLoading() const { return mIsLoading; }
+    inline bool loading() const { return mLoading; }
     inline QString currentFilterName() const { return mCurrentFilterName; }
     QList<QObject*> sets() const { return mSets; } // concat filters, samples, samples attributes and panel in one list
 
@@ -125,7 +125,7 @@ public:
     inline void setTrioChild(Sample* child) { mTrioChild=child; emit trioChildChanged(); }
     inline void setTrioMother(Sample* mother) { mTrioMother=mother; emit trioMotherChanged(); }
     inline void setTrioFather(Sample* father) { mTrioFather=father; emit trioFatherChanged(); }
-    inline void setIsLoading(bool flag) { mIsLoading=flag; emit isLoadingChanged(); }
+    inline void setLoading(bool flag) { mLoading=flag; emit loadingChanged(); }
     inline void setCurrentFilterName(QString name) { mCurrentFilterName=name; emit currentFilterNameChanged(); }
     void setReference(Reference* ref, bool continueInit=false);
     void setProject(Project* project) { mProject = project; emit dataChanged(); }
@@ -173,7 +173,6 @@ Q_SIGNALS:
     void dataChanged();
 
     void statusChanged();
-    void isLoading();
     void loadingStatusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
     void annotationsChanged();
     void displayedAnnotationsChanged();
@@ -189,7 +188,7 @@ Q_SIGNALS:
     void trioChildChanged();
     void trioMotherChanged();
     void trioFatherChanged();
-    void isLoadingChanged();
+    void loadingChanged();
     void newConditionModelChanged();
     void samplesInputsFilesListChanged();
     void filtersChanged();
@@ -254,7 +253,7 @@ private:
     Sample* mTrioMother = nullptr;
     Sample* mTrioFather = nullptr;
     QList<int> mSamplesIds; // = mSamples, but use as shortcuts to check quickly by sample id
-    bool mIsLoading = false;
+    bool mLoading = false;
     QString mCurrentFilterName;
     QList<QObject*> mSets;
 

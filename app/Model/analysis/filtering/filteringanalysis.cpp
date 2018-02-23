@@ -23,7 +23,7 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 
 
     // Init model
-    setIsLoading(true);
+    setLoading(true);
 }
 
 
@@ -533,7 +533,7 @@ void FilteringAnalysis::initResults()
     mResults->initAnalysisData(mId);
     mResults->applyFilter(mAdvancedFilter->toJson());
     raiseNewInternalLoadingStatus(Ready);
-    setIsLoading(false);
+    setLoading(false);
 }
 
 void FilteringAnalysis::raiseNewInternalLoadingStatus(LoadingStatus newStatus)

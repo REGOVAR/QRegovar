@@ -17,18 +17,9 @@ Rectangle
     {
         if (model)
         {
-            model.newConditionModel.type = AdvancedFilterModel.SetBlock;
-            var opModel = [];
-            for (var i=0; i<model.newConditionModel.opList.length; i++)
-            {
-                var rego = model.newConditionModel.opList[i];
-                var frnd = model.newConditionModel.opRegovarToFriend(rego);
-                opModel = opModel.concat(frnd + " (" + (rego == "IN" ? qsTr("in the set") : qsTr("not in the set")) + ")");
-            }
-            operatorSelector.model = opModel;
-            setSelector.model = model.sets;
-
+            model.loadingChanged.connect(updateViewFromModel);
             model.newConditionModel.resetWizard.connect(resetView);
+            updateViewFromModel();
         }
     }
     Component.onDestruction:
@@ -41,6 +32,20 @@ Rectangle
         {
             updateModelFromView();
         }
+    }
+
+    function updateViewFromModel()
+    {
+        model.newConditionModel.type = AdvancedFilterModel.SetBlock;
+        var opModel = [];
+        for (var i=0; i<model.newConditionModel.opList.length; i++)
+        {
+            var rego = model.newConditionModel.opList[i];
+            var frnd = model.newConditionModel.opRegovarToFriend(rego);
+            opModel = opModel.concat(frnd + " (" + (rego == "IN" ? qsTr("in the set") : qsTr("not in the set")) + ")");
+        }
+        operatorSelector.model = opModel;
+        setSelector.model = model.sets;
     }
 
     function resetView()

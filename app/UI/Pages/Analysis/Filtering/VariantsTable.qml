@@ -55,7 +55,7 @@ TreeView
         anchors.topMargin: Regovar.theme.font.boxSize.normal // = Header height (see UI/Framework/TreeView.qml)
 
         acceptedButtons: Qt.RightButton
-        onClicked: resultsTree.openVariantInfoDialog(mouse.x, mouse.y + Regovar.theme.font.boxSize.normal) // compense header's margin
+        onClicked:resultsTree.openVariantInfoDialog(mouse.x, mouse.y + Regovar.theme.font.boxSize.normal) // compense header's margin
     }
 
 
@@ -88,6 +88,7 @@ TreeView
                     renderType: Text.NativeRendering
                     textFormat: Text.PlainText
                     font.family: Regovar.theme.icons.name
+                    color: Regovar.theme.primaryColor.back.normal
                 }
             }
         }
@@ -130,24 +131,22 @@ TreeView
             title: ""
             width: 60
 
-
-//            delegate: Item
-//            {
-//                //anchors.margins: 0
-//                CheckBox
-//                {
-//                    anchors.left: parent.left
-//                    anchors.leftMargin: 5
-//                    anchors.verticalCenter: parent.verticalCenter
-//                    checked: Boolean(styleData.value)
-//                    text: "" // resultsTree.model.data(styleData.index, Qt.UserRole +1)
-//                    onClicked:
-//                    {
-//                        var id = resultsTree.model.data(styleData.index, Qt.UserRole +1);
-//                        resultsTree.checked(id, checked);
-//                    }
-//                }
-//            }
+            delegate: Item
+            {
+                CheckBox
+                {
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
+                    anchors.verticalCenter: parent.verticalCenter
+                    checked: Boolean(styleData.value)
+                    text: "" // resultsTree.model.data(styleData.index, Qt.UserRole +1)
+                    onClicked:
+                    {
+                        var id = resultsTree.model.data(styleData.index, Qt.UserRole +1);
+                        resultsTree.checked(id, checked);
+                    }
+                }
+            }
         }
     }
 
@@ -179,6 +178,7 @@ TreeView
             }
         }
     }
+
 
 
 

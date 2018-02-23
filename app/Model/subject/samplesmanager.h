@@ -65,7 +65,7 @@ private:
     //! List of samples
     QList<Sample*> mSamplesList;
     //! Internal collection of all loaded samples
-    QHash<u_int32_t, Sample*> mSamples;
+    QHash<int32_t, Sample*> mSamples;
     //! The QSortFilterProxyModel to use by table view to browse samples of the manager
     GenericProxyModel* mProxy = nullptr;
 

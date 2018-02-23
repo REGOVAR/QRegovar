@@ -36,37 +36,47 @@ Rectangle
             }
         }
 
-    }
-
-    Rectangle
-    {
-        id: indicatorArea
-        anchors.right: root.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        width: Regovar.theme.font.boxSize.normal
-
-        color: "transparent" // Regovar.theme.boxColor.back
-//        border.width: 1
-//        border.color: textField.focus ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.boxColor.border
-
-//        Text
-//        {
-//            anchors.centerIn: parent
-//            text: popup.visible ? "|" : "["
-//            font.family: Regovar.theme.icons.name
-//            color: textField.focus ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.boxColor.front
-//        }
-
-        MouseArea
+        Keys.onPressed:
         {
-            anchors.fill: parent
-            hoverEnabled: true
-            onEntered: textField.iconRightColor = Regovar.theme.secondaryColor.back.normal
-            onExited: textField.iconRightColor = Regovar.theme.boxColor.front
-            onClicked: if (popup.visible) { popup.close();} else { popup.open();}
+            if (event.key == Qt.Key_Down)
+            {
+                proposalsList.forceActiveFocus();
+                proposalsList.currentIndex = 0;
+                proposalsList.focus = true;
+            }
         }
+
     }
+
+//    Rectangle
+//    {
+//        id: indicatorArea
+//        anchors.right: root.right
+//        anchors.top: parent.top
+//        anchors.bottom: parent.bottom
+//        width: Regovar.theme.font.boxSize.normal
+
+//        color: "transparent" // Regovar.theme.boxColor.back
+////        border.width: 1
+////        border.color: textField.focus ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.boxColor.border
+
+////        Text
+////        {
+////            anchors.centerIn: parent
+////            text: popup.visible ? "|" : "["
+////            font.family: Regovar.theme.icons.name
+////            color: textField.focus ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.boxColor.front
+////        }
+
+//        MouseArea
+//        {
+//            anchors.fill: parent
+//            hoverEnabled: true
+//            onEntered: textField.iconRightColor = Regovar.theme.secondaryColor.back.normal
+//            onExited: textField.iconRightColor = Regovar.theme.boxColor.front
+//            onClicked: if (popup.visible) { popup.close();} else { popup.open();}
+//        }
+//    }
 
     Popup
     {
@@ -78,7 +88,6 @@ Rectangle
         height: proposalsList.height+2
         width: proposalsList.width+2
         modal: false
-        focus: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
 
@@ -93,12 +102,16 @@ Rectangle
             height: maxPopupHeight
             width: root.width
             clip: true
-            focus: true
+            smooth: false
 
             property int desiredSize: 300
             //onDesiredSizeChanged:  width = Math.max(root.width-2, desiredSize)
 
-            highlight: Rectangle { color: Regovar.theme.secondaryColor.back.light; }
+            highlight: Rectangle
+            {
+                color: Regovar.theme.secondaryColor.back.light;
+                y: list.currentItem.y
+            }
 
             delegate: Item
             {
@@ -106,7 +119,6 @@ Rectangle
                 visible: model.modelData.visible
                 height: (visible) ? Regovar.theme.font.boxSize.normal : 0
                 width: proposalsList.width
-                clip: true
                 //color: model.modelData.trueIndex % 2 == 0 ? Regovar.theme.backgroundColor.main : Regovar.theme.boxColor.back
 
 
@@ -186,7 +198,7 @@ Rectangle
                     "trueIndex" : idx,
                     "text" : model[idx].name,
                     "context": model[idx].dbName + " " + model[idx].version,
-                    "searchString" : cleanWord(model[idx].dbName + "." +  model[idx].name)
+                    "searchString" : cleanWord(model[idx].dbName + "." +  model[idx].name+ " " + model[idx].description)
                 });
                 lst = lst.concat(elmt);
             }
@@ -213,6 +225,7 @@ Rectangle
             }
         }
         popup.visible = true;
+        textField.forceActiveFocus();
     }
 
     function itemFromText(text)

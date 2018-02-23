@@ -17,6 +17,10 @@ Dialog
     width: 600
     height: 500
     property FilteringAnalysis model
+    onModelChanged:
+    {
+        tabView.tabSharedModel = model;
+    }
 
     signal addNewCondition(var conditionJson)
 
@@ -57,8 +61,6 @@ Dialog
             anchors.right: parent.right
             anchors.bottom: footer.top
             anchors.margins: 10
-
-            tabSharedModel: root.model
 
             tabsModel: ListModel
             {
