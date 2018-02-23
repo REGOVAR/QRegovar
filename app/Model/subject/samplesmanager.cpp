@@ -52,7 +52,7 @@ void SamplesManager::setReferenceId(int refId)
     if (refId == mRefId) return;
     mRefId = refId;
 
-    Request* req = Request::get(QString("/sample/ref/%1").arg(refId));
+    Request* req = Request::get(QString("/samples/ref/%1").arg(refId));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)
