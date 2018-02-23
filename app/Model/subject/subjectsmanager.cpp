@@ -144,7 +144,7 @@ QVariant SubjectsManager::data(const QModelIndex& index, int role) const
     }
     else
     {
-        subject->load();
+        //subject->load();
         return QVariant(tr("Data not loaded. Please refresh"));
     }
     return QVariant();
