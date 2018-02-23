@@ -16,13 +16,15 @@ Rectangle
     {
         if (model)
         {
-            fieldSelector.model = model.annotationsFlatList;
+            model.loadingChanged.connect(updateViewFromModel);
             model.newConditionModel.resetWizard.connect(resetView);
+            updateViewFromModel();
         }
     }
     Component.onDestruction:
     {
         model.newConditionModel.resetWizard.disconnect(resetView);
+        model.loading.resetWizard.disconnect(updateViewFromModel);
     }
     onZChanged:
     {
@@ -30,6 +32,11 @@ Rectangle
         {
             updateModelFromView();
         }
+    }
+
+    function updateViewFromModel()
+    {
+        fieldSelector.model = root.model.annotationsFlatList;
     }
 
     function resetView()

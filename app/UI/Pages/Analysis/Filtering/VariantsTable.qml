@@ -131,24 +131,8 @@ TreeView
             title: ""
             width: 60
 
-
             delegate: Item
             {
-//                Text
-//                {
-//                    anchors.leftMargin: 5
-//                    anchors.rightMargin: 5
-//                    anchors.fill: parent
-//                    verticalAlignment: Text.AlignVCenter
-//                    horizontalAlignment: styleData.textAlignment
-//                    font.pixelSize: Regovar.theme.font.size.header
-//                    text: styleData.value ? "p" : "r"
-//                    color: styleData.value ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
-//                    renderType: Text.NativeRendering
-//                    textFormat: Text.PlainText
-//                    font.family: Regovar.theme.icons.name
-//                }
-                //anchors.margins: 0
                 CheckBox
                 {
                     anchors.left: parent.left
