@@ -10,4 +10,6 @@ Phenotype::Phenotype(QObject *parent) : QObject(parent)
  {
      mId = json["id"].toString();
      mLabel = json["label"].toString();
+
+
  }

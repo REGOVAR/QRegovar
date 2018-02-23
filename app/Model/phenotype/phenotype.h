@@ -17,10 +17,10 @@ public:
     explicit Phenotype(QObject *parent = nullptr);
 
     // Getters
-    QString id() const { return mId; }
-    QString label() const { return mLabel; }
-    QStringList genes() const { return mGenes; }
-    QList<Phenotype*> relatedPhenotypes() const { return mRelatedPhenotypes; }
+    inline QString id() const { return mId; }
+    inline QString label() const { return mLabel; }
+    inline QStringList genes() const { return mGenes; }
+    inline QList<Phenotype*> relatedPhenotypes() const { return mRelatedPhenotypes; }
 
     // Methods
     void fromJson(QJsonObject json);
