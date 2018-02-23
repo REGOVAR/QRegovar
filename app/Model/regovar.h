@@ -164,6 +164,7 @@ public:
     Q_INVOKABLE void getUserInfo(int userId);
     Q_INVOKABLE void getVariantInfo(int refId, QString variantId, int analysisId=-1);
     Q_INVOKABLE void search(QString query);
+    Q_INVOKABLE void loadConfigData();
     Q_INVOKABLE void loadWelcomData();
     Q_INVOKABLE void close();
     Q_INVOKABLE void disconnectUser();

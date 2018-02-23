@@ -124,6 +124,7 @@ void Regovar::init()
 //    mPanelsManager->refresh();
 
     // Load misc data
+    loadConfigData();
     loadWelcomData();
 }
 
@@ -132,13 +133,10 @@ void Regovar::init()
 
 
 
-
-
-
-void Regovar::loadWelcomData()
+void Regovar::loadConfigData()
 {
     setWelcomIsLoading(true);
-    Request* req = Request::get(QString("/"));
+    Request* req = Request::get(QString("/config"));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)
@@ -148,7 +146,7 @@ void Regovar::loadWelcomData()
             // Get server config and release information
             mConfig->fromJson(data);
             QJsonObject milestones;
-            for (const QJsonValue& val: data["milestones"].toArray())
+            for (const QJsonValue& val: data["client_milestones"].toArray())
             {
                 milestones = val.toObject();
                 if (milestones["state"].toString() == "open")
@@ -171,6 +169,29 @@ void Regovar::loadWelcomData()
 
             // Get files import/export tools available on Regovar server
             mToolsManager->loadJson(data["tools"].toObject());
+            emit configChanged();
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+        setWelcomIsLoading(true);
+    });
+}
+
+
+void Regovar::loadWelcomData()
+{
+    setWelcomIsLoading(true);
+    Request* req = Request::get(QString("/"));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            QJsonObject data = json["data"].toObject();
 
             // Get references
             for (const QJsonValue& jsonVal: data["references"].toArray())
@@ -233,7 +254,6 @@ void Regovar::loadWelcomData()
         //            }
             emit lastDataChanged();
             emit referencesChanged();
-            emit configChanged();
 
             // Timer to refresh "last data" every 30s
             // QTimer::singleShot(30000, regovar, SLOT(refreshLastData()));
