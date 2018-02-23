@@ -109,7 +109,7 @@ bool FilesManager::deleteFile(int id)
 
 void FilesManager::loadFilesBrowser()
 {
-    Request* req = Request::get(QString("/file"));
+    Request* req = Request::get(QString("/files"));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)
