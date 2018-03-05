@@ -1,7 +1,7 @@
 #ifndef PHENOTYPE_H
 #define PHENOTYPE_H
 
-#include <QObject>
+#include <QtCore>
 
 class Phenotype : public QObject
 {
@@ -21,6 +21,7 @@ public:
     inline QString label() const { return mLabel; }
     inline QStringList genes() const { return mGenes; }
     inline QList<Phenotype*> relatedPhenotypes() const { return mRelatedPhenotypes; }
+    inline bool loaded() const { return mLoaded; }
 
     // Methods
     void fromJson(QJsonObject json);

@@ -1,7 +1,7 @@
 #ifndef PHENOTYPESMANAGER_H
 #define PHENOTYPESMANAGER_H
 
-#include <QObject>
+#include <QtCore>
 #include "phenotype.h"
 
 class PhenotypesManager : public QObject
