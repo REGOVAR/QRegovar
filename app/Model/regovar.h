@@ -81,7 +81,7 @@ class Regovar : public QObject
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
     Q_PROPERTY(QList<QObject*> lastAnalyses READ lastAnalyses NOTIFY lastDataChanged)
-    Q_PROPERTY(QJsonArray lastEvent READ lastEvent NOTIFY lastDataChanged)
+    Q_PROPERTY(QList<QObject*> lastEvents READ lastEvents NOTIFY lastDataChanged)
     Q_PROPERTY(QList<QObject*> lastSubjects READ lastSubjects NOTIFY lastDataChanged)
     Q_PROPERTY(bool welcomIsLoading READ welcomIsLoading WRITE setWelcomIsLoading NOTIFY welcomIsLoadingChanged)
 
@@ -124,7 +124,7 @@ public:
     inline QJsonObject searchResult() const { return mSearchResult; }
     inline bool searchInProgress() const { return mSearchInProgress; }
     inline QList<QObject*> lastAnalyses() const { return mLastAnalyses; }
-    inline QJsonArray lastEvent() const { return mLastEvents; }
+    inline QList<QObject*>  lastEvents() const { return mLastEvents; }
     inline QList<QObject*> lastSubjects() const { return mLastSubjects; }
     inline bool welcomIsLoading() const { return mWelcomIsLoading; }
     //--
@@ -255,7 +255,7 @@ private:
 
 
     //! Welcom last data
-    QJsonArray mLastEvents;
+    QList<QObject*> mLastEvents;
     QList<QObject*> mLastAnalyses;
     QList<QObject*> mLastSubjects;
 
