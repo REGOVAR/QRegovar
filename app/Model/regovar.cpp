@@ -248,8 +248,11 @@ void Regovar::loadWelcomData()
             mLastEvents.clear();
             for (const QJsonValue& val: data["last_events"].toArray())
             {
-                Event* event = new Event(val.toObject());
-                mLastEvents.append(event);
+                if (val["type"] != "technical")
+                {
+                    Event* event = new Event(val.toObject());
+                    mLastEvents.append(event);
+                }
             }
             emit lastDataChanged();
             emit referencesChanged();
