@@ -67,6 +67,12 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
 
     if (!full_init) return true;
 
+    // Get events
+    if (mId > 0)
+    {
+        mEvents = new EventsListModel("analysis_id", QString::number(mId));
+    }
+
     // Parse settings
     QJsonObject settings = json["settings"].toObject();
     for (const QJsonValue& field: settings["annotations_db"].toArray())
