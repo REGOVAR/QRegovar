@@ -339,7 +339,7 @@ Dialog
                         var idx = regovar.samplesManager.proxy.getModelIndex(rowIndex);
                         var id = regovar.samplesManager.data(idx, 257); // 257 = Qt::UserRole+1
 
-                        samples = samples.concat(regovar.samplesManager.getOrCreate(id));
+                        samples = samples.concat(regovar.samplesManager.getOrCreateSample(id));
                     });
                     samplesSelected(samples);
                 }

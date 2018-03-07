@@ -76,7 +76,9 @@ HEADERS += \
     Model/analysis/filtering/filteringresultcell.h \
     Model/phenotype/phenotypesmanager.h \
     Model/phenotype/phenotype.h \
-    Model/event.h
+    Model/event/event.h \
+    Model/event/eventsmanager.h \
+    Model/event/eventslistmodel.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -140,7 +142,9 @@ SOURCES += main.cpp \
     Model/analysis/filtering/filteringresultcell.cpp \
     Model/phenotype/phenotypesmanager.cpp \
     Model/phenotype/phenotype.cpp \
-    Model/event.cpp
+    Model/event/event.cpp \
+    Model/event/eventsmanager.cpp \
+    Model/event/eventslistmodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

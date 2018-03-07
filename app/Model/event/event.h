@@ -2,7 +2,7 @@
 #define EVENT_H
 
 #include <QtCore>
-#include "user.h"
+#include "Model/user.h"
 #include "Model/analysis/analysis.h"
 #include "Model/file/file.h"
 #include "Model/panel/panel.h"
@@ -16,6 +16,8 @@ class Event : public QObject
     Q_OBJECT
     Q_PROPERTY(int id READ id NOTIFY dataChanged)
     Q_PROPERTY(QString message READ message NOTIFY dataChanged)
+    Q_PROPERTY(QString details READ details NOTIFY dataChanged)
+    Q_PROPERTY(User* author READ author NOTIFY dataChanged)
     Q_PROPERTY(QDateTime date READ date NOTIFY dataChanged)
     Q_PROPERTY(QString type READ type NOTIFY dataChanged)
     // OPtional relations
@@ -28,15 +30,20 @@ class Event : public QObject
     Q_PROPERTY(Sample* sample READ sample NOTIFY dataChanged)
     Q_PROPERTY(File* file READ file NOTIFY dataChanged)
 
+    Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
+
 
 public:
     // Constructor
     explicit Event(QObject* parent=nullptr);
+    explicit Event(int id, QObject* parent=nullptr);
     explicit Event(QJsonObject json);
 
     // Getters
     inline int id() const { return mId; }
     inline QString message() const { return mMessage; }
+    inline QString details() const { return mDetails; }
+    inline User* author() const { return mAuthor; }
     inline QDateTime date() const { return mDate; }
     inline QString type() const { return mType; }
     inline User* user() const { return mUser; }
@@ -46,6 +53,7 @@ public:
     inline Subject* subject() const { return mSubject; }
     inline Sample* sample() const { return mSample; }
     inline File* file() const { return mFile; }
+    inline QString searchField() const { return mSearchField; }
 
     // Methods
     //! Set model with provided json data
@@ -60,13 +68,19 @@ public:
 Q_SIGNALS:
     void dataChanged();
 
+public Q_SLOTS:
+    void updateSearchField();
+
 private:
+    bool mLoaded = false;
     QDateTime mLastInternalLoad = QDateTime::currentDateTime();
 
     int mId=-1;
     QString mMessage;
+    QString mDetails;
     QDateTime mDate;
     QString mType;
+    User* mAuthor = nullptr;
     User* mUser = nullptr;
     Project* mProject = nullptr;
     Analysis* mAnalysis = nullptr;
@@ -74,6 +88,7 @@ private:
     Subject* mSubject = nullptr;
     Sample* mSample = nullptr;
     File* mFile = nullptr;
+    QString mSearchField;
 
 };
 

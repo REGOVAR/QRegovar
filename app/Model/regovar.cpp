@@ -16,7 +16,7 @@
 #include <QLocale>
 
 #include "Model/analysis/filtering/filteringanalysis.h"
-#include "event.h"
+#include "Model/event/event.h"
 
 
 
@@ -117,6 +117,7 @@ void Regovar::init()
     mSamplesManager = new SamplesManager(mSettings->defaultReference());
     mAnalysesManager = new AnalysesManager(this);
     mPanelsManager = new PanelsManager(this);
+    mEventsManager = new EventsManager(this);
     mToolsManager = new ToolsManager(this);
 
     // Init sub models
@@ -245,15 +246,8 @@ void Regovar::loadWelcomData()
                 mLastSubjects.append(sbj);
             }
             // Last events
-            mLastEvents.clear();
-            for (const QJsonValue& val: data["last_events"].toArray())
-            {
-                if (val["type"] != "technical")
-                {
-                    Event* event = new Event(val.toObject());
-                    mLastEvents.append(event);
-                }
-            }
+            mEventsManager->loadJson(data["last_events"].toArray());
+
             emit lastDataChanged();
             emit referencesChanged();
 
@@ -382,7 +376,7 @@ void Regovar::getPanelInfo(QString panelId)
 void Regovar::getSampleInfo(int sampleId)
 {
     emit sampleInformationSearching();
-    Sample* sample = mSamplesManager->getOrCreate(sampleId);
+    Sample* sample = mSamplesManager->getOrCreateSample(sampleId);
     sample->load(false);
     emit sampleInformationReady(sample);
 }

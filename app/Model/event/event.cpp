@@ -3,11 +3,31 @@
 #include "Model/regovar.h"
 
 Event::Event(QObject* parent) : QObject(parent)
-{}
+{
+    connect(this, &Event::dataChanged, this, &Event::updateSearchField);
+}
+
+Event::Event(int id, QObject* parent) : QObject(parent)
+{
+    connect(this, &Event::dataChanged, this, &Event::updateSearchField);
+    mId = id;
+}
 
 Event::Event(QJsonObject json) : QObject(nullptr)
 {
+    connect(this, &Event::dataChanged, this, &Event::updateSearchField);
     fromJson(json);
+}
+
+
+void Event::updateSearchField()
+{
+    mSearchField = mMessage + " " + mDetails + " " + mType;
+    if (mAuthor != nullptr)
+    {
+        mSearchField +=  " " + mAuthor->lastname() + " " + mAuthor->lastname();
+    }
+    // TODO: do the same for all optional related objects
 }
 
 
@@ -18,6 +38,10 @@ bool Event::fromJson(QJsonObject json)
     mType = json["type"].toString();
     mMessage = json["message"].toString();
     mDate = QDateTime::fromString(json["date"].toString(), Qt::ISODate);
+    if (json.contains("details"))
+    {
+        mDetails = json["details"].toString();
+    }
     if (json["meta"].isObject())
     {
         QJsonObject meta = json["meta"].toObject();
@@ -49,7 +73,7 @@ bool Event::fromJson(QJsonObject json)
             }
             else if (key == "sample_id")
             {
-                mSample = regovar->samplesManager()->getOrCreate(meta[key].toInt());
+                mSample = regovar->samplesManager()->getOrCreateSample(meta[key].toInt());
             }
             else if (key == "file_id")
             {

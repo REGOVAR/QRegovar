@@ -38,7 +38,7 @@ public:
     void setReferenceId(int ref);
 
     // Methods
-    Q_INVOKABLE Sample* getOrCreate(int sampleId, bool internalRefresh=false);
+    Q_INVOKABLE Sample* getOrCreateSample(int sampleId, bool internalRefresh=false);
     bool loadJson(QJsonArray json);
 
     // QAbstractListModel methods

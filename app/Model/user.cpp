@@ -35,11 +35,6 @@ bool User::fromJson(QJsonObject json)
     mLastActivity = QDateTime::fromString(json["last_activity"].toString(), Qt::ISODate);
     qDebug() << Q_FUNC_INFO << "New User" << mId << mFirstname << mLastname;
 
-    mRoles.clear();
-    mRoles[Administration] = Write;
-    mRoles[Project] = Write;
-    mRoles[Pipeline] = Write;
-
     emit userChanged();
     return true;
 }
@@ -54,8 +49,6 @@ void User::clear()
     mPassword = "";
     mFunction = "";
     mLocation = "";
-    mRoles.clear();
-
     emit userChanged();
 }
 
@@ -66,23 +59,10 @@ bool User::isValid()
 
 bool User::isAdmin()
 {
-    return mRoles.contains(Administration) && mRoles[Administration] == Write;
+    return mIsAdmin;
 }
 
 
-User::UserRight User::role(const UserRole& role)
-{
-    return mRoles.contains(role) ? mRoles[role] : None;
-}
-void User::setRole(const UserRole& role, const UserRight& right)
-{
-    mRoles[role] = right;
-    emit userChanged();
-}
-void User::setRole(const QString&, const QString&)
-{
-    // TODO
-}
 
 void User::save()
 {

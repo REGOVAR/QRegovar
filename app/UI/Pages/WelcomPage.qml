@@ -333,15 +333,15 @@ Rectangle
                         id: eventsColumn
                         Repeater
                         {
-                            model: regovar.lastEvents
+                            model: regovar.eventsManager.lastEvents
                             SearchResultEvent
                             {
                                 indent: 0
                                 width: eventsScrollArea.width - 10 // 10 ScrollBar width
-                                eventId: model.modelData.id
-                                date: model.modelData.date
-                                message: model.modelData.message
-                                type: model.modelData.type
+                                eventId: model.id
+                                date: model.date
+                                message: model.message
+                                type: model.type
                             }
                         }
                     }

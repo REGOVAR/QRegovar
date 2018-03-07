@@ -22,7 +22,7 @@ SamplesManager::SamplesManager(int refId, QObject* parent) : QAbstractListModel(
 }
 
 
-Sample* SamplesManager::getOrCreate(int sampleId, bool internalRefresh)
+Sample* SamplesManager::getOrCreateSample(int sampleId, bool internalRefresh)
 {
 
     if (mSamples.contains(sampleId))
@@ -75,7 +75,7 @@ bool SamplesManager::loadJson(QJsonArray json)
     for (const QJsonValue& sampleJson: json)
     {
         QJsonObject sampleData = sampleJson.toObject();
-        Sample* sample = getOrCreate(sampleData["id"].toInt(), true);
+        Sample* sample = getOrCreateSample(sampleData["id"].toInt(), true);
         sample->fromJson(sampleData);
         if (!mSamplesList.contains(sample)) mSamplesList.append(sample);
     }
@@ -108,7 +108,7 @@ void SamplesManager::processPushNotification(QString action, QJsonObject data)
         QJsonObject obj = json.toObject();
         int sid = obj["id"].toInt();
 
-        Sample* sample = getOrCreate(sid);
+        Sample* sample = getOrCreateSample(sid);
         sample->setStatus(status);
         sample->setLoadingProgress(progressValue);
         sample->refreshUIAttributes();
