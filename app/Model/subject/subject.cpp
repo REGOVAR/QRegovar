@@ -54,6 +54,13 @@ bool Subject::fromJson(QJsonObject json, bool full_init)
         mSamples.append(sample);
     }
 
+    // Event
+    if (mEvents == nullptr)
+    {
+        mEvents = new EventsListModel("subject_id", QString::number(mId));
+    }
+    mEvents->loadJson(json["events"]);
+
 
     mLoaded = true;
     emit dataChanged();
