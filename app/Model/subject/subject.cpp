@@ -2,6 +2,7 @@
 #include "sample.h"
 #include "Model/regovar.h"
 #include "Model/framework/request.h"
+#include "Model/event/eventslistmodel.h"
 
 Subject::Subject(QObject* parent) : QObject(parent)
 {
@@ -9,7 +10,7 @@ Subject::Subject(QObject* parent) : QObject(parent)
 
 Subject::Subject(QJsonObject json, QObject* parent) : QObject(parent)
 {
-    fromJson(json);
+    fromJson(json, false);
 }
 Subject::Subject(int id, QObject* parent) : QObject(parent)
 {
@@ -31,7 +32,7 @@ bool Subject::fromJson(QJsonObject json, bool full_init)
     mDateOfBirth = QDate::fromString(json["dateofbirth"].toString(), Qt::ISODate);
     mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     mCreateDate = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
-
+    mEvents = new EventsListModel("subject_id", QString::number(mId));
 
     updateSubjectUI();
     updateSearchField();
@@ -55,11 +56,7 @@ bool Subject::fromJson(QJsonObject json, bool full_init)
     }
 
     // Event
-    if (mEvents == nullptr)
-    {
-        mEvents = new EventsListModel("subject_id", QString::number(mId));
-    }
-    mEvents->loadJson(json["events"]);
+    mEvents->loadJson(json["events"].toArray());
 
 
     mLoaded = true;

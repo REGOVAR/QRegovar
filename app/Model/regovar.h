@@ -176,7 +176,7 @@ public:
     Q_INVOKABLE inline QUuid generateUuid() { return QUuid::createUuid(); }
     Q_INVOKABLE QString sizeToHumanReadable(qint64 size, qint64 uploadOffset=-1);
     Q_INVOKABLE void raiseError(QJsonObject raiseError);
-    Q_INVOKABLE QDateTime dateFromShortString(QString date);
+    Q_INVOKABLE QDateTime dateFromString(QString date);
     Q_INVOKABLE QString formatNumber(int value);
     Q_INVOKABLE QString formatNumber(double value);
     bool openNewWindow(QUrl qmlUrl, QObject* model);

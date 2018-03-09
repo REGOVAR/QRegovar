@@ -34,9 +34,10 @@ public:
     inline QString id() const { return mId; }
 
     // Methods
-    bool loadJson(QJsonArray json);
-    bool add(Event* event);
-    bool refresh();
+    Q_INVOKABLE bool loadJson(QJsonArray json);
+    Q_INVOKABLE bool add(Event* event);
+    Q_INVOKABLE bool refresh();
+    Q_INVOKABLE void newEvent(QString message, QDateTime date, QString details);
 
     // QAbstractListModel methods
     int rowCount(const QModelIndex& parent = QModelIndex()) const;

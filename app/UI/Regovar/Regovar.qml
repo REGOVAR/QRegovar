@@ -236,20 +236,6 @@ QtObject
         }
     }
 
-    function dateFromShortString(dateString)
-    {
-        if (dateString)
-        {
-            var dateElmt = dateString.split("-");
-            return new Date(dateElmt[0], dateElmt[1] - 1,  dateElmt[2]);
-        }
-        else
-        {
-            return new Date();
-        }
-    }
-
-
 
     // SPECIFIC TOOLS
     property var filteringAnalysisStatusToIconMap: ({"waiting": "{", "computing": "/", "error": "l", "done": "n", "ready": "n"})

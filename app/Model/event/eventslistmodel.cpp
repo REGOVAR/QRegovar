@@ -19,6 +19,9 @@ EventsListModel::EventsListModel(QString target, QString id, QObject* parent) : 
     mProxy->setFilterRole(SearchField);
     mProxy->setSortRole(Date);
 
+    mTarget = target;
+    mId = id;
+
     QJsonObject body;
     body.insert(target, id);
 
@@ -74,7 +77,21 @@ bool EventsListModel::add(Event* event)
 
 bool EventsListModel::refresh()
 {
+    qDebug() << "TODO";
+}
 
+
+void EventsListModel::newEvent(QString message, QDateTime date, QString details)
+{
+    QJsonObject body;
+    body.insert(mTarget, mId);
+    body.insert("message", message);
+    body.insert("date", date.toString(Qt::ISODate));
+    if (!details.isEmpty())
+    {
+        body.insert("details", details);
+    }
+    Request::post(QString("/event"), QJsonDocument(body).toJson());
 }
 
 

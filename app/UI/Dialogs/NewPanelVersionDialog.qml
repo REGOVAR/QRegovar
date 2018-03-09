@@ -322,22 +322,22 @@ Dialog
 
     function updateViewFromModel()
     {
-        panelNameField.text = model.name;
-        versionField.text = "v" + (model.versionsIds.length + 1)
-        ownerField.text = model.owner;
-        descriptionField.text = model.description;
-        sharedField.checked = model.shared;
+        panelNameField.text = root.model.name;
+        versionField.text = "v" + (root.model.versionsIds.length + 1)
+        ownerField.text = root.model.owner;
+        descriptionField.text = root.model.description;
+        sharedField.checked = root.model.shared;
         regovar.panelsManager.newPanel.reset();
 
         // Init new version with entries of the current head version
-        var headVersion = model.getVersion(model.versionsIds[0]);
+        var headVersion = root.model.getVersion(root.model.versionsIds[0]);
         for(var idx in headVersion.entries)
             regovar.panelsManager.newPanel.addEntry(headVersion.entries[idx]);
     }
 
     function commit()
     {
-        regovar.panelsManager.newPanel.panelId = model.panelId;
+        regovar.panelsManager.newPanel.panelId = root.model.panelId;
         regovar.panelsManager.newPanel.name = panelNameField.text;
         regovar.panelsManager.newPanel.version = versionField.text;
         regovar.panelsManager.newPanel.owner = ownerField.text;

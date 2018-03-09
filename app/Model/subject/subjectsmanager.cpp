@@ -35,7 +35,7 @@ bool SubjectsManager::loadJson(QJsonArray json)
     {
         QJsonObject subjectData = subjectVal.toObject();
         Subject* subject = getOrCreateSubject(subjectData["id"].toInt());
-        subject->fromJson(subjectData);
+        subject->fromJson(subjectData, false);
     }
     endResetModel();
     return true;
@@ -69,7 +69,7 @@ void SubjectsManager::newSubject(QString identifier, QString firstname, QString 
     body.insert("sex", sex == 1 ? "male" : sex == 2 ? "female" : "unknow");
     body.insert("family_number", familyNumber);
     body.insert("comment", comment);
-    if (!dateOfBirth.isEmpty()) body.insert("dateofbirth", regovar->dateFromShortString(dateOfBirth).toString(Qt::ISODate));
+    if (!dateOfBirth.isEmpty()) body.insert("dateofbirth", regovar->dateFromString(dateOfBirth).toString(Qt::ISODate));
 
     Request* req = Request::post(QString("/subject"), QJsonDocument(body).toJson());
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
@@ -78,7 +78,7 @@ void SubjectsManager::newSubject(QString identifier, QString firstname, QString 
         {
             QJsonObject data = json["data"].toObject();
             Subject* subject = getOrCreateSubject(data["id"].toInt());
-            subject->fromJson(data);
+            subject->fromJson(data, false);
             openSubject(subject->id());
             emit subjectCreationDone(true, subject->id());
 

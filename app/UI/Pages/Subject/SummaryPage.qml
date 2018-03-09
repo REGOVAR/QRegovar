@@ -1,8 +1,10 @@
 import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
+
 import "../../Regovar"
 import "../../Framework"
+import "../../Dialogs"
 
 Rectangle
 {
@@ -11,7 +13,7 @@ Rectangle
 
     property QtObject model
     property bool editionMode: false
-    onModelChanged: updateViewFromModel(model)
+    onModelChanged: updateViewFromModel()
 
     Rectangle
     {
@@ -115,7 +117,7 @@ Rectangle
             {
                 visible: editionMode
                 text: qsTr("Cancel")
-                onClicked: { updateViewFromModel(model); editionMode = false; }
+                onClicked: { updateViewFromModel(); editionMode = false; }
             }
         }
 
@@ -271,7 +273,6 @@ Rectangle
             id: events
             Layout.fillHeight: true
             Layout.fillWidth: true
-            model: (root.model) ? root.model.events : []
 
             TableViewColumn
             {
@@ -280,8 +281,14 @@ Rectangle
             }
             TableViewColumn
             {
+                width: Regovar.theme.font.boxSize.header
+                title: ""
+                role: "type"
+            }
+            TableViewColumn
+            {
                 title: "Event"
-                role: "eventUI"
+                role: "message"
             }
         }
 
@@ -294,47 +301,61 @@ Rectangle
             {
                 id: addFile
                 text: qsTr("Add event")
-                enabled: false
+                onClicked:
+                {
+                    eventDialog.reset(null);
+                    eventDialog.open();
+                }
             }
 
             Button
             {
                 id: editFile
                 text: qsTr("Edit event")
-                enabled: false
+                onClicked:
+                {
+
+                }
             }
         }
     }
 
-    function updateViewFromModel(model)
+    NewEventDialog
     {
-        if (model)
+        id: eventDialog
+    }
+
+    function updateViewFromModel()
+    {
+        if (root.model)
         {
-            nameLabel.text = model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname;
-            idField.text = model.identifier;
-            firstnameField.text = model.firstname;
-            lastnameField.text = model.lastname;
-            dateOfBirthField.text = Regovar.formatShortDate(model.dateOfBirth);
-            familyNumberField.text = model.familyNumber;
-            commentField.text = model.comment;
-            sexField.currentIndex = model.sex;
+            nameLabel.text = root.model.identifier + " : " + root.model.lastname.toUpperCase() + " " + root.model.firstname;
+            idField.text = root.model.identifier;
+            firstnameField.text = root.model.firstname;
+            lastnameField.text = root.model.lastname;
+            dateOfBirthField.text = Regovar.formatShortDate(root.model.dateOfBirth);
+            familyNumberField.text = root.model.familyNumber;
+            commentField.text = root.model.comment;
+            sexField.currentIndex = root.model.sex;
+            events.model = root.model.events;
+            eventDialog.listModel = root.model.events;
         }
     }
 
     function updateModelFromView()
     {
-        if (model)
+        if (root.model)
         {
-            model.identifier = idField.text;
-            model.firstname = firstnameField.text;
-            model.lastname = lastnameField.text;
-            model.familyNumber = familyNumberField.text;
-            model.comment = commentField.text;
-            model.dateOfBirth = Regovar.dateFromShortString(dateOfBirthField.text);
-            model.sex = sexField.currentIndex;
+            root.model.identifier = idField.text;
+            root.model.firstname = firstnameField.text;
+            root.model.lastname = lastnameField.text;
+            root.model.familyNumber = familyNumberField.text;
+            root.model.comment = commentField.text;
+            root.model.dateOfBirth = regovar.dateFromString(dateOfBirthField.text);
+            root.model.sex = sexField.currentIndex;
 
-            model.save();
-            nameLabel.text = model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname;
+            root.model.save();
+            nameLabel.text = root.model.identifier + " : " + root.model.lastname.toUpperCase() + " " + root.model.firstname;
         }
     }
 }

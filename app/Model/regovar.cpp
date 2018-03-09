@@ -552,10 +552,31 @@ void Regovar::raiseError(QJsonObject json)
 }
 
 
-QDateTime Regovar::dateFromShortString(QString date)
+QDateTime Regovar::dateFromString(QString date)
 {
-    QStringList dateElmt = date.split("-");
-    return QDateTime(QDate(dateElmt[0].toInt(), dateElmt[1].toInt(),  dateElmt[2].toInt()), QTime(12,0,0));
+    date = date.trimmed();
+    if (!date.isEmpty())
+    {
+        QStringList dateBlocks = date.split(" ");
+        QString dateElmt = dateBlocks[0].trimmed();
+        QString timeElmt = dateBlocks.count() > 1 ? dateBlocks[1].trimmed() : "";
+
+        if (!dateElmt.isEmpty())
+        {
+
+            QStringList dateElmts = dateElmt.split("-");
+            QDateTime result = QDateTime(QDate(dateElmts[0].toInt(), dateElmts[1].toInt(),  dateElmts[2].toInt()), QTime(12,0,0));
+            if (!timeElmt.isEmpty())
+            {
+                QStringList timeElmts = timeElmt.split(":");
+                result.setTime(QTime(timeElmts[0].toInt(), timeElmts[1].toInt()));
+            }
+
+            return result;
+        }
+        qDebug() << "WARNING: unable to convert \"" << date << "\" to date. Return current QDateTime";
+    }
+    return QDateTime::currentDateTime();
 }
 
 QString Regovar::formatNumber(int value)

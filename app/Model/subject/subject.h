@@ -3,9 +3,9 @@
 
 #include <QtCore>
 #include "Model/file/file.h"
-#include "Model/event/eventslistmodel.h"
 
 class Sample;
+class EventsListModel;
 
 class Subject : public QObject
 {
