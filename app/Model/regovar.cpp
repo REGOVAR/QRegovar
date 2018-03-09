@@ -16,6 +16,7 @@
 #include <QLocale>
 
 #include "Model/analysis/filtering/filteringanalysis.h"
+#include "Model/event/event.h"
 
 
 
@@ -116,6 +117,7 @@ void Regovar::init()
     mSamplesManager = new SamplesManager(mSettings->defaultReference());
     mAnalysesManager = new AnalysesManager(this);
     mPanelsManager = new PanelsManager(this);
+    mEventsManager = new EventsManager(this);
     mToolsManager = new ToolsManager(this);
 
     // Init sub models
@@ -124,6 +126,7 @@ void Regovar::init()
 //    mPanelsManager->refresh();
 
     // Load misc data
+    loadConfigData();
     loadWelcomData();
 }
 
@@ -132,13 +135,10 @@ void Regovar::init()
 
 
 
-
-
-
-void Regovar::loadWelcomData()
+void Regovar::loadConfigData()
 {
     setWelcomIsLoading(true);
-    Request* req = Request::get(QString("/"));
+    Request* req = Request::get(QString("/config"));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)
@@ -148,7 +148,7 @@ void Regovar::loadWelcomData()
             // Get server config and release information
             mConfig->fromJson(data);
             QJsonObject milestones;
-            for (const QJsonValue& val: data["milestones"].toArray())
+            for (const QJsonValue& val: data["client_milestones"].toArray())
             {
                 milestones = val.toObject();
                 if (milestones["state"].toString() == "open")
@@ -171,6 +171,29 @@ void Regovar::loadWelcomData()
 
             // Get files import/export tools available on Regovar server
             mToolsManager->loadJson(data["tools"].toObject());
+            emit configChanged();
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+        setWelcomIsLoading(true);
+    });
+}
+
+
+void Regovar::loadWelcomData()
+{
+    setWelcomIsLoading(true);
+    Request* req = Request::get(QString("/"));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            QJsonObject data = json["data"].toObject();
 
             // Get references
             for (const QJsonValue& jsonVal: data["references"].toArray())
@@ -223,17 +246,10 @@ void Regovar::loadWelcomData()
                 mLastSubjects.append(sbj);
             }
             // Last events
-        //            while(!mLastSubjects.empty()) mLastSubjects.pop_back();
-        //            for (const QJsonValue& val: data["last_events"].toArray())
-        //            {
-        //                QJsonObject item = val.toObject();
-        //                QDateTime date = QDateTime::fromString(item["update_date"].toString(), Qt::ISODate);
-        //                item["update_date"] = date.toString("yyyy-MM-dd hh:mm");
-        //                //mLastSubjects.append(item);
-        //            }
+            mEventsManager->loadJson(data["last_events"].toArray());
+
             emit lastDataChanged();
             emit referencesChanged();
-            emit configChanged();
 
             // Timer to refresh "last data" every 30s
             // QTimer::singleShot(30000, regovar, SLOT(refreshLastData()));
@@ -357,10 +373,10 @@ void Regovar::getPanelInfo(QString panelId)
 }
 
 
-void Regovar::getSampleInfo(int refId, int sampleId)
+void Regovar::getSampleInfo(int sampleId)
 {
     emit sampleInformationSearching();
-    Sample* sample = mSamplesManager->getOrCreate(refId, sampleId);
+    Sample* sample = mSamplesManager->getOrCreateSample(sampleId);
     sample->load(false);
     emit sampleInformationReady(sample);
 }
@@ -536,10 +552,31 @@ void Regovar::raiseError(QJsonObject json)
 }
 
 
-QDateTime Regovar::dateFromShortString(QString date)
+QDateTime Regovar::dateFromString(QString date)
 {
-    QStringList dateElmt = date.split("-");
-    return QDateTime(QDate(dateElmt[0].toInt(), dateElmt[1].toInt(),  dateElmt[2].toInt()), QTime(12,0,0));
+    date = date.trimmed();
+    if (!date.isEmpty())
+    {
+        QStringList dateBlocks = date.split(" ");
+        QString dateElmt = dateBlocks[0].trimmed();
+        QString timeElmt = dateBlocks.count() > 1 ? dateBlocks[1].trimmed() : "";
+
+        if (!dateElmt.isEmpty())
+        {
+
+            QStringList dateElmts = dateElmt.split("-");
+            QDateTime result = QDateTime(QDate(dateElmts[0].toInt(), dateElmts[1].toInt(),  dateElmts[2].toInt()), QTime(12,0,0));
+            if (!timeElmt.isEmpty())
+            {
+                QStringList timeElmts = timeElmt.split(":");
+                result.setTime(QTime(timeElmts[0].toInt(), timeElmts[1].toInt()));
+            }
+
+            return result;
+        }
+        qDebug() << "WARNING: unable to convert \"" << date << "\" to date. Return current QDateTime";
+    }
+    return QDateTime::currentDateTime();
 }
 
 QString Regovar::formatNumber(int value)

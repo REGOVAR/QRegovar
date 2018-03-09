@@ -198,5 +198,7 @@
         <file>Dialogs/NewPanelVersionDialog.qml</file>
         <file>InformationPanel/Variant/OnlineToolsPanel.qml</file>
         <file>InformationPanel/Variant/AnnotationsPanel.qml</file>
+        <file>Pages/Browse/SearchResultEvent.qml</file>
+        <file>Dialogs/NewEventDialog.qml</file>
     </qresource>
 </RCC>

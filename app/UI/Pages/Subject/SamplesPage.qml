@@ -64,7 +64,7 @@ Rectangle
             onDoubleClicked:
             {
                 var sample = root.model.samples[tableView.currentRow];
-                regovar.getSampleInfo(sample.reference.id, sample.id);
+                regovar.getSampleInfo(sample.id);
             }
 
 
@@ -233,7 +233,7 @@ Rectangle
                 onClicked:
                 {
                     var sample = root.model.samples[tableView.currentRow];
-                    regovar.getSampleInfo(sample.reference.id, sample.id);
+                    regovar.getSampleInfo(sample.id);
                 }
                 Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
             }

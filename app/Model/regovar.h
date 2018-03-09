@@ -16,6 +16,7 @@
 #include "tools/toolsmanager.h"
 #include "subject/reference.h"
 #include "panel/panelsmanager.h"
+#include "event/eventsmanager.h"
 // TODO: rework as manager pattern
 #include "user.h"
 #include "admin.h"
@@ -81,8 +82,8 @@ class Regovar : public QObject
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
     Q_PROPERTY(QList<QObject*> lastAnalyses READ lastAnalyses NOTIFY lastDataChanged)
-    Q_PROPERTY(QJsonArray lastEvent READ lastEvent NOTIFY lastDataChanged)
     Q_PROPERTY(QList<QObject*> lastSubjects READ lastSubjects NOTIFY lastDataChanged)
+    Q_PROPERTY(EventsListModel* lastEvents READ lastEvents NOTIFY neverChanged)
     Q_PROPERTY(bool welcomIsLoading READ welcomIsLoading WRITE setWelcomIsLoading NOTIFY welcomIsLoadingChanged)
 
     // Managers
@@ -93,6 +94,7 @@ class Regovar : public QObject
     Q_PROPERTY(FilesManager* filesManager READ filesManager NOTIFY neverChanged)
     Q_PROPERTY(AnalysesManager* analysesManager READ analysesManager NOTIFY neverChanged)
     Q_PROPERTY(PanelsManager* panelsManager READ panelsManager NOTIFY neverChanged)
+    Q_PROPERTY(EventsManager* eventsManager READ eventsManager NOTIFY neverChanged)
     Q_PROPERTY(ToolsManager* toolsManager READ toolsManager NOTIFY neverChanged)
 
     // Others
@@ -124,8 +126,8 @@ public:
     inline QJsonObject searchResult() const { return mSearchResult; }
     inline bool searchInProgress() const { return mSearchInProgress; }
     inline QList<QObject*> lastAnalyses() const { return mLastAnalyses; }
-    inline QJsonArray lastEvent() const { return mLastEvents; }
     inline QList<QObject*> lastSubjects() const { return mLastSubjects; }
+    inline EventsListModel*  lastEvents() const { return mEventsManager->lastEvents(); }
     inline bool welcomIsLoading() const { return mWelcomIsLoading; }
     //--
     inline NetworkManager* networkManager() const { return mNetworkManager; }
@@ -135,6 +137,7 @@ public:
     inline FilesManager* filesManager() const { return mFilesManager; }
     inline AnalysesManager* analysesManager() const { return mAnalysesManager; }
     inline PanelsManager* panelsManager() const { return mPanelsManager; }
+    inline EventsManager* eventsManager() const { return mEventsManager; }
     inline ToolsManager* toolsManager() const { return mToolsManager; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
@@ -160,10 +163,11 @@ public:
     Q_INVOKABLE void getPanelInfo(QString panelId);
     Q_INVOKABLE void getPhenotypeInfo(QString phenotypeId);
     Q_INVOKABLE void getPipelineInfo(int pipelineId);
-    Q_INVOKABLE void getSampleInfo(int refId, int sampleId);
+    Q_INVOKABLE void getSampleInfo(int sampleId);
     Q_INVOKABLE void getUserInfo(int userId);
     Q_INVOKABLE void getVariantInfo(int refId, QString variantId, int analysisId=-1);
     Q_INVOKABLE void search(QString query);
+    Q_INVOKABLE void loadConfigData();
     Q_INVOKABLE void loadWelcomData();
     Q_INVOKABLE void close();
     Q_INVOKABLE void disconnectUser();
@@ -172,7 +176,7 @@ public:
     Q_INVOKABLE inline QUuid generateUuid() { return QUuid::createUuid(); }
     Q_INVOKABLE QString sizeToHumanReadable(qint64 size, qint64 uploadOffset=-1);
     Q_INVOKABLE void raiseError(QJsonObject raiseError);
-    Q_INVOKABLE QDateTime dateFromShortString(QString date);
+    Q_INVOKABLE QDateTime dateFromString(QString date);
     Q_INVOKABLE QString formatNumber(int value);
     Q_INVOKABLE QString formatNumber(double value);
     bool openNewWindow(QUrl qmlUrl, QObject* model);
@@ -254,7 +258,6 @@ private:
 
 
     //! Welcom last data
-    QJsonArray mLastEvents;
     QList<QObject*> mLastAnalyses;
     QList<QObject*> mLastSubjects;
 
@@ -282,6 +285,8 @@ private:
     AnalysesManager* mAnalysesManager = nullptr;
     //! Manage genes panels
     PanelsManager* mPanelsManager = nullptr;
+    //! Manage all events
+    EventsManager* mEventsManager = nullptr;
     //! Custom Tools managers (exporters, reporters)
     ToolsManager* mToolsManager = nullptr;
     // PipelinesManangers

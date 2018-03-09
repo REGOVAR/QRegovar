@@ -67,6 +67,12 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
 
     if (!full_init) return true;
 
+    // Get events
+    if (mId > 0)
+    {
+        mEvents = new EventsListModel("analysis_id", QString::number(mId));
+    }
+
     // Parse settings
     QJsonObject settings = json["settings"].toObject();
     for (const QJsonValue& field: settings["annotations_db"].toArray())
@@ -83,7 +89,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     for (const QJsonValue& spJson: json["samples"].toArray())
     {
         QJsonObject sampleData = spJson.toObject();
-        Sample* sample = regovar->samplesManager()->getOrCreate(mRefId, sampleData["id"].toInt());
+        Sample* sample = regovar->samplesManager()->getOrCreateSample(sampleData["id"].toInt());
         if(sample->fromJson(sampleData))
         {
             mSamples.append(sample);
@@ -98,9 +104,9 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     {
         QJsonObject trio = settings["trio"].toObject();
         mIsTrio = true;
-        mTrioChild = regovar->samplesManager()->getOrCreate(mRefId, trio["child_id"].toInt());
-        mTrioMother = regovar->samplesManager()->getOrCreate(mRefId, trio["mother_id"].toInt());
-        mTrioFather = regovar->samplesManager()->getOrCreate(mRefId, trio["father_id"].toInt());
+        mTrioChild = regovar->samplesManager()->getOrCreateSample(trio["child_id"].toInt());
+        mTrioMother = regovar->samplesManager()->getOrCreateSample(trio["mother_id"].toInt());
+        mTrioFather = regovar->samplesManager()->getOrCreateSample(trio["father_id"].toInt());
         mTrioChild->setIsIndex(trio["child_index"].toBool());
         mTrioMother->setIsIndex(trio["mother_index"].toBool());
         mTrioFather->setIsIndex(trio["father_index"].toBool());
@@ -783,7 +789,7 @@ void FilteringAnalysis::addSamplesFromFile(int fileId)
             for (const QJsonValue& sampleValue: json["data"].toArray())
             {
                 QJsonObject sampleData = sampleValue.toObject();
-                Sample* sample = regovar->samplesManager()->getOrCreate(mRefId, sampleData["id"].toInt());
+                Sample* sample = regovar->samplesManager()->getOrCreateSample(sampleData["id"].toInt());
                 if (sample->fromJson(sampleData))
                 {
                     if (!mSamplesIds.contains(sample->id()))

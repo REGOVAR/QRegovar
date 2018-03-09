@@ -73,7 +73,12 @@ HEADERS += \
     Model/framework/genericproxymodel.h \
     Widgets/VariantsTreeWidget/variantstreewidget.h \
     Model/analysis/filtering/filteringresult.h \
-    Model/analysis/filtering/filteringresultcell.h
+    Model/analysis/filtering/filteringresultcell.h \
+    Model/phenotype/phenotypesmanager.h \
+    Model/phenotype/phenotype.h \
+    Model/event/event.h \
+    Model/event/eventsmanager.h \
+    Model/event/eventslistmodel.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -134,7 +139,12 @@ SOURCES += main.cpp \
     Model/framework/genericproxymodel.cpp \
     Widgets/VariantsTreeWidget/variantstreewidget.cpp \
     Model/analysis/filtering/filteringresult.cpp \
-    Model/analysis/filtering/filteringresultcell.cpp
+    Model/analysis/filtering/filteringresultcell.cpp \
+    Model/phenotype/phenotypesmanager.cpp \
+    Model/phenotype/phenotype.cpp \
+    Model/event/event.cpp \
+    Model/event/eventsmanager.cpp \
+    Model/event/eventslistmodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

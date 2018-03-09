@@ -356,7 +356,7 @@ Rectangle
                     {
                         iconTxt: "z"
                         text: ""
-                        onClicked: regovar.getSampleInfo(root.model.refId, styleData.value.id)
+                        onClicked: regovar.getSampleInfo(styleData.value.id)
                     }
 
                     Text
@@ -449,12 +449,18 @@ Rectangle
             TableViewColumn
             {
                 title: "Date"
-                role: "data"
+                role: "date"
+            }
+            TableViewColumn
+            {
+                title: "Type"
+                role: "type"
+                width: Regovar.theme.font.boxSize.header
             }
             TableViewColumn
             {
                 title: "Event"
-                role: "filenameUI"
+                role: "message"
             }
         }
         Column
@@ -656,6 +662,7 @@ Rectangle
         headerTitle.text = model.name;
         nameField.text = model.name;
         commentField.text = model.comment;
+
     }
 
     property var statusIconMap: ({"ready": "n", "error": "l", "computing": "/", "waiting": "m", "empty": "g"})
@@ -811,7 +818,8 @@ Rectangle
 
             samplesTable.model = samplesModel;
 
-            // Events ...
+            // Events
+            eventsTable.model = root.model.events;
         }
     }
 

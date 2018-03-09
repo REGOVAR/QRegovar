@@ -12,23 +12,6 @@
 class User : public QObject
 {
     Q_OBJECT
-public:
-    enum UserRight
-    {
-        None  = 0,
-        Read  = 1,
-        Write = 2
-    };
-    Q_ENUM(UserRight)
-
-    enum UserRole
-    {
-        Administration,
-        Project,
-        Pipeline
-    };
-    Q_ENUM(UserRole)
-
     Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY userChanged)
     Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY userChanged)
     Q_PROPERTY(QString email READ email WRITE setEmail NOTIFY userChanged)
@@ -38,10 +21,11 @@ public:
     Q_PROPERTY(QString location READ location WRITE setLocation NOTIFY userChanged)
     Q_PROPERTY(QDateTime lastActivity READ lastActivity WRITE setLastActivity NOTIFY userChanged)
 
+public:
+
     // Constructors
     User(QObject* parent=nullptr);
     User(quint32 id, const QString& firstname, const QString& lastname, QObject* parent=nullptr);
-
 
     // Getters
     inline const QString& lastname() const { return mLastname; }
@@ -52,6 +36,7 @@ public:
     inline const QString& function() const { return mFunction; }
     inline const QString& location() const { return mLocation; }
     inline const QDateTime& lastActivity() const { return mLastActivity; }
+
     // Setters
     inline void setLastname(const QString& lastname) { mLastname = lastname; emit userChanged(); }
     inline void setFirstname(const QString& firstname) { mFirstname = firstname; emit userChanged(); }
@@ -71,11 +56,7 @@ public:
     void clear();
     void save();
     bool isValid();
-
-    // User's right tools
     bool isAdmin();
-    UserRight role(const UserRole& role);
-    void setRole(const UserRole& role, const UserRight& right);
 
 Q_SIGNALS:
     void userChanged();
@@ -90,10 +71,7 @@ protected:
     QString mFunction;
     QString mLocation;
     QDateTime mLastActivity;
-    QHash<UserRole, UserRight> mRoles;
-
-    // Internal method used to build user role model from json dictionary
-    void setRole(const QString& role, const QString& right);
+    bool mIsAdmin = false;
 };
 
 #endif // USERMODEL_H

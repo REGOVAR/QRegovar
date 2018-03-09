@@ -124,7 +124,7 @@ Rectangle
                 else
                 {
                     // Get first sample as ref to be notified of import progress
-                    sampleModel = regovar.samplesManager.getOrCreate(samplesIds[0]);
+                    sampleModel = regovar.samplesManager.getOrCreateSample(samplesIds[0]);
                     sampleModel.dataChanged.connect(updateSampleProgress);
                 }
             }

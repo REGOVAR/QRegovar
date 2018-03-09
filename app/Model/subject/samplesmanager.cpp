@@ -22,19 +22,17 @@ SamplesManager::SamplesManager(int refId, QObject* parent) : QAbstractListModel(
 }
 
 
-Sample* SamplesManager::getOrCreate(int refId, int sampleId, bool internalRefresh)
+Sample* SamplesManager::getOrCreateSample(int sampleId, bool internalRefresh)
 {
-    // convert sample id with ref id to get sample's internal unique id
-    int32_t id = refId * 100000000 + sampleId;
 
-    if (mSamples.contains(id))
+    if (mSamples.contains(sampleId))
     {
-        return mSamples[id];
+        return mSamples[sampleId];
     }
     // else
     if (!internalRefresh) beginInsertRows(QModelIndex(), rowCount(), rowCount());
     Sample* newSample = new Sample(sampleId, this);
-    mSamples.insert(id, newSample);
+    mSamples.insert(sampleId, newSample);
     if (!mSamplesList.contains(newSample)) mSamplesList.append(newSample);
     if (!internalRefresh)
     {
@@ -54,7 +52,7 @@ void SamplesManager::setReferenceId(int refId)
     if (refId == mRefId) return;
     mRefId = refId;
 
-    Request* req = Request::get(QString("/sample/browse/%1").arg(refId));
+    Request* req = Request::get(QString("/samples/ref/%1").arg(refId));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)
@@ -77,12 +75,9 @@ bool SamplesManager::loadJson(QJsonArray json)
     for (const QJsonValue& sampleJson: json)
     {
         QJsonObject sampleData = sampleJson.toObject();
-        if (sampleData.contains("reference_id"))
-        {
-            Sample* sample = getOrCreate(sampleData["reference_id"].toInt(), sampleData["id"].toInt(), true);
-            sample->fromJson(sampleData);
-            if (!mSamplesList.contains(sample)) mSamplesList.append(sample);
-        }
+        Sample* sample = getOrCreateSample(sampleData["id"].toInt(), true);
+        sample->fromJson(sampleData);
+        if (!mSamplesList.contains(sample)) mSamplesList.append(sample);
     }
     endResetModel();
     emit referencialIdChanged();
@@ -112,9 +107,8 @@ void SamplesManager::processPushNotification(QString action, QJsonObject data)
     {
         QJsonObject obj = json.toObject();
         int sid = obj["id"].toInt();
-        int refId = obj["reference_id"].toInt();
 
-        Sample* sample = getOrCreate(refId, sid);
+        Sample* sample = getOrCreateSample(sid);
         sample->setStatus(status);
         sample->setLoadingProgress(progressValue);
         sample->refreshUIAttributes();

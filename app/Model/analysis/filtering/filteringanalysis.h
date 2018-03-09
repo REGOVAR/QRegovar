@@ -15,6 +15,7 @@
 #include "advancedfilters/advancedfiltermodel.h"
 #include "advancedfilters/set.h"
 #include "documentstreemodel.h"
+#include "Model/event/eventslistmodel.h"
 
 class AdvancedFilterModel;
 class NewAdvancedFilterModel;
@@ -33,6 +34,7 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
     Q_PROPERTY(QJsonObject computingProgress READ computingProgress NOTIFY statusChanged)
     Q_PROPERTY(QJsonObject stats READ stats NOTIFY dataChanged)
+    Q_PROPERTY(EventsListModel* events READ events NOTIFY dataChanged)
     // Filtering properties
     Q_PROPERTY(QJsonArray filterJson READ filterJson NOTIFY filterChanged)      // Filter json formated shared with server
     Q_PROPERTY(QStringList order READ order NOTIFY orderChanged)                // List of field used for sorting result
@@ -98,6 +100,7 @@ public:
     inline Sample* trioFather() const { return mTrioFather; }
     inline QList<QObject*> samplesInputsFilesList() const { return mSamplesInputsFilesList; }
     inline QJsonObject stats() const { return mStats; }
+    inline EventsListModel* events() const { return mEvents; }
     // Panel & Treeview models
     inline QHash<QString, FieldColumnInfos*> annotationsMap() { return mAnnotations; }
     inline AnnotationsTreeModel* annotationsTree() const { return mAnnotationsTreeModel; }
@@ -221,6 +224,7 @@ private:
     QList<File*> mFiles;
     DocumentsTreeModel* mDocumentsTreeModel = nullptr;
     QJsonObject mStats;
+    EventsListModel* mEvents = nullptr;
 
     QJsonObject mComputingProgress;
     QString mStatus; // status of the analysis (server side)

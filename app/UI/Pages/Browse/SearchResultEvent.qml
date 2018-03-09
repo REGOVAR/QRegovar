@@ -7,20 +7,16 @@ import "../../Framework"
 Rectangle
 {
     id: root
-    property int subjectId
-
-
+    property int eventId
     property real dateColWidth: 100
     property string date: ""
-    property string identifier: ""
-    property string firstname: ""
-    property string lastname: ""
-    property string sex: ""
-    property string age: ""
+    property string message: ""
+    property string type: ""
+    property string icon: ""
     property int indent: 1
 
     property bool isHover: false
-    signal clicked(var subjectId)
+    signal clicked(var id)
 
     height: Regovar.theme.font.boxSize.normal
     color: "transparent"
@@ -56,27 +52,7 @@ Rectangle
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: Regovar.sexToIcon(sex)
-        }
-
-        Text
-        {
-            font.pixelSize: Regovar.theme.font.size.normal
-            color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-            verticalAlignment: Text.AlignVCenter
-            font.family: "monospace"
-            text: identifier
-        }
-        Text
-        {
-            Layout.minimumWidth: Regovar.theme.font.boxSize.normal
-            font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.icons.name
-            color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            text: "{"
-            elide: Text.ElideRight
+            text: icon
         }
 
         Text
@@ -86,8 +62,7 @@ Rectangle
             font.family: Regovar.theme.font.family
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: lastname + " " + firstname + (age ? " (" + age + ")" : "")
-            elide: Text.ElideRight
+            text: message
         }
     }
 
@@ -97,6 +72,6 @@ Rectangle
         hoverEnabled: true
         onEntered: isHover = true
         onExited: isHover = false
-        onClicked: root.clicked(subjectId)
+        onClicked: root.clicked(eventId)
     }
 }

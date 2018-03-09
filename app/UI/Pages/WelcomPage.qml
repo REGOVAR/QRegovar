@@ -124,13 +124,6 @@ Rectangle
             height: 100
             spacing: 30
 
-//            ButtonWelcom
-//            {
-//                Layout.alignment: Qt.AlignHCenter
-//                text: qsTr("New project")
-//                onClicked: regovar.openNewProjectWizard()
-//                enabled: regovar.networkManager.status == 0
-//            }
             ButtonWelcom
             {
                 Layout.alignment: Qt.AlignHCenter
@@ -147,248 +140,211 @@ Rectangle
             }
         }
 
-        ScrollView
+
+        ColumnLayout
         {
-            id: scrollViewArea
             visible: regovar.welcomIsLoading
             anchors.top: newButtonsRow.bottom
-            anchors.topMargin: 70
+            anchors.topMargin: 10
             anchors.left: panel.left
             anchors.right: panel.right
             anchors.bottom: panel.bottom
+            spacing: 30
 
 
-            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
-            Column
+            SplitView
             {
-                spacing: 30
+                id: row
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
 
                 Rectangle
                 {
+                    id: analysesScrollArea
                     color: "transparent"
-                    // Layout.minimumHeight: 3*Regovar.theme.font.boxSize.normal
-                    width: panel.width
+                    width: 500
+                    height: parent.height
+                    clip: true
 
-                    SplitView
+                    Text
                     {
-                        id: row
-                        width: parent.width
-                        onHeightChanged: parent.height = height
+                        id: analysesHeader
+                        verticalAlignment: Text.AlignVCenter
+                        elide: Text.ElideRight
+                        font.pixelSize: Regovar.theme.font.size.header
+                        color: Regovar.theme.primaryColor.back.dark
+                        height: Regovar.theme.font.boxSize.header
+                        text: qsTr("Last analyses")
+                    }
+
+                    Rectangle
+                    {
+                        anchors.top: analysesHeader.bottom
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.rightMargin: Regovar.theme.font.boxSize.normal
+                        height: 1
+                        color: Regovar.theme.primaryColor.back.normal
+                    }
 
 
 
+                    ScrollView
+                    {
+                        id: analysesColumn
+                        anchors.fill: parent
+                        anchors.topMargin: Regovar.theme.font.boxSize.header + 5
+                        anchors.rightMargin: Regovar.theme.font.boxSize.normal
+                        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-                        Rectangle
+                        Column
                         {
-                            id: analysesScrollArea
-                            color: "transparent"
-                            width: 500
-                            // height is sized by colomn content
-                            onHeightChanged: row.height = Math.max(height, row.height)
-                            clip: true
 
-                            Text
+                            Repeater
                             {
-                                id: analysesHeader
-                                verticalAlignment: Text.AlignVCenter
-                                elide: Text.ElideRight
-                                font.pixelSize: Regovar.theme.font.size.header
-                                color: Regovar.theme.primaryColor.back.dark
-                                height: Regovar.theme.font.boxSize.header
-                                text: qsTr("Last analyses")
-                            }
-
-                            Rectangle
-                            {
-                                anchors.top: analysesHeader.bottom
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                anchors.rightMargin: Regovar.theme.font.boxSize.normal
-                                height: 1
-                                color: Regovar.theme.primaryColor.back.normal
-                            }
-
-                            Column
-                            {
-                                id: analysesColumn
-                                anchors.top: parent.top
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                anchors.topMargin: Regovar.theme.font.boxSize.header + 5
-                                anchors.rightMargin: Regovar.theme.font.boxSize.normal
-                                onHeightChanged: analysesScrollArea.height = Math.max(height + Regovar.theme.font.boxSize.header + 5, analysesScrollArea.height)
-
-                                Repeater
+                                model: regovar.lastAnalyses
+                                SearchResultAnalysis
                                 {
-                                    model: regovar.lastAnalyses
-                                    SearchResultAnalysis
-                                    {
-                                        indent: 0
-                                        width: analysesScrollArea.width - 30 // 15 right margin + 15 ScrollBar width
-                                        date: model.modelData.updateDate
-                                        name: model.modelData.name
-                                        fullpath: model.modelData.fullpath
-                                        status: model.modelData.status
-                                        onClicked: regovar.analysesManager.openAnalysis("analysis", model.modelData.id)
-                                        anchors.left: analysesColumn.left
-                                        anchors.right: analysesColumn.right
-                                    }
-                                }
-                            }
-                        }
-
-                        Rectangle
-                        {
-                            id: subjectScrollArea
-                            color: "transparent"
-                            // height is sized by colomn content
-                            onHeightChanged: row.height = Math.max(height, row.height)
-                            clip: true
-
-                            Text
-                            {
-                                id: subjectsHeader
-                                anchors.left: parent.left
-                                anchors.leftMargin: Regovar.theme.font.boxSize.normal
-                                verticalAlignment: Text.AlignVCenter
-                                elide: Text.ElideRight
-                                font.pixelSize: Regovar.theme.font.size.header
-                                color: Regovar.theme.primaryColor.back.dark
-                                height: Regovar.theme.font.boxSize.header
-                                text: qsTr("Last subjects")
-                            }
-
-                            Rectangle
-                            {
-                                anchors.top: subjectsHeader.bottom
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                anchors.leftMargin: Regovar.theme.font.boxSize.normal
-                                height: 1
-                                color: Regovar.theme.primaryColor.back.normal
-                            }
-
-                            Column
-                            {
-                                anchors.fill: parent
-                                anchors.topMargin: Regovar.theme.font.boxSize.header + 5
-                                anchors.rightMargin: 15
-                                onHeightChanged: subjectScrollArea.height = Math.max(height + Regovar.theme.font.boxSize.header + 5, subjectScrollArea.height)
-
-                                Repeater
-                                {
-                                    model: regovar.lastSubjects
-                                    SearchResultSubject
-                                    {
-                                        width: 500
-                                        indent: 1
-                                        date: model.modelData.updateDate
-                                        identifier: model.modelData.identifier
-                                        firstname: model.modelData.firstname
-                                        lastname: model.modelData.lastname
-                                        sex: model.modelData.sex
-                                        // age: model.modelData.age
-
-                                        onClicked: regovar.subjectsManager.openSubject(model.modelData.id)
-                                    }
+                                    indent: 0
+                                    width: analysesColumn.width - 10
+                                    date: model.modelData.updateDate
+                                    name: model.modelData.name
+                                    fullpath: model.modelData.fullpath
+                                    status: model.modelData.status
+                                    onClicked: regovar.analysesManager.openAnalysis("analysis", model.modelData.id)
                                 }
                             }
                         }
                     }
                 }
 
-                Column
+                Rectangle
                 {
+                    id: subjectScrollArea
+                    color: "transparent"
+                    height: parent.height
+                    clip: true
+
+                    ScrollBar
+                    {
+                        hoverEnabled: true
+                        active: hovered || pressed
+                        orientation: Qt.Vertical
+                        size: subjectScrollArea.height / subjectsColumn.height
+                        anchors.top: parent.top
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                    }
+
                     Text
                     {
+                        id: subjectsHeader
+                        anchors.left: parent.left
+                        anchors.leftMargin: Regovar.theme.font.boxSize.normal
                         verticalAlignment: Text.AlignVCenter
                         elide: Text.ElideRight
                         font.pixelSize: Regovar.theme.font.size.header
                         color: Regovar.theme.primaryColor.back.dark
                         height: Regovar.theme.font.boxSize.header
-                        text: qsTr("Last events")
+                        text: qsTr("Last subjects")
                     }
 
                     Rectangle
                     {
-                        width: panel.width
+                        anchors.top: subjectsHeader.bottom
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.leftMargin: Regovar.theme.font.boxSize.normal
                         height: 1
                         color: Regovar.theme.primaryColor.back.normal
                     }
 
 
-                    Rectangle
+                    ScrollView
                     {
-                        id: empty
-                        width: panel.width
-                        height: Regovar.theme.font.boxSize.normal
-                        color: "transparent"
-                        border.width: 1
-                        border.color: Regovar.theme.boxColor.border
+                        id: subjectsColumn
+                        anchors.fill: parent
+                        anchors.topMargin: Regovar.theme.font.boxSize.header + 5
+                        anchors.rightMargin: Regovar.theme.font.boxSize.normal
+                        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-                        Text
+
+                        Column
                         {
-                            anchors.centerIn: parent
-                            text: qsTr("Not yet implemented")
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            color: Regovar.theme.primaryColor.back.dark
+
+                            Repeater
+                            {
+                                model: regovar.lastSubjects
+                                SearchResultSubject
+                                {
+                                    width: subjectsColumn.width - 10
+                                    indent: 1
+                                    date: model.modelData.updateDate
+                                    identifier: model.modelData.identifier
+                                    firstname: model.modelData.firstname
+                                    lastname: model.modelData.lastname
+                                    sex: model.modelData.sex
+                                    onClicked: regovar.subjectsManager.openSubject(model.modelData.id)
+                                }
+                            }
                         }
                     }
+                }
+            }
 
 
-//                    Repeater
-//                    {
-//                        model : ListModel
-//                        {
-//                            ListElement { date: "2017-06-25 14:56"; name: "Article published"; icon:"j"; color:"" }
-//                            ListElement { date: "2017-06-25 14:56"; name: "Pause analysis \"Hugodims\""; icon:"m"; color:"red" }
-//                            ListElement { date: "2017-06-25 14:56"; name: "Start new analysis \"Hugodims\""; icon:""; color:"" }
-//                            ListElement { date: "2017-06-25 14:56"; name: "Creation of the project : DPNI"; icon:""; color:"" }
-//                        }
+            Rectangle
+            {
+                id: eventsScrollArea
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                color: "transparent"
+                clip: true
 
-//                        RowLayout
-//                        {
-//                            spacing: 0
-//                            height: Regovar.theme.font.boxSize.normal
+                Text
+                {
+                    id: eventsHeader
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    color: Regovar.theme.primaryColor.back.dark
+                    height: Regovar.theme.font.boxSize.header
+                    text: qsTr("Last events")
+                }
 
-//                            Text
-//                            {
-//                                width: 150
-//                                font.pixelSize: 12
-//                                font.family: "monospace"
-//                                verticalAlignment: Text.AlignVCenter
-//                                horizontalAlignment: Text.AlignLeft
-//                                text: date
-//                                color: Regovar.theme.frontColor.disable
-//                            }
+                Rectangle
+                {
+                    anchors.top: eventsHeader.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: 1
+                    color: Regovar.theme.primaryColor.back.normal
+                }
 
-//                            Rectangle
-//                            {
-//                                width: Regovar.theme.font.boxSize.normal
-//                                height: Regovar.theme.font.boxSize.normal
-//                                color: "transparent"
-//                            }
-//                            Text
-//                            {
-//                                Layout.minimumWidth: Regovar.theme.font.boxSize.normal
-//                                font.pixelSize: 12
-//                                font.family: Regovar.theme.icons.name
-//                                verticalAlignment: Text.AlignVCenter
-//                                horizontalAlignment: Text.AlignLeft
-//                                text: icon
-//                                color: color
-//                            }
-//                            Text
-//                            {
-//                                font.pixelSize: 12
-//                                font.family: Regovar.theme.font.family
-//                                color: Regovar.theme.frontColor.normal
-//                                verticalAlignment: Text.AlignVCenter
-//                                text: name
-//                            }
-//                        }
-//                    }
+                ScrollView
+                {
+                    anchors.fill: parent
+                    anchors.topMargin: Regovar.theme.font.boxSize.header + 5
+                    horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+                    Column
+                    {
+                        id: eventsColumn
+                        Repeater
+                        {
+                            model: regovar.eventsManager.lastEvents
+                            SearchResultEvent
+                            {
+                                indent: 0
+                                width: eventsScrollArea.width - 10 // 10 ScrollBar width
+                                eventId: model.id
+                                date: model.date
+                                message: model.message
+                                type: model.type
+                            }
+                        }
+                    }
                 }
             }
         }

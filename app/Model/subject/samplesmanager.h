@@ -38,7 +38,7 @@ public:
     void setReferenceId(int ref);
 
     // Methods
-    Q_INVOKABLE Sample* getOrCreate(int refId, int sampleId, bool internalRefresh=false);
+    Q_INVOKABLE Sample* getOrCreateSample(int sampleId, bool internalRefresh=false);
     bool loadJson(QJsonArray json);
 
     // QAbstractListModel methods
@@ -65,7 +65,7 @@ private:
     //! List of samples
     QList<Sample*> mSamplesList;
     //! Internal collection of all loaded samples
-    QHash<int32_t, Sample*> mSamples;
+    QHash<qint64, Sample*> mSamples;
     //! The QSortFilterProxyModel to use by table view to browse samples of the manager
     GenericProxyModel* mProxy = nullptr;
 
