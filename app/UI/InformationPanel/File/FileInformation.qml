@@ -50,7 +50,7 @@ InformationPanel
             root.title = "<h1>" + model.name + "</h1></br>";
             root.title += qsTr("Status") + ": " + model.statusUI["label"] + "</br>";
             root.title += qsTr("Size") + ": " + model.sizeUI + "</br>";
-            root.title += qsTr("Last modification") + ": " + Regovar.formatDate(model.updateDate);
+            root.title += qsTr("Last modification") + ": " + regovar.formatDate(model.updateDate);
         }
     }
 

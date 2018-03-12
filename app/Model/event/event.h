@@ -30,6 +30,8 @@ class Event : public QObject
     Q_PROPERTY(Sample* sample READ sample NOTIFY dataChanged)
     Q_PROPERTY(File* file READ file NOTIFY dataChanged)
 
+
+    Q_PROPERTY(QJsonObject messageUI READ messageUI NOTIFY dataChanged)
     Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
 
 
@@ -53,6 +55,7 @@ public:
     inline Subject* subject() const { return mSubject; }
     inline Sample* sample() const { return mSample; }
     inline File* file() const { return mFile; }
+    inline QJsonObject messageUI() const { return mMessageUI; }
     inline QString searchField() const { return mSearchField; }
 
     // Methods
@@ -88,7 +91,11 @@ private:
     Subject* mSubject = nullptr;
     Sample* mSample = nullptr;
     File* mFile = nullptr;
+    QJsonObject mMessageUI;
     QString mSearchField;
+
+    static QHash<QString, QString> mTypeIconMap;
+    static QHash<QString, QString> initTypeIconMap();
 
 };
 

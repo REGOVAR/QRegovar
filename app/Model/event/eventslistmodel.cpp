@@ -44,7 +44,7 @@ EventsListModel::EventsListModel(QString target, QString id, QObject* parent) : 
 
 
 
-bool EventsListModel::loadJson(QJsonArray json)
+bool EventsListModel::loadJson(QJsonArray json, bool technical)
 {
     beginResetModel();
     mEventList.clear();
@@ -53,7 +53,11 @@ bool EventsListModel::loadJson(QJsonArray json)
         QJsonObject eventData = eventJson.toObject();
         Event* event = regovar->eventsManager()->getOrCreateEvent(eventData["id"].toInt());
         event->fromJson(eventData);
-        if (!mEventList.contains(event)) mEventList.append(event);
+        if (!mEventList.contains(event))
+        {
+            if (event->type() == "technical" && !technical) continue;
+            mEventList.append(event);
+        }
     }
     endResetModel();
     emit countChanged();
@@ -110,13 +114,13 @@ QVariant EventsListModel::data(const QModelIndex& index, int role) const
 
     const Event* event= mEventList[index.row()];
     if (role == Message || role == Qt::DisplayRole)
-        return event->message();
+        return event->messageUI();
     else if (role == Id)
         return event->id();
     else if (role == Type)
         return event->type();
     else if (role == Date)
-        return event->date();
+        return regovar->formatDate(event->date());
     else if (role == Author && event->author() != nullptr)
         return event->author()->firstname() + " " + event->author()->lastname();
     else if (role == Details)

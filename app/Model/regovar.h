@@ -179,6 +179,8 @@ public:
     Q_INVOKABLE QDateTime dateFromString(QString date);
     Q_INVOKABLE QString formatNumber(int value);
     Q_INVOKABLE QString formatNumber(double value);
+    Q_INVOKABLE QString formatDate(QDateTime date, bool withTime=true);
+    Q_INVOKABLE QString formatDate(QString isodate, bool withTime=true);
     bool openNewWindow(QUrl qmlUrl, QObject* model);
 
 

@@ -101,7 +101,7 @@ Rectangle
                 anchors.fill: parent
                 anchors.margins: 5
                 verticalAlignment: Text.AlignVCenter
-                text: Regovar.formatShortDate(modelData.dateOfBirth)
+                text: regovar.formatDate(modelData.dateOfBirth, false)
                 elide: Text.ElideRight
             }
         }

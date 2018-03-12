@@ -341,7 +341,6 @@ Rectangle
                                 eventId: model.id
                                 date: model.date
                                 message: model.message
-                                type: model.type
                             }
                         }
                     }

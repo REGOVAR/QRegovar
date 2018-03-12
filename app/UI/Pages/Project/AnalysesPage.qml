@@ -176,7 +176,7 @@ Rectangle
                         anchors.fill: parent
                         anchors.margins: 5
                         verticalAlignment: Text.AlignVCenter
-                        text: Regovar.formatShortDate(modelData.dateOfBirth)
+                        text: regovar.formatDate(modelData.dateOfBirth, false)
                         elide: Text.ElideRight
                     }
                 }
@@ -239,7 +239,7 @@ Rectangle
                     font.pixelSize: Regovar.theme.font.size.header
                     verticalAlignment: Text.AlignVCenter
                     color: Regovar.theme.primaryColor.back.normal
-                    text: currentAnalysis ? Regovar.formatDate(currentAnalysis.updateDate) : ""
+                    text: currentAnalysis ? regovar.formatDate(currentAnalysis.updateDate) : ""
                 }
 
                 Rectangle

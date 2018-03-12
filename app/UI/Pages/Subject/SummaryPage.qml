@@ -281,14 +281,34 @@ Rectangle
             }
             TableViewColumn
             {
-                width: Regovar.theme.font.boxSize.header
-                title: ""
-                role: "type"
-            }
-            TableViewColumn
-            {
                 title: "Event"
                 role: "message"
+                width: 500
+                delegate: Item
+                {
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value.icon
+                        font.family: Regovar.theme.icons.name
+                    }
+                    Text
+                    {
+                        anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                        anchors.rightMargin: 5
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value.message
+                        elide: Text.ElideRight
+                    }
+                }
             }
         }
 
@@ -333,7 +353,7 @@ Rectangle
             idField.text = root.model.identifier;
             firstnameField.text = root.model.firstname;
             lastnameField.text = root.model.lastname;
-            dateOfBirthField.text = Regovar.formatShortDate(root.model.dateOfBirth);
+            dateOfBirthField.text = regovar.formatDate(root.model.dateOfBirth, false);
             familyNumberField.text = root.model.familyNumber;
             commentField.text = root.model.comment;
             sexField.currentIndex = root.model.sex;

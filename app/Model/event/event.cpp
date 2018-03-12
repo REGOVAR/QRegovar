@@ -2,6 +2,20 @@
 #include "Model/framework/request.h"
 #include "Model/regovar.h"
 
+QHash<QString, QString> Event::mTypeIconMap = Event::initTypeIconMap();
+QHash<QString, QString> Event::initTypeIconMap()
+{
+    QHash<QString, QString> map;
+    map.insert("custom",  "A");
+    map.insert("info", "k");
+    map.insert("warning",  "m");
+    map.insert("error", "l");
+    map.insert("technical", "d");
+
+    return map;
+}
+
+
 Event::Event(QObject* parent) : QObject(parent)
 {
     connect(this, &Event::dataChanged, this, &Event::updateSearchField);
@@ -38,6 +52,9 @@ bool Event::fromJson(QJsonObject json)
     mType = json["type"].toString();
     mMessage = json["message"].toString();
     mDate = QDateTime::fromString(json["date"].toString(), Qt::ISODate);
+    mMessageUI.insert("icon", mTypeIconMap[mType]);
+    mMessageUI.insert("message", mMessage);
+
     if (json.contains("details"))
     {
         mDetails = json["details"].toString();

@@ -595,6 +595,20 @@ QString Regovar::formatNumber(double value)
     ss.replace(cLocale.groupSeparator(), ' ');
     return ss;
 }
+QString Regovar::formatDate(QDateTime date, bool withTime)
+{
+    if (date.isNull() || !date.isValid()) return "";
+
+    if (withTime)
+    {
+        return date.toString("yyyy-MM-dd hh:mm");
+    }
+    return date.toString("yyyy-MM-dd");
+}
+QString Regovar::formatDate(QString isodate, bool withTime)
+{
+    return formatDate(QDateTime::fromString(isodate, Qt::ISODate), withTime);
+}
 
 
 
