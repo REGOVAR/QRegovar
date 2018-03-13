@@ -155,8 +155,10 @@ Rectangle
             SplitView
             {
                 id: row
+                property real maxHeight: Regovar.theme.font.boxSize.header
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.maximumHeight: maxHeight
 
 
                 Rectangle
@@ -200,7 +202,7 @@ Rectangle
 
                         Column
                         {
-
+                            onHeightChanged: row.maxHeight = Math.max(row.maxHeight, height + Regovar.theme.font.boxSize.header + 5)
                             Repeater
                             {
                                 model: regovar.lastAnalyses
@@ -272,7 +274,7 @@ Rectangle
 
                         Column
                         {
-
+                            onHeightChanged: row.maxHeight = Math.max(row.maxHeight, height + Regovar.theme.font.boxSize.header + 5)
                             Repeater
                             {
                                 model: regovar.lastSubjects
