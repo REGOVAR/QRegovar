@@ -119,6 +119,7 @@ void Regovar::init()
     mPanelsManager = new PanelsManager(this);
     mEventsManager = new EventsManager(this);
     mToolsManager = new ToolsManager(this);
+    mPipelinesManager = new PipelinesManager(this);
 
     // Init sub models
 //    mProjectsManager->refresh();
@@ -213,7 +214,7 @@ void Regovar::loadWelcomData()
             mPanelsManager->loadJson(data["panels"].toArray());
 
             // Get pipelines
-            // mPi->loadJson(data["jobs"].toArray());
+            mPipelinesManager->loadJson(data["pipelines"].toArray());
 
             // Get samples
             mSamplesManager->loadJson(data["samples"].toArray());

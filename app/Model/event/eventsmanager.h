@@ -12,7 +12,7 @@ class EventsManager : public QObject
     Q_PROPERTY(EventsListModel* technicalEvents READ technicalEvents NOTIFY technicalEventsChanged)
 
 public:
-    explicit EventsManager(QObject *parent = nullptr);
+    explicit EventsManager(QObject* parent=nullptr);
 
     // Getters
     inline EventsListModel* lastEvents() const { return mLastEvents; }
