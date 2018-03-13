@@ -159,6 +159,7 @@ Rectangle
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.maximumHeight: maxHeight
+                Layout.minimumHeight: maxHeight
 
 
                 Rectangle

@@ -227,18 +227,18 @@ GenericScreen
         onFileSelected: { regovar.newPipeline.addInputs(files); }
     }
 
-    Connections
-    {
-        target: regovar
-        onOnWebsocketMessageReceived:
-        {
-            // We assume that if a file is downloading, it's for us...
-            if (action == "file_upload")
-            {
-                regovar.newPipeline.addInputFromWS(data);
-            }
+//    Connections
+//    {
+//        target: regovar
+//        onOnWebsocketMessageReceived:
+//        {
+//            // We assume that if a file is downloading, it's for us...
+//            if (action == "file_upload")
+//            {
+//                regovar.newPipeline.addInputFromWS(data);
+//            }
 
-            console.log ("WS [" + action + "] " + data);
-        }
-    }
+//            console.log ("WS [" + action + "] " + data);
+//        }
+//    }
 }

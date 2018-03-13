@@ -32,6 +32,16 @@ bool PipelinesListModel::loadJson(QJsonArray json)
 }
 
 
+bool PipelinesListModel::add(Pipeline* pipe)
+{
+    if (!mPipelinesList.contains(pipe))
+    {
+        beginInsertRows(QModelIndex(), rowCount(), rowCount());
+        mPipelinesList.append(pipe);
+        endInsertRows();
+        emit countChanged();
+    }
+}
 
 
 

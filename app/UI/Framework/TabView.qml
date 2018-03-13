@@ -226,7 +226,16 @@ Item
 
                     if (elmt.hasOwnProperty("model"))
                     {
-                        elmt.model = Qt.binding(function() { return tabSharedModel; });
+                        // dedicated model
+                        if ("tabModel" in model)
+                        {
+                            elmt.model = model.tabModel;
+                        }
+                        // Shared model
+                        else if (tabSharedModel)
+                        {
+                            elmt.model = Qt.binding(function() { return tabSharedModel; });
+                        }
                     }
                 }
                 else if (comp.status == Component.Error)

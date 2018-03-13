@@ -10,28 +10,39 @@ import "../Common"
 InformationPanel
 {
     id: root
-    icon: "j"
+    icon: "J"
     updateFromModel: function updateFromModel(data)
     {
         // Update title
-        var variant = "chr" + data["chr"] + ":" + data["pos"] + " " + data["ref"] + ">" + data["alt"];
-        var gene = data["genename"];
-        var ref = data["reference"];
-        root.title = "<span style=\"font-family: monospace;\">" + variant + "</span><br/><br/><i>Ref: </i>" + ref + "&nbsp;&nbsp;&nbsp;</span>\n\n<i>Gene: </i>" + gene;
+        root.title = "<h1>" + data["name"] + "</h1><br/>Version: <span style=\"font-family: monospace;\">" + data["version"] + "</span><br/><br/>" + data["description"];
+
+
 
         // Update tabs
         root.tabSharedModel = data;
+        var documents = ("documents" in data) ? data["documents"] : {};
         var ttt = listModel.createObject(root);
+
+        if ("home" in documents)
+        {
+            ttt.append(
+            {   "title": qsTr("Presentation"),
+                "icon": "j",
+                "source": "qrc:/qml/InformationPanel/Common/WebViewPanel.qml",
+                "tabModel" : documents["home"]
+            });
+        }
         ttt.append(
             {   "title": qsTr("Information"),
                 "icon": "j",
-                "source": "qrc:/qml/InformationPanel/Pipeline/InfoPanel.qmll"
+                "source": "qrc:/qml/InformationPanel/Pipeline/InfoPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Events"),
                 "icon": "^",
                 "source": "qrc:/qml/InformationPanel/Pipeline/StatsPanel.qml"
             });
+
         root.tabsModel = ttt;
         root.loading = false;
     }

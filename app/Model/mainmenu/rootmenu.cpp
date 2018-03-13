@@ -16,7 +16,8 @@ void RootMenu::initMain()
     applicationEntry->addEntry(new MenuEntry("", tr("Connection"), "Settings/ApplicationConnectionPage.qml", this));
     applicationEntry->addEntry(new MenuEntry("", tr("Cache"), "Settings/ApplicationCachePage.qml", this));
     MenuEntry* administrationEntry = new MenuEntry("d", tr("Administration"), "", this);
-    administrationEntry->addEntry(new MenuEntry("", tr("Server"), "Settings/AdminServerPage.qml", this));
+    administrationEntry->addEntry(new MenuEntry("", tr("Logs"), "Settings/AdminLogsPage.qml", this));
+    administrationEntry->addEntry(new MenuEntry("", tr("Database"), "Settings/AdminServerPage.qml", this));
     administrationEntry->addEntry(new MenuEntry("", tr("Users"), "Settings/AdminUsersPage.qml", this));
     administrationEntry->addEntry(new MenuEntry("", tr("Pipelines"), "Settings/AdminPipesPage.qml", this));
     administrationEntry->addEntry(new MenuEntry("", tr("Annotations"), "Settings/AdminAnnotationsPage.qml", this));

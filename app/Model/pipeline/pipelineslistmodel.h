@@ -31,6 +31,7 @@ public:
 
     // Methods
     Q_INVOKABLE bool loadJson(QJsonArray json);
+    Q_INVOKABLE bool add(Pipeline* pipe);
     Q_INVOKABLE bool refresh();
 
     // QAbstractListModel methods

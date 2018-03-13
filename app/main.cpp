@@ -66,6 +66,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<MenuEntry>("Regovar.Core", 1, 0, "MenuEntry");
     qmlRegisterType<EventsListModel>("Regovar.Core", 1, 0, "EventsListModel");
     qmlRegisterType<Event>("Regovar.Core", 1, 0, "Event");
+    qmlRegisterType<Pipeline>("Regovar.Core", 1, 0, "Pipeline");
 
 
     qmlRegisterType<Tool>("Regovar.Core", 1, 0, "Tool");

@@ -9,14 +9,20 @@ class Pipeline : public QObject
     Q_PROPERTY(int id READ id NOTIFY dataChanged)
     Q_PROPERTY(bool starred READ starred WRITE setStarred NOTIFY dataChanged)
     Q_PROPERTY(QString name READ name NOTIFY dataChanged)
+    Q_PROPERTY(QString version READ version NOTIFY dataChanged)
     Q_PROPERTY(QString type READ type NOTIFY dataChanged)
     Q_PROPERTY(QString status READ status NOTIFY dataChanged)
     Q_PROPERTY(QString description READ description NOTIFY dataChanged)
-    Q_PROPERTY(QStringList authors READ authors NOTIFY dataChanged)
     Q_PROPERTY(QDateTime installationDate READ installationDate NOTIFY dataChanged)
-    Q_PROPERTY(QString version READ version NOTIFY dataChanged)
-    Q_PROPERTY(QString pirusApiVersion READ pirusApiVersion NOTIFY dataChanged)
-    Q_PROPERTY(QJsonObject form READ form NOTIFY dataChanged)
+    Q_PROPERTY(QString versionApi READ versionApi NOTIFY dataChanged)
+    // Related documents
+    Q_PROPERTY(QUrl icon READ icon NOTIFY neverChanged)
+    Q_PROPERTY(QUrl form READ form NOTIFY neverChanged)
+    Q_PROPERTY(QUrl homePage READ homePage NOTIFY neverChanged)
+    Q_PROPERTY(QUrl helpPage READ helpPage NOTIFY neverChanged)
+    Q_PROPERTY(QUrl license READ license NOTIFY neverChanged)
+    Q_PROPERTY(QUrl readme READ readme NOTIFY neverChanged)
+    Q_PROPERTY(QUrl manifest READ manifest NOTIFY neverChanged)
 
 
 
@@ -33,12 +39,20 @@ public:
     inline QString type() const { return mType; }
     inline QString status() const { return mStatus; }
     inline QString description() const { return mDescription; }
-    inline QStringList authors() const { return mAuthors; }
     inline QDateTime installationDate() const { return mInstallationDate; }
     inline QString version() const { return mVersion; }
-    inline QString pirusApiVersion() const { return mPirusApiVersion; }
-    inline QJsonObject form() const { return mForm; }
+    inline QString versionApi() const { return mVersionApi; }
+    inline QUrl icon() const { return mIcon; }
+    inline QUrl form() const { return mForm; }
+    inline QUrl helpPage() const { return mHelpPage; }
+    inline QUrl homePage() const { return mHomePage; }
+    inline QUrl license() const { return mLicense; }
+    inline QUrl readme() const { return mReadme; }
+    inline QUrl manifest() const { return mManifest; }
     inline QString searchField() const { return mSearchField; }
+
+    Q_INVOKABLE inline QJsonObject manifestJson() const { return mManifestJson; }
+    Q_INVOKABLE inline QJsonObject formJson() const { return mFormJson; }
 
     // Setters
     Q_INVOKABLE inline void setStarred(bool flag) { mStarred = flag; emit dataChanged();}
@@ -46,6 +60,8 @@ public:
     // Methods
     //! Set model with provided json data
     Q_INVOKABLE bool fromJson(QJsonObject json);
+    //! Export model data into json object
+    Q_INVOKABLE QJsonObject toJson();
     //! Ask the server to install this pipeline
     Q_INVOKABLE void install();
     //! Load event information and related object from server
@@ -53,6 +69,7 @@ public:
 
 
 Q_SIGNALS:
+    void neverChanged();
     void dataChanged();
 
 public Q_SLOTS:
@@ -68,12 +85,22 @@ private:
     QString mType;
     QString mStatus;
     QString mDescription;
-    QStringList mAuthors;
     QDateTime mInstallationDate;
     QString mVersion;
-    QString mPirusApiVersion;
-    QJsonObject mForm;
+    QString mVersionApi;
+
+    QUrl mIcon;
+    QUrl mForm;
+    QUrl mHelpPage;
+    QUrl mHomePage;
+    QUrl mLicense;
+    QUrl mReadme;
+    QUrl mManifest;
     QString mSearchField;
+
+    QJsonObject mManifestJson;
+    QJsonObject mFormJson;
+
 
     static QHash<QString, QString> mTypeIconMap;
     static QHash<QString, QString> initTypeIconMap();

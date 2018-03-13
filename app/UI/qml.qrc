@@ -200,5 +200,7 @@
         <file>InformationPanel/Variant/AnnotationsPanel.qml</file>
         <file>Pages/Browse/SearchResultEvent.qml</file>
         <file>Dialogs/NewEventDialog.qml</file>
+        <file>Pages/Settings/AdminLogsPage.qml</file>
+        <file>InformationPanel/Common/WebViewPanel.qml</file>
     </qresource>
 </RCC>

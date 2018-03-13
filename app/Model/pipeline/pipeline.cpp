@@ -23,11 +23,8 @@ Pipeline::Pipeline(QJsonObject json) : QObject(nullptr)
 
 void Pipeline::updateSearchField()
 {
-    mSearchField = mName + " " + mVersion + " " + mPirusApiVersion + " " + mStatus + " " + mType + " " + mDescription;
-    if (mAuthors.count() > 0)
-    {
-        mSearchField += " " + mAuthors.join(" ");
-    }
+    mSearchField = mName + " " + mVersion + " " + mVersionApi + " " + mStatus + " " + mType + " " + mDescription;
+    // TODO: adding manifest information like developpers ?
 }
 
 
@@ -40,11 +37,51 @@ bool Pipeline::fromJson(QJsonObject json)
     mDescription = json["description"].toString();
     mStatus = json["status"].toString();
     mVersion = json["version"].toString();
+    mVersionApi = json["version_api"].toString();
     mStarred = json["starred"].toBool();
     mInstallationDate = QDateTime::fromString(json["installation_date"].toString(), Qt::ISODate);
+    mManifestJson = json["manifest"].toObject();
+
+    QJsonObject docs = json["documents"].toObject();
+    for (const QString k: docs.keys())
+    {
+        if (k == "form") mForm = QUrl(docs[k].toString());
+        else if (k == "icon") mIcon = QUrl(docs[k].toString());
+        else if (k == "license") mLicense = QUrl(docs[k].toString());
+        else if (k == "readme") mReadme = QUrl(docs[k].toString());
+        else if (k == "help") mHelpPage = QUrl(docs[k].toString());
+        else if (k == "home") mHomePage = QUrl(docs[k].toString());
+        else if (k == "manifest") mManifest = QUrl(docs[k].toString());
+    }
+
+    updateSearchField();
     emit dataChanged();
 }
 
+
+QJsonObject Pipeline::toJson()
+{
+    QJsonObject result;
+    // Simples data
+    result.insert("id", mId);
+    result.insert("type", mType);
+    result.insert("name", mName);
+    result.insert("version", mVersion);
+    result.insert("type", mType);
+    result.insert("status", mStatus);
+    result.insert("starred", mStarred);
+    result.insert("installation_date", mInstallationDate.toString(Qt::ISODate));
+    result.insert("manifest", mManifestJson);
+    QJsonObject docs;
+    docs.insert("form", mForm.toString());
+    docs.insert("icon", mIcon.toString());
+    docs.insert("license", mLicense.toString());
+    docs.insert("readme", mReadme.toString());
+    docs.insert("help", mHelpPage.toString());
+    docs.insert("home", mHomePage.toString());
+    result.insert("documents", docs);
+    return result;
+}
 
 
 void Pipeline::install()

@@ -19,8 +19,8 @@ public:
     inline PipelinesListModel* intalledPipes() const { return mInstalledPipes; }
 
     // Method
-    void loadJson(QJsonArray json);
-    Pipeline* getOrCreatePipe(int eventId);
+    Q_INVOKABLE void loadJson(QJsonArray json);
+    Q_INVOKABLE Pipeline* getOrCreatePipe(int pipeId);
 
 
 Q_SIGNALS:
@@ -38,7 +38,7 @@ private:
     //! List of pipelines that are installed and ready to used on the Regovar server
     PipelinesListModel* mInstalledPipes;
     //! Internal collection of all loaded events
-    QHash<qint64, Pipeline*> mEvents;
+    QHash<qint64, Pipeline*> mPipelines;
 };
 
 #endif // PIPELINESMANAGER_H
