@@ -13,14 +13,32 @@ GridLayout
     columns: 2
     rows: 2
 
-    property ToolParameter model
+    property DynamicFormFieldModel model
+    onModelChanged:
+    {
+        if (model)
+        {
+            model.form.onLabelWidthChanged.connect(function() { label.Layout.minimumWidth = model.form.labelWidth; } );
+            model.onDataChanged.connect(updateViewFromModel);
+            updateViewFromModel();
+        }
+    }
+
+    function updateViewFromModel()
+    {
+        input.checked = model.value;
+        input.color =  model.error ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.danger;
+
+    }
 
     Text
     {
+        id: label
         elide: Text.ElideRight
         font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.dark
-        text: root.model ? root.model.name : "?"
+        text: root.model ? root.model.title : "?"
+        onWidthChanged: model.form.labelWidth = Math.max(model.form.labelWidth, width)
     }
 
     CheckBox

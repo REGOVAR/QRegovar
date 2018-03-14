@@ -5,18 +5,17 @@
 
 Pipeline::Pipeline(QObject* parent) : QObject(parent)
 {
+    mConfigForm = new DynamicFormModel(this);
     connect(this, &Pipeline::dataChanged, this, &Pipeline::updateSearchField);
 }
 
-Pipeline::Pipeline(int id, QObject* parent) : QObject(parent)
+Pipeline::Pipeline(int id, QObject* parent) : Pipeline(parent)
 {
-    connect(this, &Pipeline::dataChanged, this, &Pipeline::updateSearchField);
     mId = id;
 }
 
-Pipeline::Pipeline(QJsonObject json) : QObject(nullptr)
+Pipeline::Pipeline(QJsonObject json) : Pipeline(nullptr)
 {
-    connect(this, &Pipeline::dataChanged, this, &Pipeline::updateSearchField);
     fromJson(json);
 }
 

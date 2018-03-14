@@ -7,7 +7,7 @@ Item
 {
     id: root
     property var component: null
-    property ToolParameter model
+    property DynamicFormFieldModel model
     onEnabledChanged: if (component) component.enabled = enabled;
     onModelChanged:
     {
@@ -15,15 +15,15 @@ Item
         {
             console.log("model = " + model);
             console.log("type  = " + model.type);
-            if (model.type === "enum")
+            if (model.enumValues.length > 0)
             {
                 component = createBlock("DynamicFormInputEnum.qml", model);
             }
-            else if (model.type === "bool")
+            else if (model.type === "boolean")
             {
                 component = createBlock("DynamicFormInputBool.qml", model);
             }
-            else if (model.type === "int")
+            else if (model.type === "integer" || model.type === "number")
             {
                 component = createBlock("DynamicFormInputNumber.qml", model);
             }
@@ -62,5 +62,4 @@ Item
 
         return elmt;
     }
-
 }

@@ -69,8 +69,12 @@ int main(int argc, char *argv[])
     qmlRegisterType<Pipeline>("Regovar.Core", 1, 0, "Pipeline");
 
 
+    qmlRegisterType<DynamicFormModel>("Regovar.Core", 1, 0, "DynamicFormModel");
+    qmlRegisterType<DynamicFormFieldModel>("Regovar.Core", 1, 0, "DynamicFormFieldModel");
+    // TODO: refacto with DynamicFormModel & DynamicFormFieldModel
     qmlRegisterType<Tool>("Regovar.Core", 1, 0, "Tool");
     qmlRegisterType<ToolParameter>("Regovar.Core", 1, 0, "ToolParameter");
+
 
     // Register custom classes to use it with QML: Regovar.Widget
     qmlRegisterType<VariantsTreeWidget>("Regovar.Widget", 1, 0, "VariantsTreeWidget");

@@ -13,4 +13,9 @@ Rectangle
 
     property bool readyForNext: false
     property var analysisModel: ({})
+
+    function validate()
+    {
+        return true;
+    }
 }

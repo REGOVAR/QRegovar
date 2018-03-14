@@ -1,11 +1,13 @@
 import QtQuick 2.9
+import Regovar.Core 1.0
 import "../Regovar"
 
 Column
 {
     id: root
-    property var model
+    property DynamicFormModel model
 
+    spacing: 10
     Repeater
     {
         model: root.model
@@ -13,8 +15,8 @@ Column
         DynamicFormInput
         {
             width: root.width
-            height: 25
-            model: modelData
+            height: 30
+            model: root.model.getAt(index)
         }
     }
 }

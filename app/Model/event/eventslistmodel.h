@@ -54,7 +54,7 @@ private:
     int mRefId = -1;
     //! List of events
     QList<Event*> mEventList;
-    //! The QSortFilterProxyModel to use by table view to browse samples of the manager
+    //! The QSortFilterProxyModel to use by table view to browse events of the list
     GenericProxyModel* mProxy = nullptr;
     //! Target concerned by events model
     QString mTarget;

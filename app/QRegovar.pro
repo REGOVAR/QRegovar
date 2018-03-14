@@ -81,7 +81,9 @@ HEADERS += \
     Model/event/eventslistmodel.h \
     Model/pipeline/pipeline.h \
     Model/pipeline/pipelinesmanager.h \
-    Model/pipeline/pipelineslistmodel.h
+    Model/pipeline/pipelineslistmodel.h \
+    Model/framework/dynamicformmodel.h \
+    Model/framework/dynamicformfieldmodel.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -150,7 +152,9 @@ SOURCES += main.cpp \
     Model/event/eventslistmodel.cpp \
     Model/pipeline/pipeline.cpp \
     Model/pipeline/pipelinesmanager.cpp \
-    Model/pipeline/pipelineslistmodel.cpp
+    Model/pipeline/pipelineslistmodel.cpp \
+    Model/framework/dynamicformmodel.cpp \
+    Model/framework/dynamicformfieldmodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

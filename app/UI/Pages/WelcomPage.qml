@@ -186,7 +186,7 @@ Rectangle
                         anchors.top: analysesHeader.bottom
                         anchors.left: parent.left
                         anchors.right: parent.right
-                        anchors.rightMargin: Regovar.theme.font.boxSize.normal
+                        anchors.rightMargin: 10
                         height: 1
                         color: Regovar.theme.primaryColor.back.normal
                     }
@@ -198,7 +198,7 @@ Rectangle
                         id: analysesColumn
                         anchors.fill: parent
                         anchors.topMargin: Regovar.theme.font.boxSize.header + 5
-                        anchors.rightMargin: Regovar.theme.font.boxSize.normal
+                        anchors.rightMargin: 10
                         horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
                         Column
@@ -244,7 +244,7 @@ Rectangle
                     {
                         id: subjectsHeader
                         anchors.left: parent.left
-                        anchors.leftMargin: Regovar.theme.font.boxSize.normal
+                        anchors.leftMargin: 10
                         verticalAlignment: Text.AlignVCenter
                         elide: Text.ElideRight
                         font.pixelSize: Regovar.theme.font.size.header
@@ -258,7 +258,7 @@ Rectangle
                         anchors.top: subjectsHeader.bottom
                         anchors.left: parent.left
                         anchors.right: parent.right
-                        anchors.leftMargin: Regovar.theme.font.boxSize.normal
+                        anchors.leftMargin: 10
                         height: 1
                         color: Regovar.theme.primaryColor.back.normal
                     }
@@ -269,7 +269,7 @@ Rectangle
                         id: subjectsColumn
                         anchors.fill: parent
                         anchors.topMargin: Regovar.theme.font.boxSize.header + 5
-                        anchors.rightMargin: Regovar.theme.font.boxSize.normal
+                        anchors.rightMargin: 10
                         horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
 

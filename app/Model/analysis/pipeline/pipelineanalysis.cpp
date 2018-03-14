@@ -5,7 +5,7 @@
 
 PipelineAnalysis::PipelineAnalysis(QObject* parent) : Analysis(parent)
 {
-    mType = AnalysesManager::PIPELINE; //
+    mType = AnalysesManager::PIPELINE;
 }
 
 PipelineAnalysis::PipelineAnalysis(int id, QObject* parent) : PipelineAnalysis(parent)
@@ -53,6 +53,15 @@ void PipelineAnalysis::addInputFromWS(QJsonObject json)
         mInputsFilesList.append(file);
         emit inputsFilesListChanged();
     }
+}
+
+
+void PipelineAnalysis::setPipeline(Pipeline* pipe)
+{
+    mPipeline = pipe;
+    mPipeline->configForm()->load(mPipeline->form());
+    mPipeline->configForm()->reset();
+    emit pipelineChanged();
 }
 
 

@@ -62,7 +62,7 @@ GenericScreen
 
                 ListView
                 {
-                    id: inputsList
+                    id: pipelinesList
                     clip: true
                     anchors.fill: parent
                     anchors.margins: 1
@@ -71,7 +71,7 @@ GenericScreen
                     onCurrentItemChanged: updatePipeInfoPanel()
                     delegate: Rectangle
                     {
-                        width: inputsList.width
+                        width: pipelinesList.width
                         height: Regovar.theme.font.boxSize.normal
                         color: index % 2 == 0 ? Regovar.theme.backgroundColor.main : "transparent"
 
@@ -99,13 +99,15 @@ GenericScreen
 
                     function updatePipeInfoPanel()
                     {
-                        if (inputsList.currentItem)
+                        if (pipelinesList.currentItem)
                         {
-                            var idx = regovar.pipelinesManager.intalledPipes.proxy.getModelIndex(inputsList.currentIndex);
+                            var idx = regovar.pipelinesManager.intalledPipes.proxy.getModelIndex(pipelinesList.currentIndex);
                             var id = regovar.pipelinesManager.intalledPipes.data(idx, 257); // 257 = Qt::UserRole+1 = id
                             var pipe = regovar.pipelinesManager.getOrCreatePipe(id);
+
                             pipeInfoPanel.model = pipe.toJson();
                             pipeInfoPanel.visible = true;
+                            regovar.analysesManager.newPipeline.pipeline = pipe;
                         }
                     }
                 }

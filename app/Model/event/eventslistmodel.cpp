@@ -7,7 +7,6 @@ EventsListModel::EventsListModel(QObject* parent) : QAbstractListModel(parent)
     mProxy->setSourceModel(this);
     mProxy->setFilterRole(SearchField);
     mProxy->setSortRole(Date);
-
 }
 
 
