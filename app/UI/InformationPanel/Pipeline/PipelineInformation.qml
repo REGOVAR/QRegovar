@@ -14,8 +14,11 @@ InformationPanel
     updateFromModel: function updateFromModel(data)
     {
         // Update title
-        root.title = "<h1>" + data["name"] + "</h1><br/>Version: <span style=\"font-family: monospace;\">" + data["version"] + "</span><br/><br/>" + data["description"];
-
+        root.title = "<h1>" + data["name"] + "</h1>Version: <span style=\"font-family: monospace;\">" + data["version"] + "</span>";
+        if ("description" in data)
+        {
+            root.title += "<br/><br/>" + data["description"];
+        }
 
 
         // Update tabs
