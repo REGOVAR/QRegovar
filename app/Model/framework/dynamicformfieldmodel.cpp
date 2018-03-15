@@ -19,14 +19,6 @@ bool DynamicFormFieldModel::fromJson(QJsonObject json)
     mDescription = json["description"].toString();
     mType = json["type"].toString();
 
-    if (json.contains("required"))
-    {
-        mRequired = json["required"].toBool();
-    }
-    if (json.contains("default"))
-    {
-        mDefaultValue = json["default"].toVariant();
-    }
     if (json.contains("enum"))
     {
         mEnumValues.clear();
@@ -34,6 +26,25 @@ bool DynamicFormFieldModel::fromJson(QJsonObject json)
         {
             mEnumValues.append(value.toString());
         }
+    }
+    if (json.contains("required"))
+    {
+        mRequired = json["required"].toBool();
+    }
+
+
+    if (mType == "string")
+    {
+        mDefaultValue = "";
+    }
+    if (mEnumValues.count() > 0)
+    {
+        mDefaultValue = 0;
+    }
+
+    if (json.contains("default"))
+    {
+        mDefaultValue = json["default"].toVariant();
     }
     reset();
 }
@@ -81,6 +92,10 @@ bool DynamicFormFieldModel::validate()
     else if (mType == "string")
     {
         result = mValue.type() == QVariant::String;
+        if (mRequired)
+        {
+            result = !mValue.toString().isEmpty();
+        }
         if (!result) errorMsg = tr("This field must be set with a string value.");
     }
 

@@ -116,6 +116,7 @@ Dialog
                 {
                     id: searchBox
                     iconLeft: "z"
+                    displayClearButton: true
                     Layout.fillWidth: true
                     anchors.leftMargin: 10 + (referencialSelectorEnabled ? refCombo.width + 10 : 0)
                     placeholder: qsTr("Search sample by identifiant or vcf filename, subject's name, identifier, comment, ...")

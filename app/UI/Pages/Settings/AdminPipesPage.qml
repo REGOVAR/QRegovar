@@ -127,6 +127,7 @@ Rectangle
                     Layout.fillWidth: true
                     placeholder: qsTr("Filter/Search pipelines")
                     iconLeft: "z"
+                    displayClearButton: true
 
                     onTextEdited: regovar.pipelinesManager.availablePipes.proxy.setFilterString(text)
                     onTextChanged: regovar.pipelinesManager.availablePipes.proxy.setFilterString(text)

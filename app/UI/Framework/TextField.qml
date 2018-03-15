@@ -21,17 +21,6 @@ TextField
     property string iconRight: ""
     property string iconRightColor: Regovar.theme.darker(Regovar.theme.boxColor.border)
     property bool displayClearButton: false
-    onDisplayClearButtonChanged:
-    {
-        if (displayClearButton)
-        {
-            iconLeft.visible = true;
-            control.rightPadding += clearButton.width + 10;
-            displayClearButton = true;
-        }
-    }
-
-
 
 
 
@@ -40,8 +29,7 @@ TextField
         if (iconLeft)
         {
             iconLeft.visible = true;
-            control.leftPadding += iconLeft.width + 10;
-            displayClearButton = true;
+            control.leftPadding = iconLeft.width + 10;
         }
     }
     onIconRightChanged:
@@ -49,7 +37,7 @@ TextField
         if (iconRight)
         {
             iconRight.visible = true;
-            control.rightPadding += iconRight.width + 10;
+            control.rightPadding = iconRight.width + 10;
         }
     }
 

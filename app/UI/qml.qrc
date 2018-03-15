@@ -202,5 +202,6 @@
         <file>Dialogs/NewEventDialog.qml</file>
         <file>Pages/Settings/AdminLogsPage.qml</file>
         <file>InformationPanel/Common/WebViewPanel.qml</file>
+        <file>Framework/IconButton.qml</file>
     </qresource>
 </RCC>

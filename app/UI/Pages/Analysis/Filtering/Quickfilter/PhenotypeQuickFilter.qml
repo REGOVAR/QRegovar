@@ -230,6 +230,7 @@ QuickFilterBox
                 width: content.width - 30
 
                 iconLeft: "z"
+                displayClearButton: true
                 placeholder: qsTr("Enter search terms...")
             }
 

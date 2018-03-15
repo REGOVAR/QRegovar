@@ -86,6 +86,7 @@ Rectangle
                     Layout.fillWidth: true
                     placeholder: qsTr("Filter/Search events")
                     iconLeft: "z"
+                    displayClearButton: true
 
                     onTextEdited: regovar.eventsManager.technicalEvents.proxy.setFilterString(text)
                     onTextChanged: regovar.eventsManager.technicalEvents.proxy.setFilterString(text)

@@ -10,7 +10,7 @@ GridLayout
     id: root
     columnSpacing: 10
     rowSpacing: 5
-    columns: 2
+    columns: 3
     rows: 2
 
     property DynamicFormFieldModel model
@@ -21,6 +21,7 @@ GridLayout
             model.form.onLabelWidthChanged.connect(function() { label.Layout.minimumWidth = model.form.labelWidth; } );
             model.onDataChanged.connect(updateViewFromModel);
             updateViewFromModel();
+            model.validate();
         }
     }
 
@@ -28,7 +29,7 @@ GridLayout
     {
         input.text = model.value;
         input.color =  model.error ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.danger;
-
+        errorMessage.text = model.error ? model.errorMessage : "";
     }
 
     Text
@@ -37,8 +38,14 @@ GridLayout
         elide: Text.ElideRight
         font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.primaryColor.back.dark
-        text: root.model ? root.model.title : "?"
+        text: root.model ? root.model.title + (root.model.required ? " *" : "")  : "?"
         onWidthChanged: model.form.labelWidth = Math.max(model.form.labelWidth, width)
+        font.bold: root.model.required
+    }
+
+    IconButton
+    {
+        tooltip: model.description
     }
 
     ComboBox
@@ -52,13 +59,15 @@ GridLayout
 
     Text
     {
+        id: errorMessage
         Layout.row: 1
         Layout.column: 1
+        Layout.columnSpan: 2
         Layout.fillWidth: true
-        text: root.model ? root.model.description : "?"
+        text: ""
         font.pixelSize: Regovar.theme.font.size.small
         font.italic: true
-        color: Regovar.theme.primaryColor.back.normal
+        color: Regovar.theme.frontColor.danger
         wrapMode: Text.WordWrap
     }
 }

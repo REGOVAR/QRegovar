@@ -13,8 +13,6 @@ Item
     {
         if (model)
         {
-            console.log("model = " + model);
-            console.log("type  = " + model.type);
             if (model.enumValues.length > 0)
             {
                 component = createBlock("DynamicFormInputEnum.qml", model);

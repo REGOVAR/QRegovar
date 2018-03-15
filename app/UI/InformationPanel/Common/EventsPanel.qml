@@ -29,6 +29,7 @@ Rectangle
             Layout.columnSpan: 2
             Layout.fillWidth: true
             iconLeft: "z"
+            displayClearButton: true
             placeholder: qsTr("Search events...")
             enabled: false
         }
