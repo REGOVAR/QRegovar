@@ -55,7 +55,7 @@ GenericScreen
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                model: regovar.analysesManager.newPipeline.inputsFilesList
+                model: regovar.analysesManager.newPipeline.inputsFiles
 
 
                 Rectangle
@@ -99,7 +99,7 @@ GenericScreen
                 TableViewColumn
                 {
                     title: "Name"
-                    role: "filenameUI"
+                    role: "name"
                     delegate: Item
                     {
 
@@ -132,7 +132,7 @@ GenericScreen
                 TableViewColumn
                 {
                     title: "Status"
-                    role: "statusUI"
+                    role: "status"
                     delegate: Item
                     {
 
@@ -162,29 +162,9 @@ GenericScreen
 
                     }
                 }
-                TableViewColumn { title: "Size"; role: "sizeUI"; horizontalAlignment: Text.AlignRight }
-                TableViewColumn
-                {
-                    title: "Date"
-                    role: "updateDate"
-                    delegate: Item
-                    {
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.rightMargin: 5
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text:styleData.value.toLocaleDateString()
-                            elide: Text.ElideRight
-                        }
-
-                    }
-                }
-                TableViewColumn { title: "Source"; role: "sourceUI" }
+                TableViewColumn { title: "Size"; role: "size"; horizontalAlignment: Text.AlignRight }
+                TableViewColumn { title: "Date";  role: "updateDate" }
+                TableViewColumn { title: "Source"; role: "source" }
                 TableViewColumn { title: "Comment"; role: "comment" }
             }
 

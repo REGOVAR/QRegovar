@@ -48,12 +48,52 @@ GenericScreen
             Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
         }
 
+
         ComboBox
         {
             Layout.fillWidth: true
             id: projectField
-            model: ["Select a folder", "DPNI", "Panel onchogénétique", "Hugodims"]
-            onCurrentIndexChanged: checkReady();
+            model: regovar.projectsManager.projectsFlatList
+            textRole: "fullPath"
+            onCurrentIndexChanged:
+            {
+                regovar.analysesManager.newFiltering.project = regovar.projectsManager.projectsFlatList[currentIndex];
+                checkReady();
+            }
+            property int projectId
+
+            Connections
+            {
+                target: regovar.projectsManager
+                onProjectCreationDone:
+                {
+                    projectField.projectId = projectId;
+                    projectField.model.push(regovar.projectsManager.getOrCreateProject(projectId).fullPath);
+                    projectField.currentIndex = regovar.projectsManager.projectsFlatList.length - 1;
+                }
+            }
+            Connections
+            {
+                target: regovar.projectsManager
+                onProjectsFlatListChanged:
+                {
+                    projectField.currentIndex = 0;
+                    for (var idx=0; idx<regovar.projectsManager.projectsFlatList.length; idx++)
+                    {
+                        if (regovar.projectsManager.projectsFlatList[idx].id == projectField.projectId)
+                        {
+                            projectField.currentIndex = idx;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        Button
+        {
+            text: qsTr("New folder")
+            onClicked: regovar.openNewProjectWizard()
         }
     }
     RowLayout
@@ -82,7 +122,15 @@ GenericScreen
             id: nameField
             Layout.fillWidth: true
             placeholder: qsTr("The name of the analysis")
-            text: autoName()
+            text: regovar.analysesManager.newPipeline.name
+            onTextChanged:
+            {
+                if (regovar.analysesManager.newPipeline.name != text)
+                {
+                    regovar.analysesManager.newPipeline.name = text;
+                    checkReady();
+                }
+            }
         }
         Button
         {
@@ -127,7 +175,7 @@ GenericScreen
             {
                 x: 5
                 y: 5
-                spacing: 5
+                spacing: 10
 
                 RowLayout
                 {
@@ -150,7 +198,7 @@ GenericScreen
                     {
                         Layout.fillWidth: true
                         height: Regovar.theme.font.size.header
-                        text: "Hugodims pipeline v1.0"
+                        text: regovar.analysesManager.newPipeline.pipeline.name + (regovar.analysesManager.newPipeline.pipeline.version ? " (" + regovar.analysesManager.newPipeline.pipeline.version + ")" : "")
                         color: Regovar.theme.frontColor.disable
                         font.pixelSize: Regovar.theme.font.size.normal
                         font.family: Regovar.theme.font.family
@@ -177,26 +225,35 @@ GenericScreen
                     }
                     Column
                     {
+                        id: inputsList
                         Layout.fillWidth: true
-                        Row
+
+                        Repeater
                         {
-
-                            Text
+                            model: regovar.analysesManager.newPipeline.inputsFiles
+                            RowLayout
                             {
-                                width: Regovar.theme.font.boxSize.normal
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.icons.name
-                                color: Regovar.theme.frontColor.disable
-                                verticalAlignment: Text.AlignVCenter
-                                text: "Y"
-                            }
+                                height: Regovar.theme.font.boxSize.normal
+                                width: inputsList.width
+                                spacing: 5
 
-                            Text
-                            {
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                color: Regovar.theme.frontColor.disable
-                                verticalAlignment: Text.AlignVCenter
-                                text: "mybam.bam"
+                                Text
+                                {
+                                    verticalAlignment: Text.AlignVCenter
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    text: name.icon
+                                    font.family: Regovar.theme.icons.name
+                                    color: Regovar.theme.frontColor.disable
+                                }
+                                Text
+                                {
+                                    Layout.fillWidth: true
+                                    verticalAlignment: Text.AlignVCenter
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    text: name.filename
+                                    elide: Text.ElideRight
+                                    color: Regovar.theme.frontColor.disable
+                                }
                             }
                         }
                     }
@@ -205,6 +262,7 @@ GenericScreen
                 {
                     width: scrollArea.viewport.width - 10
                     spacing: 10
+                    height: Regovar.theme.font.boxSize.normal
 
                     Text
                     {
@@ -221,11 +279,13 @@ GenericScreen
                     }
                     Text
                     {
+                        id: configSummary
                         Layout.fillWidth: true
                         font.pixelSize: Regovar.theme.font.size.normal
                         color: Regovar.theme.frontColor.disable
                         verticalAlignment: Text.AlignVCenter
-                        text: "-"
+                        text: regovar.analysesManager.newPipeline.pipeline.configForm.printConfig()
+                        elide: Text.ElideRight
                     }
                 }
             }
@@ -236,6 +296,7 @@ GenericScreen
 
     function checkReady()
     {
+        configSummary.text = regovar.analysesManager.newPipeline.pipeline.configForm.printConfig();
         readyForNext = true; //refField.currentIndex > 0;
     }
 

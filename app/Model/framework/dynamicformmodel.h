@@ -49,6 +49,8 @@ public:
     Q_INVOKABLE bool validate();
     Q_INVOKABLE QJsonObject getResult();
     Q_INVOKABLE DynamicFormFieldModel* getAt(int position);
+    //! Print JSON config as qstring
+    Q_INVOKABLE QString printConfig();
 
     // QAbstractListModel methods
     int rowCount(const QModelIndex& parent = QModelIndex()) const;

@@ -65,23 +65,6 @@ GenericScreen
             }
             property int projectId
 
-//            delegate: ItemDelegate
-//            {
-//                width: projectField.width
-//                height: Regovar.theme.font.boxSize.normal
-//                contentItem: Text
-//                {
-//                    text: modelData.fullPath
-//                    color: enabled ? Regovar.theme.boxColor.front : Regovar.theme.frontColor.disable
-//                    font: projectField.font
-//                    elide: Text.ElideRight
-//                    verticalAlignment: Text.AlignVCenter
-//                }
-
-
-//                highlighted: projectField.highlightedIndex === index
-//            }
-
             Connections
             {
                 target: regovar.projectsManager

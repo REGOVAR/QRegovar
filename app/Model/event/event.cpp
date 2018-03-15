@@ -21,15 +21,13 @@ Event::Event(QObject* parent) : QObject(parent)
     connect(this, &Event::dataChanged, this, &Event::updateSearchField);
 }
 
-Event::Event(int id, QObject* parent) : QObject(parent)
+Event::Event(int id, QObject* parent) : Event(parent)
 {
-    connect(this, &Event::dataChanged, this, &Event::updateSearchField);
     mId = id;
 }
 
-Event::Event(QJsonObject json) : QObject(nullptr)
+Event::Event(QJsonObject json, QObject* parent) : Event(parent)
 {
-    connect(this, &Event::dataChanged, this, &Event::updateSearchField);
     fromJson(json);
 }
 

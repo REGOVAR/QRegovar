@@ -120,6 +120,24 @@ DynamicFormFieldModel* DynamicFormModel::getAt(int position)
 
 
 
+
+QString DynamicFormModel::printConfig()
+{
+    QString result;
+    if (mLoaded)
+    {
+        for (const DynamicFormFieldModel* field: mFieldList)
+        {
+            if (field->value().isValid())
+            {
+                result += field->id() + ": " + field->value().toString() + "\n";
+            }
+        }
+    }
+    return result;
+}
+
+
 int DynamicFormModel::rowCount(const QModelIndex&) const
 {
     return mFieldList.count();

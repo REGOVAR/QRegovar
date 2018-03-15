@@ -58,8 +58,7 @@ GridLayout
     {
         id: errorMessage
         Layout.row: 1
-        Layout.column: 1
-        Layout.columnSpan: 2
+        Layout.column: 2
         Layout.fillWidth: true
         text: ""
         font.pixelSize: Regovar.theme.font.size.small

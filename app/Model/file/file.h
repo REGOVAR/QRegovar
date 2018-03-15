@@ -36,7 +36,8 @@ class File : public QObject
     Q_PROPERTY(QVariant filenameUI READ filenameUI NOTIFY dataChanged)
     Q_PROPERTY(QVariant statusUI READ statusUI NOTIFY dataChanged)
     Q_PROPERTY(QString sizeUI READ sizeUI NOTIFY dataChanged)
-    Q_PROPERTY(QString sourceUI READ sourceUI NOTIFY dataChanged)
+    Q_PROPERTY(QString sourceUI READ sourceUI NOTIFY dataChanged)    
+    Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
 
 public:
     enum FileStatus
@@ -80,6 +81,7 @@ public:
     inline QVariant statusUI() const { return mStatusUI; }
     inline QString sizeUI() const { return mSizeUI; }
     inline QString sourceUI() const { return mSourceUI; }
+    inline QString searchField() const { return mSearchField; }
 
 
     // Setters
@@ -123,6 +125,8 @@ Q_SIGNALS:
     void dataChanged();
     void localFileReadyChanged();
 
+public Q_SLOTS:
+    void updateSearchField();
 
 private:
 
@@ -147,6 +151,7 @@ private:
     bool mLocalFileReady = false;
     qint64 mDownloadOffset = 0;
     FileStatus mLocalStatus;
+    QString mSearchField;
 
 
     // UI all-in-one attributes

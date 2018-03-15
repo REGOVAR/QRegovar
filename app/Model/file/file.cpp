@@ -20,16 +20,23 @@ QStringList File::pdf = {"pdf", "ps"};
 
 File::File(QObject* parent) : QObject(parent)
 {
+    connect(this, &File::dataChanged, this, &File::updateSearchField);
 }
-File::File(QJsonObject json, QObject* parent) : QObject(parent)
+File::File(QJsonObject json, QObject* parent) : File(parent)
 {
     fromJson(json);
 }
-File::File(int id, QObject* parent) : QObject(parent)
+File::File(int id, QObject* parent) : File(parent)
 {
     mId = id;
 }
 
+
+void File::updateSearchField()
+{
+    mSearchField = mName + " " + mComment + " " + mType + " " + mTags + mSourceUI;
+    mSearchField += " " + statusToLabel(mStatus, mSize, mUploadOffset);
+}
 
 
 

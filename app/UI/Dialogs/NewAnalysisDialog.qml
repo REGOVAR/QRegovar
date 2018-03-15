@@ -326,7 +326,7 @@ Window
         if (menuPageMapping !== undefined && newIdx>0 && newIdx != menuSelectedIndex)
         {
             // Call validate() on the current page to check
-            if (menuPageMapping[menuSelectedIndex].validate())
+            if (newIdx<menuSelectedIndex || (newIdx>menuSelectedIndex && menuPageMapping[menuSelectedIndex].validate()))
             {
                 // Open page
                 if (menuPageMapping[menuSelectedIndex])

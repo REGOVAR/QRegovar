@@ -60,7 +60,18 @@ void RootMenu::initFilteringAnalysis()
 }
 void RootMenu::initPipelineAnalysis()
 {
-
+    // Create lvl2 menu entries
+    MenuEntry* monitoringEntry = new MenuEntry(":", tr("Monitoring"), "", this);
+    monitoringEntry->addEntry(new MenuEntry("d", tr("Configuration"), "Analysis/Pipeline/ConfigurationPage.qml", this));
+    monitoringEntry->addEntry(new MenuEntry("J", tr("Container"), "Analysis/Pipeline/ContainerPage.qml", this));
+    monitoringEntry->addEntry(new MenuEntry("Y", tr("Log"), "Analysis/Pipeline/LogsPage.qml", this));
+    // Create lvl1 menu entries
+    mEntries.append(new MenuEntry("a", tr("Analysis"), "Analysis/Pipeline/SummaryPage.qml", this));
+    mEntries.append(monitoringEntry);
+    mEntries.append(new MenuEntry("n", tr("Result"), "Analysis/Pipeline/ResultPage.qml", this));
+    mEntries.append(new MenuEntry("e", tr("Help"), "Analysis/Filtering/HelpPage.qml", this));
+    mEntries.append(new MenuEntry("h", tr("Close"), "@close", this));
+    select(0,0);
 }
 
 
