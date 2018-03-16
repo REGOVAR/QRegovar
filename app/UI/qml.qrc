@@ -200,5 +200,15 @@
         <file>InformationPanel/Variant/AnnotationsPanel.qml</file>
         <file>Pages/Browse/SearchResultEvent.qml</file>
         <file>Dialogs/NewEventDialog.qml</file>
+        <file>Pages/Settings/AdminLogsPage.qml</file>
+        <file>InformationPanel/Common/WebViewPanel.qml</file>
+        <file>Framework/IconButton.qml</file>
+        <file>JobWindow.qml</file>
+        <file>Pages/Analysis/Pipeline/SummaryPage.qml</file>
+        <file>Pages/Analysis/Pipeline/ConfigurationPage.qml</file>
+        <file>Pages/Analysis/Pipeline/ContainerPage.qml</file>
+        <file>Pages/Analysis/Pipeline/LogsPage.qml</file>
+        <file>Pages/Analysis/Pipeline/ResultPage.qml</file>
+        <file>Pages/Analysis/Pipeline/HelpPage.qml</file>
     </qresource>
 </RCC>

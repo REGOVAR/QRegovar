@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.3
 import "../../Regovar"
 import "../../Framework"
 import "../../Dialogs"
+import "../../InformationPanel/Pipeline"
 
 
 GenericScreen
@@ -48,6 +49,7 @@ GenericScreen
         {
             Layout.fillHeight: true
             Layout.minimumWidth: 100
+            width: 300
             color: "transparent"
 
             Rectangle
@@ -60,14 +62,16 @@ GenericScreen
 
                 ListView
                 {
-                    id: inputsList
+                    id: pipelinesList
                     clip: true
                     anchors.fill: parent
                     anchors.margins: 1
-                    model: [{"title": "Hugodims (v1)"}, {"title": "Niourk (v2.7)"}, {"title": "Dpni (v3)"}, {"title": "Niourk (v1.9)"}, {"title": "Niourk (v1.8)"}]
+                    model: regovar.pipelinesManager.intalledPipes.proxy
+                    onModelChanged: updatePipeInfoPanel()
+                    onCurrentItemChanged: updatePipeInfoPanel()
                     delegate: Rectangle
                     {
-                        width: inputsList.width
+                        width: pipelinesList.width
                         height: Regovar.theme.font.boxSize.normal
                         color: index % 2 == 0 ? Regovar.theme.backgroundColor.main : "transparent"
 
@@ -77,7 +81,7 @@ GenericScreen
                             {
                                 height: Regovar.theme.font.boxSize.normal
                                 width: Regovar.theme.font.boxSize.small
-                                text: index < 2 ? "D" : ""
+                                text: model.starred ? "D" : ""
                                 font.family: Regovar.theme.icons.name
                                 font.pixelSize: Regovar.theme.font.size.small
                                 verticalAlignment: Text.AlignVCenter
@@ -85,11 +89,25 @@ GenericScreen
                             }
                             Text
                             {
-                                text: modelData.title
+                                text: model.name + " (" + model.version + ")"
                                 height: Regovar.theme.font.boxSize.normal
                                 font.pixelSize: Regovar.theme.font.size.small
                                 verticalAlignment: Text.AlignVCenter
                             }
+                        }
+                    }
+
+                    function updatePipeInfoPanel()
+                    {
+                        if (pipelinesList.currentItem)
+                        {
+                            var idx = regovar.pipelinesManager.intalledPipes.proxy.getModelIndex(pipelinesList.currentIndex);
+                            var id = regovar.pipelinesManager.intalledPipes.data(idx, 257); // 257 = Qt::UserRole+1 = id
+                            var pipe = regovar.pipelinesManager.getOrCreatePipe(id);
+
+                            pipeInfoPanel.model = pipe.toJson();
+                            pipeInfoPanel.visible = true;
+                            regovar.analysesManager.newPipeline.pipeline = pipe;
                         }
                     }
                 }
@@ -103,83 +121,24 @@ GenericScreen
             Layout.minimumWidth: 100
             color: "transparent"
 
-            Rectangle
+            Text
             {
                 anchors.fill: parent
-                anchors.leftMargin: 5
-
-                color: Regovar.theme.boxColor.back
-                border.width: 1
-                border.color: Regovar.theme.boxColor.border
-
-                Rectangle
-                {
-                    id: descriptionHeader
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.margins: 1
-                    height: Regovar.theme.font.boxSize.title
-                    color:  Regovar.theme.backgroundColor.main
-
-
-                    RowLayout
-                    {
-                        anchors.fill: parent
-                        anchors.leftMargin: 10
-                        anchors.rightMargin: 10
-                        spacing: 10
-
-                        Text
-                        {
-                            Layout.minimumWidth: Regovar.theme.font.boxSize.title
-                            Layout.maximumWidth: Regovar.theme.font.boxSize.title
-                            height: Regovar.theme.font.boxSize.title
-                            text: "J"
-                            font.family: Regovar.theme.icons.name
-                            font.pixelSize: Regovar.theme.font.size.title
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            color: Regovar.theme.primaryColor.front.light
-                        }
-                        Text
-                        {
-                            height: Regovar.theme.font.boxSize.title
-                            text: "Hugodims (v1.0)"
-                            elide: Text.ElideRight
-                            font.pixelSize: Regovar.theme.font.size.header
-                            verticalAlignment: Text.AlignVCenter
-                            color: Regovar.theme.primaryColor.front.light
-                        }
-
-                        Text
-                        {
-                            Layout.alignment: Qt.AlignRight
-                            height: Regovar.theme.font.boxSize.title
-                            text: "D"
-                            font.family: Regovar.theme.icons.name
-                            font.pixelSize: Regovar.theme.font.size.title
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            color: Regovar.theme.primaryColor.front.light
-                        }
-                    }
-                }
-
-
-                Text
-                {
-                    anchors.top: descriptionHeader.bottom
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    text: "No description available"
-                    font.pixelSize: Regovar.theme.font.size.small
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    color: Regovar.theme.frontColor.disable
-                }
+                text: qsTr("No pipeline selected")
+                font.pixelSize: Regovar.theme.font.size.small
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                color: Regovar.theme.frontColor.disable
             }
+
+            PipelineInformation
+            {
+                id: pipeInfoPanel
+                anchors.fill: parent
+                anchors.leftMargin: 5
+                visible: false
+            }
+
         }
     }
 }

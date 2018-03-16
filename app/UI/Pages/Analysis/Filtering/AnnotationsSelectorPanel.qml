@@ -70,6 +70,7 @@ Rectangle
                 {
                     id: searchBox
                     iconLeft: "z"
+                    displayClearButton: true
                     Layout.fillWidth: true
                     placeholder: qsTr("Search annotation...")
                     onTextEdited: root.model.annotationsTree.proxy.setFilterString(text);

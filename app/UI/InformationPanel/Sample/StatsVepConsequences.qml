@@ -179,7 +179,7 @@ Item
                 vepConsequenceChartModel.push({
                     "label": key,
                     "percent": (count / transcriptTotal * 100.0).toFixed(1) + "%",
-                    "count": Regovar.formatBigNumber(count),
+                    "count": regovar.formatNumber(count),
                     "value": count / transcriptTotal * 100.0 });
             }
             // Populate legend
@@ -226,7 +226,7 @@ Item
                     vepConsequenceChartModel.push({
                         "label": vclassesNames[vclass],
                         "percent": (count / transcriptTotal * 100.0).toFixed(1) + " %",
-                        "count": Regovar.formatBigNumber(count),
+                        "count": regovar.formatNumber(count),
                         "value": count / transcriptTotal * 100.0 });
                 });
                 // Populate legend

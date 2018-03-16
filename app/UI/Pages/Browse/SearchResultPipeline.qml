@@ -35,7 +35,7 @@ Rectangle
             font.family: "monospace"
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.disable
             verticalAlignment: Text.AlignVCenter
-            text: Regovar.formatDate(date)
+            text: regovar.formatDate(date)
             elide: Text.ElideRight
         }
         Rectangle
@@ -51,7 +51,7 @@ Rectangle
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: "j"
+            text: "J"
         }
         Text
         {

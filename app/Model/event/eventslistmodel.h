@@ -34,7 +34,7 @@ public:
     inline QString id() const { return mId; }
 
     // Methods
-    Q_INVOKABLE bool loadJson(QJsonArray json);
+    Q_INVOKABLE bool loadJson(QJsonArray json, bool technical=false);
     Q_INVOKABLE bool add(Event* event);
     Q_INVOKABLE bool refresh();
     Q_INVOKABLE void newEvent(QString message, QDateTime date, QString details);
@@ -54,7 +54,7 @@ private:
     int mRefId = -1;
     //! List of events
     QList<Event*> mEventList;
-    //! The QSortFilterProxyModel to use by table view to browse samples of the manager
+    //! The QSortFilterProxyModel to use by table view to browse events of the list
     GenericProxyModel* mProxy = nullptr;
     //! Target concerned by events model
     QString mTarget;

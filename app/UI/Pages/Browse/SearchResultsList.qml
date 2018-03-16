@@ -344,7 +344,7 @@ ScrollView
                     width: root.viewport.width
                     pipelineId: model.modelData.id
                     name: model.modelData.name
-                    date: model.modelData.update_date
+                    date: regovar.formatDate(model.modelData.installation_date)
                     onClicked: regovar.getPipelineInfo(model.modelData.id)
                 }
             }

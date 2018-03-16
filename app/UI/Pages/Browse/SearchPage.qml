@@ -60,6 +60,7 @@ Rectangle
 
             property string formerSearch: ""
             iconLeft: "z"
+            displayClearButton: true
             text: regovar.searchRequest
             placeholder: qsTr("Search subjects, samples, analyses, panels...")
             onEditingFinished:

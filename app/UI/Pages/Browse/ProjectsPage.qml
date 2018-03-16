@@ -46,6 +46,7 @@ Rectangle
             anchors.right: connectionStatus.left
             anchors.margins: 10
             iconLeft: "z"
+            displayClearButton: true
             placeholder: qsTr("Search analyses by names, dates, comments...")
             onTextEdited: regovar.projectsManager.proxy.setFilterString(text)
             onTextChanged: regovar.projectsManager.proxy.setFilterString(text)
@@ -128,12 +129,22 @@ Rectangle
                 }
             }
         }
-
         TableViewColumn
         {
             role: "name"
             title: "Name"
             width: 400
+        }
+        TableViewColumn
+        {
+            role: "analysistype"
+            title: "Type"
+        }
+
+        TableViewColumn
+        {
+            role: "status"
+            title: "Status"
         }
         TableViewColumn
         {

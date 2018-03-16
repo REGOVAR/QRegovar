@@ -325,22 +325,27 @@ Window
     {
         if (menuPageMapping !== undefined && newIdx>0 && newIdx != menuSelectedIndex)
         {
-            if (menuPageMapping[menuSelectedIndex])
+            // Call validate() on the current page to check
+            if (newIdx<menuSelectedIndex || (newIdx>menuSelectedIndex && menuPageMapping[menuSelectedIndex].validate()))
             {
-                menuPageMapping[menuSelectedIndex].z = 0;
-                menuPageMapping[newIdx].z = 100;
-                menuPageMapping[newIdx].anchors.fill = stackPanel;
-                nextButton.enabled = Qt.binding(function()
+                // Open page
+                if (menuPageMapping[menuSelectedIndex])
                 {
-                    var ready = false;
-                    if ( menuPageMapping[newIdx])
+                    menuPageMapping[menuSelectedIndex].z = 0;
+                    menuPageMapping[newIdx].z = 100;
+                    menuPageMapping[newIdx].anchors.fill = stackPanel;
+                    nextButton.enabled = Qt.binding(function()
                     {
-                        ready = menuPageMapping[newIdx].readyForNext;
-                        //menuModel[newIdx]["checked"] = ready;
-                    }
-                    return ready;
-                });
-                menuSelectedIndex = newIdx;
+                        var ready = false;
+                        if ( menuPageMapping[newIdx])
+                        {
+                            ready = menuPageMapping[newIdx].readyForNext;
+                            //menuModel[newIdx]["checked"] = ready;
+                        }
+                        return ready;
+                    });
+                    menuSelectedIndex = newIdx;
+                }
             }
         }
     }

@@ -50,6 +50,7 @@ Rectangle
             id: searchField
             Layout.fillWidth: true
             iconLeft: "z"
+            displayClearButton: true
             text: regovar.searchRequest
             placeholder: qsTr("Search gene, phenotype or disease...")
             onEditingFinished: search()

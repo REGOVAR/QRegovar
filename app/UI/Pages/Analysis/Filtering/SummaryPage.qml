@@ -453,14 +453,34 @@ Rectangle
             }
             TableViewColumn
             {
-                title: "Type"
-                role: "type"
-                width: Regovar.theme.font.boxSize.header
-            }
-            TableViewColumn
-            {
                 title: "Event"
                 role: "message"
+                width: 500
+                delegate: Item
+                {
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value.icon
+                        font.family: Regovar.theme.icons.name
+                    }
+                    Text
+                    {
+                        anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                        anchors.rightMargin: 5
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value.message
+                        elide: Text.ElideRight
+                    }
+                }
             }
         }
         Column
@@ -665,8 +685,7 @@ Rectangle
 
     }
 
-    property var statusIconMap: ({"ready": "n", "error": "l", "computing": "/", "waiting": "m", "empty": "g"})
-    property var statusTextMap: ({"ready": qsTr("Ready"), "error": qsTr("Error"), "computing": qsTr("Computing database"), "waiting": qsTr("Waiting samples import"), "empty": qsTr("Closed")})
+    property var statusTextMap: ({"ready": qsTr("Ready"), "error": qsTr("Error"), "computing": qsTr("Computing database"), "waiting": qsTr("Waiting samples import"), "empty": qsTr("Initializing"), "close": qsTr("Closed")})
     function updateStatusFromModel()
     {
         var globalProgress = 0;
@@ -713,7 +732,7 @@ Rectangle
 
         // update status
         statusField.text = root.statusTextMap[root.model.status];
-        statusIcon.text = root.statusIconMap[root.model.status];
+        statusIcon.text = Regovar.filteringAnalysisStatusToIconMap[root.model.status];
         if (root.model.status == "computing")
         {
             statusIconAnimation.start();
@@ -738,7 +757,7 @@ Rectangle
 
             updateView1FromModel(root.model);
             updateStatusFromModel();
-            //creationDate.text = Regovar.formatShortDate(root.model.createDate);
+            //creationDate.text = regovar.formatDate(root.model.createDate, false);
             refField.text = root.model.refName;
 
             // Type

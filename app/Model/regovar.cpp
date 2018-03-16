@@ -119,6 +119,7 @@ void Regovar::init()
     mPanelsManager = new PanelsManager(this);
     mEventsManager = new EventsManager(this);
     mToolsManager = new ToolsManager(this);
+    mPipelinesManager = new PipelinesManager(this);
 
     // Init sub models
 //    mProjectsManager->refresh();
@@ -213,7 +214,7 @@ void Regovar::loadWelcomData()
             mPanelsManager->loadJson(data["panels"].toArray());
 
             // Get pipelines
-            // mPi->loadJson(data["jobs"].toArray());
+            mPipelinesManager->loadJson(data["pipelines"].toArray());
 
             // Get samples
             mSamplesManager->loadJson(data["samples"].toArray());
@@ -594,6 +595,20 @@ QString Regovar::formatNumber(double value)
     QString ss = cLocale.toString(value);
     ss.replace(cLocale.groupSeparator(), ' ');
     return ss;
+}
+QString Regovar::formatDate(QDateTime date, bool withTime)
+{
+    if (date.isNull() || !date.isValid()) return "";
+
+    if (withTime)
+    {
+        return date.toString("yyyy-MM-dd hh:mm");
+    }
+    return date.toString("yyyy-MM-dd");
+}
+QString Regovar::formatDate(QString isodate, bool withTime)
+{
+    return formatDate(QDateTime::fromString(isodate, Qt::ISODate), withTime);
 }
 
 

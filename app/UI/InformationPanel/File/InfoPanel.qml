@@ -49,7 +49,7 @@ Rectangle
             tagsField.text = fileModel.tags;
             commentField.text = fileModel.comment;
 
-            remoteCreation.text = Regovar.formatDate(fileModel.creationDate);
+            remoteCreation.text = regovar.formatDate(fileModel.creationDate);
             remoteSize.text = fileModel.sizeUI;
             remoteStatus.text = fileModel.statusUI["label"];
             remoteMd5.text = fileModel.md5Sum;

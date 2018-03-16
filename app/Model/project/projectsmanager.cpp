@@ -17,7 +17,7 @@ void ProjectsManager::refresh()
 {
     mProjectsTreeModel->setIsLoading(true);
 
-    Request* request = Request::get("/project/browserTree");
+    Request* request = Request::get("/projects");
     connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
         if (success)

@@ -140,20 +140,20 @@ QtObject
 
 
     // TOOLS
-    function formatBigNumber(value)
-    {
-        if (value)
-        {
-            var n = value.toString();
-            var p = n.indexOf('.');
-            n = n.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, function($0, i)
-            {
-                return p<0 || i<p ? ($0+' ') : $0;
-            });
-            return n;
-        }
-        return "";
-    }
+//    function formatBigNumber(value)
+//    {
+//        if (value)
+//        {
+//            var n = value.toString();
+//            var p = n.indexOf('.');
+//            n = n.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, function($0, i)
+//            {
+//                return p<0 || i<p ? ($0+' ') : $0;
+//            });
+//            return n;
+//        }
+//        return "";
+//    }
 
 
     property var seqColorMapCss : ({
@@ -191,7 +191,7 @@ QtObject
         }
         return 0;
     }
-
+/*
     function formatDate(iso)
     {
         if (iso)
@@ -234,11 +234,11 @@ QtObject
         {
             return "";
         }
-    }
+    }*/
 
 
     // SPECIFIC TOOLS
-    property var filteringAnalysisStatusToIconMap: ({"waiting": "{", "computing": "/", "error": "l", "done": "n", "ready": "n"})
+    property var filteringAnalysisStatusToIconMap: ({"waiting": "{", "computing": "/", "error": "l", "done": "n", "ready": "n", "close": "g"})
     function filteringAnalysisStatusToIcon(status)
     {
         if (status in filteringAnalysisStatusToIconMap)

@@ -140,14 +140,10 @@ bool AnalysesManager::newAnalysis(QString type)
                     body.insert("fields", data["fields"].toArray());
                     Request* req2 = Request::post(QString("/analysis/%1/filtering").arg(id), QJsonDocument(body).toJson());
                     req2->deleteLater();
+                }
 
-                    // notify HMI that analysis is created
-                    emit analysisCreationDone(true, id);
-                }
-                else
-                {
-                    emit analysisCreationDone(false, -1);
-                }
+                // notify HMI that analysis is created (=> close newAnalizeWizard dialog)
+                emit analysisCreationDone(false, result ? id :-1);
             }
             else
             {
@@ -161,7 +157,28 @@ bool AnalysesManager::newAnalysis(QString type)
     }
     else if (type == PIPELINE)
     {
+        mNewPipeline->setConfig(mNewPipeline->pipeline()->configForm()->getResult());
+        Request* req = Request::post(QString("/job"), QJsonDocument(mNewPipeline->toJson()).toJson());
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+        {
+            if (success)
+            {
+                QJsonObject data = json["data"].toObject();
+                int id = data["id"].toInt();
+                // Open new analysis
+                bool result = openAnalysis(PIPELINE, id, false);
 
+                // notify HMI that analysis is created (=> close newAnalizeWizard dialog)
+                emit analysisCreationDone(false, result ? id :-1);
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            req->deleteLater();
+        });
     }
     return true;
 }
@@ -175,13 +192,16 @@ bool AnalysesManager::openAnalysis(QString type, int id, bool reload_from_server
 {
     // Get analysis
     Analysis* analysis = nullptr;
+    QUrl url;
     if (type == FILTERING)
     {
         analysis = getOrCreateFilteringAnalysis(id);
+        url = QUrl("qrc:/qml/AnalysisWindow.qml");
     }
     if (type == PIPELINE)
     {
         analysis = getOrCreatePipelineAnalysis(id);
+        url = QUrl("qrc:/qml/JobWindow.qml");
     }
 
     if (analysis == nullptr)
@@ -194,7 +214,7 @@ bool AnalysesManager::openAnalysis(QString type, int id, bool reload_from_server
     }
 
     // open it in a new windows
-    return regovar->openNewWindow(QUrl("qrc:/qml/AnalysisWindow.qml"), analysis);
+    return regovar->openNewWindow(url, analysis);
 }
 
 

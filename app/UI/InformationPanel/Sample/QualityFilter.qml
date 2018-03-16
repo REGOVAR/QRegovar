@@ -200,11 +200,11 @@ Item
 //            filterChartModel.push({
 //                "label": key,
 //                "percent": (count / variantTotal * 100.0).toFixed(1) + "%",
-//                "count": Regovar.formatBigNumber(count),
+//                "count": regovar.formatNumber(count),
 //                "value": count / variantTotal * 100.0 });
 //        }
 //        // Populate legend
-//        totalVariant.text = Regovar.formatBigNumber(variantTotal);
+//        totalVariant.text = regovar.formatNumber(variantTotal);
 //        qualFilterRepeater.model = filterChartModel;
 //        // Populate Pie slices
 //        filterPieSeries.clear()
@@ -237,11 +237,11 @@ Item
                 filterChartModel.push({
                     "label": key,
                     "percent": (count / variantTotal * 100.0).toFixed(1) + "%",
-                    "count": Regovar.formatBigNumber(count),
+                    "count": regovar.formatNumber(count),
                     "value": count / variantTotal * 100.0 });
             }
             // Populate legend
-            totalVariant.text = Regovar.formatBigNumber(variantTotal);
+            totalVariant.text = regovar.formatNumber(variantTotal);
             qualFilterRepeater.model = filterChartModel;
             // Populate Pie slices
             filterPieSeries.clear()

@@ -55,7 +55,7 @@ GenericScreen
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                model: regovar.newPipeline.inputsFilesList
+                model: regovar.analysesManager.newPipeline.inputsFiles
 
 
                 Rectangle
@@ -99,7 +99,7 @@ GenericScreen
                 TableViewColumn
                 {
                     title: "Name"
-                    role: "filenameUI"
+                    role: "name"
                     delegate: Item
                     {
 
@@ -132,7 +132,7 @@ GenericScreen
                 TableViewColumn
                 {
                     title: "Status"
-                    role: "statusUI"
+                    role: "status"
                     delegate: Item
                     {
 
@@ -162,29 +162,9 @@ GenericScreen
 
                     }
                 }
-                TableViewColumn { title: "Size"; role: "sizeUI"; horizontalAlignment: Text.AlignRight }
-                TableViewColumn
-                {
-                    title: "Date"
-                    role: "updateDate"
-                    delegate: Item
-                    {
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.rightMargin: 5
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text:styleData.value.toLocaleDateString()
-                            elide: Text.ElideRight
-                        }
-
-                    }
-                }
-                TableViewColumn { title: "Source"; role: "sourceUI" }
+                TableViewColumn { title: "Size"; role: "size"; horizontalAlignment: Text.AlignRight }
+                TableViewColumn { title: "Date";  role: "updateDate" }
+                TableViewColumn { title: "Source"; role: "source" }
                 TableViewColumn { title: "Comment"; role: "comment" }
             }
 
@@ -213,7 +193,7 @@ GenericScreen
                         {
                             files = files.concat(regovar.filesManager.remoteList[rowIndex]);
                         });
-                        regovar.newPipeline.removeInputs(files);
+                        regovar.analysesManager.newPipeline.removeInputs(files);
                     }
                 }
             }
@@ -224,21 +204,21 @@ GenericScreen
     SelectFilesDialog
     {
         id: fileSelector
-        onFileSelected: { regovar.newPipeline.addInputs(files); }
+        onFileSelected: regovar.analysesManager.newPipeline.addInputs(files)
     }
 
-    Connections
-    {
-        target: regovar
-        onOnWebsocketMessageReceived:
-        {
-            // We assume that if a file is downloading, it's for us...
-            if (action == "file_upload")
-            {
-                regovar.newPipeline.addInputFromWS(data);
-            }
+//    Connections
+//    {
+//        target: regovar
+//        onOnWebsocketMessageReceived:
+//        {
+//            // We assume that if a file is downloading, it's for us...
+//            if (action == "file_upload")
+//            {
+//                regovar.analysesManager.newPipeline.addInputFromWS(data);
+//            }
 
-            console.log ("WS [" + action + "] " + data);
-        }
-    }
+//            console.log ("WS [" + action + "] " + data);
+//        }
+//    }
 }

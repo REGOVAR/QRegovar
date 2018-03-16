@@ -186,11 +186,11 @@ Item
             variantClassesChartModel.push({
                 "label": vclassesNames[vclass],
                 "percent": (count / variantTotal * 100.0).toFixed(1) + "%",
-                "count": Regovar.formatBigNumber(count),
+                "count": regovar.formatNumber(count),
                 "value": count / variantTotal * 100.0 });
         });
         // Populate legend
-        totalVariant.text = Regovar.formatBigNumber(variantTotal);
+        totalVariant.text = regovar.formatNumber(variantTotal);
         variantClassesRepeater.model = variantClassesChartModel;
         // Populate Pie slices
         variantClassesPieSeries.clear();
@@ -219,11 +219,11 @@ Item
                 variantClassesChartModel.push({
                     "label": vclassesNames[vclass],
                     "percent": (count / variantTotal * 100.0).toFixed(1) + "%",
-                    "count": Regovar.formatBigNumber(count),
+                    "count": regovar.formatNumber(count),
                     "value": count / variantTotal * 100.0 });
             });
             // Populate legend
-            totalVariant.text = Regovar.formatBigNumber(variantTotal);
+            totalVariant.text = regovar.formatNumber(variantTotal);
             variantClassesRepeater.model = variantClassesChartModel;
             // Populate Pie slices
             variantClassesPieSeries.clear();

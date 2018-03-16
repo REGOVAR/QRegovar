@@ -10,9 +10,7 @@ Rectangle
     property int eventId
     property real dateColWidth: 100
     property string date: ""
-    property string message: ""
-    property string type: ""
-    property string icon: ""
+    property var message
     property int indent: 1
 
     property bool isHover: false
@@ -36,7 +34,7 @@ Rectangle
             font.pixelSize: Regovar.theme.font.size.normal
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.disable
             verticalAlignment: Text.AlignVCenter
-            text: Regovar.formatDate(date)
+            text: regovar.formatDate(date)
             elide: Text.ElideRight
         }
         Rectangle
@@ -52,7 +50,7 @@ Rectangle
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: icon
+            text: message.icon
         }
 
         Text
@@ -62,7 +60,7 @@ Rectangle
             font.family: Regovar.theme.font.family
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: message
+            text: message.message
         }
     }
 

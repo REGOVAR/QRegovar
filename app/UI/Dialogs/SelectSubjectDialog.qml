@@ -56,6 +56,7 @@ Dialog
             anchors.right: root.right
             anchors.margins: 10
             iconLeft: "z"
+            displayClearButton: true
             placeholder: qsTr("Search subjects by identifier, firstname, lastname, date of birth, sex, comment, ...")
             onTextEdited: regovar.subjectsManager.proxy.setFilterString(text)
         }

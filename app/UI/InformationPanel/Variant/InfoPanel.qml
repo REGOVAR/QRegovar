@@ -24,7 +24,7 @@ Rectangle
         {
             nameField.text = sampleModel.name;
             comment.text = sampleModel.comment;
-            creation.text = Regovar.formatDate(sampleModel.createDate);
+            creation.text = regovar.formatDate(sampleModel.createDate);
             vcfFile.text = sampleModel.source.name;
             reference.text = sampleModel.reference.name;
         }

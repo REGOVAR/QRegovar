@@ -104,8 +104,8 @@ Item
     function updateViewFromAnalysisModel(model)
     {
         var data=[];
-        data.push({"label": qsTr("Total variants"), "value": Regovar.formatBigNumber(model.stats["total_variant"])});
-        data.push({"label": qsTr("Total transcript"), "value": Regovar.formatBigNumber(model.stats["total_transcript"])});
+        data.push({"label": qsTr("Total variants"), "value": regovar.formatNumber(model.stats["total_variant"])});
+        data.push({"label": qsTr("Total transcript"), "value": regovar.formatNumber(model.stats["total_transcript"])});
         data.push({"label": qsTr("Overlapped genes"), "value": "-"});
         data.push({"label": "...", "value": ""});
         repeater.model = data;
@@ -118,11 +118,11 @@ Item
         if (sample)
         {
             data.push({"label": qsTr("VCF file"), "value": sample.source.name});
-            data.push({"label": qsTr("VCF import"), "value": Regovar.formatDate(sample.source.createDate)});
+            data.push({"label": qsTr("VCF import"), "value": regovar.formatDate(sample.source.createDate)});
             data.push({"label": qsTr("BAM file"), "value": "-"});
             data.push({"label": qsTr("VCF header reference"), "value": sample.reference.name}); // TODO: this stat must be computed by import manager server side
-            data.push({"label": qsTr("Total variants"), "value": Regovar.formatBigNumber(sample.stats["total_variant"])});
-            data.push({"label": qsTr("Total transcript"), "value": Regovar.formatBigNumber(sample.stats["total_transcript"])});
+            data.push({"label": qsTr("Total variants"), "value": regovar.formatNumber(sample.stats["total_variant"])});
+            data.push({"label": qsTr("Total transcript"), "value": regovar.formatNumber(sample.stats["total_transcript"])});
             data.push({"label": qsTr("Overlapped genes"), "value": "-"});
 
         }

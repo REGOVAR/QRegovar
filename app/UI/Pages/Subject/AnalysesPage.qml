@@ -219,7 +219,7 @@ Rectangle
                     font.pixelSize: Regovar.theme.font.size.header
                     verticalAlignment: Text.AlignVCenter
                     color: Regovar.theme.primaryColor.back.normal
-                    text: currentAnalysis ? Regovar.formatDate(currentAnalysis.lastUpdate) : ""
+                    text: currentAnalysis ? regovar.formatDate(currentAnalysis.lastUpdate) : ""
                 }
 
                 Rectangle

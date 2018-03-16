@@ -77,7 +77,7 @@ Rectangle
                 color: Regovar.theme.primaryColor.back.dark
 
                 font.pixelSize: Regovar.theme.font.size.header
-                text: ( root.model != null) ? ": " + Regovar.formatBigNumber(root.model.results.total) + " " + ((root.model.results.total > 1) ? qsTr("variants") : qsTr("variant")) : ""
+                text: ( root.model != null) ? ": " + regovar.formatNumber(root.model.results.total) + " " + ((root.model.results.total > 1) ? qsTr("variants") : qsTr("variant")) : ""
             }
         }
         ConnectionStatus
@@ -123,6 +123,7 @@ Rectangle
         {
             Layout.fillWidth: true
             iconLeft: "z"
+            displayClearButton: true
             placeholder: qsTr("Search by position chr1:422566 or by genes names...")
         }
     }
@@ -311,7 +312,7 @@ Rectangle
 
         Text
         {
-            text: root.model ? qsTr("Loaded entries: ") + Regovar.formatBigNumber(root.model.results.loaded) + " / " + Regovar.formatBigNumber(root.model.results.total) : ""
+            text: root.model ? qsTr("Loaded entries: ") + regovar.formatNumber(root.model.results.loaded) + " / " + regovar.formatNumber(root.model.results.total) : ""
             font.pixelSize: Regovar.theme.font.size.small
         }
         ButtonInline

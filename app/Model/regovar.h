@@ -17,6 +17,8 @@
 #include "subject/reference.h"
 #include "panel/panelsmanager.h"
 #include "event/eventsmanager.h"
+#include "pipeline/pipelinesmanager.h"
+
 // TODO: rework as manager pattern
 #include "user.h"
 #include "admin.h"
@@ -96,6 +98,7 @@ class Regovar : public QObject
     Q_PROPERTY(PanelsManager* panelsManager READ panelsManager NOTIFY neverChanged)
     Q_PROPERTY(EventsManager* eventsManager READ eventsManager NOTIFY neverChanged)
     Q_PROPERTY(ToolsManager* toolsManager READ toolsManager NOTIFY neverChanged)
+    Q_PROPERTY(PipelinesManager* pipelinesManager READ pipelinesManager NOTIFY neverChanged)
 
     // Others
     Q_PROPERTY(RootMenu* mainMenu READ mainMenu NOTIFY neverChanged)
@@ -139,6 +142,7 @@ public:
     inline PanelsManager* panelsManager() const { return mPanelsManager; }
     inline EventsManager* eventsManager() const { return mEventsManager; }
     inline ToolsManager* toolsManager() const { return mToolsManager; }
+    inline PipelinesManager* pipelinesManager() const { return mPipelinesManager; }
     //--
     inline QList<QObject*> references() const { return mReferences; }
     inline RootMenu* mainMenu() const { return mMainMenu; }
@@ -179,6 +183,8 @@ public:
     Q_INVOKABLE QDateTime dateFromString(QString date);
     Q_INVOKABLE QString formatNumber(int value);
     Q_INVOKABLE QString formatNumber(double value);
+    Q_INVOKABLE QString formatDate(QDateTime date, bool withTime=true);
+    Q_INVOKABLE QString formatDate(QString isodate, bool withTime=true);
     bool openNewWindow(QUrl qmlUrl, QObject* model);
 
 
@@ -289,7 +295,8 @@ private:
     EventsManager* mEventsManager = nullptr;
     //! Custom Tools managers (exporters, reporters)
     ToolsManager* mToolsManager = nullptr;
-    // PipelinesManangers
+    //! PipelinesManangers
+    PipelinesManager* mPipelinesManager = nullptr;
 
 
     // Technical stuff

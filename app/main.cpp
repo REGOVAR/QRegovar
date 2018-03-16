@@ -46,30 +46,37 @@ int main(int argc, char *argv[])
     qmlRegisterType<QuickFilterField>("Regovar.Core", 1, 0, "QuickFilterField");
     qmlRegisterType<AdvancedFilterModel>("Regovar.Core", 1, 0, "AdvancedFilterModel");
     qmlRegisterType<Set>("Regovar.Core", 1, 0, "Set");
-    qmlRegisterType<User>("Regovar.Core", 1, 0, "User");
-    qmlRegisterType<Project>("Regovar.Core", 1, 0, "Project");
-    qmlRegisterType<AdminTableInfo>("Regovar.Core", 1, 0, "AdminTableInfo");
 
     qmlRegisterType<ProjectsManager>("Regovar.Core", 1, 0, "ProjectsManager");
     qmlRegisterType<SubjectsManager>("Regovar.Core", 1, 0, "SubjectsManager");
     qmlRegisterType<SamplesManager>("Regovar.Core", 1, 0, "SamplesManager");
     qmlRegisterType<AnalysesManager>("Regovar.Core", 1, 0, "AnalysesManager");
     qmlRegisterType<ToolsManager>("Regovar.Core", 1, 0, "ToolsManager");
+    qmlRegisterType<PanelsManager>("Regovar.Core", 1, 0, "PanelsManager");
+
+    qmlRegisterType<EventsListModel>("Regovar.Core", 1, 0, "EventsListModel");
+    qmlRegisterType<FilesListModel>("Regovar.Core", 1, 0, "FilesListModel");
+
+    qmlRegisterType<User>("Regovar.Core", 1, 0, "User");
+    qmlRegisterType<Project>("Regovar.Core", 1, 0, "Project");
     qmlRegisterType<Subject>("Regovar.Core", 1, 0, "Subject");
     qmlRegisterType<Sample>("Regovar.Core", 1, 0, "Sample");
     qmlRegisterType<File>("Regovar.Core", 1, 0, "File");
     qmlRegisterType<Reference>("Regovar.Core", 1, 0, "Reference");
     qmlRegisterType<Attribute>("Regovar.Core", 1, 0, "Attribute");
-    qmlRegisterType<PanelsManager>("Regovar.Core", 1, 0, "PanelsManager");
     qmlRegisterType<Panel>("Regovar.Core", 1, 0, "Panel");
+    qmlRegisterType<Event>("Regovar.Core", 1, 0, "Event");
+    qmlRegisterType<Pipeline>("Regovar.Core", 1, 0, "Pipeline");
+
+    qmlRegisterType<AdminTableInfo>("Regovar.Core", 1, 0, "AdminTableInfo");
     qmlRegisterType<RootMenu>("Regovar.Core", 1, 0, "RootMenu");
     qmlRegisterType<MenuEntry>("Regovar.Core", 1, 0, "MenuEntry");
-    qmlRegisterType<EventsListModel>("Regovar.Core", 1, 0, "EventsListModel");
-    qmlRegisterType<Event>("Regovar.Core", 1, 0, "Event");
-
-
+    qmlRegisterType<DynamicFormModel>("Regovar.Core", 1, 0, "DynamicFormModel");
+    qmlRegisterType<DynamicFormFieldModel>("Regovar.Core", 1, 0, "DynamicFormFieldModel");
+    // TODO: refacto with DynamicFormModel & DynamicFormFieldModel
     qmlRegisterType<Tool>("Regovar.Core", 1, 0, "Tool");
     qmlRegisterType<ToolParameter>("Regovar.Core", 1, 0, "ToolParameter");
+
 
     // Register custom classes to use it with QML: Regovar.Widget
     qmlRegisterType<VariantsTreeWidget>("Regovar.Widget", 1, 0, "VariantsTreeWidget");

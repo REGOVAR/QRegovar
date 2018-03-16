@@ -41,6 +41,7 @@ QHash<int, QByteArray> ProjectsTreeModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[Id] = "id";
     roles[Type] = "type";
+    roles[AnalysisType] = "analysisType";
     roles[Name] = "name";
     roles[Comment] = "comment";
     roles[Date] = "date";
@@ -61,6 +62,7 @@ TreeItem* ProjectsTreeModel::newFolderTreeItem(const QJsonObject& data, TreeItem
     QHash<int, QVariant> columnData;
     columnData.insert(Id, id);
     columnData.insert(Type, "folder");
+    columnData.insert(AnalysisType, "");
     columnData.insert(Name, project->name());
     columnData.insert(Comment, project->comment());
     columnData.insert(Date, QVariant(project->updateDate().toString("yyyy-MM-dd HH:mm")));
@@ -83,11 +85,12 @@ TreeItem* ProjectsTreeModel::newAnalysisTreeItem(const int id, TreeItem* parent)
     QHash<int, QVariant> columnData;
     columnData.insert(Id, id);
     columnData.insert(Type, analysis->type());
+    columnData.insert(AnalysisType, analysis->type()); // todo: for pipeline, give the name-version of the pipe
     columnData.insert(Name, analysis->name());
     columnData.insert(Comment, analysis->comment());
     columnData.insert(Date, QVariant(analysis->updateDate().toString("yyyy-MM-dd HH:mm")));
     columnData.insert(Status, analysis->status());
-    QString search = analysis->name() + " " + analysis->comment() + " " + analysis->updateDate().toString("yyyy-MM-dd HH:mm") + " " + analysis->status();
+    QString search = analysis->name() + " " + analysis->comment() + " " + analysis->updateDate().toString("yyyy-MM-dd HH:mm") + " " + analysis->status()+ " " + analysis->type();
     columnData.insert(SearchField, QVariant(search));
 
     TreeItem* result = new TreeItem(parent);

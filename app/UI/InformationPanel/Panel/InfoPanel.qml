@@ -52,7 +52,7 @@ ScrollView
             text += "<tr><td><b>Name: </b></td><td>" + data.name + "</td></tr>";
             text += "<tr><td><b>Head version: </b></td><td>" + headVersion.version + "</td></tr>";
             text += "<tr><td><b>Shared: </b></td><td>" + (data.shared ? qsTr("Yes") : qsTr("No")) + "</td></tr>";
-            text += "<tr><td><b>Last update: </b></td><td>" + Regovar.formatDate(headVersion.updateDate) + "</td></tr>";
+            text += "<tr><td><b>Last update: </b></td><td>" + regovar.formatDate(headVersion.updateDate) + "</td></tr>";
             text += "<tr><td><b>Owner: </b></td><td>" + data.owner + "</td></tr>";
             text += "<tr><td><b>Description: </b></td><td>" + data.description + "</td></tr>";
             text += "</table><br/><br/>";

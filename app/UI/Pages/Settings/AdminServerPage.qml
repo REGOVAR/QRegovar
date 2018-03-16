@@ -895,7 +895,7 @@ Rectangle
                             elide: Text.ElideRight
                             font.family: "monospace"
                             horizontalAlignment: Text.AlignRight
-                            text: styleData.value ? Regovar.formatBigNumber(styleData.value) : "-"
+                            text: styleData.value ? regovar.formatNumber(styleData.value) : "-"
                         }
                     }
                 }
