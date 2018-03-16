@@ -99,7 +99,6 @@ QJsonObject DynamicFormModel::getResult()
         {
             if (field->value().isValid())
             {
-                if (!field->required() && (field->value().isNull() || field->value() == field->defaultValue())) continue;
                 result.insert(field->id(), field->value().toJsonValue());
             }
         }

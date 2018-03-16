@@ -157,7 +157,7 @@ bool AnalysesManager::newAnalysis(QString type)
     }
     else if (type == PIPELINE)
     {
-
+        mNewPipeline->setConfig(mNewPipeline->pipeline()->configForm()->getResult());
         Request* req = Request::post(QString("/job"), QJsonDocument(mNewPipeline->toJson()).toJson());
         connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {

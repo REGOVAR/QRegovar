@@ -28,7 +28,7 @@ ApplicationWindow
     property alias menuModel: mainMenu.model
 
     //! Analysis model dedicated to the window
-    property FilteringAnalysis model
+    property PipelineAnalysis model
 
     Settings
     {

@@ -17,7 +17,7 @@ class PipelineAnalysis: public Analysis
     Q_PROPERTY(int id READ id NOTIFY neverChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
-    Q_PROPERTY(QJsonObject config READ config NOTIFY neverChanged)
+    Q_PROPERTY(QJsonObject config READ config WRITE setConfig NOTIFY neverChanged)
     Q_PROPERTY(JobStatus status READ status NOTIFY dataChanged)
     Q_PROPERTY(double progressValue READ progressValue NOTIFY dataChanged)
     Q_PROPERTY(QString progressLabel READ progressLabel NOTIFY dataChanged)
@@ -62,6 +62,7 @@ public:
     // Setters
     inline void setName(QString name) { mName = name; emit dataChanged(); }
     inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
+    inline void setConfig(QJsonObject config) { mConfig = config; emit dataChanged(); }
     void setPipeline(Pipeline* pipe);
     void setStatus(JobStatus status);
     void setStatus(QString status);
