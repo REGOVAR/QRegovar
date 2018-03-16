@@ -238,7 +238,7 @@ QtObject
 
 
     // SPECIFIC TOOLS
-    property var filteringAnalysisStatusToIconMap: ({"waiting": "{", "computing": "/", "error": "l", "done": "n", "ready": "n"})
+    property var filteringAnalysisStatusToIconMap: ({"waiting": "{", "computing": "/", "error": "l", "done": "n", "ready": "n", "close": "g"})
     function filteringAnalysisStatusToIcon(status)
     {
         if (status in filteringAnalysisStatusToIconMap)

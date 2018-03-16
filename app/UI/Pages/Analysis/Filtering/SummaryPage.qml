@@ -685,8 +685,7 @@ Rectangle
 
     }
 
-    property var statusIconMap: ({"ready": "n", "error": "l", "computing": "/", "waiting": "m", "empty": "g"})
-    property var statusTextMap: ({"ready": qsTr("Ready"), "error": qsTr("Error"), "computing": qsTr("Computing database"), "waiting": qsTr("Waiting samples import"), "empty": qsTr("Closed")})
+    property var statusTextMap: ({"ready": qsTr("Ready"), "error": qsTr("Error"), "computing": qsTr("Computing database"), "waiting": qsTr("Waiting samples import"), "empty": qsTr("Initializing"), "close": qsTr("Closed")})
     function updateStatusFromModel()
     {
         var globalProgress = 0;
@@ -733,7 +732,7 @@ Rectangle
 
         // update status
         statusField.text = root.statusTextMap[root.model.status];
-        statusIcon.text = root.statusIconMap[root.model.status];
+        statusIcon.text = Regovar.filteringAnalysisStatusToIconMap[root.model.status];
         if (root.model.status == "computing")
         {
             statusIconAnimation.start();

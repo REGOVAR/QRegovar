@@ -129,12 +129,22 @@ Rectangle
                 }
             }
         }
-
         TableViewColumn
         {
             role: "name"
             title: "Name"
             width: 400
+        }
+        TableViewColumn
+        {
+            role: "analysistype"
+            title: "Type"
+        }
+
+        TableViewColumn
+        {
+            role: "status"
+            title: "Status"
         }
         TableViewColumn
         {

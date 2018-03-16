@@ -13,6 +13,7 @@ public:
     {
         Id = Qt::UserRole + 1,
         Type,
+        AnalysisType,
         Name,
         Comment,
         Date,
