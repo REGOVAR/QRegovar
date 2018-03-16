@@ -227,12 +227,12 @@ Item
                     if (elmt.hasOwnProperty("model"))
                     {
                         // dedicated model
-                        if ("tabModel" in model)
+                        if (model.tabModel)
                         {
                             elmt.model = model.tabModel;
                         }
                         // Shared model
-                        else if (tabSharedModel)
+                        else
                         {
                             elmt.model = Qt.binding(function() { return tabSharedModel; });
                         }
