@@ -55,7 +55,7 @@ Dialog
             Text
             {
                 Layout.fillWidth: true
-                text: qsTr("Following instruction will executed server side to clear temp data:")
+                text: qsTr("Following instruction will executed server side to clear temp data and close the analysis:")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.family
@@ -68,12 +68,13 @@ Dialog
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                text: "DROP TABLE IF EXISTS wt_" + wtId + " CASCADE;\nDROP TABLE IF EXISTS wt_" + wtId + "_var CASCADE\nDROP TABLE IF EXISTS wt_" + wtId + "_tmp CASCADE\nAnalysis status will be set to 'empty'"
+                text: "DROP TABLE IF EXISTS wt_" + wtId + " CASCADE;\nDROP TABLE IF EXISTS wt_" + wtId + "_var CASCADE\nDROP TABLE IF EXISTS wt_" + wtId + "_tmp CASCADE\nAnalysis status will be set to 'close'"
             }
             Text
             {
+                Layout.fillWidth: true
                 Layout.columnSpan: 2
-                text: qsTr("After the clear, you will not be able to use 'filtering' feature for this analysis. You will have to regenerate \"temp\" data by clicking on \"prepare filtering\" button in the analysis overview page.")
+                text: qsTr("After the clear, you will not be able to use 'filtering' feature for this analysis. You will have to regenerate \"temp\" data by clicking on \"reopen\" button in the analysis summary page.")
                 color: Regovar.theme.primaryColor.back.dark
                 font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.family
@@ -86,24 +87,20 @@ Dialog
 
 
 
-        Rectangle
+        Row
         {
             id: controlButtons
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.right: parent.right
             anchors.bottom: parent.bottom
             anchors.margins: 10
-            width: yesButton.width + noButton.width + 30
-            height: yesButton.height + 20
-            color: "transparent"
+            anchors.topMargin: 20
+            spacing: 10
+
 
             Button
             {
                 id: noButton
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.margins: 10
-
-                text: qsTr("No")
+                text: qsTr("Cancel")
                 onClicked:
                 {
                     questionDialog.no();
@@ -113,16 +110,11 @@ Dialog
             Button
             {
                 id: yesButton
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.margins: 10
-
                 text: qsTr("Yes")
                 onClicked:
                 {
                     questionDialog.yes();
                     questionDialog.close();
-
                 }
             }
         }

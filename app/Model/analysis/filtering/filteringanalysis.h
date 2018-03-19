@@ -167,6 +167,7 @@ public:
     Q_INVOKABLE void addFile(File* file);
     Q_INVOKABLE void applyChangeForDisplayedAnnotations();
     Q_INVOKABLE void setDisplayedAnnotationTemp(QString uid, bool check);
+    Q_INVOKABLE void reopen();
 
 
     void raiseNewInternalLoadingStatus(LoadingStatus newStatus);

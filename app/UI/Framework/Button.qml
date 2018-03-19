@@ -7,6 +7,11 @@ Button
     id: control
     text: "Button"
 
+    property color colorText: Regovar.theme.secondaryColor.front.normal
+    property color colorMain: Regovar.theme.secondaryColor.back.normal
+    property color colorHover: Regovar.theme.secondaryColor.back.light
+    property color colorDown: Regovar.theme.secondaryColor.back.dark
+    property color colorDisabled: Regovar.theme.boxColor.disabled
 
     contentItem: Text
     {
@@ -14,7 +19,7 @@ Button
         font.pixelSize: Regovar.theme.font.size.normal
         font.family: Regovar.theme.font.family
         font.bold: false
-        color: Regovar.theme.secondaryColor.front.normal
+        color: colorText
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
@@ -25,7 +30,7 @@ Button
     {
         implicitWidth: 100
         implicitHeight: 24
-        color : !control.enabled ? Regovar.theme.boxColor.disabled : control.down ? Regovar.theme.secondaryColor.back.dark: control.hovered ? Regovar.theme.secondaryColor.back.light : Regovar.theme.secondaryColor.back.normal
+        color : !control.enabled ? colorDisabled : control.down ? colorDown : control.hovered ? colorHover : colorMain
 
         radius: 2
 
