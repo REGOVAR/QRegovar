@@ -88,7 +88,7 @@ private:
     QStringList mWsFilteringActionsList = {"analysis_computing", "wt_update", "wt_creation", "filter_update"};
     QStringList mWsFilterActionsList = {"filter_update"};
     QStringList mWsPipelinesActionsList = {"pipeline_install", "pipeline_uninstall"};
-    QStringList mWsJobsActionsList = {"job_"};
+    QStringList mWsJobsActionsList = {"job_updated"};
 };
 
 #endif // NETWORKMANAGER_H

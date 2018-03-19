@@ -52,6 +52,7 @@ GridLayout
         id: input
         Layout.fillWidth: true
         text: qsTr("Yes")
+        onCheckedChanged: if (model) model.value = checked
     }
 
     Text

@@ -499,6 +499,7 @@ void FilteringAnalysis::setDisplayedAnnotationTemp(QString uid, bool check)
 
 void FilteringAnalysis::reopen()
 {
+
     // First, restore status from close to empty
     QJsonObject data;
     data.insert("id", mId);
@@ -509,15 +510,13 @@ void FilteringAnalysis::reopen()
         if (success)
         {
             QJsonObject data2 = json["data"].toObject();
-
-            // Then force the construction of the "working table" by requesting
-
             // Start creation of the working table by sending the first "filtering" query
             QJsonObject body;
             body.insert("filter", data2["filter"].toArray());
             body.insert("fields", data2["fields"].toArray());
             Request* req2 = Request::post(QString("/analysis/%1/filtering").arg(mId), QJsonDocument(body).toJson());
             req2->deleteLater();
+            emit dataChanged();
         }
         else
         {
