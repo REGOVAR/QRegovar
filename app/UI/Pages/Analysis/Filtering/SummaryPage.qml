@@ -250,7 +250,7 @@ Rectangle
                     NumberAnimation on rotation
                     {
                         id: statusIconAnimation
-                        duration: 1000
+                        duration: 1500
                         loops: Animation.Infinite
                         from: 0
                         to: 360
@@ -614,10 +614,10 @@ Rectangle
                                     font.family: Regovar.theme.icons.name
                                     verticalAlignment: Text.AlignVCenter
                                     horizontalAlignment: Text.AlignHCenter
-                                    text: Regovar.filteringAnalysisStatusToIcon(status)
+                                    text: regovar.analysisStatusIcon(status)
                                     onTextChanged:
                                     {
-                                        if (status == "computing")
+                                        if (regovar.analysisStatusIconAnimated(status))
                                         {
                                             stepIconAnimation.start();
                                         }
@@ -631,7 +631,7 @@ Rectangle
                                     NumberAnimation on rotation
                                     {
                                         id: stepIconAnimation
-                                        duration: 1000
+                                        duration: 1500
                                         loops: Animation.Infinite
                                         from: 0
                                         to: 360
@@ -763,9 +763,9 @@ Rectangle
 
 
         // update status
-        statusField.text = root.statusTextMap[root.model.status];
-        statusIcon.text = Regovar.filteringAnalysisStatusToIconMap[root.model.status];
-        if (root.model.status == "computing")
+        statusField.text = regovar.analysisStatusLabel(root.model.status);
+        statusIcon.text = regovar.analysisStatusIcon(root.model.status);
+        if (regovar.analysisStatusIconAnimated(root.model.status))
         {
             statusIconAnimation.start();
             statusField.text += " (" + (globalProgress/root.model.computingProgress.log.length*100).toFixed(1) + "%)";
@@ -782,19 +782,15 @@ Rectangle
     {
         if (root.model)
         {
-            if (root.model.loaded)
-            {
-                busyIndicator.visible = false;
-            }
+            busyIndicator.visible = !root.model.loaded;
 
             updateView1FromModel(root.model);
             updateStatusFromModel();
-            //creationDate.text = regovar.formatDate(root.model.createDate, false);
             refField.text = root.model.refName;
 
             // Type
             var type = qsTr("Unknow");
-            if (root.model.type == regovar.analysesManager.filteringType)
+            if (root.model.type == "analysis") // Analysis::FILTERING
             {
                 type = qsTr("Variants filtering");
                 if (root.model.isTrio)

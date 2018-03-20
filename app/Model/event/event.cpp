@@ -97,6 +97,7 @@ bool Event::fromJson(QJsonObject json)
         }
     }
     emit dataChanged();
+    return true;
 }
 
 

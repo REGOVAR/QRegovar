@@ -66,6 +66,8 @@ bool ProjectsManager::loadJson(QJsonArray json, QString prefix)
     }
     if (prefix.isEmpty())
         emit projectsFlatListChanged();
+
+    return true;
 }
 
 

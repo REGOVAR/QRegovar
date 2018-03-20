@@ -73,7 +73,9 @@ bool EventsListModel::add(Event* event)
         mEventList.append(event);
         endInsertRows();
         emit countChanged();
+        return true;
     }
+    return false;
 }
 
 
@@ -81,6 +83,7 @@ bool EventsListModel::add(Event* event)
 bool EventsListModel::refresh()
 {
     qDebug() << "TODO";
+    return false;
 }
 
 

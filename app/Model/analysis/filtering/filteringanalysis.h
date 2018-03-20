@@ -30,11 +30,9 @@ class FilteringAnalysis : public Analysis
     // Analysis properties
     Q_PROPERTY(int refId READ refId NOTIFY dataChanged)
     Q_PROPERTY(QString refName READ refName NOTIFY dataChanged)
-    Q_PROPERTY(Project* project READ project WRITE setProject NOTIFY dataChanged)
-    Q_PROPERTY(QString status READ status NOTIFY statusChanged)
-    Q_PROPERTY(QJsonObject computingProgress READ computingProgress NOTIFY statusChanged)
     Q_PROPERTY(QJsonObject stats READ stats NOTIFY dataChanged)
     Q_PROPERTY(EventsListModel* events READ events NOTIFY dataChanged)
+    Q_PROPERTY(QJsonObject computingProgress READ computingProgress NOTIFY statusChanged)
     // Filtering properties
     Q_PROPERTY(QJsonArray filterJson READ filterJson NOTIFY filterChanged)      // Filter json formated shared with server
     Q_PROPERTY(QStringList order READ order NOTIFY orderChanged)                // List of field used for sorting result
@@ -84,9 +82,6 @@ public:
 
     // Getters
     inline QString refName() const { return mRefName; }
-    inline Project* project() const { return mProject; }
-    inline QString status() const { return mStatus; }
-    inline QJsonObject computingProgress() const { return mComputingProgress; }
     inline QJsonArray filterJson() const { return mFilterJson; }
     inline QStringList fields() const { return mFields; }
     inline QStringList order() const { return mOrder; }
@@ -101,6 +96,7 @@ public:
     inline QList<QObject*> samplesInputsFilesList() const { return mSamplesInputsFilesList; }
     inline QJsonObject stats() const { return mStats; }
     inline EventsListModel* events() const { return mEvents; }
+    inline QJsonObject computingProgress() const { return mComputingProgress; }
     // Panel & Treeview models
     inline QHash<QString, FieldColumnInfos*> annotationsMap() { return mAnnotations; }
     inline AnnotationsTreeModel* annotationsTree() const { return mAnnotationsTreeModel; }
@@ -122,7 +118,6 @@ public:
     QList<QObject*> sets() const { return mSets; } // concat filters, samples, samples attributes and panel in one list
 
     // Setters
-    inline void setStatus(QString status) { mStatus = status; emit statusChanged(); }
     inline void setFilterJson(QJsonArray filterJson) { mFilterJson = filterJson; emit filterChanged(); }
     inline void setIsTrio(bool flag) { mIsTrio=flag; emit isTrioChanged(); }
     inline void setTrioChild(Sample* child) { mTrioChild=child; emit trioChildChanged(); }
@@ -131,7 +126,6 @@ public:
     inline void setLoading(bool flag) { mLoading=flag; emit loadingChanged(); }
     inline void setCurrentFilterName(QString name) { mCurrentFilterName=name; emit currentFilterNameChanged(); }
     void setReference(Reference* ref, bool continueInit=false);
-    void setProject(Project* project) { mProject = project; emit dataChanged(); }
 
 
     // Analysis Abstracty Methods overriden
@@ -176,7 +170,6 @@ public:
 Q_SIGNALS:
     void dataChanged();
 
-    void statusChanged();
     void loadingStatusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
     void annotationsChanged();
     void displayedAnnotationsChanged();
@@ -215,7 +208,6 @@ public Q_SLOTS:
 private:
     int mRefId = -1;
     QString mRefName;
-    Project* mProject = nullptr;
     QStringList mFields;
     QStringList mOrder;
     QJsonArray mFilterJson;
@@ -226,9 +218,8 @@ private:
     DocumentsTreeModel* mDocumentsTreeModel = nullptr;
     QJsonObject mStats;
     EventsListModel* mEvents = nullptr;
-
     QJsonObject mComputingProgress;
-    QString mStatus; // status of the analysis (server side)
+
     LoadingStatus mLoadingStatus; // internal (UI) status used to track and coordinates asynchrone initialisation of the analysis
     ResultsTreeModel* mResults = nullptr;
     QuickFilterModel* mQuickFilters = nullptr;

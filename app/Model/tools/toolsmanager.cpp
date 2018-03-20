@@ -18,4 +18,6 @@ bool ToolsManager::loadJson(QJsonObject json)
         mExporters.append(new Tool(Tool::Exporter, val.toObject()));
     }
     // TODO: Get custom report tools deployed
+
+    return true;
 }

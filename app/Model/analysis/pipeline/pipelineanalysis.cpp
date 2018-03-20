@@ -7,7 +7,7 @@ PipelineAnalysis::PipelineAnalysis(QObject* parent) : Analysis(parent)
 {
     mInputsFiles = new FilesListModel(this);
     mOutputsFiles = new FilesListModel(this);
-    mType = AnalysesManager::PIPELINE;
+    mType = Analysis::PIPELINE;
     mMenuModel->initPipelineAnalysis();
 }
 
@@ -56,29 +56,21 @@ void PipelineAnalysis::setPipeline(Pipeline* pipe)
 
 
 
-void PipelineAnalysis::setStatus(JobStatus status)
-{
-    mStatus = status;
-    emit dataChanged();
-}
-void PipelineAnalysis::setStatus(QString status)
-{
-    auto meta = QMetaEnum::fromType<JobStatus>();
-    setStatus(static_cast<JobStatus>(meta.keyToValue(status.toStdString().c_str())));
-}
-
-
-
 bool PipelineAnalysis::fromJson(QJsonObject json, bool full_init)
 {
     mId = json["id"].toInt();
     if (json.contains("name")) setName(json["name"].toString());
+    if (json.contains("status")) setStatus(json["status"].toString());
     if (json.contains("comment")) setComment(json["comment"].toString());
+    if (json.contains("project_id")) setProject(regovar->projectsManager()->getOrCreateProject(json["project_id"].toInt()));
     if (json.contains("update_date")) mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     if (json.contains("create_date")) mCreateDate = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
     if (json.contains("config")) mConfig =json["config"].toObject();
     if (json.contains("status")) setStatus(json["status"].toString());
     if (json.contains("pipeline_id")) mPipeline = regovar->pipelinesManager()->getOrCreatePipe(json["pipeline_id"].toInt());
+
+    if (json.contains("progress_label")) mProgressLabel = json["progress_label"].toString();
+    if (json.contains("progress_value")) mProgressValue = json["progress_value"].toDouble();
 
     // Inputs files
     if (json.contains("inputs"))
@@ -134,9 +126,11 @@ bool PipelineAnalysis::fromJson(QJsonObject json, bool full_init)
     if (full_init)
     {
         mPipeline->load(true);
+        mLoaded = true;
     }
 
     emit dataChanged();
+    return true;
 }
 
 
@@ -151,26 +145,23 @@ QJsonObject PipelineAnalysis::toJson()
     {
         result.insert("pipeline_id", mPipeline->id());
     }
-    if (mInputsFiles->rowCount() > 0)
+
+    QJsonArray inputs;
+    for(int idx=0; idx<mInputsFiles->rowCount(); idx++)
     {
-        QJsonArray inputs;
-        for(int idx=0; idx<mInputsFiles->rowCount(); idx++)
-        {
-            File* file = mInputsFiles->getAt(idx);
-            inputs.append(file->id());
-        }
-        result.insert("inputs_ids", inputs);
+        File* file = mInputsFiles->getAt(idx);
+        inputs.append(file->id());
     }
-    if (mOutputsFiles->rowCount() > 0)
+    result.insert("inputs_ids", inputs);
+
+    QJsonArray outputs;
+    for(int idx=0; idx<mOutputsFiles->rowCount(); idx++)
     {
-        QJsonArray outputs;
-        for(int idx=0; idx<mOutputsFiles->rowCount(); idx++)
-        {
-            File* file = mOutputsFiles->getAt(idx);
-            outputs.append(file->id());
-        }
-        result.insert("outputs_ids", outputs);
+        File* file = mOutputsFiles->getAt(idx);
+        outputs.append(file->id());
     }
+    result.insert("outputs_ids", outputs);
+
     return result;
 }
 
@@ -208,7 +199,7 @@ void PipelineAnalysis::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                fromJson(json["data"].toObject(), true);
             }
             else
             {

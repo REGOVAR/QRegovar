@@ -6,6 +6,7 @@ Button
 {
     id: control
     text: "Button"
+    height: Regovar.theme.font.boxSize.normal
 
     property color colorText: Regovar.theme.secondaryColor.front.normal
     property color colorMain: Regovar.theme.secondaryColor.back.normal
@@ -15,6 +16,7 @@ Button
 
     contentItem: Text
     {
+        height: control.height
         text: control.text
         font.pixelSize: Regovar.theme.font.size.normal
         font.family: Regovar.theme.font.family
@@ -29,7 +31,7 @@ Button
     background: Rectangle
     {
         implicitWidth: 100
-        implicitHeight: 24
+        implicitHeight: control.height
         color : !control.enabled ? colorDisabled : control.down ? colorDown : control.hovered ? colorHover : colorMain
 
         radius: 2

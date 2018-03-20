@@ -20,9 +20,15 @@ class Analysis : public QObject
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
     Q_PROPERTY(QString type READ type NOTIFY dataChanged)
+    Q_PROPERTY(Project* project READ project WRITE setProject NOTIFY dataChanged)
+    Q_PROPERTY(QString status READ status NOTIFY statusChanged)
 
 public:
+    // enum value returned by the server as analysis type
+    static QString FILTERING;
+    static QString PIPELINE;
 
+    // Constructors
     explicit Analysis(QObject *parent = nullptr);
 
     // Getters
@@ -35,11 +41,15 @@ public:
     inline QString name() { return mName; }
     inline QString comment() { return mComment; }
     inline QString type() { return mType; }
+    inline Project* project() const { return mProject; }
+    inline QString status() const { return mStatus; }
 
     // Setters
-    Q_INVOKABLE inline void setId(int id) { mId = id; emit dataChanged(); }
-    Q_INVOKABLE inline void setName(QString name) { mName = name; emit dataChanged(); }
-    Q_INVOKABLE inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
+    inline void setId(int id) { mId = id; emit dataChanged(); }
+    inline void setName(QString name) { mName = name; emit dataChanged(); }
+    inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
+    inline void setProject(Project* project) { mProject = project; emit dataChanged(); }
+    inline void setStatus(QString status) { mStatus = status; emit statusChanged(); }
 
     // Methods
     //! Set model with provided json data
@@ -53,11 +63,16 @@ public:
 
 
 
+    Q_INVOKABLE static QString statusLabel(QString status);
+    Q_INVOKABLE static QString statusIcon(QString status);
+    Q_INVOKABLE static bool statusIconAnimated(QString status);
+
 
 
 Q_SIGNALS:
     void menuModelChanged();
     void dataChanged();
+    void statusChanged();
 
 
 
@@ -73,7 +88,15 @@ protected:
     QString mName;
     QString mComment;
     QString mType;
+    Project* mProject = nullptr;
+    QString mStatus; // status of the analysis (server side)
 
+    static QHash<QString, QString> sStatusLabelMap;
+    static QHash<QString, QString> sStatusIconMap;
+    static QHash<QString, bool> sStatusAnimatedMap;
+    static QHash<QString, QString> initStatusLabelMap();
+    static QHash<QString, QString> initStatusIconMap();
+    static QHash<QString, bool> initStatusAnimatedMap();
 };
 
 #endif // ANALYSIS_H

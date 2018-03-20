@@ -7,7 +7,7 @@
 FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 {
     // Tree model are created to allow QML binding initialisation even if no data loaded
-    mType = AnalysesManager::FILTERING;
+    mType = Analysis::FILTERING;
     mResults = new ResultsTreeModel(this);
     mAnnotationsTreeModel = new AnnotationsTreeModel(this);
     mQuickFilters = new QuickFilterModel(this);

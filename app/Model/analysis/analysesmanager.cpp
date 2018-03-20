@@ -5,8 +5,6 @@
 #include "pipeline/pipelineanalysis.h"
 
 
-QString AnalysesManager::FILTERING = QString("analysis");
-QString AnalysesManager::PIPELINE = QString("pipeline");
 
 
 
@@ -60,7 +58,7 @@ void AnalysesManager::resetNewPipeline()
 
 bool AnalysesManager::newAnalysis(QString type)
 {
-    if (type == FILTERING)
+    if (type == Analysis::FILTERING)
     {
         // Samples
         QJsonArray ids;
@@ -130,7 +128,7 @@ bool AnalysesManager::newAnalysis(QString type)
                 QJsonObject data = json["data"].toObject();
                 int id = data["id"].toInt();
                 // Open new analysis
-                bool result = openAnalysis(FILTERING, id, false);
+                bool result = openAnalysis(Analysis::FILTERING, id, false);
 
                 if (result)
                 {
@@ -155,7 +153,7 @@ bool AnalysesManager::newAnalysis(QString type)
             req->deleteLater();
         });
     }
-    else if (type == PIPELINE)
+    else if (type == Analysis::PIPELINE)
     {
         mNewPipeline->setConfig(mNewPipeline->pipeline()->configForm()->getResult());
         Request* req = Request::post(QString("/job"), QJsonDocument(mNewPipeline->toJson()).toJson());
@@ -166,7 +164,7 @@ bool AnalysesManager::newAnalysis(QString type)
                 QJsonObject data = json["data"].toObject();
                 int id = data["id"].toInt();
                 // Open new analysis
-                bool result = openAnalysis(PIPELINE, id, false);
+                bool result = openAnalysis(Analysis::PIPELINE, id, false);
 
                 // notify HMI that analysis is created (=> close newAnalizeWizard dialog)
                 emit analysisCreationDone(false, result ? id :-1);
@@ -193,12 +191,12 @@ bool AnalysesManager::openAnalysis(QString type, int id, bool reload_from_server
     // Get analysis
     Analysis* analysis = nullptr;
     QUrl url;
-    if (type == FILTERING)
+    if (type == Analysis::FILTERING)
     {
         analysis = getOrCreateFilteringAnalysis(id);
         url = QUrl("qrc:/qml/AnalysisWindow.qml");
     }
-    if (type == PIPELINE)
+    if (type == Analysis::PIPELINE)
     {
         analysis = getOrCreatePipelineAnalysis(id);
         url = QUrl("qrc:/qml/JobWindow.qml");
@@ -226,7 +224,8 @@ bool AnalysesManager::loadJson(QJsonArray json)
         if (item.contains("pipeline_id"))
         {
             // Load job analysis
-            // TODO
+            PipelineAnalysis* pa = getOrCreatePipelineAnalysis(item["id"].toInt());
+            pa->fromJson(item, false);
         }
         else
         {
@@ -235,6 +234,8 @@ bool AnalysesManager::loadJson(QJsonArray json)
             fa->fromJson(item, false);
         }
     }
+
+    return true;
 }
 
 

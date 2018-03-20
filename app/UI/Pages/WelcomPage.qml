@@ -215,7 +215,7 @@ Rectangle
                                     name: model.modelData.name
                                     fullpath: model.modelData.fullpath
                                     status: model.modelData.status
-                                    onClicked: regovar.analysesManager.openAnalysis("analysis", model.modelData.id)
+                                    onClicked: regovar.analysesManager.openAnalysis(model.modelData.type, model.modelData.id)
                                 }
                             }
                         }

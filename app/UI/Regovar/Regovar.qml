@@ -238,16 +238,6 @@ QtObject
 
 
     // SPECIFIC TOOLS
-    property var filteringAnalysisStatusToIconMap: ({"waiting": "{", "computing": "/", "error": "l", "done": "n", "ready": "n", "close": "g"})
-    function filteringAnalysisStatusToIcon(status)
-    {
-        if (status in filteringAnalysisStatusToIconMap)
-        {
-            return filteringAnalysisStatusToIconMap[status];
-        }
-        return "I";
-    }
-
 
     property var sexToIconMap: ({"male": "9", "female": "<", "2": "9", "1": "<", "Male": "9", "Female": "<"})
     function sexToIcon(sex)

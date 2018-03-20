@@ -14,11 +14,7 @@ class PipelineAnalysis: public Analysis
     Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
     Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
     // PipelineAnalysis (Job) attribute
-    Q_PROPERTY(int id READ id NOTIFY neverChanged)
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
-    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
     Q_PROPERTY(QJsonObject config READ config WRITE setConfig NOTIFY neverChanged)
-    Q_PROPERTY(JobStatus status READ status NOTIFY dataChanged)
     Q_PROPERTY(double progressValue READ progressValue NOTIFY dataChanged)
     Q_PROPERTY(QString progressLabel READ progressLabel NOTIFY dataChanged)
 
@@ -27,32 +23,14 @@ class PipelineAnalysis: public Analysis
     Q_PROPERTY(FilesListModel* outputsFiles READ outputsFiles NOTIFY neverChanged)
 
 public:
-    enum JobStatus
-    {
-        Waiting=0,
-        Initializing,
-        Running,
-        Pause,
-        Finalizing,
-        Done,
-        Canceled,
-        Error
-    };
-    Q_ENUM(JobStatus)
-
     // Constructors
     explicit PipelineAnalysis(QObject* parent=nullptr);
     explicit PipelineAnalysis(int id, QObject* parent=nullptr);
 
     // Getters
     inline bool loaded() const { return mLoaded; }
-    inline QDateTime updateDate() const { return mUpdateDate; }
-    inline QDateTime createDate() const { return mCreateDate; }
-    inline int id() const { return mId; }
-    inline QString name() const { return mName; }
-    inline QString comment() const { return mComment; }
+
     inline QJsonObject config() const { return mConfig; }
-    inline JobStatus status() const { return mStatus; }
     inline double progressValue() const { return mProgressValue; }
     inline QString progressLabel() const { return mProgressLabel; }
     inline Pipeline* pipeline() const { return mPipeline; }
@@ -60,12 +38,8 @@ public:
     inline FilesListModel* outputsFiles() const { return mOutputsFiles; }
 
     // Setters
-    inline void setName(QString name) { mName = name; emit dataChanged(); }
-    inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
     inline void setConfig(QJsonObject config) { mConfig = config; emit dataChanged(); }
     void setPipeline(Pipeline* pipe);
-    void setStatus(JobStatus status);
-    void setStatus(QString status);
 
 
     // Analysis Abstracty Methods overriden
@@ -105,11 +79,7 @@ private:
     QDateTime mLastInternalLoad = QDateTime::currentDateTime();
 
     // Attributes
-    int mId = -1;
-    QString mName;
-    QString mComment;
     QJsonObject mConfig;
-    JobStatus mStatus = Waiting;
     double mProgressValue = 0;
     QString mProgressLabel;
 

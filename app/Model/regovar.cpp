@@ -226,7 +226,7 @@ void Regovar::loadWelcomData()
             mAnalysesManager->loadJson(data["analyses"].toArray());
 
             // Gets jobs
-            // mAnalysesManager->loadJson(data["jobs"].toArray());
+            mAnalysesManager->loadJson(data["jobs"].toArray());
 
             // Get projects (must be load after analyses + jobs)
             mProjectsManager->loadJson(data["projects"].toArray());
@@ -236,8 +236,20 @@ void Regovar::loadWelcomData()
             mLastAnalyses.clear();
             for (const QJsonValue& val: data["last_analyses"].toArray())
             {
-                FilteringAnalysis* fa = mAnalysesManager->getOrCreateFilteringAnalysis(val.toInt());
-                mLastAnalyses.append(fa);
+                QJsonObject ajson = val.toObject();
+                Analysis* a = nullptr;
+                if (ajson["type"] == "analysis")
+                {
+                   a = (Analysis*) mAnalysesManager->getOrCreateFilteringAnalysis(ajson["id"].toInt());
+                }
+                else if (ajson["type"] == "pipeline")
+                {
+                    a = (Analysis*) mAnalysesManager->getOrCreatePipelineAnalysis(ajson["id"].toInt());
+                }
+                if (a != nullptr)
+                {
+                    mLastAnalyses.append(a);
+                }
             }
             // Last subjects
             mLastSubjects.clear();

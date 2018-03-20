@@ -185,6 +185,9 @@ public:
     Q_INVOKABLE QString formatNumber(double value);
     Q_INVOKABLE QString formatDate(QDateTime date, bool withTime=true);
     Q_INVOKABLE QString formatDate(QString isodate, bool withTime=true);
+    Q_INVOKABLE inline QString analysisStatusLabel(QString status) { return Analysis::statusLabel(status); }
+    Q_INVOKABLE inline QString analysisStatusIcon(QString status) { return Analysis::statusIcon(status); }
+    Q_INVOKABLE inline bool analysisStatusIconAnimated(QString status) { return Analysis::statusIconAnimated(status); }
     bool openNewWindow(QUrl qmlUrl, QObject* model);
 
 
