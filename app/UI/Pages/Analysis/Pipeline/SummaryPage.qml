@@ -641,7 +641,7 @@ Rectangle
                     configList.push({"key": key, "value": root.model.config[key]});
                 }
             }
-            configTable.height = Math.min(configList.length, 5) * Regovar.theme.font.boxSize.normal;
+            configTable.height = (Math.min(configList.length, 5) + 1) * Regovar.theme.font.boxSize.normal;
             configTable.model = configList;
 
             // Files
@@ -665,7 +665,7 @@ Rectangle
                                           "icon": file.filenameUI["icon"]}});
                 }
             }
-            filesTable.height = Math.min(fileList.length, 5) * Regovar.theme.font.boxSize.normal;
+            filesTable.height = (Math.min(fileList.length, 5) + 1) * Regovar.theme.font.boxSize.normal;
             filesTable.model = fileList;
 
             // Events

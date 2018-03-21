@@ -123,7 +123,7 @@ bool PipelineAnalysis::fromJson(QJsonObject json, bool full_init)
         }
     }
 
-    if (full_init)
+    if (!mLoaded && full_init)
     {
         if (json.contains("pipeline"))
         {
@@ -324,21 +324,10 @@ void PipelineAnalysis::refreshMonitoring()
 
 
 
-void PipelineAnalysis::processPushNotification(QString, QJsonObject)
+void PipelineAnalysis::processPushNotification(QString action, QJsonObject data)
 {
-    // TODO
-//    if (action == "file_upload")
-//    {
-//        int id = data["id"].toInt();
-//        for (QObject* o: mInputsFilesList)
-//        {
-//            File* file = qobject_cast<File*>(o);
-//            if (file->id() != id) continue;
-
-//            // Update file model
-//            file->fromJson(data);
-
-//            break;
-//        }
-//    }
+    if (action == "job_updated")
+    {
+        fromJson(data, true);
+    }
 }
