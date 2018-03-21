@@ -14,13 +14,13 @@ class PipelineAnalysis: public Analysis
     Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
     Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
     // PipelineAnalysis (Job) attribute
-    Q_PROPERTY(QJsonObject config READ config WRITE setConfig NOTIFY neverChanged)
+    Q_PROPERTY(QJsonObject config READ config WRITE setConfig NOTIFY dataChanged)
     Q_PROPERTY(double progressValue READ progressValue NOTIFY dataChanged)
     Q_PROPERTY(QString progressLabel READ progressLabel NOTIFY dataChanged)
 
     Q_PROPERTY(Pipeline* pipeline READ pipeline WRITE setPipeline NOTIFY pipelineChanged)
-    Q_PROPERTY(FilesListModel* inputsFiles READ inputsFiles NOTIFY neverChanged)
-    Q_PROPERTY(FilesListModel* outputsFiles READ outputsFiles NOTIFY neverChanged)
+    Q_PROPERTY(FilesListModel* inputsFiles READ inputsFiles NOTIFY dataChanged)
+    Q_PROPERTY(FilesListModel* outputsFiles READ outputsFiles NOTIFY dataChanged)
 
 public:
     // Constructors

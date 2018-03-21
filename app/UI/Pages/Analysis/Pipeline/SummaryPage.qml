@@ -389,13 +389,13 @@ Rectangle
 
                 TableViewColumn
                 {
-                    role: "parameter"
-                    title: "Parameter"
+                    role: "key"
+                    title: qsTr("Parameter")
                 }
                 TableViewColumn
                 {
                     role: "value"
-                    title: "value"
+                    title: qsTr("Value")
                 }
             }
 
@@ -411,7 +411,7 @@ Rectangle
             }
             TableView
             {
-                id: inputsTable
+                id: filesTable
                 Layout.fillWidth: true
                 height: 50
 
@@ -419,39 +419,12 @@ Rectangle
                 TableViewColumn
                 {
                     role: "usage"
-                    title: "Usage"
-
-                    delegate: RowLayout
-                    {
-                        anchors.fill: parent
-                        anchors.leftMargin: 5
-                        anchors.rightMargin: 5
-                        spacing: 10
-
-                        ButtonInline
-                        {
-                            iconTxt: "z"
-                            text: ""
-                            onClicked: regovar.getSampleInfo(styleData.value.id)
-                        }
-
-                        Text
-                        {
-                            Layout.fillWidth: true
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            font.family: Regovar.theme.font.family
-                            color: Regovar.theme.frontColor.normal
-                            horizontalAlignment: Text.AlignLeft
-                            verticalAlignment: Text.AlignVCenter
-                            elide: Text.ElideRight
-                            text: styleData.value.name
-                        }
-                    }
+                    title: qsTr("Usage")
                 }
                 TableViewColumn
                 {
-                    role: "name"
-                    title: "Filename"
+                    role: "filename"
+                    title: qsTr("Filename")
                     width: 300
 
                     delegate: RowLayout
@@ -465,7 +438,7 @@ Rectangle
                         {
                             iconTxt: "z"
                             text: ""
-                            onClicked: regovar.subjectsManager.openSubject(styleData.value.id)
+                            onClicked: regovar.getFileInfo(styleData.value.id)
                             visible: styleData.value
                         }
 
@@ -475,7 +448,7 @@ Rectangle
                             font.family: Regovar.theme.icons.name
                             color: Regovar.theme.frontColor.normal
                             verticalAlignment: Text.AlignVCenter
-                            text: styleData.value ? Regovar.sexToIcon(styleData.value.sex) : ""
+                            text: styleData.value ? styleData.value.icon : ""
                             visible: styleData.value
                         }
 
@@ -488,7 +461,7 @@ Rectangle
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
                             elide: Text.ElideRight
-                            text: styleData.value ? styleData.value.name : ""
+                            text: styleData.value ? styleData.value.filename : ""
                             visible: styleData.value
                         }
                     }
@@ -524,13 +497,13 @@ Rectangle
 
                 TableViewColumn
                 {
-                    title: "Date"
                     role: "date"
+                    title: qsTr("Date")
                 }
                 TableViewColumn
                 {
-                    title: "Event"
                     role: "message"
+                    title: qsTr("Event")
                     width: 500
                     delegate: Item
                     {
@@ -660,41 +633,40 @@ Rectangle
             pipelineField.text = pipeline;
 
             // Configuration
-
+            var configList = [];
+            if (root.model.config)
+            {
+                for (var key in root.model.config)
+                {
+                    configList.push({"key": key, "value": root.model.config[key]});
+                }
+            }
+            configTable.height = Math.min(configList.length, 5) * Regovar.theme.font.boxSize.normal;
+            configTable.model = configList;
 
             // Files
-//            var samplesModel = [];
-//            samplesTable.height = Math.min(root.model.samples.length, 5) * Regovar.theme.font.boxSize.normal;
-//            for (idx in root.model.samples)
-//            {
-//                var sample = root.model.samples[idx];
-//                var item = {
-//                    "sample": {"id": sample.id, "name": sample.name},
-//                    "subject": sample.subject ? sample.subject.subjectUI : false,
-//                };
-//                if (root.model.isTrio)
-//                {
-//                    if (root.model.child === sample)
-//                    {
-//                        item["trio"] = qsTr("Child");
-//                    }
-//                    else if (root.model.mother === sample)
-//                    {
-//                        item["trio"] = qsTr("Mother");
-//                    }
-//                    else
-//                    {
-//                        item["trio"] = qsTr("Father");
-//                    }
-//                }
-//                for (idx in root.model.attributes)
-//                {
-//                    item["attr_" + idx] = root.model.attributes[idx].getValue(sample.id);
-//                }
-//                samplesModel.push(item);
-//            }
-
-//            samplesTable.model = samplesModel;
+            var fileList = [];
+            if (root.model.inputsFiles)
+            {
+                for (var i=0; i<root.model.inputsFiles.rowCount(); i++)
+                {
+                    var file = root.model.inputsFiles.getAt(i);
+                    fileList.push({"usage": qsTr("Input"), "filename": file.filenameUI});
+                }
+            }
+            if (root.model.outputsFiles)
+            {
+                for (var i=0; i<root.model.outputsFiles.rowCount(); i++)
+                {
+                    var file = root.model.outputsFiles.getAt(i);
+                    fileList.push({"usage": qsTr("Output"), "filename": {
+                                          "id": file.id,
+                                          "filename": file.filenameUI["filename"],
+                                          "icon": file.filenameUI["icon"]}});
+                }
+            }
+            filesTable.height = Math.min(fileList.length, 5) * Regovar.theme.font.boxSize.normal;
+            filesTable.model = fileList;
 
             // Events
             eventsTable.model = root.model.events;

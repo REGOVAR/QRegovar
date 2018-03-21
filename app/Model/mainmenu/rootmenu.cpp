@@ -70,7 +70,7 @@ void RootMenu::initPipelineAnalysis()
     mEntries.append(new MenuEntry("a", tr("Analysis"), "Analysis/Pipeline/SummaryPage.qml", this));
     mEntries.append(monitoringEntry);
     mEntries.append(new MenuEntry("n", tr("Result"), "Analysis/Pipeline/ResultPage.qml", this));
-    mEntries.append(new MenuEntry("e", tr("Help"), "Analysis/Filtering/HelpPage.qml", this));
+    mEntries.append(new MenuEntry("e", tr("Help"), "Analysis/Pipeline/HelpPage.qml", this));
     mEntries.append(new MenuEntry("h", tr("Close"), "@close", this));
     select(0,0);
 }

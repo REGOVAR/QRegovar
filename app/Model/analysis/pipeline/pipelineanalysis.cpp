@@ -125,7 +125,14 @@ bool PipelineAnalysis::fromJson(QJsonObject json, bool full_init)
 
     if (full_init)
     {
-        mPipeline->load(true);
+        if (json.contains("pipeline"))
+        {
+            mPipeline->fromJson(json["pipeline"].toObject());
+        }
+        else
+        {
+            mPipeline->load(true);
+        }
         mLoaded = true;
     }
 
