@@ -84,7 +84,8 @@ HEADERS += \
     Model/pipeline/pipelineslistmodel.h \
     Model/framework/dynamicformmodel.h \
     Model/framework/dynamicformfieldmodel.h \
-    Model/file/fileslistmodel.h
+    Model/file/fileslistmodel.h \
+    Model/analysis/remotelogmodel.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -156,7 +157,8 @@ SOURCES += main.cpp \
     Model/pipeline/pipelineslistmodel.cpp \
     Model/framework/dynamicformmodel.cpp \
     Model/framework/dynamicformfieldmodel.cpp \
-    Model/file/fileslistmodel.cpp
+    Model/file/fileslistmodel.cpp \
+    Model/analysis/remotelogmodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

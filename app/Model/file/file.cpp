@@ -141,7 +141,7 @@ bool File::fromJson(QJsonObject json)
     statusInfo.insert("label", statusToLabel(mStatus, mSize, mUploadOffset));
     mStatusUI = QVariant::fromValue(statusInfo);
 
-    mSizeUI = regovar->sizeToHumanReadable(mSize, mUploadOffset);
+    mSizeUI = regovar->formatFileSize(mSize, mUploadOffset);
 
     if (json.contains("job_source_id"))
     {

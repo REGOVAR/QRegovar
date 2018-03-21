@@ -210,5 +210,6 @@
         <file>Pages/Analysis/Pipeline/LogsPage.qml</file>
         <file>Pages/Analysis/Pipeline/ResultPage.qml</file>
         <file>Pages/Analysis/Pipeline/HelpPage.qml</file>
+        <file>Pages/Analysis/Pipeline/LogPage.qml</file>
     </qresource>
 </RCC>

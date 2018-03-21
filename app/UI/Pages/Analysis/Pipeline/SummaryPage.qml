@@ -249,13 +249,13 @@ Rectangle
                 verticalAlignment: Text.AlignVCenter
                 height: 35
             }
-            Row
+            RowLayout
             {
+                Layout.fillWidth: true
                 spacing: 10
                 Text
                 {
                     id: statusIcon
-                    Layout.fillWidth: true
                     height: Regovar.theme.font.size.header
                     color: Regovar.theme.frontColor.normal
                     font.pixelSize: Regovar.theme.font.size.normal
@@ -264,7 +264,7 @@ Rectangle
                     text: "n"
                     onTextChanged:
                     {
-                        if (regovar.analysisStatusIconAnimated(status))
+                        if (regovar.analysisStatusIconAnimated(root.model.status))
                         {
                             statusIconAnimation.start();
                         }

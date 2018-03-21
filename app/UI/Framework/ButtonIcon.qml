@@ -26,6 +26,7 @@ Button
 
     contentItem: Row
     {
+        anchors.verticalCenter: parent.verticalCenter
         Text
         {
             id: iconText

@@ -146,14 +146,16 @@ QtObject
     }
 
 
-    function lighter(color)
+    function lighter(color, coeff)
     {
-        return Qt.lighter(color, 1.5)
+        var trueCoeff = (typeof coeff !== 'undefined') ? coeff : 1.5;
+        return Qt.lighter(color, trueCoeff)
     }
 
-    function darker(color)
+    function darker(color, coeff)
     {
-        return Qt.darker(color, 1.5)
+        var trueCoeff = (typeof coeff !== 'undefined') ? coeff : 1.5;
+        return Qt.darker(color, trueCoeff)
     }
 
 

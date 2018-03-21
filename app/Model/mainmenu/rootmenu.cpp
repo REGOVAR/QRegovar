@@ -64,8 +64,8 @@ void RootMenu::initPipelineAnalysis()
     // Create lvl2 menu entries
     MenuEntry* monitoringEntry = new MenuEntry(":", tr("Monitoring"), "", this);
     //monitoringEntry->addEntry(new MenuEntry("d", tr("Configuration"), "Analysis/Pipeline/ConfigurationPage.qml", this));
-    monitoringEntry->addEntry(new MenuEntry("J", tr("Container"), "Analysis/Pipeline/ContainerPage.qml", this));
     monitoringEntry->addEntry(new MenuEntry("Y", tr("Log"), "Analysis/Pipeline/LogsPage.qml", this));
+    monitoringEntry->addEntry(new MenuEntry("J", tr("Container"), "Analysis/Pipeline/ContainerPage.qml", this));
     // Create lvl1 menu entries
     mEntries.append(new MenuEntry("a", tr("Analysis"), "Analysis/Pipeline/SummaryPage.qml", this));
     mEntries.append(monitoringEntry);

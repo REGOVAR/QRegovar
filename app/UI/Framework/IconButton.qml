@@ -8,6 +8,7 @@ Text
     id: control
     property bool hovered: false
     property string tooltip: ""
+    signal clicked()
 
     width: Regovar.theme.font.boxSize.normal
     height: Regovar.theme.font.boxSize.normal
@@ -29,5 +30,6 @@ Text
         hoverEnabled: true
         onEntered: control.hovered = true
         onExited: control.hovered = false
+        onClicked: control.clicked()
     }
 }

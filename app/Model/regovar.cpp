@@ -720,7 +720,7 @@ void Regovar::logout()
 
 
 
-QString Regovar::sizeToHumanReadable(qint64 size, qint64 uploadOffset)
+QString Regovar::formatFileSize(qint64 size, qint64 uploadOffset)
 {
     QStringList suffixes = {"o", "Ko", "Mo", "Go", "To", "Po"};
     QString uploadString = "";

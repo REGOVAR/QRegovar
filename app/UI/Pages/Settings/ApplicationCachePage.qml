@@ -256,7 +256,7 @@ Rectangle
     {
         var current = regovar.filesManager.cacheSize;
         if (current > 0)
-            cacheCurrentSize.text = qsTr("Total size") + ": " + regovar.sizeToHumanReadable(current, current);
+            cacheCurrentSize.text = qsTr("Total size") + ": " + regovar.formatFileSize(current, current);
         else
             cacheCurrentSize.text = qsTr("Empty");
     }

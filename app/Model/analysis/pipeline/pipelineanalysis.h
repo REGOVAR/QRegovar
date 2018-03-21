@@ -5,6 +5,7 @@
 #include "Model/analysis/analysis.h"
 #include "Model/pipeline/pipeline.h"
 #include "Model/file/fileslistmodel.h"
+#include "Model/analysis/remotelogmodel.h"
 
 class PipelineAnalysis: public Analysis
 {
@@ -21,6 +22,7 @@ class PipelineAnalysis: public Analysis
     Q_PROPERTY(Pipeline* pipeline READ pipeline WRITE setPipeline NOTIFY pipelineChanged)
     Q_PROPERTY(FilesListModel* inputsFiles READ inputsFiles NOTIFY dataChanged)
     Q_PROPERTY(FilesListModel* outputsFiles READ outputsFiles NOTIFY dataChanged)
+    Q_PROPERTY(QList<QObject*> logs READ logs NOTIFY statusChanged)
 
 public:
     // Constructors
@@ -36,6 +38,7 @@ public:
     inline Pipeline* pipeline() const { return mPipeline; }
     inline FilesListModel* inputsFiles() const { return mInputsFiles; }
     inline FilesListModel* outputsFiles() const { return mOutputsFiles; }
+    inline QList<QObject*> logs() const { return mLogs; }
 
     // Setters
     inline void setConfig(QJsonObject config) { mConfig = config; emit dataChanged(); }
@@ -82,6 +85,7 @@ private:
     QJsonObject mConfig;
     double mProgressValue = 0;
     QString mProgressLabel;
+    QList<QObject*> mLogs;
 
     //! The pipeline used for the analysis
     Pipeline* mPipeline = nullptr;

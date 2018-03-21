@@ -123,6 +123,26 @@ bool PipelineAnalysis::fromJson(QJsonObject json, bool full_init)
         }
     }
 
+    if (json.contains("logs"))
+    {
+        for (const QJsonValue& logUrl: json["logs"].toArray())
+        {
+            QString url = logUrl.toString();
+            bool exists = false;
+            for (QObject* o: mLogs)
+            {
+                RemoteLogModel* logModel = qobject_cast<RemoteLogModel*>(o);
+                exists = logModel->url() == url;
+                if (exists) break;
+            }
+            if (!exists)
+            {
+                mLogs.append(new RemoteLogModel(url, this));
+            }
+        }
+    }
+
+
     if (!mLoaded && full_init)
     {
         if (json.contains("pipeline"))
