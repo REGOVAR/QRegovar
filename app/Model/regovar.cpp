@@ -102,12 +102,12 @@ void Regovar::init()
     mMainMenu->initMain();
 
     // Init network manager
-    mNetworkManager = new NetworkManager();
+    mNetworkManager = new NetworkManager(this);
     mNetworkManager->setServerUrl(mSettings->serverUrl());
     mNetworkManager->setSharedUrl(mSettings->sharedUrl());
 
     // Init file manager
-    mFilesManager = new FilesManager();
+    mFilesManager = new FilesManager(this);
     mFilesManager->setCacheDir(mSettings->localCacheDir());
     mFilesManager->setCacheMaxSize(mSettings->localCacheMaxSize());
 

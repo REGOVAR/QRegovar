@@ -7,6 +7,7 @@ import QtQuick.Dialogs 1.2
 
 import "../../../Regovar"
 import "../../../Framework"
+import "../../../Dialogs"
 
 Rectangle
 {
@@ -16,6 +17,7 @@ Rectangle
     property PipelineAnalysis model
     property bool editionMode: false
     property bool isRunning: false
+    property bool isResumable: false
     property bool isClosed: false
 
     onModelChanged:
@@ -111,26 +113,12 @@ Rectangle
         }
 
 
-        RowLayout
+        Box
         {
             id: closeAnalysisInformation
-            Box
-            {
-                Layout.fillWidth: true
-                mainColor: Regovar.theme.frontColor.warning
-                icon: "m"
-                text: qsTr("This analysis have been closed. To be able to use dynamic filtering features again you ave to re-open it with the opposite button.\nReopenning the analysis may take long time as we need to recompute some data.")
-            }
-
-            Button
-            {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Reopen")
-                colorMain: Regovar.theme.frontColor.danger
-                colorHover: Regovar.theme.lighter(Regovar.theme.frontColor.danger)
-                colorDown: Regovar.theme.darker(Regovar.theme.frontColor.danger)
-                onClicked: model.reopen()
-            }
+            Layout.fillWidth: true
+            mainColor: Regovar.theme.frontColor.warning
+            icon: "m"
         }
 
 
@@ -321,7 +309,18 @@ Rectangle
                 {
                     iconTxt: isRunning ? "y" : "x"
                     text: isRunning ? qsTr("Pause") : qsTr("Resume")
-                    enabled: !root.isClosed
+                    enabled: root.isResumable
+                    onClicked:
+                    {
+                        if (isRunning)
+                        {
+                            root.model.pause();
+                        }
+                        else
+                        {
+                            root.model.start();
+                        }
+                    }
                 }
                 ButtonIcon
                 {
@@ -331,6 +330,7 @@ Rectangle
                     colorHover: Regovar.theme.lighter(Regovar.theme.frontColor.danger)
                     colorDown: Regovar.theme.darker(Regovar.theme.frontColor.danger)
                     enabled: !root.isClosed
+                    onClicked: confirmCancelDialog.open()
                 }
             }
 
@@ -385,7 +385,6 @@ Rectangle
             {
                 id: configTable
                 Layout.fillWidth: true
-                height: 50
 
                 TableViewColumn
                 {
@@ -413,7 +412,6 @@ Rectangle
             {
                 id: filesTable
                 Layout.fillWidth: true
-                height: 50
 
 
                 TableViewColumn
@@ -573,6 +571,17 @@ Rectangle
     }
 
 
+    QuestionDialog
+    {
+        id: confirmCancelDialog
+        icon: "m"
+        text: qsTr("Canceling an analysis is irreversible.\nThe task will be interrupted and the generated data will remain in the current state and available only on the server (not via this tool).\n\nDo you confirm the interruption of this analysis ?")
+
+        onYes: root.model.cancel()
+        onNo: close()
+    }
+
+
     function updateView1FromModel(model)
     {
         headerTitle.text = model.name;
@@ -584,14 +593,24 @@ Rectangle
     function updateStatusFromModel()
     {
         closeAnalysisInformation.visible = root.model.status == "error" || root.model.status == "canceled";
+        if (root.model.status == "error" )
+        {
+            closeAnalysisInformation.text = qsTr("An error occured during the execution of this analysis.")
+        }
+        else if (root.model.status == "canceled" )
+        {
+            closeAnalysisInformation.text = qsTr("This analysis have been canceled.")
+        }
+
 
         root.isRunning = root.model.status == "running";
         root.isClosed = root.model.status == "done" ||  root.model.status == "canceled"  ||  root.model.status == "error" ;
+        root.isResumable = root.model.status == "running" || root.model.status == "pause";
 
         // update status
         statusIcon.text = regovar.analysisStatusIcon(root.model.status);
         statusField.text = regovar.analysisStatusLabel(root.model.status);
-        if (root.model.progressValue > 0 && root.model.progressValue < 1)
+        if (root.model.progressValue > 0 && root.model.status != "done")
         {
             statusField.text += " (" + (root.model.progressValue*100).toFixed(1) + "%)";
             statusField.text += ": " + root.model.progressLabel;
@@ -641,7 +660,7 @@ Rectangle
                     configList.push({"key": key, "value": root.model.config[key]});
                 }
             }
-            configTable.height = (Math.min(configList.length, 5) + 1) * Regovar.theme.font.boxSize.normal;
+            //configTable.height = 5 * Regovar.theme.font.boxSize.normal;
             configTable.model = configList;
 
             // Files
@@ -665,7 +684,7 @@ Rectangle
                                           "icon": file.filenameUI["icon"]}});
                 }
             }
-            filesTable.height = (Math.min(fileList.length, 5) + 1) * Regovar.theme.font.boxSize.normal;
+            //filesTable.height = 5 * Regovar.theme.font.boxSize.normal;
             filesTable.model = fileList;
 
             // Events

@@ -224,41 +224,47 @@ void PipelineAnalysis::load(bool forceRefresh)
 
 void PipelineAnalysis::pause()
 {
-    Request* req = Request::get(QString("/job/%1/pause").arg(mId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    if (mStatus == "running")
     {
-        if (success)
+        Request* req = Request::get(QString("/job/%1/pause").arg(mId));
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
-            qDebug() << "Job paused";
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
+            if (success)
+            {
+                fromJson(json["data"].toObject());
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            req->deleteLater();
+        });
+    }
 }
 
 
 void PipelineAnalysis::start()
 {
-    Request* req = Request::get(QString("/job/%1/start").arg(mId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    if (mStatus == "pause")
     {
-        if (success)
+        Request* req = Request::get(QString("/job/%1/start").arg(mId));
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
-            qDebug() << "Job start";
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
+            if (success)
+            {
+                fromJson(json["data"].toObject());
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            req->deleteLater();
+        });
+    }
 }
 
 
@@ -269,7 +275,7 @@ void PipelineAnalysis::cancel()
     {
         if (success)
         {
-            qDebug() << "Job canceled";
+            fromJson(json["data"].toObject());
         }
         else
         {
@@ -284,21 +290,24 @@ void PipelineAnalysis::cancel()
 
 void PipelineAnalysis::finalyze()
 {
-    Request* req = Request::get(QString("/job/%1/finalyze").arg(mId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    if (mStatus == "running")
     {
-        if (success)
+        Request* req = Request::get(QString("/job/%1/finalyze").arg(mId));
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
-            qDebug() << "Job finalyzed";
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
+            if (success)
+            {
+                fromJson(json["data"].toObject());
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            req->deleteLater();
+        });
+    }
 }
 
 

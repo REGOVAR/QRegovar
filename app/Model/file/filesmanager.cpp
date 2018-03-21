@@ -47,7 +47,7 @@ File* FilesManager::getOrCreateFile(int id)
     if (!mFiles.contains(id))
     {
         // Create new file
-        mFiles.insert(id, new File(id));
+        mFiles.insert(id, new File(id, this));
     }
     return mFiles[id];
 }
