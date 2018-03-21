@@ -14,23 +14,14 @@ Button
     property color colorDown: Regovar.theme.secondaryColor.back.dark
     property color colorDisabled: Regovar.theme.boxColor.disabled
     property string iconTxt: ""
-    onIconTxtChanged:
-    {
-        if (iconTxt != null && iconTxt != undefined && iconTxt != "")
-        {
-            iconText.visible = true
-            iconText.width = Regovar.theme.font.boxSize.normal
-        }
-    }
 
 
     contentItem: Row
     {
-        anchors.verticalCenter: parent.verticalCenter
+        spacing: (iconTxt != "" && control.text != "") ? 5 : 0
         Text
         {
             id: iconText
-            //height: control.height
             text: iconTxt
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.icons.name
@@ -38,28 +29,30 @@ Button
             color: Regovar.theme.secondaryColor.front.normal
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            width: 0
-            visible: false
+            height: parent.height
+            width: iconTxt ? Regovar.theme.font.size.normal : 0
+            visible: iconTxt != ""
         }
         Text
         {
-            //height: control.height
             text: control.text
+            height: parent.height
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.family
             font.bold: false
-            color: colorText
+            color: Regovar.theme.secondaryColor.front.normal
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
+            visible: control.text != ""
         }
     }
 
 
     background: Rectangle
     {
-        implicitWidth: 100
-        implicitHeight: control.height
+        implicitWidth: Regovar.theme.font.boxSize.normal + 4
+        implicitHeight: Regovar.theme.font.boxSize.normal + 4
         color : !control.enabled ? colorDisabled : control.down ? colorDown : control.hovered ? colorHover : colorMain
         radius: 2
         Behavior on color

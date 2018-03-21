@@ -117,7 +117,7 @@ Rectangle
         {
             id: closeAnalysisInformation
             Layout.fillWidth: true
-            mainColor: Regovar.theme.frontColor.warning
+            mainColor: Regovar.theme.frontColor.danger
             icon: "m"
         }
 

@@ -107,7 +107,7 @@ Rectangle
             cursorPosition: root.model.cursorPosition
             font.family: "monospace"
             font.pixelSize: Regovar.theme.font.size.normal
-            colorText: "grey"
+            colorText: "lightgrey"
             colorBack: "black"
         }
 

@@ -140,7 +140,7 @@ Rectangle
                     anchors.topMargin: 1
                     anchors.left: parent.left
                     anchors.leftMargin: 1
-                    height: Regovar.theme.font.boxSize.title - 1
+                    height: Regovar.theme.font.boxSize.title - 2
                     width: Regovar.theme.font.boxSize.title
                     color: Regovar.theme.lighter(statusBar.mainColor)
                     radius: 2
@@ -152,7 +152,7 @@ Rectangle
                     anchors.topMargin: 1
                     anchors.left: parent.left
                     anchors.leftMargin: Regovar.theme.font.boxSize.title
-                    height: Regovar.theme.font.boxSize.title - 1
+                    height: Regovar.theme.font.boxSize.title - 2
                     color: Regovar.theme.lighter(statusBar.mainColor)
                     radius: 2
                 }
@@ -210,15 +210,7 @@ Rectangle
                 }
             }
 
-            ButtonIcon
-            {
-                width: Regovar.theme.font.boxSize.title
-                height: Regovar.theme.font.boxSize.title
-                iconTxt: isRunning ? "y" : "x"
-                text: ""
-                ToolTip.text: isRunning ? qsTr("Pause") : qsTr("Resume")
-                ToolTip.visible: hovered
-            }
+
             ButtonIcon
             {
                 width: Regovar.theme.font.boxSize.title
@@ -239,6 +231,21 @@ Rectangle
                         root.model.start();
                     }
                 }
+            }
+
+            ButtonIcon
+            {
+                width: Regovar.theme.font.boxSize.title
+                height: Regovar.theme.font.boxSize.title
+                iconTxt: "h"
+                text: ""
+                ToolTip.text: qsTr("Cancel")
+                ToolTip.visible: hovered
+                colorMain: Regovar.theme.frontColor.danger
+                colorHover: Regovar.theme.lighter(Regovar.theme.frontColor.danger)
+                colorDown: Regovar.theme.darker(Regovar.theme.frontColor.danger)
+                enabled: !root.isClosed
+                onClicked: confirmCancelDialog.open()
             }
         }
 
