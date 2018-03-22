@@ -56,6 +56,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<EventsListModel>("Regovar.Core", 1, 0, "EventsListModel");
     qmlRegisterType<FilesListModel>("Regovar.Core", 1, 0, "FilesListModel");
+    qmlRegisterType<FilesTreeModel>("Regovar.Core", 1, 0, "FilesTreeModel");
 
     qmlRegisterType<User>("Regovar.Core", 1, 0, "User");
     qmlRegisterType<Project>("Regovar.Core", 1, 0, "Project");

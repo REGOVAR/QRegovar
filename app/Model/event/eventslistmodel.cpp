@@ -82,7 +82,7 @@ bool EventsListModel::add(Event* event)
 
 bool EventsListModel::refresh()
 {
-    qDebug() << "TODO";
+    qDebug() << "TODO: EventsListModel::refresh()";
     return false;
 }
 

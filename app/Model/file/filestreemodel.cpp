@@ -2,10 +2,10 @@
 #include "filestreemodel.h"
 #include "filestreeitem.h"
 #include "Model/framework/request.h"
+#include "Model/regovar.h"
 
 
-
-FilesTreeModel::FilesTreeModel() : TreeModel(0)
+FilesTreeModel::FilesTreeModel() : TreeModel(nullptr)
 {
     QHash<int, QVariant> rootData;
     QHash<int, QByteArray> roles = roleNames();
@@ -15,13 +15,26 @@ FilesTreeModel::FilesTreeModel() : TreeModel(0)
     }
     mRootItem = new TreeItem(rootData);
 
+    mProxy = new GenericProxyModel(this);
+    mProxy->setSourceModel(this);
+    mProxy->setFilterRole(SearchField);
+    mProxy->setSortRole(Name);
+    mProxy->setRecursiveFilteringEnabled(true);
 }
 
 
 
-
-void FilesTreeModel::refresh()
+bool FilesTreeModel::fromJson(QJsonArray json)
 {
+    clear();
+    setupModelData(json, mRootItem);
+    return true;
+}
+
+
+bool FilesTreeModel::refresh()
+{
+    qDebug() << "TODO: FilesTreeModel::refresh()";
 //    Request* request = Request::get("/project/browserTree");
 //    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
 //    {
@@ -38,58 +51,12 @@ void FilesTreeModel::refresh()
 //        }
 //        request->deleteLater();
 //    });
+    return false;
 }
 
 
 
 
-
-
-QHash<int, QByteArray> FilesTreeModel::roleNames() const
-{
-    QHash<int, QByteArray> roles;
-    roles[NameRole] = "name";
-    roles[StatusRole] = "status";
-    roles[SizeRole] = "size";
-    roles[DateRole] = "date";
-    roles[CommentRole] = "comment";
-    return roles;
-}
-
-
-
-QVariant FilesTreeModel::newFilesTreeViewItem(int id, const QString &text)
-{
-    FilesTreeItem *t = new FilesTreeItem(this);
-    t->setText(text);
-    t->setId(id);
-    QVariant v;
-    v.setValue(t);
-    return v;
-}
-
-QVariant FilesTreeModel::newFilesTreeViewItemSize(int id, quint64 size, quint64 offset)
-{
-    if (size == offset)
-    {
-         return newFilesTreeViewItem(id, humanSize(size));
-    }
-
-    QString sOffset = humanSize(offset);
-    QString sSize = humanSize(size);
-    return newFilesTreeViewItem(id, sOffset + " / " + sSize);
-}
-
-QVariant FilesTreeModel::newFilesTreeViewItemStatus(int id, QString status, quint64 size, quint64 offset)
-{
-    if (status == "uploading")
-    {
-        float progress = (size > 0) ? offset / size * 100 : 0;
-        return newFilesTreeViewItem(id, tr("Uploading : ") + QLocale::system().toString(progress, 'f', 1) + " %");
-    }
-
-    return newFilesTreeViewItem(id, status);
-}
 
 
 void FilesTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
@@ -99,53 +66,70 @@ void FilesTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
     for (const QJsonValue& json: data)
     {
         QJsonObject p = json.toObject();
-        int id = p["id"].toInt();
 
-        // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
-        QHash<int, QVariant> columnData;
-        columnData.insert(NameRole, newFilesTreeViewItem(id, p["name"].toString()));
-        columnData.insert(StatusRole, newFilesTreeViewItemStatus(id, p["status"].toString(), p["size"].toInt(), p["upload_offset"].toInt()));
-        columnData.insert(SizeRole, newFilesTreeViewItemSize(id, p["size"].toInt(), p["upload_offset"].toInt()));
-        columnData.insert(CommentRole, newFilesTreeViewItem(id, p["comment"].toString()));
-        columnData.insert(DateRole, newFilesTreeViewItem(id, QDate::fromString(p["update_date"].toString()).toString(Qt::LocalDate)));
+        if (p.contains("folder"))
+        {
+            // Add folder entry
+            // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
+            QHash<int, QVariant> columnData;
+            columnData.insert(Id, -1);
+            columnData.insert(Name, QJsonValue::Null);
+            columnData.insert(Comment, QJsonValue::Null);
+            columnData.insert(Url, QJsonValue::Null);
+            columnData.insert(UpdateDate, QJsonValue::Null);
+            columnData.insert(Size, QJsonValue::Null);
+            columnData.insert(Status, QJsonValue::Null);
+            columnData.insert(Source, QJsonValue::Null);
+            columnData.insert(SearchField, QJsonValue::Null);
 
-        // Create treeview item with column's data and parent item
-        TreeItem* item = new TreeItem(columnData, parent);
-        parent->appendChild(item);
+            // Create treeview item
+            TreeItem* item = new TreeItem(columnData, parent);
+            parent->appendChild(item);
 
+            // Load children
+            setupModelData(p["files"].toArray(), item);
+        }
+        else
+        {
+            // Add file entry
+            int id = p["id"].toInt();
+            File* file = regovar->filesManager()->getOrCreateFile(id);
+            file->fromJson(p);
+
+            // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
+            QHash<int, QVariant> columnData;
+
+            columnData.insert(Id, id);
+            columnData.insert(Name, file->filenameUI());
+            columnData.insert(Comment, file->comment());
+            columnData.insert(Url, file->url());
+            columnData.insert(UpdateDate, file->updateDate().toString(Qt::LocalDate));
+            columnData.insert(Size, file->sizeUI());
+            columnData.insert(Status, file->statusUI());
+            columnData.insert(Source, file->sourceUI());
+            columnData.insert(SearchField, file->searchField());
+
+            // Create treeview item
+            TreeItem* item = new TreeItem(columnData, parent);
+            parent->appendChild(item);
+        }
     }
 }
 
 
 
-bool FilesTreeModel::fromJson(QJsonArray json)
+
+QHash<int, QByteArray> FilesTreeModel::roleNames() const
 {
-    clear();
-    setupModelData(json, mRootItem);
-    return true;
-}
-
-
-
-
-
-QString FilesTreeModel::humanSize(qint64 nbytes)
-{
-    QList<QString> suffixes = {"o", "Ko", "Mo", "Go", "To", "Po"};
-
-
-    if (nbytes <= 0)
-    {
-        return "O  o";
-    }
-
-    auto i=0;
-    double bytes = nbytes;
-    while( bytes >= 1024 && i < suffixes.count() -1 )
-    {
-        bytes /= 1024. ;
-        i += 1;
-    }
-    QString f = QLocale::system().toString(bytes, 'f', 2);
-    return QString("%1 %2").arg(f).arg(suffixes[i]);
+    QHash<int, QByteArray> roles;
+    roles[Id] = "id";
+    roles[Name] = "name";
+    roles[Comment] = "comment";
+    roles[Url] = "url";
+    roles[UpdateDate] = "updateDate";
+    roles[Size] = "size";
+    roles[Status] = "status";
+    roles[Source] = "source";
+    roles[SearchField] = "searchField";
+    return roles;
 }

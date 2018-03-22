@@ -50,7 +50,7 @@ bool PipelinesListModel::add(Pipeline* pipe)
 
 bool PipelinesListModel::refresh()
 {
-    qDebug() << "TODO";
+    qDebug() << "TODO: PipelinesListModel::refresh()";
     return false;
 }
 

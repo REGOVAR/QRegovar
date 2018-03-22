@@ -15,6 +15,7 @@ QStringList File::xls = {"xls", "xlsx", "ods"};
 QStringList File::doc = {"doc", "docx", "odt"};
 QStringList File::prz = {"ppt", "pps", "ppsx", "pptx", "odp"};
 QStringList File::pdf = {"pdf", "ps"};
+QStringList File::web = {"html", "htm"};
 
 
 
@@ -297,10 +298,25 @@ QString File::extensionToIco(QString ext)
     if (doc.contains(ext)) return "0";
     if (prz.contains(ext)) return "W";
     if (pdf.contains(ext)) return "V";
+    if (web.contains(ext)) return "Y";
     return "U";
 }
 
-
+QString File::getQMLViewer()
+{
+    if (zip.contains(mType)) return "BinaryViewer.qml";
+    if (txt.contains(mType)) return "TextViewer.qml";
+    if (img.contains(mType)) return "ImageViewer.qml";
+    if (src.contains(mType)) return "SourceCodeViewer.qml";
+    if (aud.contains(mType)) return "MediaViewer.qml";
+    if (vid.contains(mType)) return "MediaViewer.qml";
+    if (xls.contains(mType)) return "BinaryViewer.qml";
+    if (doc.contains(mType)) return "BinaryViewer.qml";
+    if (prz.contains(mType)) return "BinaryViewer.qml";
+    if (pdf.contains(mType)) return "BinaryViewer.qml";
+    if (web.contains(mType)) return "WebViewer.qml";
+    return "BinaryViewer.qml";
+}
 
 
 

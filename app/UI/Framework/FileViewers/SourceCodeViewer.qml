@@ -7,10 +7,10 @@ import "../../Regovar"
 Rectangle
 {
     id: root
-    property File file
-    onFileChanged:
+    property File model
+    onModelChanged:
     {
-        edit.text = file.readFile();
+        edit.text = model.readFile();
     }
     clip: true
 
@@ -41,6 +41,6 @@ Rectangle
         anchors.bottom: root.bottom
         anchors.right: root.right
         text: qsTr("Open externaly")
-        onClicked: Qt.openUrlExternally(file.localeFilePath);
+        onClicked: Qt.openUrlExternally(model.localeFilePath);
     }
 }

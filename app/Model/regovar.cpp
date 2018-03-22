@@ -722,10 +722,10 @@ void Regovar::logout()
 
 QString Regovar::formatFileSize(qint64 size, qint64 uploadOffset)
 {
-    QStringList suffixes = {"o", "Ko", "Mo", "Go", "To", "Po"};
+    QStringList suffixes = {" o", "Ko", "Mo", "Go", "To", "Po"};
     QString uploadString = "";
 
-    if (size == 0) return "0 o";
+    if (size <= 0) return "0  o";
     if (uploadOffset >=0)
     {
         if (uploadOffset < size)

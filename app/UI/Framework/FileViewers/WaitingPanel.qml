@@ -10,17 +10,17 @@ Rectangle
     color: "transparent"
 
     signal waitingDone(int fileId)
-    property File file
-    onFileChanged:
+    property File model
+    onModelChanged:
     {
-        file.localFileReadyChanged.connect(waitingDoneHandler);
-        msg.text = qsTr("The document {0} is uploading...").replace("{0}", file.name);
+        model.localFileReadyChanged.connect(waitingDoneHandler);
+        msg.text = qsTr("The document {0} is uploading...").replace("{0}", model.name);
     }
     Component.onDestruction:
     {
-        if (file)
+        if (model)
         {
-            file.localFileReadyChanged.disconnect(waitingDoneHandler);
+            model.localFileReadyChanged.disconnect(waitingDoneHandler);
         }
     }
 
@@ -36,7 +36,7 @@ Rectangle
 
     function waitingDoneHandler()
     {
-        file.localFileReadyChanged.disconnect(waitingDoneHandler);
-        root.waitingDone(file.id);
+        model.localFileReadyChanged.disconnect(waitingDoneHandler);
+        root.waitingDone(model.id);
     }
 }
