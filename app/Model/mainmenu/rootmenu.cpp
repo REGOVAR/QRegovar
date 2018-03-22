@@ -24,7 +24,7 @@ void RootMenu::initMain()
     administrationEntry->addEntry(new MenuEntry("", tr("Annotations"), "Settings/AdminAnnotationsPage.qml", this));
 
     // Create lvl2 menu entries
-    mAnalysisBrowserEntry = new MenuEntry("c", tr("Analysis"), "", this);
+    mAnalysisBrowserEntry = new MenuEntry("c", tr("Analyses"), "", this);
     mAnalysisBrowserEntry->addEntry(new MenuEntry("c", tr("Browser"), "Browse/ProjectsPage.qml", this));
     mSubjectBrowserEntry = new MenuEntry("b", tr("Subjects"), "", this);
     mSubjectBrowserEntry->addEntry(new MenuEntry("z", tr("Browser"), "Browse/SubjectsPage.qml", this));

@@ -65,36 +65,49 @@ Rectangle
             {
                 Layout.fillWidth: true
 
-                property string formerSearch: ""
                 iconLeft: "z"
                 displayClearButton: true
                 text: regovar.searchRequest
                 placeholder: qsTr("Search in this log...")
-                onEditingFinished:
+                onTextChanged:
                 {
-                    if (formerSearch != text && text != "")
-                    {
-                        root.model.search(text);
-                        regovar.search(text);
+                    root.model.search(text);
+                    updateSearchSelection();
 
-                        formerSearch = text;
-                        updateSearchSelection();
+                    if (root.model.searchResult.length > 0)
+                    {
+                        nextButton.enabled = true;
+                        previousButton.enabled = true;
                     }
+                    else
+                    {
+                        nextButton.enabled = false;
+                        previousButton.enabled = false;
+                    }
+                }
+                Keys.onPressed:
+                {
+                    if (event.key == Qt.Key_F3) jumpToNearestMatch(1);
+                    if (event.key == Qt.Key_F3 && (event.modifiers == Qt.ShiftModifier))
+                        jumpToNearestMatch(-1);
                 }
             }
 
             IconButton
             {
-
-                text: "u"
-                tooltip: qsTr("Jump to the previous result")
+                id: previousButton
+                text: "v"
+                tooltip: qsTr("(Shift+F3) Jump to the previous result")
                 onClicked: jumpToNearestMatch(-1)
+                enabled: false
             }
             IconButton
             {
-                text: "v"
-                tooltip: qsTr("Jump to the next result")
+                id: nextButton
+                text: "u"
+                tooltip: qsTr("(F3) Jump to the next result")
                 onClicked: jumpToNearestMatch(1)
+                enabled: false
             }
         }
 
@@ -130,6 +143,7 @@ Rectangle
             {
                 id: autoRefresh
                 text: "Auto refresh (5s)"
+                enabled: false
             }
         }
     }
@@ -148,22 +162,59 @@ Rectangle
     {
         if (root.model.searchResult.length>0)
         {
-            var nearestId = -1
-            var previousDistance=-1;
-            for (var idx=0; idx < root.model.searchResult.length; idx++)
+
+            // Find the nearest matching position
+            var nearestIdx = 0
+            var currentPos = logText.selectionStart;
+            var previousDistance = Math.abs(currentPos - root.model.searchResult[0]);
+            var resultsCount = root.model.searchResult.length;
+
+            if (root.model.searchResult.length>1)
             {
-                var dist = Math.abs(logText.cursorPosition - root.model.searchResult.length[idx]);
-                if (nearestId == -1)
+                for (var idx=1; idx<resultsCount; idx++)
                 {
+                    var dist = Math.abs(currentPos - root.model.searchResult[idx]);
+                    if (previousDistance < dist)
+                    {
+                        break;
+                    }
                     previousDistance = dist;
+                    nearestIdx = idx;
                 }
-                else if (previousDistance < dist)
-                {
-                    break;
-                }
-                nearestId = idx;
             }
 
+            // Get new index according to the direction
+            var newIdx;
+            if (previousDistance == 0)
+            {
+                newIdx =  nearestIdx + direction;
+            }
+            else if (direction == -1)
+            {
+                if (root.model.searchResult[nearestIdx] < currentPos)
+                {
+                    newIdx = nearestIdx;
+                }
+                else
+                {
+                     newIdx = nearestIdx - 1;
+                }
+            }
+            else if (direction == 1)
+            {
+                if (root.model.searchResult[nearestIdx] > currentPos)
+                {
+                    newIdx = nearestIdx;
+                }
+                else
+                {
+                     newIdx = nearestIdx + 1;
+                }
+            }
+
+            // Update current position and selection
+            newIdx = newIdx == -1 ? resultsCount - 1 : newIdx % resultsCount;
+            root.model.cursorPosition = root.model.searchResult[newIdx];
             updateSearchSelection();
         }
     }
@@ -173,5 +224,6 @@ Rectangle
     {
         logText.cursorPosition = root.model.cursorPosition;
         logText.moveCursorSelection(logText.cursorPosition + root.model.searchPattern.length);
+
     }
 }

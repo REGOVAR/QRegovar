@@ -44,14 +44,20 @@ void RemoteLogModel::refresh()
 void RemoteLogModel::search(QString search)
 {
     search = search.trimmed();
-    if (!search.isEmpty() && mSearchPattern != search)
+    if (search.isEmpty())
+    {
+        mSearchPattern = "";
+        mSearchResult.clear();
+        emit searchChanged();
+    }
+    else if (mSearchPattern != search)
     {
         mSearchPattern = search;
         mSearchResult.clear();
         if (!mSearchPattern.isEmpty())
         {
             int j = 0;
-            while ( (j = mText.indexOf(mSearchPattern, j)) != -1)
+            while ( (j = mText.indexOf(mSearchPattern, j, Qt::CaseInsensitive)) != -1)
             {
                 mSearchResult.append(j);
                 ++j;
