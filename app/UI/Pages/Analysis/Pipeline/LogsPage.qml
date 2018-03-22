@@ -19,7 +19,6 @@ Rectangle
     property bool isRunning: false
     property bool isResumable: false
     property bool isClosed: false
-    property bool logsTabsLoaded: false
 
     onModelChanged:
     {
@@ -364,29 +363,39 @@ Rectangle
         }
     }
 
+    property var existingLogs: []
+
     function updateLogsView()
     {
         // Update tabs
 
         if (root.model.loaded)
         {
+            var needRefresh = false;
             var documents = ("documents" in data) ? data["documents"] : {};
-            var ttt = listModel.createObject(root);
+            var ttt = logsView.tabsModel; //listModel.createObject(root);
 
             for (var idx in root.model.logs)
             {
                 var logModel = root.model.logs[idx];
                 var name =  logModel.url.substring(logModel.url.lastIndexOf("/") + 1);
-                ttt.append(
-                {   "title": name,
-                    "icon": "Y",
-                    "source": "qrc:/qml/Pages/Analysis/Pipeline/LogPage.qml",
-                    "tabModel" : logModel
-                });
+                if (existingLogs.indexOf(logModel.url) == -1)
+                {
+                    ttt.append(
+                    {   "title": name,
+                        "icon": "Y",
+                        "source": "qrc:/qml/Pages/Analysis/Pipeline/LogPage.qml",
+                        "tabModel" : logModel
+                    });
+                    existingLogs.push(logModel.url);
+                    needRefresh = true;
+                }
             }
 
-            logsView.tabsModel = ttt;
-            root.logsTabsLoaded = true;
+            if (needRefresh)
+                logsView.forceRefreshTabs();
+
+            //logsView.tabsModel = ttt;
         }
     }
 }

@@ -357,6 +357,6 @@ void PipelineAnalysis::processPushNotification(QString action, QJsonObject data)
 {
     if (action == "job_updated")
     {
-        fromJson(data, true);
+        fromJson(data);
     }
 }

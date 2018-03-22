@@ -164,6 +164,8 @@ bool AnalysesManager::newAnalysis(QString type)
                 QJsonObject data = json["data"].toObject();
                 int id = data["id"].toInt();
                 // Open new analysis
+                PipelineAnalysis*  pa = getOrCreatePipelineAnalysis(id);
+                pa->fromJson(data, true);
                 bool result = openAnalysis(Analysis::PIPELINE, id, false);
 
                 // notify HMI that analysis is created (=> close newAnalizeWizard dialog)
