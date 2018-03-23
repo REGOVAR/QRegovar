@@ -102,6 +102,8 @@ bool PanelsManager::loadJson(QJsonArray data)
     mPanelsTree->refresh(data);
     // Refresh public model used by QML
     updatePanelsLists();
+
+    return true;
 }
 
 

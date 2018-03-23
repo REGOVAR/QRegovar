@@ -6,8 +6,8 @@
 PipelineAnalysis::PipelineAnalysis(QObject* parent) : Analysis(parent)
 {
     mInputsFiles = new FilesListModel(this);
-    mOutputsFiles = new FilesListModel(this);
-    mType = AnalysesManager::PIPELINE;
+    mOutputsFiles = new FilesTreeModel(this);
+    mType = Analysis::PIPELINE;
     mMenuModel->initPipelineAnalysis();
 }
 
@@ -56,29 +56,21 @@ void PipelineAnalysis::setPipeline(Pipeline* pipe)
 
 
 
-void PipelineAnalysis::setStatus(JobStatus status)
-{
-    mStatus = status;
-    emit dataChanged();
-}
-void PipelineAnalysis::setStatus(QString status)
-{
-    auto meta = QMetaEnum::fromType<JobStatus>();
-    setStatus(static_cast<JobStatus>(meta.keyToValue(status.toStdString().c_str())));
-}
-
-
-
 bool PipelineAnalysis::fromJson(QJsonObject json, bool full_init)
 {
     mId = json["id"].toInt();
     if (json.contains("name")) setName(json["name"].toString());
+    if (json.contains("status")) setStatus(json["status"].toString());
     if (json.contains("comment")) setComment(json["comment"].toString());
+    if (json.contains("project_id")) setProject(regovar->projectsManager()->getOrCreateProject(json["project_id"].toInt()));
     if (json.contains("update_date")) mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     if (json.contains("create_date")) mCreateDate = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
     if (json.contains("config")) mConfig =json["config"].toObject();
     if (json.contains("status")) setStatus(json["status"].toString());
     if (json.contains("pipeline_id")) mPipeline = regovar->pipelinesManager()->getOrCreatePipe(json["pipeline_id"].toInt());
+
+    if (json.contains("progress_label")) mProgressLabel = json["progress_label"].toString();
+    if (json.contains("progress_value")) mProgressValue = json["progress_value"].toDouble();
 
     // Inputs files
     if (json.contains("inputs"))
@@ -131,12 +123,51 @@ bool PipelineAnalysis::fromJson(QJsonObject json, bool full_init)
         }
     }
 
-    if (full_init)
+    // If job is done, and full_init is requested: load outputs files in the cache
+    if (mStatus == "done" && full_init)
     {
-        mPipeline->load(true);
+        for (int idx=0; idx<mOutputsFiles->rowCount(); idx++)
+        {
+            File* file = mOutputsFiles->getAt(idx);
+            file->downloadLocalFile();
+        }
+    }
+
+    if (json.contains("logs"))
+    {
+        for (const QJsonValue& logUrl: json["logs"].toArray())
+        {
+            QString url = logUrl.toString();
+            bool exists = false;
+            for (QObject* o: mLogs)
+            {
+                RemoteLogModel* logModel = qobject_cast<RemoteLogModel*>(o);
+                exists = logModel->url() == url;
+                if (exists) break;
+            }
+            if (!exists)
+            {
+                mLogs.append(new RemoteLogModel(url, this));
+            }
+        }
+    }
+
+
+    if (!mLoaded && full_init)
+    {
+        if (json.contains("pipeline"))
+        {
+            mPipeline->fromJson(json["pipeline"].toObject());
+        }
+        else
+        {
+            mPipeline->load(true);
+        }
+        mLoaded = true;
     }
 
     emit dataChanged();
+    return true;
 }
 
 
@@ -151,26 +182,23 @@ QJsonObject PipelineAnalysis::toJson()
     {
         result.insert("pipeline_id", mPipeline->id());
     }
-    if (mInputsFiles->rowCount() > 0)
+
+    QJsonArray inputs;
+    for(int idx=0; idx<mInputsFiles->rowCount(); idx++)
     {
-        QJsonArray inputs;
-        for(int idx=0; idx<mInputsFiles->rowCount(); idx++)
-        {
-            File* file = mInputsFiles->getAt(idx);
-            inputs.append(file->id());
-        }
-        result.insert("inputs_ids", inputs);
+        File* file = mInputsFiles->getAt(idx);
+        inputs.append(file->id());
     }
-    if (mOutputsFiles->rowCount() > 0)
+    result.insert("inputs_ids", inputs);
+
+    QJsonArray outputs;
+    for(int idx=0; idx<mOutputsFiles->rowCount(); idx++)
     {
-        QJsonArray outputs;
-        for(int idx=0; idx<mOutputsFiles->rowCount(); idx++)
-        {
-            File* file = mOutputsFiles->getAt(idx);
-            outputs.append(file->id());
-        }
-        result.insert("outputs_ids", outputs);
+        File* file = mOutputsFiles->getAt(idx);
+        outputs.append(file->id());
     }
+    result.insert("outputs_ids", outputs);
+
     return result;
 }
 
@@ -208,7 +236,7 @@ void PipelineAnalysis::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                fromJson(json["data"].toObject(), true);
             }
             else
             {
@@ -226,41 +254,47 @@ void PipelineAnalysis::load(bool forceRefresh)
 
 void PipelineAnalysis::pause()
 {
-    Request* req = Request::get(QString("/job/%1/pause").arg(mId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    if (mStatus == "running")
     {
-        if (success)
+        Request* req = Request::get(QString("/job/%1/pause").arg(mId));
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
-            qDebug() << "Job paused";
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
+            if (success)
+            {
+                fromJson(json["data"].toObject());
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            req->deleteLater();
+        });
+    }
 }
 
 
 void PipelineAnalysis::start()
 {
-    Request* req = Request::get(QString("/job/%1/start").arg(mId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    if (mStatus == "pause")
     {
-        if (success)
+        Request* req = Request::get(QString("/job/%1/start").arg(mId));
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
-            qDebug() << "Job start";
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
+            if (success)
+            {
+                fromJson(json["data"].toObject());
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            req->deleteLater();
+        });
+    }
 }
 
 
@@ -271,7 +305,7 @@ void PipelineAnalysis::cancel()
     {
         if (success)
         {
-            qDebug() << "Job canceled";
+            fromJson(json["data"].toObject());
         }
         else
         {
@@ -286,21 +320,24 @@ void PipelineAnalysis::cancel()
 
 void PipelineAnalysis::finalyze()
 {
-    Request* req = Request::get(QString("/job/%1/finalyze").arg(mId));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    if (mStatus == "running")
     {
-        if (success)
+        Request* req = Request::get(QString("/job/%1/finalyze").arg(mId));
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
-            qDebug() << "Job finalyzed";
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
+            if (success)
+            {
+                fromJson(json["data"].toObject());
+            }
+            else
+            {
+                QJsonObject jsonError = json;
+                jsonError.insert("method", Q_FUNC_INFO);
+                regovar->raiseError(jsonError);
+            }
+            req->deleteLater();
+        });
+    }
 }
 
 
@@ -326,21 +363,10 @@ void PipelineAnalysis::refreshMonitoring()
 
 
 
-void PipelineAnalysis::processPushNotification(QString, QJsonObject)
+void PipelineAnalysis::processPushNotification(QString action, QJsonObject data)
 {
-    // TODO
-//    if (action == "file_upload")
-//    {
-//        int id = data["id"].toInt();
-//        for (QObject* o: mInputsFilesList)
-//        {
-//            File* file = qobject_cast<File*>(o);
-//            if (file->id() != id) continue;
-
-//            // Update file model
-//            file->fromJson(data);
-
-//            break;
-//        }
-//    }
+    if (action == "job_updated")
+    {
+        fromJson(data);
+    }
 }

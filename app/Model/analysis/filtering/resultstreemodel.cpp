@@ -13,7 +13,7 @@ ResultsTreeModel::ResultsTreeModel(FilteringAnalysis* parent) : TreeModel(parent
     QHash<int, QVariant> rootData;
     mRootItem = new TreeItem(rootData);
 
-    mAnalysisId = -1;
+    mAnalysisId = parent == nullptr ? -1 : parent->id();
     mPagination = 1000; // TODO : load from settings
 }
 

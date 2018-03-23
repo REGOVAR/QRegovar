@@ -56,6 +56,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<EventsListModel>("Regovar.Core", 1, 0, "EventsListModel");
     qmlRegisterType<FilesListModel>("Regovar.Core", 1, 0, "FilesListModel");
+    qmlRegisterType<FilesTreeModel>("Regovar.Core", 1, 0, "FilesTreeModel");
 
     qmlRegisterType<User>("Regovar.Core", 1, 0, "User");
     qmlRegisterType<Project>("Regovar.Core", 1, 0, "Project");
@@ -68,6 +69,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Event>("Regovar.Core", 1, 0, "Event");
     qmlRegisterType<Pipeline>("Regovar.Core", 1, 0, "Pipeline");
 
+    qmlRegisterType<RemoteLogModel>("Regovar.Core", 1, 0, "RemoteLogModel");
     qmlRegisterType<AdminTableInfo>("Regovar.Core", 1, 0, "AdminTableInfo");
     qmlRegisterType<RootMenu>("Regovar.Core", 1, 0, "RootMenu");
     qmlRegisterType<MenuEntry>("Regovar.Core", 1, 0, "MenuEntry");

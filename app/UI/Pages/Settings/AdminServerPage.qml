@@ -916,7 +916,7 @@ Rectangle
                             elide: Text.ElideRight
                             font.family: "monospace"
                             horizontalAlignment: Text.AlignRight
-                            text: styleData.value ? regovar.sizeToHumanReadable(styleData.value) : "-"
+                            text: styleData.value ? regovar.formatFileSize(styleData.value) : "-"
                         }
                     }
                 }
@@ -937,7 +937,7 @@ Rectangle
                             elide: Text.ElideRight
                             font.family: "monospace"
                             horizontalAlignment: Text.AlignRight
-                            text: styleData.value ? regovar.sizeToHumanReadable(styleData.value) : "-"
+                            text: styleData.value ? regovar.formatFileSize(styleData.value) : "-"
                         }
                     }
                 }
@@ -971,25 +971,25 @@ Rectangle
             cpuFreq.text = Regovar.round(serverData["cpu"]["freq"]/1000,1) + " GHz";
 
             ramGauge.value = serverData["ram"]["percent"];
-            ramTotal.text  = regovar.sizeToHumanReadable(serverData["ram"]["total"]);
-            ramBuffer.text = regovar.sizeToHumanReadable(serverData["ram"]["buffers"]);
-            ramCached.text = regovar.sizeToHumanReadable(serverData["ram"]["cached"]);
-            ramUsed.text   = regovar.sizeToHumanReadable(serverData["ram"]["used"]);
-            swpTotal.text  = regovar.sizeToHumanReadable(serverData["swap"]["total"]);
-            swpUsed.text   = regovar.sizeToHumanReadable(serverData["swap"]["used"]);
+            ramTotal.text  = regovar.formatFileSize(serverData["ram"]["total"]);
+            ramBuffer.text = regovar.formatFileSize(serverData["ram"]["buffers"]);
+            ramCached.text = regovar.formatFileSize(serverData["ram"]["cached"]);
+            ramUsed.text   = regovar.formatFileSize(serverData["ram"]["used"]);
+            swpTotal.text  = regovar.formatFileSize(serverData["swap"]["total"]);
+            swpUsed.text   = regovar.formatFileSize(serverData["swap"]["used"]);
 
             dskGauge.value = serverData["disk"]["overall"]["percent"];
-            dskTotal.text  = regovar.sizeToHumanReadable(serverData["disk"]["overall"]["total"]);
-            dskUsed.text   = regovar.sizeToHumanReadable(serverData["disk"]["overall"]["used"]);
-            dskFile.text   = regovar.sizeToHumanReadable(serverData["disk"]["files"]);
-            dskTmp.text    = regovar.sizeToHumanReadable(serverData["disk"]["temp"]);
-            dskCache.text  = regovar.sizeToHumanReadable(serverData["disk"]["cache"]);
-            dskDB.text     = regovar.sizeToHumanReadable(serverData["disk"]["ext_db"]);
-            dskPipe.text   = regovar.sizeToHumanReadable(serverData["disk"]["pipelines"]);
-            dskJobs.text   = regovar.sizeToHumanReadable(serverData["disk"]["jobs"]);
+            dskTotal.text  = regovar.formatFileSize(serverData["disk"]["overall"]["total"]);
+            dskUsed.text   = regovar.formatFileSize(serverData["disk"]["overall"]["used"]);
+            dskFile.text   = regovar.formatFileSize(serverData["disk"]["files"]);
+            dskTmp.text    = regovar.formatFileSize(serverData["disk"]["temp"]);
+            dskCache.text  = regovar.formatFileSize(serverData["disk"]["cache"]);
+            dskDB.text     = regovar.formatFileSize(serverData["disk"]["ext_db"]);
+            dskPipe.text   = regovar.formatFileSize(serverData["disk"]["pipelines"]);
+            dskJobs.text   = regovar.formatFileSize(serverData["disk"]["jobs"]);
 
             tablesTableView.model = regovar.admin.tables;
-            databaseResumeTotalSize.text = regovar.sizeToHumanReadable(regovar.admin.tablesTotalSize);
+            databaseResumeTotalSize.text = regovar.formatFileSize(regovar.admin.tablesTotalSize);
             databaseResumeRepeater.model = regovar.admin.tablesSizes;
             // Populate Pie slices
             pieSeries.clear()

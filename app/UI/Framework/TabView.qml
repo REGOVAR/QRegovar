@@ -14,6 +14,11 @@ Item
     property alias currentIndex: tabsPanel.currentIndex
     property bool smallHeader: false
 
+    property color colorTabBack: Regovar.theme.backgroundColor.alt
+    property color colorTabText: Regovar.theme.primaryColor.back.normal
+    property color colorSelectedTabBack: Regovar.theme.backgroundColor.main
+    property color colorSelectedTabText: Regovar.theme.primaryColor.back.dark
+
 
     Rectangle
     {
@@ -22,7 +27,7 @@ Item
         anchors.top: root.top
         anchors.right: root.right
         height: smallHeader ? 25 : 50
-        color: Regovar.theme.backgroundColor.alt
+        color: root.colorTabBack
 
         Rectangle
         {
@@ -63,7 +68,7 @@ Item
                 Rectangle
                 {
                     anchors.fill: parent
-                    color: parent.isSelected ? Regovar.theme.backgroundColor.main : Regovar.theme.backgroundColor.alt
+                    color: parent.isSelected ? root.colorSelectedTabBack : root.colorTabBack
                 }
 
                 Rectangle
@@ -113,7 +118,7 @@ Item
                     width: parent.hasIcon ? (smallHeader ? Regovar.theme.font.boxSize.normal : Regovar.theme.font.boxSize.title) : 0
 
                     text: (parent.hasIcon) ? model.icon : ""
-                    color: parent.isSelected ? Regovar.theme.primaryColor.back.dark : Regovar.theme.primaryColor.back.normal
+                    color: parent.isSelected ? root.colorTabText : root.colorSelectedTabText
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: smallHeader ? Regovar.theme.font.size.normal : Regovar.theme.font.size.title
@@ -129,7 +134,7 @@ Item
                     anchors.bottom: parent.bottom
 
                     text: (parent.hasLabel) ? model.title : ""
-                    color: parent.isSelected ? Regovar.theme.primaryColor.back.dark : Regovar.theme.primaryColor.back.normal
+                    color: parent.isSelected ? root.colorTabText : root.colorSelectedTabText
                     verticalAlignment: Text.AlignVCenter
                     font.pixelSize: smallHeader ? Regovar.theme.font.size.normal : Regovar.theme.font.size.title
                 }

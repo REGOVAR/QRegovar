@@ -55,6 +55,7 @@ bool Pipeline::fromJson(QJsonObject json)
 
     updateSearchField();
     emit dataChanged();
+    return true;
 }
 
 

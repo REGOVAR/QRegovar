@@ -133,6 +133,15 @@ void NetworkManager::onWebsocketReceived(QString message)
             analysis->processPushNotification(action, data);
         }
     }
+    else if (mWsJobsActionsList.indexOf(action) != -1)
+    {
+        int id = data["id"].toInt();
+        PipelineAnalysis* analysis = regovar->analysesManager()->getPipelineAnalysis(id);
+        if (analysis != nullptr)
+        {
+            analysis->processPushNotification(action, data);
+        }
+    }
     else if (obj["action"].toString() != "hello")
     {
         qDebug() << "WS WARNING: Websocket Unknow message" << message;

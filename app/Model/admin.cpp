@@ -46,7 +46,7 @@ void Admin::getServerStatus()
             for (const QJsonValue& value: data["database_tmp"].toArray())
             {
                 QJsonObject wt = value.toObject();
-                wt.insert("hSize", regovar->sizeToHumanReadable(wt["size"].toInt()));
+                wt.insert("hSize", regovar->formatFileSize(wt["size"].toInt()));
                 mWtTables.append(wt);
             }
             for (const QString& k: sectionsSizes.keys())
@@ -55,7 +55,7 @@ void Admin::getServerStatus()
                 json.insert("section", k);
                 json.insert("size", sectionsSizes[k]);
                 json.insert("percent", QString::number(sectionsSizes[k] / ((float) mTablesTotalSize) * 100, 'f', 1) + "%");
-                json.insert("hSize", regovar->sizeToHumanReadable(sectionsSizes[k]));
+                json.insert("hSize", regovar->formatFileSize(sectionsSizes[k]));
                 if (k == "Regovar")
                 {
                     mSectionsSizes.insert(0, json);

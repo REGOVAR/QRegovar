@@ -220,13 +220,13 @@ Item
         State
         {
             name: "level0"
-            PropertyChanges { target: mainMenu; width: root.model.collapsed ? 50 : 250}
+            PropertyChanges { target: mainMenu; width: root.model && root.model.collapsed ? 50 : 250}
             PropertyChanges { target: subLevel; anchors.leftMargin: root.width }
         },
         State
         {
             name: "level1"
-            PropertyChanges { target: mainMenu; width: root.model.collapsed ? 50 : 250}
+            PropertyChanges { target: mainMenu; width: root.model && root.model.collapsed ? 50 : 250}
             PropertyChanges { target: subLevel; anchors.leftMargin: 50}
         },
         State

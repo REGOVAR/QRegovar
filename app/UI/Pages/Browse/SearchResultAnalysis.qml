@@ -54,11 +54,11 @@ Rectangle
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            text: Regovar.filteringAnalysisStatusToIcon(status)
+            text: regovar.analysisStatusIcon(status)
 
             onTextChanged:
             {
-                if (status == "computing")
+                if (regovar.analysisStatusIconAnimated(status))
                 {
                     statusIconAnimation.start();
                 }
@@ -72,7 +72,7 @@ Rectangle
             NumberAnimation on rotation
             {
                 id: statusIconAnimation
-                duration: 1000
+                duration: 1500
                 loops: Animation.Infinite
                 from: 0
                 to: 360

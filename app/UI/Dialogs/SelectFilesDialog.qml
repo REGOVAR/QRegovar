@@ -275,7 +275,7 @@ Dialog
                                 NumberAnimation on rotation
                                 {
                                     id: statusIconAnimation
-                                    duration: 1000
+                                    duration: 1500
                                     loops: Animation.Infinite
                                     from: 0
                                     to: 360

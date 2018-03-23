@@ -24,8 +24,8 @@ void VariantsTreeWidget::paint(QPainter* painter)
 {
 
 
-    int rc = mModel->rowCount();
-    int cc = mModel->columnCount();
+//    int rc = mModel->rowCount();
+//    int cc = mModel->columnCount();
 
     mTree->resize(width(), height());
     mTree->render(painter);

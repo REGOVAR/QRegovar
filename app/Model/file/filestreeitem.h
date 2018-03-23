@@ -6,39 +6,30 @@
 class FilesTreeItem : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged)
-    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
+    Q_PROPERTY(int id READ id WRITE setId NOTIFY dataChanged)
+    Q_PROPERTY(QVariant value READ value WRITE setValue NOTIFY dataChanged)
 
 public:
 
     // Constructors
     explicit FilesTreeItem(QObject* parent=nullptr);
-    explicit FilesTreeItem(int id, QString text, QObject* parent=nullptr);
-//    FilesTreeItem(const FilesTreeItem &other);
-//    ~FilesTreeItem();
+    explicit FilesTreeItem(int id, QVariant value, QObject* parent=nullptr);
 
     // Accessors
-    inline QString text() { return mText; }
+    inline QVariant value() { return mValue; }
     inline int id() { return mId; }
-    inline int size() { return mSize; }
-    inline int uploadOffset() { return mOffset; }
 
     // Setters
-    inline void setText(QString text) { mText = text; emit textChanged(); }
-    inline void setId(int id) { mId = id; emit idChanged(); }
-    inline void setSize(qint64 size) { mSize = size; }
-    inline void setUploadOffset(qint64 offset) { mOffset = offset; }
+    inline void setValue(QVariant value) { mValue = value; emit dataChanged(); }
+    inline void setId(int id) { mId = id; emit dataChanged(); }
 
 
 Q_SIGNALS:
-    void textChanged();
-    void idChanged();
+    void dataChanged();
 
 private:
-    QString mText;
+    QVariant mValue;
     int mId = -1;
-    qint64 mSize = 0;
-    qint64 mOffset = 0;
 };
 
 #endif // FILESTREEITEM_H

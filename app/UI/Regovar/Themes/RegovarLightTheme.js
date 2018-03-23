@@ -38,6 +38,7 @@
     "boxColor": 
     {
         "back":        "#ffffff",
+        "alt":         "#e7e7e7",
         "header1":     "#fcfcfd",
         "header2":     "#e7e7e7",
         "front":       "#000000",
@@ -48,14 +49,16 @@
     "backgroundColor":
     {
         "main": "#efeff1",
-        "alt":  "#e4e4e8"
+        "alt":  "#e4e4e8",
+        "overlay": "#aaffffff"
     },
     "frontColor":
     {
         "normal":   "#000000",
+        "disable":  "#999999",
         "info":     "#6887ff",
         "success" : "#6cc788",
-        "warning" : "#f77a99",
+        "warning" : "#ff9b28",
         "danger" :  "#f44455"
     },
 

@@ -97,10 +97,9 @@ QtObject
     {
         property color normal: "#000000"
         property color disable: "#999999"
-
         property color info: "#6887ff"
         property color success : "#6cc788"
-        property color warning : "#f46d44"
+        property color warning : "#ff9b28"
         property color danger : "#f44455"
     }
 
@@ -146,14 +145,16 @@ QtObject
     }
 
 
-    function lighter(color)
+    function lighter(color, coeff)
     {
-        return Qt.lighter(color, 1.5)
+        var trueCoeff = (typeof coeff !== 'undefined') ? coeff : 1.5;
+        return Qt.lighter(color, trueCoeff)
     }
 
-    function darker(color)
+    function darker(color, coeff)
     {
-        return Qt.darker(color, 1.5)
+        var trueCoeff = (typeof coeff !== 'undefined') ? coeff : 1.5;
+        return Qt.darker(color, trueCoeff)
     }
 
 
@@ -191,6 +192,7 @@ QtObject
                 styleRoot.secondaryColor.front.dark = themeData.secondaryColor.front.dark;
 
                 styleRoot.boxColor.back = themeData.boxColor.back;
+                styleRoot.boxColor.alt = themeData.boxColor.alt;
                 styleRoot.boxColor.header1 = themeData.boxColor.header1;
                 styleRoot.boxColor.header2 = themeData.boxColor.header2;
                 styleRoot.boxColor.front = themeData.boxColor.front;
@@ -200,8 +202,10 @@ QtObject
 
                 styleRoot.backgroundColor.main = themeData.backgroundColor.main;
                 styleRoot.backgroundColor.alt = themeData.backgroundColor.alt;
+                styleRoot.backgroundColor.overlay = themeData.backgroundColor.overlay;
 
                 styleRoot.frontColor.normal = themeData.frontColor.normal;
+                styleRoot.frontColor.disable = themeData.frontColor.disable;
                 styleRoot.frontColor.info = themeData.frontColor.info;
                 styleRoot.frontColor.success = themeData.frontColor.success;
                 styleRoot.frontColor.warning = themeData.frontColor.warning;

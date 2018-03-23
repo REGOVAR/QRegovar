@@ -7,14 +7,15 @@
 
 QStringList File::zip = {"zip", "gz", "xz", "tar", "rar"};
 QStringList File::txt = {"txt", "vcf", "sam", "fasta", "fastq", "csv"};
-QStringList File::src = {"sh", "bat", "xml", "css", "py", "js", "html", "htm"};
+QStringList File::src = {"sh", "bat", "xml", "css", "py", "js"};
 QStringList File::aud = {"wav", "ogg", "mp3"};
-QStringList File::vid = {"avi", "wmv", "mov", "mpg", "mpeg", "mkv"};
+QStringList File::vid = {"avi", "wmv", "mov", "mpg", "mpeg", "mp4"};
 QStringList File::img = {"tiff", "tif", "gif", "jpeg", "jpg", "jpe", "png", "bmp"};
 QStringList File::xls = {"xls", "xlsx", "ods"};
 QStringList File::doc = {"doc", "docx", "odt"};
 QStringList File::prz = {"ppt", "pps", "ppsx", "pptx", "odp"};
 QStringList File::pdf = {"pdf", "ps"};
+QStringList File::web = {"html", "htm"};
 
 
 
@@ -141,7 +142,7 @@ bool File::fromJson(QJsonObject json)
     statusInfo.insert("label", statusToLabel(mStatus, mSize, mUploadOffset));
     mStatusUI = QVariant::fromValue(statusInfo);
 
-    mSizeUI = regovar->sizeToHumanReadable(mSize, mUploadOffset);
+    mSizeUI = regovar->formatFileSize(mSize, mUploadOffset);
 
     if (json.contains("job_source_id"))
     {
@@ -201,7 +202,7 @@ bool File::downloadLocalFile()
         else
         {
             // Need to download file
-            Request* req = Request::download(QString("/dl/file/%1/%2").arg(mId).arg(mName));
+            Request* req = Request::download(mUrl.toString());
             connect(req, &Request::downloadReceived, [this, req](bool success, const QByteArray& data)
             {
                 if (success)
@@ -297,10 +298,25 @@ QString File::extensionToIco(QString ext)
     if (doc.contains(ext)) return "0";
     if (prz.contains(ext)) return "W";
     if (pdf.contains(ext)) return "V";
+    if (web.contains(ext)) return "Y";
     return "U";
 }
 
-
+QString File::getQMLViewer()
+{
+    if (zip.contains(mType)) return "BinaryViewer.qml";
+    if (txt.contains(mType)) return "TextViewer.qml";
+    if (img.contains(mType)) return "ImageViewer.qml";
+    if (src.contains(mType)) return "SourceCodeViewer.qml";
+    if (aud.contains(mType)) return "MediaViewer.qml";
+    if (vid.contains(mType)) return "MediaViewer.qml";
+    if (xls.contains(mType)) return "BinaryViewer.qml";
+    if (doc.contains(mType)) return "BinaryViewer.qml";
+    if (prz.contains(mType)) return "BinaryViewer.qml";
+    if (pdf.contains(mType)) return "BinaryViewer.qml";
+    if (web.contains(mType)) return "WebViewer.qml";
+    return "BinaryViewer.qml";
+}
 
 
 

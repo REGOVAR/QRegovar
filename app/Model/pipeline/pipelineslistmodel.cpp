@@ -40,7 +40,9 @@ bool PipelinesListModel::add(Pipeline* pipe)
         mPipelinesList.append(pipe);
         endInsertRows();
         emit countChanged();
+        return true;
     }
+    return false;
 }
 
 
@@ -48,7 +50,8 @@ bool PipelinesListModel::add(Pipeline* pipe)
 
 bool PipelinesListModel::refresh()
 {
-    qDebug() << "TODO";
+    qDebug() << "TODO: PipelinesListModel::refresh()";
+    return false;
 }
 
 
