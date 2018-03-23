@@ -32,7 +32,7 @@ public:
 
     // Methods
     QHash<int, QByteArray> roleNames() const override;
-    void refresh(QJsonArray json);
+    void fromJson(QJsonArray json);
     void setupModelData(QJsonArray data, TreeItem *parent);
     TreeItem* newFolderTreeItem(const QJsonObject& data, TreeItem* parent);
     TreeItem* newAnalysisTreeItem(const int id, TreeItem* parent);

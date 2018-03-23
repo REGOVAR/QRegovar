@@ -13,10 +13,8 @@ Rectangle
 
     function openFile(id)
     {
-        emptyPanel.visible = true;
         waitingPanel.visible = true;
-        viewer.visible = true;
-
+        emptyPanel.visible = false;
 
         // Get file
         var file = regovar.filesManager.getOrCreateFile(id);
@@ -66,7 +64,7 @@ Rectangle
             {
                 elmt.model = file;
             }
-            console.log ("load file viewer" + uid + ": " + qmlPage)
+            console.log ("load file viewer: " + qmlPage)
         }
         else if (comp.status == Component.Error)
         {
@@ -108,7 +106,6 @@ Rectangle
         {
             id: viewer
             anchors.fill: parent
-            visible: false
         }
     }
 }

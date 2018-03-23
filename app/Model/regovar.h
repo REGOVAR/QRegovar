@@ -184,6 +184,7 @@ public:
     Q_INVOKABLE QString formatNumber(double value);
     Q_INVOKABLE QString formatDate(QDateTime date, bool withTime=true);
     Q_INVOKABLE QString formatDate(QString isodate, bool withTime=true);
+    Q_INVOKABLE QString formatDuration(int duration);
     Q_INVOKABLE QString formatFileSize(qint64 size, qint64 uploadOffset=-1);
     Q_INVOKABLE inline QString analysisStatusLabel(QString status) { return Analysis::statusLabel(status); }
     Q_INVOKABLE inline QString analysisStatusIcon(QString status) { return Analysis::statusIcon(status); }

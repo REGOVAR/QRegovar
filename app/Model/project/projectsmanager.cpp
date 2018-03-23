@@ -38,7 +38,7 @@ bool ProjectsManager::loadJson(QJsonArray json, QString prefix)
     if (prefix.isEmpty())
     {
         // Update tree model
-        mProjectsTreeModel->refresh(json);
+        mProjectsTreeModel->fromJson(json);
 
         mProjectsFlatList.clear();
     }

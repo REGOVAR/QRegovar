@@ -2,45 +2,80 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import Regovar.Core 1.0
-import "../../Regovar"
 
-Rectangle
+import "../../Regovar"
+import "../../Framework"
+
+Item
 {
     id: root
+    anchors.fill: parent
+
     property File model
     onModelChanged:
     {
-        edit.text = model.readFile();
+        fileContent.text = model.readFile();
+        fileName.text = model.name;
     }
-    clip: true
 
-    color: Regovar.theme.boxColor.back
-    border.width: 1
-    border.color: Regovar.theme.boxColor.border
-
-
-    ScrollView
+    ColumnLayout
     {
         anchors.fill: parent
-        TextEdit
-        {
-            id: edit
-            width: root.width - 30
-            font.pixelSize: Regovar.theme.font.size.normal
-            color: Regovar.theme.frontColor.normal
-            readOnly: true
-            selectByMouse: true
-            selectByKeyboard: true
-            wrapMode: TextEdit.Wrap
-            font.family: "monospace"
-        }
-    }
 
-    Button
-    {
-        anchors.bottom: root.bottom
-        anchors.right: root.right
-        text: qsTr("Open externaly")
-        onClicked: Qt.openUrlExternally(model.localeFilePath);
+        Rectangle
+        {
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.header
+            color: "transparent"
+
+            RowLayout
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.right: parent.right
+                spacing: 10
+
+                Text
+                {
+                    id: fileName
+                    Layout.fillWidth: true
+                    font.pixelSize: Regovar.theme.font.size.header
+                    color: Regovar.theme.primaryColor.back.dark
+                    elide: Text.ElideRight
+                }
+
+
+                ButtonInline
+                {
+                    iconTxt: "_"
+                    text: qsTr("Open externaly")
+                    onClicked: Qt.openUrlExternally(model.localFilePath);
+                }
+            }
+
+
+
+            Rectangle
+            {
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                width: parent.width
+                height: 1
+                color: Regovar.theme.primaryColor.back.normal
+            }
+        }
+
+
+        TextArea
+        {
+            id: fileContent
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            readOnly: true
+            font.family: "monospace"
+            font.pixelSize: Regovar.theme.font.size.normal
+            colorText: "lightgrey"
+            colorBack: "black"
+        }
     }
 }

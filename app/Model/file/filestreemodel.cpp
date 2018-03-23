@@ -5,7 +5,7 @@
 #include "Model/regovar.h"
 
 
-FilesTreeModel::FilesTreeModel() : TreeModel(nullptr)
+FilesTreeModel::FilesTreeModel(QObject* parent) : TreeModel(parent)
 {
     QHash<int, QVariant> rootData;
     QHash<int, QByteArray> roles = roleNames();
@@ -26,8 +26,10 @@ FilesTreeModel::FilesTreeModel() : TreeModel(nullptr)
 
 bool FilesTreeModel::fromJson(QJsonArray json)
 {
+    beginResetModel();
     clear();
     setupModelData(json, mRootItem);
+    endResetModel();
     return true;
 }
 
@@ -56,6 +58,47 @@ bool FilesTreeModel::refresh()
 
 
 
+void FilesTreeModel::add(File* file, const QModelIndex& index)
+{
+    beginInsertRows(index, rowCount(index), rowCount(index));
+    add(file, getItem(index));
+    endInsertRows();
+}
+
+
+void FilesTreeModel::add(File* file, TreeItem* parent)
+{
+    if (parent == nullptr)
+    {
+        qDebug() << "ERROR: [FilesTreeModel::add] parent cannot be null";
+        return;
+    }
+    // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
+    QHash<int, QVariant> columnData;
+    columnData.insert(Id, file->id());
+    columnData.insert(Name, file->filenameUI());
+    columnData.insert(Comment, file->comment());
+    columnData.insert(Url, file->url());
+    columnData.insert(UpdateDate, file->updateDate().toString(Qt::LocalDate));
+    columnData.insert(Size, file->sizeUI());
+    columnData.insert(Status, file->statusUI());
+    columnData.insert(Source, file->sourceUI());
+    columnData.insert(SearchField, file->searchField());
+
+    // Create treeview item
+
+    TreeItem* item = new TreeItem(columnData, parent);
+    parent->appendChild(item);
+}
+
+
+
+File* FilesTreeModel::getAt(int row, const QModelIndex& parent)
+{
+    int id = data(index(row, 0, parent), Id).toInt();
+    return regovar->filesManager()->getOrCreateFile(id);
+}
+
 
 
 
@@ -73,14 +116,14 @@ void FilesTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
             // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
             QHash<int, QVariant> columnData;
             columnData.insert(Id, -1);
-            columnData.insert(Name, QJsonValue::Null);
+            columnData.insert(Name, p["name"].toString());
             columnData.insert(Comment, QJsonValue::Null);
             columnData.insert(Url, QJsonValue::Null);
             columnData.insert(UpdateDate, QJsonValue::Null);
             columnData.insert(Size, QJsonValue::Null);
             columnData.insert(Status, QJsonValue::Null);
             columnData.insert(Source, QJsonValue::Null);
-            columnData.insert(SearchField, QJsonValue::Null);
+            columnData.insert(SearchField, p["name"].toString());
 
             // Create treeview item
             TreeItem* item = new TreeItem(columnData, parent);
@@ -95,26 +138,12 @@ void FilesTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
             int id = p["id"].toInt();
             File* file = regovar->filesManager()->getOrCreateFile(id);
             file->fromJson(p);
-
-            // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
-            QHash<int, QVariant> columnData;
-
-            columnData.insert(Id, id);
-            columnData.insert(Name, file->filenameUI());
-            columnData.insert(Comment, file->comment());
-            columnData.insert(Url, file->url());
-            columnData.insert(UpdateDate, file->updateDate().toString(Qt::LocalDate));
-            columnData.insert(Size, file->sizeUI());
-            columnData.insert(Status, file->statusUI());
-            columnData.insert(Source, file->sourceUI());
-            columnData.insert(SearchField, file->searchField());
-
-            // Create treeview item
-            TreeItem* item = new TreeItem(columnData, parent);
-            parent->appendChild(item);
+            add(file, parent);
         }
     }
 }
+
+
 
 
 

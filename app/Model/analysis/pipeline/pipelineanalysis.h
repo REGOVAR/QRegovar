@@ -5,6 +5,7 @@
 #include "Model/analysis/analysis.h"
 #include "Model/pipeline/pipeline.h"
 #include "Model/file/fileslistmodel.h"
+#include "Model/file/filestreemodel.h"
 #include "Model/analysis/remotelogmodel.h"
 
 class PipelineAnalysis: public Analysis
@@ -21,7 +22,7 @@ class PipelineAnalysis: public Analysis
 
     Q_PROPERTY(Pipeline* pipeline READ pipeline WRITE setPipeline NOTIFY pipelineChanged)
     Q_PROPERTY(FilesListModel* inputsFiles READ inputsFiles NOTIFY dataChanged)
-    Q_PROPERTY(FilesListModel* outputsFiles READ outputsFiles NOTIFY dataChanged)
+    Q_PROPERTY(FilesTreeModel* outputsFiles READ outputsFiles NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> logs READ logs NOTIFY statusChanged)
 
 public:
@@ -37,7 +38,7 @@ public:
     inline QString progressLabel() const { return mProgressLabel; }
     inline Pipeline* pipeline() const { return mPipeline; }
     inline FilesListModel* inputsFiles() const { return mInputsFiles; }
-    inline FilesListModel* outputsFiles() const { return mOutputsFiles; }
+    inline FilesTreeModel* outputsFiles() const { return mOutputsFiles; }
     inline QList<QObject*> logs() const { return mLogs; }
 
     // Setters
@@ -92,8 +93,8 @@ private:
     //! The list of files used as input for the analysis
     FilesListModel* mInputsFiles = nullptr;
     //! The list of files created by the analysis
-    FilesListModel* mOutputsFiles = nullptr;
-
+    //! Note that we use a tree even if we know that outputs is a list because the FileBrowser need a treemodel
+    FilesTreeModel* mOutputsFiles = nullptr;
 };
 
 #endif // PIPELINEANALYSIS_H

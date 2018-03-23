@@ -717,7 +717,11 @@ void Regovar::logout()
 }
 
 
-
+QString Regovar::formatDuration(int duration)
+{
+    // TODO:
+    return QString::number( duration / 1000);
+}
 
 
 QString Regovar::formatFileSize(qint64 size, qint64 uploadOffset)

@@ -215,5 +215,6 @@
         <file>Pages/Settings/AdminLogsPage.qml</file>
         <file>InformationPanel/Common/WebViewPanel.qml</file>
         <file>Framework/IconButton.qml</file>
+        <file>Framework/FileViewers/WebViewer.qml</file>
     </qresource>
 </RCC>

@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
+import QtWebView 1.0
 import Regovar.Core 1.0
 
 import "../../Regovar"
@@ -14,7 +15,7 @@ Item
     property File model
     onModelChanged:
     {
-        fileContent.text = model.readFile();
+        webview.url = model.url;
         fileName.text = model.name;
     }
 
@@ -66,13 +67,11 @@ Item
         }
 
 
-        TextArea
+        WebView
         {
-            id: fileContent
+            id: webview
             Layout.fillHeight: true
             Layout.fillWidth: true
-            readOnly: true
-            font.family: "monospace"
         }
     }
 }

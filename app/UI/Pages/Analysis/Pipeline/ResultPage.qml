@@ -117,6 +117,7 @@ Rectangle
 
         Row
         {
+            id: errorMessage
             anchors.centerIn: parent
             Text
             {
@@ -144,7 +145,6 @@ Rectangle
         {
             id: filesBrowser
             anchors.fill: parent
-            visible: false
         }
     }
 
@@ -196,10 +196,11 @@ Rectangle
                 pipelineLogo.source = root.model.pipeline.icon;
             }
 
-            if (root.model.status == "done")
+            if (root.model.status == "done" && filesBrowser.model != model.outputsFiles)
             {
                 filesBrowser.visible = true;
-                filesBrowser.modelList = model.outputsFiles;
+                errorMessage.visible = false;
+                filesBrowser.model = model.outputsFiles;
             }
         }
     }

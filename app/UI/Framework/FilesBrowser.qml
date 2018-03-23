@@ -2,43 +2,24 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import Regovar.Core 1.0
+
 import "../Regovar"
+import "../Framework"
 
 Item
 {
     id: root
-    property alias modelTree: filesTreeView.model
-    property alias modelList: filesListView.model
-    onModelTreeChanged:
-    {
-        if (modelTree)
-        {
-            filesTreeView.visible = true;
-            leftPanel.width = 300;
-        }
-    }
-    onModelListChanged:
-    {
-        if (modelList)
-        {
-            filesListView.visible = true;
-            leftPanel.width = modelList.rowCount() > 1 ? 300 : 0;
-        }
-    }
+    property alias model: filesTreeView.model
 
     SplitView
     {
         id: row
         anchors.fill: parent
-        anchors.margins: 10
-        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
-        visible: root.model ? root.model.loaded : false
-
 
         Rectangle
         {
             id: leftPanel
-            width: 0
+            width: 300
             color: "transparent"
             clip: true
 
@@ -71,15 +52,12 @@ Item
                             elide: Text.ElideRight
                         }
 
-
-                        ButtonInline
-                        {
-                            text: qsTr("Download all")
-                            iconTxt: "é"
-                        }
+//                        ButtonInline
+//                        {
+//                            text: qsTr("Download all")
+//                            iconTxt: "é"
+//                        }
                     }
-
-
 
                     Rectangle
                     {
@@ -91,99 +69,12 @@ Item
                     }
                 }
 
-                TableView
-                {
-                    id: filesListView
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    visible: false
-
-                    onCurrentRowChanged:
-                    {
-                        if (model)
-                        {
-                            var file = model.getAt(currentRow);
-                            viewer.openFile(file.id);
-                        }
-                    }
-
-                    TableViewColumn
-                    {
-                        width: 100
-                        role: "name"
-                        title: "Name"
-                        delegate: Item
-                        {
-
-                            Text
-                            {
-                                anchors.leftMargin: 5
-                                anchors.left: parent.left
-                                anchors.verticalCenter: parent.verticalCenter
-                                verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.icons.name
-                                text: styleData.value.icon
-                                onTextChanged:
-                                {
-                                    if (styleData.value.icon == "/") // = Loading
-                                    {
-                                        statusIconAnimation.start();
-                                    }
-                                    else
-                                    {
-                                        statusIconAnimation.stop();
-                                        rotation = 0;
-                                    }
-                                }
-                                NumberAnimation on rotation
-                                {
-                                    id: statusIconAnimation
-                                    duration: 1500
-                                    loops: Animation.Infinite
-                                    from: 0
-                                    to: 360
-                                }
-                            }
-                            Text
-                            {
-                                anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
-                                anchors.rightMargin: 5
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                anchors.verticalCenter: parent.verticalCenter
-                                horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                text: styleData.value.filename
-                                elide: Text.ElideRight
-                            }
-                        }
-                    }
-                    TableViewColumn
-                    {
-                        width: 100
-                        role: "size"
-                        title: "Size"
-                    }
-                    TableViewColumn
-                    {
-                        role: "date"
-                        title: "Date"
-                    }
-                    TableViewColumn
-                    {
-                        role: "comment"
-                        title: "Comment"
-                    }
-                }
-
                 TreeView
                 {
                     id: filesTreeView
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    visible: false
+                    width: 300
 
                     onCurrentIndexChanged:
                     {
@@ -195,7 +86,6 @@ Item
                         }
                     }
 
-
                     TableViewColumn
                     {
                         width: 100
@@ -203,7 +93,6 @@ Item
                         title: "Name"
                         delegate: Item
                         {
-
                             Text
                             {
                                 anchors.leftMargin: 5

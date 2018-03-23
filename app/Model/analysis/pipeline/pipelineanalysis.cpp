@@ -6,7 +6,7 @@
 PipelineAnalysis::PipelineAnalysis(QObject* parent) : Analysis(parent)
 {
     mInputsFiles = new FilesListModel(this);
-    mOutputsFiles = new FilesListModel(this);
+    mOutputsFiles = new FilesTreeModel(this);
     mType = Analysis::PIPELINE;
     mMenuModel->initPipelineAnalysis();
 }

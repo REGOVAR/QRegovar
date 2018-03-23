@@ -26,7 +26,7 @@ public:
     };
 
     // Constructors
-    explicit FilesTreeModel();
+    explicit FilesTreeModel(QObject* parent=nullptr);
     QHash<int, QByteArray> roleNames() const override;
 
     // Accessors
@@ -40,6 +40,8 @@ public:
     // Methods
     Q_INVOKABLE bool fromJson(QJsonArray json);
     Q_INVOKABLE bool refresh();
+    Q_INVOKABLE void add(File* file, const QModelIndex& parent=QModelIndex());
+    Q_INVOKABLE File* getAt(int row, const QModelIndex& parent=QModelIndex());
 
 
 Q_SIGNALS:
@@ -55,6 +57,7 @@ private:
 
     // TreeModel method
     void setupModelData(QJsonArray data, TreeItem *parent);
+    void add(File* file, TreeItem* parent);
 };
 
 #endif // FILESTREEMODEL_H

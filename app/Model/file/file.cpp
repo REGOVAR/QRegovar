@@ -7,9 +7,9 @@
 
 QStringList File::zip = {"zip", "gz", "xz", "tar", "rar"};
 QStringList File::txt = {"txt", "vcf", "sam", "fasta", "fastq", "csv"};
-QStringList File::src = {"sh", "bat", "xml", "css", "py", "js", "html", "htm"};
+QStringList File::src = {"sh", "bat", "xml", "css", "py", "js"};
 QStringList File::aud = {"wav", "ogg", "mp3"};
-QStringList File::vid = {"avi", "wmv", "mov", "mpg", "mpeg", "mkv"};
+QStringList File::vid = {"avi", "wmv", "mov", "mpg", "mpeg", "mp4"};
 QStringList File::img = {"tiff", "tif", "gif", "jpeg", "jpg", "jpe", "png", "bmp"};
 QStringList File::xls = {"xls", "xlsx", "ods"};
 QStringList File::doc = {"doc", "docx", "odt"};
@@ -202,7 +202,7 @@ bool File::downloadLocalFile()
         else
         {
             // Need to download file
-            Request* req = Request::download(QString("/dl/file/%1/%2").arg(mId).arg(mName));
+            Request* req = Request::download(mUrl.toString());
             connect(req, &Request::downloadReceived, [this, req](bool success, const QByteArray& data)
             {
                 if (success)
