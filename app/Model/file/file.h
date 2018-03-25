@@ -118,7 +118,7 @@ public:
     Q_INVOKABLE static QString extensionToIco(QString ext);
     Q_INVOKABLE QString statusToLabel(FileStatus status, qint64 size, qint64 uploadOffset);
 
-
+    Q_INVOKABLE QString getQMLViewer();
 
 
 Q_SIGNALS:
@@ -160,8 +160,7 @@ private:
     QVariant mStatusUI;
     QString mSourceUI;
 
-
-    // TODO: static collection
+    // static collection to link file extension to a generic type
     static QStringList zip;
     static QStringList txt;
     static QStringList src;
@@ -172,6 +171,7 @@ private:
     static QStringList doc;
     static QStringList prz;
     static QStringList pdf;
+    static QStringList web;
 };
 
 #endif // FILE_H

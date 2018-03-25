@@ -126,10 +126,18 @@ Request* Request::download(const QString& query)
 //------------------------------------------------------------------------------------------------
 QNetworkRequest Request::makeRequest(const QString& resource)
 {
-    QUrl url(regovar->networkManager()->serverUrl());
-    url.setPath(resource);
-    qDebug() << "REQUEST:" << url.toString();
+    QUrl url;
+    if (resource.startsWith("http"))
+    {
+        url.setUrl(resource);
+    }
+    else
+    {
+        url = QUrl(regovar->networkManager()->serverUrl());
+        url.setPath(resource);
+    }
 
+    qDebug() << "REQUEST:" << url.toString();
     QNetworkRequest request(url);
     return request;
 }

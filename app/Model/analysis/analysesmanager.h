@@ -16,19 +16,14 @@ class AnalysesManager : public QObject
     Q_PROPERTY(QString filteringType READ filteringType)
     Q_PROPERTY(QString pipelineType READ pipelineType)
 public:
-    // enum value returned by the server as analysis type
-    static QString FILTERING;
-    static QString PIPELINE;
-
-
     // Constructors
     explicit AnalysesManager(QObject* parent=nullptr);
 
     // Getters
     inline PipelineAnalysis* newPipeline() const { return mNewPipeline; }
     inline FilteringAnalysis* newFiltering() const { return mNewFiltering; }
-    inline QString filteringType() const { return FILTERING; }
-    inline QString pipelineType() const { return PIPELINE; }
+    inline QString filteringType() const { return Analysis::FILTERING; }
+    inline QString pipelineType() const { return Analysis::PIPELINE; }
 
     // Methods
     Q_INVOKABLE FilteringAnalysis* getOrCreateFilteringAnalysis(int id);

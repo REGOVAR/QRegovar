@@ -104,17 +104,20 @@ ApplicationWindow
                     {
                         var elmt = comp.createObject(stack, {"visible": false});
                         root.pages[uid] = elmt;
-                        if (sharedModel)
+                        if (elmt.hasOwnProperty("model"))
                         {
-                            elmt.model = sharedModel;
-                        }
-                        else if (menuEntry.project)
-                        {
-                            elmt.model = menuEntry.project;
-                        }
-                        else if (menuEntry.subject)
-                        {
-                            elmt.model = menuEntry.subject;
+                            if (sharedModel)
+                            {
+                                elmt.model = sharedModel;
+                            }
+                            else if (menuEntry.project)
+                            {
+                                elmt.model = menuEntry.project;
+                            }
+                            else if (menuEntry.subject)
+                            {
+                                elmt.model = menuEntry.subject;
+                            }
                         }
 
                         console.log ("load " + uid + ": Pages/" + menuEntry.qmlPage)

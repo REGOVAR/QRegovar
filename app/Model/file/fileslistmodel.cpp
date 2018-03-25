@@ -64,7 +64,8 @@ bool FilesListModel::remove(File* file)
 
 bool FilesListModel::refresh()
 {
-    qDebug() << "TODO";
+    qDebug() << "TODO: FilesListModel::refresh()";
+    return false;
 }
 
 
@@ -74,6 +75,7 @@ bool FilesListModel::clear()
     mFileList.clear();
     endResetModel();
     emit countChanged();
+    return true;
 }
 
 File* FilesListModel::getAt(int position)

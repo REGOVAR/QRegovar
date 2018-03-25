@@ -99,7 +99,18 @@ QJsonObject DynamicFormModel::getResult()
         {
             if (field->value().isValid())
             {
-                result.insert(field->id(), field->value().toJsonValue());
+                if (field->type() == "integer")
+                {
+                    result.insert(field->id(), field->value().toInt());
+                }
+                else if (field->type() == "number")
+                {
+                    result.insert(field->id(), field->value().toDouble());
+                }
+                else
+                {
+                    result.insert(field->id(), field->value().toJsonValue());
+                }
             }
         }
     }

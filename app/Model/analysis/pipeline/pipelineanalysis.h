@@ -5,6 +5,8 @@
 #include "Model/analysis/analysis.h"
 #include "Model/pipeline/pipeline.h"
 #include "Model/file/fileslistmodel.h"
+#include "Model/file/filestreemodel.h"
+#include "Model/analysis/remotelogmodel.h"
 
 class PipelineAnalysis: public Analysis
 {
@@ -14,58 +16,34 @@ class PipelineAnalysis: public Analysis
     Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
     Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
     // PipelineAnalysis (Job) attribute
-    Q_PROPERTY(int id READ id NOTIFY neverChanged)
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
-    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
-    Q_PROPERTY(QJsonObject config READ config WRITE setConfig NOTIFY neverChanged)
-    Q_PROPERTY(JobStatus status READ status NOTIFY dataChanged)
+    Q_PROPERTY(QJsonObject config READ config WRITE setConfig NOTIFY dataChanged)
     Q_PROPERTY(double progressValue READ progressValue NOTIFY dataChanged)
     Q_PROPERTY(QString progressLabel READ progressLabel NOTIFY dataChanged)
 
     Q_PROPERTY(Pipeline* pipeline READ pipeline WRITE setPipeline NOTIFY pipelineChanged)
-    Q_PROPERTY(FilesListModel* inputsFiles READ inputsFiles NOTIFY neverChanged)
-    Q_PROPERTY(FilesListModel* outputsFiles READ outputsFiles NOTIFY neverChanged)
+    Q_PROPERTY(FilesListModel* inputsFiles READ inputsFiles NOTIFY dataChanged)
+    Q_PROPERTY(FilesTreeModel* outputsFiles READ outputsFiles NOTIFY dataChanged)
+    Q_PROPERTY(QList<QObject*> logs READ logs NOTIFY statusChanged)
 
 public:
-    enum JobStatus
-    {
-        Waiting=0,
-        Initializing,
-        Running,
-        Pause,
-        Finalizing,
-        Done,
-        Canceled,
-        Error
-    };
-    Q_ENUM(JobStatus)
-
     // Constructors
     explicit PipelineAnalysis(QObject* parent=nullptr);
     explicit PipelineAnalysis(int id, QObject* parent=nullptr);
 
     // Getters
     inline bool loaded() const { return mLoaded; }
-    inline QDateTime updateDate() const { return mUpdateDate; }
-    inline QDateTime createDate() const { return mCreateDate; }
-    inline int id() const { return mId; }
-    inline QString name() const { return mName; }
-    inline QString comment() const { return mComment; }
+
     inline QJsonObject config() const { return mConfig; }
-    inline JobStatus status() const { return mStatus; }
     inline double progressValue() const { return mProgressValue; }
     inline QString progressLabel() const { return mProgressLabel; }
     inline Pipeline* pipeline() const { return mPipeline; }
     inline FilesListModel* inputsFiles() const { return mInputsFiles; }
-    inline FilesListModel* outputsFiles() const { return mOutputsFiles; }
+    inline FilesTreeModel* outputsFiles() const { return mOutputsFiles; }
+    inline QList<QObject*> logs() const { return mLogs; }
 
     // Setters
-    inline void setName(QString name) { mName = name; emit dataChanged(); }
-    inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
     inline void setConfig(QJsonObject config) { mConfig = config; emit dataChanged(); }
     void setPipeline(Pipeline* pipe);
-    void setStatus(JobStatus status);
-    void setStatus(QString status);
 
 
     // Analysis Abstracty Methods overriden
@@ -105,21 +83,18 @@ private:
     QDateTime mLastInternalLoad = QDateTime::currentDateTime();
 
     // Attributes
-    int mId = -1;
-    QString mName;
-    QString mComment;
     QJsonObject mConfig;
-    JobStatus mStatus = Waiting;
     double mProgressValue = 0;
     QString mProgressLabel;
+    QList<QObject*> mLogs;
 
     //! The pipeline used for the analysis
     Pipeline* mPipeline = nullptr;
     //! The list of files used as input for the analysis
     FilesListModel* mInputsFiles = nullptr;
     //! The list of files created by the analysis
-    FilesListModel* mOutputsFiles = nullptr;
-
+    //! Note that we use a tree even if we know that outputs is a list because the FileBrowser need a treemodel
+    FilesTreeModel* mOutputsFiles = nullptr;
 };
 
 #endif // PIPELINEANALYSIS_H

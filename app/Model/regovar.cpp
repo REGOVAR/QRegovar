@@ -102,12 +102,12 @@ void Regovar::init()
     mMainMenu->initMain();
 
     // Init network manager
-    mNetworkManager = new NetworkManager();
+    mNetworkManager = new NetworkManager(this);
     mNetworkManager->setServerUrl(mSettings->serverUrl());
     mNetworkManager->setSharedUrl(mSettings->sharedUrl());
 
     // Init file manager
-    mFilesManager = new FilesManager();
+    mFilesManager = new FilesManager(this);
     mFilesManager->setCacheDir(mSettings->localCacheDir());
     mFilesManager->setCacheMaxSize(mSettings->localCacheMaxSize());
 
@@ -226,7 +226,7 @@ void Regovar::loadWelcomData()
             mAnalysesManager->loadJson(data["analyses"].toArray());
 
             // Gets jobs
-            // mAnalysesManager->loadJson(data["jobs"].toArray());
+            mAnalysesManager->loadJson(data["jobs"].toArray());
 
             // Get projects (must be load after analyses + jobs)
             mProjectsManager->loadJson(data["projects"].toArray());
@@ -236,8 +236,20 @@ void Regovar::loadWelcomData()
             mLastAnalyses.clear();
             for (const QJsonValue& val: data["last_analyses"].toArray())
             {
-                FilteringAnalysis* fa = mAnalysesManager->getOrCreateFilteringAnalysis(val.toInt());
-                mLastAnalyses.append(fa);
+                QJsonObject ajson = val.toObject();
+                Analysis* a = nullptr;
+                if (ajson["type"] == "analysis")
+                {
+                   a = (Analysis*) mAnalysesManager->getOrCreateFilteringAnalysis(ajson["id"].toInt());
+                }
+                else if (ajson["type"] == "pipeline")
+                {
+                    a = (Analysis*) mAnalysesManager->getOrCreatePipelineAnalysis(ajson["id"].toInt());
+                }
+                if (a != nullptr)
+                {
+                    mLastAnalyses.append(a);
+                }
             }
             // Last subjects
             mLastSubjects.clear();
@@ -705,15 +717,19 @@ void Regovar::logout()
 }
 
 
-
-
-
-QString Regovar::sizeToHumanReadable(qint64 size, qint64 uploadOffset)
+QString Regovar::formatDuration(int duration)
 {
-    QStringList suffixes = {"o", "Ko", "Mo", "Go", "To", "Po"};
+    // TODO:
+    return QString::number( duration / 1000);
+}
+
+
+QString Regovar::formatFileSize(qint64 size, qint64 uploadOffset)
+{
+    QStringList suffixes = {" o", "Ko", "Mo", "Go", "To", "Po"};
     QString uploadString = "";
 
-    if (size == 0) return "0 o";
+    if (size <= 0) return "0  o";
     if (uploadOffset >=0)
     {
         if (uploadOffset < size)

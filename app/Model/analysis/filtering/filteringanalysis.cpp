@@ -7,7 +7,7 @@
 FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
 {
     // Tree model are created to allow QML binding initialisation even if no data loaded
-    mType = AnalysesManager::FILTERING;
+    mType = Analysis::FILTERING;
     mResults = new ResultsTreeModel(this);
     mAnnotationsTreeModel = new AnnotationsTreeModel(this);
     mQuickFilters = new QuickFilterModel(this);
@@ -496,6 +496,37 @@ void FilteringAnalysis::setDisplayedAnnotationTemp(QString uid, bool check)
     }
 }
 
+
+void FilteringAnalysis::reopen()
+{
+
+    // First, restore status from close to empty
+    QJsonObject data;
+    data.insert("id", mId);
+    data.insert("status", "empty");
+    Request* req = Request::put(QString("/analysis/%1").arg(mId), QJsonDocument(data).toJson());
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            QJsonObject data2 = json["data"].toObject();
+            // Start creation of the working table by sending the first "filtering" query
+            QJsonObject body;
+            body.insert("filter", data2["filter"].toArray());
+            body.insert("fields", data2["fields"].toArray());
+            Request* req2 = Request::post(QString("/analysis/%1/filtering").arg(mId), QJsonDocument(body).toJson());
+            req2->deleteLater();
+            emit dataChanged();
+        }
+        else
+        {
+            QJsonObject jsonError = json;
+            jsonError.insert("method", Q_FUNC_INFO);
+            regovar->raiseError(jsonError);
+        }
+        req->deleteLater();
+    });
+}
 
 
 

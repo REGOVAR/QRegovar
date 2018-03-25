@@ -61,7 +61,6 @@ Rectangle
         anchors.left: root.left
         anchors.right: root.right
         anchors.margins: 10
-        height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success

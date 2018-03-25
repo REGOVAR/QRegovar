@@ -98,7 +98,7 @@ ApplicationWindow
                     {
                         var elmt = comp.createObject(stack, {"visible": false});
                         root.pages[uid] = elmt;
-                        if (sharedModel)
+                        if (sharedModel && elmt.hasOwnProperty("model"))
                         {
                             elmt.model = sharedModel;
                         }
