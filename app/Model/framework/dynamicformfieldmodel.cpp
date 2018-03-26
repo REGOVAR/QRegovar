@@ -58,43 +58,50 @@ bool DynamicFormFieldModel::validate()
     if (mValue.isNull()) result = !mRequired;
     if (!result) errorMsg = tr("Please, set a valid value for this field.");
 
+    QVariant valueToTest = mValue;
+    if (mEnumValues.count() > 0)
+    {
+        valueToTest = mEnumValues[mValue.toInt()];
+    }
+
+
     if (mType == "integer")
     {
-        if ( mValue.type() == QVariant::String)
+        if ( valueToTest.type() == QVariant::String)
         {
-            QString value = mValue.toString();
+            QString value = valueToTest.toString();
             value.toInt(&result);
         }
         else
         {
-            result = mValue.type() == QVariant::Int || mValue.type() == QVariant::Double;
+            result = valueToTest.type() == QVariant::Int || valueToTest.type() == QVariant::Double;
         }
         if (!result) errorMsg = tr("Thanks to set with a valid integer number.");
     }
     else if (mType == "number")
     {
-        if ( mValue.type() == QVariant::String)
+        if ( valueToTest.type() == QVariant::String)
         {
-            QString value = mValue.toString();
+            QString value = valueToTest.toString();
             value.toDouble(&result);
         }
         else
         {
-            result = mValue.type() == QVariant::Double;
+            result = valueToTest.type() == QVariant::Double;
         }
         if (!result) errorMsg = tr("Thanks to set with a valid number.");
     }
     else if (mType == "boolean")
     {
-        result = mValue.type() == QVariant::Bool;
+        result = valueToTest.type() == QVariant::Bool;
         if (!result) errorMsg = tr("This field must be set with a boolean value: True or False.");
     }
     else if (mType == "string")
     {
-        result = mValue.type() == QVariant::String;
+        result = valueToTest.type() == QVariant::String;
         if (mRequired)
         {
-            result = !mValue.toString().isEmpty();
+            result = !valueToTest.toString().isEmpty();
         }
         if (!result) errorMsg = tr("This field must be set with a string value.");
     }

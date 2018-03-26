@@ -69,11 +69,14 @@ GenericScreen
                     model: regovar.pipelinesManager.intalledPipes.proxy
                     onModelChanged: updatePipeInfoPanel()
                     onCurrentItemChanged: updatePipeInfoPanel()
+
                     delegate: Rectangle
                     {
                         width: pipelinesList.width
                         height: Regovar.theme.font.boxSize.normal
                         color: index % 2 == 0 ? Regovar.theme.backgroundColor.main : "transparent"
+
+
 
                         Row
                         {
@@ -94,6 +97,11 @@ GenericScreen
                                 font.pixelSize: Regovar.theme.font.size.small
                                 verticalAlignment: Text.AlignVCenter
                             }
+                        }
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            onClicked: pipelinesList.currentIndex = index
                         }
                     }
 
