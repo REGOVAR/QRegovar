@@ -27,7 +27,7 @@ GridLayout
 
     function updateViewFromModel()
     {
-        input.text = model.value;
+        //input.text = model.value;
         input.color =  model.error ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.danger;
         errorMessage.text = model.error ? model.errorMessage : "";
     }

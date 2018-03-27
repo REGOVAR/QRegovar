@@ -1,4 +1,6 @@
 #include "dynamicformfieldmodel.h"
+#include "Model/file/fileslistmodel.h"
+#include "Model/regovar.h"
 
 DynamicFormFieldModel::DynamicFormFieldModel(DynamicFormModel* parent) : QObject(parent)
 {
@@ -12,6 +14,28 @@ DynamicFormFieldModel::DynamicFormFieldModel(QJsonObject json, int order, Dynami
 }
 
 
+QString DynamicFormFieldModel::formatedValue() const
+{
+    QString result = mValue.toString();
+    if (mEnumValues.count() > 0)
+    {
+        int idx = mValue.toInt();
+        if (idx >= 0 && idx < mEnumValues.count())
+        {
+            result = mEnumValues[mValue.toInt()];
+        }
+    }
+    else if (mType == "integer" || mType == "number")
+    {
+        result = regovar->formatNumber(mValue.toDouble());
+    }
+    else if (mType == "boolean")
+    {
+        result = mValue.toBool() ? tr("Yes") : tr("No");
+    }
+    return result;
+}
+
 bool DynamicFormFieldModel::fromJson(QJsonObject json)
 {
     mId = json["id"].toString();
@@ -22,9 +46,21 @@ bool DynamicFormFieldModel::fromJson(QJsonObject json)
     if (json.contains("enum"))
     {
         mEnumValues.clear();
-        for (const QJsonValue& value: json["enum"].toArray())
+        if (json["enum"].isString())
         {
-            mEnumValues.append(value.toString());
+            QString flag = json["enum"].toString();
+            if (flag.startsWith("__") && flag.endsWith("__"))
+            {
+                mSpecialFlag = flag;
+                refresh();
+            }
+        }
+        else
+        {
+            for (const QJsonValue& value: json["enum"].toArray())
+            {
+                mEnumValues.append(value.toString());
+            }
         }
     }
     if (json.contains("required"))
@@ -47,6 +83,7 @@ bool DynamicFormFieldModel::fromJson(QJsonObject json)
         mDefaultValue = json["default"].toVariant();
     }
     reset();
+    return true;
 }
 
 
@@ -58,50 +95,43 @@ bool DynamicFormFieldModel::validate()
     if (mValue.isNull()) result = !mRequired;
     if (!result) errorMsg = tr("Please, set a valid value for this field.");
 
-    QVariant valueToTest = mValue;
-    if (mEnumValues.count() > 0)
-    {
-        valueToTest = mEnumValues[mValue.toInt()];
-    }
-
-
     if (mType == "integer")
     {
-        if ( valueToTest.type() == QVariant::String)
+        if ( mValue.type() == QVariant::String)
         {
-            QString value = valueToTest.toString();
+            QString value = mValue.toString();
             value.toInt(&result);
         }
         else
         {
-            result = valueToTest.type() == QVariant::Int || valueToTest.type() == QVariant::Double;
+            result = mValue.type() == QVariant::Int || mValue.type() == QVariant::Double;
         }
         if (!result) errorMsg = tr("Thanks to set with a valid integer number.");
     }
     else if (mType == "number")
     {
-        if ( valueToTest.type() == QVariant::String)
+        if ( mValue.type() == QVariant::String)
         {
-            QString value = valueToTest.toString();
+            QString value = mValue.toString();
             value.toDouble(&result);
         }
         else
         {
-            result = valueToTest.type() == QVariant::Double;
+            result = mValue.type() == QVariant::Double;
         }
         if (!result) errorMsg = tr("Thanks to set with a valid number.");
     }
     else if (mType == "boolean")
     {
-        result = valueToTest.type() == QVariant::Bool;
+        result = mValue.type() == QVariant::Bool;
         if (!result) errorMsg = tr("This field must be set with a boolean value: True or False.");
     }
     else if (mType == "string")
     {
-        result = valueToTest.type() == QVariant::String;
+        result = mValue.type() == QVariant::String;
         if (mRequired)
         {
-            result = !valueToTest.toString().isEmpty();
+            result = !mValue.toString().isEmpty();
         }
         if (!result) errorMsg = tr("This field must be set with a string value.");
     }
@@ -120,6 +150,28 @@ bool DynamicFormFieldModel::validate()
     return result;
 }
 
+void DynamicFormFieldModel::refresh()
+{
+    if (mSpecialFlag == "__INPUTS_FILES__" && mForm->inputsFiles() != nullptr)
+    {
+        mEnumValues.clear();
+        for (int idx=0; idx < mForm->inputsFiles()->rowCount(); idx++)
+        {
+            mEnumValues.append(mForm->inputsFiles()->getAt(idx)->name());
+        }
+    }
+    else if (mSpecialFlag == "__GENOMES_REFS__")
+    {
+        mEnumValues.clear();
+
+        for (QObject* o: regovar->references())
+        {
+            Reference* ref = qobject_cast<Reference*>(o);
+            mEnumValues.append(ref->name());
+        }
+    }
+    emit dataChanged();
+}
 
 void DynamicFormFieldModel::reset()
 {

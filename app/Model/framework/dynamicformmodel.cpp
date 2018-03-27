@@ -2,9 +2,8 @@
 #include "Model/framework/request.h"
 #include "Model/regovar.h"
 
-DynamicFormModel::DynamicFormModel(Pipeline* pipeline) : QAbstractListModel(pipeline)
+DynamicFormModel::DynamicFormModel(QObject* parent) : QAbstractListModel(parent)
 {
-    mPipeline = pipeline;
     mProxy = new GenericProxyModel(this);
     mProxy->setSourceModel(this);
     mProxy->setFilterRole(SearchField);
@@ -67,6 +66,17 @@ void DynamicFormModel::load(QJsonObject json)
 }
 
 
+void DynamicFormModel::refresh()
+{
+    if (mLoaded)
+    {
+        for (DynamicFormFieldModel* field: mFieldList)
+        {
+            field->refresh();
+        }
+    }
+}
+
 void DynamicFormModel::reset()
 {
     if (mLoaded)
@@ -109,7 +119,7 @@ QJsonObject DynamicFormModel::getResult()
                 }
                 else
                 {
-                    result.insert(field->id(), field->value().toJsonValue());
+                    result.insert(field->id(), field->formatedValue());
                 }
             }
         }
@@ -140,7 +150,7 @@ QString DynamicFormModel::printConfig()
         {
             if (field->value().isValid())
             {
-                result += field->id() + ": " + field->value().toString() + "\n";
+                result += field->id() + ": " + field->formatedValue() + "\n";
             }
         }
     }

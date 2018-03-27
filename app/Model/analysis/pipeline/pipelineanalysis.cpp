@@ -49,6 +49,7 @@ void PipelineAnalysis::addInputFromWS(QJsonObject json)
 void PipelineAnalysis::setPipeline(Pipeline* pipe)
 {
     mPipeline = pipe;
+    mPipeline->configForm()->setInputsFiles(mInputsFiles);
     mPipeline->configForm()->load(mPipeline->form());
     mPipeline->configForm()->reset();
     emit pipelineChanged();

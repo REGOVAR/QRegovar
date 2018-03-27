@@ -303,7 +303,7 @@ GenericScreen
     function autoName()
     {
         var name = "";
-        name += "Hugodims-2017-09-15";
+        name +=  "Hugodims-2017-09-15";
         name += Qt.formatDate(Date.now(), "yyyy-MM-dd");
         return name;
     }

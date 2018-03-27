@@ -13,6 +13,13 @@ GenericScreen
 
     readyForNext: checkReadyreadyForNext();
     property real labelColWidth: 100
+    onZChanged:
+    {
+        if (z == 100)
+        {
+            regovar.analysesManager.newPipeline.pipeline.configForm.refresh();
+        }
+    }
 
     function checkReadyreadyForNext()
     {

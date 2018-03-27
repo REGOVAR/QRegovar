@@ -5,8 +5,9 @@
 #include "dynamicformfieldmodel.h"
 #include "Model/pipeline/pipeline.h"
 #include "Model/framework/genericproxymodel.h"
+#include "Model/file/fileslistmodel.h"
 
-class Pipeline;
+
 class DynamicFormFieldModel;
 
 class DynamicFormModel : public QAbstractListModel
@@ -26,25 +27,29 @@ class DynamicFormModel : public QAbstractListModel
     };
 
     Q_OBJECT
+    Q_PROPERTY(FilesListModel* inputsFiles READ inputsFiles WRITE setInputsFiles NOTIFY neverChanged)
     Q_PROPERTY(bool loaded READ loaded NOTIFY loadedChanged)
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
     Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
     Q_PROPERTY(double labelWidth READ labelWidth WRITE setLabelWidth NOTIFY labelWidthChanged)
 
 public:
-    explicit DynamicFormModel(Pipeline* parent=nullptr);
+    explicit DynamicFormModel(QObject* parent=nullptr);
 
     // Getters
+    inline FilesListModel* inputsFiles() const { return mInputsFiles; }
     inline bool loaded() const { return mLoaded; }
     inline GenericProxyModel* proxy() const { return mProxy; }
     inline double labelWidth() const { return mLabelWidth; }
 
     // Setters
+    inline void setInputsFiles(FilesListModel* lst) { mInputsFiles = lst; }
     inline void setLabelWidth(double width) { mLabelWidth = width; emit labelWidthChanged(); }
 
     // Methods
     Q_INVOKABLE void load(QUrl jsonUrl);
     Q_INVOKABLE void load(QJsonObject json);
+    Q_INVOKABLE void refresh();
     Q_INVOKABLE void reset();
     Q_INVOKABLE bool validate();
     Q_INVOKABLE QJsonObject getResult();
@@ -65,7 +70,8 @@ Q_SIGNALS:
 
 private:
     bool mLoaded = false;
-    Pipeline* mPipeline = nullptr;
+    //! The optional ref to the list of inputs files associated to this form
+    FilesListModel* mInputsFiles = nullptr;
     //! List of form field
     QList<DynamicFormFieldModel*> mFieldList;
     //! The QSortFilterProxyModel to use by table view to browse fields
