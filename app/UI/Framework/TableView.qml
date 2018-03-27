@@ -4,7 +4,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 
-import "../Regovar"
+import "qrc:/qml/Regovar"
 
 TableView
 {

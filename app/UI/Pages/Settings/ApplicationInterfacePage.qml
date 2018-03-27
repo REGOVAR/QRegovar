@@ -3,8 +3,8 @@ import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
 
-import "../../Regovar"
-import "../../Framework"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
 
 Rectangle
 {

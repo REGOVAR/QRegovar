@@ -6,9 +6,9 @@ import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.2 as Control
 import Regovar.Core 1.0
 
-import "../Regovar"
-import "../Framework"
-import "../Wizards/Sample"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
+import "qrc:/qml/Wizards/Sample"
 
 
 

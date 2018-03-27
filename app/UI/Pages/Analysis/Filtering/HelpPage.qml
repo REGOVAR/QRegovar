@@ -3,9 +3,9 @@ import QtQuick.Layouts 1.3
 import QtWebView 1.0
 import QtWebEngine 1.1
 import Regovar.Core 1.0
-//import QtWebKit 3.0
-import "../../../Regovar"
-import "../../../Framework"
+
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
 
 Rectangle
 {

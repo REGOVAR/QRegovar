@@ -6,8 +6,8 @@ import QtQuick.Dialogs 1.2
 import Regovar.Core 1.0
 import QtGraphicalEffects 1.0
 
-import "../Regovar"
-import "../Framework"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
 
 Dialog
 {

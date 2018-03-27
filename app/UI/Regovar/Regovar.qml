@@ -4,8 +4,8 @@ import Qt.labs.settings 1.0
 import Regovar.Core 1.0
 
 
-import "../MainMenu"
-import "../Pages"
+import "qrc:/qml/MainMenu"
+import "qrc:/qml/Pages"
 
 QtObject 
 {

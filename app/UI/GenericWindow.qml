@@ -2,8 +2,8 @@ import QtQuick 2.9
 import QtQuick.Controls 2.0
 import Regovar.Core 1.0
 
-import "MainMenu"
-import "Dialogs"
+import "qrc:/qml/MainMenu"
+import "qrc:/qml/Dialogs"
 
 ApplicationWindow
 {

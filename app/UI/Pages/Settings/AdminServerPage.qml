@@ -3,10 +3,10 @@ import QtQml 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import QtCharts 2.0
-import "../../Regovar"
-import "../../Framework"
-import "../../Charts"
-import "../../Dialogs"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
+import "qrc:/qml/Charts"
+import "qrc:/qml/Dialogs"
 
 Rectangle
 {

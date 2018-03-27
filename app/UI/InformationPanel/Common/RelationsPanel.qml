@@ -4,9 +4,9 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import Regovar.Core 1.0
 
-import "../../Regovar"
-import "../../Framework"
-import "../../Pages/Browse"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
+import "qrc:/qml/Pages/Browse"
 
 
 Rectangle

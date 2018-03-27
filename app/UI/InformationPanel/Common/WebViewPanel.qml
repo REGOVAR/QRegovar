@@ -2,8 +2,8 @@ import QtQuick 2.9
 import QtWebView 1.0
 
 
-import "../../Regovar"
-import "../../Framework"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
 
 
 Rectangle

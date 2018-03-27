@@ -4,10 +4,10 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 
-import "../Framework"
-import "../Regovar"
-import "../Dialogs"
-import "Browse"
+import "qrc:/qml/Framework"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Dialogs"
+import "qrc:/qml/Pages/Browse"
 
 Rectangle
 {

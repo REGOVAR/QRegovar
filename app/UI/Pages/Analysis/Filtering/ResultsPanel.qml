@@ -7,11 +7,10 @@ import QtGraphicalEffects 1.0
 import Regovar.Core 1.0
 import QtQml.Models 2.2
 
-import "../../../Regovar"
-import "../../../Framework"
-import "../../../MainMenu"
-
-import "Quickfilter"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
+import "qrc:/qml/MainMenu"
+import "qrc:/qml/Pages/Analysis/Filtering/Quickfilter"
 
 import Regovar.Core 1.0
 import Regovar.Widget 1.0

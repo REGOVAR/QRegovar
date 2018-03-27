@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import QtCharts 2.0
 
-import "../../Regovar"
+import "qrc:/qml/Regovar"
 
 Item
 {

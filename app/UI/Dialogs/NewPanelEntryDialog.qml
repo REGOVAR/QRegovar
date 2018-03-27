@@ -4,8 +4,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
 
-import "../Regovar"
-import "../Framework"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
 
 Dialog
 {
