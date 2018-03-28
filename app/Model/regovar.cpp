@@ -95,7 +95,7 @@ void Regovar::init()
     mSettings = new Settings();
 
     // Create models
-    mUser = new User(1, "MyFirstname", "MyLastname");
+    mUser = new User();
     mConfig = new RegovarInfo();
     mAdmin = new Admin();
     mMainMenu = new RootMenu(this);
@@ -120,11 +120,6 @@ void Regovar::init()
     mEventsManager = new EventsManager(this);
     mToolsManager = new ToolsManager(this);
     mPipelinesManager = new PipelinesManager(this);
-
-    // Init sub models
-//    mProjectsManager->refresh();
-//    mSubjectsManager->refresh();
-//    mPanelsManager->refresh();
 
     // Load misc data
     loadConfigData();
@@ -176,9 +171,7 @@ void Regovar::loadConfigData()
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
         setWelcomIsLoading(true);
@@ -270,9 +263,7 @@ void Regovar::loadWelcomData()
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
         setWelcomIsLoading(true);
@@ -359,7 +350,10 @@ Reference* Regovar::referenceFromId(int id)
 
 
 
-
+void Regovar::switchLoginScreen(bool state)
+{
+    emit displayLoginScreen(state);
+}
 
 
 
@@ -420,9 +414,7 @@ void Regovar::getPipelineInfo(int pipelineId)
         else
         {
             emit pipelineInformationReady(QJsonValue::Null);
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -449,9 +441,7 @@ void Regovar::getGeneInfo(QString geneName, int analysisId)
         else
         {
             emit geneInformationReady(QJsonValue::Null);
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -473,9 +463,7 @@ void Regovar::getPhenotypeInfo(QString phenotypeId)
         else
         {
             emit phenotypeInformationReady(QJsonValue::Null);
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -504,9 +492,7 @@ void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
         else
         {
             emit variantInformationReady(QJsonValue::Null);
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -538,30 +524,39 @@ void Regovar::quit()
     qDebug() << "quit regovar app !";
 }
 
-void Regovar::raiseError(QJsonObject json)
+void Regovar::manageRequestError(QJsonObject json, QString method)
 {
-    QString code = json["code"].toString();
-    QString msg  = json["msg"].toString();
-    QString cpuiBuild = QSysInfo::buildCpuArchitecture();
+    QString httpCode = json.contains("httpCode") ? json["httpCode"].toString() : "";
 
-    if (msg.isEmpty())
+    if (httpCode == "403")
     {
-        msg  = "Unmanaged error :s";
+        switchLoginScreen(true);
     }
-    qDebug() << "ERROR Server side [" << code << "]" << msg;
+    else
+    {
+        QString code = json.contains("httpCode") ? json["code"].toString() : "";
+        QString msg  = json.contains("httpCode") ? json["msg"].toString() : "";
+        QString cpuiBuild = QSysInfo::buildCpuArchitecture();
 
-    QString msgTech = "Method:       " + json["method"].toString() + "\n";
-    msgTech += "Query:        " + json["query"].toString() + "\n";
-    msgTech += "Net reply:    " + json["reqError"].toString() +  "\n";
-    msgTech += "Qt version:   " + QString(QT_VERSION_STR) + "\n";
-    msgTech += "Build CPU:    " + QSysInfo::buildCpuArchitecture() + "\n";
-    msgTech += "Current CPU:  " + QSysInfo::currentCpuArchitecture() + "\n";
-    msgTech += "Kernel:       " + QSysInfo::kernelType() + " " + QSysInfo::kernelVersion() +"\n";
-    msgTech += "OS:           " + QSysInfo::prettyProductName() + "\n";
+        if (msg.isEmpty())
+        {
+            msg  = "Unmanaged error :s";
+        }
+        qDebug() << "ERROR Server side [" << code << "]" << msg;
+
+        QString msgTech = "Method:       " + method + "\n";
+        msgTech += "Query:        " + json["query"].toString() + "\n";
+        msgTech += "Net reply:    " + json["reqError"].toString() +  "\n";
+        msgTech += "Qt version:   " + QString(QT_VERSION_STR) + "\n";
+        msgTech += "Build CPU:    " + QSysInfo::buildCpuArchitecture() + "\n";
+        msgTech += "Current CPU:  " + QSysInfo::currentCpuArchitecture() + "\n";
+        msgTech += "Kernel:       " + QSysInfo::kernelType() + " " + QSysInfo::kernelVersion() +"\n";
+        msgTech += "OS:           " + QSysInfo::prettyProductName() + "\n";
 
 
 
-    emit errorOccured(code, msg, msgTech);
+        emit errorOccured(code, msg, msgTech);
+    }
 }
 
 
@@ -639,9 +634,7 @@ void Regovar::search(QString query)
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
         setSearchInProgress(false);
@@ -656,7 +649,7 @@ void Regovar::search(QString query)
 
 
 
-void Regovar::login(QString& login, QString& password)
+void Regovar::login(QString login, QString password)
 {
     // Do nothing if user already connected
     if (mUser->isValid())
@@ -668,30 +661,23 @@ void Regovar::login(QString& login, QString& password)
         // Store login and password as it may be ask later if network authentication problem
         mUser->setLogin(login);
         mUser->setPassword(password);
-        // TODO use Regovar api /user/login
-        QHttpMultiPart* multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
-        QHttpPart p1;
-        p1.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"login\""));
-        p1.setBody(login.toUtf8());
-        QHttpPart p2;
-        p2.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"password\""));
-        p2.setBody(password.toUtf8());
 
-        multiPart->append(p1);
-        multiPart->append(p2);
+        QJsonObject body;
+        body.insert("login", login);
+        body.insert("password", password);
 
-        Request* req = Request::post("/user/login", multiPart);
-        connect(req, &Request::responseReceived, [this, multiPart, req](bool success, const QJsonObject& json)
+        Request* req = Request::post("/user/login", QJsonDocument(body).toJson());
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
-            if (success)
+            if (success && mUser->fromJson(json["data"].toObject()))
             {
-                if (mUser->fromJson(json["data"].toObject()))
-                {
-                    emit loginSuccess();
-                }
+                emit displayLoginScreen(false);
+                loadWelcomData();
             }
-            emit loginFailed();
-            multiPart->deleteLater();
+            else
+            {
+                emit loginFailed();
+            }
             req->deleteLater();
         });
     }
@@ -699,12 +685,7 @@ void Regovar::login(QString& login, QString& password)
 
 void Regovar::logout()
 {
-    // Do nothing if user already disconnected
-    if (!mUser->isValid())
-    {
-        qDebug() << Q_FUNC_INFO << "You are already not authenticated...";
-    }
-    else
+    if (mUser->isValid())
     {
         Request* test = Request::get("/user/logout");
         connect(test, &Request::responseReceived, [this](bool, const QJsonObject&)
@@ -712,6 +693,7 @@ void Regovar::logout()
             mUser->clear();
             qDebug() << Q_FUNC_INFO << "You are disconnected !";
             emit logoutSuccess();
+            emit displayLoginScreen(true);
         });
     }
 }

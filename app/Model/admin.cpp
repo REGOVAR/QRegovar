@@ -74,9 +74,7 @@ void Admin::getServerStatus()
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -99,9 +97,7 @@ void Admin::clearWt(int analysisId)
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });

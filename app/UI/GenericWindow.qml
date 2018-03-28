@@ -61,6 +61,14 @@ ApplicationWindow
         }
     }
 
+    LoginPage
+    {
+        id: loginPage
+        anchors.fill: parent
+        visible: false
+    }
+
+
     CloseDialog
     {
         id: closePopup
@@ -88,6 +96,16 @@ ApplicationWindow
         }
     }
 
+    Connections
+    {
+        target: regovar
+        onDisplayLoginScreen:
+        {
+            loginPage.visible = state;
+            mainMenu.enabled = !state;
+            stack.enabled = !state;
+        }
+    }
 
     function buildPages(model, sharedModel)
     {

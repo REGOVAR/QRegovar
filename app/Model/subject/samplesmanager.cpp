@@ -61,9 +61,7 @@ void SamplesManager::setReferenceId(int refId)
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });

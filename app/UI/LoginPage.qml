@@ -1,0 +1,122 @@
+import QtQuick 2.9
+import QtQuick.Layouts 1.3
+import QtGraphicalEffects 1.0
+
+import "qrc:/qml/Framework"
+import "qrc:/qml/Regovar"
+
+Rectangle
+{
+    id: root
+    color: Regovar.theme.backgroundColor.main
+
+
+    Item
+    {
+        id: logo
+        anchors.top: root.top
+        anchors.topMargin: 50
+        anchors.horizontalCenter: root.horizontalCenter
+        height: logoImage.height
+        width: logoImage.width
+
+        Image
+        {
+            id: logoImage
+            source: "qrc:/regovar.png"
+            sourceSize.height: 125
+        }
+
+        LinearGradient
+        {
+            anchors.fill: parent
+            start: Qt.point(0, logo.height / 3)
+            end: Qt.point(0, logo.height)
+            gradient: Gradient
+            {
+                GradientStop { position: 0.0; color: regovar.networkManager.status == 0 ? Regovar.theme.logo.color1 : Regovar.theme.frontColor.disable }
+                GradientStop { position: 1.0; color: regovar.networkManager.status == 0 ? Regovar.theme.logo.color2 : Regovar.theme.frontColor.disable }
+            }
+            source: logoImage
+        }
+    }
+
+    Text
+    {
+        text: qsTr("Authentication required")
+        font.pixelSize: Regovar.theme.font.size.title
+        color: Regovar.theme.frontColor.danger
+        font.bold: true
+
+        anchors.bottom: panel.top
+        anchors.bottomMargin: 50
+        anchors.horizontalCenter: root.horizontalCenter
+    }
+
+
+    Rectangle
+    {
+        id: panel
+
+        width: 400
+        height: 200
+        radius: 2
+        border.width: 1
+        border.color: Regovar.theme.boxColor.border
+        color: Regovar.theme.boxColor.back
+
+
+        anchors.centerIn: parent
+
+
+        ColumnLayout
+        {
+            anchors.fill: parent
+            anchors.margins: 50
+            spacing: 10
+
+
+            TextField
+            {
+                id: loginField
+                Layout.fillWidth: true
+                placeholder: qsTr("Login")
+
+            }
+
+            TextField
+            {
+                id: pwdField
+                Layout.fillWidth: true
+                placeholder: qsTr("Password")
+                echoMode: TextInput.Password
+            }
+
+            Button
+            {
+                Layout.alignment: Qt.AlignCenter
+                text: qsTr("Go")
+                onClicked: regovar.login(loginField.text, pwdField.text)
+            }
+        }
+    }
+
+    Text
+    {
+        anchors.top: panel.bottom
+        anchors.topMargin: 10
+        anchors.horizontalCenter: panel.horizontalCenter
+        text: qsTr("I forgot my credential")
+        color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
+        property bool hovered: false
+
+        MouseArea
+        {
+            anchors.fill: parent
+            hoverEnabled: true
+            onEntered: parent.hovered = true
+            onExited: parent.hovered = false
+            onClicked: console.log("Shame on you !!")
+        }
+    }
+}

@@ -162,6 +162,7 @@ public:
     Q_INVOKABLE inline void openNewProjectWizard() { emit newProjectWizardOpen(); }
     Q_INVOKABLE inline void openNewAnalysisWizard() { emit newAnalysisWizardOpen(); }
     Q_INVOKABLE inline void openNewSubjectWizard() { emit newSubjectWizardOpen(); }
+    Q_INVOKABLE void switchLoginScreen(bool state);
     Q_INVOKABLE void getFileInfo(int fileId);
     Q_INVOKABLE void getGeneInfo(QString geneName, int analysisId=-1);
     Q_INVOKABLE void getPanelInfo(QString panelId);
@@ -178,7 +179,7 @@ public:
     Q_INVOKABLE void quit();
     // Tools
     Q_INVOKABLE inline QUuid generateUuid() { return QUuid::createUuid(); }
-    Q_INVOKABLE void raiseError(QJsonObject raiseError);
+    Q_INVOKABLE void manageRequestError(QJsonObject json, QString method="");
     Q_INVOKABLE QDateTime dateFromString(QString date);
     Q_INVOKABLE QString formatNumber(int value);
     Q_INVOKABLE QString formatNumber(double value);
@@ -193,7 +194,7 @@ public:
 
 
 public Q_SLOTS:
-    void login(QString& login, QString& password);
+    void login(QString login, QString password);
     void logout();
 
 
@@ -218,6 +219,7 @@ Q_SIGNALS:
     void configChanged();
     void adminChanged();
     // Wizards events
+    void displayLoginScreen(bool state);
     void newProjectWizardOpen();
     void newAnalysisWizardOpen();
     void newSubjectWizardOpen();

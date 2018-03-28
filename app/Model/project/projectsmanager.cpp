@@ -111,9 +111,7 @@ void ProjectsManager::newProject(QString name, QString comment)
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
             emit projectCreationDone(false, -1);
         }
         req->deleteLater();
@@ -147,9 +145,7 @@ void ProjectsManager::deleteProject(int id)
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });

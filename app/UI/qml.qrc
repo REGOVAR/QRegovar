@@ -185,7 +185,6 @@
         <file>Pages/Subject/PhenotypesPage.qml</file>
         <file>Pages/Subject/SamplesPage.qml</file>
         <file>Pages/Subject/SummaryPage.qml</file>
-        <file>Pages/LoginPage.qml</file>
         <file>Pages/WelcomPage.qml</file>
         <file>Regovar/Themes/HalloweenTheme.js</file>
         <file>Regovar/Themes/RegovarDarkTheme.js</file>
@@ -216,5 +215,6 @@
         <file>InformationPanel/Common/WebViewPanel.qml</file>
         <file>Framework/IconButton.qml</file>
         <file>Framework/FileViewers/WebViewer.qml</file>
+        <file>LoginPage.qml</file>
     </qresource>
 </RCC>

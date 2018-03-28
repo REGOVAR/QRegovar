@@ -33,9 +33,7 @@ EventsListModel::EventsListModel(QString target, QString id, QObject* parent) : 
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });

@@ -178,6 +178,7 @@ void Request::received()
             QString code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString();
             QString reason = reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
             mJson = QJsonObject();
+            mJson.insert("httpCode", code);
             mJson.insert("reqError", code + " " + reason);
             mJson.insert("query", reply->url().toString());
             qWarning() << "ERROR" << code << reason << mReplyError;

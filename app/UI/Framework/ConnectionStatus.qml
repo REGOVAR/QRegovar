@@ -8,7 +8,7 @@ GridLayout
 {
     id: root
     implicitWidth: 300
-    property string userFullName: qsTr("Anonymous")
+    property string userFullName: ""
     property string serverStatus: "online"
 
     rows:2
@@ -61,6 +61,23 @@ GridLayout
         target: regovar.networkManager
         onStatusChanged: updateConnectionStatus()
     }
+
+    Connections
+    {
+        target: regovar
+        onDisplayLoginScreen:
+        {
+            if (!state)
+            {
+                root.userFullName = regovar.user.firstname + " " + regovar.user.lastname;
+            }
+            else
+            {
+                root.userFullName = qsTr("Not connected");
+            }
+        }
+    }
+
 
     function updateConnectionStatus()
     {
