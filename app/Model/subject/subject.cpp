@@ -107,7 +107,7 @@ void Subject::save()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         request->deleteLater();
     });
@@ -131,7 +131,7 @@ void Subject::load(bool forceRefresh)
             }
             else
             {
-                regovar->manageRequestError(json, Q_FUNC_INFO);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });

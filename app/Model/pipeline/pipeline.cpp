@@ -96,7 +96,7 @@ void Pipeline::install()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         request->deleteLater();
     });
@@ -119,7 +119,7 @@ void Pipeline::load(bool forceRefresh)
             }
             else
             {
-                regovar->manageRequestError(json, Q_FUNC_INFO);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });

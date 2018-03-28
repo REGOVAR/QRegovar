@@ -111,7 +111,7 @@ void Project::save()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         request->deleteLater();
     });
@@ -134,7 +134,7 @@ void Project::load(bool forceRefresh)
             }
             else
             {
-                regovar->manageRequestError(json, Q_FUNC_INFO);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });

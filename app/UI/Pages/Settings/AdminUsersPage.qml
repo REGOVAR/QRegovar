@@ -1,10 +1,10 @@
 import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
+import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
-import "qrc:/qml/Charts"
 import "qrc:/qml/Dialogs"
 
 Rectangle
@@ -13,9 +13,8 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
 
-    property QtObject model
-
-
+    property User model
+    property bool editionMode: false
 
     Rectangle
     {
@@ -30,9 +29,10 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Users management")
-            font.pixelSize: 20
+            text: qsTr("Regovar server logs")
+            font.pixelSize: Regovar.theme.font.size.title
             font.weight: Font.Black
+            color: Regovar.theme.primaryColor.back.dark
         }
         ConnectionStatus
         {
@@ -59,22 +59,145 @@ Rectangle
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("Below the list of all events and \"technical\" actions done on the server.")
+        text: qsTr("This page allow you to browse and manage all users of the application.")
+    }
+
+    Column
+    {
+        id: actionsPanel
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
+        anchors.right: root.right
+        anchors.margins : 10
+        spacing: 10
+
+
+        Button
+        {
+            id: newUser
+            text: qsTr("New user")
+             onClicked: regovar.openNewProjectWizard()
+        }
+        Button
+        {
+            text: editionMode ? qsTr("Save") : qsTr("Edit")
+            onClicked:
+            {
+                editionMode = !editionMode;
+                if (!editionMode)
+                {
+                    // when click on save : update model
+                    updateModelFromView();
+                }
+            }
+        }
+
+        Button
+        {
+            visible: editionMode
+            text: qsTr("Cancel")
+            onClicked: { updateView1FromModel(model); editionMode = false; }
+        }
+        Button
+        {
+            id: deleteUser
+            text: qsTr("Delete")
+            onClicked:  deleteSelectedProject()
+        }
     }
 
 
-    ColumnLayout
+
+    SplitView
     {
-        id: contentLayout
+        id: row
         anchors.top : header.bottom
         anchors.left: root.left
-        anchors.right: root.right
+        anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
         anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
 
-        spacing: 5
+
+        Item
+        {
+            ColumnLayout
+            {
+                anchors.fill: parent
+                anchors.rightMargin: 10
+                spacing: 10
+
+                TextField
+                {
+                    id: searchField
+                    Layout.fillWidth: true
+                    placeholder: qsTr("Filter/Search users")
+                    iconLeft: "z"
+                    displayClearButton: true
+
+                    onTextEdited: regovar.usersManager.usersList.proxy.setFilterString(text)
+                    onTextChanged: regovar.usersManager.usersList.proxy.setFilterString(text)
+                }
+
+                TableView
+                {
+                    id: eventsTable
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    model: regovar.usersManager.usersList.proxy
+
+                    TableViewColumn
+                    {
+                        role: "lastname"
+                        title: qsTr("Lastname")
+                    }
+                    TableViewColumn
+                    {
+                        role: "firstname"
+                        title: qsTr("Firstname")
+                    }
+                    TableViewColumn
+                    {
+                        role: "login"
+                        title: qsTr("Login")
+                    }
+                    TableViewColumn
+                    {
+                        role: "role"
+                        title: qsTr("Role")
+                    }
+                    TableViewColumn
+                    {
+                        role: "update"
+                        title: qsTr("Last connection")
+                    }
+                }
+            }
+        }
 
 
+        Item
+        {
+            width: 500
+            ColumnLayout
+            {
+                anchors.fill: parent
+                anchors.leftMargin: 10
+                spacing: 10
+
+                Text
+                {
+                    Layout.fillWidth: true
+                    text: qsTr("TODO: event details panel")
+                }
+
+                Item
+                {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                }
+            }
+        }
     }
 }

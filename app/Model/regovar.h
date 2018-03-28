@@ -179,7 +179,8 @@ public:
     Q_INVOKABLE void quit();
     // Tools
     Q_INVOKABLE inline QUuid generateUuid() { return QUuid::createUuid(); }
-    Q_INVOKABLE void manageRequestError(QJsonObject json, QString method="");
+    Q_INVOKABLE void manageServerError(QJsonObject json, QString method="");
+    Q_INVOKABLE void manageClientError(QString msg, QString code="", QString method="");
     Q_INVOKABLE QDateTime dateFromString(QString date);
     Q_INVOKABLE QString formatNumber(int value);
     Q_INVOKABLE QString formatNumber(double value);

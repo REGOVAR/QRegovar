@@ -216,7 +216,7 @@ void PipelineAnalysis::save()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         request->deleteLater();
     });
@@ -239,7 +239,7 @@ void PipelineAnalysis::load(bool forceRefresh)
             }
             else
             {
-                regovar->manageRequestError(json, Q_FUNC_INFO);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });
@@ -262,7 +262,7 @@ void PipelineAnalysis::pause()
             }
             else
             {
-                regovar->manageRequestError(json, Q_FUNC_INFO);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });
@@ -283,7 +283,7 @@ void PipelineAnalysis::start()
             }
             else
             {
-                regovar->manageRequestError(json, Q_FUNC_INFO);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });
@@ -302,7 +302,7 @@ void PipelineAnalysis::cancel()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -322,7 +322,7 @@ void PipelineAnalysis::finalyze()
             }
             else
             {
-                regovar->manageRequestError(json, Q_FUNC_INFO);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });
@@ -342,7 +342,7 @@ void PipelineAnalysis::refreshMonitoring()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });

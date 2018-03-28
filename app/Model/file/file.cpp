@@ -54,7 +54,7 @@ void File::save()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         request->deleteLater();
     });
@@ -78,7 +78,7 @@ void File::load(bool forceRefresh)
             }
             else
             {
-                regovar->manageRequestError(json, Q_FUNC_INFO);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });
@@ -217,7 +217,7 @@ bool File::downloadLocalFile()
                     // TODO: create json error from scratch
                     QJsonObject jsonError;
                     jsonError.insert("method", Q_FUNC_INFO);
-                    regovar->manageRequestError(jsonError, Q_FUNC_INFO);
+                    regovar->manageServerError(jsonError, Q_FUNC_INFO);
                 }
                 req->deleteLater();
             });

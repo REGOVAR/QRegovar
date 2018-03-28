@@ -74,7 +74,7 @@ void Admin::getServerStatus()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -97,7 +97,7 @@ void Admin::clearWt(int analysisId)
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });

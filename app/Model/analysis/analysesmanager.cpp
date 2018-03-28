@@ -145,7 +145,7 @@ bool AnalysesManager::newAnalysis(QString type)
             }
             else
             {
-                regovar->manageRequestError(json, Q_FUNC_INFO);
+                regovar->manageServerError(json, Q_FUNC_INFO);
                 emit analysisCreationDone(false, -1);
             }
             req->deleteLater();
@@ -171,7 +171,7 @@ bool AnalysesManager::newAnalysis(QString type)
             }
             else
             {
-                regovar->manageRequestError(json, Q_FUNC_INFO);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });
@@ -290,7 +290,7 @@ void AnalysesManager::deleteFilteringAnalysis(int id)
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -308,7 +308,7 @@ void AnalysesManager::deletePipelineAnalysis(int id)
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });

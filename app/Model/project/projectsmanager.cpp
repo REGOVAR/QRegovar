@@ -111,7 +111,7 @@ void ProjectsManager::newProject(QString name, QString comment)
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
             emit projectCreationDone(false, -1);
         }
         req->deleteLater();
@@ -145,7 +145,7 @@ void ProjectsManager::deleteProject(int id)
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });

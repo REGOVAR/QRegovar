@@ -75,7 +75,6 @@ public Q_SLOTS:
     void updateSearchField();
 
 private:
-    bool mLoaded = false;
     QDateTime mLastInternalLoad = QDateTime::currentDateTime();
 
     int mId=-1;

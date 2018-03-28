@@ -10,6 +10,7 @@ GridLayout
     implicitWidth: 300
     property string userFullName: ""
     property string serverStatus: "online"
+    property bool hovered: false
 
     rows:2
     columns: 2
@@ -22,8 +23,8 @@ GridLayout
         Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
         font.pixelSize: Regovar.theme.font.size.normal
         font.family: Regovar.theme.font.family
-        color: Regovar.theme.primaryColor.back.dark
-        text: userFullName
+        color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
+        text:  hovered ? qsTr("Click to disconnect") : userFullName
     }
     Text
     {
@@ -31,8 +32,8 @@ GridLayout
         Layout.alignment: Qt.AlignVCenter
         font.pixelSize: Regovar.theme.font.size.normal
         font.family: Regovar.theme.icons.name
-        color: Regovar.theme.primaryColor.back.dark
-        text: "b"
+        color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
+        text: hovered ? "h" : "b"
     }
     Text
     {
@@ -53,6 +54,17 @@ GridLayout
         color: Regovar.theme.primaryColor.back.dark
         text: "F"
     }
+
+    MouseArea
+    {
+        anchors.fill: parent
+        hoverEnabled: true
+        onEntered: root.hovered = true
+        onExited: root.hovered = false
+        onClicked: regovar.logout()
+    }
+
+
 
     Component.onCompleted: updateConnectionStatus()
 

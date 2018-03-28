@@ -115,7 +115,7 @@ void ResultsTreeModel::fetchMore(const QModelIndex& parent)
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         setIsLoading(false);
         request->deleteLater();
@@ -181,7 +181,7 @@ void ResultsTreeModel::applyFilter(QJsonArray filter)
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         setIsLoading(false);
         request->deleteLater();
@@ -226,7 +226,7 @@ void ResultsTreeModel::loadNext()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
 
         // Notify view/model that update is finished

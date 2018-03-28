@@ -171,7 +171,7 @@ void Regovar::loadConfigData()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
         setWelcomIsLoading(true);
@@ -263,7 +263,7 @@ void Regovar::loadWelcomData()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
         setWelcomIsLoading(true);
@@ -414,7 +414,7 @@ void Regovar::getPipelineInfo(int pipelineId)
         else
         {
             emit pipelineInformationReady(QJsonValue::Null);
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -441,7 +441,7 @@ void Regovar::getGeneInfo(QString geneName, int analysisId)
         else
         {
             emit geneInformationReady(QJsonValue::Null);
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -463,7 +463,7 @@ void Regovar::getPhenotypeInfo(QString phenotypeId)
         else
         {
             emit phenotypeInformationReady(QJsonValue::Null);
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -492,7 +492,7 @@ void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
         else
         {
             emit variantInformationReady(QJsonValue::Null);
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -524,7 +524,7 @@ void Regovar::quit()
     qDebug() << "quit regovar app !";
 }
 
-void Regovar::manageRequestError(QJsonObject json, QString method)
+void Regovar::manageServerError(QJsonObject json, QString method)
 {
     QString httpCode = json.contains("httpCode") ? json["httpCode"].toString() : "";
 
@@ -552,11 +552,18 @@ void Regovar::manageRequestError(QJsonObject json, QString method)
         msgTech += "Current CPU:  " + QSysInfo::currentCpuArchitecture() + "\n";
         msgTech += "Kernel:       " + QSysInfo::kernelType() + " " + QSysInfo::kernelVersion() +"\n";
         msgTech += "OS:           " + QSysInfo::prettyProductName() + "\n";
-
-
-
         emit errorOccured(code, msg, msgTech);
     }
+}
+void Regovar::manageClientError(QString msg, QString code, QString method)
+{
+    QString msgTech = "Method:       " + method + "\n";
+    msgTech += "Qt version:   " + QString(QT_VERSION_STR) + "\n";
+    msgTech += "Build CPU:    " + QSysInfo::buildCpuArchitecture() + "\n";
+    msgTech += "Current CPU:  " + QSysInfo::currentCpuArchitecture() + "\n";
+    msgTech += "Kernel:       " + QSysInfo::kernelType() + " " + QSysInfo::kernelVersion() +"\n";
+    msgTech += "OS:           " + QSysInfo::prettyProductName() + "\n";
+    emit errorOccured(code, msg, msgTech);
 }
 
 
@@ -634,7 +641,7 @@ void Regovar::search(QString query)
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
         setSearchInProgress(false);

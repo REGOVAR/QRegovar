@@ -201,7 +201,7 @@ void FilteringAnalysis::save()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         request->deleteLater();
     });
@@ -226,7 +226,7 @@ void FilteringAnalysis::load(bool forceRefresh)
             }
             else
             {
-                regovar->manageRequestError(json, Q_FUNC_INFO);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });
@@ -294,7 +294,7 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
             raiseNewInternalLoadingStatus(Error);
         }
         req->deleteLater();
@@ -514,7 +514,7 @@ void FilteringAnalysis::reopen()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -687,7 +687,7 @@ void FilteringAnalysis::deleteFilter(int filterId)
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -744,7 +744,7 @@ void FilteringAnalysis::editFilter(int filterId, QString filterName, QString fil
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -822,7 +822,7 @@ void FilteringAnalysis::addSamplesFromFile(int fileId)
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
             raiseNewInternalLoadingStatus(Error);
         }
         req->deleteLater();
@@ -1090,7 +1090,7 @@ void FilteringAnalysis::setVariantSelection(QString id, bool isChecked)
     {
         if (!success)
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
             raiseNewInternalLoadingStatus(Error);
         }
         req->deleteLater();
@@ -1119,7 +1119,7 @@ void FilteringAnalysis::addFile(File* file)
             }
             else
             {
-                regovar->manageRequestError(json, Q_FUNC_INFO);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             request->deleteLater();
         });

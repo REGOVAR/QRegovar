@@ -86,7 +86,7 @@ void SubjectsManager::newSubject(QString identifier, QString firstname, QString 
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
             emit subjectCreationDone(false, -1);
         }
         req->deleteLater();

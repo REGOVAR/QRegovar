@@ -1,30 +1,29 @@
 #include "user.h"
 #include "framework/request.h"
+#include "Model/regovar.h"
 
 User::User(QObject* parent) : QObject(parent)
 {
+    connect(this, &User::dataChanged, this, &User::updateSearchField);
 }
 
-User::User(quint32 id, const QString& firstname, const QString& lastname, QObject* parent)
-    : QObject(parent), mId(id), mFirstname(firstname), mLastname(lastname)
+User::User(quint32 id, const QString& firstname, const QString& lastname, QObject* parent): User(parent)
 {
+    mId = id;
+    mFirstname = firstname;
+    mLastname = lastname;
 }
 
 
-
-// Tools ========================================
-
-
-bool User::fromJson(QJsonDocument json)
+void User::updateSearchField()
 {
-    QJsonObject data = json.object();
-    return User::fromJson(data);
+    mSearchField = mLogin + " " + mFirstname + " " + mLastname + " " + mEmail + " " + mFunction + " " + mLocation;
+    mSearchField +=  " " + (mIsAdmin ? tr("admin") : "") + (mIsActive ? tr("active") : "");
 }
+
 
 bool User::fromJson(QJsonObject json)
 {
-    // TODO set current user with json data
-    // QString st(json.toJson(QJsonDocument::Compact));
     mId = json["id"].toInt();
     mLogin = json["login"].toString();
     mFirstname = json["firstname"].toString();
@@ -32,13 +31,36 @@ bool User::fromJson(QJsonObject json)
     mEmail = json["email"].toString();
     mFunction = json["function"].toString();
     mLocation = json["location"].toString();
-    mLastActivity = QDateTime::fromString(json["last_activity"].toString(), Qt::ISODate);
+    mCreationDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
+    mLastActivity = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
+    mIsActive = json["is_active"].toBool();
+    mIsAdmin = json["is_admin"].toBool();
     qDebug() << Q_FUNC_INFO << "New User" << mId << mFirstname << mLastname;
 
-    emit userChanged();
+    emit dataChanged();
     return true;
 }
 
+QJsonObject User::toJson(bool withPassword)
+{
+    QJsonObject result;
+    // Simples data
+    result.insert("id", mId);
+    result.insert("login", mLogin);
+    result.insert("firstname", mFirstname);
+    result.insert("lastname", mLastname);
+    result.insert("email", mEmail);
+    result.insert("function", mFunction);
+    result.insert("location", mLocation);
+    result.insert("is_active", mIsActive);
+    result.insert("is_admin", mIsAdmin);
+
+    if (withPassword)
+    {
+        result.insert("password", mPassword);
+    }
+    return result;
+}
 void User::clear()
 {
     mId = 0;
@@ -49,92 +71,69 @@ void User::clear()
     mPassword = "";
     mFunction = "";
     mLocation = "";
-    emit userChanged();
+    emit dataChanged();
 }
+
 
 bool User::isValid()
 {
     return mId > 0;
 }
 
-bool User::isAdmin()
-{
-    return mIsAdmin;
-}
 
 
-
-void User::save()
+void User::save(bool withPassword)
 {
     if (mLogin.isEmpty())
     {
-        qWarning() <<  Q_FUNC_INFO << "User's login is empty, not able to save it.";
+        regovar->manageClientError("User's login is empty, not able to save it.", "", Q_FUNC_INFO);
+        return;
     }
-
-    QHttpMultiPart* multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
-    QHttpPart p1;
-    p1.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"firstname\""));
-    p1.setBody(mFirstname.toUtf8());
-    multiPart->append(p1);
-    QHttpPart p2;
-    p2.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"lastname\""));
-    p2.setBody(mLastname.toUtf8());
-    multiPart->append(p2);
-    QHttpPart p3;
-    p3.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"email\""));
-    p3.setBody(mEmail.toUtf8());
-    multiPart->append(p3);
-    QHttpPart p4;
-    p4.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"function\""));
-    p4.setBody(mFunction.toUtf8());
-    multiPart->append(p4);
-    QHttpPart p5;
-    p5.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"location\""));
-    p5.setBody(mLocation.toUtf8());
-    multiPart->append(p5);
-
-    if (!mPassword.isEmpty())
-    {
-        QHttpPart p6;
-        p6.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"password\""));
-        p6.setBody(mPassword.toUtf8());
-        multiPart->append(p6);
-    }
-    QHttpPart p7;
-    p7.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"login\""));
-    p7.setBody(mLogin.toUtf8());
-    multiPart->append(p7);
 
     Request* request;
     if (mId == 0)
     {
-        request = Request::post("/user", multiPart);
+        request = Request::post("/user", QJsonDocument(toJson(withPassword)).toJson());
     }
     else
     {
-        request = Request::put(QString("/user/%1").arg(mId), multiPart);
+        request = Request::put(QString("/user/%1").arg(mId), QJsonDocument(toJson(withPassword)).toJson());
     }
 
-    connect(request, &Request::responseReceived, [this, multiPart, request](bool success, const QJsonObject& json)
+    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
     {
-        if (success)
+        if (!success)
         {
-            QJsonObject data = json["data"].toObject();
-            mId = data["id"].toInt();
-            qDebug() << Q_FUNC_INFO << "User saved";
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
-        else
-        {
-            qCritical() << Q_FUNC_INFO << "Request error occured";
-        }
-        multiPart->deleteLater();
         request->deleteLater();
     });
 }
 
 
 
-
+void User::load(bool forceRefresh)
+{
+    // Check if need refresh
+    qint64 diff = mLastInternalLoad.secsTo(QDateTime::currentDateTime());
+    if (forceRefresh || diff > MIN_SYNC_DELAY)
+    {
+        mLastInternalLoad = QDateTime::currentDateTime();
+        Request* req = Request::get(QString("/user/%1").arg(mId));
+        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+        {
+            if (success)
+            {
+                fromJson(json["data"].toObject());
+            }
+            else
+            {
+                regovar->manageServerError(json, Q_FUNC_INFO);
+            }
+            req->deleteLater();
+        });
+    }
+}
 
 
 

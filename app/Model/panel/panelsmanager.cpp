@@ -46,7 +46,7 @@ void PanelsManager::commitNewPanel()
         }
         else
         {
-            regovar->manageRequestError(json, Q_FUNC_INFO);
+            regovar->manageServerError(json, Q_FUNC_INFO);
             emit commitNewPanelDone(false);
         }
         req->deleteLater();

@@ -30,7 +30,7 @@ void DynamicFormModel::load(QUrl jsonUrl)
                 // TODO: create json error from scratch
                 QJsonDocument doc = QJsonDocument::fromJson(data);
                 QJsonObject jsonError = doc.object();
-                regovar->manageRequestError(jsonError, Q_FUNC_INFO);
+                regovar->manageServerError(jsonError, Q_FUNC_INFO);
             }
             req->deleteLater();
         });

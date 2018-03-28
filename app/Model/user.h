@@ -12,56 +12,74 @@
 class User : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY userChanged)
-    Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY userChanged)
-    Q_PROPERTY(QString email READ email WRITE setEmail NOTIFY userChanged)
-    Q_PROPERTY(QString login READ login WRITE setLogin NOTIFY userChanged)
-    Q_PROPERTY(QString password READ password WRITE setPassword NOTIFY userChanged)
-    Q_PROPERTY(QString function READ function WRITE setFunction NOTIFY userChanged)
-    Q_PROPERTY(QString location READ location WRITE setLocation NOTIFY userChanged)
-    Q_PROPERTY(QDateTime lastActivity READ lastActivity WRITE setLastActivity NOTIFY userChanged)
+    Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY dataChanged)
+    Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY dataChanged)
+    Q_PROPERTY(QString email READ email WRITE setEmail NOTIFY dataChanged)
+    Q_PROPERTY(QString login READ login WRITE setLogin NOTIFY dataChanged)
+    Q_PROPERTY(QString password READ password WRITE setPassword NOTIFY dataChanged)
+    Q_PROPERTY(QString function READ function WRITE setFunction NOTIFY dataChanged)
+    Q_PROPERTY(QString location READ location WRITE setLocation NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime creationDate READ creationDate NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime lastActivity READ lastActivity NOTIFY dataChanged)
+    Q_PROPERTY(bool isActive READ isActive WRITE setIsActive NOTIFY dataChanged)
+    Q_PROPERTY(bool isAdmin READ isAdmin WRITE setIsAdmin NOTIFY dataChanged)
+    Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
 
 public:
 
     // Constructors
-    User(QObject* parent=nullptr);
-    User(quint32 id, const QString& firstname, const QString& lastname, QObject* parent=nullptr);
+    explicit User(QObject* parent=nullptr);
+    explicit User(quint32 id, const QString& firstname, const QString& lastname, QObject* parent=nullptr);
 
     // Getters
-    inline const QString& lastname() const { return mLastname; }
-    inline const QString& firstname() const { return mFirstname; }
-    inline const QString& email() const { return mEmail; }
-    inline const QString& login() const { return mLogin; }
-    inline const QString& password() const { return mPassword; }
-    inline const QString& function() const { return mFunction; }
-    inline const QString& location() const { return mLocation; }
-    inline const QDateTime& lastActivity() const { return mLastActivity; }
+    inline QString lastname() const { return mLastname; }
+    inline QString firstname() const { return mFirstname; }
+    inline QString email() const { return mEmail; }
+    inline QString login() const { return mLogin; }
+    inline QString password() const { return mPassword; }
+    inline QString function() const { return mFunction; }
+    inline QString location() const { return mLocation; }
+    inline QDateTime creationDate() const { return mCreationDate; }
+    inline QDateTime lastActivity() const { return mLastActivity; }
+    inline bool isActive() const { return mIsActive; }
+    inline bool isAdmin() const { return mIsAdmin; }
+    inline QString searchField() const { return mSearchField; }
 
     // Setters
-    inline void setLastname(const QString& lastname) { mLastname = lastname; emit userChanged(); }
-    inline void setFirstname(const QString& firstname) { mFirstname = firstname; emit userChanged(); }
-    inline void setEmail(const QString& email) { mEmail = email; emit userChanged(); }
-    inline void setLogin(const QString& login) { mLogin = login; emit userChanged(); }
-    inline void setPassword(const QString& password) { mPassword = password; emit userChanged(); }
-    inline void setFunction(const QString& function) { mFunction = function; emit userChanged(); }
-    inline void setLocation(const QString& location) { mLocation = location; emit userChanged(); }
-    inline void setLastActivity(const QDateTime& lastActivity) { mLastActivity = lastActivity; emit userChanged(); }
+    inline void setLastname(const QString& lastname) { mLastname = lastname; emit dataChanged(); }
+    inline void setFirstname(const QString& firstname) { mFirstname = firstname; emit dataChanged(); }
+    inline void setEmail(const QString& email) { mEmail = email; emit dataChanged(); }
+    inline void setLogin(const QString& login) { mLogin = login; emit dataChanged(); }
+    inline void setPassword(const QString& password) { mPassword = password; emit dataChanged(); }
+    inline void setFunction(const QString& function) { mFunction = function; emit dataChanged(); }
+    inline void setLocation(const QString& location) { mLocation = location; emit dataChanged(); }
+    inline void setIsActive(const bool flag) { mIsActive = flag; emit dataChanged(); }
+    inline void setIsAdmin(const bool flag) { mIsAdmin = flag; emit dataChanged(); }
 
 
     // Methods
-    // Init user data according to provided json return by api rest for authentication
-    bool fromJson(QJsonDocument json);
-    bool fromJson(QJsonObject json);
-    // Reset value to anonymous. Should be used to logout the current user
-    void clear();
-    void save();
-    bool isValid();
-    bool isAdmin();
+    //! Set model with provided json data
+    Q_INVOKABLE bool fromJson(QJsonObject json);
+    //! Export model data into json object
+    Q_INVOKABLE QJsonObject toJson(bool withPassword=false);
+    //! Save event information onto server
+    Q_INVOKABLE void save(bool withPassword=false);
+    //! Load event information and related object from server
+    Q_INVOKABLE void load(bool forceRefresh=true);
+    //! Reset value to anonymous. Should be used to logout the current user
+    Q_INVOKABLE void clear();
+    //! Return true if the current user valid (login success, active and loaded data ok); false otherwise
+    Q_INVOKABLE bool isValid();
 
 Q_SIGNALS:
-    void userChanged();
+    void dataChanged();
+
+public Q_SLOTS:
+    void updateSearchField();
 
 protected:
+    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
+
     int mId = -1;
     QString mFirstname;
     QString mLastname;
@@ -70,8 +88,11 @@ protected:
     QString mPassword;
     QString mFunction;
     QString mLocation;
+    QDateTime mCreationDate;
     QDateTime mLastActivity;
+    bool mIsActive = false;
     bool mIsAdmin = false;
+    QString mSearchField;
 };
 
 #endif // USERMODEL_H
