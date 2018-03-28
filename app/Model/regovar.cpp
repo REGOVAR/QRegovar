@@ -205,6 +205,9 @@ void Regovar::loadWelcomData()
                 }
             }
 
+            // Get users
+            mUsersManager->loadJson(data["users"].toArray());
+
             // Get panels
             mPanelsManager->loadJson(data["panels"].toArray());
 
@@ -225,7 +228,6 @@ void Regovar::loadWelcomData()
 
             // Get projects (must be load after analyses + jobs)
             mProjectsManager->loadJson(data["projects"].toArray());
-
 
             // Last analyses
             mLastAnalyses.clear();

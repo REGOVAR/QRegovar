@@ -136,7 +136,7 @@ Rectangle
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            model: regovar.usersManager.users.proxy
+            model: regovar.usersManager.users//.proxy
 
             TableViewColumn
             {
