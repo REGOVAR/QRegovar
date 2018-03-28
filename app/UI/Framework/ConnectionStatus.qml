@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.1
 import "qrc:/qml/Regovar"
 
 
-GridLayout
+Item
 {
     id: root
     implicitWidth: 300
@@ -12,47 +12,52 @@ GridLayout
     property string serverStatus: "online"
     property bool hovered: false
 
-    rows:2
-    columns: 2
-    rowSpacing: 2
-    columnSpacing: 10
+    GridLayout
+    {
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        rows:2
+        columns: 2
+        rowSpacing: 2
+        columnSpacing: 10
 
-    Text
-    {
-        id: userLabel
-        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-        font.pixelSize: Regovar.theme.font.size.normal
-        font.family: Regovar.theme.font.family
-        color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
-        text:  hovered ? qsTr("Click to disconnect") : userFullName
-    }
-    Text
-    {
-        id: userIcon
-        Layout.alignment: Qt.AlignVCenter
-        font.pixelSize: Regovar.theme.font.size.normal
-        font.family: Regovar.theme.icons.name
-        color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
-        text: hovered ? "h" : "b"
-    }
-    Text
-    {
-        id: serverLabel
-        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-        font.pixelSize: Regovar.theme.font.size.small
-        font.family: Regovar.theme.font.family
-        color: Regovar.theme.primaryColor.back.dark
+        Text
+        {
+            id: userLabel
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+            font.pixelSize: Regovar.theme.font.size.normal
+            font.family: Regovar.theme.font.family
+            color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
+            text:  hovered ? qsTr("Click to disconnect") : userFullName
+        }
+        Text
+        {
+            id: userIcon
+            Layout.alignment: Qt.AlignVCenter
+            font.pixelSize: Regovar.theme.font.size.normal
+            font.family: Regovar.theme.icons.name
+            color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
+            text: hovered ? "h" : "b"
+        }
+        Text
+        {
+            id: serverLabel
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+            font.pixelSize: Regovar.theme.font.size.small
+            font.family: Regovar.theme.font.family
+            color: Regovar.theme.primaryColor.back.dark
 
-        text: serverStatus
-    }
-    Text
-    {
-        id: serverIcon
-        Layout.alignment: Qt.AlignVCenter
-        font.pixelSize: Regovar.theme.font.size.small
-        font.family: Regovar.theme.icons.name
-        color: Regovar.theme.primaryColor.back.dark
-        text: "F"
+            text: serverStatus
+        }
+        Text
+        {
+            id: serverIcon
+            Layout.alignment: Qt.AlignVCenter
+            font.pixelSize: Regovar.theme.font.size.small
+            font.family: Regovar.theme.icons.name
+            color: Regovar.theme.primaryColor.back.dark
+            text: "F"
+        }
     }
 
     MouseArea
@@ -61,7 +66,7 @@ GridLayout
         hoverEnabled: true
         onEntered: root.hovered = true
         onExited: root.hovered = false
-        onClicked: regovar.logout()
+        onClicked: regovar.usersManager.logout()
     }
 
 
@@ -76,12 +81,12 @@ GridLayout
 
     Connections
     {
-        target: regovar
+        target: regovar.usersManager
         onDisplayLoginScreen:
         {
             if (!state)
             {
-                root.userFullName = regovar.user.firstname + " " + regovar.user.lastname;
+                root.userFullName = regovar.usersManager.user.firstname + " " + regovar.usersManager.user.lastname;
             }
             else
             {
@@ -93,9 +98,11 @@ GridLayout
 
     function updateConnectionStatus()
     {
-        if (regovar.networkManager.status == 0)
+        if (regovar.networkManager.status <= 1 ) // 0=ready, 1=access denied
         {
             serverLabel.text = qsTr("online");
+            if (regovar.networkManager.status == 1)
+                serverLabel.text = qsTr("You must be logged in to use regovar");
             serverIcon.text = "F";
             serverLabel.color = Regovar.theme.primaryColor.back.dark;
             serverIcon.color = Regovar.theme.primaryColor.back.dark;
@@ -105,12 +112,10 @@ GridLayout
             serverIcon.text = (regovar.networkManager.status == 3) ? "h" : "F";
             serverIcon.color = Regovar.theme.frontColor.danger;
             serverLabel.color = Regovar.theme.frontColor.danger;
-            if (regovar.networkManager.status == 1)
-                serverLabel.text = qsTr("You must login to use regovar");
-            else if (regovar.networkManager.status == 2)
+            if (regovar.networkManager.status == 2)
                 serverLabel.text = qsTr("Regovar server in error");
             else
-                serverLabel.text = qsTr("Regovar server not reachable");
+                serverLabel.text = qsTr("Regovar server unreachable");
         }
     }
 }

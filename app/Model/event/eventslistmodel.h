@@ -25,6 +25,7 @@ class EventsListModel : public QAbstractListModel
     Q_PROPERTY(QString id READ id NOTIFY neverChanged)
 
 public:
+    // Constructors
     explicit EventsListModel(QObject* parent = nullptr);
     explicit EventsListModel(QString target, QString id, QObject* parent = nullptr);
 

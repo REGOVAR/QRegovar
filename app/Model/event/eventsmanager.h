@@ -12,6 +12,7 @@ class EventsManager : public QObject
     Q_PROPERTY(EventsListModel* technicalEvents READ technicalEvents NOTIFY technicalEventsChanged)
 
 public:
+    // Constructor
     explicit EventsManager(QObject* parent=nullptr);
 
     // Getters
@@ -29,7 +30,7 @@ Q_SIGNALS:
     void newEventPop(Event* event);
 
 public Q_SLOTS:
-    // Called by NetworkManager when need to process WebSocket messages managed by SampleManager
+    // Called by NetworkManager when need to process WebSocket messages managed by EventsManager
     void processPushNotification(QString action, QJsonObject data);
 
 

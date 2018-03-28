@@ -97,7 +97,7 @@ Rectangle
                 height: Regovar.theme.font.boxSize.title
 
                 elide: Text.ElideRight
-                text: qsTr("Regovar user : ") + regovar.user.login
+                text: qsTr("Regovar user : ") + regovar.usersManager.user.login
                 font.bold: true
                 font.pixelSize: Regovar.theme.font.size.header
                 verticalAlignment: Text.AlignVCenter
@@ -308,7 +308,7 @@ Rectangle
         TextField
         {
             Layout.fillWidth: true
-            text: regovar.user.lastname
+            text: regovar.usersManager.user.lastname
             placeholder: qsTr("Lastname")
         }
 
@@ -352,7 +352,7 @@ Rectangle
         TextField
         {
             Layout.fillWidth: true
-            text: regovar.user.firstname
+            text: regovar.usersManager.user.firstname
             placeholder: qsTr("Firstname")
         }
 
@@ -378,7 +378,7 @@ Rectangle
         TextField
         {
             Layout.fillWidth: true
-            text: regovar.user ? regovar.user.email : ""
+            text: regovar.usersManager.user ? regovar.usersManager.user.email : ""
             placeholder: qsTr("Email")
         }
 
@@ -404,7 +404,7 @@ Rectangle
         TextField
         {
             Layout.fillWidth: true
-            text: regovar.user ? regovar.user.location : ""
+            text: regovar.usersManager.user ? regovar.usersManager.user.location : ""
             placeholder: qsTr("Location")
         }
 
@@ -430,7 +430,7 @@ Rectangle
         TextField
         {
             Layout.fillWidth: true
-            text: regovar.user ? regovar.user.function : ""
+            text: regovar.usersManager.user ? regovar.usersManager.user.function : ""
             placeholder: qsTr("Function")
         }
 

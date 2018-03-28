@@ -8,6 +8,7 @@
 
 #include "Model/mainmenu/rootmenu.h"
 #include "framework/networkmanager.h"
+#include "user/usersmanager.h"
 #include "project/projectsmanager.h"
 #include "subject/subjectsmanager.h"
 #include "subject/samplesmanager.h"
@@ -20,7 +21,7 @@
 #include "pipeline/pipelinesmanager.h"
 
 // TODO: rework as manager pattern
-#include "user.h"
+#include "user/user.h"
 #include "admin.h"
 #include "settings.h"
 
@@ -90,6 +91,7 @@ class Regovar : public QObject
 
     // Managers
     Q_PROPERTY(NetworkManager* networkManager READ networkManager NOTIFY neverChanged)
+    Q_PROPERTY(UsersManager* usersManager READ usersManager NOTIFY neverChanged)
     Q_PROPERTY(ProjectsManager* projectsManager READ projectsManager NOTIFY neverChanged)
     Q_PROPERTY(SubjectsManager* subjectsManager READ subjectsManager NOTIFY neverChanged)
     Q_PROPERTY(SamplesManager* samplesManager READ samplesManager NOTIFY neverChanged)
@@ -104,7 +106,6 @@ class Regovar : public QObject
     Q_PROPERTY(RootMenu* mainMenu READ mainMenu NOTIFY neverChanged)
     Q_PROPERTY(Settings* settings READ settings NOTIFY settingsChanged)
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
-    Q_PROPERTY(User* user READ user NOTIFY userChanged)
 
     Q_PROPERTY(RegovarInfo* config READ config NOTIFY configChanged)
     Q_PROPERTY(Admin* admin READ admin NOTIFY adminChanged)
@@ -124,7 +125,6 @@ public:
     inline RegovarInfo* config() const { return mConfig; }
     inline Admin* admin() { return mAdmin; }
     //--
-    inline User* user() const { return mUser; }
     inline QString searchRequest() { return mSearchRequest; }
     inline QJsonObject searchResult() const { return mSearchResult; }
     inline bool searchInProgress() const { return mSearchInProgress; }
@@ -134,6 +134,7 @@ public:
     inline bool welcomIsLoading() const { return mWelcomIsLoading; }
     //--
     inline NetworkManager* networkManager() const { return mNetworkManager; }
+    inline UsersManager* usersManager() const { return mUsersManager; }
     inline ProjectsManager* projectsManager() const { return mProjectsManager; }
     inline SubjectsManager* subjectsManager() const { return mSubjectsManager; }
     inline SamplesManager* samplesManager() const { return mSamplesManager; }
@@ -162,7 +163,6 @@ public:
     Q_INVOKABLE inline void openNewProjectWizard() { emit newProjectWizardOpen(); }
     Q_INVOKABLE inline void openNewAnalysisWizard() { emit newAnalysisWizardOpen(); }
     Q_INVOKABLE inline void openNewSubjectWizard() { emit newSubjectWizardOpen(); }
-    Q_INVOKABLE void switchLoginScreen(bool state);
     Q_INVOKABLE void getFileInfo(int fileId);
     Q_INVOKABLE void getGeneInfo(QString geneName, int analysisId=-1);
     Q_INVOKABLE void getPanelInfo(QString panelId);
@@ -194,20 +194,12 @@ public:
     bool openNewWindow(QUrl qmlUrl, QObject* model);
 
 
-public Q_SLOTS:
-    void login(QString login, QString password);
-    void logout();
 
 
 Q_SIGNALS:
     //! special signal used for QML property that never changed to avoid to declare to many useless signal
     //! QML need that property declare a "changed" event for binding
     void neverChanged();
-    // Session events
-    void userChanged();
-    void loginSuccess();
-    void loginFailed();
-    void logoutSuccess();
     // Omnisearch events
     void searchRequestChanged();
     void searchResultChanged();
@@ -220,7 +212,6 @@ Q_SIGNALS:
     void configChanged();
     void adminChanged();
     // Wizards events
-    void displayLoginScreen(bool state);
     void newProjectWizardOpen();
     void newAnalysisWizardOpen();
     void newSubjectWizardOpen();
@@ -257,35 +248,26 @@ private:
     Settings* mSettings = nullptr;
     //! The config retrieved from the server
     RegovarInfo* mConfig = nullptr;
-    //! The current user of the application
-    User* mUser = nullptr;
     //! Admin operation wrapper
     Admin* mAdmin = nullptr;
-
+    //! Model of the main menu
+    RootMenu* mMainMenu;
+    //! list of references supported by the server
+    QList<QObject*> mReferences;
+    //! Welcom last data
+    QList<QObject*> mLastAnalyses;
+    QList<QObject*> mLastSubjects;
     //! Search request and results
     QString mSearchRequest;
     QJsonObject mSearchResult;
     bool mSearchInProgress = false;
     bool mWelcomIsLoading = false;
 
-
-
-    //! Welcom last data
-    QList<QObject*> mLastAnalyses;
-    QList<QObject*> mLastSubjects;
-
-    //! List of open Filtering Analyses
-    QList<FilteringAnalysis*> mOpenAnalyses;
-
-    //! Model of the main menu
-    RootMenu* mMainMenu;
-
-    //! list of references supported by the server
-    QList<QObject*> mReferences;
-
     // Managers
     //! Manage network (all requests Up/Down with the server, authent, and websocket connection)
     NetworkManager* mNetworkManager = nullptr;
+    //! Manage users
+    UsersManager* mUsersManager = nullptr;
     //! Manage projects (Browse + CRUD)
     ProjectsManager* mProjectsManager = nullptr;
     //! Manage subjects (Browse + CRUD)
@@ -305,12 +287,9 @@ private:
     //! PipelinesManangers
     PipelinesManager* mPipelinesManager = nullptr;
 
-
     // Technical stuff
-    //! We need ref to the QML engine to create/open new windows for Analysis
+    //! We need ref to the QML engine to create/open new windows from model events
     QQmlApplicationEngine* mQmlEngine = nullptr;
-
-
     //! List of model used by additional qml windows open
     QList<QObject*> mOpenWindowModels;
 };

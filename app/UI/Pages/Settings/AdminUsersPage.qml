@@ -107,97 +107,64 @@ Rectangle
 
 
 
-    SplitView
+
+    ColumnLayout
     {
-        id: row
         anchors.top : header.bottom
         anchors.left: root.left
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
         anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
+        spacing: 10
 
-
-        Item
+        TextField
         {
-            ColumnLayout
-            {
-                anchors.fill: parent
-                anchors.rightMargin: 10
-                spacing: 10
+            id: searchField
+            Layout.fillWidth: true
+            placeholder: qsTr("Filter/Search users")
+            iconLeft: "z"
+            displayClearButton: true
 
-                TextField
-                {
-                    id: searchField
-                    Layout.fillWidth: true
-                    placeholder: qsTr("Filter/Search users")
-                    iconLeft: "z"
-                    displayClearButton: true
-
-                    onTextEdited: regovar.usersManager.usersList.proxy.setFilterString(text)
-                    onTextChanged: regovar.usersManager.usersList.proxy.setFilterString(text)
-                }
-
-                TableView
-                {
-                    id: eventsTable
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-
-                    model: regovar.usersManager.usersList.proxy
-
-                    TableViewColumn
-                    {
-                        role: "lastname"
-                        title: qsTr("Lastname")
-                    }
-                    TableViewColumn
-                    {
-                        role: "firstname"
-                        title: qsTr("Firstname")
-                    }
-                    TableViewColumn
-                    {
-                        role: "login"
-                        title: qsTr("Login")
-                    }
-                    TableViewColumn
-                    {
-                        role: "role"
-                        title: qsTr("Role")
-                    }
-                    TableViewColumn
-                    {
-                        role: "update"
-                        title: qsTr("Last connection")
-                    }
-                }
-            }
+            onTextEdited: regovar.usersManager.users.proxy.setFilterString(text)
+            onTextChanged: regovar.usersManager.users.proxy.setFilterString(text)
         }
 
-
-        Item
+        TableView
         {
-            width: 500
-            ColumnLayout
+            id: eventsTable
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            model: regovar.usersManager.users.proxy
+
+            TableViewColumn
             {
-                anchors.fill: parent
-                anchors.leftMargin: 10
-                spacing: 10
-
-                Text
-                {
-                    Layout.fillWidth: true
-                    text: qsTr("TODO: event details panel")
-                }
-
-                Item
-                {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-
-                }
+                role: "lastname"
+                title: qsTr("Lastname")
+            }
+            TableViewColumn
+            {
+                role: "firstname"
+                title: qsTr("Firstname")
+            }
+            TableViewColumn
+            {
+                role: "login"
+                title: qsTr("Login")
+            }
+            TableViewColumn
+            {
+                role: "role"
+                title: qsTr("Role")
+            }
+            TableViewColumn
+            {
+                role: "update"
+                title: qsTr("Last connection")
             }
         }
     }
+
+
 }

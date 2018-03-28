@@ -95,7 +95,6 @@ void Regovar::init()
     mSettings = new Settings();
 
     // Create models
-    mUser = new User();
     mConfig = new RegovarInfo();
     mAdmin = new Admin();
     mMainMenu = new RootMenu(this);
@@ -110,6 +109,9 @@ void Regovar::init()
     mFilesManager = new FilesManager(this);
     mFilesManager->setCacheDir(mSettings->localCacheDir());
     mFilesManager->setCacheMaxSize(mSettings->localCacheMaxSize());
+
+    // Init user manager and current user if autologin enabled
+    mUsersManager = new UsersManager(this);
 
     // Init others managers
     mProjectsManager = new ProjectsManager(this);
@@ -350,14 +352,6 @@ Reference* Regovar::referenceFromId(int id)
 
 
 
-void Regovar::switchLoginScreen(bool state)
-{
-    emit displayLoginScreen(state);
-}
-
-
-
-
 
 
 
@@ -389,12 +383,12 @@ void Regovar::getSampleInfo(int sampleId)
 }
 
 
-void Regovar::getUserInfo(int)
+void Regovar::getUserInfo(int userId)
 {
     emit userInformationSearching();
-    //User* sample= mUserManager->getOrCreate(userId);
-    //sample->load(false);
-    emit userInformationReady(mUser);
+    User* user= mUsersManager->getOrCreateUser(userId);
+    user->load(false);
+    emit userInformationReady(user);
 }
 
 
@@ -530,7 +524,7 @@ void Regovar::manageServerError(QJsonObject json, QString method)
 
     if (httpCode == "403")
     {
-        switchLoginScreen(true);
+        mUsersManager->switchLoginScreen(true);
     }
     else
     {
@@ -655,55 +649,6 @@ void Regovar::search(QString query)
 
 
 
-
-void Regovar::login(QString login, QString password)
-{
-    // Do nothing if user already connected
-    if (mUser->isValid())
-    {
-        qDebug() << Q_FUNC_INFO << QString("User %1 %2 already loged in. Thanks to logout first.").arg(mUser->firstname(), mUser->lastname());
-    }
-    else
-    {
-        // Store login and password as it may be ask later if network authentication problem
-        mUser->setLogin(login);
-        mUser->setPassword(password);
-
-        QJsonObject body;
-        body.insert("login", login);
-        body.insert("password", password);
-
-        Request* req = Request::post("/user/login", QJsonDocument(body).toJson());
-        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-        {
-            if (success && mUser->fromJson(json["data"].toObject()))
-            {
-                emit displayLoginScreen(false);
-                loadWelcomData();
-            }
-            else
-            {
-                emit loginFailed();
-            }
-            req->deleteLater();
-        });
-    }
-}
-
-void Regovar::logout()
-{
-    if (mUser->isValid())
-    {
-        Request* test = Request::get("/user/logout");
-        connect(test, &Request::responseReceived, [this](bool, const QJsonObject&)
-        {
-            mUser->clear();
-            qDebug() << Q_FUNC_INFO << "You are disconnected !";
-            emit logoutSuccess();
-            emit displayLoginScreen(true);
-        });
-    }
-}
 
 
 QString Regovar::formatDuration(int duration)

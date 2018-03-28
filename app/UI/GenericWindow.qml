@@ -98,7 +98,7 @@ ApplicationWindow
 
     Connections
     {
-        target: regovar
+        target: regovar.usersManager
         onDisplayLoginScreen:
         {
             loginPage.visible = state;

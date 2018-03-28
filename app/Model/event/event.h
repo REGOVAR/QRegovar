@@ -2,14 +2,13 @@
 #define EVENT_H
 
 #include <QtCore>
-#include "Model/user.h"
+#include "Model/user/user.h"
 #include "Model/analysis/analysis.h"
 #include "Model/file/file.h"
 #include "Model/panel/panel.h"
 #include "Model/project/project.h"
 #include "Model/subject/sample.h"
 #include "Model/subject/subject.h"
-#include "Model/user.h"
 
 class Event : public QObject
 {

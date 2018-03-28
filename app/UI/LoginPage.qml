@@ -10,6 +10,20 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
+    onVisibleChanged:
+    {
+        if (visible)
+        {
+            loginField.text = "";
+            pwdField.text = "";
+            loginField.focus = true;
+        }
+    }
+
+    function tryLogin()
+    {
+        regovar.usersManager.login(loginField.text, pwdField.text);
+    }
 
     Item
     {
@@ -81,7 +95,7 @@ Rectangle
                 id: loginField
                 Layout.fillWidth: true
                 placeholder: qsTr("Login")
-
+                focus: true
             }
 
             TextField
@@ -90,13 +104,15 @@ Rectangle
                 Layout.fillWidth: true
                 placeholder: qsTr("Password")
                 echoMode: TextInput.Password
+                //onTextEdited: regovar.usersManager.login(loginField.text, pwdField.text);
+                Keys.onPressed: { if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) tryLogin(); }
             }
 
             Button
             {
                 Layout.alignment: Qt.AlignCenter
                 text: qsTr("Go")
-                onClicked: regovar.login(loginField.text, pwdField.text)
+                onClicked: tryLogin()
             }
         }
     }
