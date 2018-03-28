@@ -23,7 +23,7 @@ Item
         imageContainer.originalHeight = image.height;
 
         updateZoomScales();
-        applyZoom(imageContainer.zoomScaleMin);
+        applyZoom(0, 0, imageContainer.zoomScaleMin);
     }
     onWidthChanged: updateZoomScales()
     onHeightChanged: updateZoomScales()
@@ -35,16 +35,27 @@ Item
         imageContainer.zoomScaleMax = 5;
     }
 
-    function applyZoom(scale)
+    function applyZoom(mouseX, mouseY, scale)
     {
         var checkedScale = scale;
         checkedScale = Math.max(checkedScale, imageContainer.zoomScaleMin);
         checkedScale = Math.min(checkedScale, imageContainer.zoomScaleMax);
-        if (checkedScale != imageContainer.zoomScale)
+        if (!isNaN(checkedScale) && checkedScale != imageContainer.zoomScale)
         {
+            var deltaX = mouseX + Math.abs(imageContainer.contentX);
+            var deltaY = mouseY + Math.abs(imageContainer.contentY);
+            deltaX = deltaX / imageContainer.zoomScale;
+            deltaY = deltaY / imageContainer.zoomScale;
+            var newDX = deltaX * checkedScale;
+            var newDY = deltaY * checkedScale;
+
+            console.log(imageContainer.zoomScale + " => " + checkedScale);
             imageContainer.zoomScale = checkedScale;
             image.width = imageContainer.originalWidth * checkedScale;
             image.height = imageContainer.originalHeight * checkedScale;
+            imageContainer.contentX = mouseX - newDX;
+            imageContainer.contentY = mouseY - newDY;
+
         }
     }
 
@@ -85,14 +96,14 @@ Item
                 {
                     iconTxt: ""
                     text: qsTr("1:1")
-                    onClicked: root.applyZoom(1.0);
+                    onClicked: root.applyZoom(0,0, 1.0);
                 }
 
                 ButtonInline
                 {
                     iconTxt: "_"
                     text: qsTr("Open externaly")
-                    onClicked: Qt.openUrlExternally(model.localFilePath);
+                    onClicked: Qt.openUrlExternally(0,0, model.localFilePath);
                 }
             }
 
@@ -128,12 +139,13 @@ Item
                 contentWidth: image.width
                 contentHeight: image.height
 
+                boundsBehavior: Flickable.StopAtBounds
+
                 property int originalWidth: 100
                 property int originalHeight: 100
                 property real zoomScaleMin: 1.0
                 property real zoomScaleMax: 1.0
                 property real zoomScale: 1.0
-                onZoomScaleChanged: applyZoom(zoomScale)
 
                 Image
                 {
@@ -145,10 +157,10 @@ Item
                     anchors.fill: parent
                     onWheel:
                     {
-                        if (wheel.modifiers & Qt.ControlModifier)
+                        //if (wheel.modifiers & Qt.ControlModifier)
                         {
                             var wheelStep = wheel.angleDelta.y / 120;
-                            applyZoom(imageContainer.zoomScale += wheelStep * 0.1);
+                            applyZoom(wheel.x, wheel.y, imageContainer.zoomScale + wheelStep * 0.1);
                         }
                     }
                 }

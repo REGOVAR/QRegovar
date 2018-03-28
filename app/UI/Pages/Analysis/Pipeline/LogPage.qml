@@ -118,10 +118,11 @@ Rectangle
             Layout.fillWidth: true
             text: root.model.text
             cursorPosition: root.model.cursorPosition
-            font.family: Qt.font
+            font.family: "monospace"
             font.pixelSize: Regovar.theme.font.size.normal
             colorText: "lightgrey"
             colorBack: "black"
+
         }
 
         RowLayout
