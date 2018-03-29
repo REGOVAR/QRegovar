@@ -93,11 +93,10 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
             color: Regovar.theme.primaryColor.back.normal
         }
-        Rectangle
+        Item
         {
             Layout.row: 1
             Layout.column: 0
-            color: "transparent"
             Layout.minimumHeight: 10
             Layout.minimumWidth: Regovar.theme.font.boxSize.header
         }
@@ -128,11 +127,10 @@ Rectangle
             }
         }
 
-        Rectangle
+        Item
         {
             Layout.row: 3
             Layout.column: 0
-            color: "transparent"
             width: 10
             height: 10
         }
@@ -182,11 +180,10 @@ Rectangle
             }
         }
 
-        Rectangle
+        Item
         {
             Layout.row: 7
             Layout.column: 0
-            color: "transparent"
             width: 10
             height: 10
         }
@@ -230,11 +227,10 @@ Rectangle
         }
 
 
-        Rectangle
+        Item
         {
             Layout.row: 9
             Layout.column: 1
-            color: "transparent"
             Layout.fillHeight: true
             Layout.fillWidth: true
         }

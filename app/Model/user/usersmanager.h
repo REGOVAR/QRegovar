@@ -9,7 +9,8 @@ class UsersManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(UsersListModel* users READ users NOTIFY usersChanged)
-    Q_PROPERTY(User* user READ user NOTIFY userChanged)
+    Q_PROPERTY(User* user READ user WRITE setUser NOTIFY userChanged)
+    Q_PROPERTY(bool keepMeLogged READ keepMeLogged WRITE setKeepMeLogged NOTIFY keepMeLoggedChanged)
 
 public:
     // Constructor
@@ -18,15 +19,21 @@ public:
     // Getters
     inline UsersListModel* users() const { return mUsersList; }
     inline User* user() const { return mUser; }
+    inline bool keepMeLogged() const { return mKeepMeLogged; }
+
+    // Setters
+    inline void setUser(User* user) { mUser = user; emit userChanged(); }
+    inline void setKeepMeLogged(bool flag) { mKeepMeLogged = flag; emit keepMeLoggedChanged(); }
 
     // Method
     void loadJson(QJsonArray json);
-    Q_INVOKABLE User* getOrCreateUser(qint32 userId);
+    Q_INVOKABLE User* getOrCreateUser(int userId);
     Q_INVOKABLE void switchLoginScreen(bool state);
 
 Q_SIGNALS:
     void usersChanged();
     void userChanged();
+    void keepMeLoggedChanged();
     void loginSuccess();
     void loginFailed();
     void logoutSuccess();
@@ -47,8 +54,10 @@ private:
     UsersListModel* mUsersList;
     //! The current user of the application
     User* mUser = nullptr;
+    //! Restore user session at the start when true
+    bool mKeepMeLogged = false;
     //! Internal collection of all loaded users
-    QHash<qint32, User*> mUsers;
+    QHash<int, User*> mUsers;
 
 };
 

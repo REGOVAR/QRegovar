@@ -4,6 +4,7 @@
         <file>MainWindow.qml</file>
         <file>AnalysisWindow.qml</file>
         <file>JobWindow.qml</file>
+        <file>LoginPage.qml</file>
         <file>Icons.ttf</file>
         <file>Charts/CircularGauge.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/GenericScreen.qml</file>
@@ -19,7 +20,6 @@
         <file>Dialogs/NewAnalysisWizardScreens/PipelineLaunch.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml</file>
-        <file>Dialogs/CloseDialog.qml</file>
         <file>Dialogs/ErrorDialog.qml</file>
         <file>Dialogs/FilterNewConditionDialog.qml</file>
         <file>Dialogs/FilterSaveDialog.qml</file>
@@ -36,6 +36,8 @@
         <file>Dialogs/DeleteAttributeDialog.qml</file>
         <file>Dialogs/AdminConfirmWtClear.qml</file>
         <file>Dialogs/SelectSubjectDialog.qml</file>
+        <file>Dialogs/NewPanelVersionDialog.qml</file>
+        <file>Dialogs/NewEventDialog.qml</file>
         <file>Framework/AutoCompleteTextField.qml</file>
         <file>Framework/Box.qml</file>
         <file>Framework/BusyIndicator.qml</file>
@@ -74,11 +76,14 @@
         <file>Framework/TextFieldForm.qml</file>
         <file>Framework/TreeView.qml</file>
         <file>Framework/Text.qml</file>
+        <file>Framework/IconButton.qml</file>
+        <file>Framework/FileViewers/WebViewer.qml</file>
         <file>InformationPanel/Common/RelationsPanel.qml</file>
         <file>InformationPanel/Common/InformationPanel.qml</file>
         <file>InformationPanel/Common/EventsPanel.qml</file>
         <file>InformationPanel/Common/Section.qml</file>
         <file>InformationPanel/Common/OnlineToolAction.qml</file>
+        <file>InformationPanel/Common/WebViewPanel.qml</file>
         <file>InformationPanel/File/FileInformation.qml</file>
         <file>InformationPanel/File/InfoPanel.qml</file>
         <file>InformationPanel/Gene/GeneInformation.qml</file>
@@ -101,15 +106,30 @@
         <file>InformationPanel/Pipeline/StatsPanel.qml</file>
         <file>InformationPanel/Sample/InfoPanel.qml</file>
         <file>InformationPanel/Sample/SampleInformation.qml</file>
+        <file>InformationPanel/Sample/StatsOverview.qml</file>
+        <file>InformationPanel/Sample/StatsVariantClasses.qml</file>
+        <file>InformationPanel/Sample/StatsVepConsequences.qml</file>
+        <file>InformationPanel/Sample/StatsVepImpacts.qml</file>
+        <file>InformationPanel/Sample/QualityOverview.qml</file>
+        <file>InformationPanel/Sample/QualityFilter.qml</file>
+        <file>InformationPanel/Sample/StatsQualPanel.qml</file>
         <file>InformationPanel/User/InfoPanel.qml</file>
         <file>InformationPanel/User/StatsPanel.qml</file>
         <file>InformationPanel/User/UserInformation.qml</file>
         <file>InformationPanel/Variant/InfoPanel.qml</file>
         <file>InformationPanel/Variant/VariantInformation.qml</file>
+        <file>InformationPanel/Variant/OnlineToolsPanel.qml</file>
+        <file>InformationPanel/Variant/AnnotationsPanel.qml</file>
         <file>MainMenu/MainMenu.qml</file>
         <file>MainMenu/MenuEntryL1.qml</file>
         <file>MainMenu/MenuEntryL2.qml</file>
         <file>MainMenu/MenuEntryL3.qml</file>
+        <file>Pages/Admin/AnnotationsPage.qml</file>
+        <file>Pages/Admin/LogsPage.qml</file>
+        <file>Pages/Admin/PipesPage.qml</file>
+        <file>Pages/Admin/ServerPage.qml</file>
+        <file>Pages/Admin/TrashPage.qml</file>
+        <file>Pages/Admin/UsersPage.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilter/FieldBlock.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilter/FilterFormField.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilter/FilterFormLogical.qml</file>
@@ -150,6 +170,7 @@
         <file>Pages/Analysis/Pipeline/SummaryPage.qml</file>
         <file>Pages/Browse/ProjectsPage.qml</file>
         <file>Pages/Browse/SearchPage.qml</file>
+        <file>Pages/Browse/SearchResultEvent.qml</file>
         <file>Pages/Browse/SearchResultAnalysis.qml</file>
         <file>Pages/Browse/SearchResultFile.qml</file>
         <file>Pages/Browse/SearchResultGene.qml</file>
@@ -169,16 +190,11 @@
         <file>Pages/Help/AboutPage.qml</file>
         <file>Pages/Help/InfoCard.qml</file>
         <file>Pages/Help/UserGuidePage.qml</file>
+        <file>Pages/Panel/PanelsPage.qml</file>
         <file>Pages/Project/AnalysesPage.qml</file>
         <file>Pages/Project/FilesPage.qml</file>
         <file>Pages/Project/SubjectsPage.qml</file>
         <file>Pages/Project/SummaryPage.qml</file>
-        <file>Pages/Settings/AdminAnnotationsPage.qml</file>
-        <file>Pages/Settings/AdminUsersPage.qml</file>
-        <file>Pages/Settings/AdminPipesPage.qml</file>
-        <file>Pages/Settings/AdminServerPage.qml</file>
-        <file>Pages/Settings/ProfilePage.qml</file>
-        <file>Pages/Settings/StatisticsPage.qml</file>
         <file>Pages/Subject/AnalysesPage.qml</file>
         <file>Pages/Subject/CharacteristicsPage.qml</file>
         <file>Pages/Subject/FilesPage.qml</file>
@@ -186,35 +202,19 @@
         <file>Pages/Subject/SamplesPage.qml</file>
         <file>Pages/Subject/SummaryPage.qml</file>
         <file>Pages/WelcomPage.qml</file>
+        <file>Pages/Settings/ProfilePage.qml</file>
+        <file>Pages/Settings/StatisticsPage.qml</file>
+        <file>Pages/Settings/ApplicationRegovarPage.qml</file>
+        <file>Pages/Settings/ApplicationInterfacePage.qml</file>
+        <file>Pages/Settings/ApplicationConnectionPage.qml</file>
+        <file>Pages/Settings/ApplicationCachePage.qml</file>
         <file>Regovar/Themes/HalloweenTheme.js</file>
         <file>Regovar/Themes/RegovarDarkTheme.js</file>
         <file>Regovar/Themes/RegovarLightTheme.js</file>
         <file>Regovar/Regovar.qml</file>
         <file>Regovar/Style.qml</file>
         <file>Regovar/qmldir</file>
-        <file>Pages/Settings/ApplicationRegovarPage.qml</file>
-        <file>Pages/Settings/ApplicationInterfacePage.qml</file>
-        <file>Pages/Settings/ApplicationConnectionPage.qml</file>
-        <file>Pages/Settings/ApplicationCachePage.qml</file>
-        <file>Pages/Panel/PanelsPage.qml</file>
-        <file>InformationPanel/Sample/StatsOverview.qml</file>
-        <file>InformationPanel/Sample/StatsVariantClasses.qml</file>
-        <file>InformationPanel/Sample/StatsVepConsequences.qml</file>
-        <file>InformationPanel/Sample/StatsVepImpacts.qml</file>
-        <file>InformationPanel/Sample/QualityOverview.qml</file>
-        <file>InformationPanel/Sample/QualityFilter.qml</file>
-        <file>InformationPanel/Sample/StatsQualPanel.qml</file>
         <file>Wizards/Sample/SampleFileImportControl.qml</file>
         <file>Wizards/Sample/SampleImportView.qml</file>
-        <file>Dialogs/NewPanelVersionDialog.qml</file>
-        <file>InformationPanel/Variant/OnlineToolsPanel.qml</file>
-        <file>InformationPanel/Variant/AnnotationsPanel.qml</file>
-        <file>Pages/Browse/SearchResultEvent.qml</file>
-        <file>Dialogs/NewEventDialog.qml</file>
-        <file>Pages/Settings/AdminLogsPage.qml</file>
-        <file>InformationPanel/Common/WebViewPanel.qml</file>
-        <file>Framework/IconButton.qml</file>
-        <file>Framework/FileViewers/WebViewer.qml</file>
-        <file>LoginPage.qml</file>
     </qresource>
 </RCC>

@@ -123,6 +123,13 @@ Request* Request::download(const QString& query)
 
 }
 
+
+
+void Request::setCookie(const QNetworkCookie& cookie)
+{
+    Request::netManager()->cookieJar()->insertCookie(cookie);
+}
+
 //------------------------------------------------------------------------------------------------
 QNetworkRequest Request::makeRequest(const QString& resource)
 {

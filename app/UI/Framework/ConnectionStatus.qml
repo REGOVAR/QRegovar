@@ -12,6 +12,15 @@ Item
     property string serverStatus: "online"
     property bool hovered: false
 
+    Component.onCompleted:
+    {
+        regovar.usersManager.user.onDataChanged.connect(function ()
+        {
+            userFullName = regovar.usersManager.user.firstname + " " + regovar.usersManager.user.lastname;
+        });
+        updateConnectionStatus();
+    }
+
     GridLayout
     {
         anchors.right: parent.right
@@ -70,8 +79,6 @@ Item
     }
 
 
-
-    Component.onCompleted: updateConnectionStatus()
 
     Connections
     {

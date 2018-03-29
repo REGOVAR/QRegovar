@@ -12,7 +12,7 @@
 class User : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(qint32 id READ id NOTIFY dataChanged)
+    Q_PROPERTY(int id READ id NOTIFY dataChanged)
     Q_PROPERTY(QString firstname READ firstname WRITE setFirstname NOTIFY dataChanged)
     Q_PROPERTY(QString lastname READ lastname WRITE setLastname NOTIFY dataChanged)
     Q_PROPERTY(QString email READ email WRITE setEmail NOTIFY dataChanged)
@@ -30,11 +30,11 @@ public:
 
     // Constructors
     explicit User(QObject* parent=nullptr);
-    explicit User(quint32 id, QObject* parent=nullptr);
-    explicit User(quint32 id, const QString& firstname, const QString& lastname, QObject* parent=nullptr);
+    explicit User(int id, QObject* parent=nullptr);
+    explicit User(int id, const QString& firstname, const QString& lastname, QObject* parent=nullptr);
 
     // Getters
-    inline qint32 id() const { return mId; }
+    inline int id() const { return mId; }
     inline QString lastname() const { return mLastname; }
     inline QString firstname() const { return mFirstname; }
     inline QString email() const { return mEmail; }
@@ -83,7 +83,7 @@ public Q_SLOTS:
 protected:
     QDateTime mLastInternalLoad = QDateTime::currentDateTime();
 
-    qint32 mId = -1;
+    int mId = -1;
     QString mFirstname;
     QString mLastname;
     QString mEmail;

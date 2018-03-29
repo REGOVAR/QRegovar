@@ -175,8 +175,6 @@ public:
     Q_INVOKABLE void loadConfigData();
     Q_INVOKABLE void loadWelcomData();
     Q_INVOKABLE void close();
-    Q_INVOKABLE void disconnectUser();
-    Q_INVOKABLE void quit();
     // Tools
     Q_INVOKABLE inline QUuid generateUuid() { return QUuid::createUuid(); }
     Q_INVOKABLE void manageServerError(QJsonObject json, QString method="");

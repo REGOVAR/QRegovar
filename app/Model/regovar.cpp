@@ -112,6 +112,16 @@ void Regovar::init()
 
     // Init user manager and current user if autologin enabled
     mUsersManager = new UsersManager(this);
+    if (mSettings->keepMeLogged())
+    {
+        // Restore cookie and try to authent with it
+        mUsersManager->setKeepMeLogged(true);
+        Request::setCookie(mSettings->sessionCookie());
+        User* user = mUsersManager->getOrCreateUser(mSettings->sessionUserId());
+        user->load(true);
+        emit mUsersManager->displayLoginScreen(false);
+        mUsersManager->setUser(user);
+    }
 
     // Init others managers
     mProjectsManager = new ProjectsManager(this);
@@ -509,16 +519,6 @@ void Regovar::close()
     QApplication::quit();
 }
 
-
-void Regovar::disconnectUser()
-{
-    qDebug() << "disconnect user !";
-}
-
-void Regovar::quit()
-{
-    qDebug() << "quit regovar app !";
-}
 
 void Regovar::manageServerError(QJsonObject json, QString method)
 {

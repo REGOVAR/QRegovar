@@ -9,19 +9,22 @@ RootMenu::RootMenu(QObject* parent): QAbstractListModel(parent)
 
 void RootMenu::initMain()
 {
+    // Admin menu entry
+
+    mAdminEntry = new MenuEntry("d", tr("Administration"), "", this);
+    mAdminEntry->addEntry(new MenuEntry("Y", tr("Logs"), "Admin/LogsPage.qml", this));
+    mAdminEntry->addEntry(new MenuEntry("=", tr("Trash"), "Admin/TrashPage.qml", this));
+    mAdminEntry->addEntry(new MenuEntry("7", tr("Server"), "Admin/ServerPage.qml", this));
+    mAdminEntry->addEntry(new MenuEntry("@", tr("Users"), "Admin/UsersPage.qml", this));
+    mAdminEntry->addEntry(new MenuEntry("L", tr("Pipelines"), "Admin/PipesPage.qml", this));
+    mAdminEntry->addEntry(new MenuEntry("B", tr("Annotations"), "Admin/AnnotationsPage.qml", this));
+
     // Create lvl3 menu entries
     MenuEntry* applicationEntry = new MenuEntry("I", tr("Application"), "", this);
     applicationEntry->addEntry(new MenuEntry("", tr("Regovar"), "Settings/ApplicationRegovarPage.qml", this));
     applicationEntry->addEntry(new MenuEntry("", tr("Interface"), "Settings/ApplicationInterfacePage.qml", this));
     applicationEntry->addEntry(new MenuEntry("", tr("Connection"), "Settings/ApplicationConnectionPage.qml", this));
     applicationEntry->addEntry(new MenuEntry("", tr("Cache"), "Settings/ApplicationCachePage.qml", this));
-    MenuEntry* administrationEntry = new MenuEntry("d", tr("Administration"), "", this);
-    administrationEntry->addEntry(new MenuEntry("", tr("Logs"), "Settings/AdminLogsPage.qml", this));
-    administrationEntry->addEntry(new MenuEntry("", tr("Trash"), "Settings/AdminTrashPage.qml", this));
-    administrationEntry->addEntry(new MenuEntry("", tr("Database"), "Settings/AdminServerPage.qml", this));
-    administrationEntry->addEntry(new MenuEntry("", tr("Users"), "Settings/AdminUsersPage.qml", this));
-    administrationEntry->addEntry(new MenuEntry("", tr("Pipelines"), "Settings/AdminPipesPage.qml", this));
-    administrationEntry->addEntry(new MenuEntry("", tr("Annotations"), "Settings/AdminAnnotationsPage.qml", this));
 
     // Create lvl2 menu entries
     mAnalysisBrowserEntry = new MenuEntry("c", tr("Analyses"), "", this);
@@ -32,7 +35,6 @@ void RootMenu::initMain()
     settingsEntry->addEntry(new MenuEntry("b", tr("My profile"), "Settings/ProfilePage.qml", this));
     settingsEntry->addEntry(applicationEntry);
     settingsEntry->addEntry(new MenuEntry("^", tr("Statistics"), "Settings/StatisticsPage.qml", this));
-    settingsEntry->addEntry(administrationEntry);
     MenuEntry* helpEntry = new MenuEntry("e", tr("Help"), "", this);
     helpEntry->addEntry(new MenuEntry("e", tr("User guide"), "Help/UserGuidePage.qml", this));
     helpEntry->addEntry(new MenuEntry("e", tr("About"), "Help/AboutPage.qml", this));
@@ -44,6 +46,7 @@ void RootMenu::initMain()
     mEntries.append(mSubjectBrowserEntry);
     mEntries.append(new MenuEntry("q", tr("Panels"), "Panel/PanelsPage.qml", this));
     mEntries.append(settingsEntry);
+    mEntries.append(mAdminEntry);
     mEntries.append(helpEntry);
 
     select(0,0);

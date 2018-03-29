@@ -96,6 +96,7 @@ Rectangle
                 Layout.fillWidth: true
                 placeholder: qsTr("Login")
                 focus: true
+                Keys.onPressed: { if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) tryLogin(); }
             }
 
             TextField
@@ -108,11 +109,23 @@ Rectangle
                 Keys.onPressed: { if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) tryLogin(); }
             }
 
-            Button
+            RowLayout
             {
-                Layout.alignment: Qt.AlignCenter
-                text: qsTr("Go")
-                onClicked: tryLogin()
+                CheckBox
+                {
+                    Layout.fillWidth: true
+                    text: qsTr("Keep me logged in")
+                    checked: regovar.usersManager.keepMeLogged
+                    onCheckedChanged: regovar.usersManager.keepMeLogged = checked
+                    Keys.onPressed: { if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) tryLogin(); }
+                }
+
+                Button
+                {
+                    Layout.alignment: Qt.AlignCenter
+                    text: qsTr("Go")
+                    onClicked: tryLogin()
+                }
             }
         }
     }

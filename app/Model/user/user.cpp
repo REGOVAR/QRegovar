@@ -7,11 +7,11 @@ User::User(QObject* parent) : QObject(parent)
     connect(this, &User::dataChanged, this, &User::updateSearchField);
 }
 
-User::User(quint32 id, QObject* parent): User(parent)
+User::User(int id, QObject* parent): User(parent)
 {
     mId = id;
 }
-User::User(quint32 id, const QString& firstname, const QString& lastname, QObject* parent): User(parent)
+User::User(int id, const QString& firstname, const QString& lastname, QObject* parent): User(parent)
 {
     mId = id;
     mFirstname = firstname;

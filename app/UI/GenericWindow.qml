@@ -68,12 +68,6 @@ ApplicationWindow
         visible: false
     }
 
-
-    CloseDialog
-    {
-        id: closePopup
-        visible: false
-    }
     ErrorDialog
     {
         id: errorPopup

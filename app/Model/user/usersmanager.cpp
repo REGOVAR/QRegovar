@@ -26,7 +26,7 @@ void UsersManager::loadJson(QJsonArray json)
 
 
 
-User* UsersManager::getOrCreateUser(qint32 userId)
+User* UsersManager::getOrCreateUser(int userId)
 {
     if (mUsers.contains(userId))
     {
@@ -86,36 +86,41 @@ void UsersManager::processPushNotification(QString action, QJsonObject data)
 
 void UsersManager::login(QString login, QString password)
 {
-    // Do nothing if user already connected
-    if (mUser->isValid())
-    {
-        qDebug() << Q_FUNC_INFO << QString("User %1 %2 already loged in. Thanks to logout first.").arg(mUser->firstname(), mUser->lastname());
-    }
-    else
-    {
-        // Store login and password as it may be ask later if network authentication problem (see Regovar::onAuthenticationRequired)
-        mUser->setLogin(login);
-        mUser->setPassword(password);
 
-        QJsonObject body;
-        body.insert("login", login);
-        body.insert("password", password);
+    // Store login and password as it may be ask later if network authentication problem (see Regovar::onAuthenticationRequired)
+    mUser->setLogin(login);
+    mUser->setPassword(password);
 
-        Request* req = Request::post("/user/login", QJsonDocument(body).toJson());
-        connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    QJsonObject body;
+    body.insert("login", login);
+    body.insert("password", password);
+
+    Request* req = Request::post("/user/login", QJsonDocument(body).toJson());
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success && mUser->fromJson(json["data"].toObject()))
         {
-            if (success && mUser->fromJson(json["data"].toObject()))
+            emit displayLoginScreen(false);
+            regovar->loadWelcomData();
+            regovar->settings()->setKeepMeLogged(mKeepMeLogged);
+            if (mKeepMeLogged)
             {
-                emit displayLoginScreen(false);
-                regovar->loadWelcomData();
+                regovar->settings()->setSessionUserId(mUser->id());
+                for (QNetworkCookie cookie: Request::netManager()->cookieJar()->cookiesForUrl(regovar->settings()->serverUrl()))
+                {
+                    if (cookie.name().toStdString() == "regovar_session")
+                    {
+                        regovar->settings()->setSessionCookie(cookie);
+                    }
+                }
             }
-            else
-            {
-                emit loginFailed();
-            }
-            req->deleteLater();
-        });
-    }
+        }
+        else
+        {
+            emit loginFailed();
+        }
+        req->deleteLater();
+    });
 }
 
 
