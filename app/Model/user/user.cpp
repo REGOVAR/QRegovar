@@ -95,7 +95,7 @@ void User::save(bool withPassword)
     }
 
     Request* request;
-    if (mId == 0)
+    if (mId <= 0)
     {
         request = Request::post("/user", QJsonDocument(toJson(withPassword)).toJson());
     }

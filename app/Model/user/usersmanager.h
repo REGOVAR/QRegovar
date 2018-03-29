@@ -10,6 +10,7 @@ class UsersManager : public QObject
     Q_OBJECT
     Q_PROPERTY(UsersListModel* users READ users NOTIFY usersChanged)
     Q_PROPERTY(User* user READ user WRITE setUser NOTIFY userChanged)
+    Q_PROPERTY(User* newUser READ newUser NOTIFY userChanged)
     Q_PROPERTY(bool keepMeLogged READ keepMeLogged WRITE setKeepMeLogged NOTIFY keepMeLoggedChanged)
 
 public:
@@ -19,6 +20,7 @@ public:
     // Getters
     inline UsersListModel* users() const { return mUsersList; }
     inline User* user() const { return mUser; }
+    inline User* newUser() const { return mNewUser; }
     inline bool keepMeLogged() const { return mKeepMeLogged; }
 
     // Setters
@@ -54,6 +56,8 @@ private:
     UsersListModel* mUsersList;
     //! The current user of the application
     User* mUser = nullptr;
+    //! The model used to create new user (admin panel)
+    User* mNewUser = nullptr;
     //! Restore user session at the start when true
     bool mKeepMeLogged = false;
     //! Internal collection of all loaded users

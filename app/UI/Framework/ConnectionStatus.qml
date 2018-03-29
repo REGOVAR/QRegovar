@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Layouts 1.1
+import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"
 
@@ -11,14 +12,28 @@ Item
     property string userFullName: ""
     property string serverStatus: "online"
     property bool hovered: false
+    property User currentUser
 
-    Component.onCompleted:
+    Component.onCompleted: updateConnectionStatus()
+
+    Connections
     {
-        regovar.usersManager.user.onDataChanged.connect(function ()
+        target: regovar.usersManager
+        onUserChanged:
         {
-            userFullName = regovar.usersManager.user.firstname + " " + regovar.usersManager.user.lastname;
-        });
-        updateConnectionStatus();
+            if (currentUser)
+            {
+                currentUser.onDataChanged.disconnect(updateName);
+            }
+            currentUser = regovar.usersManager.user;
+            currentUser.onDataChanged.connect(updateName);
+            updateName();
+        }
+    }
+
+    function updateName()
+    {
+        userFullName = regovar.usersManager.user.firstname + " " + regovar.usersManager.user.lastname;
     }
 
     GridLayout

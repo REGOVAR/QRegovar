@@ -6,6 +6,7 @@ UsersManager::UsersManager(QObject *parent) : QObject(parent)
 {
     mUsersList = new UsersListModel(this);
     mUser = new User();
+    mNewUser = new User();
 }
 
 
@@ -81,9 +82,6 @@ void UsersManager::processPushNotification(QString action, QJsonObject data)
 
 
 
-
-
-
 void UsersManager::login(QString login, QString password)
 {
 
@@ -98,8 +96,11 @@ void UsersManager::login(QString login, QString password)
     Request* req = Request::post("/user/login", QJsonDocument(body).toJson());
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
-        if (success && mUser->fromJson(json["data"].toObject()))
+        if (success)
         {
+            QJsonObject data = json["data"].toObject();
+            setUser(getOrCreateUser(data["id"].toInt()));
+            mUser->fromJson(data);
             emit displayLoginScreen(false);
             regovar->loadWelcomData();
             regovar->settings()->setKeepMeLogged(mKeepMeLogged);

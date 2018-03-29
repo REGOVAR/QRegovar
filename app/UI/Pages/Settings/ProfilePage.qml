@@ -10,17 +10,24 @@ Rectangle
 {
     id: root
     color: Regovar.theme.backgroundColor.main
+    property User model
 
 
-    property User model: regovar.usersManager.user
-    onModelChanged:
+    Connections
     {
-        if (model)
+        target: regovar.usersManager
+        onUserChanged:
         {
+            if (model)
+            {
+                model.onDataChanged.disconnect(updateViewFromModel);
+            }
+            model = regovar.usersManager.user;
             model.onDataChanged.connect(updateViewFromModel);
             updateViewFromModel();
         }
     }
+
 
     function updateViewFromModel()
     {
@@ -35,7 +42,7 @@ Rectangle
 
             newPassword.text = "";
             newPasswordConfirm.text = "";
-            oldPassword.text = "";
+            //oldPassword.text = "";
         }
     }
 
@@ -395,28 +402,28 @@ Rectangle
                 echoMode: "Password"
             }
 
-            Text
-            {
-                Layout.row: 4
-                Layout.column: 1
-                Layout.fillWidth: true
-                width: parent.width
-                text: qsTr("To confirm your new password you have to type also your current password.")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.primaryColor.back.normal
-                wrapMode: Text.WordWrap
-            }
+//            Text
+//            {
+//                Layout.row: 4
+//                Layout.column: 1
+//                Layout.fillWidth: true
+//                width: parent.width
+//                text: qsTr("To confirm your new password you have to type also your current password.")
+//                font.pixelSize: Regovar.theme.font.size.normal
+//                color: Regovar.theme.primaryColor.back.normal
+//                wrapMode: Text.WordWrap
+//            }
 
-            TextField
-            {
-                Layout.row: 5
-                Layout.column: 1
-                Layout.fillWidth: true
-                id: oldPassword
-                width: parent.width
-                placeholder: qsTr("Current password")
-                echoMode: "Password"
-            }
+//            TextField
+//            {
+//                Layout.row: 5
+//                Layout.column: 1
+//                Layout.fillWidth: true
+//                id: oldPassword
+//                width: parent.width
+//                placeholder: qsTr("Current password")
+//                echoMode: "Password"
+//            }
             Button
             {
                 Layout.row: 6
