@@ -31,7 +31,10 @@ void Settings::reload()
     mSessionUserId = settings.value("sessionUserId", -1).toUInt();
     if (mSessionUserId > 0)
     {
-        mSessionCookie = QNetworkCookie(settings.value("sessionCookieName", "trash").toByteArray(), settings.value("sessionCookieValue", "trash").toByteArray());
+        QByteArray name = settings.value("sessionCookieName", "trash").toByteArray();
+        QByteArray value = settings.value("sessionCookieValue", "trash").toByteArray();
+        mSessionCookie = QNetworkCookie(name, value);
+        qDebug() << "RETRIEVE SESSION: " << QString(name) << "=" << QString(value);
     }
 
     emit dataChanged();

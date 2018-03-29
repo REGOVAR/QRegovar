@@ -118,9 +118,9 @@ void Regovar::init()
         mUsersManager->setKeepMeLogged(true);
         Request::setCookie(mSettings->sessionCookie());
         User* user = mUsersManager->getOrCreateUser(mSettings->sessionUserId());
+        mUsersManager->setUser(user);
         user->load(true);
         emit mUsersManager->displayLoginScreen(false);
-        mUsersManager->setUser(user);
     }
 
     // Init others managers

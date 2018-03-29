@@ -12,22 +12,24 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
     property User model
 
+    Component.onCompleted: setModel()
 
     Connections
     {
         target: regovar.usersManager
-        onUserChanged:
-        {
-            if (model)
-            {
-                model.onDataChanged.disconnect(updateViewFromModel);
-            }
-            model = regovar.usersManager.user;
-            model.onDataChanged.connect(updateViewFromModel);
-            updateViewFromModel();
-        }
+        onUserChanged: setModel()
     }
 
+    function setModel()
+    {
+        if (model)
+        {
+            model.onDataChanged.disconnect(updateViewFromModel);
+        }
+        model = regovar.usersManager.user;
+        model.onDataChanged.connect(updateViewFromModel);
+        updateViewFromModel();
+    }
 
     function updateViewFromModel()
     {

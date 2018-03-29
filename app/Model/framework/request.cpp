@@ -127,7 +127,12 @@ Request* Request::download(const QString& query)
 
 void Request::setCookie(const QNetworkCookie& cookie)
 {
-    Request::netManager()->cookieJar()->insertCookie(cookie);
+    QList<QNetworkCookie> list;
+    list.append(cookie);
+    if (Request::netManager()->cookieJar()->setCookiesFromUrl(list, regovar->networkManager()->serverUrl()))
+    {
+       qDebug() << "SESSION COOKIE UPDATED";
+    }
 }
 
 //------------------------------------------------------------------------------------------------

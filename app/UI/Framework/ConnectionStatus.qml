@@ -14,21 +14,26 @@ Item
     property bool hovered: false
     property User currentUser
 
-    Component.onCompleted: updateConnectionStatus()
-
+    Component.onCompleted:
+    {
+        setModel();
+        updateConnectionStatus();
+    }
     Connections
     {
         target: regovar.usersManager
-        onUserChanged:
+        onUserChanged: setModel()
+    }
+
+    function setModel()
+    {
+        if (currentUser)
         {
-            if (currentUser)
-            {
-                currentUser.onDataChanged.disconnect(updateName);
-            }
-            currentUser = regovar.usersManager.user;
-            currentUser.onDataChanged.connect(updateName);
-            updateName();
+            currentUser.onDataChanged.disconnect(updateName);
         }
+        currentUser = regovar.usersManager.user;
+        currentUser.onDataChanged.connect(updateName);
+        updateName();
     }
 
     function updateName()
