@@ -33,6 +33,7 @@ ApplicationWindow
 
 
 
+
     MainMenu
     {
         id: mainMenu
@@ -66,6 +67,7 @@ ApplicationWindow
         id: loginPage
         anchors.fill: parent
         visible: false
+        z: 20
     }
 
     ErrorDialog

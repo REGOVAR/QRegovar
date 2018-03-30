@@ -2,7 +2,6 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.0
 
 import "qrc:/qml/Framework"
 import "qrc:/qml/Regovar"
@@ -41,34 +40,12 @@ Rectangle
     }
 
 
-    Item
+    Logo
     {
         id: logo
         anchors.top: header.bottom
         anchors.topMargin: 50
-        anchors.horizontalCenter: header.horizontalCenter
-        height: logoImage.height
-        width: logoImage.width
-
-        Image
-        {
-            id: logoImage
-            source: "qrc:/regovar.png"
-            sourceSize.height: 125
-        }
-
-        LinearGradient
-        {
-            anchors.fill: parent
-            start: Qt.point(0, logo.height / 3)
-            end: Qt.point(0, logo.height)
-            gradient: Gradient
-            {
-                GradientStop { position: 0.0; color: regovar.networkManager.status == 0 ? Regovar.theme.logo.color1 : Regovar.theme.frontColor.disable }
-                GradientStop { position: 1.0; color: regovar.networkManager.status == 0 ? Regovar.theme.logo.color2 : Regovar.theme.frontColor.disable }
-            }
-            source: logoImage
-        }
+        anchors.horizontalCenter: root.horizontalCenter
     }
 
 

@@ -216,5 +216,6 @@
         <file>Regovar/qmldir</file>
         <file>Wizards/Sample/SampleFileImportControl.qml</file>
         <file>Wizards/Sample/SampleImportView.qml</file>
+        <file>Framework/Logo.qml</file>
     </qresource>
 </RCC>

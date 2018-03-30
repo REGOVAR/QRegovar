@@ -1,7 +1,7 @@
 {
     "name": "Regovar Dark Theme",
     "description": "I can still see you.",
-    "font": 
+    "font":
     {
         "family": "Sans"
     },
@@ -13,14 +13,14 @@
             "normal": "#424242",
             "dark":   "#1b1b1b"
          },
-        "front": 
+        "front":
         {
             "light":  "#ffffff",
             "normal": "#ffffff",
             "dark":   "#ffffff"
          }
     },
-    "secondaryColor": 
+    "secondaryColor":
     {
         "back":
         {
@@ -28,18 +28,19 @@
             "normal": "#607d8b",
             "dark":   "#34515e"
          },
-        "front": 
+        "front":
         {
             "normal": "#000000",
             "light":  "#000000",
             "dark":   "#ffffff"
          }
     },
-    "boxColor": 
+    "boxColor":
     {
-        "back":        "#757575",
-        "header1":     "#fcfcfd",
-        "header2":     "#e7e7e7",
+        "back":        "#959595",
+        "alt":         "#686868",
+        "header1":     "#c1c1c1",
+        "header2":     "#b2b2b2",
         "front":       "#000000",
         "placeholder": "#494949",
         "border":      "#616161",
@@ -48,14 +49,16 @@
     "backgroundColor":
     {
         "main": "#9e9e9e",
-        "alt":  "#707070"
+        "alt":  "#808080",
+        "overlay": "#aaffffff"
     },
     "frontColor":
     {
         "normal":   "#000000",
+        "disable":  "#999999",
         "info":     "#6887ff",
         "success" : "#6cc788",
-        "warning" : "#f77a99",
+        "warning" : "#ff9b28",
         "danger" :  "#f44455"
     },
 

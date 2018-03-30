@@ -1,6 +1,5 @@
 import QtQuick 2.9
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.0
 
 import "qrc:/qml/Framework"
 import "qrc:/qml/Regovar"
@@ -25,45 +24,11 @@ Rectangle
         regovar.usersManager.login(loginField.text, pwdField.text);
     }
 
-    Item
+    Logo
     {
         id: logo
         anchors.top: root.top
-        anchors.topMargin: 50
-        anchors.horizontalCenter: root.horizontalCenter
-        height: logoImage.height
-        width: logoImage.width
-
-        Image
-        {
-            id: logoImage
-            source: "qrc:/regovar.png"
-            sourceSize.height: 125
-        }
-
-        LinearGradient
-        {
-            anchors.fill: parent
-            start: Qt.point(0, logo.height / 3)
-            end: Qt.point(0, logo.height)
-            gradient: Gradient
-            {
-                GradientStop { position: 0.0; color: regovar.networkManager.status == 0 ? Regovar.theme.logo.color1 : Regovar.theme.frontColor.disable }
-                GradientStop { position: 1.0; color: regovar.networkManager.status == 0 ? Regovar.theme.logo.color2 : Regovar.theme.frontColor.disable }
-            }
-            source: logoImage
-        }
-    }
-
-    Text
-    {
-        text: qsTr("Authentication required")
-        font.pixelSize: Regovar.theme.font.size.title
-        color: Regovar.theme.frontColor.danger
-        font.bold: true
-
-        anchors.bottom: panel.top
-        anchors.bottomMargin: 50
+        anchors.topMargin: 100
         anchors.horizontalCenter: root.horizontalCenter
     }
 
