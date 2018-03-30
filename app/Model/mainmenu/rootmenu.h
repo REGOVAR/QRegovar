@@ -81,6 +81,7 @@ private:
 
     MenuEntry* mAnalysisBrowserEntry = nullptr;
     MenuEntry* mSubjectBrowserEntry = nullptr;
+    MenuEntry* mAdminEntry = nullptr;
 
 };
 

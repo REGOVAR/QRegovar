@@ -139,9 +139,7 @@ void Sample::save()
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         request->deleteLater();
     });
@@ -165,9 +163,7 @@ void Sample::load(bool forceRefresh)
             }
             else
             {
-                QJsonObject jsonError = json;
-                jsonError.insert("method", Q_FUNC_INFO);
-                regovar->raiseError(jsonError);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });

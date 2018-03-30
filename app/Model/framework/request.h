@@ -24,9 +24,10 @@ public:
     static Request* put(const QString& query,  QHttpMultiPart* data=nullptr);
     static Request* put(const QString& query,  const QByteArray& data);
     static Request* del(const QString& query);
-    static Request* download(const QString& query) ;
+    static Request* download(const QString& query);
     // static Request* patch(const QString query,const QByteArray& data = QByteArray());
     // static Request* head(const QString query);
+    static void setCookie(const QNetworkCookie& cookie);
     static QNetworkRequest makeRequest(const QString& resource) ;
 
 

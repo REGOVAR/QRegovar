@@ -3,8 +3,8 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Regovar.Core 1.0
 
-import "../../../Regovar"
-import "../../../Framework"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
 
 Rectangle
 {
@@ -122,6 +122,7 @@ Rectangle
             font.pixelSize: Regovar.theme.font.size.normal
             colorText: "lightgrey"
             colorBack: "black"
+
         }
 
         RowLayout

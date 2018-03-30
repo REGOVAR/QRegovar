@@ -1,4 +1,6 @@
 #include "dynamicformfieldmodel.h"
+#include "Model/file/fileslistmodel.h"
+#include "Model/regovar.h"
 
 DynamicFormFieldModel::DynamicFormFieldModel(DynamicFormModel* parent) : QObject(parent)
 {
@@ -12,6 +14,28 @@ DynamicFormFieldModel::DynamicFormFieldModel(QJsonObject json, int order, Dynami
 }
 
 
+QString DynamicFormFieldModel::formatedValue() const
+{
+    QString result = mValue.toString();
+    if (mEnumValues.count() > 0)
+    {
+        int idx = mValue.toInt();
+        if (idx >= 0 && idx < mEnumValues.count())
+        {
+            result = mEnumValues[mValue.toInt()];
+        }
+    }
+    else if (mType == "integer" || mType == "number")
+    {
+        result = regovar->formatNumber(mValue.toDouble());
+    }
+    else if (mType == "boolean")
+    {
+        result = mValue.toBool() ? tr("Yes") : tr("No");
+    }
+    return result;
+}
+
 bool DynamicFormFieldModel::fromJson(QJsonObject json)
 {
     mId = json["id"].toString();
@@ -22,9 +46,21 @@ bool DynamicFormFieldModel::fromJson(QJsonObject json)
     if (json.contains("enum"))
     {
         mEnumValues.clear();
-        for (const QJsonValue& value: json["enum"].toArray())
+        if (json["enum"].isString())
         {
-            mEnumValues.append(value.toString());
+            QString flag = json["enum"].toString();
+            if (flag.startsWith("__") && flag.endsWith("__"))
+            {
+                mSpecialFlag = flag;
+                refresh();
+            }
+        }
+        else
+        {
+            for (const QJsonValue& value: json["enum"].toArray())
+            {
+                mEnumValues.append(value.toString());
+            }
         }
     }
     if (json.contains("required"))
@@ -47,6 +83,7 @@ bool DynamicFormFieldModel::fromJson(QJsonObject json)
         mDefaultValue = json["default"].toVariant();
     }
     reset();
+    return true;
 }
 
 
@@ -113,6 +150,28 @@ bool DynamicFormFieldModel::validate()
     return result;
 }
 
+void DynamicFormFieldModel::refresh()
+{
+    if (mSpecialFlag == "__INPUTS_FILES__" && mForm->inputsFiles() != nullptr)
+    {
+        mEnumValues.clear();
+        for (int idx=0; idx < mForm->inputsFiles()->rowCount(); idx++)
+        {
+            mEnumValues.append(mForm->inputsFiles()->getAt(idx)->name());
+        }
+    }
+    else if (mSpecialFlag == "__GENOMES_REFS__")
+    {
+        mEnumValues.clear();
+
+        for (QObject* o: regovar->references())
+        {
+            Reference* ref = qobject_cast<Reference*>(o);
+            mEnumValues.append(ref->name());
+        }
+    }
+    emit dataChanged();
+}
 
 void DynamicFormFieldModel::reset()
 {

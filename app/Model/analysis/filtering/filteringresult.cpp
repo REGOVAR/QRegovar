@@ -114,9 +114,7 @@ void FilteringResult::applyFilter(QJsonArray filter)
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
         setIsLoading(false);
         request->deleteLater();
@@ -156,9 +154,7 @@ void FilteringResult::loadNext()
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageRequestError(json, Q_FUNC_INFO);
         }
 
         // Notify view/model that update is finished

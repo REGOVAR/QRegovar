@@ -19,7 +19,8 @@ void PhenotypesManager::fromJson(QJsonArray json)
     }
 }
 
-QStringList PhenotypesManager::search(QString query)
+QStringList PhenotypesManager::search(QString )
 {
-
+    QStringList result;
+    return result;
 }

@@ -179,10 +179,14 @@ void NetworkManager::onAuthenticationRequired(QNetworkReply* request, QAuthentic
 {
     // Basic authentication requested by the server.
     // Try authentication using current user credentials
-    if (authenticator->password() != regovar->user()->password() || authenticator->user() != regovar->user()->login())
+    User* user = regovar->usersManager()->user();
+    if (user!= nullptr && user->isValid())
     {
-        authenticator->setUser(regovar->user()->login());
-        authenticator->setPassword(regovar->user()->password());
+        if (authenticator->password() != user->password() || authenticator->user() != user->login())
+        {
+            authenticator->setUser(user->login());
+            authenticator->setPassword(user->password());
+        }
     }
     else
     {

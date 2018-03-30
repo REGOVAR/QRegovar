@@ -2,9 +2,9 @@ import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 
-import "../../Regovar"
-import "../../Framework"
-import "../../Dialogs"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
+import "qrc:/qml/Dialogs"
 
 
 GenericScreen
@@ -13,6 +13,13 @@ GenericScreen
 
     readyForNext: checkReadyreadyForNext();
     property real labelColWidth: 100
+    onZChanged:
+    {
+        if (z == 100)
+        {
+            regovar.analysesManager.newPipeline.pipeline.configForm.refresh();
+        }
+    }
 
     function checkReadyreadyForNext()
     {

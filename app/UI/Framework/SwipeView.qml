@@ -2,7 +2,8 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 
-Item {
+Item
+{
     id: swipeView
     property var model
     property bool isDesktopPlatform: Qt.platform.os === "windows" ||

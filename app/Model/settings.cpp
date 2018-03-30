@@ -19,13 +19,23 @@ void Settings::reload()
     mThemeId = settings.value("themeId", 0).toInt();
     mFontSize = settings.value("fontSize", 1).toFloat();
     mLanguage = settings.value("language", "EN-En").toString();
-    mDisplayHelp = settings.value("displayHelp", 0).toBool();
+    mDisplayHelp = settings.value("displayHelp", false).toBool();
     // Connection settings
     mServerUrl = QUrl(settings.value("serverUrl", "http://dev.regovar.org").toString());
     mSharedUrl = QUrl(settings.value("sharedUrl", "http://shared.regovar.org").toString());
-    // Loca cache settings
+    // Local cache settings
     mLocalCacheDir = settings.value("cacheDir", "").toString();
     mLocalCacheMaxSize = settings.value("cacheMaxSize", 100).toInt();
+    // Cookie
+    mKeepMeLogged = settings.value("keepMeLogged", false).toBool();
+    mSessionUserId = settings.value("sessionUserId", -1).toUInt();
+    if (mSessionUserId > 0)
+    {
+        QByteArray name = settings.value("sessionCookieName", "trash").toByteArray();
+        QByteArray value = settings.value("sessionCookieValue", "trash").toByteArray();
+        mSessionCookie = QNetworkCookie(name, value);
+        qDebug() << "RETRIEVE SESSION: " << QString(name) << "=" << QString(value);
+    }
 
     emit dataChanged();
 }
@@ -49,7 +59,20 @@ void Settings::save()
     // Loca cache settings
     settings.setValue("cacheDir", mLocalCacheDir);
     settings.setValue("cacheMaxSize", mLocalCacheMaxSize);
-
+    // Cookie
+    settings.setValue("keepMeLogged", mKeepMeLogged);
+    if (mKeepMeLogged && mSessionUserId > 0)
+    {
+        settings.setValue("sessionUserId", mSessionUserId);
+        settings.setValue("sessionCookieName", mSessionCookie.name());
+        settings.setValue("sessionCookieValue", mSessionCookie.value());
+    }
+    else
+    {
+        settings.setValue("sessionUserId", -1);
+        settings.setValue("sessionCookieName", QByteArray());
+        settings.setValue("sessionCookieValue", QByteArray());
+    }
 }
 
 

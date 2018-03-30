@@ -5,9 +5,9 @@ import QtQuick.Layouts 1.3
 import Regovar.Core 1.0
 
 
-import "../../Regovar"
-import "../../Framework"
-import "../Common"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
+import "qrc:/qml/InformationPanel/Common"
 
 
 ScrollView

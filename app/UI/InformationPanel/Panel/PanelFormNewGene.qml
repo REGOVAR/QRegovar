@@ -2,10 +2,11 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
-import "../../Regovar"
-import "../../Framework"
-import "../../InformationPanel/Gene"
-import "../../InformationPanel/Phenotype"
+
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
+import "qrc:/qml/InformationPanel/Gene"
+import "qrc:/qml/InformationPanel/Phenotype"
 
 
 Rectangle

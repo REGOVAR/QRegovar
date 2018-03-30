@@ -15,16 +15,48 @@ Item
     onModelChanged:
     {
         fileName.text = model.name;
-        image.source = "file://" + model.localFilePath;
+        image.source = "file:///" + model.localFilePath;
         // compute min and max zoom scale according to image size
         // - minscale = whole image fit the screen
         // - maxscale = 5x of the image 1:1
         imageContainer.originalWidth = image.width;
         imageContainer.originalHeight = image.height;
 
-        imageContainer.zoomScaleMin = 0.5;
+        updateZoomScales();
+        applyZoom(0, 0, imageContainer.zoomScaleMin);
+    }
+    onWidthChanged: updateZoomScales()
+    onHeightChanged: updateZoomScales()
+
+    function updateZoomScales()
+    {
+        // get "fit level" coeff
+        imageContainer.zoomScaleMin = Math.min(root.width / imageContainer.originalWidth, root.height / imageContainer.originalHeight);
         imageContainer.zoomScaleMax = 5;
-        imageContainer.zoomScale = 1.0;
+    }
+
+    function applyZoom(mouseX, mouseY, scale)
+    {
+        var checkedScale = scale;
+        checkedScale = Math.max(checkedScale, imageContainer.zoomScaleMin);
+        checkedScale = Math.min(checkedScale, imageContainer.zoomScaleMax);
+        if (!isNaN(checkedScale) && checkedScale != imageContainer.zoomScale)
+        {
+            var deltaX = mouseX + Math.abs(imageContainer.contentX);
+            var deltaY = mouseY + Math.abs(imageContainer.contentY);
+            deltaX = deltaX / imageContainer.zoomScale;
+            deltaY = deltaY / imageContainer.zoomScale;
+            var newDX = deltaX * checkedScale;
+            var newDY = deltaY * checkedScale;
+
+            console.log(imageContainer.zoomScale + " => " + checkedScale);
+            imageContainer.zoomScale = checkedScale;
+            image.width = imageContainer.originalWidth * checkedScale;
+            image.height = imageContainer.originalHeight * checkedScale;
+            imageContainer.contentX = mouseX - newDX;
+            imageContainer.contentY = mouseY - newDY;
+
+        }
     }
 
     ColumnLayout
@@ -56,15 +88,22 @@ Item
                 ButtonInline
                 {
                     iconTxt: ""
-                    text: qsTr("Restore Zoom")
-                    onClicked: Qt.openUrlExternally(model.localFilePath);
+                    text: qsTr("Fit")
+                    onClicked: root.applyZoom(imageContainer.zoomScaleMin);
+                }
+
+                ButtonInline
+                {
+                    iconTxt: ""
+                    text: qsTr("1:1")
+                    onClicked: root.applyZoom(0,0, 1.0);
                 }
 
                 ButtonInline
                 {
                     iconTxt: "_"
                     text: qsTr("Open externaly")
-                    onClicked: Qt.openUrlExternally(model.localFilePath);
+                    onClicked: Qt.openUrlExternally(0,0, model.localFilePath);
                 }
             }
 
@@ -100,19 +139,13 @@ Item
                 contentWidth: image.width
                 contentHeight: image.height
 
+                boundsBehavior: Flickable.StopAtBounds
+
                 property int originalWidth: 100
                 property int originalHeight: 100
                 property real zoomScaleMin: 1.0
                 property real zoomScaleMax: 1.0
                 property real zoomScale: 1.0
-                onZoomScaleChanged:
-                {
-                    var newWidth = originalWidth * zoomScale;
-                    var newHeight = originalHeight * zoomScale;
-                    image.width = newWidth;
-                    image.height = newHeight;
-                    console.log(zoomScale);
-                }
 
                 Image
                 {
@@ -124,13 +157,10 @@ Item
                     anchors.fill: parent
                     onWheel:
                     {
-                        if (wheel.modifiers & Qt.ControlModifier)
+                        //if (wheel.modifiers & Qt.ControlModifier)
                         {
                             var wheelStep = wheel.angleDelta.y / 120;
-                            imageContainer.zoomScale += wheelStep * 0.1;
-                            imageContainer.zoomScale = Math.max(imageContainer.zoomScale, imageContainer.zoomScaleMin);
-                            imageContainer.zoomScale = Math.min(imageContainer.zoomScale, imageContainer.zoomScaleMax);
-
+                            applyZoom(wheel.x, wheel.y, imageContainer.zoomScale + wheelStep * 0.1);
                         }
                     }
                 }

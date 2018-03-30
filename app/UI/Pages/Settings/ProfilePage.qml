@@ -1,17 +1,52 @@
 import QtQuick 2.9
 import QtQuick.Layouts 1.3
+import Regovar.Core 1.0
 
 
-import "../../Regovar"
-import "../../Framework"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
 
 Rectangle
 {
     id: root
     color: Regovar.theme.backgroundColor.main
+    property User model
 
+    Component.onCompleted: setModel()
 
-    property QtObject model
+    Connections
+    {
+        target: regovar.usersManager
+        onUserChanged: setModel()
+    }
+
+    function setModel()
+    {
+        if (model)
+        {
+            model.onDataChanged.disconnect(updateViewFromModel);
+        }
+        model = regovar.usersManager.user;
+        model.onDataChanged.connect(updateViewFromModel);
+        updateViewFromModel();
+    }
+
+    function updateViewFromModel()
+    {
+        if (model)
+        {
+            loginField.text = model.login;
+            lastnameField.text = model.lastname;
+            firstnameField.text = model.firstname;
+            emailField.text = model.email;
+            locationField.text = model.location;
+            functionField.text = model.function;
+
+            newPassword.text = "";
+            newPasswordConfirm.text = "";
+            //oldPassword.text = "";
+        }
+    }
 
     Rectangle
     {
@@ -27,8 +62,9 @@ Rectangle
             anchors.fill: header
             anchors.margins: 10
             text: qsTr("User profile settings")
-            font.pixelSize: 20
+            font.pixelSize: Regovar.theme.font.size.title
             font.weight: Font.Black
+            color: Regovar.theme.primaryColor.back.dark
         }
         ConnectionStatus
         {
@@ -57,7 +93,7 @@ Rectangle
     }
 
 
-    GridLayout
+    ColumnLayout
     {
         anchors.top : header.bottom
         anchors.left: root.left
@@ -66,24 +102,249 @@ Rectangle
         anchors.margins: 10
         anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
 
-        columns: 3
-        rows: 10
-        columnSpacing: 30
-        rowSpacing: 20
 
-
-        // ===== Login Section =====
-        Row
+        // USER INFORMATION =======================================================================
+        GridLayout
         {
             Layout.fillWidth: true
-            Layout.columnSpan: 3
+
+            columns: 2
+            rows: 10
+            columnSpacing: 30
+            rowSpacing: 20
+
+            Row
+            {
+                Layout.fillWidth: true
+                Layout.columnSpan: 2
+                height: Regovar.theme.font.boxSize.title
+
+                Text
+                {
+                    width: Regovar.theme.font.boxSize.title
+                    height: Regovar.theme.font.boxSize.title
+                    text: "\\"
+
+                    font.family: Regovar.theme.icons.name
+                    font.pixelSize: Regovar.theme.font.size.title
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    color: Regovar.theme.primaryColor.back.normal
+                }
+                Text
+                {
+                    height: Regovar.theme.font.boxSize.title
+
+                    elide: Text.ElideRight
+                    text: qsTr("User information")
+                    font.bold: true
+                    font.pixelSize: Regovar.theme.font.size.header
+                    verticalAlignment: Text.AlignVCenter
+                    color: Regovar.theme.primaryColor.back.normal
+                }
+            }
+
+
+
+            // Login
+            Row
+            {
+                Item
+                {
+                    width: Regovar.theme.font.boxSize.title
+                    height: Regovar.theme.font.boxSize.normal
+                }
+                Text
+                {
+                    text: qsTr("Login")
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    color: Regovar.theme.primaryColor.back.normal
+                    Layout.alignment: Qt.AlignTop
+                    height: Regovar.theme.font.boxSize.normal
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+            Text
+            {
+                id: loginField
+                Layout.fillWidth: true
+            }
+
+            // Lastname
+            Row
+            {
+                Item
+                {
+                    width: Regovar.theme.font.boxSize.title
+                    height: Regovar.theme.font.boxSize.normal
+                }
+                Text
+                {
+                    text: qsTr("Lastname")
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    color: Regovar.theme.primaryColor.back.normal
+                    Layout.alignment: Qt.AlignTop
+                    height: Regovar.theme.font.boxSize.normal
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+            TextField
+            {
+                id: lastnameField
+                Layout.fillWidth: true
+                placeholder: qsTr("Lastname")
+                onTextEdited: model.lastname = text
+            }
+
+
+            // Firstname
+            Row
+            {
+                Item
+                {
+                    width: Regovar.theme.font.boxSize.title
+                    height: Regovar.theme.font.boxSize.normal
+                }
+                Text
+                {
+                    text: qsTr("Firstname")
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    color: Regovar.theme.primaryColor.back.normal
+                    Layout.alignment: Qt.AlignTop
+                    height: Regovar.theme.font.boxSize.normal
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+            TextField
+            {
+                id: firstnameField
+                Layout.fillWidth: true
+                placeholder: qsTr("Firstname")
+                onTextEdited: model.firstname = text
+            }
+
+            // Email
+            Row
+            {
+                Item
+                {
+                    width: Regovar.theme.font.boxSize.title
+                    height: Regovar.theme.font.boxSize.normal
+                }
+                Text
+                {
+                    text: qsTr("Email")
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    color: Regovar.theme.primaryColor.back.normal
+                    Layout.alignment: Qt.AlignTop
+                    height: Regovar.theme.font.boxSize.normal
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+            TextField
+            {
+                id: emailField
+                Layout.fillWidth: true
+                placeholder: qsTr("Email")
+                onTextEdited: model.email = text
+            }
+
+            // Location
+            Row
+            {
+                Item
+                {
+                    width: Regovar.theme.font.boxSize.title
+                    height: Regovar.theme.font.boxSize.normal
+                }
+                Text
+                {
+                    text: qsTr("Location")
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    color: Regovar.theme.primaryColor.back.normal
+                    Layout.alignment: Qt.AlignTop
+                    height: Regovar.theme.font.boxSize.normal
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+            TextField
+            {
+                id: locationField
+                Layout.fillWidth: true
+                placeholder: qsTr("Location")
+                onTextEdited: model.location = text
+            }
+
+
+            // Function
+            Row
+            {
+                Item
+                {
+                    width: Regovar.theme.font.boxSize.title
+                    height: Regovar.theme.font.boxSize.normal
+                }
+                Text
+                {
+                    text: qsTr("Function")
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    color: Regovar.theme.primaryColor.back.normal
+                    Layout.alignment: Qt.AlignTop
+                    height: Regovar.theme.font.boxSize.normal
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+            TextField
+            {
+                id: functionField
+                Layout.fillWidth: true
+                placeholder: qsTr("Function")
+                onTextEdited: model.function = text;
+            }
+
+            Row
+            {
+                Item
+                {
+                    width: Regovar.theme.font.boxSize.title
+                    height: Regovar.theme.font.boxSize.normal
+                }
+                Button
+                {
+                    text: qsTr("Save change")
+                    onClicked: model.save()
+                }
+            }
+
+        }
+
+
+        Item
+        {
+            width: Regovar.theme.font.boxSize.title
             height: Regovar.theme.font.boxSize.title
+        }
+
+
+        // USER PASSWORD ==========================================================================
+
+        GridLayout
+        {
+            Layout.fillWidth: true
+
+            columns: 2
+            rows: 7
+            rowSpacing: 20
+
 
             Text
             {
-                width: Regovar.theme.font.boxSize.title
+                Layout.row: 0
+                Layout.column: 0
+                Layout.minimumWidth: Regovar.theme.font.boxSize.title
+                Layout.maximumWidth: Regovar.theme.font.boxSize.title
                 height: Regovar.theme.font.boxSize.title
-                text: "b"
+                text: "8"
 
                 font.family: Regovar.theme.icons.name
                 font.pixelSize: Regovar.theme.font.size.title
@@ -91,49 +352,42 @@ Rectangle
                 horizontalAlignment: Text.AlignHCenter
                 color: Regovar.theme.primaryColor.back.normal
             }
+
             Text
             {
+                Layout.row: 0
+                Layout.column: 1
+                Layout.fillWidth: true
                 height: Regovar.theme.font.boxSize.title
 
                 elide: Text.ElideRight
-                text: qsTr("Regovar user : ") + regovar.user.login
+                text: qsTr("Password")
                 font.bold: true
                 font.pixelSize: Regovar.theme.font.size.header
                 verticalAlignment: Text.AlignVCenter
                 color: Regovar.theme.primaryColor.back.normal
             }
-        }
 
-
-        // password
-        Row
-        {
-            Layout.alignment: Qt.AlignTop
-            Rectangle
-            {
-                width: Regovar.theme.font.boxSize.title
-                height: Regovar.theme.font.boxSize.title
-                color: "transparent"
-            }
             Text
             {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Password")
+                Layout.row: 1
+                Layout.column: 1
+                Layout.fillWidth: true
+                height: Regovar.theme.font.boxSize.title
+
+                elide: Text.ElideRight
+                text: qsTr("Set a new password by typing it 2 times with the 2 text fields below.")
                 font.pixelSize: Regovar.theme.font.size.normal
                 color: Regovar.theme.primaryColor.back.normal
-                height: Regovar.theme.font.boxSize.normal
-                verticalAlignment: Text.AlignVCenter
             }
-        }
-
-        Column
-        {
-            Layout.fillWidth: true
-            spacing: 5
 
 
+            // password
             TextField
             {
+                Layout.row: 2
+                Layout.column: 1
+                Layout.fillWidth: true
                 id: newPassword
                 width: parent.width
                 placeholder: qsTr("New password")
@@ -141,305 +395,63 @@ Rectangle
             }
             TextField
             {
+                Layout.row: 3
+                Layout.column: 1
+                Layout.fillWidth: true
                 id: newPasswordConfirm
                 width: parent.width
                 placeholder: qsTr("New password confirmation")
                 echoMode: "Password"
             }
-            Text
+
+//            Text
+//            {
+//                Layout.row: 4
+//                Layout.column: 1
+//                Layout.fillWidth: true
+//                width: parent.width
+//                text: qsTr("To confirm your new password you have to type also your current password.")
+//                font.pixelSize: Regovar.theme.font.size.normal
+//                color: Regovar.theme.primaryColor.back.normal
+//                wrapMode: Text.WordWrap
+//            }
+
+//            TextField
+//            {
+//                Layout.row: 5
+//                Layout.column: 1
+//                Layout.fillWidth: true
+//                id: oldPassword
+//                width: parent.width
+//                placeholder: qsTr("Current password")
+//                echoMode: "Password"
+//            }
+            Button
             {
-                width: parent.width
-                text: qsTr("Set a new password by typing it 2 times with the 2 text fields above.")
-                font.pixelSize: Regovar.theme.font.size.small
-                font.italic: true
-                color: Regovar.theme.primaryColor.back.normal
-                wrapMode: Text.WordWrap
-            }
-        }
-
-        // Password confirm panel
-        Rectangle
-        {
-            color: Regovar.theme.boxColor.back
-            border.width: 1
-            border.color: Regovar.theme.boxColor.border
-            width: confirmPasswordButton.width + 20
-            Layout.rowSpan: 2
-            Layout.fillHeight: true
-
-
-            ButtonIcon
-            {
-                id: confirmPasswordButton
-                x:10
-                y:10
+                Layout.row: 6
+                Layout.column: 1
+                enabled: false
                 text: qsTr("Change my password")
-                iconTxt: "n"
-                onClicked:
-                {
-                    confirmPasswordButton.enabled = false;
-                    confirmPasswordIcon.text = "/";
-                    regovar.testConnection(regovarUrl.text, proxyUrl.text);
-                }
-//                Connections
-//                {
-//                    target: regovar
-//                    onTestConnectionEnd:
-//                    {
-//                        confirmPasswordIcon.text = "n";
-//                        confirmPasswordButton.enabled = true;
-
-//                    }
-//                }
             }
-            Text
-            {
-                id: confirmPasswordIcon
-                anchors.top: confirmPasswordButton.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: confirmPasswordLabel.top
-                wrapMode: Text.WordWrap
-                text: "n"
-                verticalAlignment: Text.AlignVCenter
-                font.family: Regovar.theme.icons.name
-                font.pixelSize: 30
-                color: Regovar.theme.primaryColor.back.normal
-            }
-            Text
-            {
-                id: confirmPasswordLabel
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                wrapMode: Text.WordWrap
-                text: qsTr("Password complexity : OK")
-                font.pixelSize: Regovar.theme.font.size.small
-                color: Regovar.theme.primaryColor.back.normal
-                horizontalAlignment: Text.AlignHCenter
-            }
-
         }
 
+
+
+        // HF ====================================================================================
+        Item
+        {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
         Rectangle
         {
-            width: Regovar.theme.font.boxSize.title
+            Layout.fillWidth: true
             height: Regovar.theme.font.boxSize.title
-            color: "transparent"
-        }
-
-        Column
-        {
-            Layout.fillWidth: true
-            spacing: 5
-
-            TextField
-            {
-                id: oldPassword
-                width: parent.width
-                placeholder: qsTr("Current password")
-                echoMode: "Password"
-            }
-            Text
-            {
-                width: parent.width
-                text: qsTr("To confirm your new password you have to type also your current password. Then you have to click on the opposite validate button.")
-                font.pixelSize: Regovar.theme.font.size.small
-                font.italic: true
-                color: Regovar.theme.primaryColor.back.normal
-                wrapMode: Text.WordWrap
-            }
-        }
-
-
-        // ===== User information =====
-        Row
-        {
-            Layout.fillWidth: true
-            Layout.columnSpan: 3
-            height: Regovar.theme.font.boxSize.title
-
-            Text
-            {
-                width: Regovar.theme.font.boxSize.title
-                height: Regovar.theme.font.boxSize.title
-                text: "\\"
-
-                font.family: Regovar.theme.icons.name
-                font.pixelSize: Regovar.theme.font.size.title
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                color: Regovar.theme.primaryColor.back.normal
-            }
-            Text
-            {
-                height: Regovar.theme.font.boxSize.title
-
-                elide: Text.ElideRight
-                text: qsTr("User information")
-                font.bold: true
-                font.pixelSize: Regovar.theme.font.size.header
-                verticalAlignment: Text.AlignVCenter
-                color: Regovar.theme.primaryColor.back.normal
-            }
-        }
-
-
-
-        // Lastname
-        Row
-        {
-            Rectangle
-            {
-                width: Regovar.theme.font.boxSize.title
-                height: Regovar.theme.font.boxSize.normal
-                color: "transparent"
-            }
-            Text
-            {
-                text: qsTr("Lastname")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.primaryColor.back.normal
-                Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.normal
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
-        TextField
-        {
-            Layout.fillWidth: true
-            text: regovar.user.lastname
-            placeholder: qsTr("Lastname")
-        }
-
-        // User avatar panel
-        Rectangle
-        {
-            Layout.rowSpan: 5
-            color: Regovar.theme.boxColor.back
+            radius: 2
+            color: Regovar.theme.backgroundColor.alt
             border.width: 1
             border.color: Regovar.theme.boxColor.border
-            width: confirmPasswordButton.width + 20
-            Layout.fillHeight: true
 
-
-            Text
-            {
-                anchors.centerIn: parent
-                text: qsTr("Todo : avatar ?")
-            }
-        }
-
-        // Firstname
-        Row
-        {
-            Rectangle
-            {
-                width: Regovar.theme.font.boxSize.title
-                height: Regovar.theme.font.boxSize.normal
-                color: "transparent"
-            }
-            Text
-            {
-                text: qsTr("Firstname")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.primaryColor.back.normal
-                Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.normal
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
-        TextField
-        {
-            Layout.fillWidth: true
-            text: regovar.user.firstname
-            placeholder: qsTr("Firstname")
-        }
-
-        // Email
-        Row
-        {
-            Rectangle
-            {
-                width: Regovar.theme.font.boxSize.title
-                height: Regovar.theme.font.boxSize.normal
-                color: "transparent"
-            }
-            Text
-            {
-                text: qsTr("Email")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.primaryColor.back.normal
-                Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.normal
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
-        TextField
-        {
-            Layout.fillWidth: true
-            text: regovar.user ? regovar.user.email : ""
-            placeholder: qsTr("Email")
-        }
-
-        // Location
-        Row
-        {
-            Rectangle
-            {
-                width: Regovar.theme.font.boxSize.title
-                height: Regovar.theme.font.boxSize.normal
-                color: "transparent"
-            }
-            Text
-            {
-                text: qsTr("Location")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.primaryColor.back.normal
-                Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.normal
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
-        TextField
-        {
-            Layout.fillWidth: true
-            text: regovar.user ? regovar.user.location : ""
-            placeholder: qsTr("Location")
-        }
-
-        // Function
-        Row
-        {
-            Rectangle
-            {
-                width: Regovar.theme.font.boxSize.title
-                height: Regovar.theme.font.boxSize.normal
-                color: "transparent"
-            }
-            Text
-            {
-                text: qsTr("Function")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.primaryColor.back.normal
-                Layout.alignment: Qt.AlignTop
-                height: Regovar.theme.font.boxSize.normal
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
-        TextField
-        {
-            Layout.fillWidth: true
-            text: regovar.user ? regovar.user.function : ""
-            placeholder: qsTr("Function")
-        }
-
-
-        Rectangle
-        {
-            Layout.columnSpan: 3
-            color: "transparent"
-            Layout.fillHeight: true
-            Layout.fillWidth: true
         }
     }
 }

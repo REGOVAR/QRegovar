@@ -123,6 +123,18 @@ Request* Request::download(const QString& query)
 
 }
 
+
+
+void Request::setCookie(const QNetworkCookie& cookie)
+{
+    QList<QNetworkCookie> list;
+    list.append(cookie);
+    if (Request::netManager()->cookieJar()->setCookiesFromUrl(list, regovar->networkManager()->serverUrl()))
+    {
+       qDebug() << "SESSION COOKIE UPDATED";
+    }
+}
+
 //------------------------------------------------------------------------------------------------
 QNetworkRequest Request::makeRequest(const QString& resource)
 {
@@ -178,6 +190,7 @@ void Request::received()
             QString code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString();
             QString reason = reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
             mJson = QJsonObject();
+            mJson.insert("httpCode", code);
             mJson.insert("reqError", code + " " + reason);
             mJson.insert("query", reply->url().toString());
             qWarning() << "ERROR" << code << reason << mReplyError;

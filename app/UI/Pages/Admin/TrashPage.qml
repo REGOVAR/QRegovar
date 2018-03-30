@@ -2,10 +2,10 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 
-import "../../Regovar"
-import "../../Framework"
-import "../../Charts"
-import "../../Dialogs"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
+import "qrc:/qml/Charts"
+import "qrc:/qml/Dialogs"
 
 Rectangle
 {
@@ -30,9 +30,10 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Users management")
-            font.pixelSize: 20
+            text: qsTr("Trash")
+            font.pixelSize: Regovar.theme.font.size.title
             font.weight: Font.Black
+            color: Regovar.theme.primaryColor.back.dark
         }
         ConnectionStatus
         {
@@ -59,7 +60,7 @@ Rectangle
         visible: Regovar.helpInfoBoxDisplayed
         mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("Below the list of all events and \"technical\" actions done on the server.")
+        text: qsTr("Check which data have been erase before deleting them definitively.")
     }
 
 
@@ -74,7 +75,6 @@ Rectangle
         anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
 
         spacing: 5
-
 
     }
 }

@@ -115,9 +115,7 @@ void ResultsTreeModel::fetchMore(const QModelIndex& parent)
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         setIsLoading(false);
         request->deleteLater();
@@ -183,9 +181,7 @@ void ResultsTreeModel::applyFilter(QJsonArray filter)
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         setIsLoading(false);
         request->deleteLater();
@@ -230,9 +226,7 @@ void ResultsTreeModel::loadNext()
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
 
         // Notify view/model that update is finished

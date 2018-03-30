@@ -2,8 +2,8 @@ import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 
-import "../../Regovar"
-import "../../Framework"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
 
 
 GenericScreen
@@ -303,7 +303,7 @@ GenericScreen
     function autoName()
     {
         var name = "";
-        name += "Hugodims-2017-09-15";
+        name +=  "Hugodims-2017-09-15";
         name += Qt.formatDate(Date.now(), "yyyy-MM-dd");
         return name;
     }

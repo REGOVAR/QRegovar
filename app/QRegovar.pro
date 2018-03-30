@@ -48,7 +48,8 @@ HEADERS += \
     Model/subject/subject.h \
     Model/admin.h \
     Model/regovar.h \
-    Model/user.h \
+    Model/user/user.h \
+    Model/user/userslistmodel.h \
     Model/subject/subjectsmanager.h \
     Model/subject/samplesmanager.h \
     Model/subject/reference.h \
@@ -85,7 +86,8 @@ HEADERS += \
     Model/framework/dynamicformmodel.h \
     Model/framework/dynamicformfieldmodel.h \
     Model/file/fileslistmodel.h \
-    Model/analysis/remotelogmodel.h
+    Model/analysis/remotelogmodel.h \
+    Model/user/usersmanager.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -121,7 +123,8 @@ SOURCES += main.cpp \
     Model/subject/subject.cpp \
     Model/admin.cpp \
     Model/regovar.cpp \
-    Model/user.cpp \
+    Model/user/user.cpp \
+    Model/user/userslistmodel.cpp \
     Model/subject/subjectsmanager.cpp \
     Model/subject/samplesmanager.cpp \
     Model/subject/reference.cpp \
@@ -158,7 +161,8 @@ SOURCES += main.cpp \
     Model/framework/dynamicformmodel.cpp \
     Model/framework/dynamicformfieldmodel.cpp \
     Model/file/fileslistmodel.cpp \
-    Model/analysis/remotelogmodel.cpp
+    Model/analysis/remotelogmodel.cpp \
+    Model/user/usersmanager.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

@@ -2,8 +2,8 @@ import QtQuick 2.9
 import QtQuick.Controls 2.0
 import Regovar.Core 1.0
 
-import "MainMenu"
-import "Dialogs"
+import "qrc:/qml/MainMenu"
+import "qrc:/qml/Dialogs"
 
 ApplicationWindow
 {
@@ -30,6 +30,7 @@ ApplicationWindow
             openPage(menuModel.selectedEntry);
         }
     }
+
 
 
 
@@ -61,11 +62,14 @@ ApplicationWindow
         }
     }
 
-    CloseDialog
+    LoginPage
     {
-        id: closePopup
+        id: loginPage
+        anchors.fill: parent
         visible: false
+        z: 20
     }
+
     ErrorDialog
     {
         id: errorPopup
@@ -88,6 +92,16 @@ ApplicationWindow
         }
     }
 
+    Connections
+    {
+        target: regovar.usersManager
+        onDisplayLoginScreen:
+        {
+            loginPage.visible = state;
+            mainMenu.enabled = !state;
+            stack.enabled = !state;
+        }
+    }
 
     function buildPages(model, sharedModel)
     {

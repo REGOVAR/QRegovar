@@ -7,10 +7,10 @@ import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 import Regovar.Core 1.0
 
-import "../../../Regovar"
-import "../../../Framework"
-import "../../../MainMenu"
-import "../../../Dialogs"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
+import "qrc:/qml/MainMenu"
+import "qrc:/qml/Dialogs"
 
 
 import "Quickfilter"

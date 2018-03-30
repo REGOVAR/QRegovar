@@ -33,7 +33,7 @@ void RemoteLogModel::refresh()
             // TODO: create json error from scratch
             QJsonObject jsonError;
             jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(jsonError, Q_FUNC_INFO);
         }
         req->deleteLater();
     });

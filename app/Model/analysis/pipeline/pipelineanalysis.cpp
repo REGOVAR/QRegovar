@@ -49,6 +49,7 @@ void PipelineAnalysis::addInputFromWS(QJsonObject json)
 void PipelineAnalysis::setPipeline(Pipeline* pipe)
 {
     mPipeline = pipe;
+    mPipeline->configForm()->setInputsFiles(mInputsFiles);
     mPipeline->configForm()->load(mPipeline->form());
     mPipeline->configForm()->reset();
     emit pipelineChanged();
@@ -215,9 +216,7 @@ void PipelineAnalysis::save()
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         request->deleteLater();
     });
@@ -240,9 +239,7 @@ void PipelineAnalysis::load(bool forceRefresh)
             }
             else
             {
-                QJsonObject jsonError = json;
-                jsonError.insert("method", Q_FUNC_INFO);
-                regovar->raiseError(jsonError);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });
@@ -265,9 +262,7 @@ void PipelineAnalysis::pause()
             }
             else
             {
-                QJsonObject jsonError = json;
-                jsonError.insert("method", Q_FUNC_INFO);
-                regovar->raiseError(jsonError);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });
@@ -288,9 +283,7 @@ void PipelineAnalysis::start()
             }
             else
             {
-                QJsonObject jsonError = json;
-                jsonError.insert("method", Q_FUNC_INFO);
-                regovar->raiseError(jsonError);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });
@@ -309,9 +302,7 @@ void PipelineAnalysis::cancel()
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -331,9 +322,7 @@ void PipelineAnalysis::finalyze()
             }
             else
             {
-                QJsonObject jsonError = json;
-                jsonError.insert("method", Q_FUNC_INFO);
-                regovar->raiseError(jsonError);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });
@@ -353,9 +342,7 @@ void PipelineAnalysis::refreshMonitoring()
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });

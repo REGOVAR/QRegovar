@@ -3,8 +3,8 @@ import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
 
-import "../../Regovar"
-import "../../Framework"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
 
 Rectangle
 {
@@ -88,11 +88,10 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
             color: Regovar.theme.primaryColor.back.normal
         }
-        Rectangle
+        Item
         {
             Layout.row: 1
             Layout.column: 0
-            color: "transparent"
             Layout.minimumHeight: 10
             Layout.minimumWidth: Regovar.theme.font.boxSize.header
         }
@@ -119,11 +118,10 @@ Rectangle
             enabled: false
         }
 
-        Rectangle
+        Item
         {
             Layout.row: 3
             Layout.column: 0
-            color: "transparent"
             width: 10
             height: 10
         }
@@ -168,11 +166,10 @@ Rectangle
             onCurrentIndexChanged: Regovar.theme.themeId = currentIndex
         }
 
-        Rectangle
+        Item
         {
             Layout.row: 7
             Layout.column: 0
-            color: "transparent"
             width: 10
             height: 10
         }
@@ -217,11 +214,10 @@ Rectangle
             onClicked: setSizePopup.open()
         }
 
-        Rectangle
+        Item
         {
             Layout.row: 11
             Layout.column: 0
-            color: "transparent"
             width: 10
             height: 10
         }
@@ -264,11 +260,10 @@ Rectangle
             onCheckedChanged: Regovar.helpInfoBoxDisplayed = checked
         }
 
-        Rectangle
+        Item
         {
             Layout.row: 15
             Layout.column: 1
-            color: "transparent"
             Layout.fillHeight: true
             Layout.fillWidth: true
         }

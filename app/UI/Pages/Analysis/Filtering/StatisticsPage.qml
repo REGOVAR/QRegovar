@@ -3,10 +3,10 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import QtCharts 2.0
 import Regovar.Core 1.0
-import "../../../Regovar"
-import "../../../Framework"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
 
-import "../../../InformationPanel/Sample"
+import "qrc:/qml/InformationPanel/Sample"
 
 
 

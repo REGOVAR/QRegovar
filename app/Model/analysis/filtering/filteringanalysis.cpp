@@ -201,9 +201,7 @@ void FilteringAnalysis::save()
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         request->deleteLater();
     });
@@ -228,9 +226,7 @@ void FilteringAnalysis::load(bool forceRefresh)
             }
             else
             {
-                QJsonObject jsonError = json;
-                jsonError.insert("method", Q_FUNC_INFO);
-                regovar->raiseError(jsonError);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });
@@ -298,9 +294,7 @@ void FilteringAnalysis::setReference(Reference* ref, bool continueInit)
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
             raiseNewInternalLoadingStatus(Error);
         }
         req->deleteLater();
@@ -520,9 +514,7 @@ void FilteringAnalysis::reopen()
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -695,9 +687,7 @@ void FilteringAnalysis::deleteFilter(int filterId)
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -754,9 +744,7 @@ void FilteringAnalysis::editFilter(int filterId, QString filterName, QString fil
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
@@ -834,9 +822,7 @@ void FilteringAnalysis::addSamplesFromFile(int fileId)
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
             raiseNewInternalLoadingStatus(Error);
         }
         req->deleteLater();
@@ -1104,9 +1090,7 @@ void FilteringAnalysis::setVariantSelection(QString id, bool isChecked)
     {
         if (!success)
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
             raiseNewInternalLoadingStatus(Error);
         }
         req->deleteLater();
@@ -1135,9 +1119,7 @@ void FilteringAnalysis::addFile(File* file)
             }
             else
             {
-                QJsonObject jsonError = json;
-                jsonError.insert("method", Q_FUNC_INFO);
-                regovar->raiseError(jsonError);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             request->deleteLater();
         });

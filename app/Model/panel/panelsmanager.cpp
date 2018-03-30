@@ -46,9 +46,7 @@ void PanelsManager::commitNewPanel()
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
             emit commitNewPanelDone(false);
         }
         req->deleteLater();

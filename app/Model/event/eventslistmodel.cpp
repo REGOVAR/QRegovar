@@ -21,24 +21,22 @@ EventsListModel::EventsListModel(QString target, QString id, QObject* parent) : 
     mTarget = target;
     mId = id;
 
-    QJsonObject body;
-    body.insert(target, id);
+//    QJsonObject body;
+//    body.insert(target, id);
 
-    Request* req = Request::post(QString("/events"), QJsonDocument(body).toJson());
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            loadJson(json["data"].toArray());
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
+//    Request* req = Request::post(QString("/events"), QJsonDocument(body).toJson());
+//    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+//    {
+//        if (success)
+//        {
+//            loadJson(json["data"].toArray());
+//        }
+//        else
+//        {
+//            regovar->manageServerError(json, Q_FUNC_INFO);
+//        }
+//        req->deleteLater();
+//    });
 }
 
 

@@ -2,7 +2,7 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
-import "../Regovar"
+import "qrc:/qml/Regovar"
 
 Item
 {

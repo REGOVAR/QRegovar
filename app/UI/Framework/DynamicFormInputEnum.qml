@@ -2,7 +2,7 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import Regovar.Core 1.0
 
-import "../Regovar"
+import "qrc:/qml/Regovar"
 
 
 GridLayout
@@ -27,7 +27,7 @@ GridLayout
 
     function updateViewFromModel()
     {
-        input.text = model.value;
+        //input.text = model.value;
         input.color =  model.error ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.danger;
         errorMessage.text = model.error ? model.errorMessage : "";
     }

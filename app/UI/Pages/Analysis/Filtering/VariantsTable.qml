@@ -8,10 +8,10 @@ import QtQuick.Dialogs 1.2
 import Regovar.Core 1.0
 import QtQml.Models 2.2
 
-import "../../../Regovar"
-import "../../../Framework"
-import "../../../MainMenu"
-import "../../../InformationPanel/Variant"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
+import "qrc:/qml/MainMenu"
+import "qrc:/qml/InformationPanel/Variant"
 
 import Regovar.Core 1.0
 

@@ -17,8 +17,10 @@ class DynamicFormFieldModel : public QObject
     Q_PROPERTY(QStringList enumValues READ enumValues NOTIFY dataChanged)
     Q_PROPERTY(bool required READ required NOTIFY dataChanged)
     Q_PROPERTY(QVariant value READ value WRITE setValue NOTIFY dataChanged)
+    Q_PROPERTY(QString formatedValue READ formatedValue NOTIFY dataChanged)
     Q_PROPERTY(QVariant defaultValue READ defaultValue NOTIFY dataChanged)
     Q_PROPERTY(DynamicFormModel* form READ form NOTIFY dataChanged)
+    Q_PROPERTY(QString specialFlag READ specialFlag NOTIFY dataChanged)
     // Validation
     Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
     Q_PROPERTY(bool validated READ validated NOTIFY dataChanged)
@@ -46,6 +48,8 @@ public:
     inline QString errorMessage() const { return mErrorMessage; }
     inline QString searchField() const { return mSearchField; }
     inline DynamicFormModel* form() const { return mForm; }
+    inline QString specialFlag() const { return mSpecialFlag; }
+    QString formatedValue() const;
 
     // Setters
     inline void setValue(QVariant value) { mValue = value; validate(); }
@@ -55,6 +59,8 @@ public:
     Q_INVOKABLE bool fromJson(QJsonObject json);
     //! Check that value is valid. If not
     Q_INVOKABLE bool validate();
+    //! Refresh dynamic form information withou reseting value (need for special flag that may change enum values available)
+    Q_INVOKABLE void refresh();
     //! Reset field value with default value
     Q_INVOKABLE void reset();
 
@@ -74,10 +80,12 @@ private:
     bool mRequired=false;
     QVariant mValue;
     QVariant mDefaultValue;
+    QString mSpecialFlag;
     bool mValidated=false;
     bool mInError=false;
     QString mErrorMessage;
     QString mSearchField;
+
 };
 
 #endif // DYNAMICFORMFIELD_H

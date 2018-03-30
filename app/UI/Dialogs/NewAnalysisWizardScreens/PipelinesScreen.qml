@@ -2,10 +2,10 @@ import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 
-import "../../Regovar"
-import "../../Framework"
-import "../../Dialogs"
-import "../../InformationPanel/Pipeline"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Framework"
+import "qrc:/qml/Dialogs"
+import "qrc:/qml/InformationPanel/Pipeline"
 
 
 GenericScreen
@@ -69,11 +69,14 @@ GenericScreen
                     model: regovar.pipelinesManager.intalledPipes.proxy
                     onModelChanged: updatePipeInfoPanel()
                     onCurrentItemChanged: updatePipeInfoPanel()
+
                     delegate: Rectangle
                     {
                         width: pipelinesList.width
                         height: Regovar.theme.font.boxSize.normal
                         color: index % 2 == 0 ? Regovar.theme.backgroundColor.main : "transparent"
+
+
 
                         Row
                         {
@@ -94,6 +97,11 @@ GenericScreen
                                 font.pixelSize: Regovar.theme.font.size.small
                                 verticalAlignment: Text.AlignVCenter
                             }
+                        }
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            onClicked: pipelinesList.currentIndex = index
                         }
                     }
 

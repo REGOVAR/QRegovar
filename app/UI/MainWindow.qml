@@ -2,16 +2,16 @@ import QtQuick 2.9
 import Qt.labs.settings 1.0
 import QtQuick.Window 2.3
 
-import "Regovar"
-import "Dialogs"
-import "InformationPanel/File"
-import "InformationPanel/Gene"
-import "InformationPanel/Panel"
-import "InformationPanel/Phenotype"
-import "InformationPanel/Pipeline"
-import "InformationPanel/Sample"
-import "InformationPanel/User"
-import "InformationPanel/Variant"
+import "qrc:/qml/Regovar"
+import "qrc:/qml/Dialogs"
+import "qrc:/qml/InformationPanel/File"
+import "qrc:/qml/InformationPanel/Gene"
+import "qrc:/qml/InformationPanel/Panel"
+import "qrc:/qml/InformationPanel/Phenotype"
+import "qrc:/qml/InformationPanel/Pipeline"
+import "qrc:/qml/InformationPanel/Sample"
+import "qrc:/qml/InformationPanel/User"
+import "qrc:/qml/InformationPanel/Variant"
 
 GenericWindow
 {

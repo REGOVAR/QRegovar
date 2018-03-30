@@ -91,9 +91,7 @@ bool FilesManager::deleteFile(int id)
             }
             else
             {
-                QJsonObject jsonError = json;
-                jsonError.insert("method", Q_FUNC_INFO);
-                regovar->raiseError(jsonError);
+                regovar->manageServerError(json, Q_FUNC_INFO);
             }
             req->deleteLater();
         });
@@ -126,9 +124,7 @@ void FilesManager::loadFilesBrowser()
         }
         else
         {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
+            regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();
     });
