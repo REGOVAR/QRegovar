@@ -2,7 +2,7 @@ branches:
   only:
     - master
 install:
-  - set QTDIR=C:\Qt\5.10.0\mingw53_32 
+  - set QTDIR=C:\Qt\5.10.1\mingw53_32 
   - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw530_32\bin;%PATH%;
 build_script:
   - qmake app/QRegovar.pro
