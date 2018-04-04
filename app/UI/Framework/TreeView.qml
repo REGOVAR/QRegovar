@@ -35,10 +35,10 @@ TreeView
             height: control.rowHeight
             color:  styleData.hasActiveFocus ? Regovar.theme.secondaryColor.back.light :
                     (
-                        styleData.selected ? Regovar.theme.secondaryColor.back.light :
-                        (
-                            styleData.alternate ? Regovar.theme.boxColor.back : Regovar.theme.backgroundColor.main
-                        )
+                        styleData.selected ? Regovar.theme.secondaryColor.back.light : "transparent"
+//                        (
+//                            styleData.alternate ? Regovar.theme.boxColor.back : Regovar.theme.backgroundColor.main
+//                        )
                     )
         }
 

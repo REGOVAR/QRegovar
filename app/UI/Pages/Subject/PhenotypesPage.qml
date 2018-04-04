@@ -74,6 +74,7 @@ Rectangle
     {
         id: actionsPanel
         anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
+        anchors.topMargin: Regovar.theme.font.boxSize.header + 10
         anchors.right: root.right
         anchors.margins : 10
         spacing: 10
@@ -115,6 +116,7 @@ Rectangle
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         orientation: Qt.Vertical
+        anchors.margins: 10
 
         Rectangle
         {
@@ -123,44 +125,60 @@ Rectangle
             color: Regovar.theme.backgroundColor.main
             Layout.minimumHeight: 200
 
-            TableView
+            ColumnLayout
             {
-                id: phenotypeList
                 anchors.fill: parent
-                anchors.margins: 10
-                model: (root.model) ? root.model.phenotypes : []
+                anchors.bottomMargin: 10
 
-                TableViewColumn
+                Text
                 {
-                    role: "label"
-                    title: "Phenotype"
-                }
-                TableViewColumn
-                {
-                    role: "genes"
-                    title: "Genes of interest"
-                }
-                TableViewColumn
-                {
-                    role: "comment"
-                    title: "Comment"
-                }
-                TableViewColumn
-                {
-                    role: "lastUpdate"
-                    title: "Date"
-                }
-                TableViewColumn
-                {
-                    role: "comment"
-                    title: "Comment"
-                    width: 400
+                    height: Regovar.theme.font.boxSize.header
+                    elide: Text.ElideRight
+                    text: qsTr("Phenotype")
+                    font.pixelSize: Regovar.theme.font.size.header
+                    verticalAlignment: Text.AlignVCenter
+                    color: Regovar.theme.primaryColor.back.normal
                 }
 
-
-                onCurrentRowChanged:
+                TableView
                 {
-                    displayCurrentPhenotypeDetails(root.model.phenotypes[currentRow]);
+                    id: phenotypeList
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    model: (root.model) ? root.model.phenotypes : []
+
+                    TableViewColumn
+                    {
+                        role: "label"
+                        title: ""
+                    }
+                    TableViewColumn
+                    {
+                        role: "genes"
+                        title: qsTr("Genes of interest")
+                    }
+//                    TableViewColumn
+//                    {
+//                        role: "comment"
+//                        title: "Comment"
+//                    }
+//                    TableViewColumn
+//                    {
+//                        role: "lastUpdate"
+//                        title: "Date"
+//                    }
+                    TableViewColumn
+                    {
+                        role: "comment"
+                        title: qsTr("Comment")
+                        width: 400
+                    }
+
+
+                    onCurrentRowChanged:
+                    {
+                        displayCurrentPhenotypeDetails(root.model.phenotypes[currentRow]);
+                    }
                 }
             }
         } // end topPanel
@@ -172,59 +190,36 @@ Rectangle
             color: Regovar.theme.backgroundColor.main
             Layout.minimumHeight: 200
 
-            GridLayout
+            ColumnLayout
             {
                 anchors.fill: parent
-                anchors.margins: 10
-                rows:2
-                columns:2
-                rowSpacing: 10
-                columnSpacing: 10
+                anchors.topMargin: 10
+                spacing: 10
 
                 Text
                 {
                     height: Regovar.theme.font.boxSize.header
                     elide: Text.ElideRight
-                    text: qsTr("Definition")
+                    text: qsTr("Caracteristics")
                     font.pixelSize: Regovar.theme.font.size.header
                     verticalAlignment: Text.AlignVCenter
                     color: Regovar.theme.primaryColor.back.normal
                 }
-                Text
+
+                Rectangle
                 {
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    text: qsTr("Associated phenotype")
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                }
-                TextArea
-                {
-                    Layout.minimumWidth: 300
+                    color: "transparent"
                     Layout.fillHeight: true
-                }
-
-                TableView
-                {
                     Layout.fillWidth: true
-                    Layout.fillHeight: true
-
-
-                    TableViewColumn
+                    border.width: 1
+                    border.color: Regovar.theme.boxColor.border
+                    Text
                     {
-                        role: "id"
-                        title: "Id"
-                    }
-                    TableViewColumn
-                    {
-                        role: "label"
-                        title: "Name"
-                    }
-                    TableViewColumn
-                    {
-                        role: "genes"
-                        title: "Associated genes"
+                        anchors.centerIn: parent
+                        text: qsTr("Not yet implemented")
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        color: Regovar.theme.frontColor.disable
+                        verticalAlignment: Text.AlignVCenter
                     }
                 }
             }
