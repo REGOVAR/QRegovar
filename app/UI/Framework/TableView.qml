@@ -17,12 +17,12 @@ TableView
     style: TableViewStyle
     {
         activateItemOnSingleClick: true
-        backgroundColor: Regovar.theme.backgroundColor.main
-        alternateBackgroundColor: Regovar.theme.backgroundColor.alt
-        highlightedTextColor: Regovar.theme.secondaryColor.front.light
+        backgroundColor: "transparent" // Regovar.theme.boxColor.back // Regovar.theme.backgroundColor.main
+        // alternateBackgroundColor: Regovar.theme.backgroundColor.alt
         textColor: Regovar.theme.frontColor.normal
         frame: Rectangle
         {
+            radius: 2
             color: Regovar.theme.boxColor.back
             border.width: 1
             border.color: Regovar.theme.boxColor.border
@@ -34,47 +34,49 @@ TableView
     rowDelegate: Rectangle
     {
         height: root.rowHeight
-        color:  styleData.hasActiveFocus ? Regovar.theme.secondaryColor.back.normal :
-                (
-                    styleData.selected ? Regovar.theme.secondaryColor.back.light :
-                    (
-                        styleData.alternate ? Regovar.theme.boxColor.back : Regovar.theme.backgroundColor.main
-                    )
-                )
+        color:  styleData.selected ? Regovar.theme.secondaryColor.back.light : "transparent"
+//                (
+//                    styleData.alternate ? Regovar.theme.boxColor.back : Regovar.theme.backgroundColor.main
+//                )
     }
 
     headerDelegate: Item
     {
         id: headerRoot
-        height: 24
+        height: Regovar.theme.font.boxSize.header
 //        border.width: 0
 
 //        border.color: Regovar.theme.boxColor.border
 
 
-        LinearGradient
-        {
-            anchors.fill: parent
-            anchors.margins: 1
-            start: Qt.point(0, 0)
-            end: Qt.point(0, 24)
-            gradient: Gradient
-            {
-                GradientStop { position: 0.0; color: Regovar.theme.boxColor.header1  }
-                GradientStop { position: 1.0; color: Regovar.theme.boxColor.header2  }
-            }
-        }
-
-        // Right border
+//        LinearGradient
+//        {
+//            anchors.fill: parent
+//            anchors.margins: 1
+//            start: Qt.point(0, 0)
+//            end: Qt.point(0, 24)
+//            gradient: Gradient
+//            {
+//                GradientStop { position: 0.0; color: Regovar.theme.boxColor.header1  }
+//                GradientStop { position: 1.0; color: Regovar.theme.boxColor.header2  }
+//            }
+//        }
         Rectangle
         {
-            width: 1
-            anchors.top: headerRoot.top
-            anchors.right: headerRoot.right
-            anchors.bottom: headerRoot.bottom
-            color: Regovar.theme.boxColor.border
+            anchors.fill: parent
+            color: Regovar.theme.boxColor.back // Regovar.theme.darker(Regovar.theme.boxColor.back, 1.1) // Regovar.theme.backgroundColor.alt
         }
-        // Top border
+
+//        // Right border
+//        Rectangle
+//        {
+//            width: 1
+//            anchors.top: headerRoot.top
+//            anchors.right: headerRoot.right
+//            anchors.bottom: headerRoot.bottom
+//            color: Regovar.theme.boxColor.border
+//        }
+//        // Top border
         Rectangle
         {
             height: 1
@@ -92,6 +94,27 @@ TableView
             anchors.bottom: headerRoot.bottom
             color: Regovar.theme.boxColor.border
         }
+
+//        Item
+//        {
+//            id: shadow
+//            anchors.right: parent.right
+//            anchors.left: parent.left
+//            height: 2
+//            anchors.top: parent.bottom
+//        }
+//        LinearGradient
+//        {
+//            anchors.fill: shadow
+//            start: Qt.point(0, 0)
+//            end: Qt.point(0, shadow.height)
+//            gradient: Gradient
+//            {
+//                GradientStop { position: 0.0; color: "#55000000" } //Regovar.theme.darker(Regovar.theme.boxColor.back, 1.5)} // Regovar.theme.boxColor.header1  }
+//                GradientStop { position: 1.0; color: "transparent"} // Regovar.theme.boxColor.header2  }
+//            }
+//        }
+
 
         RowLayout
         {
@@ -115,8 +138,8 @@ TableView
             Text
             {
                 Layout.fillHeight: true
-                visible: root.sortIndicatorVisible && root.sortIndicatorColumn == styleData.column
-                width: root.sortIndicatorVisible && root.sortIndicatorColumn == styleData.column ? Regovar.theme.font.boxSize.normal : 0
+                visible: root.sortIndicatorVisible && root.sortIndicatorColumn === styleData.column
+                width: root.sortIndicatorVisible && root.sortIndicatorColumn === styleData.column ? Regovar.theme.font.boxSize.normal : 0
                 font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.icons.name
                 color: Regovar.theme.frontColor.normal
