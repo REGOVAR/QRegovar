@@ -13,8 +13,10 @@ public:
 
     // Methods
     Q_INVOKABLE void fromJson(QJsonArray json);
-    Q_INVOKABLE QStringList search(QString query);
+    Q_INVOKABLE void search(QString query);
 
+Q_SIGNALS:
+    void phenotypeSearchDone(bool success, QJsonArray result);
 
 private:
 

@@ -6,7 +6,7 @@
 #include <QAuthenticator>
 #include <QQmlApplicationEngine>
 
-#include "Model/mainmenu/rootmenu.h"
+#include "mainmenu/rootmenu.h"
 #include "framework/networkmanager.h"
 #include "user/usersmanager.h"
 #include "project/projectsmanager.h"
@@ -19,6 +19,7 @@
 #include "panel/panelsmanager.h"
 #include "event/eventsmanager.h"
 #include "pipeline/pipelinesmanager.h"
+#include "phenotype/phenotypesmanager.h"
 
 // TODO: rework as manager pattern
 #include "user/user.h"
@@ -98,6 +99,7 @@ class Regovar : public QObject
     Q_PROPERTY(FilesManager* filesManager READ filesManager NOTIFY neverChanged)
     Q_PROPERTY(AnalysesManager* analysesManager READ analysesManager NOTIFY neverChanged)
     Q_PROPERTY(PanelsManager* panelsManager READ panelsManager NOTIFY neverChanged)
+    Q_PROPERTY(PhenotypesManager* phenotypesManager READ phenotypesManager NOTIFY neverChanged)
     Q_PROPERTY(EventsManager* eventsManager READ eventsManager NOTIFY neverChanged)
     Q_PROPERTY(ToolsManager* toolsManager READ toolsManager NOTIFY neverChanged)
     Q_PROPERTY(PipelinesManager* pipelinesManager READ pipelinesManager NOTIFY neverChanged)
@@ -141,6 +143,7 @@ public:
     inline FilesManager* filesManager() const { return mFilesManager; }
     inline AnalysesManager* analysesManager() const { return mAnalysesManager; }
     inline PanelsManager* panelsManager() const { return mPanelsManager; }
+    inline PhenotypesManager* phenotypesManager() const { return mPhenotypesManager; }
     inline EventsManager* eventsManager() const { return mEventsManager; }
     inline ToolsManager* toolsManager() const { return mToolsManager; }
     inline PipelinesManager* pipelinesManager() const { return mPipelinesManager; }
@@ -278,6 +281,8 @@ private:
     AnalysesManager* mAnalysesManager = nullptr;
     //! Manage genes panels
     PanelsManager* mPanelsManager = nullptr;
+    //! Manage phenotype
+    PhenotypesManager* mPhenotypesManager = nullptr;
     //! Manage all events
     EventsManager* mEventsManager = nullptr;
     //! Custom Tools managers (exporters, reporters)

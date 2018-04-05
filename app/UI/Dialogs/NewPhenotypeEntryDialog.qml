@@ -6,6 +6,7 @@ import QtQuick.Layouts 1.3
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
+import "qrc:/qml/Pages/Browse"
 
 Dialog
 {
@@ -18,10 +19,31 @@ Dialog
     width: 600
     height: 400
 
-    property int currentStep: 1
+    property string formerSearch: ""
+    function search()
+    {
+        if (formerSearch != searchField.text)
+        {
+            regovar.phenotypesManager.search(searchField.text);
+        }
+    }
 
-    property var newEntryModel: ({ "label": "", "ref_id": "0", "chr": "", "start": "", "end": ""})
 
+    Connections
+    {
+        target: regovar.phenotypesManager
+        onPhenotypeSearchDone:
+        {
+            if (success)
+            {
+                resultsModel.clear();
+                for(var idx in result)
+                {
+                    resultsModel.append(result[idx]);
+                }
+            }
+        }
+    }
 
     contentItem: Rectangle
     {
@@ -36,14 +58,14 @@ Dialog
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            iconText: "K"
+            iconText: "à"
             title: qsTr("Add Phenotype entry")
             text: qsTr("Search a phenotype or a disease (OMIM/ORPHANET) and add it your list.")
         }
 
 
 
-        TabView
+        GridLayout
         {
             id: tabView
             anchors.top: header.bottom
@@ -52,22 +74,57 @@ Dialog
             anchors.bottom: footer.top
             anchors.margins: 10
 
-            smallHeader: true
-            tabSharedModel: root.newEntryModel
 
-            tabsModel: ListModel
+            rows: 2
+            columns: 2
+            rowSpacing: 10
+            columnSpacing: 10
+
+
+            TextField
             {
-                ListElement
+                id: searchField
+                Layout.fillWidth: true
+                iconLeft: "z"
+                displayClearButton: true
+                text: regovar.searchRequest
+                placeholder: qsTr("Search gene, phenotype or disease...")
+                onEditingFinished: search()
+            }
+
+            Button
+            {
+                text: qsTr("Search")
+                onClicked: search()
+            }
+
+            ListView
+            {
+                id: results
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                Layout.columnSpan: 2
+
+                model: ListModel
                 {
-                    enabled: true
-                    title: qsTr("Gene & Phenotype")
-                    source: "../InformationPanel/Panel/PanelFormNewGene.qml"
+                    id: resultsModel
                 }
-                ListElement
+
+                delegate: SearchResultPhenotype
                 {
-                    enabled: true
-                    title: qsTr("Custom")
-                    source: "../InformationPanel/Panel/PanelFormNewCustom.qml"
+                    width: 100// scrollarea.viewport.width
+                    height: 20
+                    phenotypeId: model.id
+                    label: model.label
+//                                onAdded:
+//                                {
+//                                    regovar.panelsManager.newPanel.addEntry({"label" : modelData["symbol"], "id": modelData["id"], "details": modelData["id"]});
+//                                    enabled = false;
+//                                }
+//                                onShowDetails:
+//                                {
+//                                    regovar.getGeneInfo(modelData["symbol"]);
+//                                }
                 }
             }
         }
@@ -81,26 +138,11 @@ Dialog
 
             height: Regovar.theme.font.boxSize.normal
             spacing: 10
-            visible: tabView.currentIndex == 1
-
 
             Button
             {
-                text: qsTr("Add new entry")
-                onClicked:
-                {
-                    var description = "Chr" + root.newEntryModel["chr"] + ":" + root.newEntryModel["start"] + "-" + root.newEntryModel["end"];
-                    if (root.newEntryModel["label"].trim() == "")
-                    {
-                        root.newEntryModel["label"] = description;
-                        root.newEntryModel["details"] = "";
-                    }
-                    else
-                    {
-                        root.newEntryModel["details"] = description;
-                    }
-                    regovar.panelsManager.newPanel.addEntry(root.newEntryModel);
-                }
+                text: qsTr("Close")
+                onClicked: close()
             }
         }
 
@@ -117,4 +159,5 @@ Dialog
             }
         }
     }
+
 }

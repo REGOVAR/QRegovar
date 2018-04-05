@@ -186,49 +186,4 @@ Rectangle
 
         color: Regovar.theme.boxColor.border
     }
-
-
-//    Connections
-//    {
-//        target: regovar
-//        onGeneInformationReady:  geneInfoDialog.data = json
-//    }
-//    Dialog
-//    {
-//        id: geneInfoDialog
-//        title: qsTr("Gene Information")
-//        visible: false
-//        modality: Qt.NonModal
-//        width: 500
-//        height: 400
-
-//        property alias data: geneInfoPanel.model
-
-//        contentItem: GeneInformation
-//        {
-//            id: geneInfoPanel
-//        }
-//    }
-
-//    Connections
-//    {
-//        target: regovar
-//        onVariantInformationReady: phenotypeInfoDialog.data = json
-//    }
-//    Dialog
-//    {
-//        id: phenotypeInfoDialog
-//        title: qsTr("Gene Information")
-//        visible: false
-//        modality: Qt.NonModal
-//        width: 500
-//        height: 400
-
-//        property alias data: phenotypeInfoPanel.model
-
-//        contentItem: PhenotypeInformation
-//        {
-//            id: phenotypeInfoPanel
-//        }
-//    }
 }

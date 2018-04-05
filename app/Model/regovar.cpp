@@ -129,6 +129,7 @@ void Regovar::init()
     mSamplesManager = new SamplesManager(mSettings->defaultReference());
     mAnalysesManager = new AnalysesManager(this);
     mPanelsManager = new PanelsManager(this);
+    mPhenotypesManager = new PhenotypesManager(this);
     mEventsManager = new EventsManager(this);
     mToolsManager = new ToolsManager(this);
     mPipelinesManager = new PipelinesManager(this);

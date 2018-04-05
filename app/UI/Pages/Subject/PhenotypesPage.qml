@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.3
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
+import "qrc:/qml/Dialogs"
 
 Rectangle
 {
@@ -74,7 +75,7 @@ Rectangle
     {
         id: actionsPanel
         anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
-        anchors.topMargin: Regovar.theme.font.boxSize.header + 10
+        anchors.topMargin: Regovar.theme.font.boxSize.header
         anchors.right: root.right
         anchors.margins : 10
         spacing: 10
@@ -85,7 +86,7 @@ Rectangle
             id: addPhenotype
             Layout.fillWidth: true
             text: qsTr("Add")
-            onClicked:  console.log("Open Select Phenotype dialog")
+            onClicked: newPhenotypeEntryDialog.open()
         }
         Button
         {
@@ -150,7 +151,7 @@ Rectangle
                     TableViewColumn
                     {
                         role: "label"
-                        title: ""
+                        title: qsTr("Label")
                     }
                     TableViewColumn
                     {
@@ -226,6 +227,13 @@ Rectangle
 
         } // end bottomPanel
     } // end SplitView
+
+
+    NewPhenotypeEntryDialog
+    {
+        id: newPhenotypeEntryDialog
+
+    }
 
 
     function displayCurrentAnalysisPreview(analysis)

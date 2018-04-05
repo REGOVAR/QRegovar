@@ -198,6 +198,7 @@ void RootMenu::openMenuEntry(Subject* subject)
         }
         mSelectedEntry = entry->getEntry(entry->index());
         mSubjectBrowserEntry->select(0, mSubjectBrowserEntry->entries().indexOf(entry));
+
         emit openPage(mSelectedEntry);
     }
 }
