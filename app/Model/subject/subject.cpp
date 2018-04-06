@@ -171,6 +171,22 @@ void Subject::removeSample(Sample* sample)
 }
 
 
+void Subject::addPhenotype(Phenotype* phenotype)
+{
+    mPhenotypes->add(phenotype);
+    emit dataChanged();
+}
+
+
+void Subject::removePhenotype(Phenotype* phenotype)
+{
+    mPhenotypes->remove(phenotype);
+    emit dataChanged();
+}
+
+
+
+
 void Subject::updateSubjectUI()
 {
     // Format name

@@ -2,24 +2,35 @@
 #include "Model/regovar.h"
 #include "Model/framework/request.h"
 
-PhenotypesManager::PhenotypesManager(QObject *parent) : QObject(parent)
+PhenotypesManager::PhenotypesManager(QObject* parent) : QObject(parent)
 {
-
 }
 
 
 
-void PhenotypesManager::fromJson(QJsonArray json)
+Phenotype* PhenotypesManager::getOrCreatePhenotype(QString hpoId)
 {
-    for (const QJsonValue& data: json)
+    if (mPhenotypes.contains(hpoId))
     {
-        QJsonObject item = data.toObject();
-        if (!mPhenotypes.contains(item["id"].toString()))
-        {
-
-        }
+        return mPhenotypes[hpoId];
     }
+    Phenotype* newPheno = new Phenotype(hpoId, this);
+    mPhenotypes.insert(hpoId, newPheno);
+    return newPheno;
 }
+
+
+Disease* PhenotypesManager::getOrCreateDisease(QString hpoId)
+{
+    if (mDiseases.contains(hpoId))
+    {
+        return mDiseases[hpoId];
+    }
+    Disease* newDisea = new Disease(hpoId, this);
+    mDiseases.insert(hpoId, newDisea);
+    return newDisea;
+}
+
 
 void PhenotypesManager::search(QString query)
 {
@@ -30,12 +41,14 @@ void PhenotypesManager::search(QString query)
     {
         if (success)
         {
-            emit phenotypeSearchDone(true, json["data"].toArray());
+            mSearchResults->clear();
+            mSearchResults->fromJson(json["data"].toArray());
+            emit searchDone(true);
         }
         else
         {
             regovar->manageServerError(json, Q_FUNC_INFO);
-            emit phenotypeSearchDone(false, QJsonArray());
+            emit searchDone(false);
         }
         req->deleteLater();
     });

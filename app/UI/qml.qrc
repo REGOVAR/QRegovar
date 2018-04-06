@@ -219,5 +219,6 @@
         <file>Framework/Logo.qml</file>
         <file>Framework/SplitView.qml</file>
         <file>Dialogs/NewPhenotypeEntryDialog.qml</file>
+        <file>InformationPanel/Phenotype/PhenotypeSearchEntry.qml</file>
     </qresource>
 </RCC>

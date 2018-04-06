@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
+import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
@@ -11,7 +12,7 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property QtObject model
+    property Subject model
     onModelChanged:
     {
         if (model != undefined)
@@ -232,7 +233,10 @@ Rectangle
     NewPhenotypeEntryDialog
     {
         id: newPhenotypeEntryDialog
-
+        onAddPhenotype:
+        {
+            root.model.addPhenotype(hpo_id);
+        }
     }
 
 

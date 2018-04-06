@@ -9,7 +9,7 @@ Row
     id: root
     spacing: 10
 
-    property var model
+    property alias label: label.text
     signal added()
     signal showDetails()
 
@@ -29,6 +29,6 @@ Row
 
     Text
     {
-        text: ("symbol" in root.model) ? root.model["symbol"] : root.model["label"]
+        id: label
     }
 }

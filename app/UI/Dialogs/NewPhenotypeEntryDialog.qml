@@ -6,7 +6,7 @@ import QtQuick.Layouts 1.3
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
-import "qrc:/qml/Pages/Browse"
+import "qrc:/qml/InformationPanel/Phenotype"
 
 Dialog
 {
@@ -14,10 +14,20 @@ Dialog
 
     title: qsTr("Add phenotype entry")
 
-    // modality: Qt.NonModal
+    signal addPhenotype(var hpo_id)
 
+    // modality: Qt.NonModal
     width: 600
     height: 400
+    onVisibleChanged:
+    {
+        if (visible)
+        {
+            searchField.text = "";
+            formerSearch = "";
+            resultsModel.clear();
+        }
+    }
 
     property string formerSearch: ""
     function search()
@@ -87,7 +97,6 @@ Dialog
                 Layout.fillWidth: true
                 iconLeft: "z"
                 displayClearButton: true
-                text: regovar.searchRequest
                 placeholder: qsTr("Search gene, phenotype or disease...")
                 onEditingFinished: search()
             }
@@ -98,35 +107,48 @@ Dialog
                 onClicked: search()
             }
 
-            ListView
+            Rectangle
             {
-                id: results
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
+                radius: 2
+                color: Regovar.theme.boxColor.back
 
-                model: ListModel
+                ListView
                 {
-                    id: resultsModel
-                }
+                    id: results
+                    anchors.fill: parent
+                    anchors.margins: 1
+                    clip: true
+                    flickableDirection: Flickable.VerticalFlick
+                    boundsBehavior: Flickable.StopAtBounds
+                    ScrollBar.vertical: ScrollBar {}
 
-                delegate: SearchResultPhenotype
-                {
-                    width: 100// scrollarea.viewport.width
-                    height: 20
-                    phenotypeId: model.id
-                    label: model.label
-//                                onAdded:
-//                                {
-//                                    regovar.panelsManager.newPanel.addEntry({"label" : modelData["symbol"], "id": modelData["id"], "details": modelData["id"]});
-//                                    enabled = false;
-//                                }
-//                                onShowDetails:
-//                                {
-//                                    regovar.getGeneInfo(modelData["symbol"]);
-//                                }
+                    model: ListModel
+                    {
+                        id: resultsModel
+                    }
+
+                    delegate: PhenotypeSearchEntry
+                    {
+                        width: 100// scrollarea.viewport.width
+                        height: 20
+                        label: model.label
+                        onAdded:
+                        {
+                            addPhenotype(model.id);
+                            enabled = false;
+                        }
+                        onShowDetails:
+                        {
+                            regovar.getPhenotypeInfo(model.id);
+                        }
+                    }
                 }
             }
+
+
         }
 
         Row
