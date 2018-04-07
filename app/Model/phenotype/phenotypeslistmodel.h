@@ -54,7 +54,7 @@ Q_SIGNALS:
 
 private:
     QList<Phenotype*> mPhenotypes;
-    GenericProxyModel* mProxy;
+    GenericProxyModel* mProxy = nullptr;
 };
 
 #endif // PHENOTYPESLISTMODEL_H

@@ -131,7 +131,7 @@ private:
     QList<QObject*> mJobs;
     QList<QObject*> mFiles;
     QList<QObject*> mIndicators;
-    PhenotypesListModel* mPhenotypes;
+    PhenotypesListModel* mPhenotypes = nullptr;
     EventsListModel* mEvents = nullptr;
     QJsonObject mSubjectUI;
     QString mSearchField = "";

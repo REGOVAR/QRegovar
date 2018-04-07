@@ -235,7 +235,7 @@ Rectangle
         id: newPhenotypeEntryDialog
         onAddPhenotype:
         {
-            root.model.addPhenotype(hpo_id);
+            root.model.addPhenotype(phenotype);
         }
     }
 

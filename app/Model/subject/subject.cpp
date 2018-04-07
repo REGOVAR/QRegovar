@@ -6,13 +6,14 @@
 
 Subject::Subject(QObject* parent) : QObject(parent)
 {
+    mPhenotypes = new PhenotypesListModel(this);
 }
 
-Subject::Subject(QJsonObject json, QObject* parent) : QObject(parent)
+Subject::Subject(QJsonObject json, QObject* parent) : Subject(parent)
 {
     fromJson(json, false);
 }
-Subject::Subject(int id, QObject* parent) : QObject(parent)
+Subject::Subject(int id, QObject* parent) : Subject(parent)
 {
     mId = id;
 }
@@ -173,15 +174,21 @@ void Subject::removeSample(Sample* sample)
 
 void Subject::addPhenotype(Phenotype* phenotype)
 {
-    mPhenotypes->add(phenotype);
-    emit dataChanged();
+    if (mPhenotypes->add(phenotype))
+    {
+        save();
+        emit dataChanged();
+    }
 }
 
 
 void Subject::removePhenotype(Phenotype* phenotype)
 {
-    mPhenotypes->remove(phenotype);
-    emit dataChanged();
+    if (mPhenotypes->remove(phenotype))
+    {
+        save();
+        emit dataChanged();
+    }
 }
 
 

@@ -16,6 +16,7 @@ void PhenotypesListModel::clear()
     beginResetModel();
     mPhenotypes.clear();
     endResetModel();
+    emit countChanged();
 }
 
 
@@ -28,15 +29,17 @@ bool PhenotypesListModel::fromJson(QJsonArray json)
         QJsonObject data = val.toObject();
         Phenotype* pheno = regovar->phenotypesManager()->getOrCreatePhenotype(data["id"].toString());
         pheno->fromJson(data);
+        mPhenotypes.append(pheno);
     }
     endResetModel();
+    emit countChanged();
     return true;
 }
 
 
 bool PhenotypesListModel::add(Phenotype* pheno)
 {
-    if (!mPhenotypes.contains(pheno))
+    if (pheno!= nullptr && !mPhenotypes.contains(pheno))
     {
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         mPhenotypes.append(pheno);
@@ -61,7 +64,14 @@ bool PhenotypesListModel::remove(Phenotype* phenotype)
     return false;
 }
 
-
+Phenotype* PhenotypesListModel::getAt(int idx)
+{
+    if (idx >= 0 && idx <= mPhenotypes.count())
+    {
+        return mPhenotypes[idx];
+    }
+    return nullptr;
+}
 
 int PhenotypesListModel::rowCount(const QModelIndex&) const
 {
@@ -77,13 +87,15 @@ QVariant PhenotypesListModel::data(const QModelIndex& index, int role) const
 
 
     const Phenotype* pheno = mPhenotypes[index.row()];
+    if (pheno == nullptr) // TODO: why sometime pheno is nullptr ? how could it append
+        return QVariant();
     if (role == Label || role == Qt::DisplayRole)
         return pheno->label();
     else if (role == Id)
         return pheno->id();
     else if (role == Definition)
         return pheno->definition();
-    else if (role == Parent)
+    else if (role == Parent && pheno->parent() != nullptr)
         return pheno->parent()->label();
 //    else if (role == Childs)
 //        return "";

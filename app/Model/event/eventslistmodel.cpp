@@ -65,7 +65,7 @@ bool EventsListModel::loadJson(QJsonArray json, bool technical)
 
 bool EventsListModel::add(Event* event)
 {
-    if (!mEventList.contains(event))
+    if (event!= nullptr && !mEventList.contains(event))
     {
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         mEventList.append(event);

@@ -4,6 +4,7 @@
 
 Phenotype::Phenotype(QObject *parent) : QObject(parent)
 {
+    mChilds = new PhenotypesListModel(this);
     connect(this, &Phenotype::dataChanged, this, &Phenotype::updateSearchField);
 }
 Phenotype::Phenotype(QString hpo_id, QObject *parent) : Phenotype(parent)

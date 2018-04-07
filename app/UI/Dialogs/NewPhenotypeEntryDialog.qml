@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
+import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
@@ -14,7 +15,7 @@ Dialog
 
     title: qsTr("Add phenotype entry")
 
-    signal addPhenotype(var hpo_id)
+    signal addPhenotype(var phenotype)
 
     // modality: Qt.NonModal
     width: 600
@@ -39,21 +40,21 @@ Dialog
     }
 
 
-    Connections
-    {
-        target: regovar.phenotypesManager
-        onPhenotypeSearchDone:
-        {
-            if (success)
-            {
-                resultsModel.clear();
-                for(var idx in result)
-                {
-                    resultsModel.append(result[idx]);
-                }
-            }
-        }
-    }
+//    Connections
+//    {
+//        target: regovar.phenotypesManager
+//        onSearchDone:
+//        {
+//            if (success)
+//            {
+//                resultsModel.clear();
+//                for(var idx in result)
+//                {
+//                    resultsModel.append(result[idx]);
+//                }
+//            }
+//        }
+//    }
 
     contentItem: Rectangle
     {
@@ -124,11 +125,11 @@ Dialog
                     flickableDirection: Flickable.VerticalFlick
                     boundsBehavior: Flickable.StopAtBounds
                     ScrollBar.vertical: ScrollBar {}
-
-                    model: ListModel
-                    {
-                        id: resultsModel
-                    }
+                    model: regovar.phenotypesManager.searchResults
+//                    model: ListModel
+//                    {
+//                        id: resultsModel
+//                    }
 
                     delegate: PhenotypeSearchEntry
                     {
@@ -137,7 +138,7 @@ Dialog
                         label: model.label
                         onAdded:
                         {
-                            addPhenotype(model.id);
+                            addPhenotype(model);
                             enabled = false;
                         }
                         onShowDetails:

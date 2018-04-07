@@ -4,6 +4,7 @@
 
 PhenotypesManager::PhenotypesManager(QObject* parent) : QObject(parent)
 {
+    mSearchResults = new PhenotypesListModel(this);
 }
 
 

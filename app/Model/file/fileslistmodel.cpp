@@ -35,7 +35,7 @@ bool FilesListModel::loadJson(QJsonArray json)
 bool FilesListModel::add(File* file)
 {
     bool result = false;
-    if (!mFileList.contains(file))
+    if (file!= nullptr && !mFileList.contains(file))
     {
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         mFileList.append(file);

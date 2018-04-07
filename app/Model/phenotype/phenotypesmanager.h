@@ -27,7 +27,7 @@ Q_SIGNALS:
     void searchDone(bool success);
 
 private:
-    PhenotypesListModel* mSearchResults;
+    PhenotypesListModel* mSearchResults = nullptr;
     QHash<QString, Phenotype*> mPhenotypes;
     QHash<QString, Disease*> mDiseases;
     QHash<QString, QString> mPhenotypesSearchMap;

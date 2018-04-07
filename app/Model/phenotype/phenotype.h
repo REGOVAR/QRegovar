@@ -52,8 +52,8 @@ private:
     QString mLabel;
     QString mDefinition;
     QStringList mGenes;
-    Phenotype* mParent;
-    PhenotypesListModel* mChilds;
+    Phenotype* mParent = nullptr;
+    PhenotypesListModel* mChilds = nullptr;
     QList<Disease*> mDiseases;
     bool mLoaded = false;
     QString mSearchField;
