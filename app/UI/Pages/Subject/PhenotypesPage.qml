@@ -229,13 +229,12 @@ Rectangle
         } // end bottomPanel
     } // end SplitView
 
-
     NewPhenotypeEntryDialog
     {
         id: newPhenotypeEntryDialog
         onAddPhenotype:
         {
-            root.model.addPhenotype(phenotype);
+            root.model.addPhenotype(regovar.phenotypesManager.getOrCreatePhenotype(phenoId));
         }
     }
 

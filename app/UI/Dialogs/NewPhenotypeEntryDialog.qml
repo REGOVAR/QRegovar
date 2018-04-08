@@ -3,7 +3,6 @@ import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
-import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
@@ -15,7 +14,7 @@ Dialog
 
     title: qsTr("Add phenotype entry")
 
-    signal addPhenotype(var phenotype)
+    signal addPhenotype(var phenoId)
 
     // modality: Qt.NonModal
     width: 600
@@ -138,7 +137,7 @@ Dialog
                         label: model.label
                         onAdded:
                         {
-                            addPhenotype(model);
+                            addPhenotype(model.id);
                             enabled = false;
                         }
                         onShowDetails:

@@ -40,6 +40,8 @@ public:
     Q_INVOKABLE bool add(Phenotype* phenotype);
     //! Remove a phenotype from the list if possible
     Q_INVOKABLE bool remove(Phenotype* phenotype);
+    //! Return entry at the requested position in the list
+    Q_INVOKABLE Phenotype* getAt(int idx);
 
     // QAbstractListModel methods
     int rowCount(const QModelIndex& parent = QModelIndex()) const;

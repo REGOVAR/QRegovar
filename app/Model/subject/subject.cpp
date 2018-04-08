@@ -55,6 +55,20 @@ bool Subject::fromJson(QJsonObject json, bool full_init)
         sample->fromJson(sampleData);
         mSamples.append(sample);
     }
+    // Phenotype
+    QJsonArray hpo;
+    for (const QJsonValue& val: json["hpo"].toArray())
+    {
+        QJsonObject sampleData = val.toObject();
+        Sample* sample = regovar->samplesManager()->getOrCreateSample(sampleData["id"].toInt());
+        sample->fromJson(sampleData);
+        mSamples.append(sample);
+    }
+
+    for (int i=0; i<mPhenotypes->rowCount() ; ++i)
+    {
+        hpo.append(mPhenotypes->getAt(i)->id());
+    }
 
     // Event
     mEvents->loadJson(json["events"].toArray());
@@ -87,6 +101,13 @@ QJsonObject Subject::toJson()
         samples.append(sample->id());
     }
     result.insert("samples_ids", samples);
+    // Phenotype
+    QJsonArray hpo;
+    for (int i=0; i<mPhenotypes->rowCount() ; ++i)
+    {
+        hpo.append(mPhenotypes->getAt(i)->id());
+    }
+    result.insert("hpo_ids", hpo);
 
     // Files
     // Indicators
