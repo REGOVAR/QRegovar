@@ -9,6 +9,11 @@ PhenotypesListModel::PhenotypesListModel(QObject* parent): QAbstractListModel(pa
     mProxy->setSortRole(Label);
 }
 
+PhenotypesListModel::PhenotypesListModel(int subjectId, QObject* parent) : PhenotypesListModel(parent)
+{
+    mSubjectId = subjectId;
+}
+
 
 
 void PhenotypesListModel::clear()
@@ -101,8 +106,10 @@ QVariant PhenotypesListModel::data(const QModelIndex& index, int role) const
 //        return "";
 //    else if (role == Diseases)
 //        return "";
-//    else if (role == Genes)
-//        return "";
+    else if (role == Presence && mSubjectId != -1)
+        return pheno->presence(mSubjectId);
+    else if (role == Genes)
+        return pheno->genes().join(", ");
     else if (role == SearchField)
         return pheno->searchField();
     return QVariant();
@@ -118,6 +125,7 @@ QHash<int, QByteArray> PhenotypesListModel::roleNames() const
     roles[Childs] = "childs";
     roles[Diseases] = "diseases";
     roles[Genes] = "genes";
+    roles[Presence] = "presence";
     roles[SearchField] = "searchField";
     return roles;
 }

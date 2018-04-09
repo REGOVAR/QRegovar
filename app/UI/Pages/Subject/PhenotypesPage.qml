@@ -151,13 +151,43 @@ Rectangle
 
                     TableViewColumn
                     {
+                        role: "operator"
+                        title: qsTr("Presence")
+                    }
+                    TableViewColumn
+                    {
                         role: "label"
                         title: qsTr("Label")
+                        width: 300
+
+                        delegate: RowLayout
+                        {
+                            spacing: 10
+
+                            ButtonInline
+                            {
+                                iconTxt: "z"
+                                text: ""
+                                onClicked: regovar.getPhenotypeInfo(model.id)
+                            }
+                            Text
+                            {
+                                Layout.fillWidth: true
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                font.family: Regovar.theme.font.family
+                                color: Regovar.theme.frontColor.normal
+                                horizontalAlignment: Text.AlignLeft
+                                verticalAlignment: Text.AlignVCenter
+                                elide: Text.ElideRight
+                                text: styleData.value
+                            }
+                        }
                     }
                     TableViewColumn
                     {
                         role: "genes"
                         title: qsTr("Genes of interest")
+                        width: 400
                     }
 //                    TableViewColumn
 //                    {
@@ -169,12 +199,6 @@ Rectangle
 //                        role: "lastUpdate"
 //                        title: "Date"
 //                    }
-                    TableViewColumn
-                    {
-                        role: "comment"
-                        title: qsTr("Comment")
-                        width: 400
-                    }
 
 
                     onCurrentRowChanged:

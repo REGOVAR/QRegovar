@@ -17,18 +17,22 @@ class PhenotypesListModel: public QAbstractListModel
         Childs,
         Diseases,
         Genes,
+        Presence,
         SearchField
     };
 
     Q_OBJECT
+    Q_PROPERTY(int subjectId READ subjectId NOTIFY neverChanged)
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
     Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
 public:
     // Constructor
     explicit PhenotypesListModel(QObject* parent=nullptr);
+    explicit PhenotypesListModel(int subjectId, QObject* parent=nullptr);
 
     // Getters
+    inline int subjectId() const { return mSubjectId; }
     inline GenericProxyModel* proxy() const { return mProxy; }
 
     // Methods
@@ -55,6 +59,7 @@ Q_SIGNALS:
 
 
 private:
+    int mSubjectId = -1;
     QList<Phenotype*> mPhenotypes;
     GenericProxyModel* mProxy = nullptr;
 };

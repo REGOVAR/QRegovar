@@ -16,6 +16,8 @@ Subject::Subject(QJsonObject json, QObject* parent) : Subject(parent)
 Subject::Subject(int id, QObject* parent) : Subject(parent)
 {
     mId = id;
+    mPhenotypes->deleteLater();
+    mPhenotypes = new PhenotypesListModel(id, this);
 }
 
 
@@ -40,6 +42,7 @@ bool Subject::fromJson(QJsonObject json, bool full_init)
 
     if (!full_init) return true;
 
+    mPhenotypes->clear();
     mSamples.clear();
     mAnalyses.clear();
     mProjects.clear();
@@ -57,12 +60,16 @@ bool Subject::fromJson(QJsonObject json, bool full_init)
     }
     // Phenotype
     QJsonArray hpo;
-    for (const QJsonValue& val: json["hpo"].toArray())
+    for (const QJsonValue& val: json["phenotypes"].toArray())
     {
-        QJsonObject sampleData = val.toObject();
-        Sample* sample = regovar->samplesManager()->getOrCreateSample(sampleData["id"].toInt());
-        sample->fromJson(sampleData);
-        mSamples.append(sample);
+        QJsonObject phenoData = val.toObject();
+        Phenotype* pheno = regovar->phenotypesManager()->getOrCreatePhenotype(phenoData["id"].toString());
+        pheno->fromJson(phenoData);
+        if (phenoData.contains("presence"))
+        {
+            pheno->setPresence(mId, phenoData["presence"].toString());
+        }
+        mPhenotypes->add(pheno);
     }
 
     for (int i=0; i<mPhenotypes->rowCount() ; ++i)

@@ -36,16 +36,16 @@ void Phenotype::fromJson(QJsonObject json)
     QJsonObject parent = json["parent"].toObject();
     mParent = regovar->phenotypesManager()->getOrCreatePhenotype(parent["id"].toString());
     mParent->fromJson(parent);
-    for(const QJsonValue& gname: json["genes"].toArray())
-    {
-        mGenes.append(gname.toString());
-    }
     for(const QJsonValue& val: json["childs"].toArray())
     {
         QJsonObject child = val.toObject();
         Phenotype* cpheno = regovar->phenotypesManager()->getOrCreatePhenotype(child["id"].toString());
         cpheno->fromJson(child);
         mChilds->add(cpheno);
+    }
+    for(const QJsonValue& val: json["genes"].toArray())
+    {
+        mGenes.append(val.toString());
     }
     for(const QJsonValue& val: json["diseases"].toArray())
     {
@@ -55,4 +55,16 @@ void Phenotype::fromJson(QJsonObject json)
         mDiseases.append(dise);
     }
     emit dataChanged();
+}
+
+
+QString Phenotype::presence(int subjectId) const
+{
+    if (mPresence.contains(subjectId))
+        return mPresence[subjectId];
+    return "unknow";
+}
+void Phenotype::setPresence(int subjectId, QString presence)
+{
+    mPresence[subjectId] = presence;
 }
