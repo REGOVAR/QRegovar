@@ -4,6 +4,7 @@
 
 Phenotype::Phenotype(QObject *parent) : QObject(parent)
 {
+    mParents = new PhenotypesListModel(this);
     mChilds = new PhenotypesListModel(this);
     connect(this, &Phenotype::dataChanged, this, &Phenotype::updateSearchField);
 }
@@ -33,9 +34,15 @@ void Phenotype::fromJson(QJsonObject json)
 
     // Load full data
     mDefinition = json["definition"].toString();
-    QJsonObject parent = json["parent"].toObject();
-    mParent = regovar->phenotypesManager()->getOrCreatePhenotype(parent["id"].toString());
-    mParent->fromJson(parent);
+    mParents->clear();
+    mChilds->clear();
+    for(const QJsonValue& val: json["parents"].toArray())
+    {
+        QJsonObject parent = val.toObject();
+        Phenotype* ppheno = regovar->phenotypesManager()->getOrCreatePhenotype(parent["id"].toString());
+        ppheno->fromJson(parent);
+        mChilds->add(ppheno);
+    }
     for(const QJsonValue& val: json["childs"].toArray())
     {
         QJsonObject child = val.toObject();

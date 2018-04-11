@@ -100,8 +100,8 @@ QVariant PhenotypesListModel::data(const QModelIndex& index, int role) const
         return pheno->id();
     else if (role == Definition)
         return pheno->definition();
-    else if (role == Parent && pheno->parent() != nullptr)
-        return pheno->parent()->label();
+    else if (role == Parent && pheno->parents() != nullptr)
+        return ""; //pheno->parents()->label();
 //    else if (role == Childs)
 //        return "";
 //    else if (role == Diseases)

@@ -2,7 +2,9 @@
 #define DISEASE_H
 
 #include <QtCore>
+#include "phenotypeslistmodel.h"
 
+class PhenotypesListModel;
 class Disease: public QObject
 {
     Q_OBJECT
@@ -27,6 +29,7 @@ public:
 
     // Method
     void fromJson(QJsonObject json);
+    PhenotypesListModel* getQualifiers(QString hpoId);
 
 
 
