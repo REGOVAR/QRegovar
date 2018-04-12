@@ -46,7 +46,7 @@ public:
     void setPipeline(Pipeline* pipe);
 
 
-    // Analysis Abstracty Methods overriden
+    // Analysis  abstracts methods overriden
     //! Set model with provided json data
     Q_INVOKABLE bool fromJson(QJsonObject json, bool full_init=false);
     //! Export model data into json object

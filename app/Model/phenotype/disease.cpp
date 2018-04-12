@@ -1,8 +1,9 @@
 #include "disease.h"
 
 
-Disease::Disease(QObject* parent) : QObject(parent)
+Disease::Disease(QObject* parent) : HpoData(parent)
 {
+    mType = "disease";
     connect(this, &Disease::dataChanged, this, &Disease::updateSearchField);
 }
 
@@ -18,19 +19,21 @@ void Disease::updateSearchField()
     // TODO: add genes, diseases label
 }
 
-void Disease::fromJson(QJsonObject json)
+bool Disease::fromJson(QJsonObject json)
 {
     mId = json["id"].toString();
     mLabel = json["label"].toString();
+    mDiseasesFreq = 0;
 
     if (mLoaded || !json.contains("definition"))
     {
         mLoaded = false;
         emit dataChanged();
-        return;
+        return true;
     }
 
     // Load full data
     // Todo
     emit dataChanged();
+    return true;
 }

@@ -128,7 +128,7 @@ public:
     void setReference(Reference* ref, bool continueInit=false);
 
 
-    // Analysis Abstracty Methods overriden
+    // Analysis abstracts methods overriden
     Q_INVOKABLE bool fromJson(QJsonObject json, bool full_init=true);
     Q_INVOKABLE QJsonObject toJson();
     Q_INVOKABLE void save();

@@ -9,28 +9,25 @@ PhenotypesManager::PhenotypesManager(QObject* parent) : QObject(parent)
 
 
 
-Phenotype* PhenotypesManager::getOrCreatePhenotype(QString hpoId)
+HpoData* PhenotypesManager::getOrCreate(QString hpoId)
 {
-    if (mPhenotypes.contains(hpoId))
+    if (mHpoData.contains(hpoId))
     {
-        return mPhenotypes[hpoId];
+        return mHpoData[hpoId];
     }
-    Phenotype* newPheno = new Phenotype(hpoId, this);
-    mPhenotypes.insert(hpoId, newPheno);
-    return newPheno;
+    HpoData* hpo = nullptr;
+    if (hpoId.startsWith("HP:"))
+    {
+        hpo = new Phenotype(hpoId, this);
+    }
+    else
+    {
+        hpo = new Disease(hpoId, this);
+    }
+    mHpoData.insert(hpoId, hpo);
+    return hpo;
 }
 
-
-Disease* PhenotypesManager::getOrCreateDisease(QString hpoId)
-{
-    if (mDiseases.contains(hpoId))
-    {
-        return mDiseases[hpoId];
-    }
-    Disease* newDisea = new Disease(hpoId, this);
-    mDiseases.insert(hpoId, newDisea);
-    return newDisea;
-}
 
 
 void PhenotypesManager::search(QString query)

@@ -2,9 +2,11 @@
 #define PHENOTYPESLISTMODEL_H
 
 #include <QtCore>
-#include "phenotype.h"
+#include "hpodata.h"
 #include "Model/framework/genericproxymodel.h"
+#include "Model/subject/subject.h"
 
+class Subject;
 class Phenotype;
 class PhenotypesListModel: public QAbstractListModel
 {
@@ -12,17 +14,18 @@ class PhenotypesListModel: public QAbstractListModel
     {
         Id = Qt::UserRole + 1,
         Label,
-        Definition,
-        Parent,
-        Childs,
-        Diseases,
-        Genes,
+        Type,
+        Category,
         Presence,
+        AdditionDate,
+        DiseasesScore,
+        GenesScore,
+        Genes,
         SearchField
     };
 
     Q_OBJECT
-    Q_PROPERTY(int subjectId READ subjectId NOTIFY neverChanged)
+    Q_PROPERTY(Subject* subject READ subject NOTIFY neverChanged)
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
     Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
@@ -32,7 +35,7 @@ public:
     explicit PhenotypesListModel(int subjectId, QObject* parent=nullptr);
 
     // Getters
-    inline int subjectId() const { return mSubjectId; }
+    Subject* subject() const;
     inline GenericProxyModel* proxy() const { return mProxy; }
 
     // Methods
@@ -41,11 +44,11 @@ public:
     //! Load phenotype list from json
     Q_INVOKABLE bool fromJson(QJsonArray json);
     //! Add the provided phenotype to the list if not already contains
-    Q_INVOKABLE bool add(Phenotype* phenotype);
+    Q_INVOKABLE bool add(HpoData* hpoData);
     //! Remove a phenotype from the list if possible
-    Q_INVOKABLE bool remove(Phenotype* phenotype);
+    Q_INVOKABLE bool remove(HpoData* hpoData);
     //! Return entry at the requested position in the list
-    Q_INVOKABLE Phenotype* getAt(int idx);
+    Q_INVOKABLE HpoData* getAt(int idx);
 
     // QAbstractListModel methods
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
@@ -60,7 +63,8 @@ Q_SIGNALS:
 
 private:
     int mSubjectId = -1;
-    QList<Phenotype*> mPhenotypes;
+
+    QList<HpoData*> mHpoDataList;
     GenericProxyModel* mProxy = nullptr;
 };
 

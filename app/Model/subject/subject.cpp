@@ -13,10 +13,9 @@ Subject::Subject(QJsonObject json, QObject* parent) : Subject(parent)
 {
     fromJson(json, false);
 }
-Subject::Subject(int id, QObject* parent) : Subject(parent)
+Subject::Subject(int id, QObject* parent) : QObject(parent)
 {
     mId = id;
-    mPhenotypes->deleteLater();
     mPhenotypes = new PhenotypesListModel(id, this);
 }
 
@@ -59,22 +58,16 @@ bool Subject::fromJson(QJsonObject json, bool full_init)
         mSamples.append(sample);
     }
     // Phenotype
-    QJsonArray hpo;
-    for (const QJsonValue& val: json["phenotypes"].toArray())
+    for (const QJsonValue& val: json["hpo"].toArray())
     {
-        QJsonObject phenoData = val.toObject();
-        Phenotype* pheno = regovar->phenotypesManager()->getOrCreatePhenotype(phenoData["id"].toString());
-        pheno->fromJson(phenoData);
-        if (phenoData.contains("presence"))
+        QJsonObject data = val.toObject();
+        HpoData* hpo = regovar->phenotypesManager()->getOrCreate(data["id"].toString());
+        hpo->fromJson(data);
+        if (data.contains("presence"))
         {
-            pheno->setPresence(mId, phenoData["presence"].toString());
+            setPresence(hpo->id(), data["presence"].toString());
         }
-        mPhenotypes->add(pheno);
-    }
-
-    for (int i=0; i<mPhenotypes->rowCount() ; ++i)
-    {
-        hpo.append(mPhenotypes->getAt(i)->id());
+        mPhenotypes->add(hpo);
     }
 
     // Event
@@ -112,7 +105,8 @@ QJsonObject Subject::toJson()
     QJsonArray hpo;
     for (int i=0; i<mPhenotypes->rowCount() ; ++i)
     {
-        hpo.append(mPhenotypes->getAt(i)->id());
+        QString id = mPhenotypes->getAt(i)->id();
+        hpo.append(presence(id) + id);
     }
     result.insert("hpo_ids", hpo);
 
@@ -200,17 +194,18 @@ void Subject::removeSample(Sample* sample)
 }
 
 
-void Subject::addPhenotype(Phenotype* phenotype)
+void Subject::addHpo(HpoData* phenotype, QString presence)
 {
     if (mPhenotypes->add(phenotype))
     {
+        setPresence(phenotype->id(), presence);
         save();
         emit dataChanged();
     }
 }
 
 
-void Subject::removePhenotype(Phenotype* phenotype)
+void Subject::removeHpo(HpoData* phenotype)
 {
     if (mPhenotypes->remove(phenotype))
     {
@@ -218,6 +213,27 @@ void Subject::removePhenotype(Phenotype* phenotype)
         emit dataChanged();
     }
 }
+
+
+
+QString Subject::presence(QString hpoId) const
+{
+    if (mPresence.contains(hpoId))
+        return mPresence[hpoId];
+    return "unknow";
+}
+void Subject::setPresence(QString hpoId, QString presence)
+{
+    mPresence[hpoId] = presence;
+}
+
+QDateTime Subject::additionDate(QString hpoId) const
+{
+    if (mAdditionDate.contains(hpoId))
+        return mAdditionDate[hpoId];
+    return QDateTime();
+}
+
 
 
 

@@ -14,40 +14,42 @@ PhenotypesListModel::PhenotypesListModel(int subjectId, QObject* parent) : Pheno
     mSubjectId = subjectId;
 }
 
-
+Subject* PhenotypesListModel::subject() const
+{
+    if (mSubjectId == -1) return  nullptr;
+    return regovar->subjectsManager()->getOrCreateSubject(mSubjectId);
+}
 
 void PhenotypesListModel::clear()
 {
     beginResetModel();
-    mPhenotypes.clear();
+    mHpoDataList.clear();
     endResetModel();
     emit countChanged();
 }
 
-
 bool PhenotypesListModel::fromJson(QJsonArray json)
 {
     beginResetModel();
-    mPhenotypes.clear();
+    mHpoDataList.clear();
     for(const QJsonValue& val: json)
     {
         QJsonObject data = val.toObject();
-        Phenotype* pheno = regovar->phenotypesManager()->getOrCreatePhenotype(data["id"].toString());
-        pheno->fromJson(data);
-        mPhenotypes.append(pheno);
+        HpoData* hpo = regovar->phenotypesManager()->getOrCreate(data["id"].toString());
+        hpo->fromJson(data);
+        mHpoDataList.append(hpo);
     }
     endResetModel();
     emit countChanged();
     return true;
 }
 
-
-bool PhenotypesListModel::add(Phenotype* pheno)
+bool PhenotypesListModel::add(HpoData* hpodata)
 {
-    if (pheno!= nullptr && !mPhenotypes.contains(pheno))
+    if (hpodata!= nullptr && !mHpoDataList.contains(hpodata))
     {
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
-        mPhenotypes.append(pheno);
+        mHpoDataList.append(hpodata);
         endInsertRows();
         emit countChanged();
         return true;
@@ -55,13 +57,13 @@ bool PhenotypesListModel::add(Phenotype* pheno)
     return false;
 }
 
-bool PhenotypesListModel::remove(Phenotype* phenotype)
+bool PhenotypesListModel::remove(HpoData* hpoData)
 {
-    if (mPhenotypes.contains(phenotype))
+    if (mHpoDataList.contains(hpoData))
     {
-        int pos = mPhenotypes.indexOf(phenotype);
+        int pos = mHpoDataList.indexOf(hpoData);
         beginRemoveRows(QModelIndex(), pos, pos);
-        mPhenotypes.removeAll(phenotype);
+        mHpoDataList.removeAll(hpoData);
         endRemoveRows();
         emit countChanged();
         return true;
@@ -69,49 +71,49 @@ bool PhenotypesListModel::remove(Phenotype* phenotype)
     return false;
 }
 
-Phenotype* PhenotypesListModel::getAt(int idx)
+HpoData* PhenotypesListModel::getAt(int idx)
 {
-    if (idx >= 0 && idx <= mPhenotypes.count())
+    if (idx >= 0 && idx <= mHpoDataList.count())
     {
-        return mPhenotypes[idx];
+        return mHpoDataList[idx];
     }
     return nullptr;
 }
 
 int PhenotypesListModel::rowCount(const QModelIndex&) const
 {
-    return mPhenotypes.count();
+    return mHpoDataList.count();
 }
-
-
 
 QVariant PhenotypesListModel::data(const QModelIndex& index, int role) const
 {
-    if (index.row() < 0 || index.row() >= mPhenotypes.count())
+    if (index.row() < 0 || index.row() >= mHpoDataList.count())
         return QVariant();
 
-
-    const Phenotype* pheno = mPhenotypes[index.row()];
-    if (pheno == nullptr) // TODO: why sometime pheno is nullptr ? how could it append
+    const HpoData* hpo = mHpoDataList[index.row()];
+    if (hpo == nullptr) // TODO: why sometime pheno is nullptr ? how could it append
         return QVariant();
     if (role == Label || role == Qt::DisplayRole)
-        return pheno->label();
+        return hpo->label();
     else if (role == Id)
-        return pheno->id();
-    else if (role == Definition)
-        return pheno->definition();
-    else if (role == Parent && pheno->parents() != nullptr)
-        return ""; //pheno->parents()->label();
-//    else if (role == Childs)
-//        return "";
-//    else if (role == Diseases)
-//        return "";
-    else if (role == Presence && mSubjectId != -1)
-        return pheno->presence(mSubjectId);
+        return hpo->id();
+    else if (role == Type)
+        return hpo->type();
+    else if (role == Category)
+        return hpo->category();
+    else if (role == DiseasesScore)
+        return hpo->diseasesFreq();
+    else if (role == GenesScore)
+        return hpo->genesFreq();
     else if (role == Genes)
-        return pheno->genes().join(", ");
+        return hpo->genes().join(", ");
+    else if (role == Presence && mSubjectId != -1)
+        return regovar->subjectsManager()->getOrCreateSubject(mSubjectId)->presence(hpo->id());
+    else if (role == AdditionDate && mSubjectId != -1)
+        return regovar->subjectsManager()->getOrCreateSubject(mSubjectId)->additionDate(hpo->id());
     else if (role == SearchField)
-        return pheno->searchField();
+        return hpo->searchField();
+
     return QVariant();
 }
 
@@ -120,12 +122,12 @@ QHash<int, QByteArray> PhenotypesListModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[Id] = "id";
     roles[Label] = "label";
-    roles[Definition] = "definition";
-    roles[Parent] = "parent";
-    roles[Childs] = "childs";
-    roles[Diseases] = "diseases";
-    roles[Genes] = "genes";
+    roles[Type] = "type";
+    roles[Category] = "category";
     roles[Presence] = "presence";
+    roles[AdditionDate] = "additionDate";
+    roles[DiseasesScore] = "diseasesScore";
+    roles[GenesScore] = "genesScore";
     roles[SearchField] = "searchField";
     return roles;
 }

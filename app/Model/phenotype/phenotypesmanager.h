@@ -18,8 +18,7 @@ public:
     inline PhenotypesListModel* searchResults() const { return mSearchResults; }
 
     // Methods
-    Q_INVOKABLE Phenotype* getOrCreatePhenotype(QString hpoId);
-    Q_INVOKABLE Disease* getOrCreateDisease(QString hpoId);
+    Q_INVOKABLE HpoData* getOrCreate(QString hpoId);
     Q_INVOKABLE void search(QString query);
 
 
@@ -28,8 +27,7 @@ Q_SIGNALS:
 
 private:
     PhenotypesListModel* mSearchResults = nullptr;
-    QHash<QString, Phenotype*> mPhenotypes;
-    QHash<QString, Disease*> mDiseases;
+    QHash<QString, HpoData*> mHpoData;
     QHash<QString, QString> mPhenotypesSearchMap;
 };
 

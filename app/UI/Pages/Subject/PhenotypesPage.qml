@@ -18,6 +18,7 @@ Rectangle
         if (model != undefined)
         {
             nameLabel.text = model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname;
+            phenotypeList.model = model.phenotypes;
         }
     }
 
@@ -147,12 +148,12 @@ Rectangle
                     id: phenotypeList
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    model: (root.model) ? root.model.phenotypes : []
 
                     TableViewColumn
                     {
-                        role: "operator"
+                        role: "presence"
                         title: qsTr("Presence")
+                        width: 100
                     }
                     TableViewColumn
                     {
@@ -185,8 +186,18 @@ Rectangle
                     }
                     TableViewColumn
                     {
+                        role: "diseasesScore"
+                        title: qsTr("Disease score")
+                    }
+                    TableViewColumn
+                    {
+                        role: "genesScore"
+                        title: qsTr("Genes score")
+                    }
+                    TableViewColumn
+                    {
                         role: "genes"
-                        title: qsTr("Genes of interest")
+                        title: qsTr("Genes")
                         width: 400
                     }
 //                    TableViewColumn
@@ -194,17 +205,6 @@ Rectangle
 //                        role: "comment"
 //                        title: "Comment"
 //                    }
-//                    TableViewColumn
-//                    {
-//                        role: "lastUpdate"
-//                        title: "Date"
-//                    }
-
-
-                    onCurrentRowChanged:
-                    {
-                        displayCurrentPhenotypeDetails(root.model.phenotypes[currentRow]);
-                    }
                 }
             }
         } // end topPanel

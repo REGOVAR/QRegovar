@@ -98,9 +98,7 @@
         <file>InformationPanel/Panel/PanelFormNewCustom.qml</file>
         <file>InformationPanel/Panel/PanelSearchEntry.qml</file>
         <file>InformationPanel/Phenotype/InfoPanel.qml</file>
-        <file>InformationPanel/Phenotype/OnlineToolsPanel.qml</file>
         <file>InformationPanel/Phenotype/PhenotypeInformation.qml</file>
-        <file>InformationPanel/Phenotype/StatsPanel.qml</file>
         <file>InformationPanel/Pipeline/InfoPanel.qml</file>
         <file>InformationPanel/Pipeline/PipelineInformation.qml</file>
         <file>InformationPanel/Pipeline/StatsPanel.qml</file>
@@ -220,5 +218,8 @@
         <file>Framework/SplitView.qml</file>
         <file>Dialogs/NewPhenotypeEntryDialog.qml</file>
         <file>InformationPanel/Phenotype/PhenotypeSearchEntry.qml</file>
+        <file>InformationPanel/Phenotype/DiseasesPanel.qml</file>
+        <file>InformationPanel/Phenotype/GenesPanel.qml</file>
+        <file>InformationPanel/Phenotype/SubjectsPanel.qml</file>
     </qresource>
 </RCC>

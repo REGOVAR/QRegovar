@@ -8,6 +8,7 @@
 
 class Sample;
 class EventsListModel;
+class PhenotypesListModel;
 
 class Subject : public QObject
 {
@@ -48,9 +49,9 @@ public:
     Q_ENUM(Sex)
 
     // Constructors
-    explicit Subject(QObject *parent = nullptr);
-    explicit Subject(int id, QObject *parent = nullptr);
-    explicit Subject(QJsonObject json, QObject *parent = nullptr);
+    explicit Subject(QObject* parent = nullptr);
+    explicit Subject(int id, QObject* parent = nullptr);
+    explicit Subject(QJsonObject json, QObject* parent = nullptr);
 
     // Getters
     inline bool loaded() const { return mLoaded; }
@@ -97,13 +98,16 @@ public:
     Q_INVOKABLE void addSample(Sample* sample);
     //! Remove the association between the sample and the subject
     Q_INVOKABLE void removeSample(Sample* sample);
-    //! Associate a phenotype to the subject
-    Q_INVOKABLE void addPhenotype(Phenotype* phenotype);
-    //! Remove the association between the phenotype and the subject
-    Q_INVOKABLE void removePhenotype(Phenotype* phenotype);
+    //! Associate a phenotype/disease to the subject
+    Q_INVOKABLE void addHpo(HpoData* hpo, QString presence="present");
+    //! Remove the association between the phenotype/disease and the subject
+    Q_INVOKABLE void removeHpo(HpoData* hpo);
     //! SubjectUI is a all-in-one property to quickly display subject in the UI.
     void updateSubjectUI();
     QString computeAge(QDate d1, QDate d2);
+    Q_INVOKABLE QString presence(QString hpoId) const;
+    Q_INVOKABLE void setPresence(QString hpoId, QString presence);
+    Q_INVOKABLE QDateTime additionDate(QString hpoId) const;
 
 Q_SIGNALS:
     void dataChanged();
@@ -135,6 +139,8 @@ private:
     EventsListModel* mEvents = nullptr;
     QJsonObject mSubjectUI;
     QString mSearchField = "";
+    QHash<QString, QString> mPresence;
+    QHash<QString, QDateTime> mAdditionDate;
 };
 
 #endif // SUBJECT_H

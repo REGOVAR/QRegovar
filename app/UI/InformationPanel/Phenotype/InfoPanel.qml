@@ -14,9 +14,8 @@ ScrollView
     id: root
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-    property var diseases
-    property var phenotypes
     property var model
+
     onModelChanged:  if (model) { updateFromModel(model); }
 
     function updateFromModel(data)

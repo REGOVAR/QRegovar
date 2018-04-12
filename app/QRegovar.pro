@@ -89,7 +89,8 @@ HEADERS += \
     Model/analysis/remotelogmodel.h \
     Model/user/usersmanager.h \
     Model/phenotype/disease.h \
-    Model/phenotype/phenotypeslistmodel.h
+    Model/phenotype/phenotypeslistmodel.h \
+    Model/phenotype/hpodata.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -166,7 +167,8 @@ SOURCES += main.cpp \
     Model/analysis/remotelogmodel.cpp \
     Model/user/usersmanager.cpp \
     Model/phenotype/disease.cpp \
-    Model/phenotype/phenotypeslistmodel.cpp
+    Model/phenotype/phenotypeslistmodel.cpp \
+    Model/phenotype/hpodata.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

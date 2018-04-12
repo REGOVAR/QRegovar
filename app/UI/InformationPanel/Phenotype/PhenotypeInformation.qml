@@ -15,10 +15,9 @@ InformationPanel
     updateFromModel: function updateFromModel(data)
     {
         // Update title
-        var variant = "chr" + data["chr"] + ":" + data["pos"] + " " + data["ref"] + ">" + data["alt"];
-        var gene = data["genename"];
-        var ref = data["reference"];
-        root.title = "<span style=\"font-family: monospace;\">" + variant + "</span><br/><br/><i>Ref: </i>" + ref + "&nbsp;&nbsp;&nbsp;</span>\n\n<i>Gene: </i>" + gene;
+        root.title = "<h1>" + data["label"] + "</h1>";
+        root.title += "<span style=\"font-family: monospace;\">" + data["id"] + "</span><br>";
+        root.title += data["definition"];
 
         // Update tabs
         root.tabSharedModel = data;
@@ -29,14 +28,19 @@ InformationPanel
                 "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qmll"
             });
         ttt.append({
-                "title": qsTr("Online tools"),
+                "title": qsTr("Diseases"),
                 "icon": "K",
-                "source": "qrc:/qml/InformationPanel/Phenotype/OnlineToolsPanel.qml"
+                "source": "qrc:/qml/InformationPanel/Phenotype/DiseasesPanel.qml"
             });
         ttt.append({
-                "title": qsTr("Regovar statistics"),
-                "icon": "í",
-                "source": "qrc:/qml/InformationPanel/Phenotype/StatsPanel.qml"
+                "title": qsTr("Genes"),
+                "icon": "ì",
+                "source": "qrc:/qml/InformationPanel/Phenotype/GenesPanel.qml"
+            });
+        ttt.append({
+                "title": qsTr("Subjects"),
+                "icon": "b",
+                "source": "qrc:/qml/InformationPanel/Phenotype/SubjectsPanel.qml"
             });
         root.tabsModel = ttt;
         root.loading = false;
