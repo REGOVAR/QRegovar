@@ -34,7 +34,6 @@ class Subject : public QObject
     Q_PROPERTY(QList<QObject*> indicators READ indicators NOTIFY dataChanged)
     Q_PROPERTY(PhenotypesListModel* phenotypes READ phenotypes NOTIFY dataChanged)
     Q_PROPERTY(EventsListModel* events READ events NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> samples READ samples NOTIFY dataChanged)
     // Special "shortcut" properties for qml display
     Q_PROPERTY(QJsonObject subjectUI READ subjectUI NOTIFY dataChanged)
     Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
