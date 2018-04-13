@@ -4,9 +4,10 @@
 
 Phenotype::Phenotype(QObject* parent) : HpoData(parent)
 {
-    mType = "phenotype";
-    mParents = new PhenotypesListModel(this);
-    mChilds = new PhenotypesListModel(this);
+    mType = "phenotypic";
+    mParents = new HpoDataListModel(this);
+    mChilds = new HpoDataListModel(this);
+    mDiseases = new DiseasesListModel(this);
     connect(this, &Phenotype::dataChanged, this, &Phenotype::updateSearchField);
 }
 Phenotype::Phenotype(QString hpo_id, QObject* parent) : Phenotype( parent)
@@ -26,43 +27,81 @@ bool Phenotype::fromJson(QJsonObject json)
     mId = json["id"].toString();
     mLabel = json["label"].toString();
 
-    if (mLoaded || !json.contains("definition"))
+    if (!json.contains("definition"))
     {
-        mLoaded = false;
         emit dataChanged();
         return true;
     }
 
     // Load full data
     mDefinition = json["definition"].toString();
-    mParents->clear();
-    mChilds->clear();
-    for(const QJsonValue& val: json["parents"].toArray())
+    mCategory = json["category"].toString();
+    if (json.contains("parents"))
     {
-        QJsonObject parent = val.toObject();
-        Phenotype* ppheno = (Phenotype*) regovar->phenotypesManager()->getOrCreate(parent["id"].toString());
-        ppheno->fromJson(parent);
-        mChilds->add(ppheno);
+        mParents->clear();
+        mChilds->clear();
+        for(const QJsonValue& val: json["parents"].toArray())
+        {
+            QJsonObject parent = val.toObject();
+            Phenotype* ppheno = (Phenotype*) regovar->phenotypesManager()->getOrCreate(parent["id"].toString());
+            ppheno->fromJson(parent);
+            mChilds->add(ppheno);
+        }
+        for(const QJsonValue& val: json["childs"].toArray())
+        {
+            QJsonObject child = val.toObject();
+            Phenotype* cpheno = (Phenotype*) regovar->phenotypesManager()->getOrCreate(child["id"].toString());
+            cpheno->fromJson(child);
+            mChilds->add(cpheno);
+        }
+        mLoaded = true;
     }
-    for(const QJsonValue& val: json["childs"].toArray())
+
+    if (json.contains("genes"))
     {
-        QJsonObject child = val.toObject();
-        Phenotype* cpheno = (Phenotype*) regovar->phenotypesManager()->getOrCreate(child["id"].toString());
-        cpheno->fromJson(child);
-        mChilds->add(cpheno);
+        mGenes->fromJson(json["genes"].toArray());
     }
-    for(const QJsonValue& val: json["genes"].toArray())
+    if (json.contains("diseases"))
     {
-        mGenes.append(val.toString());
+        mDiseases->setPhenotypeId(mId);
+        mDiseases->fromJson(json["diseases"].toArray());
     }
-    for(const QJsonValue& val: json["diseases"].toArray())
+
+    if (json.contains("meta"))
     {
-        QJsonObject jdise = val.toObject();
-        Disease* dise = (Disease*) regovar->phenotypesManager()->getOrCreate(jdise["id"].toString());
-        dise->fromJson(jdise);
-        mDiseases.append(dise);
+        mMeta = json["meta"].toObject();
+        mGenesFreq = mMeta["genes_freq"].toObject();
+        mDiseasesFreq = mMeta["diseases_freq"].toObject();
+        mQualifiers = mMeta["qualifiers"].toObject();
+        if (mMeta.contains("sources"))
+        {
+            mSources.clear();
+            for(const QJsonValue& val: mMeta["sources"].toArray())
+            {
+                mSources.append(val.toString());
+            }
+        }
     }
+
     emit dataChanged();
     return true;
 }
 
+
+
+QString Phenotype::qualifier(QString diseaseId)
+{
+    QString result;
+    if (mQualifiers.contains(diseaseId))
+    {
+        for (const QJsonValue& val: mQualifiers[diseaseId].toArray() )
+        {
+            QJsonObject data = val.toObject();
+            if (data.contains("definition"))
+                result += data["definition"].toString() + " ";
+            else
+                result += val.toString() + ". ";
+        }
+    }
+    return result;
+}

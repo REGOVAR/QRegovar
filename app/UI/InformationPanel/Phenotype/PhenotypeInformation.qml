@@ -15,9 +15,9 @@ InformationPanel
     updateFromModel: function updateFromModel(data)
     {
         // Update title
-        root.title = "<h1>" + data["label"] + "</h1>";
-        root.title += "<span style=\"font-family: monospace;\">" + data["id"] + "</span><br>";
-        root.title += data["definition"];
+        root.title = "<h1>" + data.label + "</h1>";
+        //root.title += "<span style=\"font-family: monospace;\">" + data.id + "</span><br>";
+        root.title += data.definition;
 
         // Update tabs
         root.tabSharedModel = data;
@@ -25,7 +25,7 @@ InformationPanel
         ttt.append(
             {   "title": qsTr("Information"),
                 "icon": "è",
-                "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qmll"
+                "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qml"
             });
         ttt.append({
                 "title": qsTr("Diseases"),
@@ -55,6 +55,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onPhenotypeInformationReady: root.model = json
+        onPhenotypeInformationReady: root.model = phenotype
     }
 }

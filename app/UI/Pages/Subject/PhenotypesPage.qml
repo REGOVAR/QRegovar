@@ -77,7 +77,7 @@ Rectangle
     {
         id: actionsPanel
         anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
-        anchors.topMargin: Regovar.theme.font.boxSize.header
+        anchors.topMargin: Regovar.theme.font.size.header + 10
         anchors.right: root.right
         anchors.margins : 10
         spacing: 10
@@ -159,7 +159,7 @@ Rectangle
                     {
                         role: "label"
                         title: qsTr("Label")
-                        width: 300
+                        width: 400
 
                         delegate: RowLayout
                         {
@@ -176,35 +176,26 @@ Rectangle
                                 Layout.fillWidth: true
                                 font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.font.family
-                                color: Regovar.theme.frontColor.normal
+                                color: (model.presence == "present") ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
                                 horizontalAlignment: Text.AlignLeft
                                 verticalAlignment: Text.AlignVCenter
                                 elide: Text.ElideRight
-                                text: styleData.value
+                                text: styleData.value + (model.id.startsWith("HP:") ? "" : " (" + model.id + ")")
                             }
                         }
                     }
                     TableViewColumn
                     {
-                        role: "diseasesScore"
-                        title: qsTr("Disease score")
+                        role: "diseasesFreq"
+                        title: qsTr("Disease Freq")
+                        horizontalAlignment: Text.AlignRight
                     }
                     TableViewColumn
                     {
-                        role: "genesScore"
-                        title: qsTr("Genes score")
+                        role: "genesFreq"
+                        title: qsTr("Genes Freq")
+                        horizontalAlignment: Text.AlignRight
                     }
-                    TableViewColumn
-                    {
-                        role: "genes"
-                        title: qsTr("Genes")
-                        width: 400
-                    }
-//                    TableViewColumn
-//                    {
-//                        role: "comment"
-//                        title: "Comment"
-//                    }
                 }
             }
         } // end topPanel

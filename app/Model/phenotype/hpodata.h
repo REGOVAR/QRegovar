@@ -2,6 +2,7 @@
 #define HPODATA_H
 
 #include <QtCore>
+#include "geneslistmodel.h"
 
 class HpoData: public QObject
 {
@@ -10,10 +11,11 @@ class HpoData: public QObject
     Q_PROPERTY(QString label READ label NOTIFY dataChanged)
     Q_PROPERTY(QString type READ type  NOTIFY dataChanged)
     Q_PROPERTY(QStringList sources READ sources NOTIFY dataChanged)
-    Q_PROPERTY(QStringList genes READ genes NOTIFY dataChanged)
-    Q_PROPERTY(double genesFreq READ genesFreq NOTIFY dataChanged)
-    Q_PROPERTY(double diseasesFreq READ diseasesFreq NOTIFY dataChanged)
+    Q_PROPERTY(GenesListModel* genes READ genes NOTIFY dataChanged)
+    Q_PROPERTY(QJsonObject genesFreq READ genesFreq NOTIFY dataChanged)
+    Q_PROPERTY(QJsonObject diseasesFreq READ diseasesFreq NOTIFY dataChanged)
     Q_PROPERTY(QString category READ category NOTIFY dataChanged)
+    Q_PROPERTY(QJsonObject meta READ meta NOTIFY dataChanged)
 
     Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
     Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
@@ -27,16 +29,17 @@ public:
     inline QString label() const { return mLabel; }
     inline QString type() const { return mType; }
     inline QStringList sources() const { return mSources; }
-    inline QStringList genes() const { return mGenes; }
-    inline double genesFreq() const { return mGenesFreq; }
-    inline double diseasesFreq() const { return mDiseasesFreq; }
+    inline GenesListModel* genes() const { return mGenes; }
+    inline QJsonObject genesFreq() const { return mGenesFreq; }
+    inline QJsonObject diseasesFreq() const { return mDiseasesFreq; }
     inline QString category() const { return mCategory; }
+    inline QJsonObject meta() const { return mMeta; }
     inline bool loaded() const { return mLoaded; }
     inline QString searchField() const { return mSearchField; }
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE virtual bool fromJson(QJsonObject json) = 0;
+    Q_INVOKABLE virtual bool fromJson(QJsonObject json);
 
 
 Q_SIGNALS:
@@ -48,10 +51,11 @@ protected:
     QString mLabel;
     QString mType;
     QStringList mSources;
-    QStringList mGenes;
+    GenesListModel* mGenes;
     QString mCategory;
-    double mGenesFreq;
-    double mDiseasesFreq;
+    QJsonObject mGenesFreq;
+    QJsonObject mDiseasesFreq;
+    QJsonObject mMeta;
     bool mLoaded = false;
     QString mSearchField;
 };

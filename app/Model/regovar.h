@@ -232,7 +232,8 @@ Q_SIGNALS:
     void userInformationReady(User* user);
     void pipelineInformationReady(QJsonValue json);
     void geneInformationReady(QJsonValue json);
-    void phenotypeInformationReady(QJsonValue json);
+    void phenotypeInformationReady(Phenotype* phenotype);
+    void diseaseInformationReady(Disease* disease);
     void variantInformationReady(QJsonValue json);
 
     void errorOccured(QString errCode, QString message, QString techData);

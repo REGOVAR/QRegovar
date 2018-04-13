@@ -4,11 +4,11 @@
 #include <QtCore>
 #include "Model/file/file.h"
 #include "Model/phenotype/phenotype.h"
-#include "Model/phenotype/phenotypeslistmodel.h"
+#include "Model/phenotype/hpodatalistmodel.h"
 
 class Sample;
 class EventsListModel;
-class PhenotypesListModel;
+class HpoDataListModel;
 
 class Subject : public QObject
 {
@@ -32,7 +32,7 @@ class Subject : public QObject
     Q_PROPERTY(QList<QObject*> jobs READ jobs NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> files READ files NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> indicators READ indicators NOTIFY dataChanged)
-    Q_PROPERTY(PhenotypesListModel* phenotypes READ phenotypes NOTIFY dataChanged)
+    Q_PROPERTY(HpoDataListModel* phenotypes READ phenotypes NOTIFY dataChanged)
     Q_PROPERTY(EventsListModel* events READ events NOTIFY dataChanged)
     // Special "shortcut" properties for qml display
     Q_PROPERTY(QJsonObject subjectUI READ subjectUI NOTIFY dataChanged)
@@ -70,7 +70,7 @@ public:
     inline QList<QObject*> jobs() const { return mJobs; }
     inline QList<QObject*> files() const { return mFiles; }
     inline QList<QObject*> indicators() const { return mIndicators; }
-    inline PhenotypesListModel* phenotypes() const { return mPhenotypes; }
+    inline HpoDataListModel* phenotypes() const { return mPhenotypes; }
     inline EventsListModel* events() const { return mEvents; }
     inline QJsonObject subjectUI() const { return mSubjectUI; }
     inline QString searchField() const { return mSearchField; }
@@ -134,7 +134,7 @@ private:
     QList<QObject*> mJobs;
     QList<QObject*> mFiles;
     QList<QObject*> mIndicators;
-    PhenotypesListModel* mPhenotypes = nullptr;
+    HpoDataListModel* mPhenotypes = nullptr;
     EventsListModel* mEvents = nullptr;
     QJsonObject mSubjectUI;
     QString mSearchField = "";

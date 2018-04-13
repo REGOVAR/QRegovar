@@ -4,17 +4,20 @@
 #include <QtCore>
 #include "hpodata.h"
 #include "disease.h"
-#include "phenotypeslistmodel.h"
+#include "hpodatalistmodel.h"
+#include "diseaseslistmodel.h"
 
 class Disease;
-class PhenotypesListModel;
+class HpoDataListModel;
+class DiseasesListModel;
 class Phenotype : public HpoData
 {
     Q_OBJECT
     Q_PROPERTY(QString definition READ definition NOTIFY dataChanged)
-    Q_PROPERTY(PhenotypesListModel* parents READ parents NOTIFY dataChanged)
-    Q_PROPERTY(PhenotypesListModel* childs READ childs NOTIFY dataChanged)
-    Q_PROPERTY(QList<Disease*> diseases READ diseases NOTIFY dataChanged)
+    Q_PROPERTY(HpoDataListModel* parents READ parents NOTIFY dataChanged)
+    Q_PROPERTY(HpoDataListModel* childs READ childs NOTIFY dataChanged)
+    Q_PROPERTY(DiseasesListModel* diseases READ diseases NOTIFY dataChanged)
+
 
 
 public:
@@ -24,12 +27,15 @@ public:
 
     // Getters
     inline QString definition() const { return mDefinition; }
-    inline PhenotypesListModel* parents() const { return mParents; }
-    inline PhenotypesListModel* childs() const { return mChilds; }
-    inline QList<Disease*> diseases() const { return mDiseases; }
+    inline HpoDataListModel* parents() const { return mParents; }
+    inline HpoDataListModel* childs() const { return mChilds; }
+    inline DiseasesListModel* diseases() const { return mDiseases; }
 
     // HpoData  abstracts methods overriden
+    //! Load phenotype from json
     Q_INVOKABLE bool fromJson(QJsonObject json);
+    //! Return the phenotype qualifiers (as human readable string) for the requested disease
+    Q_INVOKABLE QString qualifier(QString diseaseId);
 
 
 public Q_SLOTS:
@@ -38,9 +44,10 @@ public Q_SLOTS:
 
 private:
     QString mDefinition;
-    PhenotypesListModel* mParents = nullptr;
-    PhenotypesListModel* mChilds = nullptr;
-    QList<Disease*> mDiseases;
+    HpoDataListModel* mParents = nullptr;
+    HpoDataListModel* mChilds = nullptr;
+    DiseasesListModel* mDiseases;
+    QJsonObject mQualifiers;
 };
 
 #endif // PHENOTYPE_H

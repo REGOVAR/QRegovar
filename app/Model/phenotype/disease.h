@@ -3,13 +3,16 @@
 
 #include <QtCore>
 #include "hpodata.h"
-#include "phenotypeslistmodel.h"
+#include "hpodatalistmodel.h"
 
-class PhenotypesListModel;
+class HpoDataListModel;
 class Disease: public HpoData
 {
     Q_OBJECT
     Q_PROPERTY(QStringList genes READ genes NOTIFY dataChanged)
+    Q_PROPERTY(QJsonObject omim READ omim  NOTIFY dataChanged)
+    Q_PROPERTY(QJsonObject orpha READ orpha  NOTIFY dataChanged)
+    Q_PROPERTY(QJsonObject decipher READ decipher  NOTIFY dataChanged)
 
 
 public:
@@ -19,9 +22,12 @@ public:
 
     // Getters
     inline QStringList genes() const { return mGenes; }
+    inline QJsonObject omim() const { return mOmim; }
+    inline QJsonObject orpha() const { return mOrpha; }
+    inline QJsonObject decipher() const { return mDecipher; }
 
     // Method
-    PhenotypesListModel* getQualifiers(QString hpoId);
+    HpoDataListModel* getQualifiers(QString hpoId);
 
     // HpoData abstracts methods overriden
     Q_INVOKABLE bool fromJson(QJsonObject json);
@@ -33,6 +39,9 @@ public Q_SLOTS:
 
 private:
     QStringList mGenes;
+    QJsonObject mOmim;
+    QJsonObject mOrpha;
+    QJsonObject mDecipher;
 };
 
 #endif // DISEASE_H

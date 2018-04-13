@@ -465,11 +465,18 @@ void Regovar::getPhenotypeInfo(QString phenotypeId)
     {
         if (success)
         {
-            emit phenotypeInformationReady(json["data"].toObject());
+            QJsonObject data = json["data"].toObject();
+            HpoData* hpo = phenotypesManager()->getOrCreate(data["id"].toString());
+            if (hpo->fromJson(data))
+            {
+                if (hpo->type() == "phenotypic")
+                    emit phenotypeInformationReady((Phenotype*)hpo);
+                else if (hpo->type() == "disease")
+                    emit diseaseInformationReady((Disease*)hpo);
+            }
         }
         else
         {
-            emit phenotypeInformationReady(QJsonValue::Null);
             regovar->manageServerError(json, Q_FUNC_INFO);
         }
         req->deleteLater();

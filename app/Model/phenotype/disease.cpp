@@ -23,17 +23,50 @@ bool Disease::fromJson(QJsonObject json)
 {
     mId = json["id"].toString();
     mLabel = json["label"].toString();
-    mDiseasesFreq = 0;
 
-    if (mLoaded || !json.contains("definition"))
+    if (mLoaded)
     {
-        mLoaded = false;
         emit dataChanged();
         return true;
     }
 
-    // Load full data
-    // Todo
+    if (json.contains("genes"))
+    {
+        mGenes.clear();
+        for(const QJsonValue& val: json["genes"].toArray())
+        {
+            mGenes.append(val.toString());
+        }
+    }
+    if (json.contains("meta"))
+    {
+        QJsonObject meta = json["meta"].toObject();
+        mGenesFreq = meta["genes_freq"].toObject();
+        if (meta.contains("sources"))
+        {
+            mSources.clear();
+            for(const QJsonValue& val: meta["sources"].toArray())
+            {
+                mSources.append(val.toString());
+            }
+        }
+    }
+    if (json.contains("omim"))
+    {
+        mOmim = json["omim"].toObject();
+        mLoaded = true;
+    }
+    if (json.contains("orpha"))
+    {
+        mOrpha = json["orpha"].toObject();
+        mLoaded = true;
+    }
+    if (json.contains("decipher"))
+    {
+        mDecipher = json["decipher"].toObject();
+        mLoaded = true;
+    }
+
     emit dataChanged();
     return true;
 }

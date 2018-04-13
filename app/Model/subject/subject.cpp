@@ -6,7 +6,7 @@
 
 Subject::Subject(QObject* parent) : QObject(parent)
 {
-    mPhenotypes = new PhenotypesListModel(this);
+    mPhenotypes = new HpoDataListModel(this);
 }
 
 Subject::Subject(QJsonObject json, QObject* parent) : Subject(parent)
@@ -16,7 +16,7 @@ Subject::Subject(QJsonObject json, QObject* parent) : Subject(parent)
 Subject::Subject(int id, QObject* parent) : QObject(parent)
 {
     mId = id;
-    mPhenotypes = new PhenotypesListModel(id, this);
+    mPhenotypes = new HpoDataListModel(id, this);
 }
 
 
