@@ -126,9 +126,9 @@ Rectangle
             anchors.right: panel.right
             anchors.bottom: panel.bottom
             columns: 2
-            rows:4
+            rows:5
             columnSpacing: 30
-            rowSpacing: 30
+            rowSpacing: 10
 
 
 
@@ -149,18 +149,24 @@ Rectangle
                 Layout.column: 0
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                color: "red"
+                color: Regovar.theme.backgroundColor.alt
+                radius: 2
                 ListView
                 {
                     anchors.fill: parent
+                    anchors.margins: 5
                     model: regovar.lastAnalyses
+                    clip: true
+                    flickableDirection: Flickable.VerticalFlick
+                    boundsBehavior: Flickable.StopAtBounds
+                    ScrollBar.vertical: ScrollBar {}
                     delegate: SearchResultAnalysis
                     {
+                        width: parent.width - 10
                         indent: 0
-                        width: analysesColumn.width - 10
                         date: model.modelData.updateDate
                         name: model.modelData.name
-                        fullpath: model.modelData.fullpath
+                        //fullpath: model.modelData.fullpath
                         status: model.modelData.status
                         onClicked: regovar.analysesManager.openAnalysis(model.modelData.type, model.modelData.id)
                     }
@@ -186,15 +192,21 @@ Rectangle
                 Layout.column: 1
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                color: "blue"
+                color: Regovar.theme.backgroundColor.alt
+                radius: 2
                 ListView
                 {
                     anchors.fill: parent
+                    anchors.margins: 5
                     model: regovar.lastSubjects
+                    clip: true
+                    flickableDirection: Flickable.VerticalFlick
+                    boundsBehavior: Flickable.StopAtBounds
+                    ScrollBar.vertical: ScrollBar {}
                     delegate: SearchResultSubject
                     {
-                        width: subjectsColumn.width - 10
-                        indent: 1
+                        width: parent.width - 10
+                        indent: 0
                         date: model.modelData.updateDate
                         identifier: model.modelData.identifier
                         firstname: model.modelData.firstname
@@ -206,9 +218,18 @@ Rectangle
             }
 
 
-            Text
+            Item
             {
                 Layout.row: 2
+                Layout.column: 0
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+                Layout.minimumHeight: 10
+            }
+
+            Text
+            {
+                Layout.row: 3
                 Layout.column: 0
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
@@ -222,20 +243,26 @@ Rectangle
 
             Rectangle
             {
-                Layout.row: 3
+                Layout.row: 4
                 Layout.column: 0
                 Layout.columnSpan: 2
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                color: "green"
+                color: Regovar.theme.backgroundColor.alt
+                radius: 2
                 ListView
                 {
                     anchors.fill: parent
+                    anchors.margins: 5
+                    clip: true
+                    flickableDirection: Flickable.VerticalFlick
+                    boundsBehavior: Flickable.StopAtBounds
+                    ScrollBar.vertical: ScrollBar {}
                     model: regovar.eventsManager.lastEvents
                     SearchResultEvent
                     {
+                        width: parent.width - 10
                         indent: 0
-                        width: eventsScrollArea.width - 10 // 10 ScrollBar width
                         eventId: model.id
                         date: model.date
                         message: model.message

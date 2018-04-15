@@ -11,10 +11,6 @@
 class PipelineAnalysis: public Analysis
 {
     Q_OBJECT
-    // Regovar resource attribute
-    Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
     // PipelineAnalysis (Job) attribute
     Q_PROPERTY(QJsonObject config READ config WRITE setConfig NOTIFY dataChanged)
     Q_PROPERTY(double progressValue READ progressValue NOTIFY dataChanged)
@@ -31,8 +27,6 @@ public:
     explicit PipelineAnalysis(int id, QObject* parent=nullptr);
 
     // Getters
-    inline bool loaded() const { return mLoaded; }
-
     inline QJsonObject config() const { return mConfig; }
     inline double progressValue() const { return mProgressValue; }
     inline QString progressLabel() const { return mProgressLabel; }
@@ -71,17 +65,10 @@ public Q_SLOTS:
     void processPushNotification(QString action, QJsonObject data);
 
 Q_SIGNALS:
-    void neverChanged();
     void pipelineChanged();
-    void dataChanged();
 
 
 private:
-    bool mLoaded = false;
-    QDateTime mUpdateDate;
-    QDateTime mCreateDate;
-    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
-
     // Attributes
     QJsonObject mConfig;
     double mProgressValue = 0;
