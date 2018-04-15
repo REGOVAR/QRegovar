@@ -79,10 +79,9 @@ Rectangle
     }
 
 
-    Rectangle
+    Item
     {
         id: panel
-        color: "transparent"
 
         anchors.top: searchBar.bottom
         anchors.bottom: root.bottom
@@ -118,7 +117,7 @@ Rectangle
         }
 
 
-        ColumnLayout
+        GridLayout
         {
             visible: regovar.welcomIsLoading
             anchors.top: newButtonsRow.bottom
@@ -126,206 +125,124 @@ Rectangle
             anchors.left: panel.left
             anchors.right: panel.right
             anchors.bottom: panel.bottom
-            spacing: 30
+            columns: 2
+            rows:4
+            columnSpacing: 30
+            rowSpacing: 30
 
 
-            SplitView
+
+            Text
             {
-                id: row
-                property real maxHeight: Regovar.theme.font.boxSize.header
-                Layout.fillWidth: true
+                Layout.row: 0
+                Layout.column: 0
+                height: Regovar.theme.font.boxSize.header
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+                font.pixelSize: Regovar.theme.font.size.header
+                color: Regovar.theme.primaryColor.back.dark
+                text: qsTr("Last analyses")
+            }
+            Rectangle
+            {
+                Layout.row: 1
+                Layout.column: 0
                 Layout.fillHeight: true
-                Layout.maximumHeight: maxHeight
-                Layout.minimumHeight: maxHeight
-
-
-                Rectangle
+                Layout.fillWidth: true
+                color: "red"
+                ListView
                 {
-                    id: analysesScrollArea
-                    color: "transparent"
-                    width: 500
-                    height: parent.height
-                    clip: true
-
-                    Text
+                    anchors.fill: parent
+                    model: regovar.lastAnalyses
+                    delegate: SearchResultAnalysis
                     {
-                        id: analysesHeader
-                        verticalAlignment: Text.AlignVCenter
-                        elide: Text.ElideRight
-                        font.pixelSize: Regovar.theme.font.size.header
-                        color: Regovar.theme.primaryColor.back.dark
-                        height: Regovar.theme.font.boxSize.header
-                        text: qsTr("Last analyses")
-                    }
-
-                    Rectangle
-                    {
-                        anchors.top: analysesHeader.bottom
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.rightMargin: 10
-                        height: 1
-                        color: Regovar.theme.primaryColor.back.normal
-                    }
-
-
-
-                    ScrollView
-                    {
-                        id: analysesColumn
-                        anchors.fill: parent
-                        anchors.topMargin: Regovar.theme.font.boxSize.header + 5
-                        anchors.rightMargin: 10
-                        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
-                        Column
-                        {
-                            onHeightChanged: row.maxHeight = Math.max(row.maxHeight, height + Regovar.theme.font.boxSize.header + 5)
-                            Repeater
-                            {
-                                model: regovar.lastAnalyses
-                                SearchResultAnalysis
-                                {
-                                    indent: 0
-                                    width: analysesColumn.width - 10
-                                    date: model.modelData.updateDate
-                                    name: model.modelData.name
-                                    fullpath: model.modelData.fullpath
-                                    status: model.modelData.status
-                                    onClicked: regovar.analysesManager.openAnalysis(model.modelData.type, model.modelData.id)
-                                }
-                            }
-                        }
-                    }
-                }
-
-                Rectangle
-                {
-                    id: subjectScrollArea
-                    color: "transparent"
-                    height: parent.height
-                    clip: true
-
-                    ScrollBar
-                    {
-                        hoverEnabled: true
-                        active: hovered || pressed
-                        orientation: Qt.Vertical
-                        size: subjectScrollArea.height / subjectsColumn.height
-                        anchors.top: parent.top
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
-                    }
-
-                    Text
-                    {
-                        id: subjectsHeader
-                        anchors.left: parent.left
-                        anchors.leftMargin: 10
-                        verticalAlignment: Text.AlignVCenter
-                        elide: Text.ElideRight
-                        font.pixelSize: Regovar.theme.font.size.header
-                        color: Regovar.theme.primaryColor.back.dark
-                        height: Regovar.theme.font.boxSize.header
-                        text: qsTr("Last subjects")
-                    }
-
-                    Rectangle
-                    {
-                        anchors.top: subjectsHeader.bottom
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.leftMargin: 10
-                        height: 1
-                        color: Regovar.theme.primaryColor.back.normal
-                    }
-
-
-                    ScrollView
-                    {
-                        id: subjectsColumn
-                        anchors.fill: parent
-                        anchors.topMargin: Regovar.theme.font.boxSize.header + 5
-                        anchors.rightMargin: 10
-                        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
-
-                        Column
-                        {
-                            onHeightChanged: row.maxHeight = Math.max(row.maxHeight, height + Regovar.theme.font.boxSize.header + 5)
-                            Repeater
-                            {
-                                model: regovar.lastSubjects
-                                SearchResultSubject
-                                {
-                                    width: subjectsColumn.width - 10
-                                    indent: 1
-                                    date: model.modelData.updateDate
-                                    identifier: model.modelData.identifier
-                                    firstname: model.modelData.firstname
-                                    lastname: model.modelData.lastname
-                                    sex: model.modelData.sex
-                                    onClicked: regovar.subjectsManager.openSubject(model.modelData.id)
-                                }
-                            }
-                        }
+                        indent: 0
+                        width: analysesColumn.width - 10
+                        date: model.modelData.updateDate
+                        name: model.modelData.name
+                        fullpath: model.modelData.fullpath
+                        status: model.modelData.status
+                        onClicked: regovar.analysesManager.openAnalysis(model.modelData.type, model.modelData.id)
                     }
                 }
             }
 
+
+
+            Text
+            {
+                Layout.row: 0
+                Layout.column: 1
+                height: Regovar.theme.font.boxSize.header
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+                font.pixelSize: Regovar.theme.font.size.header
+                color: Regovar.theme.primaryColor.back.dark
+                text: qsTr("Last subjects")
+            }
+            Rectangle
+            {
+                Layout.row: 1
+                Layout.column: 1
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                color: "blue"
+                ListView
+                {
+                    anchors.fill: parent
+                    model: regovar.lastSubjects
+                    delegate: SearchResultSubject
+                    {
+                        width: subjectsColumn.width - 10
+                        indent: 1
+                        date: model.modelData.updateDate
+                        identifier: model.modelData.identifier
+                        firstname: model.modelData.firstname
+                        lastname: model.modelData.lastname
+                        sex: model.modelData.sex
+                        onClicked: regovar.subjectsManager.openSubject(model.modelData.id)
+                    }
+                }
+            }
+
+
+            Text
+            {
+                Layout.row: 2
+                Layout.column: 0
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+                height: Regovar.theme.font.boxSize.header
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+                font.pixelSize: Regovar.theme.font.size.header
+                color: Regovar.theme.primaryColor.back.dark
+                text: qsTr("Last events")
+            }
 
             Rectangle
             {
-                id: eventsScrollArea
-                Layout.fillWidth: true
+                Layout.row: 3
+                Layout.column: 0
+                Layout.columnSpan: 2
                 Layout.fillHeight: true
-                color: "transparent"
-                clip: true
-
-                Text
-                {
-                    id: eventsHeader
-                    verticalAlignment: Text.AlignVCenter
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    color: Regovar.theme.primaryColor.back.dark
-                    height: Regovar.theme.font.boxSize.header
-                    text: qsTr("Last events")
-                }
-
-                Rectangle
-                {
-                    anchors.top: eventsHeader.bottom
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    height: 1
-                    color: Regovar.theme.primaryColor.back.normal
-                }
-
-                ScrollView
+                Layout.fillWidth: true
+                color: "green"
+                ListView
                 {
                     anchors.fill: parent
-                    anchors.topMargin: Regovar.theme.font.boxSize.header + 5
-                    horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
-                    Column
+                    model: regovar.eventsManager.lastEvents
+                    SearchResultEvent
                     {
-                        id: eventsColumn
-                        Repeater
-                        {
-                            model: regovar.eventsManager.lastEvents
-                            SearchResultEvent
-                            {
-                                indent: 0
-                                width: eventsScrollArea.width - 10 // 10 ScrollBar width
-                                eventId: model.id
-                                date: model.date
-                                message: model.message
-                            }
-                        }
+                        indent: 0
+                        width: eventsScrollArea.width - 10 // 10 ScrollBar width
+                        eventId: model.id
+                        date: model.date
+                        message: model.message
                     }
                 }
             }
+
         }
 
         Rectangle
