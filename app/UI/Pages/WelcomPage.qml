@@ -259,7 +259,7 @@ Rectangle
                     boundsBehavior: Flickable.StopAtBounds
                     ScrollBar.vertical: ScrollBar {}
                     model: regovar.eventsManager.lastEvents
-                    SearchResultEvent
+                    delegate: SearchResultEvent
                     {
                         width: parent.width - 10
                         indent: 0

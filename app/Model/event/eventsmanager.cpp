@@ -16,11 +16,12 @@ void EventsManager::loadJson(QJsonArray json)
         int id = data["id"].toInt();
         Event* event = getOrCreateEvent(id);
         event->fromJson(data);
-        mTechnicalEvents->add(event);
         if (data["type"] != "technical")
         {
             mLastEvents->add(event);
         }
+
+        // mTechnicalEvents->add(event);
     }
 }
 
