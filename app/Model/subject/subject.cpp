@@ -106,7 +106,7 @@ QJsonObject Subject::toJson()
     for (int i=0; i<mPhenotypes->rowCount() ; ++i)
     {
         QString id = mPhenotypes->getAt(i)->id();
-        hpo.append(presence(id) + id);
+        hpo.append((presence(id) == "present" ? "+" : "-" )+ id);
     }
     result.insert("hpo_ids", hpo);
 
@@ -194,13 +194,12 @@ void Subject::removeSample(Sample* sample)
 }
 
 
-void Subject::addHpo(HpoData* phenotype, QString presence)
+void Subject::setHpo(HpoData* hpo, QString presence)
 {
-    if (mPhenotypes->add(phenotype))
+    if (hpo != nullptr)
     {
-        setPresence(phenotype->id(), presence);
-        save();
-        emit dataChanged();
+        mPhenotypes->add(hpo);
+        setPresence(hpo->id(), presence);
     }
 }
 
@@ -224,7 +223,12 @@ QString Subject::presence(QString hpoId) const
 }
 void Subject::setPresence(QString hpoId, QString presence)
 {
-    mPresence[hpoId] = presence;
+    if (mPresence.contains(hpoId))
+    {
+        mPresence[hpoId] = presence;
+        save();
+        emit dataChanged();
+    }
 }
 
 QDateTime Subject::additionDate(QString hpoId) const

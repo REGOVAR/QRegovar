@@ -31,6 +31,7 @@ ColumnLayout
         TextField
         {
             id: searchField
+            Layout.fillWidth: true
             iconLeft: "z"
             displayClearButton: true
             placeholder: qsTr("Quick filter...")
@@ -70,13 +71,14 @@ ColumnLayout
     {
         if (!data) return;
 
-        diseasesTable.enabled = data.diseases.length>0;
-        searchField.enabled = data.diseases.length>0;
+        var count =  data.diseases.rowCount();
+        diseasesTable.enabled = count>0;
+        searchField.enabled = count>0;
 
-        if (data.diseases.length>0)
+        if (count>0)
         {
             diseasesTable.model = data.diseases.proxy;
-            label.text = "The phenotype have been found in " + data.diseases.length + " diseases.";
+            label.text = "The phenotype have been found in " + count + " diseases.";
         }
         else
         {

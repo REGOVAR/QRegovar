@@ -108,7 +108,7 @@ QVariant HpoDataListModel::data(const QModelIndex& index, int role) const
     else if (role == Genes)
         return hpo->genes()->join(", ");
     else if (role == Presence && mSubjectId != -1)
-        return regovar->subjectsManager()->getOrCreateSubject(mSubjectId)->presence(hpo->id());
+        return regovar->subjectsManager()->getOrCreateSubject(mSubjectId)->presence(hpo->id()) == "present" ? true: false;
     else if (role == AdditionDate && mSubjectId != -1)
         return regovar->subjectsManager()->getOrCreateSubject(mSubjectId)->additionDate(hpo->id());
     else if (role == SearchField)

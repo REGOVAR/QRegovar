@@ -92,17 +92,10 @@ Rectangle
         }
         Button
         {
-            id: editPhenotype
-            Layout.fillWidth: true
-            text: qsTr("Edit")
-            onClicked:  console.log("Open Select Phenotype dialog")
-        }
-        Button
-        {
             id: removePhenotype
             Layout.fillWidth: true
             text: qsTr("Remove")
-            onClicked:  console.log("Remove phenotype entry")
+            onClicked: root.model.phenotypes.removeHpo(phenotypeList.getAt(phenotypeList.currentRow))
         }
         Item
         {
@@ -154,6 +147,16 @@ Rectangle
                         role: "presence"
                         title: qsTr("Presence")
                         width: 100
+                        delegate:  CheckBox
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.left
+                            anchors.leftMargin: 5
+                            text: checked ? qsTr("Present") : qsTr("Absent")
+                            color: checked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
+                            checked: styleData.value
+                            onClicked: root.model.setHpo(model, checked ? "present" : "absent")
+                        }
                     }
                     TableViewColumn
                     {
@@ -176,7 +179,6 @@ Rectangle
                                 Layout.fillWidth: true
                                 font.pixelSize: Regovar.theme.font.size.normal
                                 font.family: Regovar.theme.font.family
-                                color: (model.presence == "present") ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
                                 horizontalAlignment: Text.AlignLeft
                                 verticalAlignment: Text.AlignVCenter
                                 elide: Text.ElideRight
@@ -247,10 +249,7 @@ Rectangle
     NewPhenotypeEntryDialog
     {
         id: newPhenotypeEntryDialog
-        onAddPhenotype:
-        {
-            root.model.addPhenotype(regovar.phenotypesManager.getOrCreatePhenotype(phenoId));
-        }
+        onAddPhenotype: root.model.setHpo(regovar.phenotypesManager.getOrCreate(phenoId))
     }
 
 

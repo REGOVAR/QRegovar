@@ -31,6 +31,7 @@ ColumnLayout
         TextField
         {
             id: searchField
+            Layout.fillWidth: true
             iconLeft: "z"
             displayClearButton: true
             placeholder: qsTr("Quick filter...")
@@ -70,13 +71,14 @@ ColumnLayout
     {
         if (!data) return;
 
-        genesTable.enabled = data.diseases.length>0;
-        searchField.enabled = data.diseases.length>0;
+        var count = data.genes.rowCount();
+        genesTable.enabled = count>0;
+        searchField.enabled = count>0;
 
-        if (data.genes.length>0)
+        if (count>0)
         {
             genesTable.model = data.genes.proxy;
-            label.text = "The phenotype is linked to " + data.genes.length + " genes.";
+            label.text = "The phenotype is linked to " + count + " genes.";
         }
         else
         {

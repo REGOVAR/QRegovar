@@ -98,7 +98,7 @@ public:
     //! Remove the association between the sample and the subject
     Q_INVOKABLE void removeSample(Sample* sample);
     //! Associate a phenotype/disease to the subject
-    Q_INVOKABLE void addHpo(HpoData* hpo, QString presence="present");
+    Q_INVOKABLE void setHpo(HpoData* hpo, QString presence="present");
     //! Remove the association between the phenotype/disease and the subject
     Q_INVOKABLE void removeHpo(HpoData* hpo);
     //! SubjectUI is a all-in-one property to quickly display subject in the UI.
