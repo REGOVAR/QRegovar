@@ -6,6 +6,7 @@
 #include "Model/framework/genericproxymodel.h"
 #include "Model/subject/subject.h"
 
+class HpoData;
 class Subject;
 class HpoDataListModel: public QAbstractListModel
 {
@@ -41,9 +42,9 @@ public:
     //! Remove all entries of the list
     Q_INVOKABLE void clear();
     //! Load phenotype list from json
-    Q_INVOKABLE bool fromJson(QJsonArray json);
+    Q_INVOKABLE bool loadJson(QJsonArray json);
     //! Add the provided phenotype to the list if not already contains
-    Q_INVOKABLE bool add(HpoData* hpoData);
+    Q_INVOKABLE bool append(HpoData* hpoData);
     //! Remove a phenotype from the list if possible
     Q_INVOKABLE bool remove(HpoData* hpoData);
     //! Return entry at the requested position in the list

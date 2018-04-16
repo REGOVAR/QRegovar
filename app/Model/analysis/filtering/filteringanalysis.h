@@ -129,7 +129,7 @@ public:
 
 
     // Analysis abstracts methods overriden
-    Q_INVOKABLE bool fromJson(QJsonObject json, bool full_init=true);
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true);
     Q_INVOKABLE QJsonObject toJson();
     Q_INVOKABLE void save();
     Q_INVOKABLE void load(bool forceRefresh=true);

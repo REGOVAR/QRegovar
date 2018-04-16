@@ -19,7 +19,7 @@ bool FilesListModel::loadJson(QJsonArray json)
     {
         QJsonObject fileData = eventJson.toObject();
         File* file = regovar->filesManager()->getOrCreateFile(fileData["id"].toInt());
-        file->fromJson(fileData);
+        file->loadJson(fileData);
         if (!mFileList.contains(file))
         {
             mFileList.append(file);

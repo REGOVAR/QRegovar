@@ -31,7 +31,7 @@ AnnotationsTreeModel::AnnotationsTreeModel(FilteringAnalysis* analysis) : TreeMo
 
 
 
-bool AnnotationsTreeModel::fromJson(QJsonObject, QStringList)
+bool AnnotationsTreeModel::loadJson(QJsonObject, QStringList)
 {
 //    NEVER USED ???
 //    clear();

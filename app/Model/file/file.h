@@ -99,8 +99,8 @@ public:
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE bool fromJson(QJsonDocument json);
-    Q_INVOKABLE bool fromJson(QJsonObject json);
+    Q_INVOKABLE bool loadJson(QJsonDocument json);
+    Q_INVOKABLE bool loadJson(QJsonObject json);
     //! Export model data into json object
     Q_INVOKABLE QJsonObject toJson();
     //! Save subject information onto server

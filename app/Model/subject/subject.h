@@ -3,13 +3,11 @@
 
 #include <QtCore>
 #include "Model/file/file.h"
-#include "Model/phenotype/phenotype.h"
-#include "Model/phenotype/hpodatalistmodel.h"
 
 class Sample;
 class EventsListModel;
+class HpoData;
 class HpoDataListModel;
-
 class Subject : public QObject
 {
     Q_OBJECT
@@ -86,7 +84,7 @@ public:
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE bool fromJson(QJsonObject json, bool full_init=true);
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true);
     //! Export model data into json object
     Q_INVOKABLE QJsonObject toJson();
     //! Save subject information onto server

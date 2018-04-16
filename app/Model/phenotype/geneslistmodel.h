@@ -29,9 +29,9 @@ public:
     //! Remove all entries of the list
     Q_INVOKABLE void clear();
     //! Load phenotype list from list of json
-    Q_INVOKABLE bool fromJson(QJsonArray json);
+    Q_INVOKABLE bool loadJson(QJsonArray json);
     //! Add the provided gene to the list if not already contains
-    Q_INVOKABLE bool add(QString gene);
+    Q_INVOKABLE bool append(QString gene);
     //! Remove a gene from the list if possible
     Q_INVOKABLE bool remove(QString gene);
     //! Return entry at the requested position in the list

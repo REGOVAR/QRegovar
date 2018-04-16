@@ -8,11 +8,11 @@ SavedFilter::SavedFilter(QObject* parent) : QObject(parent)
 }
 SavedFilter::SavedFilter(QJsonObject json, QObject* parent): QObject(parent)
 {
-    fromJson(json);
+    loadJson(json);
 }
 
 
-void SavedFilter::fromJson(QJsonObject json)
+bool SavedFilter::loadJson(QJsonObject json)
 {
     mId = json["id"].toInt();
     mName = json["name"].toString();
@@ -21,4 +21,5 @@ void SavedFilter::fromJson(QJsonObject json)
     mCount = json["total_variants"].toInt();
     mProgress =  json["progress"].toDouble();
     emit dataChanged();
+    return true;
 }

@@ -36,7 +36,7 @@ public:
 
     // Methods
     Q_INVOKABLE bool loadJson(QJsonArray json, bool technical=false);
-    Q_INVOKABLE bool add(Event* event);
+    Q_INVOKABLE bool append(Event* event);
     Q_INVOKABLE bool refresh();
     Q_INVOKABLE void newEvent(QString message, QDateTime date, QString details);
 

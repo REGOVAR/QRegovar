@@ -22,7 +22,7 @@ void Phenotype::updateSearchField()
     // TODO: add genes, diseases label
 }
 
-bool Phenotype::fromJson(QJsonObject json)
+bool Phenotype::loadJson(QJsonObject json)
 {
     mId = json["id"].toString();
     mLabel = json["label"].toString();
@@ -44,27 +44,31 @@ bool Phenotype::fromJson(QJsonObject json)
         {
             QJsonObject parent = val.toObject();
             Phenotype* ppheno = (Phenotype*) regovar->phenotypesManager()->getOrCreate(parent["id"].toString());
-            ppheno->fromJson(parent);
-            mChilds->add(ppheno);
+            ppheno->loadJson(parent);
+            mChilds->append(ppheno);
         }
         for(const QJsonValue& val: json["childs"].toArray())
         {
             QJsonObject child = val.toObject();
             Phenotype* cpheno = (Phenotype*) regovar->phenotypesManager()->getOrCreate(child["id"].toString());
-            cpheno->fromJson(child);
-            mChilds->add(cpheno);
+            cpheno->loadJson(child);
+            mChilds->append(cpheno);
         }
         mLoaded = true;
     }
 
     if (json.contains("genes"))
     {
-        mGenes->fromJson(json["genes"].toArray());
+        mGenes->loadJson(json["genes"].toArray());
     }
     if (json.contains("diseases"))
     {
         mDiseases->setPhenotypeId(mId);
-        mDiseases->fromJson(json["diseases"].toArray());
+        mDiseases->loadJson(json["diseases"].toArray());
+    }
+    if (json.contains("subjects"))
+    {
+        mSubjects->loadJson(json["subjects"].toArray());
     }
 
     if (json.contains("meta"))

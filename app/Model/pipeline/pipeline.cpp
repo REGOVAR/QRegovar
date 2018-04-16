@@ -16,7 +16,7 @@ Pipeline::Pipeline(int id, QObject* parent) : Pipeline(parent)
 
 Pipeline::Pipeline(QJsonObject json) : Pipeline(nullptr)
 {
-    fromJson(json);
+    loadJson(json);
 }
 
 
@@ -28,7 +28,7 @@ void Pipeline::updateSearchField()
 
 
 
-bool Pipeline::fromJson(QJsonObject json)
+bool Pipeline::loadJson(QJsonObject json)
 {
     mId = json["id"].toInt();
     mType = json["type"].toString();
@@ -115,7 +115,7 @@ void Pipeline::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {

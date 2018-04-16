@@ -163,7 +163,7 @@ bool AnalysesManager::newAnalysis(QString type)
                 int id = data["id"].toInt();
                 // Open new analysis
                 PipelineAnalysis*  pa = getOrCreatePipelineAnalysis(id);
-                pa->fromJson(data, true);
+                pa->loadJson(data, true);
                 bool result = openAnalysis(Analysis::PIPELINE, id, false);
 
                 // notify HMI that analysis is created (=> close newAnalizeWizard dialog)
@@ -223,13 +223,13 @@ bool AnalysesManager::loadJson(QJsonArray json)
         {
             // Load job analysis
             PipelineAnalysis* pa = getOrCreatePipelineAnalysis(item["id"].toInt());
-            pa->fromJson(item, false);
+            pa->loadJson(item, false);
         }
         else
         {
             // Load filtering analysis
             FilteringAnalysis* fa = getOrCreateFilteringAnalysis(item["id"].toInt());
-            fa->fromJson(item, false);
+            fa->loadJson(item, false);
         }
     }
 

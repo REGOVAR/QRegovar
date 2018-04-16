@@ -44,7 +44,7 @@ FilteringAnalysis::FilteringAnalysis(int id, QObject* parent) : FilteringAnalysi
 
 
 
-bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
+bool FilteringAnalysis::loadJson(QJsonObject json, bool full_init)
 {
     // load basic data from json
     setId(json["id"].toInt());
@@ -90,7 +90,7 @@ bool FilteringAnalysis::fromJson(QJsonObject json, bool full_init)
     {
         QJsonObject sampleData = spJson.toObject();
         Sample* sample = regovar->samplesManager()->getOrCreateSample(sampleData["id"].toInt());
-        if(sample->fromJson(sampleData))
+        if(sample->loadJson(sampleData))
         {
             mSamples.append(sample);
         }
@@ -222,7 +222,7 @@ void FilteringAnalysis::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {
@@ -731,7 +731,7 @@ void FilteringAnalysis::editFilter(int filterId, QString filterName, QString fil
             if (filter != nullptr)
             {
                 // Edit
-                filter->fromJson(jsonData);
+                filter->loadJson(jsonData);
             }
             else
             {
@@ -809,7 +809,7 @@ void FilteringAnalysis::addSamplesFromFile(int fileId)
             {
                 QJsonObject sampleData = sampleValue.toObject();
                 Sample* sample = regovar->samplesManager()->getOrCreateSample(sampleData["id"].toInt());
-                if (sample->fromJson(sampleData))
+                if (sample->loadJson(sampleData))
                 {
                     if (!mSamplesIds.contains(sample->id()))
                     {
@@ -1001,7 +1001,7 @@ void FilteringAnalysis::processPushNotification(QString action, QJsonObject data
             SavedFilter* filter = qobject_cast<SavedFilter*>(o);
             if (filter->id() == filterId)
             {
-                filter->fromJson(data);
+                filter->loadJson(data);
                 break;
             }
         }

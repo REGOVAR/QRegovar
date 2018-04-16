@@ -38,7 +38,7 @@ bool ProjectsManager::loadJson(QJsonArray json, QString prefix)
     if (prefix.isEmpty())
     {
         // Update tree model
-        mProjectsTreeModel->fromJson(json);
+        mProjectsTreeModel->loadJson(json);
 
         mProjectsFlatList.clear();
     }
@@ -60,7 +60,7 @@ bool ProjectsManager::loadJson(QJsonArray json, QString prefix)
         {
             p.insert("fullpath", prefix + name);
             Project* proj = getOrCreateProject(id);
-            proj->fromJson(p);
+            proj->loadJson(p);
             mProjectsFlatList << proj;
         }
     }
@@ -103,7 +103,7 @@ void ProjectsManager::newProject(QString name, QString comment)
         {
             QJsonObject data = json["data"].toObject();
             Project* project = getOrCreateProject(data["id"].toInt());
-            project->fromJson(data);
+            project->loadJson(data);
             openProject(project->id(), false);
             emit projectCreationDone(true, project->id());
 

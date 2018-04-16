@@ -26,7 +26,7 @@ Panel* Panel::buildPanel(QJsonObject json)
 {
     // Create first panel
     Panel* panel = new Panel(true);
-    if (panel->fromJson(json))
+    if (panel->loadJson(json))
     {
         // Create all other versions of the same panel
         for (const QJsonValue& data: json["versions"].toArray())
@@ -53,7 +53,7 @@ Panel* Panel::buildPanel(QJsonObject json)
 QString Panel::addVersion(QJsonObject data, bool append)
 {
     Panel* panel = new Panel(mOrderedVersionsIds, mVersionsMap);
-    bool result = panel->fromJson(data);
+    bool result = panel->loadJson(data);
     if (result)
     {
         mVersionsMap->insert(panel->versionId(), panel);
@@ -73,7 +73,7 @@ QString Panel::addVersion(QJsonObject data, bool append)
 
 
 // Load only data for the current panelversion.
-bool Panel::fromJson(QJsonObject json)
+bool Panel::loadJson(QJsonObject json)
 {
     // json may be for Panel or Panel's version
     // a Panel contains a list of version
@@ -198,7 +198,7 @@ void Panel::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {

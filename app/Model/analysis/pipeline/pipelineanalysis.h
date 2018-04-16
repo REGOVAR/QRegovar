@@ -42,7 +42,7 @@ public:
 
     // Analysis  abstracts methods overriden
     //! Set model with provided json data
-    Q_INVOKABLE bool fromJson(QJsonObject json, bool full_init=false);
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=false);
     //! Export model data into json object
     Q_INVOKABLE QJsonObject toJson();
     //! Save subject information onto server

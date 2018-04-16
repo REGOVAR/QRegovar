@@ -21,7 +21,6 @@ class SubjectsManager : public QAbstractListModel
     };
 
     Q_OBJECT
-
     Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
 public:

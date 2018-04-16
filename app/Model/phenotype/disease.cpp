@@ -19,7 +19,7 @@ void Disease::updateSearchField()
     // TODO: add genes, diseases label
 }
 
-bool Disease::fromJson(QJsonObject json)
+bool Disease::loadJson(QJsonObject json)
 {
     mId = json["id"].toString();
     mLabel = json["label"].toString();
@@ -32,10 +32,10 @@ bool Disease::fromJson(QJsonObject json)
 
     if (json.contains("genes"))
     {
-        mGenes.clear();
+        mGenes->clear();
         for(const QJsonValue& val: json["genes"].toArray())
         {
-            mGenes.append(val.toString());
+            mGenes->append(val.toString());
         }
     }
     if (json.contains("meta"))

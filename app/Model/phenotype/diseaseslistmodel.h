@@ -5,7 +5,6 @@
 #include "disease.h"
 #include "Model/framework/genericproxymodel.h"
 
-class Disease;
 class DiseasesListModel: public QAbstractListModel
 {
     enum Roles
@@ -33,13 +32,13 @@ public:
     //! Remove all entries of the list
     Q_INVOKABLE void clear();
     //! Load phenotype list from json
-    Q_INVOKABLE bool fromJson(QJsonArray json);
+    Q_INVOKABLE bool loadJson(QJsonArray json);
     //! Add the provided phenotype to the list if not already contains
-    Q_INVOKABLE bool add(Disease* disease);
+    Q_INVOKABLE bool append(Disease* disease);
     //! Remove a phenotype from the list if possible
     Q_INVOKABLE bool remove(Disease* disease);
     //! Return entry at the requested position in the list
-    Q_INVOKABLE HpoData* getAt(int idx);
+    Q_INVOKABLE Disease* getAt(int idx);
     //! Set the id of the related phenotype
     Q_INVOKABLE inline void setPhenotypeId(QString id) { mPhenotypeId = id; }
 

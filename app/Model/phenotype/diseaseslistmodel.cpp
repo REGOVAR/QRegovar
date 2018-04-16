@@ -18,7 +18,7 @@ void DiseasesListModel::clear()
     emit countChanged();
 }
 
-bool DiseasesListModel::fromJson(QJsonArray json)
+bool DiseasesListModel::loadJson(QJsonArray json)
 {
     beginResetModel();
     mDiseases.clear();
@@ -26,7 +26,7 @@ bool DiseasesListModel::fromJson(QJsonArray json)
     {
         QJsonObject data = val.toObject();
         HpoData* hpo = regovar->phenotypesManager()->getOrCreate(data["id"].toString());
-        hpo->fromJson(data);
+        hpo->loadJson(data);
         mDiseases.append((Disease*)hpo);
     }
     endResetModel();
@@ -34,7 +34,7 @@ bool DiseasesListModel::fromJson(QJsonArray json)
     return true;
 }
 
-bool DiseasesListModel::add(Disease* disease)
+bool DiseasesListModel::append(Disease* disease)
 {
     if (disease!= nullptr && !mDiseases.contains(disease))
     {
@@ -61,7 +61,7 @@ bool DiseasesListModel::remove(Disease* disease)
     return false;
 }
 
-HpoData* DiseasesListModel::getAt(int idx)
+Disease* DiseasesListModel::getAt(int idx)
 {
     if (idx >= 0 && idx <= mDiseases.count())
     {
@@ -80,7 +80,7 @@ QVariant DiseasesListModel::data(const QModelIndex& index, int role) const
     if (index.row() < 0 || index.row() >= mDiseases.count())
         return QVariant();
 
-    const HpoData* hpo = mDiseases[index.row()];
+    const Disease* hpo = mDiseases[index.row()];
     if (role == Label || role == Qt::DisplayRole)
         return hpo->label();
     else if (role == Id)

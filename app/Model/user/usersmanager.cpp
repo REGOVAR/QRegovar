@@ -18,8 +18,8 @@ void UsersManager::loadJson(QJsonArray json)
         QJsonObject data = val.toObject();
         int id = data["id"].toInt();
         User* user = getOrCreateUser(id);
-        user->fromJson(data);
-        mUsersList->add(user);
+        user->loadJson(data);
+        mUsersList->append(user);
     }
 }
 
@@ -100,7 +100,7 @@ void UsersManager::login(QString login, QString password)
         {
             QJsonObject data = json["data"].toObject();
             setUser(getOrCreateUser(data["id"].toInt()));
-            mUser->fromJson(data);
+            mUser->loadJson(data);
             emit displayLoginScreen(false);
             regovar->loadWelcomData();
             regovar->settings()->setKeepMeLogged(mKeepMeLogged);

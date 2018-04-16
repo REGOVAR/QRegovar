@@ -1,8 +1,10 @@
 #include "subject.h"
-#include "sample.h"
 #include "Model/regovar.h"
 #include "Model/framework/request.h"
+#include "sample.h"
 #include "Model/event/eventslistmodel.h"
+#include "Model/phenotype/phenotype.h"
+#include "Model/phenotype/hpodatalistmodel.h"
 
 Subject::Subject(QObject* parent) : QObject(parent)
 {
@@ -11,7 +13,7 @@ Subject::Subject(QObject* parent) : QObject(parent)
 
 Subject::Subject(QJsonObject json, QObject* parent) : Subject(parent)
 {
-    fromJson(json, false);
+    loadJson(json, false);
 }
 Subject::Subject(int id, QObject* parent) : QObject(parent)
 {
@@ -21,7 +23,7 @@ Subject::Subject(int id, QObject* parent) : QObject(parent)
 
 
 
-bool Subject::fromJson(QJsonObject json, bool full_init)
+bool Subject::loadJson(QJsonObject json, bool full_init)
 {
     mId = json["id"].toInt();
     mIdentifier = json["identifier"].toString();
@@ -54,7 +56,7 @@ bool Subject::fromJson(QJsonObject json, bool full_init)
     {
         QJsonObject sampleData = val.toObject();
         Sample* sample = regovar->samplesManager()->getOrCreateSample(sampleData["id"].toInt());
-        sample->fromJson(sampleData);
+        sample->loadJson(sampleData);
         mSamples.append(sample);
     }
     // Phenotype
@@ -62,12 +64,12 @@ bool Subject::fromJson(QJsonObject json, bool full_init)
     {
         QJsonObject data = val.toObject();
         HpoData* hpo = regovar->phenotypesManager()->getOrCreate(data["id"].toString());
-        hpo->fromJson(data);
+        hpo->loadJson(data);
         if (data.contains("presence"))
         {
             setPresence(hpo->id(), data["presence"].toString());
         }
-        mPhenotypes->add(hpo);
+        mPhenotypes->append(hpo);
     }
 
     // Event
@@ -150,7 +152,7 @@ void Subject::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {
@@ -198,7 +200,7 @@ void Subject::setHpo(HpoData* hpo, QString presence)
 {
     if (hpo != nullptr)
     {
-        mPhenotypes->add(hpo);
+        mPhenotypes->append(hpo);
         setPresence(hpo->id(), presence);
     }
 }

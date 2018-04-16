@@ -58,7 +58,7 @@ void PanelsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
         QJsonObject pJson = json.toObject();
         QString id = pJson["id"].toString();
         Panel* p = regovar->panelsManager()->getOrCreatePanel(id);
-        p->fromJson(pJson);
+        p->loadJson(pJson);
 
         // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
         QHash<int, QVariant> columnData;

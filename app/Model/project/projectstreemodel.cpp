@@ -23,12 +23,13 @@ ProjectsTreeModel::ProjectsTreeModel(QObject* parent) : TreeModel(parent)
 
 
 
-void ProjectsTreeModel::fromJson(QJsonArray json)
+bool ProjectsTreeModel::loadJson(QJsonArray json)
 {
     beginResetModel();
     clear();
     setupModelData(json, mRootItem);
     endResetModel();
+    return true;
 }
 
 
@@ -56,7 +57,7 @@ TreeItem* ProjectsTreeModel::newFolderTreeItem(const QJsonObject& data, TreeItem
 {
     int id = data["id"].toInt();
     Project* project = regovar->projectsManager()->getOrCreateProject(id);
-    project->fromJson(data);
+    project->loadJson(data);
 
     // add columns info to the item
     QHash<int, QVariant> columnData;

@@ -40,7 +40,7 @@ void PhenotypesManager::search(QString query)
         if (success)
         {
             mSearchResults->clear();
-            mSearchResults->fromJson(json["data"].toArray());
+            mSearchResults->loadJson(json["data"].toArray());
             emit searchDone(true);
         }
         else

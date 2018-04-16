@@ -15,10 +15,10 @@ void EventsManager::loadJson(QJsonArray json)
         QJsonObject data = val.toObject();
         int id = data["id"].toInt();
         Event* event = getOrCreateEvent(id);
-        event->fromJson(data);
+        event->loadJson(data);
         if (data["type"] != "technical")
         {
-            mLastEvents->add(event);
+            mLastEvents->append(event);
         }
 
         // mTechnicalEvents->add(event);

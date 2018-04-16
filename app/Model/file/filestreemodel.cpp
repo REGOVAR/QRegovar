@@ -24,7 +24,7 @@ FilesTreeModel::FilesTreeModel(QObject* parent) : TreeModel(parent)
 
 
 
-bool FilesTreeModel::fromJson(QJsonArray json)
+bool FilesTreeModel::loadJson(QJsonArray json)
 {
     beginResetModel();
     clear();
@@ -140,7 +140,7 @@ void FilesTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
             // Add file entry
             int id = p["id"].toInt();
             File* file = regovar->filesManager()->getOrCreateFile(id);
-            file->fromJson(p);
+            file->loadJson(p);
             add(file, parent);
         }
     }

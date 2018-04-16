@@ -26,7 +26,7 @@ RegovarInfo::RegovarInfo(QObject* parent) : QObject(parent)
 }
 
 
-void RegovarInfo::fromJson(QJsonObject json)
+bool RegovarInfo::loadJson(QJsonObject json)
 {
     mServerVersion = json["version"].toString();
     mWebsite = json["website"].toString();
@@ -56,6 +56,7 @@ void RegovarInfo::fromJson(QJsonObject json)
 
 
     emit configChanged();
+    return true;
 }
 
 
@@ -155,7 +156,7 @@ void Regovar::loadConfigData()
             QJsonObject data = json["data"].toObject();
 
             // Get server config and release information
-            mConfig->fromJson(data);
+            mConfig->loadJson(data);
             QJsonObject milestones;
             for (const QJsonValue& val: data["client_milestones"].toArray())
             {
@@ -211,7 +212,7 @@ void Regovar::loadWelcomData()
                 if (ref == nullptr)
                 {
                     ref = new Reference(this);
-                    ref->fromJson(jsonVal.toObject());
+                    ref->loadJson(jsonVal.toObject());
                     if (ref->id() > 0) mReferences.append(ref);
                 }
             }
@@ -467,7 +468,7 @@ void Regovar::getPhenotypeInfo(QString phenotypeId)
         {
             QJsonObject data = json["data"].toObject();
             HpoData* hpo = phenotypesManager()->getOrCreate(data["id"].toString());
-            if (hpo->fromJson(data))
+            if (hpo->loadJson(data))
             {
                 if (hpo->type() == "phenotypic")
                     emit phenotypeInformationReady((Phenotype*)hpo);

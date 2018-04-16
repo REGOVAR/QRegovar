@@ -3,7 +3,9 @@
 
 #include <QtCore>
 #include "geneslistmodel.h"
+#include "Model/subject/subjectslistmodel.h"
 
+class SubjectsListModel;
 class HpoData: public QObject
 {
     Q_OBJECT
@@ -12,6 +14,7 @@ class HpoData: public QObject
     Q_PROPERTY(QString type READ type  NOTIFY dataChanged)
     Q_PROPERTY(QStringList sources READ sources NOTIFY dataChanged)
     Q_PROPERTY(GenesListModel* genes READ genes NOTIFY dataChanged)
+    Q_PROPERTY(SubjectsListModel* subjects READ subjects NOTIFY dataChanged)
     Q_PROPERTY(QJsonObject genesFreq READ genesFreq NOTIFY dataChanged)
     Q_PROPERTY(QJsonObject diseasesFreq READ diseasesFreq NOTIFY dataChanged)
     Q_PROPERTY(QString category READ category NOTIFY dataChanged)
@@ -30,6 +33,7 @@ public:
     inline QString type() const { return mType; }
     inline QStringList sources() const { return mSources; }
     inline GenesListModel* genes() const { return mGenes; }
+    inline SubjectsListModel* subjects() const { return mSubjects; }
     inline QJsonObject genesFreq() const { return mGenesFreq; }
     inline QJsonObject diseasesFreq() const { return mDiseasesFreq; }
     inline QString category() const { return mCategory; }
@@ -39,7 +43,7 @@ public:
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE virtual bool fromJson(QJsonObject json);
+    Q_INVOKABLE virtual bool loadJson(QJsonObject json);
 
 
 Q_SIGNALS:
@@ -51,7 +55,8 @@ protected:
     QString mLabel;
     QString mType;
     QStringList mSources;
-    GenesListModel* mGenes;
+    GenesListModel* mGenes = nullptr;
+    SubjectsListModel* mSubjects = nullptr;
     QString mCategory;
     QJsonObject mGenesFreq;
     QJsonObject mDiseasesFreq;

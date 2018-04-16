@@ -18,7 +18,7 @@ void GenesListModel::clear()
     emit countChanged();
 }
 
-bool GenesListModel::fromJson(QJsonArray json)
+bool GenesListModel::loadJson(QJsonArray json)
 {
     beginResetModel();
     mGenes.clear();
@@ -35,7 +35,7 @@ bool GenesListModel::fromJson(QJsonArray json)
     return true;
 }
 
-bool GenesListModel::add(QString gene)
+bool GenesListModel::append(QString gene)
 {
     if (!gene.isEmpty() && !mGenes.contains(gene))
     {

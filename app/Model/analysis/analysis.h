@@ -53,7 +53,7 @@ public:
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE virtual bool fromJson(QJsonObject json, bool full_init=true) = 0;
+    Q_INVOKABLE virtual bool loadJson(QJsonObject json, bool full_init=true) = 0;
     //! Export model data into json object
     Q_INVOKABLE virtual QJsonObject toJson() = 0;
     //! Save subject information onto server

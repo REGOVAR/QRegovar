@@ -8,6 +8,7 @@
 #include "diseaseslistmodel.h"
 
 class Disease;
+class HpoData;
 class HpoDataListModel;
 class DiseasesListModel;
 class Phenotype : public HpoData
@@ -33,7 +34,7 @@ public:
 
     // HpoData  abstracts methods overriden
     //! Load phenotype from json
-    Q_INVOKABLE bool fromJson(QJsonObject json);
+    Q_INVOKABLE bool loadJson(QJsonObject json);
     //! Return the phenotype qualifiers (as human readable string) for the requested disease
     Q_INVOKABLE QString qualifier(QString diseaseId);
 

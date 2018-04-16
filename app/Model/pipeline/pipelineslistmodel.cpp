@@ -20,7 +20,7 @@ bool PipelinesListModel::loadJson(QJsonArray json)
     {
         QJsonObject pipeData = pipeJson.toObject();
         Pipeline* pipe = regovar->pipelinesManager()->getOrCreatePipe(pipeData["id"].toInt());
-        pipe->fromJson(pipeData);
+        pipe->loadJson(pipeData);
         if (!mPipelinesList.contains(pipe))
         {
             mPipelinesList.append(pipe);

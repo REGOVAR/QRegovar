@@ -20,7 +20,7 @@ bool UsersListModel::loadJson(QJsonArray json)
     {
         QJsonObject userData = userJson.toObject();
         User* user = regovar->usersManager()->getOrCreateUser(userData["id"].toInt());
-        user->fromJson(userData);
+        user->loadJson(userData);
         if (!mUsersList.contains(user))
         {
             mUsersList.append(user);
@@ -33,7 +33,7 @@ bool UsersListModel::loadJson(QJsonArray json)
 
 
 
-bool UsersListModel::add(User* user)
+bool UsersListModel::append(User* user)
 {
     if (!mUsersList.contains(user))
     {

@@ -57,7 +57,7 @@ public:
     // Setters
     inline void setRelease(QJsonObject release) { mRelease = release; emit configChanged(); }
     // Methods
-    void fromJson(QJsonObject json);
+    bool loadJson(QJsonObject json);
 
 Q_SIGNALS:
     void configChanged();

@@ -28,7 +28,7 @@ void HpoDataListModel::clear()
     emit countChanged();
 }
 
-bool HpoDataListModel::fromJson(QJsonArray json)
+bool HpoDataListModel::loadJson(QJsonArray json)
 {
     beginResetModel();
     mHpoDataList.clear();
@@ -36,7 +36,7 @@ bool HpoDataListModel::fromJson(QJsonArray json)
     {
         QJsonObject data = val.toObject();
         HpoData* hpo = regovar->phenotypesManager()->getOrCreate(data["id"].toString());
-        hpo->fromJson(data);
+        hpo->loadJson(data);
         mHpoDataList.append(hpo);
     }
     endResetModel();
@@ -44,7 +44,7 @@ bool HpoDataListModel::fromJson(QJsonArray json)
     return true;
 }
 
-bool HpoDataListModel::add(HpoData* hpodata)
+bool HpoDataListModel::append(HpoData* hpodata)
 {
     if (hpodata!= nullptr && !mHpoDataList.contains(hpodata))
     {
