@@ -30,7 +30,7 @@ bool SubjectsListModel::loadJson(QJsonArray json)
     {
         QJsonObject data = val.toObject();
         Subject* subject = regovar->subjectsManager()->getOrCreateSubject(data["id"].toInt());
-        subject->loadJson(data);
+        subject->loadJson(data, false);
         mSubjects.append(subject);
     }
     endResetModel();

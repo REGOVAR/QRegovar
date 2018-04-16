@@ -24,18 +24,20 @@ void Phenotype::updateSearchField()
 
 bool Phenotype::loadJson(QJsonObject json)
 {
+    bool fullLoaded = false;
     mId = json["id"].toString();
     mLabel = json["label"].toString();
 
     if (!json.contains("definition"))
     {
-        emit dataChanged();
-        return true;
+        mDefinition = json["definition"].toString();
+        fullLoaded = true;
+    }
+    if (!json.contains("category"))
+    {
+        mDefinition = json["category"].toString();
     }
 
-    // Load full data
-    mDefinition = json["definition"].toString();
-    mCategory = json["category"].toString();
     if (json.contains("parents"))
     {
         mParents->clear();
@@ -54,7 +56,6 @@ bool Phenotype::loadJson(QJsonObject json)
             cpheno->loadJson(child);
             mChilds->append(cpheno);
         }
-        mLoaded = true;
     }
 
     if (json.contains("genes"))
@@ -87,6 +88,7 @@ bool Phenotype::loadJson(QJsonObject json)
         }
     }
 
+    mLoaded = mLoaded || fullLoaded;
     emit dataChanged();
     return true;
 }

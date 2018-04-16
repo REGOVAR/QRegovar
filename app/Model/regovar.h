@@ -221,6 +221,7 @@ Q_SIGNALS:
     void geneInformationSearching();
     void panelInformationSearching();
     void phenotypeInformationSearching();
+    void diseaseInformationSearching();
     void pipelineInformationSearching();
     void sampleInformationSearching();
     void userInformationSearching();

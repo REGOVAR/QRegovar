@@ -13,12 +13,14 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property Subject model
+    property bool isInit: false
     onModelChanged:
     {
         if (model != undefined)
         {
             nameLabel.text = model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname;
             phenotypeList.model = model.phenotypes;
+            root.isInit = true;
         }
     }
 
@@ -155,7 +157,7 @@ Rectangle
                             text: checked ? qsTr("Present") : qsTr("Absent")
                             color: checked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
                             checked: styleData.value
-                            onClicked: root.model.setHpo(model, checked ? "present" : "absent")
+                            onClicked: root.model.setHpo(regovar.phenotypesManager.getOrCreate(model.id), checked ? "present" : "absent")
                         }
                     }
                     TableViewColumn

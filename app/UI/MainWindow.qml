@@ -221,6 +221,29 @@ GenericWindow
             onPhenotypeInformationSearching: { phenotypeInfoPanel.reset(); phenotypeInfoDialog.show(); }
         }
     }
+    Window
+    {
+        id: diseaseInfoDialog
+        title: qsTr("Disease Information")
+        visible: false
+        modality: Qt.NonModal
+        width: 700
+        height: 500
+        minimumHeight : 300
+        minimumWidth : 300
+
+        DiseaseInformation
+        {
+            id: diseaseInfoPanel
+            anchors.fill: parent
+        }
+
+        Connections
+        {
+            target: regovar
+            onDiseaseInformationSearching: { diseaseInfoPanel.reset(); diseaseInfoDialog.show(); }
+        }
+    }
 
     // Pipeline info dialog
     Window

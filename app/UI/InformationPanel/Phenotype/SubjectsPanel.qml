@@ -49,21 +49,36 @@ ColumnLayout
 
         TableViewColumn
         {
-            role: "id"
-            title: "Id"
+            role: "identifier"
+            title: qsTr("Identifier")
             width: 75
         }
         TableViewColumn
         {
-            role: "label"
-            title: "Disease"
-            width: 300
+            role: "lastname"
+            title: qsTr("Lastname")
         }
         TableViewColumn
         {
-            role: "qualifiers"
-            title: "Qualifiers"
-            width: 300
+            role: "firstname"
+            title: qsTr("Firstname")
+        }
+        TableViewColumn
+        {
+            role: "sex"
+            title: qsTr("Sex")
+            width: 75
+        }
+        TableViewColumn
+        {
+            role: "dateOfBirth"
+            title: qsTr("Date of birth")
+            width: 100
+        }
+        TableViewColumn
+        {
+            role: "comment"
+            title: qsTr("Comment")
         }
     }
 

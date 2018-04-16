@@ -458,7 +458,11 @@ void Regovar::getGeneInfo(QString geneName, int analysisId)
 
 void Regovar::getPhenotypeInfo(QString phenotypeId)
 {
-    emit phenotypeInformationSearching();
+    if (phenotypeId.startsWith("HP:"))
+        emit phenotypeInformationSearching();
+    else
+        emit diseaseInformationSearching();
+
     QString url = QString("/search/phenotype/%1").arg(phenotypeId);
 
     Request* req = Request::get(url);

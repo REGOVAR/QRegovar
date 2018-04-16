@@ -47,7 +47,7 @@ private:
     QString mDefinition;
     HpoDataListModel* mParents = nullptr;
     HpoDataListModel* mChilds = nullptr;
-    DiseasesListModel* mDiseases;
+    DiseasesListModel* mDiseases = nullptr;
     QJsonObject mQualifiers;
 };
 

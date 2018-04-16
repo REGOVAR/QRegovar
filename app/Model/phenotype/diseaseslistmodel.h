@@ -31,11 +31,11 @@ public:
     // Methods
     //! Remove all entries of the list
     Q_INVOKABLE void clear();
-    //! Load phenotype list from json
+    //! Load diseases list from json
     Q_INVOKABLE bool loadJson(QJsonArray json);
-    //! Add the provided phenotype to the list if not already contains
+    //! Add the provided disease to the list if not already contains
     Q_INVOKABLE bool append(Disease* disease);
-    //! Remove a phenotype from the list if possible
+    //! Remove a disease from the list if possible
     Q_INVOKABLE bool remove(Disease* disease);
     //! Return entry at the requested position in the list
     Q_INVOKABLE Disease* getAt(int idx);

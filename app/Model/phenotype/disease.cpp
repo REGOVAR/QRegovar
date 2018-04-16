@@ -3,6 +3,7 @@
 
 Disease::Disease(QObject* parent) : HpoData(parent)
 {
+    mPhenotypes = new PhenotypesListModel(this);
     mType = "disease";
     connect(this, &Disease::dataChanged, this, &Disease::updateSearchField);
 }
@@ -10,6 +11,7 @@ Disease::Disease(QObject* parent) : HpoData(parent)
 Disease::Disease(QString hpoId, QObject* parent) : Disease(parent)
 {
     mId = hpoId;
+    mPhenotypes->setDiseaseId(mId);
 }
 
 
@@ -22,6 +24,7 @@ void Disease::updateSearchField()
 bool Disease::loadJson(QJsonObject json)
 {
     mId = json["id"].toString();
+    mPhenotypes->setDiseaseId(mId);
     mLabel = json["label"].toString();
 
     if (mLoaded)
@@ -65,6 +68,11 @@ bool Disease::loadJson(QJsonObject json)
     {
         mDecipher = json["decipher"].toObject();
         mLoaded = true;
+    }
+
+    if (json.contains("phenotypes"))
+    {
+        mPhenotypes->loadJson(json["phenotypes"].toArray());
     }
 
     emit dataChanged();

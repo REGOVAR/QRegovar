@@ -67,7 +67,7 @@ bool Subject::loadJson(QJsonObject json, bool full_init)
         hpo->loadJson(data);
         if (data.contains("presence"))
         {
-            setPresence(hpo->id(), data["presence"].toString());
+            mPresence[hpo->id()] = data["presence"].toString();
         }
         mPhenotypes->append(hpo);
     }
@@ -201,7 +201,9 @@ void Subject::setHpo(HpoData* hpo, QString presence)
     if (hpo != nullptr)
     {
         mPhenotypes->append(hpo);
-        setPresence(hpo->id(), presence);
+        mPresence[hpo->id()] = presence;
+        save();
+        emit dataChanged();
     }
 }
 
@@ -223,15 +225,7 @@ QString Subject::presence(QString hpoId) const
         return mPresence[hpoId];
     return "unknow";
 }
-void Subject::setPresence(QString hpoId, QString presence)
-{
-    if (mPresence.contains(hpoId))
-    {
-        mPresence[hpoId] = presence;
-        save();
-        emit dataChanged();
-    }
-}
+
 
 QDateTime Subject::additionDate(QString hpoId) const
 {

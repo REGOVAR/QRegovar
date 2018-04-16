@@ -221,5 +221,7 @@
         <file>InformationPanel/Phenotype/DiseasesPanel.qml</file>
         <file>InformationPanel/Phenotype/GenesPanel.qml</file>
         <file>InformationPanel/Phenotype/SubjectsPanel.qml</file>
+        <file>InformationPanel/Phenotype/DiseaseInformation.qml</file>
+        <file>InformationPanel/Phenotype/PhenotypesPanel.qml</file>
     </qresource>
 </RCC>

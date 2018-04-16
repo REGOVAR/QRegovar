@@ -103,7 +103,6 @@ public:
     void updateSubjectUI();
     QString computeAge(QDate d1, QDate d2);
     Q_INVOKABLE QString presence(QString hpoId) const;
-    Q_INVOKABLE void setPresence(QString hpoId, QString presence);
     Q_INVOKABLE QDateTime additionDate(QString hpoId) const;
 
 Q_SIGNALS:

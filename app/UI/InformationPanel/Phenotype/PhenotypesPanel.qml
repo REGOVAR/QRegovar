@@ -35,7 +35,7 @@ ColumnLayout
             iconLeft: "z"
             displayClearButton: true
             placeholder: qsTr("Quick filter...")
-            onTextEdited: genesTable.model.setFilterString(text)
+            onTextEdited: pehnotypesTable.model.setFilterString(text)
         }
     }
 
@@ -43,40 +43,41 @@ ColumnLayout
 
     TableView
     {
-        id: genesTable
+        id: pehnotypesTable
         Layout.fillWidth: true
         Layout.fillHeight: true
 
         TableViewColumn
         {
-            role: "id"
-            title: "Gene"
+            role: "label"
+            title: "Phenotype"
+            width: 300
         }
-//        TableViewColumn
-//        {
-//            role: "panel"
-//            title: "Panel"
-//            width: 300
-//        }
+        TableViewColumn
+        {
+            role: "qualifiers"
+            title: "Qualifiers"
+            width: 300
+        }
     }
 
     function updateFromModel(data)
     {
         if (!data) return;
 
-        var count = data.genes.rowCount();
-        genesTable.enabled = count>0;
+        var count =  data.phenotypes.rowCount();
+        pehnotypesTable.enabled = count>0;
         searchField.enabled = count>0;
 
         if (count>0)
         {
-            genesTable.model = data.genes.proxy;
-            label.text = "The phenotype is linked to " + count + " genes.";
+            pehnotypesTable.model = data.phenotypes.proxy;
+            label.text = "The disease is linked to " + count + " phenotypes.";
         }
         else
         {
-            genesTable.model = null;
-            label.text = "The phenotype is not linked to any gene.";
+            pehnotypesTable.model = null;
+            label.text = "The disease is not linked to any phenotype.";
         }
     }
 }

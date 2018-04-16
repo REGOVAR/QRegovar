@@ -49,6 +49,11 @@ ScrollView
     {
         if (!data) return "";
 
+        infoText.text = data.type === "phenotypic" ? phenotypeData(data) : diseaseData(data);
+    }
+
+    function phenotypeData(data)
+    {
         var text = "<table><tr><td><b>Id: </b></td><td> " + data.id + "</td></tr>";
         text += "<tr><td><b>Category: </b></td><td> -</td></tr>";
         text += "<tr><td><b>Genes frequence: </b></td><td " + data.genesFreq["label"] + "</td></tr>";
@@ -85,7 +90,25 @@ ScrollView
             }
             text += "</ul>";
         }
+        return text;
+    }
 
-        infoText.text = text;
+    function diseaseData(data)
+    {
+        var text = "<table><tr><td><b>Id: </b></td><td> " + data.id + "</td></tr>";
+        text += "<tr><td><b>Genes frequence: </b></td><td " + data.genesFreq["label"] + "</td></tr>";
+        text += "</table><br/><br/>";
+
+        // Sources
+        if (data.sources.length>0)
+        {
+            text += "<b>Sources:</b><ul>";
+            for (var idx=0; idx<data.sources.length; idx++)
+            {
+                text += "<li>" + data.sources[idx] + "</li>";
+            }
+            text += "</ul>";
+        }
+        return text;
     }
 }
