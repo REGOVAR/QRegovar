@@ -18,25 +18,15 @@ ColumnLayout
     anchors.margins: 10
 
 
-    RowLayout
+
+    TextField
     {
+        id: searchField
         Layout.fillWidth: true
-        spacing: 10
-
-        Text
-        {
-            id: label
-        }
-
-        TextField
-        {
-            id: searchField
-            Layout.fillWidth: true
-            iconLeft: "z"
-            displayClearButton: true
-            placeholder: qsTr("Quick filter...")
-            onTextEdited: genesTable.model.setFilterString(text)
-        }
+        iconLeft: "z"
+        displayClearButton: true
+        placeholder: qsTr("Quick filter...")
+        onTextEdited: genesTable.model.setFilterString(text)
     }
 
 
@@ -60,6 +50,15 @@ ColumnLayout
 //        }
     }
 
+
+    Text
+    {
+        id: label
+        Layout.fillWidth: true
+        font.pixelSize: Regovar.theme.font.size.small
+        horizontalAlignment: Text.AlignRight
+    }
+
     function updateFromModel(data)
     {
         if (!data) return;
@@ -71,12 +70,12 @@ ColumnLayout
         if (count>0)
         {
             genesTable.model = data.genes.proxy;
-            label.text = "The phenotype is linked to " + count + " genes.";
+            label.text = count + " genes.";
         }
         else
         {
             genesTable.model = null;
-            label.text = "The phenotype is not linked to any gene.";
+            label.text = "No gene.";
         }
     }
 }

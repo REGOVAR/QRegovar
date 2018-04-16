@@ -168,6 +168,8 @@ Rectangle
 
                         delegate: RowLayout
                         {
+                            anchors.left: parent.left
+                            anchors.leftMargin: 5
                             spacing: 10
 
                             ButtonInline

@@ -75,9 +75,18 @@ bool Phenotype::loadJson(QJsonObject json)
     if (json.contains("meta"))
     {
         mMeta = json["meta"].toObject();
-        mGenesFreq = mMeta["genes_freq"].toObject();
-        mDiseasesFreq = mMeta["diseases_freq"].toObject();
-        mQualifiers = mMeta["qualifiers"].toObject();
+        if (mMeta.contains("genes_freq"))
+        {
+            mGenesFreq = mMeta["genes_freq"].toObject();
+        }
+        if (mMeta.contains("diseases_freq"))
+        {
+            mDiseasesFreq = mMeta["diseases_freq"].toObject();
+        }
+        if (mMeta.contains("qualifiers"))
+        {
+            mQualifiers = mMeta["qualifiers"].toObject();
+        }
         if (mMeta.contains("sources"))
         {
             mSources.clear();
@@ -95,7 +104,7 @@ bool Phenotype::loadJson(QJsonObject json)
 
 
 
-QString Phenotype::qualifier(QString diseaseId)
+QString Phenotype::qualifier(QString diseaseId) const
 {
     QString result;
     if (mQualifiers.contains(diseaseId))

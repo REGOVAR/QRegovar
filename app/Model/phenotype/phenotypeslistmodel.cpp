@@ -87,7 +87,7 @@ QVariant PhenotypesListModel::data(const QModelIndex& index, int role) const
     else if (role == Id)
         return hpo->id();
     else if (role == Qualifiers && !mDiseaseId.isEmpty())
-        return ""; //hpo->qualifier(mDiseaseId);
+        return hpo->qualifier(mDiseaseId);
     else if (role == SearchField)
         return hpo->searchField();
 

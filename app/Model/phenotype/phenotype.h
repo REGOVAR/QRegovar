@@ -36,7 +36,7 @@ public:
     //! Load phenotype from json
     Q_INVOKABLE bool loadJson(QJsonObject json);
     //! Return the phenotype qualifiers (as human readable string) for the requested disease
-    Q_INVOKABLE QString qualifier(QString diseaseId);
+    Q_INVOKABLE QString qualifier(QString diseaseId) const;
 
 
 public Q_SLOTS:

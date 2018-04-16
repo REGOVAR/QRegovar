@@ -16,8 +16,6 @@ InformationPanel
     {
         // Update title
         root.title = "<h1>" + data.label + "</h1>";
-        //root.title += "<span style=\"font-family: monospace;\">" + data.id + "</span><br>";
-        root.title += data.definition;
 
         // Update tabs
         root.tabSharedModel = data;
@@ -28,7 +26,7 @@ InformationPanel
                 "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qml"
             });
         ttt.append({
-                "title": qsTr("Diseases"),
+                "title": qsTr("Phenotypes"),
                 "icon": "K",
                 "source": "qrc:/qml/InformationPanel/Phenotype/PhenotypesPanel.qml"
             });

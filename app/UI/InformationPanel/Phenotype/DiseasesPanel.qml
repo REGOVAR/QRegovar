@@ -18,25 +18,14 @@ ColumnLayout
     anchors.margins: 10
 
 
-    RowLayout
+    TextField
     {
+        id: searchField
         Layout.fillWidth: true
-        spacing: 10
-
-        Text
-        {
-            id: label
-        }
-
-        TextField
-        {
-            id: searchField
-            Layout.fillWidth: true
-            iconLeft: "z"
-            displayClearButton: true
-            placeholder: qsTr("Quick filter...")
-            onTextEdited: diseasesTable.model.setFilterString(text)
-        }
+        iconLeft: "z"
+        displayClearButton: true
+        placeholder: qsTr("Quick filter...")
+        onTextEdited: diseasesTable.model.setFilterString(text)
     }
 
 
@@ -58,6 +47,30 @@ ColumnLayout
             role: "label"
             title: "Disease"
             width: 300
+
+            delegate: RowLayout
+            {
+                anchors.left: parent.left
+                anchors.leftMargin: 5
+                spacing: 10
+
+                ButtonInline
+                {
+                    iconTxt: "z"
+                    text: ""
+                    onClicked: regovar.getPhenotypeInfo(model.id)
+                }
+                Text
+                {
+                    Layout.fillWidth: true
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.font.family
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                    text: styleData.value
+                }
+            }
         }
         TableViewColumn
         {
@@ -65,6 +78,15 @@ ColumnLayout
             title: "Qualifiers"
             width: 300
         }
+    }
+
+
+    Text
+    {
+        id: label
+        Layout.fillWidth: true
+        font.pixelSize: Regovar.theme.font.size.small
+        horizontalAlignment: Text.AlignRight
     }
 
     function updateFromModel(data)
@@ -78,12 +100,12 @@ ColumnLayout
         if (count>0)
         {
             diseasesTable.model = data.diseases.proxy;
-            label.text = "The phenotype have been found in " + count + " diseases.";
+            label.text = count + " diseases.";
         }
         else
         {
             diseasesTable.model = null;
-            label.text = "The phenotype have not been found in any disease.";
+            label.text = "No disease.";
         }
     }
 }

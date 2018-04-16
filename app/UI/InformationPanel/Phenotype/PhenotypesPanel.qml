@@ -18,25 +18,16 @@ ColumnLayout
     anchors.margins: 10
 
 
-    RowLayout
+
+
+    TextField
     {
+        id: searchField
         Layout.fillWidth: true
-        spacing: 10
-
-        Text
-        {
-            id: label
-        }
-
-        TextField
-        {
-            id: searchField
-            Layout.fillWidth: true
-            iconLeft: "z"
-            displayClearButton: true
-            placeholder: qsTr("Quick filter...")
-            onTextEdited: pehnotypesTable.model.setFilterString(text)
-        }
+        iconLeft: "z"
+        displayClearButton: true
+        placeholder: qsTr("Quick filter...")
+        onTextEdited: pehnotypesTable.model.setFilterString(text)
     }
 
 
@@ -52,6 +43,30 @@ ColumnLayout
             role: "label"
             title: "Phenotype"
             width: 300
+
+            delegate: RowLayout
+            {
+                anchors.left: parent.left
+                anchors.leftMargin: 5
+                spacing: 10
+
+                ButtonInline
+                {
+                    iconTxt: "z"
+                    text: ""
+                    onClicked: regovar.getPhenotypeInfo(model.id)
+                }
+                Text
+                {
+                    Layout.fillWidth: true
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.font.family
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                    text: styleData.value
+                }
+            }
         }
         TableViewColumn
         {
@@ -59,6 +74,15 @@ ColumnLayout
             title: "Qualifiers"
             width: 300
         }
+    }
+
+
+    Text
+    {
+        id: label
+        Layout.fillWidth: true
+        font.pixelSize: Regovar.theme.font.size.small
+        horizontalAlignment: Text.AlignRight
     }
 
     function updateFromModel(data)
@@ -72,12 +96,12 @@ ColumnLayout
         if (count>0)
         {
             pehnotypesTable.model = data.phenotypes.proxy;
-            label.text = "The disease is linked to " + count + " phenotypes.";
+            label.text = count + " phenotypes.";
         }
         else
         {
             pehnotypesTable.model = null;
-            label.text = "The disease is not linked to any phenotype.";
+            label.text = "No phenotype.";
         }
     }
 }

@@ -18,25 +18,14 @@ ColumnLayout
     anchors.margins: 10
 
 
-    RowLayout
+    TextField
     {
+        id: searchField
         Layout.fillWidth: true
-        spacing: 10
-
-        Text
-        {
-            id: label
-        }
-
-        TextField
-        {
-            id: searchField
-            Layout.fillWidth: true
-            iconLeft: "z"
-            displayClearButton: true
-            placeholder: qsTr("Quick filter...")
-            onTextEdited: subjectsTable.model.setFilterString(text)
-        }
+        iconLeft: "z"
+        displayClearButton: true
+        placeholder: qsTr("Quick filter...")
+        onTextEdited: subjectsTable.model.setFilterString(text)
     }
 
 
@@ -52,6 +41,29 @@ ColumnLayout
             role: "identifier"
             title: qsTr("Identifier")
             width: 75
+            delegate: RowLayout
+            {
+                anchors.left: parent.left
+                anchors.leftMargin: 5
+                spacing: 10
+
+                ButtonInline
+                {
+                    iconTxt: "z"
+                    text: ""
+                    onClicked: regovar.subjectsManager.openSubject(model.id)
+                }
+                Text
+                {
+                    Layout.fillWidth: true
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.font.family
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                    text: styleData.value
+                }
+            }
         }
         TableViewColumn
         {
@@ -82,6 +94,14 @@ ColumnLayout
         }
     }
 
+    Text
+    {
+        id: label
+        Layout.fillWidth: true
+        font.pixelSize: Regovar.theme.font.size.small
+        horizontalAlignment: Text.AlignRight
+    }
+
     function updateFromModel(data)
     {
         if (!data) return;
@@ -93,12 +113,12 @@ ColumnLayout
         if (count>0)
         {
             subjectsTable.model = data.subjects.proxy;
-            label.text = count + " subjects have this phenotype.";
+            label.text = count + " subjects.";
         }
         else
         {
             subjectsTable.model = null;
-            label.text = "No subject have the phenotype.";
+            label.text = "No subject.";
         }
     }
 }
