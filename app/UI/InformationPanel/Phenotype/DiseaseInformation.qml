@@ -25,18 +25,24 @@ InformationPanel
                 "icon": "è",
                 "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qml"
             });
+        var pCount = data.phenotypes.rowCount();
+        pCount = pCount > 0 ? " (" + pCount + ")" : "";
         ttt.append({
-                "title": qsTr("Phenotypes"),
+                "title": qsTr("Phenotypes") + pCount,
                 "icon": "K",
                 "source": "qrc:/qml/InformationPanel/Phenotype/PhenotypesPanel.qml"
             });
+        var gCount = data.genes.rowCount();
+        gCount = gCount > 0 ? " (" + gCount + ")" : "";
         ttt.append({
-                "title": qsTr("Genes"),
+                "title": qsTr("Genes") + gCount,
                 "icon": "ì",
                 "source": "qrc:/qml/InformationPanel/Phenotype/GenesPanel.qml"
             });
+        var sCount = data.subjects.rowCount();
+        sCount = sCount > 0 ? " (" + sCount + ")" : "";
         ttt.append({
-                "title": qsTr("Subjects"),
+                "title": qsTr("Subjects") + sCount,
                 "icon": "b",
                 "source": "qrc:/qml/InformationPanel/Phenotype/SubjectsPanel.qml"
             });

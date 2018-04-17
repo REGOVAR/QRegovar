@@ -8,74 +8,85 @@ import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
 import "qrc:/qml/InformationPanel/Common"
 
-
-ColumnLayout
+Item
 {
     id: root
     property var model
     onModelChanged: updateFromModel(model)
     Component.onCompleted: updateFromModel(model)
-    anchors.margins: 10
 
-
-
-    TextField
+    ColumnLayout
     {
-        id: searchField
-        Layout.fillWidth: true
-        iconLeft: "z"
-        displayClearButton: true
-        placeholder: qsTr("Quick filter...")
-        onTextEdited: genesTable.model.setFilterString(text)
-    }
+        id: content
+        anchors.fill: parent
+        anchors.margins: 10
+        visible: false
+        enabled: false
 
-
-
-    TableView
-    {
-        id: genesTable
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-
-        TableViewColumn
+        TextField
         {
-            role: "id"
-            title: "Gene"
+            id: searchField
+            Layout.fillWidth: true
+            iconLeft: "z"
+            displayClearButton: true
+            placeholder: qsTr("Quick filter...")
+            onTextEdited: genesTable.model.setFilterString(text)
         }
-//        TableViewColumn
-//        {
-//            role: "panel"
-//            title: "Panel"
-//            width: 300
-//        }
-    }
 
+        TableView
+        {
+            id: genesTable
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            TableViewColumn
+            {
+                role: "id"
+                title: "Gene"
+            }
+        }
+
+        Text
+        {
+            id: label
+            Layout.fillWidth: true
+            font.pixelSize: Regovar.theme.font.size.small
+            horizontalAlignment: Text.AlignRight
+        }
+    }
 
     Text
     {
-        id: label
-        Layout.fillWidth: true
-        font.pixelSize: Regovar.theme.font.size.small
-        horizontalAlignment: Text.AlignRight
+        id: emptyMessage
+        anchors.fill: parent
+        wrapMode: Text.WordWrap
+        elide: Text.ElideRight
+        text: qsTr("No gene")
+        color: Regovar.theme.primaryColor.back.normal
+        font.pixelSize: Regovar.theme.font.size.header
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
     }
 
     function updateFromModel(data)
     {
         if (!data) return;
-
-        var count = data.genes.rowCount();
-        genesTable.enabled = count>0;
-        searchField.enabled = count>0;
+        var count = data.subjects.rowCount();
 
         if (count>0)
         {
+            content.visible = true;
+            content.enabled = true;
+            emptyMessage.visible = false;
             genesTable.model = data.genes.proxy;
             label.text = count + " genes.";
         }
         else
         {
+            content.visible = false;
+            content.enabled = false;
+            emptyMessage.visible = true;
             genesTable.model = null;
-            label.text = "No gene.";
         }
     }
 }

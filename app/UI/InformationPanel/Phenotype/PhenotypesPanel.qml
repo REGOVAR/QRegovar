@@ -9,99 +9,115 @@ import "qrc:/qml/Framework"
 import "qrc:/qml/InformationPanel/Common"
 
 
-ColumnLayout
+Item
 {
     id: root
     property var model
     onModelChanged: updateFromModel(model)
     Component.onCompleted: updateFromModel(model)
-    anchors.margins: 10
 
-
-
-
-    TextField
+    ColumnLayout
     {
-        id: searchField
-        Layout.fillWidth: true
-        iconLeft: "z"
-        displayClearButton: true
-        placeholder: qsTr("Quick filter...")
-        onTextEdited: pehnotypesTable.model.setFilterString(text)
-    }
+        id: content
+        anchors.fill: parent
+        anchors.margins: 10
+        visible: false
+        enabled: false
 
-
-
-    TableView
-    {
-        id: pehnotypesTable
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-
-        TableViewColumn
+        TextField
         {
-            role: "label"
-            title: "Phenotype"
-            width: 300
+            id: searchField
+            Layout.fillWidth: true
+            iconLeft: "z"
+            displayClearButton: true
+            placeholder: qsTr("Quick filter...")
+            onTextEdited: pehnotypesTable.model.setFilterString(text)
+        }
 
-            delegate: RowLayout
+        TableView
+        {
+            id: pehnotypesTable
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            TableViewColumn
             {
-                anchors.left: parent.left
-                anchors.leftMargin: 5
-                spacing: 10
+                role: "label"
+                title: "Phenotype"
+                width: 300
+                delegate: RowLayout
+                {
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
+                    spacing: 10
 
-                ButtonInline
-                {
-                    iconTxt: "z"
-                    text: ""
-                    onClicked: regovar.getPhenotypeInfo(model.id)
-                }
-                Text
-                {
-                    Layout.fillWidth: true
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.family
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                    elide: Text.ElideRight
-                    text: styleData.value
+                    ButtonInline
+                    {
+                        iconTxt: "z"
+                        text: ""
+                        onClicked: regovar.getPhenotypeInfo(model.id)
+                    }
+                    Text
+                    {
+                        Layout.fillWidth: true
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        font.family: Regovar.theme.font.family
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
+                        elide: Text.ElideRight
+                        text: styleData.value
+                    }
                 }
             }
+            TableViewColumn
+            {
+                role: "qualifiers"
+                title: "Qualifiers"
+                width: 300
+            }
         }
-        TableViewColumn
+
+        Text
         {
-            role: "qualifiers"
-            title: "Qualifiers"
-            width: 300
+            id: label
+            Layout.fillWidth: true
+            font.pixelSize: Regovar.theme.font.size.small
+            horizontalAlignment: Text.AlignRight
         }
     }
-
 
     Text
     {
-        id: label
-        Layout.fillWidth: true
-        font.pixelSize: Regovar.theme.font.size.small
-        horizontalAlignment: Text.AlignRight
+        id: emptyMessage
+        anchors.fill: parent
+        wrapMode: Text.WordWrap
+        elide: Text.ElideRight
+        text: qsTr("No phenotype")
+        color: Regovar.theme.primaryColor.back.normal
+        font.pixelSize: Regovar.theme.font.size.header
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
     }
 
     function updateFromModel(data)
     {
         if (!data) return;
-
         var count =  data.phenotypes.rowCount();
-        pehnotypesTable.enabled = count>0;
-        searchField.enabled = count>0;
 
         if (count>0)
         {
+            content.visible = true;
+            content.enabled = true;
+            emptyMessage.visible = false;
             pehnotypesTable.model = data.phenotypes.proxy;
             label.text = count + " phenotypes.";
         }
         else
         {
+            content.visible = false;
+            content.enabled = false;
+            emptyMessage.visible = true;
             pehnotypesTable.model = null;
-            label.text = "No phenotype.";
         }
     }
 }

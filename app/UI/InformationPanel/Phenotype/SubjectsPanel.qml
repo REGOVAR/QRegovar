@@ -10,18 +10,18 @@ import "qrc:/qml/InformationPanel/Common"
 
 Item
 {
-    Component.onCompleted: updateFromModel(root.model)
+    id: root
+    property var model
+    onModelChanged: updateFromModel(model)
+    Component.onCompleted: updateFromModel(model)
 
     ColumnLayout
     {
-        id: root
+        id: content
         anchors.fill: parent
         anchors.margins: 10
-        property var model
-        onModelChanged: updateFromModel(root.model)
         visible: false
         enabled: false
-
 
         TextField
         {
@@ -32,8 +32,6 @@ Item
             placeholder: qsTr("Quick filter...")
             onTextEdited: subjectsTable.model.setFilterString(text)
         }
-
-
 
         TableView
         {
@@ -114,32 +112,30 @@ Item
         anchors.fill: parent
         wrapMode: Text.WordWrap
         elide: Text.ElideRight
-        text: qsTr("No subject.")
+        text: qsTr("No subject")
         color: Regovar.theme.primaryColor.back.normal
         font.pixelSize: Regovar.theme.font.size.header
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
     }
 
-
     function updateFromModel(data)
     {
         if (!data) return;
-
         var count = data.genes.rowCount();
 
         if (count>0)
         {
-            root.visible = true;
-            root.enabled = true;
+            content.visible = true;
+            content.enabled = true;
             emptyMessage.visible = false;
             subjectsTable.model = data.subjects.proxy;
             label.text = count + " subjects.";
         }
         else
         {
-            root.visible = false;
-            root.enabled = false;
+            content.visible = false;
+            content.enabled = false;
             emptyMessage.visible = true;
             subjectsTable.model = null;
         }
