@@ -122,7 +122,7 @@ Item
     function updateFromModel(data)
     {
         if (!data) return;
-        var count = data.genes.rowCount();
+        var count = data.subjects.rowCount();
 
         if (count>0)
         {

@@ -48,7 +48,6 @@ ScrollView
     function updateFromModel(data)
     {
         if (!data) return "";
-
         infoText.text = data.type === "phenotypic" ? phenotypeData(data) : diseaseData(data);
     }
 
@@ -56,7 +55,7 @@ ScrollView
     {
         var text = "<table><tr><td><b>Id: </b></td><td> " + data.id + "</td></tr>";
         text += "<tr><td><b>Category: </b></td><td> -</td></tr>";
-        text += "<tr><td><b>Genes frequence: </b></td><td " + data.genesFreq["label"] + "</td></tr>";
+        text += "<tr><td><b>Genes frequence: </b></td><td> " + data.genesFreq["label"] + "</td></tr>";
         text += "<tr><td><b>Diseases frequence: </b></td><td> " + data.diseasesFreq["label"]  + "</td></tr>";
         text += "</table><br/><br/>";
 
@@ -95,8 +94,19 @@ ScrollView
 
     function diseaseData(data)
     {
-        var text = "<table><tr><td><b>Id: </b></td><td> " + data.id + "</td></tr>";
-        text += "<tr><td><b>Genes frequence: </b></td><td " + data.genesFreq["label"] + "</td></tr>";
+        // Compute url link
+        var tokens = data.id.split(":");
+        var url = data.id;
+        if (tokens[0] === "OMIM")
+        {
+            url = "<a href=\"https://www.omim.org/entry/" + tokens[1] + "\">OMIM " + tokens[1] + "</a>";
+        }
+        else if (tokens[0] === "ORPHA")
+        {
+            url = "<a href=\"http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Lng=FR&Expert=" + tokens[1] + "\">Orphanet " + tokens[1] + "</a>";
+        }
+        var text = "<table><tr><td><b>Id: </b></td><td>" + url + "</td></tr>";
+        text += "<tr><td><b>Genes frequence: </b></td><td> " + data.genesFreq["label"] + "</td></tr>";
         text += "</table><br/><br/>";
 
         // Sources
