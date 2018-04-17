@@ -111,7 +111,6 @@ class Regovar : public QObject
 
     Q_PROPERTY(RegovarInfo* config READ config NOTIFY configChanged)
     Q_PROPERTY(Admin* admin READ admin NOTIFY adminChanged)
-    Q_PROPERTY(QList<QObject*> openWindowModels READ openWindowModels NOTIFY neverChanged)
 
     // TODO: rework as Manager:
     //  - ConnectionManager (manage login, ServerStatus, pending queries, and websocket realtime event)
@@ -151,7 +150,6 @@ public:
     inline QList<QObject*> references() const { return mReferences; }
     inline RootMenu* mainMenu() const { return mMainMenu; }
     inline Settings* settings() const { return mSettings; }
-    inline QList<QObject*> openWindowModels() const { return mOpenWindowModels; }
 
     // Setters
     inline void setSearchRequest(QString searchRequest) { mSearchRequest = searchRequest; emit searchRequestChanged(); }
@@ -193,7 +191,8 @@ public:
     Q_INVOKABLE inline QString analysisStatusIcon(QString status) { return Analysis::statusIcon(status); }
     Q_INVOKABLE inline bool analysisStatusIconAnimated(QString status) { return Analysis::statusIconAnimated(status); }
     bool openNewWindow(QUrl qmlUrl, QObject* model);
-
+    Q_INVOKABLE bool closeWindow(QString wid);
+    Q_INVOKABLE inline QObject* getWindowModels(QString wid) const { if (mOpenWindowModels.contains(wid)) return mOpenWindowModels[wid]; return nullptr; }
 
 
 
@@ -231,7 +230,7 @@ Q_SIGNALS:
     void panelInformationReady(Panel* panel);
     void sampleInformationReady(Sample* sample);
     void userInformationReady(User* user);
-    void pipelineInformationReady(QJsonValue json);
+    void pipelineInformationReady(Pipeline* pipeline);
     void geneInformationReady(QJsonValue json);
     void phenotypeInformationReady(Phenotype* phenotype);
     void diseaseInformationReady(Disease* disease);
@@ -295,8 +294,8 @@ private:
     // Technical stuff
     //! We need ref to the QML engine to create/open new windows from model events
     QQmlApplicationEngine* mQmlEngine = nullptr;
-    //! List of model used by additional qml windows open
-    QList<QObject*> mOpenWindowModels;
+    //! List of model used by open qml windows
+    QHash<QString, QObject*> mOpenWindowModels;
 };
 
 

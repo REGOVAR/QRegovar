@@ -44,6 +44,7 @@ public:
     // Methods
     //! Set model with provided json data
     Q_INVOKABLE virtual bool loadJson(QJsonObject json);
+    Q_INVOKABLE virtual bool load(bool forceRefresh=false);
 
 
 Q_SIGNALS:

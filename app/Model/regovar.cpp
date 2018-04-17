@@ -289,9 +289,27 @@ void Regovar::loadWelcomData()
 
 bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
 {
+    // Build unique windows id according to the model
+    QString wid = model->metaObject()->className();
+    if (wid == "FilteringAnalysis" || wid == "PipelineAnalysis")
+    {
+        wid += "_" + QString::number(qobject_cast<Analysis*>(model)->id());
+    }
+    else if (wid == "Disease" || wid == "Phenotype")
+    {
+        wid += "_" + qobject_cast<HpoData*>(model)->id();
+    }
+    qDebug() << "OPEN WINDOW ID:" << wid;
+
+
     // Store model of the new windows in a collection readable from qml
-    int lastId = mOpenWindowModels.count();
-    mOpenWindowModels.append(model);
+    if (mOpenWindowModels.contains(wid))
+    {
+        // TODO: window already open, set focus on it
+    }
+
+    // Create new window
+    mOpenWindowModels.insert(wid, model);
 
     // Create new QML window
     QQmlComponent *c = new QQmlComponent(mQmlEngine, qmlUrl, QQmlComponent::PreferSynchronous);
@@ -302,7 +320,7 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
         QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
 
         // Call init qml method to retrieve its model
-        QMetaObject::invokeMethod(i, "initFromCpp", Q_ARG(QVariant, lastId));
+        QMetaObject::invokeMethod(i, "initFromCpp", Q_ARG(QVariant, wid));
 
         // Setup qml window's parent
         QObject* root = mQmlEngine->rootObjects()[0];
@@ -325,6 +343,15 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
     return true;
 }
 
+bool Regovar::closeWindow(QString wid)
+{
+    if (mOpenWindowModels.contains(wid))
+    {
+        mOpenWindowModels.remove(wid);
+        return true;
+    }
+    return false;
+}
 
 
 Reference* Regovar::referenceFromId(int id)
@@ -371,8 +398,8 @@ Reference* Regovar::referenceFromId(int id)
 
 void Regovar::getFileInfo(int fileId)
 {
-    emit fileInformationSearching();
     File* file = mFilesManager->getOrCreateFile(fileId);
+    openNewWindow(QUrl("qrc:/qml/Windows/FileInfoWindow.qml"), file);
     file->load(false);
     emit fileInformationReady(file);
 }
@@ -380,8 +407,8 @@ void Regovar::getFileInfo(int fileId)
 
 void Regovar::getPanelInfo(QString panelId)
 {
-    emit panelInformationSearching();
     Panel* panel = mPanelsManager->getOrCreatePanel(panelId);
+    openNewWindow(QUrl("qrc:/qml/Windows/PanelInfoWindow.qml"), panel);
     panel->load(false);
     emit panelInformationReady(panel);
 }
@@ -389,8 +416,8 @@ void Regovar::getPanelInfo(QString panelId)
 
 void Regovar::getSampleInfo(int sampleId)
 {
-    emit sampleInformationSearching();
     Sample* sample = mSamplesManager->getOrCreateSample(sampleId);
+    openNewWindow(QUrl("qrc:/qml/Windows/SampleInfoWindow.qml"), sample);
     sample->load(false);
     emit sampleInformationReady(sample);
 }
@@ -398,8 +425,8 @@ void Regovar::getSampleInfo(int sampleId)
 
 void Regovar::getUserInfo(int userId)
 {
-    emit userInformationSearching();
     User* user= mUsersManager->getOrCreateUser(userId);
+    openNewWindow(QUrl("qrc:/qml/Windows/UserInfoWindow.qml"), user);
     user->load(false);
     emit userInformationReady(user);
 }
@@ -407,30 +434,16 @@ void Regovar::getUserInfo(int userId)
 
 void Regovar::getPipelineInfo(int pipelineId)
 {
-    emit pipelineInformationSearching();
-    QString sPipelineId = QString::number(pipelineId);
-    QString url = QString("/pipeline/%1").arg(sPipelineId);
-
-    Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            emit pipelineInformationReady(json["data"].toObject());
-        }
-        else
-        {
-            emit pipelineInformationReady(QJsonValue::Null);
-            regovar->manageServerError(json, Q_FUNC_INFO);
-        }
-        req->deleteLater();
-    });
+    Pipeline* pipeline = pipelinesManager()->getOrCreatePipe(pipelineId);
+    openNewWindow(QUrl("qrc:/qml/Windows/PipelineInfoWindow.qml"), pipeline);
+    pipeline->load(false);
+    emit pipelineInformationReady(pipeline);
 }
 
 
 void Regovar::getGeneInfo(QString geneName, int analysisId)
 {
-    emit geneInformationSearching();
+    openNewWindow(QUrl("qrc:/qml/Windows/GeneInfoWindow.qml"), nullptr);
     QString sAnalysisId = QString::number(analysisId);
     QString url;
     if (analysisId == -1)
@@ -457,40 +470,24 @@ void Regovar::getGeneInfo(QString geneName, int analysisId)
 
 void Regovar::getPhenotypeInfo(QString phenotypeId)
 {
+    HpoData* hpo = phenotypesManager()->getOrCreate(phenotypeId);
+    hpo->load(false);
     if (phenotypeId.startsWith("HP:"))
-        emit phenotypeInformationSearching();
-    else
-        emit diseaseInformationSearching();
-
-    QString url = QString("/search/phenotype/%1").arg(phenotypeId);
-
-    Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
-        if (success)
-        {
-            QJsonObject data = json["data"].toObject();
-            HpoData* hpo = phenotypesManager()->getOrCreate(data["id"].toString());
-            if (hpo->loadJson(data))
-            {
-                if (hpo->type() == "phenotypic")
-                    emit phenotypeInformationReady((Phenotype*)hpo);
-                else if (hpo->type() == "disease")
-                    emit diseaseInformationReady((Disease*)hpo);
-            }
-        }
-        else
-        {
-            regovar->manageServerError(json, Q_FUNC_INFO);
-        }
-        req->deleteLater();
-    });
+        openNewWindow(QUrl("qrc:/qml/Windows/PhenotypeInfoWindow.qml"), hpo);
+        emit phenotypeInformationReady((Phenotype*)hpo);
+    }
+    else
+    {
+        openNewWindow(QUrl("qrc:/qml/Windows/DiseaseInfoWindow.qml"), hpo);
+        emit diseaseInformationReady((Disease*)hpo);
+    }
 }
 
 
 void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
 {
-    emit variantInformationSearching();
+    openNewWindow(QUrl("qrc:/qml/Windows/VariantInfoWindow.qml"), nullptr);
     QString sRefId = QString::number(refId);
     QString sAnalysisId = QString::number(analysisId);
 

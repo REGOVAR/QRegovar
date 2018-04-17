@@ -223,5 +223,14 @@
         <file>InformationPanel/Phenotype/SubjectsPanel.qml</file>
         <file>InformationPanel/Phenotype/DiseaseInformation.qml</file>
         <file>InformationPanel/Phenotype/PhenotypesPanel.qml</file>
+        <file>Windows/FileInfoWindow.qml</file>
+        <file>Windows/GeneInfoWindow.qml</file>
+        <file>Windows/PanelInfoWindow.qml</file>
+        <file>Windows/PhenotypeInfoWindow.qml</file>
+        <file>Windows/DiseaseInfoWindow.qml</file>
+        <file>Windows/PipelineInfoWindow.qml</file>
+        <file>Windows/SampleInfoWindow.qml</file>
+        <file>Windows/UserInfoWindow.qml</file>
+        <file>Windows/VariantInfoWindow.qml</file>
     </qresource>
 </RCC>

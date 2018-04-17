@@ -18,7 +18,7 @@ ApplicationWindow
     title: "Analysis"
 
     // The id of this window that allow "Regovar model" to retrieve corresponding "Analysis model" among open models/windows
-    property int winId
+    property string winId
     // Internal map to store qml page associated with their menuModel Uid
     property var pages
     // The uid of the page currently displayed
@@ -163,7 +163,7 @@ ApplicationWindow
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
-        model = regovar.openWindowModels[winId];
+        model = regovar.getWindowModels(winId);
         menuModel = model.menuModel;
         title = model.name;
 
