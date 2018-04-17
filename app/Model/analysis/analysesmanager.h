@@ -3,6 +3,7 @@
 
 #include <QtCore>
 #include "analysis.h"
+#include "analyseslistmodel.h"
 
 
 class FilteringAnalysis;

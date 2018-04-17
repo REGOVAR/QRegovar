@@ -136,6 +136,7 @@ void Regovar::init()
     mPipelinesManager = new PipelinesManager(this);
 
     // Load misc data
+    mLastAnalyses = new AnalysesListModel(this);
     mLastSubjects = new SubjectsListModel(this);
     loadConfigData();
     loadWelcomData();
@@ -243,9 +244,10 @@ void Regovar::loadWelcomData()
             mProjectsManager->loadJson(data["projects"].toArray());
 
             // Last analyses
-            mLastAnalyses.clear();
+            mLastAnalyses->clear();
             for (const QJsonValue& val: data["last_analyses"].toArray())
             {
+
                 QJsonObject ajson = val.toObject();
                 Analysis* a = nullptr;
                 if (ajson["type"] == "analysis")
@@ -258,7 +260,7 @@ void Regovar::loadWelcomData()
                 }
                 if (a != nullptr)
                 {
-                    mLastAnalyses.append(a);
+                    mLastAnalyses->append(a);
                 }
             }
             // Last subjects

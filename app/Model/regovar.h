@@ -85,7 +85,7 @@ class Regovar : public QObject
     Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
-    Q_PROPERTY(QList<QObject*> lastAnalyses READ lastAnalyses NOTIFY lastDataChanged)
+    Q_PROPERTY(AnalysesListModel* lastAnalyses READ lastAnalyses NOTIFY lastDataChanged)
     Q_PROPERTY(SubjectsListModel* lastSubjects READ lastSubjects NOTIFY lastDataChanged)
     Q_PROPERTY(EventsListModel* lastEvents READ lastEvents NOTIFY neverChanged)
     Q_PROPERTY(bool welcomIsLoading READ welcomIsLoading WRITE setWelcomIsLoading NOTIFY welcomIsLoadingChanged)
@@ -130,7 +130,7 @@ public:
     inline QString searchRequest() { return mSearchRequest; }
     inline QJsonObject searchResult() const { return mSearchResult; }
     inline bool searchInProgress() const { return mSearchInProgress; }
-    inline QList<QObject*> lastAnalyses() const { return mLastAnalyses; }
+    inline AnalysesListModel* lastAnalyses() const { return mLastAnalyses; }
     inline SubjectsListModel* lastSubjects() const { return mLastSubjects; }
     inline EventsListModel*  lastEvents() const { return mEventsManager->lastEvents(); }
     inline bool welcomIsLoading() const { return mWelcomIsLoading; }
@@ -258,7 +258,7 @@ private:
     //! list of references supported by the server
     QList<QObject*> mReferences;
     //! Welcom last data
-    QList<QObject*> mLastAnalyses;
+    AnalysesListModel* mLastAnalyses;
     SubjectsListModel* mLastSubjects;
     //! Search request and results
     QString mSearchRequest;

@@ -22,6 +22,7 @@ class Analysis : public QObject
     Q_PROPERTY(QString type READ type NOTIFY dataChanged)
     Q_PROPERTY(Project* project READ project WRITE setProject NOTIFY dataChanged)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
+    Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
 
 public:
     // enum value returned by the server as analysis type
@@ -43,6 +44,7 @@ public:
     inline QString type() { return mType; }
     inline Project* project() const { return mProject; }
     inline QString status() const { return mStatus; }
+    inline QString searchField() const { return mSearchField; }
 
     // Setters
     inline void setId(int id) { mId = id; emit dataChanged(); }
@@ -75,6 +77,9 @@ Q_SIGNALS:
     void statusChanged();
 
 
+public Q_SLOTS:
+    virtual void updateSearchField();
+
 
 protected:
     RootMenu* mMenuModel = nullptr;
@@ -90,6 +95,7 @@ protected:
     QString mType;
     Project* mProject = nullptr;
     QString mStatus; // status of the analysis (server side)
+    QString mSearchField = "";
 
     static QHash<QString, QString> sStatusLabelMap;
     static QHash<QString, QString> sStatusIconMap;

@@ -9,7 +9,6 @@ SubjectsListModel::SubjectsListModel(QObject *parent) : QAbstractListModel(paren
     mProxy->setSourceModel(this);
     mProxy->setFilterRole(SearchField);
     mProxy->setSortRole(Identifier);
-
 }
 
 

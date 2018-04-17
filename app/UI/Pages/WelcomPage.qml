@@ -166,11 +166,11 @@ Rectangle
                     {
                         width: parent.width - 10
                         indent: 0
-                        date: model.modelData.updateDate
-                        name: model.modelData.name
+                        date: model.updateDate
+                        name: model.name
                         //fullpath: model.modelData.fullpath
-                        status: model.modelData.status
-                        onClicked: regovar.analysesManager.openAnalysis(model.modelData.type, model.modelData.id)
+                        status: model.status
+                        onClicked: regovar.analysesManager.openAnalysis(model.type, model.id)
                     }
                 }
             }

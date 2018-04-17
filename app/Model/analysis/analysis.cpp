@@ -94,3 +94,8 @@ bool Analysis::statusIconAnimated(QString status)
     }
     return "";
 }
+
+void Analysis::updateSearchField()
+{
+    mSearchField = mName + " " + mComment + " " + mStatus;
+}
