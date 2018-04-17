@@ -105,6 +105,8 @@ QVariant SubjectsListModel::data(const QModelIndex& index, int role) const
         return subject->dateOfBirth().toString("yyyy-MM-dd");
     else if (role == FamilyNumber)
         return subject->familyNumber();
+    else if (role == UpdateDate)
+        return subject->updateDate().toString("yyyy-MM-dd");
     else if (role == SearchField)
         return subject->searchField();
     return QVariant();
@@ -122,6 +124,7 @@ QHash<int, QByteArray> SubjectsListModel::roleNames() const
     roles[Sex] = "sex";
     roles[DateOfBirth] = "dateOfBirth";
     roles[FamilyNumber] = "familyNumber";
+    roles[UpdateDate] = "updateDate";
     roles[SearchField] = "searchField";
     return roles;
 }

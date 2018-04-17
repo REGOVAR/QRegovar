@@ -136,6 +136,7 @@ void Regovar::init()
     mPipelinesManager = new PipelinesManager(this);
 
     // Load misc data
+    mLastSubjects = new SubjectsListModel(this);
     loadConfigData();
     loadWelcomData();
 }
@@ -229,7 +230,7 @@ void Regovar::loadWelcomData()
             // Get samples
             mSamplesManager->loadJson(data["samples"].toArray());
 
-            // Get subjects (Must be loaded after samples)
+            // Get subjects (Must be loaded after samples and before last_subjects)
             mSubjectsManager->loadJson(data["subjects"].toArray());
 
             // Get analyses
@@ -261,21 +262,17 @@ void Regovar::loadWelcomData()
                 }
             }
             // Last subjects
-            mLastSubjects.clear();
+            mLastSubjects->clear();
             for (const QJsonValue& val: data["last_subjects"].toArray())
             {
                 Subject* sbj = mSubjectsManager->getOrCreateSubject(val.toInt());
-                mLastSubjects.append(sbj);
+                mLastSubjects->append(sbj);
             }
             // Last events
             mEventsManager->loadJson(data["last_events"].toArray());
 
             emit lastDataChanged();
             emit referencesChanged();
-
-            // Timer to refresh "last data" every 30s
-            // QTimer::singleShot(30000, regovar, SLOT(refreshLastData()));
-
         }
         else
         {

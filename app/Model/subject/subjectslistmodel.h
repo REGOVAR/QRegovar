@@ -17,6 +17,7 @@ class SubjectsListModel: public QAbstractListModel
         Sex,
         DateOfBirth,
         FamilyNumber,
+        UpdateDate,
         SearchField
     };
 

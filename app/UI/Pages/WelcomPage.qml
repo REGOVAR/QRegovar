@@ -64,14 +64,16 @@ Rectangle
 
         Component.onCompleted: text = regovar.searchRequest
 
+        property string previousResearch: ""
 
         onEditingFinished:
         {
-            if (text != "" && root.visible)
+            if (text != "" && text != previousResearch && root.visible)
             {
                 regovar.search(text);
                 regovar.mainMenu.goTo(1,-1,-1);
             }
+            previousResearch = text;
         }
 
         placeholder: regovar.networkManager.status == 0 ? qsTr("Search anything, sample, phenotype, analysis, variant, report...") : ""
@@ -207,12 +209,12 @@ Rectangle
                     {
                         width: parent.width - 10
                         indent: 0
-                        date: model.modelData.updateDate
-                        identifier: model.modelData.identifier
-                        firstname: model.modelData.firstname
-                        lastname: model.modelData.lastname
-                        sex: model.modelData.sex
-                        onClicked: regovar.subjectsManager.openSubject(model.modelData.id)
+                        date: model.updateDate
+                        identifier: model.identifier
+                        firstname: model.firstname
+                        lastname: model.lastname
+                        sex: model.sex
+                        onClicked: regovar.subjectsManager.openSubject(model.id)
                     }
                 }
             }
