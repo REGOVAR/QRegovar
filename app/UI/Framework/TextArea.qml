@@ -15,6 +15,7 @@ TextArea
     property color colorSelection: Regovar.theme.secondaryColor.back.light
     property color colorTextSelection: Regovar.theme.secondaryColor.front.light
 
+    font.pixelSize: Regovar.theme.font.size.normal
 
     implicitHeight: 3 * Regovar.theme.font.boxSize.normal
     style: TextAreaStyle
@@ -23,12 +24,14 @@ TextArea
         selectionColor: control.colorSelection
         selectedTextColor: control.colorTextSelection
         backgroundColor: enabled ? control.colorBack : control.colorBackDisable
+        textMargin: 5
 
         frame: Rectangle
         {
             color: "transparent"
             border.width: enabled ? 1 : 0
             border.color: control.colorBorder
+            radius: 2
         }
     }
 }

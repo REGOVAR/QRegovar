@@ -186,16 +186,7 @@ Rectangle
             color: Regovar.theme.primaryColor.back.normal
         }
     }
-    Rectangle
-    {
-        anchors.top: section1Header.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: 10
-        anchors.topMargin: 0
-        height: 1
-        color: Regovar.theme.primaryColor.back.normal
-    }
+
 
 
     //
@@ -264,16 +255,6 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
             color: Regovar.theme.primaryColor.back.normal
         }
-    }
-    Rectangle
-    {
-        anchors.top: section2Header.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: 10
-        anchors.topMargin: 0
-        height: 1
-        color: Regovar.theme.primaryColor.back.normal
     }
 
     //

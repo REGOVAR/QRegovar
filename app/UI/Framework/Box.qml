@@ -14,9 +14,11 @@ Rectangle
     color: Regovar.theme.lighter(root.mainColor)
     border.width: 1
     border.color: root.mainColor
-    height: message.height + 10
+    Component.onCompleted: setAnimation()
 
-    onIconChanged:
+    onIconAnimationChanged:setAnimation()
+
+    function setAnimation()
     {
         if (iconAnimation)
         {
@@ -51,6 +53,7 @@ Rectangle
             loops: Animation.Infinite
             from: 0
             to: 360
+
         }
     }
 
@@ -62,7 +65,7 @@ Rectangle
         anchors.top: root.top
         anchors.margins: 5
         anchors.leftMargin: 0
-        onHeightChanged: root.height = height + 10
+        onContentHeightChanged: root.height = contentHeight + 10
 
         text: root.text
         font.pixelSize: Regovar.theme.font.size.normal

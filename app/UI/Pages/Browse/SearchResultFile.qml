@@ -12,6 +12,7 @@ Rectangle
     property string date: ""
     property string filename: ""
     property string icon: ""
+    property int indent: 1
     property string status: ""
 
     property bool isHover: false
@@ -25,7 +26,7 @@ Rectangle
         anchors.fill: parent
         Rectangle
         {
-            width: Regovar.theme.font.boxSize.normal
+            width: indent * Regovar.theme.font.boxSize.normal
             height: Regovar.theme.font.boxSize.normal
             color: "transparent"
         }

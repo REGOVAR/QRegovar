@@ -63,7 +63,17 @@ Rectangle
         }
     }
 
-    // Help information on this page
+
+    Rectangle
+    {
+        id: rowHeadBackground
+        anchors.left: root.left
+        anchors.top: header.bottom
+        anchors.bottom: root.bottom
+        height: 50
+        color: Regovar.theme.backgroundColor.alt
+    }
+
     ColumnLayout
     {
         anchors.top : header.bottom
@@ -73,22 +83,16 @@ Rectangle
         anchors.bottom: root.bottom
         spacing: 10
 
+        // Help information on this page
         Box
         {
             id: helpInfoBox
             Layout.fillWidth: true
-            height: 30
 
             visible: Regovar.helpInfoBoxDisplayed
-            mainColor: Regovar.theme.frontColor.success
             icon: "k"
-            text: qsTr("This page give you an overview of the analysis.")
+            text: qsTr("This page give you an overview of the analysis. Editable information, original configuration and list of all events regarding the analysis are displayed on this page.")
         }
-
-
-
-
-
 
         GridLayout
         {
@@ -98,21 +102,19 @@ Rectangle
             columnSpacing: 10
             rowSpacing: 10
 
-
             Box
             {
+                id: statusBox
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                id: statusBox
                 mainColor: Regovar.theme.frontColor.warning
-                icon: "m"
-                text: qsTr("This analysis have been closed. To be able to use dynamic filtering features again you ave to re-open it with the opposite button.\nReopenning the analysis may take long time as we need to recompute some data.")
+                icon: ""
+                text: ""
             }
             Button
             {
                 Layout.alignment: Qt.AlignTop
                 id: statusButton
-                //iconTxt: "Y"
                 text: ""
                 onClicked: computingProgressLog.visible = true
                 ToolTip.text: qsTr("Display details")
@@ -125,7 +127,7 @@ Rectangle
             Row
             {
                 Layout.fillWidth: true
-                Layout.columnSpan: 2
+                onWidthChanged: rowHeadBackground.width = width + 10
                 height: Regovar.theme.font.boxSize.header
 
                 Text
@@ -152,39 +154,11 @@ Rectangle
                     color: Regovar.theme.primaryColor.back.normal
                 }
             }
-
-
-            Column
+            Item
             {
-                Layout.rowSpan: 9
-                Layout.alignment: Qt.AlignTop
-                spacing: 10
-
-
-                Button
-                {
-                    text: editionMode ? qsTr("Save") : qsTr("Edit")
-                    onClicked:
-                    {
-                        editionMode = !editionMode;
-                        if (!editionMode)
-                        {
-                            // when click on save : update model
-                            updateModelFromView();
-                        }
-                    }
-                    ToolTip.text: editionMode ? qsTr("Save analysis information") : qsTr("Edit analysis information")
-                    ToolTip.visible: hovered
-                }
-
-                Button
-                {
-                    visible: editionMode
-                    text: qsTr("Cancel")
-                    onClicked: { updateView1FromModel(model); editionMode = false; }
-                }
+                Layout.columnSpan: 2
+                width: 10; height: 10
             }
-
 
 
             RowLayout
@@ -213,6 +187,36 @@ Rectangle
                 enabled: editionMode
                 placeholder: qsTr("Name of the analysis")
                 onTextChanged: if (model) model.name = text
+            }
+            Column
+            {
+                Layout.rowSpan: 8
+                Layout.alignment: Qt.AlignTop
+                spacing: 10
+
+
+                Button
+                {
+                    text: editionMode ? qsTr("Save") : qsTr("Edit")
+                    onClicked:
+                    {
+                        editionMode = !editionMode;
+                        if (!editionMode)
+                        {
+                            // when click on save : update model
+                            updateModelFromView();
+                        }
+                    }
+                    ToolTip.text: editionMode ? qsTr("Save analysis information") : qsTr("Edit analysis information")
+                    ToolTip.visible: hovered
+                }
+
+                Button
+                {
+                    visible: editionMode
+                    text: qsTr("Cancel")
+                    onClicked: { updateView1FromModel(model); editionMode = false; }
+                }
             }
 
             RowLayout
@@ -243,7 +247,7 @@ Rectangle
                 Text
                 {
                     anchors.fill: parent
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: 5
                     text: qsTr("Not yet implemented")
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.frontColor.disable
@@ -277,6 +281,7 @@ Rectangle
                 enabled: editionMode
                 height: 3 * Regovar.theme.font.size.normal
                 onTextChanged: if (model) model.comment = text
+                colorTextDisable: Regovar.theme.frontColor.normal
             }
 
 
@@ -286,7 +291,6 @@ Rectangle
             Row
             {
                 Layout.fillWidth: true
-                Layout.columnSpan: 2
                 height: Regovar.theme.font.boxSize.header
 
                 Text
@@ -312,6 +316,10 @@ Rectangle
                     verticalAlignment: Text.AlignVCenter
                     color: Regovar.theme.primaryColor.back.normal
                 }
+            }
+            Item
+            {
+                width: 10; height: 10
             }
 
             RowLayout
@@ -520,7 +528,6 @@ Rectangle
             Row
             {
                 Layout.fillWidth: true
-                Layout.columnSpan: 3
                 height: Regovar.theme.font.boxSize.header
 
                 Text
@@ -547,46 +554,45 @@ Rectangle
                     color: Regovar.theme.primaryColor.back.normal
                 }
             }
-
-            RowLayout
+            Item
             {
                 Layout.columnSpan: 2
+                width: 10; height: 10
+            }
+
+
+            Item
+            {
+                width: 10
+                height: Regovar.theme.font.boxSize.normal
+            }
+
+            Rectangle
+            {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-
-                Item
+                color: Regovar.theme.boxColor.back
+                border.width: 1
+                border.color: Regovar.theme.boxColor.border
+                radius: 2
+                ListView
                 {
-                    Layout.minimumWidth: Regovar.theme.font.boxSize.header
-                    height: Regovar.theme.font.boxSize.normal
-                }
-
-                Rectangle
-                {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    color: Regovar.theme.boxColor.back
-                    border.width: 1
-                    border.color: Regovar.theme.boxColor.border
-                    radius: 2
-                    ListView
+                    id: eventsTable
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    clip: true
+                    flickableDirection: Flickable.VerticalFlick
+                    boundsBehavior: Flickable.StopAtBounds
+                    ScrollBar.vertical: ScrollBar {}
+                    model: regovar.eventsManager.lastEvents
+                    delegate: SearchResultEvent
                     {
-                        id: eventsTable
-                        anchors.fill: parent
-                        anchors.margins: 5
-                        clip: true
-                        flickableDirection: Flickable.VerticalFlick
-                        boundsBehavior: Flickable.StopAtBounds
-                        ScrollBar.vertical: ScrollBar {}
-                        model: regovar.eventsManager.lastEvents
-                        delegate: SearchResultEvent
-                        {
-                            width: parent.width - 10
-                            indent: 0
-                            eventId: model.id
-                            date: model.date
-                            //icon: model.icon
-                            message: model.message
-                        }
+                        width: parent.width - 10
+                        indent: 0
+                        eventId: model.id
+                        date: model.date
+                        //icon: model.icon
+                        message: model.message
                     }
                 }
             }
@@ -830,7 +836,7 @@ Rectangle
         else if (status == "empty" || status == "close")
         {
             statusColor = Regovar.theme.frontColor.warning;
-            statusText = ". " + qsTr("Analysis is closed. Variants data cannot be analysed. You have to re-open the analysis to \"prepare\" data.");
+            statusText = ". " + qsTr("This analysis is closed. To be able to use dynamic filtering features you have to (re)open it with the opposite button.\nReopenning the analysis may take long time as we need to recompute some data.");
             statusButton.text = qsTr("Open it");
             statusButton.ToolTip.text = qsTr("Open or reopen the analysis to use dynamic filtering.")
             statusButton.colorMain = Regovar.theme.frontColor.danger;
