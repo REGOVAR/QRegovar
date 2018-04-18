@@ -151,7 +151,9 @@ Rectangle
                 Layout.column: 0
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                color: Regovar.theme.backgroundColor.alt
+                color: Regovar.theme.boxColor.back
+                border.width: 1
+                border.color: Regovar.theme.boxColor.border
                 radius: 2
                 ListView
                 {
@@ -194,7 +196,9 @@ Rectangle
                 Layout.column: 1
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                color: Regovar.theme.backgroundColor.alt
+                color: Regovar.theme.boxColor.back
+                border.width: 1
+                border.color: Regovar.theme.boxColor.border
                 radius: 2
                 ListView
                 {
@@ -250,7 +254,9 @@ Rectangle
                 Layout.columnSpan: 2
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                color: Regovar.theme.backgroundColor.alt
+                color: Regovar.theme.boxColor.back
+                border.width: 1
+                border.color: Regovar.theme.boxColor.border
                 radius: 2
                 ListView
                 {
