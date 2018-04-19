@@ -106,6 +106,7 @@ Rectangle
                         width: root.width - 10
                         date: model.modelData.update_date
                         name: model.modelData.name
+                        status: model.modelData.status
                         projectName: model.modelData.project.name
                         onClicked: regovar.analysesManager.openAnalysis("analysis", model.modelData.id)
                     }
@@ -437,7 +438,7 @@ Rectangle
                     {
                         width: root.width - 10
                         userId: model.modelData.id
-                        fullname: model.modelData.fullname
+                        fullname: model.modelData.firstname + " " + model.modelData.lastname
                         date: model.modelData.update_date
                         onClicked: regovar.getUserInfo(model.modelData.id)
                     }
@@ -460,16 +461,13 @@ Rectangle
         policy: ScrollBar.AlwaysOn
         onPositionChanged: if (pressed)
         {
-            console.log(vbar.position + " " + content.height + " => " + imageContainer.contentY)
             imageContainer.contentY = vbar.position * content.height;
         }
     }
 
     function scrollTo(newY)
     {
-
         imageContainer.contentY = newY * content.height;
-        console.log(newY + " * " + content.height + " => " + imageContainer.contentY)
     }
 
     function displayresults(results)
@@ -529,7 +527,7 @@ Rectangle
         }
         if (usersResult.visible)
         {
-            usersResult.model = results["panel"];
+            usersResult.model = results["user"];
         }
     }
 }
