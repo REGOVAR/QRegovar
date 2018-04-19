@@ -26,6 +26,53 @@ Rectangle
         {
             console.log("search result : " + regovar.searchResult["total_result"]);
             isEmpty = regovar.searchResult["total_result"] === 0;
+            var m = regovar.searchResult;
+            var resume = [
+                {"active": m.hasOwnProperty("project") && m["project"].length > 0, "key": "project",
+                 "label": m["project"].length + " " + (m["project"].length > 1 ? qsTr("Projects") : qsTr("Project"))},
+                {"active": m.hasOwnProperty("analysis") && m["analysis"].length > 0, "key": "analysis",
+                 "label": m["analysis"].length + " " + (m["analysis"].length > 1 ? qsTr("Analyses") : qsTr("Analysis"))},
+                {"active": m.hasOwnProperty("file") && m["file"].length > 0, "key": "file",
+                 "label": m["file"].length + " " + (m["file"].length > 1 ?  qsTr("Files") : qsTr("File"))},
+                {"active": m.hasOwnProperty("subject") && m["subject"].length > 0, "key": "subject",
+                 "label": m["subject"].length + " " + (m["subject"].length > 1 ? qsTr("Subjects") : qsTr("Subject"))},
+                {"active": m.hasOwnProperty("sample") && m["sample"].length > 0, "key": "sample",
+                 "label": m["sample"].length + " " + (m["sample"].length > 1 ? qsTr("Samples") : qsTr("Sample"))},
+                {"active": m.hasOwnProperty("phenotype") && m["phenotype"].length > 0, "key": "phenotype",
+                 "label": m["phenotype"].length + " " + (m["phenotype"].length > 1 ? qsTr("Phenotypes") : qsTr("Phenotype"))},
+                {"active": m.hasOwnProperty("disease") && m["disease"].length > 0, "key": "disease",
+                 "label": m["disease"].length + " " + (m["disease"].length > 1 ? qsTr("Diseases") : qsTr("Disease"))},
+                {"active": m.hasOwnProperty("gene") && m["gene"].length > 0, "key": "gene",
+                 "label": m["gene"].length + " " + (m["gene"].length > 1 ? qsTr("Genes") : qsTr("Gene"))},
+                {"active": m.hasOwnProperty("variant") && m["variant"].length > 0, "key": "variant",
+                 "label": m["variant"].length + " " + (m["variant"].length > 1 ? qsTr("Variants") : qsTr("Variant"))},
+                {"active": m.hasOwnProperty("pipeline") && m["pipeline"].length > 0, "key": "pipeline",
+                 "label": m["pipeline"].length + " " + (m["pipeline"].length > 1 ?qsTr("Pipelines") : qsTr("Pipeline"))},
+                {"active": m.hasOwnProperty("panel") && m["panel"].length > 0, "key": "panel",
+                 "label": m["panel"].length + " " + (m["panel"].length > 1 ? qsTr("Panels") : qsTr("Panel"))},
+                {"active": m.hasOwnProperty("user") && m["user"].length > 0, "key": "user",
+                 "label": m["user"].length + " " + (m["user"].length > 1 ? qsTr("Users") : qsTr("User"))}
+            ];
+
+            var t = 0;
+            for (var r in resume)
+            {
+                if (resume[r]["active"])
+                {
+                    resume[r]["position"] = t;
+                    t += 1 + m[resume[r]["key"]].length;
+                }
+            }
+            for (var r in resume)
+            {
+                if (resume[r]["active"])
+                {
+                    resume[r]["position"] = resume[r]["position"] / t;
+                }
+            }
+
+            resumeRepeater.model = resume;
+
             searchResults.displayresults(regovar.searchResult);
         }
     }
@@ -85,7 +132,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("Use the field above to search everything in Regovar. Then double click on the result below to open it and see details.")
     }
@@ -112,7 +158,7 @@ Rectangle
     }
 
 
-    Rectangle
+    ColumnLayout
     {
         id: resultsList
         visible: !isEmpty
@@ -122,33 +168,60 @@ Rectangle
         anchors.bottom: root.bottom
         anchors.margins: 10
         anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
-
-
-        color: "transparent"
+        spacing: 10
 
         Text
         {
-            anchors.top: parent.top
             text: regovar.searchResult["total_result"] + " " + ( (regovar.searchResult["total_result"] > 1 ) ? qsTr("results found") : qsTr("result found"))
             font.pixelSize: Regovar.theme.font.size.header
             height: Regovar.theme.font.boxSize.header
             color: Regovar.theme.primaryColor.back.dark
         }
 
+        Rectangle
+        {
+            Layout.fillWidth: true
+            height: 3 * Regovar.theme.font.boxSize.normal + 10
+            color: Regovar.theme.boxColor.back
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            radius: 2
+
+            GridLayout
+            {
+                anchors.fill: parent
+                anchors.margins: 5
+                columns: 4
+
+                Repeater
+                {
+                    id: resumeRepeater
+                    Text
+                    {
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        color: modelData.active ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
+                        verticalAlignment: Text.AlignVCenter
+                        text: modelData.label
+
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            enabled: modelData.active
+                            hoverEnabled: modelData.active
+                            onEntered: parent.color = Regovar.theme.secondaryColor.back.normal
+                            onExited: parent.color = modelData.active ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
+                            onClicked: searchResults.scrollTo(modelData.position)
+                        }
+                    }
+                }
+            }
+        }
+
         SearchResultsList
         {
             id: searchResults
-            anchors.fill: parent
-            anchors.topMargin: Regovar.theme.font.boxSize.title + 5
-        }
-
-        Rectangle
-        {
-            anchors.left: resultsList.left
-            anchors.right: resultsList.right
-            anchors.bottom: searchResults.top
-            height: 1
-            color: Regovar.theme.primaryColor.back.normal
+            Layout.fillWidth: true
+            Layout.fillHeight: true
         }
     }
 
