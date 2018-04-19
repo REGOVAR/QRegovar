@@ -101,7 +101,6 @@ Rectangle
         height: 50
         color: Regovar.theme.backgroundColor.alt
     }
-
     function updateColumn1Width(newWidth)
     {
         rowHeadBackground.width = Math.max(newWidth + 15, rowHeadBackground.width);
@@ -285,7 +284,6 @@ Rectangle
             {
                 onWidthChanged: updateColumn1Width(width)
                 height: Regovar.theme.font.boxSize.header
-                spacing: 10
                 Text
                 {
                     width: Regovar.theme.font.boxSize.header

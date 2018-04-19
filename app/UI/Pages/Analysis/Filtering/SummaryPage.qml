@@ -33,6 +33,9 @@ Rectangle
     }
 
 
+
+
+
     Rectangle
     {
         id: header
@@ -72,6 +75,10 @@ Rectangle
         anchors.bottom: root.bottom
         height: 50
         color: Regovar.theme.backgroundColor.alt
+    }
+    function updateColumn1Width(newWidth)
+    {
+        rowHeadBackground.width = Math.max(newWidth + 15, rowHeadBackground.width);
     }
 
     ColumnLayout
@@ -126,8 +133,7 @@ Rectangle
             // INFO ========================================================
             Row
             {
-                Layout.fillWidth: true
-                onWidthChanged: rowHeadBackground.width = width + 10
+                onWidthChanged: updateColumn1Width(width)
                 height: Regovar.theme.font.boxSize.header
 
                 Text
@@ -163,6 +169,7 @@ Rectangle
 
             RowLayout
             {
+                onWidthChanged: updateColumn1Width(width)
                 Item
                 {
                     Layout.minimumWidth: Regovar.theme.font.boxSize.header
@@ -221,6 +228,7 @@ Rectangle
 
             RowLayout
             {
+                onWidthChanged: updateColumn1Width(width)
                 Item
                 {
                     Layout.minimumWidth: Regovar.theme.font.boxSize.header
@@ -258,6 +266,7 @@ Rectangle
             RowLayout
             {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+                onWidthChanged: updateColumn1Width(width)
                 Item
                 {
                     Layout.minimumWidth: Regovar.theme.font.boxSize.header
@@ -290,7 +299,7 @@ Rectangle
             // CONFIG ========================================================
             Row
             {
-                Layout.fillWidth: true
+                onWidthChanged: updateColumn1Width(width)
                 height: Regovar.theme.font.boxSize.header
 
                 Text
@@ -324,6 +333,7 @@ Rectangle
 
             RowLayout
             {
+                onWidthChanged: updateColumn1Width(width)
                 Item
                 {
                     Layout.minimumWidth: Regovar.theme.font.boxSize.header
@@ -354,6 +364,7 @@ Rectangle
 
             RowLayout
             {
+                onWidthChanged: updateColumn1Width(width)
                 Item
                 {
                     Layout.minimumWidth: Regovar.theme.font.boxSize.header
@@ -383,6 +394,7 @@ Rectangle
 
             RowLayout
             {
+                onWidthChanged: updateColumn1Width(width)
                 Item
                 {
                     Layout.minimumWidth: Regovar.theme.font.boxSize.header
@@ -399,7 +411,6 @@ Rectangle
                     height: Regovar.theme.font.boxSize.normal
                 }
             }
-
             Text
             {
                 id: annotationsField
@@ -410,9 +421,11 @@ Rectangle
                 wrapMode: Text.WordWrap
                 elide: Text.ElideRight
             }
+
             RowLayout
             {
                 Layout.alignment: Qt.AlignTop
+                onWidthChanged: updateColumn1Width(width)
                 Item
                 {
                     Layout.minimumWidth: Regovar.theme.font.boxSize.header
@@ -527,7 +540,7 @@ Rectangle
             // EVENTS ========================================================
             Row
             {
-                Layout.fillWidth: true
+                onWidthChanged: updateColumn1Width(width)
                 height: Regovar.theme.font.boxSize.header
 
                 Text
