@@ -38,12 +38,14 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
             text: regovar.formatDate(date)
             elide: Text.ElideRight
+            visible: date != ""
         }
         Rectangle
         {
             width: Regovar.theme.font.boxSize.normal
             height: Regovar.theme.font.boxSize.normal
             color: "transparent"
+            visible: date != ""
         }
         Text
         {
@@ -62,7 +64,7 @@ Rectangle
             font.family: Regovar.theme.font.family
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: filename + " (" + status + ")"
+            text: filename + (status != "" ? " (" + status + ")" : "")
         }
     }
 

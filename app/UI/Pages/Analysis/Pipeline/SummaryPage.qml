@@ -102,6 +102,11 @@ Rectangle
         color: Regovar.theme.backgroundColor.alt
     }
 
+    function updateColumn1Width(newWidth)
+    {
+        rowHeadBackground.width = Math.max(newWidth + 15, rowHeadBackground.width);
+    }
+
     ColumnLayout
     {
         anchors.top : header.bottom
@@ -278,7 +283,7 @@ Rectangle
             // INFO ========================================================
             Row
             {
-                onWidthChanged: rowHeadBackground.width = Math.max(width + 10, rowHeadBackground.width)
+                onWidthChanged: updateColumn1Width(width)
                 height: Regovar.theme.font.boxSize.header
                 spacing: 10
                 Text
@@ -313,6 +318,7 @@ Rectangle
 
             RowLayout
             {
+                onWidthChanged: updateColumn1Width(width)
                 Item
                 {
                     Layout.minimumWidth: Regovar.theme.font.boxSize.header
@@ -372,6 +378,7 @@ Rectangle
 
             RowLayout
             {
+                onWidthChanged: updateColumn1Width(width)
                 Item
                 {
                     Layout.minimumWidth: Regovar.theme.font.boxSize.header
@@ -409,6 +416,7 @@ Rectangle
             RowLayout
             {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+                onWidthChanged: updateColumn1Width(width)
                 Item
                 {
                     Layout.minimumWidth: Regovar.theme.font.boxSize.header
@@ -435,11 +443,11 @@ Rectangle
                 colorTextDisable: Regovar.theme.frontColor.normal
             }
 
-/*
 
             // CONFIG ========================================================
             Row
             {
+                onWidthChanged: updateColumn1Width(width)
                 height: Regovar.theme.font.boxSize.header
 
                 Text
@@ -473,6 +481,7 @@ Rectangle
 
             RowLayout
             {
+                onWidthChanged: updateColumn1Width(width)
                 Item
                 {
                     Layout.minimumWidth: Regovar.theme.font.boxSize.header
@@ -518,6 +527,7 @@ Rectangle
             RowLayout
             {
                 Layout.alignment: Qt.AlignTop
+                onWidthChanged: updateColumn1Width(width)
                 Item
                 {
                     Layout.minimumWidth: Regovar.theme.font.boxSize.header
@@ -534,26 +544,51 @@ Rectangle
                     height: Regovar.theme.font.boxSize.normal
                 }
             }
-            TableView
+            Rectangle
             {
-                id: configTable
+                id: configParametersFrame
                 Layout.fillWidth: true
-
-                TableViewColumn
+                Layout.fillHeight: true
+                color: Regovar.theme.boxColor.back
+                border.width: 1
+                border.color: Regovar.theme.boxColor.border
+                radius: 2
+                property real colParamWidth: 50
+                ListView
                 {
-                    role: "key"
-                    title: qsTr("Parameter")
-                }
-                TableViewColumn
-                {
-                    role: "value"
-                    title: qsTr("Value")
+                    id: configTable
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    clip: true
+                    flickableDirection: Flickable.VerticalFlick
+                    boundsBehavior: Flickable.StopAtBounds
+                    ScrollBar.vertical: ScrollBar {}
+                    delegate: Row
+                    {
+                        spacing: 10
+                        width: parent.width - 10
+                        Text
+                        {
+                            onContentWidthChanged: configParametersFrame.colParamWidth = Math.max(contentWidth, configParametersFrame.colParamWidth)
+                            width: configParametersFrame.colParamWidth
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            verticalAlignment: Text.AlignVCenter
+                            text: modelData.key + " :"
+                        }
+                        Text
+                        {
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            verticalAlignment: Text.AlignVCenter
+                            text: modelData.value
+                        }
+                    }
                 }
             }
 
             RowLayout
             {
                 Layout.alignment: Qt.AlignTop
+                onWidthChanged: updateColumn1Width(width)
                 Item
                 {
                     Layout.minimumWidth: Regovar.theme.font.boxSize.header
@@ -607,15 +642,15 @@ Rectangle
                             flickableDirection: Flickable.VerticalFlick
                             boundsBehavior: Flickable.StopAtBounds
                             ScrollBar.vertical: ScrollBar {}
-                            model: regovar.eventsManager.lastEvents
                             delegate: SearchResultFile
                             {
                                 width: parent.width - 10
                                 indent: 0
                                 fileId: model.id
                                 date: model.date
-                                icon: model.icon
-                                filename: model.filename
+                                icon: model.name.icon
+                                filename: model.name.filename
+                                onClicked: regovar.getFileInfo(fileId)
                             }
                         }
                     }
@@ -651,15 +686,15 @@ Rectangle
                             flickableDirection: Flickable.VerticalFlick
                             boundsBehavior: Flickable.StopAtBounds
                             ScrollBar.vertical: ScrollBar {}
-                            model: regovar.eventsManager.lastEvents
                             delegate: SearchResultFile
                             {
                                 width: parent.width - 10
                                 indent: 0
                                 fileId: model.id
                                 date: model.date
-                                icon: model.icon
-                                filename: model.filename
+                                icon: model.name.icon
+                                filename: model.name.filename
+                                onClicked: regovar.getFileInfo(fileId)
                             }
                         }
                     }
@@ -670,6 +705,7 @@ Rectangle
             // EVENTS ========================================================
             Row
             {
+                onWidthChanged: updateColumn1Width(width)
                 height: Regovar.theme.font.boxSize.header
 
                 Text
@@ -726,7 +762,6 @@ Rectangle
                     flickableDirection: Flickable.VerticalFlick
                     boundsBehavior: Flickable.StopAtBounds
                     ScrollBar.vertical: ScrollBar {}
-                    model: regovar.eventsManager.lastEvents
                     delegate: SearchResultEvent
                     {
                         width: parent.width - 10
@@ -758,8 +793,6 @@ Rectangle
                     enabled: false
                 }
             }
-
-            */
         }
     }
 
@@ -802,38 +835,43 @@ Rectangle
 
     function updateStatusFromModel()
     {
-        closeAnalysisInformation.visible = root.model.status == "error" || root.model.status == "canceled";
-        if (root.model.status == "error" )
+        // Update message
+        var status = root.model.status;
+        var statusIcon = regovar.analysisStatusIcon(status);
+        var statusLabel = regovar.analysisStatusLabel(status);
+        var statusText = "";
+        var statusColor = Regovar.theme.frontColor.success;
+
+        root.isRunning = status == "running";
+        root.isClosed = status == "done" ||  status == "canceled"  ||  status == "error" ;
+        root.isResumable = status == "running" || status == "pause";
+
+        if (status == "error" )
         {
-            closeAnalysisInformation.text = qsTr("An error occured during the execution of this analysis.")
+            statusText = qsTr("An error occured during the execution of this analysis.")
+            statusColor = Regovar.theme.frontColor.danger;
         }
-        else if (root.model.status == "canceled" )
+        else if (status == "canceled" )
         {
-            closeAnalysisInformation.text = qsTr("This analysis have been canceled.")
+            statusText = qsTr("This analysis have been canceled.")
+            statusColor = Regovar.theme.frontColor.danger;
+        }
+        else if (status == "pause" )
+        {
+            statusText = qsTr("This analysis is paused. Click on opposite \"play\" button to resume the task.")
+            statusColor = Regovar.theme.frontColor.warning;
         }
 
+        if (root.model.progressValue > 0 && status != "done")
+        {
+            statusText += "\nProgress: " (root.model.progressValue*100).toFixed(1) + "% " + root.model.progressLabel;
+        }
 
-        root.isRunning = root.model.status == "running";
-        root.isClosed = root.model.status == "done" ||  root.model.status == "canceled"  ||  root.model.status == "error" ;
-        root.isResumable = root.model.status == "running" || root.model.status == "pause";
-
-        // update status
-        statusIcon.text = regovar.analysisStatusIcon(root.model.status);
-        statusField.text = regovar.analysisStatusLabel(root.model.status);
-        if (root.model.progressValue > 0 && root.model.status != "done")
-        {
-            statusField.text += " (" + (root.model.progressValue*100).toFixed(1) + "%)";
-            statusField.text += ": " + root.model.progressLabel;
-        }
-        if (regovar.analysisStatusIconAnimated(root.model.status))
-        {
-            statusIconAnimation.start();
-        }
-        else
-        {
-            statusIconAnimation.stop();
-            statusIcon.rotation = 0;
-        }
+        // update view
+        statusBox.icon = statusIcon;
+        statusBox.text = statusLabel + statusText;
+        statusBox.mainColor = statusColor;
+        statusBox.iconAnimation = regovar.analysisStatusIconAnimated(status);
 
     }
 
@@ -874,28 +912,8 @@ Rectangle
             configTable.model = configList;
 
             // Files
-            var fileList = [];
-            if (root.model.inputsFiles)
-            {
-                for (var i=0; i<root.model.inputsFiles.rowCount(); i++)
-                {
-                    var file = root.model.inputsFiles.getAt(i);
-                    fileList.push({"usage": qsTr("Input"), "filename": file.filenameUI});
-                }
-            }
-            if (root.model.outputsFiles)
-            {
-                for (var i=0; i<root.model.outputsFiles.rowCount(); i++)
-                {
-                    var file = root.model.outputsFiles.getAt(i);
-                    fileList.push({"usage": qsTr("Output"), "filename": {
-                                          "id": file.id,
-                                          "filename": file.filenameUI["filename"],
-                                          "icon": file.filenameUI["icon"]}});
-                }
-            }
-            //filesTable.height = 5 * Regovar.theme.font.boxSize.normal;
-            filesTable.model = fileList;
+            inputsTable.model = root.model.inputsFiles;
+            outputsTable.model = root.model.outputsFiles;
 
             // Events
             eventsTable.model = root.model.events;
