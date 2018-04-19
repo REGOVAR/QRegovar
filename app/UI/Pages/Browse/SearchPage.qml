@@ -29,7 +29,7 @@ Rectangle
             var m = regovar.searchResult;
             var resume = [
                 {"active": m.hasOwnProperty("project") && m["project"].length > 0, "key": "project",
-                 "label": m["project"].length + " " + (m["project"].length > 1 ? qsTr("Projects") : qsTr("Project"))},
+                 "label": m["project"].length + " " + (m["project"].length > 1 ? qsTr("Folders") : qsTr("Folder"))},
                 {"active": m.hasOwnProperty("analysis") && m["analysis"].length > 0, "key": "analysis",
                  "label": m["analysis"].length + " " + (m["analysis"].length > 1 ? qsTr("Analyses") : qsTr("Analysis"))},
                 {"active": m.hasOwnProperty("file") && m["file"].length > 0, "key": "file",

@@ -55,7 +55,7 @@ Rectangle
 
                 Text
                 {
-                    text: projectsResult.count + " " + (projectsResult.count > 1 ? qsTr("Projects") : qsTr("Project"))
+                    text: projectsResult.count + " " + (projectsResult.count > 1 ? qsTr("Folders") : qsTr("Folder"))
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.normal
@@ -253,6 +253,40 @@ Rectangle
                 Repeater
                 {
                     model: phenotypesResult.model
+                    SearchResultPhenotype
+                    {
+                        width: root.width - 10
+                        phenotypeId: model.modelData.id
+                        label: model.modelData.label
+                        onClicked: regovar.getPhenotypeInfo(phenotypeId)
+                    }
+                }
+            }
+            // Disease
+            Column
+            {
+                id: diseasesResult
+                visible: false
+                property int count: 0
+                property var model
+                onModelChanged:
+                {
+                    count = model.length;
+                    visible = count > 0;
+                }
+
+                Text
+                {
+                    text: diseasesResult.count + " " + (diseasesResult.count > 1 ? qsTr("Diseases") : qsTr("Disease"))
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    color: Regovar.theme.primaryColor.back.dark
+                    height: Regovar.theme.font.boxSize.normal
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                Repeater
+                {
+                    model: diseasesResult.model
                     SearchResultPhenotype
                     {
                         width: root.width - 10
@@ -478,6 +512,7 @@ Rectangle
         subjectsResult.visible = "subject" in results && results["subject"];
         samplesResult.visible = "sample" in results && results["sample"];
         phenotypesResult.visible = "phenotype" in results && results["phenotype"];
+        diseasesResult.visible = "disease" in results && results["disease"];
         genesResult.visible = "gene" in results && results["gene"];
         variantsResult.visible = "variant" in results && results["variant"];
         pipelinesResult.visible = "pipeline" in results && results["pipeline"];
@@ -508,6 +543,10 @@ Rectangle
         if (phenotypesResult.visible)
         {
             phenotypesResult.model = results["phenotype"];
+        }
+        if (diseasesResult.visible)
+        {
+            diseasesResult.model = results["disease"];
         }
         if (genesResult.visible)
         {
