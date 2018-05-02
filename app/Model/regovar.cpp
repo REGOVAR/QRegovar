@@ -290,7 +290,12 @@ void Regovar::loadWelcomData()
 bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
 {
     // Build unique windows id according to the model
-    QString wid = model->metaObject()->className();
+    QString wid = "unique_wid";
+    if (model != nullptr)
+    {
+        wid = model->metaObject()->className();
+    }
+
     if (wid == "FilteringAnalysis" || wid == "PipelineAnalysis")
     {
         wid += "_" + QString::number(qobject_cast<Analysis*>(model)->id());
@@ -299,8 +304,13 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
     {
         wid += "_" + qobject_cast<HpoData*>(model)->id();
     }
-    qDebug() << "OPEN WINDOW ID:" << wid;
+    openNewWindow(qmlUrl, model, wid);
+}
 
+bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model, QString wid)
+{
+
+    qDebug() << "OPEN WINDOW ID:" << wid;
 
     // Store model of the new windows in a collection readable from qml
     if (mOpenWindowModels.contains(wid))
@@ -443,7 +453,7 @@ void Regovar::getPipelineInfo(int pipelineId)
 
 void Regovar::getGeneInfo(QString geneName, int analysisId)
 {
-    openNewWindow(QUrl("qrc:/qml/Windows/GeneInfoWindow.qml"), nullptr);
+    openNewWindow(QUrl("qrc:/qml/Windows/GeneInfoWindow.qml"), nullptr, geneName);
     QString sAnalysisId = QString::number(analysisId);
     QString url;
     if (analysisId == -1)
@@ -487,7 +497,7 @@ void Regovar::getPhenotypeInfo(QString phenotypeId)
 
 void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
 {
-    openNewWindow(QUrl("qrc:/qml/Windows/VariantInfoWindow.qml"), nullptr);
+    openNewWindow(QUrl("qrc:/qml/Windows/VariantInfoWindow.qml"), nullptr, QString("variant_%1").arg(variantId));
     QString sRefId = QString::number(refId);
     QString sAnalysisId = QString::number(analysisId);
 

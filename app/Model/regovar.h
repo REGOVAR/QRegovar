@@ -191,6 +191,7 @@ public:
     Q_INVOKABLE inline QString analysisStatusIcon(QString status) { return Analysis::statusIcon(status); }
     Q_INVOKABLE inline bool analysisStatusIconAnimated(QString status) { return Analysis::statusIconAnimated(status); }
     bool openNewWindow(QUrl qmlUrl, QObject* model);
+    bool openNewWindow(QUrl qmlUrl, QObject* model, QString wid);
     Q_INVOKABLE bool closeWindow(QString wid);
     Q_INVOKABLE inline QObject* getWindowModels(QString wid) const { if (mOpenWindowModels.contains(wid)) return mOpenWindowModels[wid]; return nullptr; }
 
