@@ -128,7 +128,7 @@ bool AnalysesManager::newAnalysis(QString type)
                 QJsonObject data = json["data"].toObject();
                 int id = data["id"].toInt();
                 // Open new analysis
-                bool result = openAnalysis(Analysis::FILTERING, id, false);
+                bool result = openAnalysis(Analysis::FILTERING, id, true);
 
                 if (result)
                 {

@@ -355,11 +355,12 @@ Window
     {
         if (regovar.analysesManager.newAnalysis(root.analysisModel["type"]))
         {
-
+            root.close();
         }
         else
         {
             // Unable to create analysis.
+            // TODO: display error
         }
     }
 

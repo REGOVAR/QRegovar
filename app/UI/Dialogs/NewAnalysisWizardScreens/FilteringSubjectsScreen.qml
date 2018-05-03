@@ -232,7 +232,7 @@ GenericScreen
                 id: remButton
                 text: qsTr("New subject")
                 Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
-                onClicked: newSubjectDialog.open()
+                onClicked: newSubjectDialog.show()
                 enabled: samplesSubjectsTable.currentRow > -1
             }
         }
