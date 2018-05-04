@@ -47,7 +47,7 @@ RowLayout
         onWidthChanged: root.labelWidth = width;
         text: ""
     }
-    Binding { target: model; property: "isActive"; value: fieldCheck.checked; }
+    //Binding { target: model; property: "isActive"; value: fieldCheck.checked; }
 
 
     // FIXME : Weird bug, need to add free space otherwise ComboBox is hover the CheckBox
@@ -77,7 +77,7 @@ RowLayout
         onTextChanged: fieldCheck.checked = true
         placeholderText: qsTr("Value ?")
     }
-    Binding { target: model; property: "value"; value: fieldValue.text; }
+    //Binding { target: model; property: "value"; value: fieldValue.text; }
 
 
     // FIXME : Qt BUG, margin value not take in account when control resize by the Splitter

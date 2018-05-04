@@ -60,7 +60,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.right: parent.right
                 height: 1
-                color: Regovar.theme.primaryColor.back.light
+                color: Regovar.theme.boxColor.border
             }
         }
 
@@ -89,7 +89,7 @@ Rectangle
         {
             Layout.fillWidth: true
             height: 1
-            color: Regovar.theme.primaryColor.back.light
+            color: Regovar.theme.boxColor.border
         }
 
         Rectangle

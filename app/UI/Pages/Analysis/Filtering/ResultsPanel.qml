@@ -317,7 +317,7 @@ Rectangle
         ButtonInline
         {
             text: qsTr("Load next 1000")
-            visible: root.model.results.loaded < root.model.results.total
+            visible: root.model && root.model.results.loaded < root.model.results.total
             enabled: resultsTree.model ? !resultsTree.model.isLoading : false
             onClicked: resultsTree.model.loadNext()
         }

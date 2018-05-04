@@ -182,12 +182,17 @@ Item
         var variantClassesChartModel = [];
         variantClasses.forEach(function (vclass)
         {
-            var count = stats["variants_classes"][vclass];
+            var count = 0;
+            if (vclass in stats["variants_classes"])
+            {
+                count = stats["variants_classes"][vclass];
+            }
             variantClassesChartModel.push({
                 "label": vclassesNames[vclass],
                 "percent": (count / variantTotal * 100.0).toFixed(1) + "%",
                 "count": regovar.formatNumber(count),
                 "value": count / variantTotal * 100.0 });
+
         });
         // Populate legend
         totalVariant.text = regovar.formatNumber(variantTotal);

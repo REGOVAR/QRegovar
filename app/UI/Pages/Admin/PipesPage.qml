@@ -12,6 +12,7 @@ Rectangle
 
 
     property QtObject model
+    property QtObject currentAnalysis // TODO: need it ?
 
     Rectangle
     {

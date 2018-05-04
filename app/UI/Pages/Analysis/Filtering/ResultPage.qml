@@ -16,7 +16,7 @@ Rectangle
     {
         if (model)
         {
-            filesBrowser.modelTree = model.documents;
+            filesBrowser.model = model.documents;
         }
     }
 

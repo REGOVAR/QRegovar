@@ -55,8 +55,11 @@ QuickFilterBox
         qlAll.checked = (!depth.checked && !vaf.checked);
         // send final combination to the model to update the filter
         var qf = model.quickfilters.qualityFilter;
-        qf.depth.isActive = depth.checked;
-        qf.vaf.isActive = vaf.checked;
+        if (qf)
+        {
+            qf.depth.isActive = depth.checked;
+            qf.vaf.isActive = vaf.checked;
+        }
     }
 
     content: Column

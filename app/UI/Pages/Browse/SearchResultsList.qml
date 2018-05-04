@@ -38,7 +38,7 @@ Rectangle
         Column
         {
             id: content
-            width: parent.width - 10
+            width: root.width - 10
 
             // Projects
             Column

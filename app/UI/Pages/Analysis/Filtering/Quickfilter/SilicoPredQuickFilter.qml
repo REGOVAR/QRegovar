@@ -11,6 +11,7 @@ import "qrc:/qml/Framework"
 
 QuickFilterBox
 {
+    id: root
     title : qsTr("In silico prediction")
     isExpanded: false
     property bool internalUiUpdate: false
@@ -46,12 +47,14 @@ QuickFilterBox
         if (model && model.quickfilters && model.quickfilters.inSilicoPredFilter)
         {
             var m = model.quickfilters.inSilicoPredFilter;
-            predSift.enabled = m.sift.isDisplayed;
-            predPoly.enabled = m.polyphen.isDisplayed;
-            predCadd.enabled = m.cadd.isDisplayed;
-            predImpact.enabled = m.impact.isDisplayed;
-
-            root.enabled = model.quickfilters.inSilicoPredFilter.isVisible();
+            root.enabled = m.isVisible();
+            if (root.enabled)
+            {
+                predSift.enabled = m.sift.isDisplayed;
+                predPoly.enabled = m.polyphen.isDisplayed;
+                predCadd.enabled = m.cadd.isDisplayed;
+                predImpact.enabled = m.impact.isDisplayed;
+            }
         }
     }
 

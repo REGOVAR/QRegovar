@@ -35,7 +35,9 @@ QuickFilterBox
     {
         if (model && model.quickfilters && model.quickfilters.transmissionFilter)
         {
-            root.enabled = model.quickfilters.transmissionFilter.isVisible();
+            console.log("transmission: " + model.quickfilters.transmissionFilter.isVisible());
+            //root.enabled = model.quickfilters.transmissionFilter.isVisible();
+            root.enabled = true;
         }
     }
 

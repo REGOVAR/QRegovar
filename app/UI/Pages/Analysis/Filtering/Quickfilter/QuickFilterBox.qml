@@ -15,6 +15,8 @@ Rectangle
 //    border.color: Regovar.theme.boxColor.border
     height: isExpanded ? content.height + header.height + 1: header.height +1
 
+    onEnabledChanged: console.log("enabled set to " + enabled);
+
     function reset()
     {
         console.log("TODO : override the reset method plz");
