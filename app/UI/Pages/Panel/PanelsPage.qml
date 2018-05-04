@@ -33,8 +33,9 @@ Rectangle
             anchors.fill: header
             anchors.margins: 10
             text: qsTr("Panels settings")
-            font.pixelSize: 20
+            font.pixelSize: Regovar.theme.font.size.title
             font.weight: Font.Black
+            color: Regovar.theme.primaryColor.back.dark
         }
         ConnectionStatus
         {

@@ -45,6 +45,7 @@ QHash<int, QByteArray> PanelsTreeModel::roleNames() const
     roles[Date] = "date";
     roles[Comment] = "comment";
     roles[Shared] = "shared";
+    roles[SearchField] = "searchField";
     return roles;
 }
 
@@ -68,6 +69,8 @@ void PanelsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
         columnData.insert(Comment, QVariant(p->description()));
         columnData.insert(Date, QVariant(p->updateDate().toString("yyyy-MM-dd HH:mm")));
         columnData.insert(Shared, QVariant(p->shared() ? tr("Yes") : ""));
+        QString search = p->name() + " " + p->description();
+        columnData.insert(SearchField, QVariant(search));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);
@@ -92,6 +95,8 @@ void PanelsTreeModel::setupModelPaneVersionData(Panel* panel, TreeItem *parent)
         columnData.insert(Comment, QVariant(vdata->comment()));
         columnData.insert(Date, QVariant(vdata->updateDate().toString("yyyy-MM-dd HH:mm")));
         columnData.insert(Shared, QVariant(panel->shared() ? tr("Yes") : ""));
+        QString search = vdata->version() + " " + vdata->comment();
+        columnData.insert(SearchField, QVariant(search));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);

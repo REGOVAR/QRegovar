@@ -9,8 +9,8 @@ ApplicationWindow
 {
     id: root
     visible: true
-    minimumWidth: 900
-    minimumHeight: 300
+    minimumWidth: 1600
+    minimumHeight: 800
 
     // The id of this window that allow "Regovar model" to retrieve corresponding "Analysis model" among open models/windows
     property int winId

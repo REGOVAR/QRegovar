@@ -10,14 +10,15 @@ class PanelsTreeModel : public TreeModel
     Q_PROPERTY(bool isLoading READ isLoading WRITE setIsLoading NOTIFY isLoadingChanged)
 
 public:
-    enum JsonModelRoles
+    enum Roles
     {
         PanelId = Qt::UserRole + 1,
         VersionId,
         Name,
         Comment,
         Date,
-        Shared
+        Shared,
+        SearchField
     };
 
     // Constructor
