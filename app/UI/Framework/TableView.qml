@@ -67,16 +67,18 @@ TableView
             color: Regovar.theme.boxColor.back // Regovar.theme.darker(Regovar.theme.boxColor.back, 1.1) // Regovar.theme.backgroundColor.alt
         }
 
-//        // Right border
-//        Rectangle
-//        {
-//            width: 1
-//            anchors.top: headerRoot.top
-//            anchors.right: headerRoot.right
-//            anchors.bottom: headerRoot.bottom
-//            color: Regovar.theme.boxColor.border
-//        }
-//        // Top border
+        // Right border
+        Rectangle
+        {
+            width: 1
+            anchors.top: headerRoot.top
+            anchors.right: headerRoot.right
+            anchors.bottom: headerRoot.bottom
+            anchors.topMargin: 5
+            anchors.bottomMargin: 5
+            color: Regovar.theme.boxColor.border
+        }
+        // Top border
         Rectangle
         {
             height: 1
@@ -128,11 +130,12 @@ TableView
                 Layout.fillWidth: true
                 font.pixelSize: Regovar.theme.font.size.normal
                 font.family: Regovar.theme.font.family
-                color: Regovar.theme.frontColor.normal
+                color: Regovar.theme.primaryColor.back.normal
                 horizontalAlignment: styleData.textAlignment
                 verticalAlignment: Text.AlignVCenter
                 elide: Text.ElideRight
                 text: styleData.value
+                font.bold: true
             }
             // Sorting indicator
             Text

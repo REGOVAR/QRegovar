@@ -123,7 +123,9 @@ Rectangle
             Layout.fillWidth: true
             iconLeft: "z"
             displayClearButton: true
-            placeholder: qsTr("Search by position chr1:422566 or by genes names...")
+            // TODO
+            placeholder: qsTr("Quick search among loaded entries... (not yet implemented)")
+            enabled: false
         }
     }
 
