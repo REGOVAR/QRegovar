@@ -123,9 +123,7 @@ Rectangle
             Layout.fillWidth: true
             iconLeft: "z"
             displayClearButton: true
-            // TODO
-            placeholder: qsTr("Quick search among loaded entries... (not yet implemented)")
-            enabled: false
+            placeholder: qsTr("Quick search among loaded entries...")
         }
     }
 

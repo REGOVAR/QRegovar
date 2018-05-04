@@ -19,62 +19,6 @@
 #include "Model/event/event.h"
 
 
-
-RegovarInfo::RegovarInfo(QObject* parent) : QObject(parent)
-{
-
-}
-
-
-bool RegovarInfo::loadJson(QJsonObject json)
-{
-    mServerVersion = json["version"].toString();
-    mWebsite = json["website"].toString();
-
-    if (VERSION_BUILD == 0)
-    {
-        mClientVersion= QString("%1.%2.dev").arg(VERSION_MAJOR).arg(VERSION_MINOR);
-    }
-    else
-    {
-        mClientVersion= QString("%1.%2.%3").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_BUILD);
-    }
-
-    // get license text
-    QFile mFile(":/license.html");
-    if(mFile.open(QFile::ReadOnly | QFile::Text))
-    {
-        QTextStream in(&mFile);
-        mLicense = in.readAll();
-        mFile.close();
-    }
-    else
-    {
-        mLicense = tr("Unable to open license file");
-    }
-
-
-
-    emit configChanged();
-    return true;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Regovar* Regovar::mInstance = Q_NULLPTR;
 Regovar* Regovar::i()
 {
@@ -713,4 +657,68 @@ QString Regovar::formatFileSize(qint64 size, qint64 uploadOffset)
 
 
     return QString("%1%2 %3").arg(uploadString, sizeString, suffixes[i]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ===============================================================================
+// ===============================================================================
+// ===============================================================================
+
+
+
+
+RegovarInfo::RegovarInfo(QObject* parent) : QObject(parent)
+{
+
+}
+
+
+bool RegovarInfo::loadJson(QJsonObject json)
+{
+    mServerVersion = json["version"].toString();
+    mWebsite = json["website"].toString();
+    QJsonObject msg = json["message"].toObject();
+    mWelcomMessage = msg["message"].toString();
+    mWelcomMessageType = msg["type"].toString();
+
+    if (VERSION_BUILD == 0)
+    {
+        mClientVersion= QString("%1.%2.dev").arg(VERSION_MAJOR).arg(VERSION_MINOR);
+    }
+    else
+    {
+        mClientVersion= QString("%1.%2.%3").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_BUILD);
+    }
+
+    // get license text
+    QFile mFile(":/license.html");
+    if(mFile.open(QFile::ReadOnly | QFile::Text))
+    {
+        QTextStream in(&mFile);
+        mLicense = in.readAll();
+        mFile.close();
+    }
+    else
+    {
+        mLicense = tr("Unable to open license file");
+    }
+
+
+
+    emit configChanged();
+    return true;
 }

@@ -33,43 +33,7 @@
 
 
 
-
-
-
-
-class RegovarInfo: public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(QString serverVersion READ serverVersion NOTIFY configChanged)
-    Q_PROPERTY(QString clientVersion READ clientVersion NOTIFY configChanged)
-    Q_PROPERTY(QString website READ website NOTIFY configChanged)
-    Q_PROPERTY(QString license READ license  NOTIFY configChanged)
-    Q_PROPERTY(QJsonObject release READ release  NOTIFY configChanged)
-
-public:
-    explicit RegovarInfo(QObject *parent = nullptr);
-    // Getters
-    inline QString serverVersion() { return mServerVersion; }
-    inline QString clientVersion() { return mClientVersion; }
-    inline QString website() { return mWebsite; }
-    inline QString license() { return mLicense; }
-    inline QJsonObject release() { return mRelease; }
-    // Setters
-    inline void setRelease(QJsonObject release) { mRelease = release; emit configChanged(); }
-    // Methods
-    bool loadJson(QJsonObject json);
-
-Q_SIGNALS:
-    void configChanged();
-
-private:
-    QString mServerVersion;
-    QString mClientVersion;
-    QString mWebsite;
-    QString mLicense;
-    QJsonObject mRelease;
-};
-
+class RegovarInfo;
 
 
 /*!
@@ -89,7 +53,6 @@ class Regovar : public QObject
     Q_PROPERTY(SubjectsListModel* lastSubjects READ lastSubjects NOTIFY lastDataChanged)
     Q_PROPERTY(EventsListModel* lastEvents READ lastEvents NOTIFY neverChanged)
     Q_PROPERTY(bool welcomIsLoading READ welcomIsLoading WRITE setWelcomIsLoading NOTIFY welcomIsLoadingChanged)
-
     // Managers
     Q_PROPERTY(NetworkManager* networkManager READ networkManager NOTIFY neverChanged)
     Q_PROPERTY(UsersManager* usersManager READ usersManager NOTIFY neverChanged)
@@ -212,6 +175,7 @@ Q_SIGNALS:
     void referencesChanged();
     void configChanged();
     void adminChanged();
+
     // Wizards events
     void newProjectWizardOpen();
     void newAnalysisWizardOpen();
@@ -299,5 +263,52 @@ private:
     QHash<QString, QObject*> mOpenWindowModels;
 };
 
+
+
+
+
+/*!
+ * \brief Class to old server's information
+ * (to avoid to polluate main regovar singleton with these data)
+ */
+class RegovarInfo: public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QString serverVersion READ serverVersion NOTIFY configChanged)
+    Q_PROPERTY(QString clientVersion READ clientVersion NOTIFY configChanged)
+    Q_PROPERTY(QString website READ website NOTIFY configChanged)
+    Q_PROPERTY(QString license READ license  NOTIFY configChanged)
+    Q_PROPERTY(QJsonObject release READ release  NOTIFY configChanged)
+    Q_PROPERTY(QString welcomMessage READ welcomMessage NOTIFY configChanged)
+    Q_PROPERTY(QString welcomMessageType READ welcomMessageType NOTIFY configChanged)
+
+public:
+    explicit RegovarInfo(QObject *parent = nullptr);
+    // Getters
+    inline QString serverVersion() { return mServerVersion; }
+    inline QString clientVersion() { return mClientVersion; }
+    inline QString website() { return mWebsite; }
+    inline QString license() { return mLicense; }
+    inline QJsonObject release() { return mRelease; }
+    inline QString welcomMessage() const { return mWelcomMessage; }
+    inline QString welcomMessageType() const { return mWelcomMessageType; }
+    // Setters
+    inline void setRelease(QJsonObject release) { mRelease = release; emit configChanged(); }
+    // Methods
+    bool loadJson(QJsonObject json);
+
+Q_SIGNALS:
+    void configChanged();
+
+private:
+    QString mServerVersion;
+    QString mClientVersion;
+    QString mWebsite;
+    QString mLicense;
+    QJsonObject mRelease;
+    //! Server welcom custom message
+    QString mWelcomMessage = "";
+    QString mWelcomMessageType = "";
+};
 
 #endif // REGOVAR_H

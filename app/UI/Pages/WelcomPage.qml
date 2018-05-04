@@ -49,18 +49,45 @@ Rectangle
     }
 
 
+    Column
+    {
+        id: infos
+        spacing: 10
+        anchors.top: logo.bottom
+        anchors.horizontalCenter: root.horizontalCenter
+        anchors.topMargin: 10
+        width: 600
 
+        Box
+        {
+            id: testServerWarning
+            width: 600
 
+            mainColor: regovar.config.welcomMessageType === "critical" ? Regovar.theme.frontColor.danger : regovar.config.welcomMessageType === "warning" ? Regovar.theme.frontColor.warning : Regovar.theme.frontColor.info;
+            text: regovar.config.welcomMessage
+            icon: regovar.config.welcomMessageType === "critical" ? "l" : regovar.config.welcomMessageType === "warning" ? "m" : "k";
+            visible: regovar.config.welcomMessage !== ""
+        }
+        Box
+        {
+            id: connectionError
+            width: 600
+
+            mainColor: Regovar.theme.frontColor.danger
+            text: qsTr("You are not connected to the Regovar server. Check your network connection or the url to the Regovar server in the settings panel.")
+            icon: "m"
+            visible: regovar.networkManager.status !== 0
+        }
+    }
 
     TextField
     {
         id: searchBar
-        anchors.top: logo.bottom
+        anchors.top: infos.bottom
         anchors.horizontalCenter: root.horizontalCenter
-        anchors.margins: 10
+        anchors.topMargin: 10
         width: 600
-        anchors.topMargin: 50
-        enabled: regovar.networkManager.status == 0
+        enabled: regovar.networkManager.status === 0
 
         Component.onCompleted: text = regovar.searchRequest
 
@@ -76,7 +103,7 @@ Rectangle
             previousResearch = text;
         }
 
-        placeholder: regovar.networkManager.status == 0 ? qsTr("Search anything, sample, phenotype, analysis, variant, report...") : ""
+        placeholder: regovar.networkManager.status === 0 ? qsTr("Search anything, sample, phenotype, analysis, variant, report...") : ""
         focus: true
     }
 
@@ -107,14 +134,14 @@ Rectangle
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New analysis")
                 onClicked: regovar.openNewAnalysisWizard()
-                enabled: regovar.networkManager.status == 0
+                enabled: regovar.networkManager.status === 0
             }
             ButtonWelcom
             {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New subject")
                 onClicked: regovar.openNewSubjectWizard()
-                enabled: regovar.networkManager.status == 0
+                enabled: regovar.networkManager.status === 0
             }
         }
 
@@ -280,15 +307,16 @@ Rectangle
 
         }
 
+
         Rectangle
         {
             anchors.topMargin: newButtonsRow.height
             anchors.fill: parent
             color: Regovar.theme.backgroundColor.main
-            visible: regovar.networkManager.status != 0
+            visible: regovar.networkManager.status !== 0
 
 
-
+/*
             Text
             {
                 id: connectionLostText
@@ -302,12 +330,13 @@ Rectangle
                 font.pixelSize: Regovar.theme.font.size.header
                 horizontalAlignment: Text.AlignHCenter
             }
+*/
             ButtonIcon
             {
-                anchors.top: connectionLostText.bottom
-                anchors.horizontalCenter: connectionLostText.horizontalCenter
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
                 anchors.margins: 20
-                visible: !regovar.welcomIsLoading || regovar.networkManager.status != 0
+                visible: !regovar.welcomIsLoading || regovar.networkManager.status !== 0
                 iconTxt: "d"
                 text: qsTr("Check local settings")
                 onClicked: regovar.mainMenu.goTo(5,1,2)
