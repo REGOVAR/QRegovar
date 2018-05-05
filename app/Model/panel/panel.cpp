@@ -103,7 +103,7 @@ bool Panel::loadJson(QJsonObject json)
     else
     {
         // Load version information
-        mVersionId = json["vid"].toString();
+        mVersionId = json["id"].toString();
         mVersion = json["name"].toString();
         mComment = json["comment"].toString();
         mCreateDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);

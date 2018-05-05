@@ -176,15 +176,21 @@ Dialog
 
                     TableViewColumn
                     {
-                        title: qsTr("Label")
+                        title: qsTr("Version")
+                        role: "version"
                         width: 200
-                        role: "label"
 
                     }
                     TableViewColumn
                     {
-                        role: "details"
-                        title: qsTr("Details")
+                        title: qsTr("Date")
+                        role: "updateDate"
+
+                    }
+                    TableViewColumn
+                    {
+                        title: qsTr("Comment")
+                        role: "comment"
                         width: 400
                     }
                 }
@@ -311,11 +317,11 @@ Dialog
         if (newModel)
         {
             root.model = newModel;
+            updateViewFromModel();
 
-            var headVersion = model.getVersion(model.versionsIds[0]);
-            header.text = qsTr("Edit panel's information and/or add new versions.");
-            //header.text += "\n" + qsTr("ID") + ": " + model.panelId;
-            header.text += "\n\n" + qsTr("Current name") + ": " + model.name;
+            //header.text = qsTr("Edit panel's information and/or add new versions.");
+            header.text = "\n\n" + qsTr("Panel name") + ": " + model.name;
+            var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
             header.text += "\n" + qsTr("Head version") + ": " + headVersion.version;
         }
     }
@@ -330,9 +336,9 @@ Dialog
         regovar.panelsManager.newPanel.reset();
 
         // Init new version with entries of the current head version
-        var headVersion = root.model.getVersion(root.model.versionsIds[0]);
-        for(var idx in headVersion.entries)
-            regovar.panelsManager.newPanel.addEntry(headVersion.entries[idx]);
+        var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
+        for(var idx in root.model.versionsIds)
+            regovar.panelsManager.newPanel.addEntry(root.model.versionsIds[idx]);
     }
 
     function commit()

@@ -23,7 +23,7 @@ class Panel : public QObject
     Q_PROPERTY(QString description READ description WRITE setDescription NOTIFY dataChanged)
     Q_PROPERTY(QString owner READ owner WRITE setOwner NOTIFY dataChanged)
     Q_PROPERTY(bool shared READ shared WRITE setShared NOTIFY dataChanged)
-    // List of others versions of this panel
+    // List of versions of this panel (ordered from latest to oldest
     Q_PROPERTY(QStringList versionsIds READ versionsIds NOTIFY dataChanged)
 
 public:
