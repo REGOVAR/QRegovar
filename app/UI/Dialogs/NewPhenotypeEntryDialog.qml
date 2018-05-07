@@ -11,7 +11,6 @@ import "qrc:/qml/InformationPanel/Phenotype"
 Dialog
 {
     id: root
-
     title: qsTr("Add phenotype entry")
 
     signal addPhenotype(var phenoId)
@@ -25,7 +24,7 @@ Dialog
         {
             searchField.text = "";
             formerSearch = "";
-            resultsModel.clear();
+            regovar.phenotypesManager.searchResults.clear();
         }
     }
 
@@ -38,22 +37,6 @@ Dialog
         }
     }
 
-
-//    Connections
-//    {
-//        target: regovar.phenotypesManager
-//        onSearchDone:
-//        {
-//            if (success)
-//            {
-//                resultsModel.clear();
-//                for(var idx in result)
-//                {
-//                    resultsModel.append(result[idx]);
-//                }
-//            }
-//        }
-//    }
 
     contentItem: Rectangle
     {
@@ -83,7 +66,6 @@ Dialog
             anchors.right: parent.right
             anchors.bottom: footer.top
             anchors.margins: 10
-
 
             rows: 2
             columns: 2
@@ -125,10 +107,6 @@ Dialog
                     boundsBehavior: Flickable.StopAtBounds
                     ScrollBar.vertical: ScrollBar {}
                     model: regovar.phenotypesManager.searchResults
-//                    model: ListModel
-//                    {
-//                        id: resultsModel
-//                    }
 
                     delegate: PhenotypeSearchEntry
                     {
@@ -147,8 +125,6 @@ Dialog
                     }
                 }
             }
-
-
         }
 
         Row
@@ -181,5 +157,4 @@ Dialog
             }
         }
     }
-
 }

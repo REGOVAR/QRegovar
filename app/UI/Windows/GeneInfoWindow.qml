@@ -14,7 +14,7 @@ Window
     minimumHeight : 300
     minimumWidth : 300
 
-    property int winId
+    property string winId
 
     GeneInformation
     {

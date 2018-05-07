@@ -57,6 +57,7 @@ Rectangle
         anchors.horizontalCenter: root.horizontalCenter
         anchors.topMargin: 10
         width: 600
+        visible: false
 
         Box
         {

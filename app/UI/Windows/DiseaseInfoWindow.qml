@@ -15,7 +15,7 @@ Window
     minimumHeight : 300
     minimumWidth : 300
 
-    property int winId
+    property string winId
 
     DiseaseInformation
     {
@@ -33,6 +33,6 @@ Window
     {
         winId = cppWinId;
         diseaseInfoPanel.model = regovar.getWindowModels(winId);
-        title = diseaseInfoPanel.model.name;
+        title = diseaseInfoPanel.model.label;
     }
 }

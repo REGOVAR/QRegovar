@@ -129,9 +129,9 @@ bool Panel::loadJson(QJsonObject json)
             // Compute details field
             QJsonObject entryData = entry.toObject();
 
-            if (entryData.contains("id"))
+            if (entryData.contains("symbol"))
             {
-                entryData.insert("details", entryData["id"]);
+                entryData.insert("details", "");
             }
             else
             {
