@@ -21,7 +21,7 @@ void Settings::reload()
     mLanguage = settings.value("language", "EN-En").toString();
     mDisplayHelp = settings.value("displayHelp", false).toBool();
     // Connection settings
-    mServerUrl = QUrl(settings.value("serverUrl", "http://dev.regovar.org").toString());
+    mServerUrl = QUrl(settings.value("serverUrl", "http://test.regovar.org").toString());
     mSharedUrl = QUrl(settings.value("sharedUrl", "http://shared.regovar.org").toString());
     // Local cache settings
     mLocalCacheDir = settings.value("cacheDir", "").toString();
