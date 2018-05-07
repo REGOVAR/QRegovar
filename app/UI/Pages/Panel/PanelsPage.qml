@@ -141,7 +141,7 @@ Rectangle
     function openSelectedPanel()
     {
         var itemId = regovar.panelsManager.panelsTree.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
-        if (itemId !== undefined && itemId != "")
+        if (itemId !== undefined && itemId !== "")
         {
             regovar.getPanelInfo(itemId);
         }
@@ -151,7 +151,7 @@ Rectangle
     function updateSelectedPanel()
     {
         var itemId = regovar.panelsManager.panelsTree.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
-        if (itemId !== undefined && itemId != "")
+        if (itemId !== undefined && itemId !== "")
         {
             newPanelVersionDialog.reset(regovar.panelsManager.getOrCreatePanel(itemId));
             newPanelVersionDialog.open();

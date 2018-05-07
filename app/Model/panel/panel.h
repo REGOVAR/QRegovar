@@ -18,7 +18,7 @@ class Panel : public QObject
     Q_PROPERTY(QString version READ version WRITE setVersion NOTIFY dataChanged)
     Q_PROPERTY(QString fullname READ fullname NOTIFY dataChanged)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
-    Q_PROPERTY(QVariantList entries READ entries NOTIFY dataChanged)
+    Q_PROPERTY(QVariantList entries READ entries NOTIFY entriesChanged)
     // Common panel's versions properties
     Q_PROPERTY(QString description READ description WRITE setDescription NOTIFY dataChanged)
     Q_PROPERTY(QString owner READ owner WRITE setOwner NOTIFY dataChanged)
@@ -72,12 +72,13 @@ public:
 
     //! Add a new version to the panel (append=true should be only used by factory)
     Q_INVOKABLE QString addVersion(QJsonObject data, bool append=false);
+    Q_INVOKABLE bool addVersion(QString versionId);
     //! Add a new entry to the list (only used by the qml wizard)
     Q_INVOKABLE void addEntry(QJsonObject data);
     //! Remove entry at the given index in the list (only used by the qml wizard)
-    Q_INVOKABLE inline void removeEntryAt(int idx) { if (mEntries.count() > idx) mEntries.removeAt(idx); emit dataChanged(); }
+    Q_INVOKABLE inline void removeEntryAt(int idx) { if (mEntries.count() > idx) { mEntries.removeAt(idx); emit entriesChanged(); } }
     //! Remove entry at the given index in the list (only used by the qml wizard)
-    Q_INVOKABLE inline void removeAllEntries() { mEntries.clear(); emit dataChanged(); }
+    Q_INVOKABLE inline void removeAllEntries() { if (mEntries.count()>0) { mEntries.clear(); emit entriesChanged(); } }
     //! Reset data (only used by Creation wizard to reset its model)
     Q_INVOKABLE void reset();
     //! Return panel version details if provided id match; otherwise return null
@@ -86,6 +87,7 @@ public:
 
 Q_SIGNALS:
     void dataChanged();
+    void entriesChanged();
 
 private:
     bool mLoaded = false;

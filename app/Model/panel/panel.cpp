@@ -69,6 +69,20 @@ QString Panel::addVersion(QJsonObject data, bool append)
     return result ? panel->versionId() : "";
 }
 
+bool Panel::addVersion(QString versionId)
+{
+    Panel* panel = regovar->panelsManager()->getOrCreatePanel(versionId);
+    if (panel != nullptr)
+    {
+        if (!mVersionsMap->contains(versionId))
+        {
+            mVersionsMap->insert(versionId, panel);
+            mOrderedVersionsIds->append(versionId);
+            return true;
+        }
+    }
+    return false;
+}
 
 
 
@@ -249,7 +263,7 @@ void Panel::addEntry(QJsonObject data)
     if (append)
     {
         mEntries.append(data);
-        emit dataChanged();
+        emit entriesChanged();
     }
 }
 
@@ -259,11 +273,13 @@ void Panel::reset()
     mName = "";
     mDescription = "";
     mOwner = "";
-    mDescription = "";
     mShared = false;
     mVersion = "";
     mEntries.clear();
+    mOrderedVersionsIds->clear();
+    mVersionsMap->clear();
     emit dataChanged();
+    emit entriesChanged();
 }
 
 

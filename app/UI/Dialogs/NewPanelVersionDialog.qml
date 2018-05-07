@@ -1,6 +1,6 @@
 import QtQuick 2.9
-import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
+import QtQuick.Controls 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
 import Regovar.Core 1.0
@@ -176,21 +176,15 @@ Dialog
 
                     TableViewColumn
                     {
-                        title: qsTr("Version")
-                        role: "version"
+                        title: qsTr("Label")
                         width: 200
+                        role: "label"
 
                     }
                     TableViewColumn
                     {
-                        title: qsTr("Date")
-                        role: "updateDate"
-
-                    }
-                    TableViewColumn
-                    {
-                        title: qsTr("Comment")
-                        role: "comment"
+                        role: "details"
+                        title: qsTr("Details")
                         width: 400
                     }
                 }
@@ -223,6 +217,13 @@ Dialog
                         onClicked: removeAllEntries()
                         enabled: !newPanelEntryDialog.visible
                     }
+//                    Button
+//                    {
+//                        text: qsTr("Reset")
+//                        onClicked: loadLastVersionEntries()
+//                        enabled: !newPanelEntryDialog.visible
+//                    }
+
                 }
             }
         }
@@ -300,6 +301,25 @@ Dialog
         }
     }
 
+    Connections
+    {
+        target: regovar.panelsManager.newPanel
+        onDataChanged: updateViewFromModel()
+    }
+
+    property bool internalUpdate: false
+    function loadLastVersionEntries()
+    {
+        //panelEntriesTable.model = [];
+        regovar.panelsManager.newPanel.removeAllEntries();
+        var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
+        for (var idx in headVersion.entries)
+            regovar.panelsManager.newPanel.addEntry(headVersion.entries[idx]);
+        //panelEntriesTable.model = regovar.panelsManager.newPanel.entries;
+        console.log("===== loadLastVersionEntries");
+    }
+
+
     function removeSelectedEntry()
     {
         regovar.panelsManager.newPanel.removeEntryAt(panelEntriesTable.currentRow);
@@ -311,16 +331,26 @@ Dialog
 
     function reset(newModel)
     {
-        root.currentStep = 1;
-        root.model = null;
+        currentStep = 1;
+        if (newModel === model) return;
+
         header.text = "";
+
+        if (model)
+        {
+            model.onDataChanged.disconnect(updateViewFromModel);
+        }
+
         if (newModel)
         {
-            root.model = newModel;
-            updateViewFromModel();
+            model = newModel;
+
+            model.onDataChanged.connect(updateViewFromModel)
+            model.load(true);
+
 
             //header.text = qsTr("Edit panel's information and/or add new versions.");
-            header.text = "\n\n" + qsTr("Panel name") + ": " + model.name;
+            header.text = "\n" + qsTr("Panel name") + ": " + model.name;
             var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
             header.text += "\n" + qsTr("Head version") + ": " + headVersion.version;
         }
@@ -328,27 +358,41 @@ Dialog
 
     function updateViewFromModel()
     {
-        panelNameField.text = root.model.name;
-        versionField.text = "v" + (root.model.versionsIds.length + 1)
-        ownerField.text = root.model.owner;
-        descriptionField.text = root.model.description;
-        sharedField.checked = root.model.shared;
-        regovar.panelsManager.newPanel.reset();
+        if (model && !internalUpdate)
+        {
+            internalUpdate = true;
 
-        // Init new version with entries of the current head version
-        var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
-        for(var idx in root.model.versionsIds)
-            regovar.panelsManager.newPanel.addEntry(root.model.versionsIds[idx]);
+            panelNameField.text = root.model.name;
+            versionField.text = "v" + (root.model.versionsIds.length + 1)
+            ownerField.text = root.model.owner;
+            descriptionField.text = root.model.description;
+            sharedField.checked = root.model.shared;
+            regovar.panelsManager.newPanel.reset();
+
+            // Init new version with entries of the current head version
+            var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
+            for(var idx in root.model.versionsIds)
+                regovar.panelsManager.newPanel.addVersion(root.model.versionsIds[idx]);
+            // Init entries with entries of the latest version
+            loadLastVersionEntries();
+
+            internalUpdate = false;
+        }
     }
 
     function commit()
     {
-        regovar.panelsManager.newPanel.panelId = root.model.panelId;
-        regovar.panelsManager.newPanel.name = panelNameField.text;
-        regovar.panelsManager.newPanel.version = versionField.text;
-        regovar.panelsManager.newPanel.owner = ownerField.text;
-        regovar.panelsManager.newPanel.description = descriptionField.text;
-        regovar.panelsManager.newPanel.shared = sharedField.checked;
-        regovar.panelsManager.commitNewPanel();
+        if (!internalUpdate)
+        {
+            internalUpdate = true;
+            regovar.panelsManager.newPanel.panelId = root.model.panelId;
+            regovar.panelsManager.newPanel.name = panelNameField.text;
+            regovar.panelsManager.newPanel.version = versionField.text;
+            regovar.panelsManager.newPanel.owner = ownerField.text;
+            regovar.panelsManager.newPanel.description = descriptionField.text;
+            regovar.panelsManager.newPanel.shared = sharedField.checked;
+            regovar.panelsManager.commitNewPanel();
+            internalUpdate = false;
+        }
     }
 }
