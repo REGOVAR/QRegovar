@@ -36,21 +36,23 @@ bool Pipeline::loadJson(QJsonObject json)
     mDescription = json["description"].toString();
     mStatus = json["status"].toString();
     mVersion = json["version"].toString();
-    mVersionApi = json["version_api"].toString();
+    // mVersionApi = json["version_api"].toString();
     mStarred = json["starred"].toBool();
     mInstallationDate = QDateTime::fromString(json["installation_date"].toString(), Qt::ISODate);
     mManifestJson = json["manifest"].toObject();
 
     QJsonObject docs = json["documents"].toObject();
+
+
     for (const QString k: docs.keys())
     {
-        if (k == "form") mForm = QUrl(docs[k].toString());
-        else if (k == "icon") mIcon = QUrl(docs[k].toString());
-        else if (k == "license") mLicense = QUrl(docs[k].toString());
-        else if (k == "readme") mReadme = QUrl(docs[k].toString());
-        else if (k == "help") mHelpPage = QUrl(docs[k].toString());
-        else if (k == "home") mHomePage = QUrl(docs[k].toString());
-        else if (k == "manifest") mManifest = QUrl(docs[k].toString());
+        if (k == "form" && !docs[k].isNull()) mForm = QUrl(docs[k].toString());
+        else if (k == "icon" && !docs[k].isNull()) mIcon = QUrl(docs[k].toString());
+        else if (k == "license" && !docs[k].isNull()) mLicense = QUrl(docs[k].toString());
+        else if (k == "readme" && !docs[k].isNull()) mReadme = QUrl(docs[k].toString());
+        else if (k == "help" && !docs[k].isNull()) mHelpPage = QUrl(docs[k].toString());
+        else if (k == "home" && !docs[k].isNull()) mHomePage = QUrl(docs[k].toString());
+        else if (k == "manifest" && !docs[k].isNull()) mManifest = QUrl(docs[k].toString());
     }
 
     updateSearchField();
