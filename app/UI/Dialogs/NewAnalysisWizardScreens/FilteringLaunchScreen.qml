@@ -19,25 +19,28 @@ GenericScreen
         checkReady();
     }
 
-    Text
+
+    // Help information on this page
+    Box
     {
-        id: header
+        id: helpInfoBox
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        icon: "k"
         text: qsTr("You're almost done! Choose a name and select the project you want to save your analysis to. Below is a summary of the configuration of the analysis.\nIf all is good. press the \"Launch\" button. The Regovar server will prepare your data, and you will then be able to dynamically filter the variants.")
-        wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.normal
-        color: Regovar.theme.primaryColor.back.normal
     }
 
     RowLayout
     {
         id: projectForm
-        anchors.top: header.bottom
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : parent.top
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? 10 : 0
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.topMargin: 30
         spacing: 10
 
         Text

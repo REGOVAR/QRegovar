@@ -98,7 +98,6 @@ GenericScreen
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("Select the sample(s) you want to analyse.")
     }
@@ -118,14 +117,6 @@ GenericScreen
             spacing: 10
             Layout.fillHeight: true
             Layout.fillWidth: true
-
-            Text
-            {
-                id: tableTitle
-                text: qsTr("Selected samples")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.frontColor.normal
-            }
 
             // TODO: feature #142 in developpment
 //            Rectangle

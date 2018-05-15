@@ -28,25 +28,28 @@ GenericScreen
         }
     }
 
-    Text
+
+    // Help information on this page
+    Box
     {
-        id: header
+        id: helpInfoBox
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        icon: "k"
         text: qsTr("This step is optional.\n" +
                    "Select the annotations databases and their versions to annotate the variants. Annotations of the samples vcf files are selected by default.\n\n" +
                    "Note :\n - Default annotations databases complient with selected samples are in bold.\n" +
                    " - Quick filters need VEP and dbNSFP databases to work; Otherwise some filters will be disabled.")
-        wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.normal
-        color: Regovar.theme.primaryColor.back.normal
     }
 
     ColumnLayout
     {
-        anchors.top: header.bottom
-        anchors.topMargin: 30
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : parent.top
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? 10 : 0
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom

@@ -12,106 +12,93 @@ GenericScreen
 
     readyForNext: true
 
-    Text
+
+    // Help information on this page
+    Box
     {
-        id: header
+        id: helpInfoBox
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        text:  qsTr("This step is optional.\nYou can add custom attributes to your samples. Then it will allow you to do some 'set' conditions in your filter.\nBy example, you can add an attribute 'sex' to your samples and then filter variants by sample that are 'Female'...")
-        wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.normal
-        color: Regovar.theme.primaryColor.back.normal
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        icon: "k"
+        text: qsTr("This step is optional.\nYou can add custom attributes to your samples. Then it will allow you to do some 'set' conditions in your filter.\nBy example, you can add an attribute 'sex' to your samples and then filter variants by sample that are 'Female'...")
     }
 
     RowLayout
     {
-        anchors.top: header.bottom
-        anchors.topMargin: 30
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : parent.top
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? 10 : 0
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         spacing: 10
 
-
-        ColumnLayout
+        TableView
         {
-            spacing: 10
-            Layout.fillHeight: true
+            id: samplesAttributesTable
+            clip: true
             Layout.fillWidth: true
+            Layout.fillHeight: true
 
-            Text
+            model: regovar.analysesManager.newFiltering.samples
+
+            TableViewColumn { title: qsTr("Sample"); role: "name" }
+
+
+            Connections
             {
-                id: tableTitle
-                text: qsTr("Samples attributes")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.frontColor.normal
+                target: regovar.analysesManager.newFiltering
+                onAttributesChanged: samplesAttributesTable.refreshColumns()
             }
 
-            TableView
+            // Special column to display sample's attribute
+            Component
             {
-                id: samplesAttributesTable
-                clip: true
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                id: columnComponent_attribute
 
-                model: regovar.analysesManager.newFiltering.samples
-
-                TableViewColumn { title: qsTr("Sample"); role: "name" }
-
-
-                Connections
+                TableViewColumn
                 {
-                    target: regovar.analysesManager.newFiltering
-                    onAttributesChanged: samplesAttributesTable.refreshColumns()
-                }                
+                    width: 100
+                    property var attribute
 
-                // Special column to display sample's attribute
-                Component
-                {
-                    id: columnComponent_attribute
-
-                    TableViewColumn
+                    delegate: Item
                     {
-                        width: 100
-                        property var attribute
-
-                        delegate: Item
+                        TableViewTextField
                         {
-                            TableViewTextField
-                            {
-                                id: textField
-                                anchors.fill: parent
-                                text: attribute.getValue(styleData.value.id)
-                                onTextEdited: attribute.setValue(styleData.value.id, text)
-                            }
+                            id: textField
+                            anchors.fill: parent
+                            text: attribute.getValue(styleData.value.id)
+                            onTextEdited: attribute.setValue(styleData.value.id, text)
                         }
                     }
                 }
+            }
 
 
 
-                function refreshColumns()
+            function refreshColumns()
+            {
+                // Remove old columns (except the first one with samples names
+                var position, col;
+                for (var idx=samplesAttributesTable.columnCount; idx> 1; idx-- )
                 {
-                    // Remove old columns (except the first one with samples names
-                    var position, col;
-                    for (var idx=samplesAttributesTable.columnCount; idx> 1; idx-- )
+                    col = samplesAttributesTable.getColumn(idx-1);
+                    if (col !== null)
                     {
-                        col = samplesAttributesTable.getColumn(idx-1);
-                        if (col !== null)
-                        {
-                            // remove columb from UI
-                            samplesAttributesTable.removeColumn(idx-1);
-                        }
+                        // remove columb from UI
+                        samplesAttributesTable.removeColumn(idx-1);
                     }
+                }
 
-                    // Add columns
-                    for (idx=0; idx < regovar.analysesManager.newFiltering.attributes.length; idx++)
-                    {
-                        var attribute = regovar.analysesManager.newFiltering.attributes[idx];
-                        col = columnComponent_attribute.createObject(samplesAttributesTable, {"attribute": attribute, "title": attribute.name});
-                        samplesAttributesTable.insertColumn(idx+1, col);
-                    }
+                // Add columns
+                for (idx=0; idx < regovar.analysesManager.newFiltering.attributes.length; idx++)
+                {
+                    var attribute = regovar.analysesManager.newFiltering.attributes[idx];
+                    col = columnComponent_attribute.createObject(samplesAttributesTable, {"attribute": attribute, "title": attribute.name});
+                    samplesAttributesTable.insertColumn(idx+1, col);
                 }
             }
         }
