@@ -894,7 +894,7 @@ Rectangle
                             verticalAlignment: Text.AlignVCenter
                             font.pixelSize: Regovar.theme.font.size.normal
                             elide: Text.ElideRight
-                            font.family: "monospace"
+                            font.family: fixedFont
                             horizontalAlignment: Text.AlignRight
                             text: styleData.value ? regovar.formatNumber(styleData.value) : "-"
                         }
@@ -915,7 +915,7 @@ Rectangle
                             verticalAlignment: Text.AlignVCenter
                             font.pixelSize: Regovar.theme.font.size.normal
                             elide: Text.ElideRight
-                            font.family: "monospace"
+                            font.family: fixedFont
                             horizontalAlignment: Text.AlignRight
                             text: styleData.value ? regovar.formatFileSize(styleData.value) : "-"
                         }
@@ -936,7 +936,7 @@ Rectangle
                             verticalAlignment: Text.AlignVCenter
                             font.pixelSize: Regovar.theme.font.size.normal
                             elide: Text.ElideRight
-                            font.family: "monospace"
+                            font.family: fixedFont
                             horizontalAlignment: Text.AlignRight
                             text: styleData.value ? regovar.formatFileSize(styleData.value) : "-"
                         }

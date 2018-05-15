@@ -65,7 +65,7 @@ Rectangle
                     text: "13"
                     verticalAlignment: Text.AlignVCenter
                     font.pixelSize: Regovar.theme.font.size.header
-                    font.family: "monospace"
+                    font.family: fixedFont
                     color: Regovar.theme.primaryColor.back.dark
                     elide: Text.ElideRight
                 }

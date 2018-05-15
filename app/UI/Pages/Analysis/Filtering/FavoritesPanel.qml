@@ -194,7 +194,7 @@ Rectangle
                                     id: filterItemCount
                                     text: modelData.progress == 1 ? modelData.count : ""
                                     color: Regovar.theme.primaryColor.back.dark
-                                    font.family: "monospace"
+                                    font.family: fixedFont
                                 }
 
                                 Rectangle

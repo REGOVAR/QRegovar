@@ -64,7 +64,7 @@ Rectangle
             font.pixelSize: Regovar.theme.font.size.normal
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            font.family: "monospace"
+            font.family: fixedFont
             text: identifier
         }
         Text

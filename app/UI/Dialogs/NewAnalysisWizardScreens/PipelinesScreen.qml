@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
-import QtWebView 1.0
+//import QtWebView 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
@@ -128,6 +128,7 @@ GenericScreen
 
                             if (pipe && !pipe.aboutPage !== "")
                             {
+                                regovar.analysesManager.newPipeline.pipeline = pipe;
                                 pipeInfoPanel.url = pipe.aboutPage;
                                 pipeInfoPanel.visible = true;
                             }
@@ -136,8 +137,6 @@ GenericScreen
                                 pipeInfoPanel.url = "";
                                 pipeInfoPanel.visible = false;
                             }
-
-                            regovar.analysesManager.newPipeline.pipeline = pipe;
                         }
                     }
                 }
@@ -160,13 +159,13 @@ GenericScreen
                 color: Regovar.theme.frontColor.disable
             }
 
-            WebView
-            {
-                id: pipeInfoPanel
-                anchors.fill: parent
-                anchors.leftMargin: 5
-                visible: false
-            }
+//            WebView
+//            {
+//                id: pipeInfoPanel
+//                anchors.fill: parent
+//                anchors.leftMargin: 5
+//                visible: false
+//            }
 
         }
     }
