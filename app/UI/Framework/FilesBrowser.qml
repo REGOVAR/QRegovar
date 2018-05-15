@@ -23,139 +23,93 @@ Item
             color: "transparent"
             clip: true
 
-            ColumnLayout
+
+            TreeView
             {
+                id: filesTreeView
                 anchors.fill: parent
                 anchors.rightMargin: 10
-                spacing: 10
 
-                Rectangle
+                onCurrentIndexChanged:
                 {
-                    Layout.fillWidth: true
-                    height: Regovar.theme.font.boxSize.header
-                    color: "transparent"
-
-                    RowLayout
+                    if (model)
                     {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        spacing: 10
+                        var id = model.data(currentIndex, Qt.UserRole+1);
+                        console.log(id);
+                        viewer.openFile(id);
+                    }
+                }
 
+                TableViewColumn
+                {
+                    width: 100
+                    role: "name"
+                    title: "Name"
+                    delegate: Item
+                    {
                         Text
                         {
-                            id: leftPanelHeader
-                            Layout.fillWidth: true
-                            font.pixelSize: Regovar.theme.font.size.header
-                            color: Regovar.theme.primaryColor.back.dark
-                            text: qsTr("Documents")
+                            anchors.leftMargin: 5
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            font.family: Regovar.theme.icons.name
+                            text: styleData.value.icon
+                            onTextChanged:
+                            {
+                                if (styleData.value.icon == "/") // = Loading
+                                {
+                                    statusIconAnimation.start();
+                                }
+                                else
+                                {
+                                    statusIconAnimation.stop();
+                                    rotation = 0;
+                                }
+                            }
+                            NumberAnimation on rotation
+                            {
+                                id: statusIconAnimation
+                                duration: 1500
+                                loops: Animation.Infinite
+                                from: 0
+                                to: 360
+                            }
+                        }
+                        Text
+                        {
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                            anchors.rightMargin: 5
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value.filename
                             elide: Text.ElideRight
                         }
-
-//                        ButtonInline
-//                        {
-//                            text: qsTr("Download all")
-//                            iconTxt: "é"
-//                        }
-                    }
-
-                    Rectangle
-                    {
-                        anchors.bottom: parent.bottom
-                        anchors.left: parent.left
-                        width: parent.width
-                        height: 1
-                        color: Regovar.theme.primaryColor.back.normal
                     }
                 }
-
-                TreeView
+                TableViewColumn
                 {
-                    id: filesTreeView
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    width: 300
-
-                    onCurrentIndexChanged:
-                    {
-                        if (model)
-                        {
-                            var id = model.data(currentIndex, Qt.UserRole+1);
-                            console.log(id);
-                            viewer.openFile(id);
-                        }
-                    }
-
-                    TableViewColumn
-                    {
-                        width: 100
-                        role: "name"
-                        title: "Name"
-                        delegate: Item
-                        {
-                            Text
-                            {
-                                anchors.leftMargin: 5
-                                anchors.left: parent.left
-                                anchors.verticalCenter: parent.verticalCenter
-                                verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                font.family: Regovar.theme.icons.name
-                                text: styleData.value.icon
-                                onTextChanged:
-                                {
-                                    if (styleData.value.icon == "/") // = Loading
-                                    {
-                                        statusIconAnimation.start();
-                                    }
-                                    else
-                                    {
-                                        statusIconAnimation.stop();
-                                        rotation = 0;
-                                    }
-                                }
-                                NumberAnimation on rotation
-                                {
-                                    id: statusIconAnimation
-                                    duration: 1500
-                                    loops: Animation.Infinite
-                                    from: 0
-                                    to: 360
-                                }
-                            }
-                            Text
-                            {
-                                anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
-                                anchors.rightMargin: 5
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                anchors.verticalCenter: parent.verticalCenter
-                                horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                text: styleData.value.filename
-                                elide: Text.ElideRight
-                            }
-                        }
-                    }
-                    TableViewColumn
-                    {
-                        width: 100
-                        role: "size"
-                        title: "Size"
-                    }
-                    TableViewColumn
-                    {
-                        role: "date"
-                        title: "Date"
-                    }
-                    TableViewColumn
-                    {
-                        role: "comment"
-                        title: "Comment"
-                    }
+                    width: 100
+                    role: "size"
+                    title: "Size"
+                }
+                TableViewColumn
+                {
+                    role: "date"
+                    title: "Date"
+                }
+                TableViewColumn
+                {
+                    role: "comment"
+                    title: "Comment"
                 }
             }
+
         }
 
         FileViewer
