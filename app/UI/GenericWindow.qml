@@ -58,7 +58,7 @@ ApplicationWindow
 
         Keys.onPressed:
         {
-            if (event.key == Qt.Key_F5) regovar.loadWelcomData();
+            if (event.key === Qt.Key_F5) regovar.loadWelcomData();
         }
     }
 
@@ -114,7 +114,7 @@ ApplicationWindow
                 if (menuEntry.qmlPage !== "")
                 {
                     var comp = Qt.createComponent("Pages/" + menuEntry.qmlPage);
-                    if (comp.status == Component.Ready)
+                    if (comp.status === Component.Ready)
                     {
                         var elmt = comp.createObject(stack, {"visible": false});
                         root.pages[uid] = elmt;
@@ -136,7 +136,7 @@ ApplicationWindow
 
                         console.log ("load " + uid + ": Pages/" + menuEntry.qmlPage)
                     }
-                    else if (comp.status == Component.Error)
+                    else if (comp.status === Component.Error)
                     {
                         console.log("Error loading component: ", comp.errorString());
                     }

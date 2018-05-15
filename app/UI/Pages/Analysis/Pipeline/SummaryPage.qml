@@ -21,6 +21,17 @@ Rectangle
     property bool isResumable: false
     property bool isClosed: false
 
+    property real column1Width: 50
+    property real column3Width: 50
+    function updateColumn1Width(newWidth)
+    {
+        column1Width = Math.max(newWidth + 20, column1Width);
+    }
+    function updateColumn3Width(newWidth)
+    {
+        column3Width = Math.max(newWidth + 20, column3Width);
+    }
+
     onModelChanged:
     {
         if (model)
@@ -98,192 +109,104 @@ Rectangle
         anchors.left: root.left
         anchors.top: header.bottom
         anchors.bottom: root.bottom
-        height: 50
+        width: root.column1Width
         color: Regovar.theme.backgroundColor.alt
     }
-    function updateColumn1Width(newWidth)
-    {
-        rowHeadBackground.width = Math.max(newWidth + 15, rowHeadBackground.width);
-    }
 
-    ColumnLayout
+    GridLayout
     {
         anchors.top : header.bottom
         anchors.left: root.left
         anchors.right: root.right
-        anchors.bottom: root.bottom
         anchors.margins: 10
-        spacing: 10
+        anchors.bottom: root.bottom
+        columns: 3
+        columnSpacing: 20
+        rowSpacing: 10
 
+
+        // HELP ========================================================
+        Item
+        {
+            width: 10; height: 10
+            visible: Regovar.helpInfoBoxDisplayed
+        }
         // Help information on this page
         Box
         {
             id: helpInfoBox
             Layout.fillWidth: true
-
+            Layout.columnSpan: 2
             visible: Regovar.helpInfoBoxDisplayed
             icon: "k"
             text: qsTr("This page give you an overview of the analysis.")
         }
 
-        GridLayout
+        // STATUS ========================================================
+        Item
         {
+            width: root.column1Width - 20; height: 10
+        }
+        Box
+        {
+            id: statusBox
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            columns: 3
-            columnSpacing: 10
-            rowSpacing: 10
-
-            Box
+            mainColor: Regovar.theme.frontColor.warning
+            icon: ""
+            text: ""
+        }
+        RowLayout
+        {
+            ButtonIcon
             {
-                id: statusBox
-                Layout.fillWidth: true
-                Layout.columnSpan: 2
-                mainColor: Regovar.theme.frontColor.warning
-                icon: ""
+                width: Regovar.theme.font.boxSize.header
+                iconTxt: isRunning ? "y" : "x"
                 text: ""
-            }
-            RowLayout
-            {
-                ButtonIcon
+                ToolTip.text: isRunning ? qsTr("Pause") : qsTr("Resume")
+                ToolTip.visible: hovered
+                enabled: root.isResumable
+                onClicked:
                 {
-                    width: Regovar.theme.font.boxSize.header
-                    iconTxt: isRunning ? "y" : "x"
-                    text: ""
-                    ToolTip.text: isRunning ? qsTr("Pause") : qsTr("Resume")
-                    ToolTip.visible: hovered
-                    enabled: root.isResumable
-                    onClicked:
+                    if (isRunning)
                     {
-                        if (isRunning)
-                        {
-                            root.model.pause();
-                        }
-                        else
-                        {
-                            root.model.start();
-                        }
+                        root.model.pause();
+                    }
+                    else
+                    {
+                        root.model.start();
                     }
                 }
-                ButtonIcon
-                {
-                    width: Regovar.theme.font.boxSize.header
-                    iconTxt: "h"
-                    text: ""
-                    ToolTip.text: qsTr("Cancel")
-                    ToolTip.visible: hovered
-                    colorMain: Regovar.theme.frontColor.danger
-                    colorHover: Regovar.theme.lighter(Regovar.theme.frontColor.danger)
-                    colorDown: Regovar.theme.darker(Regovar.theme.frontColor.danger)
-                    enabled: !root.isClosed
-                    onClicked: confirmCancelDialog.open()
-                }
             }
-
-            /*
-            Text
+            ButtonIcon
             {
-                text: qsTr("Status")
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.family
-                verticalAlignment: Text.AlignVCenter
-                height: 35
+                width: Regovar.theme.font.boxSize.header
+                iconTxt: "h"
+                text: ""
+                ToolTip.text: qsTr("Cancel")
+                ToolTip.visible: hovered
+                colorMain: Regovar.theme.frontColor.danger
+                colorHover: Regovar.theme.lighter(Regovar.theme.frontColor.danger)
+                colorDown: Regovar.theme.darker(Regovar.theme.frontColor.danger)
+                enabled: !root.isClosed
+                onClicked: confirmCancelDialog.open()
             }
-            RowLayout
-            {
-                Layout.fillWidth: true
-                spacing: 10
-                Text
-                {
-                    id: statusIcon
-                    height: Regovar.theme.font.size.header
-                    color: Regovar.theme.frontColor.normal
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.icons.name
-                    verticalAlignment: Text.AlignVCenter
-                    text: "n"
-                    onTextChanged:
-                    {
-                        if (regovar.analysisStatusIconAnimated(root.model.status))
-                        {
-                            statusIconAnimation.start();
-                        }
-                        else
-                        {
-                            statusIconAnimation.stop();
-                            rotation = 0;
-                        }
-                    }
-                    NumberAnimation on rotation
-                    {
-                        id: statusIconAnimation
-                        duration: 1500
-                        loops: Animation.Infinite
-                        from: 0
-                        to: 360
-                    }
-                }
-
-                Text
-                {
-                    id: statusField
-                    Layout.fillWidth: true
-                    height: Regovar.theme.font.size.header
-                    color: Regovar.theme.frontColor.normal
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.family
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
+        }
 
 
+        // INFO ========================================================
+        Rectangle
+        {
+            Layout.columnSpan: 3
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.header
+            color: Regovar.theme.backgroundColor.alt
 
-            Column
-            {
-                Layout.rowSpan: 5
-                Layout.alignment: Qt.AlignTop
-                spacing: 10
-
-
-                ButtonIcon
-                {
-                    iconTxt: isRunning ? "y" : "x"
-                    text: isRunning ? qsTr("Pause") : qsTr("Resume")
-                    enabled: root.isResumable
-                    onClicked:
-                    {
-                        if (isRunning)
-                        {
-                            root.model.pause();
-                        }
-                        else
-                        {
-                            root.model.start();
-                        }
-                    }
-                }
-                ButtonIcon
-                {
-                    iconTxt: "h"
-                    text: qsTr("Cancel")
-                    colorMain: Regovar.theme.frontColor.danger
-                    colorHover: Regovar.theme.lighter(Regovar.theme.frontColor.danger)
-                    colorDown: Regovar.theme.darker(Regovar.theme.frontColor.danger)
-                    enabled: !root.isClosed
-                    onClicked: confirmCancelDialog.open()
-                }
-            }
-            */
-
-
-
-
-            // INFO ========================================================
             Row
             {
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
                 onWidthChanged: updateColumn1Width(width)
-                height: Regovar.theme.font.boxSize.header
                 Text
                 {
                     width: Regovar.theme.font.boxSize.header
@@ -308,145 +231,149 @@ Rectangle
                     color: Regovar.theme.primaryColor.back.normal
                 }
             }
+        }
+
+        RowLayout
+        {
+            onWidthChanged: updateColumn1Width(width)
             Item
             {
-                Layout.columnSpan: 2
-                width: 10; height: 10
-            }
-
-            RowLayout
-            {
-                onWidthChanged: updateColumn1Width(width)
-                Item
-                {
-                    Layout.minimumWidth: Regovar.theme.font.boxSize.header
-                    height: Regovar.theme.font.boxSize.normal
-                }
-
-                Text
-                {
-                    text: qsTr("Name*")
-                    font.bold: true
-                    color: Regovar.theme.primaryColor.back.dark
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.family
-                    verticalAlignment: Text.AlignVCenter
-                    height: Regovar.theme.font.boxSize.normal
-                }
-            }
-            TextField
-            {
-                id: nameField
-                Layout.fillWidth: true
-                enabled: editionMode
-                placeholder: qsTr("Name of the analysis")
-                onTextChanged: if (model) model.name = text
-            }
-
-            Column
-            {
-                Layout.rowSpan: 7
-                Layout.alignment: Qt.AlignTop
-                spacing: 10
-
-
-                Button
-                {
-                    text: editionMode ? qsTr("Save") : qsTr("Edit")
-                    onClicked:
-                    {
-                        editionMode = !editionMode;
-                        if (!editionMode)
-                        {
-                            // when click on save : update model
-                            updateModelFromView();
-                        }
-                    }
-                    ToolTip.text: editionMode ? qsTr("Save analysis information") : qsTr("Edit analysis information")
-                    ToolTip.visible: hovered
-                }
-
-                Button
-                {
-                    visible: editionMode
-                    text: qsTr("Cancel")
-                    onClicked: { updateView1FromModel(model); editionMode = false; }
-                }
-            }
-
-            RowLayout
-            {
-                onWidthChanged: updateColumn1Width(width)
-                Item
-                {
-                    Layout.minimumWidth: Regovar.theme.font.boxSize.header
-                    height: Regovar.theme.font.boxSize.normal
-                }
-
-                Text
-                {
-                    text: qsTr("Indicator")
-                    color: Regovar.theme.primaryColor.back.dark
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.family
-                    verticalAlignment: Text.AlignVCenter
-                    height: Regovar.theme.font.boxSize.normal
-                }
-            }
-            Rectangle
-            {
-                Layout.fillWidth: true
+                Layout.minimumWidth: Regovar.theme.font.boxSize.header
                 height: Regovar.theme.font.boxSize.normal
-                color: "transparent"
-                border.width: editionMode ? 1 : 0
-                border.color: Regovar.theme.boxColor.border
-                Text
-                {
-                    anchors.fill: parent
-                    anchors.leftMargin: 5
-                    text: qsTr("Not yet implemented")
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    color: Regovar.theme.frontColor.disable
-                    verticalAlignment: Text.AlignVCenter
-                }
             }
 
-            RowLayout
+            Text
             {
-                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                onWidthChanged: updateColumn1Width(width)
-                Item
-                {
-                    Layout.minimumWidth: Regovar.theme.font.boxSize.header
-                    height: Regovar.theme.font.boxSize.normal
-                }
-
-                Text
-                {
-                    text: qsTr("Comment")
-                    color: Regovar.theme.primaryColor.back.dark
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.family
-                    verticalAlignment: Text.AlignVCenter
-                    height: Regovar.theme.font.boxSize.normal
-                }
+                text: qsTr("Name*")
+                font.bold: true
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.family
+                verticalAlignment: Text.AlignVCenter
+                height: Regovar.theme.font.boxSize.normal
             }
-            TextArea
+        }
+        TextField
+        {
+            id: nameField
+            Layout.fillWidth: true
+            enabled: editionMode
+            placeholder: qsTr("Name of the analysis")
+            onTextChanged: if (model) model.name = text
+        }
+        Column
+        {
+            Layout.rowSpan: 3
+            Layout.alignment: Qt.AlignTop
+            spacing: 10
+
+
+            Button
             {
-                id: commentField
-                Layout.fillWidth: true
-                enabled: editionMode
-                height: 3 * Regovar.theme.font.size.normal
-                onTextChanged: if (model) model.comment = text
-                colorTextDisable: Regovar.theme.frontColor.normal
+                text: editionMode ? qsTr("Save") : qsTr("Edit")
+                onClicked:
+                {
+                    editionMode = !editionMode;
+                    if (!editionMode)
+                    {
+                        // when click on save : update model
+                        updateModelFromView();
+                    }
+                }
+                ToolTip.text: editionMode ? qsTr("Save analysis information") : qsTr("Edit analysis information")
+                ToolTip.visible: hovered
             }
 
+            Button
+            {
+                visible: editionMode
+                text: qsTr("Cancel")
+                onClicked: { updateView1FromModel(model); editionMode = false; }
+            }
+        }
 
-            // CONFIG ========================================================
+        RowLayout
+        {
+            onWidthChanged: updateColumn1Width(width)
+            Item
+            {
+                Layout.minimumWidth: Regovar.theme.font.boxSize.header
+                height: Regovar.theme.font.boxSize.normal
+            }
+
+            Text
+            {
+                text: qsTr("Indicator")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.family
+                verticalAlignment: Text.AlignVCenter
+                height: Regovar.theme.font.boxSize.normal
+            }
+        }
+        Rectangle
+        {
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.normal
+            color: "transparent"
+            border.width: editionMode ? 1 : 0
+            border.color: Regovar.theme.boxColor.border
+            Text
+            {
+                anchors.fill: parent
+                anchors.leftMargin: 5
+                text: qsTr("Not yet implemented")
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.frontColor.disable
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        RowLayout
+        {
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+            onWidthChanged: updateColumn1Width(width)
+            Item
+            {
+                Layout.minimumWidth: Regovar.theme.font.boxSize.header
+                height: Regovar.theme.font.boxSize.normal
+            }
+
+            Text
+            {
+                text: qsTr("Comment")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.family
+                verticalAlignment: Text.AlignVCenter
+                height: Regovar.theme.font.boxSize.normal
+            }
+        }
+        TextArea
+        {
+            id: commentField
+            Layout.fillWidth: true
+            enabled: editionMode
+            height: 3 * Regovar.theme.font.size.normal
+            onTextChanged: if (model) model.comment = text
+            colorTextDisable: Regovar.theme.frontColor.normal
+        }
+
+
+        // CONFIG ========================================================
+        Rectangle
+        {
+            Layout.columnSpan: 3
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.header
+            color: Regovar.theme.backgroundColor.alt
+
             Row
             {
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
                 onWidthChanged: updateColumn1Width(width)
-                height: Regovar.theme.font.boxSize.header
 
                 Text
                 {
@@ -472,240 +399,250 @@ Rectangle
                     color: Regovar.theme.primaryColor.back.normal
                 }
             }
+        }
+
+        RowLayout
+        {
+            onWidthChanged: updateColumn1Width(width)
             Item
             {
-                width: 10; height: 10
+                Layout.minimumWidth: Regovar.theme.font.boxSize.header
+                height: Regovar.theme.font.boxSize.normal
             }
 
-            RowLayout
+            Text
             {
-                onWidthChanged: updateColumn1Width(width)
-                Item
-                {
-                    Layout.minimumWidth: Regovar.theme.font.boxSize.header
-                    height: Regovar.theme.font.boxSize.normal
-                }
-
-                Text
-                {
-                    text: qsTr("Pipeline")
-                    color: Regovar.theme.primaryColor.back.dark
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.family
-                    verticalAlignment: Text.AlignVCenter
-                    height: Regovar.theme.font.boxSize.normal
-                }
+                text: qsTr("Pipeline")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.family
+                verticalAlignment: Text.AlignVCenter
+                height: Regovar.theme.font.boxSize.normal
             }
-            Row
+        }
+        Row
+        {
+            spacing: 10
+
+            Text
             {
-                spacing: 10
-
-                Text
-                {
-                    id: pipelineField
-                    height: Regovar.theme.font.size.header
-                    text: "Unknow pipeline"
-                    color: Regovar.theme.frontColor.normal
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.family
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                ButtonInline
-                {
-                    id: pipelineDetailsButton
-                    iconTxt: "z"
-                    text: ""
-                    onClicked: regovar.getPipelineInfo(root.model.pipeline.id)
-                    ToolTip.text: qsTr("Pipeline details")
-                    ToolTip.visible: hovered
-                }
+                id: pipelineField
+                height: Regovar.theme.font.size.header
+                text: "Unknow pipeline"
+                color: Regovar.theme.frontColor.normal
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.family
+                verticalAlignment: Text.AlignVCenter
             }
 
-            RowLayout
+            ButtonInline
             {
-                Layout.alignment: Qt.AlignTop
-                onWidthChanged: updateColumn1Width(width)
-                Item
-                {
-                    Layout.minimumWidth: Regovar.theme.font.boxSize.header
-                    height: Regovar.theme.font.boxSize.normal
-                }
+                id: pipelineDetailsButton
+                iconTxt: "z"
+                text: ""
+                onClicked: regovar.getPipelineInfo(root.model.pipeline.id)
+                ToolTip.text: qsTr("Pipeline details")
+                ToolTip.visible: hovered
+            }
+        }
+        Item
+        {
+            Layout.rowSpan: 3
+            width: 10;height: 10
+        }
 
-                Text
+        RowLayout
+        {
+            Layout.alignment: Qt.AlignTop
+            onWidthChanged: updateColumn1Width(width)
+            Item
+            {
+                Layout.minimumWidth: Regovar.theme.font.boxSize.header
+                height: Regovar.theme.font.boxSize.normal
+            }
+
+            Text
+            {
+                text: qsTr("Parameters")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.family
+                verticalAlignment: Text.AlignVCenter
+                height: Regovar.theme.font.boxSize.normal
+            }
+        }
+        Rectangle
+        {
+            id: configParametersFrame
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            color: Regovar.theme.boxColor.back
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            radius: 2
+            property real colParamWidth: 50
+            ListView
+            {
+                id: configTable
+                anchors.fill: parent
+                anchors.margins: 5
+                clip: true
+                flickableDirection: Flickable.VerticalFlick
+                boundsBehavior: Flickable.StopAtBounds
+                ScrollBar.vertical: ScrollBar {}
+                delegate: Row
                 {
-                    text: qsTr("Parameters")
-                    color: Regovar.theme.primaryColor.back.dark
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.family
-                    verticalAlignment: Text.AlignVCenter
-                    height: Regovar.theme.font.boxSize.normal
+                    spacing: 10
+                    width: parent.width - 10
+                    Text
+                    {
+                        onContentWidthChanged: configParametersFrame.colParamWidth = Math.max(contentWidth, configParametersFrame.colParamWidth)
+                        width: configParametersFrame.colParamWidth
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        verticalAlignment: Text.AlignVCenter
+                        text: modelData.key + " :"
+                    }
+                    Text
+                    {
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        verticalAlignment: Text.AlignVCenter
+                        text: modelData.value
+                    }
                 }
             }
-            Rectangle
+        }
+
+        RowLayout
+        {
+            Layout.alignment: Qt.AlignTop
+            onWidthChanged: updateColumn1Width(width)
+            Item
             {
-                id: configParametersFrame
+                Layout.minimumWidth: Regovar.theme.font.boxSize.header
+                height: Regovar.theme.font.boxSize.normal
+            }
+
+            Text
+            {
+                text: qsTr("Files")
+                color: Regovar.theme.primaryColor.back.dark
+                font.pixelSize: Regovar.theme.font.size.normal
+                font.family: Regovar.theme.font.family
+                verticalAlignment: Text.AlignVCenter
+                height: Regovar.theme.font.boxSize.normal
+            }
+        }
+        RowLayout
+        {
+            Layout.fillWidth: true
+            height: 10 + 5 * Regovar.theme.font.boxSize.normal
+            spacing: 10
+
+            ColumnLayout
+            {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                color: Regovar.theme.boxColor.back
-                border.width: 1
-                border.color: Regovar.theme.boxColor.border
-                radius: 2
-                property real colParamWidth: 50
-                ListView
-                {
-                    id: configTable
-                    anchors.fill: parent
-                    anchors.margins: 5
-                    clip: true
-                    flickableDirection: Flickable.VerticalFlick
-                    boundsBehavior: Flickable.StopAtBounds
-                    ScrollBar.vertical: ScrollBar {}
-                    delegate: Row
-                    {
-                        spacing: 10
-                        width: parent.width - 10
-                        Text
-                        {
-                            onContentWidthChanged: configParametersFrame.colParamWidth = Math.max(contentWidth, configParametersFrame.colParamWidth)
-                            width: configParametersFrame.colParamWidth
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            verticalAlignment: Text.AlignVCenter
-                            text: modelData.key + " :"
-                        }
-                        Text
-                        {
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            verticalAlignment: Text.AlignVCenter
-                            text: modelData.value
-                        }
-                    }
-                }
-            }
-
-            RowLayout
-            {
-                Layout.alignment: Qt.AlignTop
-                onWidthChanged: updateColumn1Width(width)
-                Item
-                {
-                    Layout.minimumWidth: Regovar.theme.font.boxSize.header
-                    height: Regovar.theme.font.boxSize.normal
-                }
-
                 Text
                 {
-                    text: qsTr("Files")
+                    Layout.fillWidth: true
+                    text: qsTr("Inputs")
                     color: Regovar.theme.primaryColor.back.dark
                     font.pixelSize: Regovar.theme.font.size.normal
                     font.family: Regovar.theme.font.family
                     verticalAlignment: Text.AlignVCenter
                     height: Regovar.theme.font.boxSize.normal
                 }
+                Rectangle
+                {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    color: Regovar.theme.boxColor.back
+                    border.width: 1
+                    border.color: Regovar.theme.boxColor.border
+                    radius: 2
+                    ListView
+                    {
+                        id: inputsTable
+                        anchors.fill: parent
+                        anchors.margins: 5
+                        clip: true
+                        flickableDirection: Flickable.VerticalFlick
+                        boundsBehavior: Flickable.StopAtBounds
+                        ScrollBar.vertical: ScrollBar {}
+                        delegate: SearchResultFile
+                        {
+                            width: parent.width - 10
+                            indent: 0
+                            fileId: model.id
+                            date: model.date
+                            icon: model.name.icon
+                            filename: model.name.filename
+                            onClicked: regovar.getFileInfo(fileId)
+                        }
+                    }
+                }
             }
-            RowLayout
+            ColumnLayout
             {
                 Layout.fillWidth: true
-                height: 10 + 5 * Regovar.theme.font.boxSize.normal
-                spacing: 10
-
-                ColumnLayout
+                Layout.fillHeight: true
+                Text
                 {
                     Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    Text
-                    {
-                        Layout.fillWidth: true
-                        text: qsTr("Inputs")
-                        color: Regovar.theme.primaryColor.back.dark
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.family
-                        verticalAlignment: Text.AlignVCenter
-                        height: Regovar.theme.font.boxSize.normal
-                    }
-                    Rectangle
-                    {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                        color: Regovar.theme.boxColor.back
-                        border.width: 1
-                        border.color: Regovar.theme.boxColor.border
-                        radius: 2
-                        ListView
-                        {
-                            id: inputsTable
-                            anchors.fill: parent
-                            anchors.margins: 5
-                            clip: true
-                            flickableDirection: Flickable.VerticalFlick
-                            boundsBehavior: Flickable.StopAtBounds
-                            ScrollBar.vertical: ScrollBar {}
-                            delegate: SearchResultFile
-                            {
-                                width: parent.width - 10
-                                indent: 0
-                                fileId: model.id
-                                date: model.date
-                                icon: model.name.icon
-                                filename: model.name.filename
-                                onClicked: regovar.getFileInfo(fileId)
-                            }
-                        }
-                    }
+                    text: qsTr("Outputs")
+                    color: Regovar.theme.primaryColor.back.dark
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.font.family
+                    verticalAlignment: Text.AlignVCenter
+                    height: Regovar.theme.font.boxSize.normal
                 }
-                ColumnLayout
+                Rectangle
                 {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    Text
+                    color: Regovar.theme.boxColor.back
+                    border.width: 1
+                    border.color: Regovar.theme.boxColor.border
+                    radius: 2
+                    ListView
                     {
-                        Layout.fillWidth: true
-                        text: qsTr("Outputs")
-                        color: Regovar.theme.primaryColor.back.dark
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        font.family: Regovar.theme.font.family
-                        verticalAlignment: Text.AlignVCenter
-                        height: Regovar.theme.font.boxSize.normal
-                    }
-                    Rectangle
-                    {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                        color: Regovar.theme.boxColor.back
-                        border.width: 1
-                        border.color: Regovar.theme.boxColor.border
-                        radius: 2
-                        ListView
+                        id: outputsTable
+                        anchors.fill: parent
+                        anchors.margins: 5
+                        clip: true
+                        flickableDirection: Flickable.VerticalFlick
+                        boundsBehavior: Flickable.StopAtBounds
+                        ScrollBar.vertical: ScrollBar {}
+                        delegate: SearchResultFile
                         {
-                            id: outputsTable
-                            anchors.fill: parent
-                            anchors.margins: 5
-                            clip: true
-                            flickableDirection: Flickable.VerticalFlick
-                            boundsBehavior: Flickable.StopAtBounds
-                            ScrollBar.vertical: ScrollBar {}
-                            delegate: SearchResultFile
-                            {
-                                width: parent.width - 10
-                                indent: 0
-                                fileId: model.id
-                                date: model.date
-                                icon: model.name.icon
-                                filename: model.name.filename
-                                onClicked: regovar.getFileInfo(fileId)
-                            }
+                            width: parent.width - 10
+                            indent: 0
+                            fileId: model.id
+                            date: model.date
+                            icon: model.name.icon
+                            filename: model.name.filename
+                            onClicked: regovar.getFileInfo(fileId)
                         }
                     }
                 }
             }
+        }
 
 
-            // EVENTS ========================================================
+        // EVENTS ========================================================
+        Rectangle
+        {
+            Layout.columnSpan: 3
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.header
+            color: Regovar.theme.backgroundColor.alt
+
             Row
             {
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
                 onWidthChanged: updateColumn1Width(width)
-                height: Regovar.theme.font.boxSize.header
-
                 Text
                 {
                     width: Regovar.theme.font.boxSize.header
@@ -730,66 +667,61 @@ Rectangle
                     color: Regovar.theme.primaryColor.back.normal
                 }
             }
-            Item
-            {
-                Layout.columnSpan: 2
-                width: 10; height: 10
-            }
+        }
 
 
-            Item
-            {
-                width: 10
-                height: Regovar.theme.font.boxSize.normal
-            }
+        Item
+        {
+            width: 10
+            height: Regovar.theme.font.boxSize.normal
+        }
 
-            Rectangle
+        Rectangle
+        {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            color: Regovar.theme.boxColor.back
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            radius: 2
+            ListView
             {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                color: Regovar.theme.boxColor.back
-                border.width: 1
-                border.color: Regovar.theme.boxColor.border
-                radius: 2
-                ListView
+                id: eventsTable
+                anchors.fill: parent
+                anchors.margins: 5
+                clip: true
+                flickableDirection: Flickable.VerticalFlick
+                boundsBehavior: Flickable.StopAtBounds
+                ScrollBar.vertical: ScrollBar {}
+                delegate: SearchResultEvent
                 {
-                    id: eventsTable
-                    anchors.fill: parent
-                    anchors.margins: 5
-                    clip: true
-                    flickableDirection: Flickable.VerticalFlick
-                    boundsBehavior: Flickable.StopAtBounds
-                    ScrollBar.vertical: ScrollBar {}
-                    delegate: SearchResultEvent
-                    {
-                        width: parent.width - 10
-                        indent: 0
-                        eventId: model.id
-                        date: model.date
-                        //icon: model.icon
-                        message: model.message
-                    }
+                    width: parent.width - 10
+                    indent: 0
+                    eventId: model.id
+                    date: model.date
+                    //icon: model.icon
+                    message: model.message
                 }
             }
-            Column
+        }
+        Column
+        {
+            Layout.alignment: Qt.AlignTop
+            spacing: 10
+
+
+            Button
             {
-                Layout.alignment: Qt.AlignTop
-                spacing: 10
+                id: addFile
+                text: qsTr("Add event")
+                enabled: false
+            }
 
-
-                Button
-                {
-                    id: addFile
-                    text: qsTr("Add event")
-                    enabled: false
-                }
-
-                Button
-                {
-                    id: editFile
-                    text: qsTr("Edit event")
-                    enabled: false
-                }
+            Button
+            {
+                id: editFile
+                text: qsTr("Edit event")
+                enabled: false
             }
         }
     }
