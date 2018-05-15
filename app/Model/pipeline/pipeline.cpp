@@ -36,7 +36,6 @@ bool Pipeline::loadJson(QJsonObject json)
     mDescription = json["description"].toString();
     mStatus = json["status"].toString();
     mVersion = json["version"].toString();
-    // mVersionApi = json["version_api"].toString();
     mStarred = json["starred"].toBool();
     mInstallationDate = QDateTime::fromString(json["installation_date"].toString(), Qt::ISODate);
     mManifestJson = json["manifest"].toObject();
@@ -51,8 +50,7 @@ bool Pipeline::loadJson(QJsonObject json)
         else if (k == "license" && !docs[k].isNull()) mLicense = QUrl(docs[k].toString());
         else if (k == "readme" && !docs[k].isNull()) mReadme = QUrl(docs[k].toString());
         else if (k == "help" && !docs[k].isNull()) mHelpPage = QUrl(docs[k].toString());
-        else if (k == "home" && !docs[k].isNull()) mHomePage = QUrl(docs[k].toString());
-        else if (k == "manifest" && !docs[k].isNull()) mManifest = QUrl(docs[k].toString());
+        else if (k == "about" && !docs[k].isNull()) mAboutPage = QUrl(docs[k].toString());
     }
 
     updateSearchField();
@@ -80,7 +78,7 @@ QJsonObject Pipeline::toJson()
     docs.insert("license", mLicense.toString());
     docs.insert("readme", mReadme.toString());
     docs.insert("help", mHelpPage.toString());
-    docs.insert("home", mHomePage.toString());
+    docs.insert("home", mAboutPage.toString());
     result.insert("documents", docs);
     return result;
 }

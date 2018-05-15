@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
+import QtWebView 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
@@ -14,22 +15,25 @@ GenericScreen
 
     readyForNext: true
 
-    Text
+
+    // Help information on this page
+    Box
     {
-        id: header
+        id: helpInfoBox
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+
+        visible: Regovar.helpInfoBoxDisplayed
+        icon: "k"
         text: qsTr("Choose which pipeline to use to do your analysis among the list below.")
-        wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.normal
-        color: Regovar.theme.primaryColor.back.normal
     }
+
 
     SplitView
     {
-        anchors.top: header.bottom
-        anchors.topMargin: 30
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : parent.top
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? 10 : 0
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
@@ -70,16 +74,17 @@ GenericScreen
                     anchors.fill: parent
                     anchors.margins: 1
                     model: regovar.pipelinesManager.intalledPipes.proxy
-                    onModelChanged: updatePipeInfoPanel()
                     onCurrentItemChanged: updatePipeInfoPanel()
+                    Component.onCompleted: updatePipeInfoPanel()
 
                     delegate: Rectangle
                     {
+                        id: pipelineItem
                         property bool hovered: false
 
                         width: pipelinesList.width
                         height: Regovar.theme.font.boxSize.normal
-                        color: hovered ? Regovar.theme.secondaryColor.back.light : pipelinesList.currentIndex == index ? Regovar.theme.secondaryColor.back.normal : "transparent"
+                        color: pipelinesList.currentIndex == index ? Regovar.theme.secondaryColor.back.light : "transparent"
 
                         Row
                         {
@@ -92,6 +97,7 @@ GenericScreen
                                 font.pixelSize: Regovar.theme.font.size.normal
                                 verticalAlignment: Text.AlignVCenter
                                 horizontalAlignment: Text.AlignHCenter
+                                color: pipelinesList.currentIndex == index ? Regovar.theme.secondaryColor.front.normal : pipelineItem.hovered ? Regovar.theme.secondaryColor.back.light : Regovar.theme.frontColor.normal
                             }
                             Text
                             {
@@ -99,6 +105,7 @@ GenericScreen
                                 height: Regovar.theme.font.boxSize.normal
                                 font.pixelSize: Regovar.theme.font.size.normal
                                 verticalAlignment: Text.AlignVCenter
+                                color: pipelinesList.currentIndex == index ? Regovar.theme.secondaryColor.front.normal : pipelineItem.hovered ? Regovar.theme.secondaryColor.back.light : Regovar.theme.frontColor.normal
                             }
                         }
                         MouseArea
@@ -113,14 +120,23 @@ GenericScreen
 
                     function updatePipeInfoPanel()
                     {
-                        if (pipelinesList.currentItem)
+                        if (pipelinesList.currentIndex > -1)
                         {
                             var idx = regovar.pipelinesManager.intalledPipes.proxy.getModelIndex(pipelinesList.currentIndex);
                             var id = regovar.pipelinesManager.intalledPipes.data(idx, 257); // 257 = Qt::UserRole+1 = id
                             var pipe = regovar.pipelinesManager.getOrCreatePipe(id);
 
-                            pipeInfoPanel.model = pipe.toJson();
-                            pipeInfoPanel.visible = true;
+                            if (pipe && !pipe.aboutPage !== "")
+                            {
+                                pipeInfoPanel.url = pipe.aboutPage;
+                                pipeInfoPanel.visible = true;
+                            }
+                            else
+                            {
+                                pipeInfoPanel.url = "";
+                                pipeInfoPanel.visible = false;
+                            }
+
                             regovar.analysesManager.newPipeline.pipeline = pipe;
                         }
                     }
@@ -139,13 +155,12 @@ GenericScreen
             {
                 anchors.fill: parent
                 text: qsTr("No pipeline selected")
-                font.pixelSize: Regovar.theme.font.size.small
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 color: Regovar.theme.frontColor.disable
             }
 
-            PipelineInformation
+            WebView
             {
                 id: pipeInfoPanel
                 anchors.fill: parent

@@ -17,15 +17,14 @@ class Pipeline : public QObject
     Q_PROPERTY(QString status READ status NOTIFY dataChanged)
     Q_PROPERTY(QString description READ description NOTIFY dataChanged)
     Q_PROPERTY(QDateTime installationDate READ installationDate NOTIFY dataChanged)
-    Q_PROPERTY(QString versionApi READ versionApi NOTIFY dataChanged)
     // Related documents
-    Q_PROPERTY(QUrl icon READ icon NOTIFY neverChanged)
-    Q_PROPERTY(QUrl form READ form NOTIFY neverChanged)
-    Q_PROPERTY(QUrl homePage READ homePage NOTIFY neverChanged)
-    Q_PROPERTY(QUrl helpPage READ helpPage NOTIFY neverChanged)
-    Q_PROPERTY(QUrl license READ license NOTIFY neverChanged)
-    Q_PROPERTY(QUrl readme READ readme NOTIFY neverChanged)
-    Q_PROPERTY(QUrl manifest READ manifest NOTIFY neverChanged)
+    Q_PROPERTY(QString icon READ icon NOTIFY neverChanged)
+    Q_PROPERTY(QString form READ form NOTIFY neverChanged)
+    Q_PROPERTY(QString aboutPage READ aboutPage NOTIFY neverChanged)
+    Q_PROPERTY(QString helpPage READ helpPage NOTIFY neverChanged)
+    Q_PROPERTY(QString license READ license NOTIFY neverChanged)
+    Q_PROPERTY(QString readme READ readme NOTIFY neverChanged)
+    Q_PROPERTY(QString manifest READ manifest NOTIFY neverChanged)
 
 
     Q_PROPERTY(DynamicFormModel* configForm READ configForm NOTIFY neverChanged)
@@ -47,14 +46,13 @@ public:
     inline QString description() const { return mDescription; }
     inline QDateTime installationDate() const { return mInstallationDate; }
     inline QString version() const { return mVersion; }
-    inline QString versionApi() const { return mVersionApi; }
-    inline QUrl icon() const { return mIcon; }
-    inline QUrl form() const { return mForm; }
-    inline QUrl helpPage() const { return mHelpPage; }
-    inline QUrl homePage() const { return mHomePage; }
-    inline QUrl license() const { return mLicense; }
-    inline QUrl readme() const { return mReadme; }
-    inline QUrl manifest() const { return mManifest; }
+    inline QString icon() const { return mIcon.toString(); }
+    inline QString form() const { return mForm.toString(); }
+    inline QString helpPage() const { return mHelpPage.toString(); }
+    inline QString aboutPage() const { return mAboutPage.toString(); }
+    inline QString license() const { return mLicense.toString(); }
+    inline QString readme() const { return mReadme.toString(); }
+    inline QString manifest() const { return mManifest.toString(); }
     inline QString searchField() const { return mSearchField; }
     inline DynamicFormModel* configForm() const { return mConfigForm; }
 
@@ -99,7 +97,7 @@ private:
     QUrl mIcon;
     QUrl mForm;
     QUrl mHelpPage;
-    QUrl mHomePage;
+    QUrl mAboutPage;
     QUrl mLicense;
     QUrl mReadme;
     QUrl mManifest;
