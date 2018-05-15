@@ -102,7 +102,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("Statistics about your variants and quality scores from DepthOfCoverage.")
     }
