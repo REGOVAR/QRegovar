@@ -65,7 +65,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("The list below shows all subjects and samples available. You can filter the list using the search field.")
     }

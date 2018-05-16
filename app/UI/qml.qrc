@@ -194,7 +194,6 @@
         <file>Pages/Project/SubjectsPage.qml</file>
         <file>Pages/Project/SummaryPage.qml</file>
         <file>Pages/Subject/AnalysesPage.qml</file>
-        <file>Pages/Subject/CharacteristicsPage.qml</file>
         <file>Pages/Subject/FilesPage.qml</file>
         <file>Pages/Subject/PhenotypesPage.qml</file>
         <file>Pages/Subject/SamplesPage.qml</file>

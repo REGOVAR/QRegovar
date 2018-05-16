@@ -16,9 +16,8 @@ Rectangle
     property bool isInit: false
     onModelChanged:
     {
-        if (model != undefined)
+        if (model)
         {
-            nameLabel.text = model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname;
             phenotypeList.model = model.phenotypes;
             root.isInit = true;
         }
@@ -35,18 +34,16 @@ Rectangle
 
         Text
         {
-            id: nameLabel
             anchors.top: header.top
             anchors.left: header.left
             anchors.bottom: header.bottom
             anchors.right: connectionStatus.left
             anchors.margins: 10
-            font.pixelSize: 22
-            font.family: Regovar.theme.font.family
-            color: Regovar.theme.frontColor.normal
+            font.pixelSize: Regovar.theme.font.size.title
+            font.weight: Font.Black
+            color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
-
-            text: "-"
+            text: model ? model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname : ""
         }
         ConnectionStatus
         {
@@ -70,7 +67,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("This page allow you to list all phenotypes and diseases of the subject.")
     }
@@ -122,6 +118,7 @@ Rectangle
             width: root.width
             color: Regovar.theme.backgroundColor.main
             Layout.minimumHeight: 200
+            Layout.fillHeight: true
 
             ColumnLayout
             {

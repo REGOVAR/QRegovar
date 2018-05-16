@@ -31,10 +31,9 @@ Rectangle
             {
                 id: nameLabel
                 Layout.fillWidth: true
-
-                font.pixelSize: 22
-                font.family: Regovar.theme.font.family
-                color: Regovar.theme.frontColor.normal
+                font.pixelSize: Regovar.theme.font.size.title
+                font.weight: Font.Black
+                color: Regovar.theme.primaryColor.back.dark
                 verticalAlignment: Text.AlignVCenter
                 text: model ? model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname : "-"
                 elide: Text.ElideRight
@@ -44,9 +43,24 @@ Rectangle
         }
     }
 
+    // Help information on this page
+    Box
+    {
+        id: helpInfoBox
+        anchors.top : header.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+        anchors.margins: 10
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        icon: "k"
+        text: qsTr("This page list all samples of the subject.")
+    }
+
     RowLayout
     {
-        anchors.top : header.bottom
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
         anchors.left: root.left
         anchors.right: root.right
         anchors.bottom: root.bottom
