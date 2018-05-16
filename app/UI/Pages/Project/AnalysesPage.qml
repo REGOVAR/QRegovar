@@ -31,10 +31,9 @@ Rectangle
             {
                 id: nameLabel
                 Layout.fillWidth: true
-
-                font.pixelSize: 22
-                font.family: Regovar.theme.font.family
-                color: Regovar.theme.frontColor.normal
+                font.pixelSize: Regovar.theme.font.size.title
+                font.weight: Font.Black
+                color: Regovar.theme.primaryColor.back.dark
                 verticalAlignment: Text.AlignVCenter
                 text: (model) ? model.name : ""
                 elide: Text.ElideRight
@@ -55,7 +54,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("This page list all analyses that have been done in the current folder.")
     }
@@ -111,6 +109,7 @@ Rectangle
         anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
         anchors.left: root.left
         anchors.leftMargin: 10
+        anchors.rightMargin: 10
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         orientation: Qt.Vertical
@@ -119,8 +118,9 @@ Rectangle
         {
             id: topPanel
             width: root.width
-            color: Regovar.theme.backgroundColor.main
             Layout.minimumHeight: 200
+            Layout.fillHeight: true
+            color: Regovar.theme.backgroundColor.main
 
             TableView
             {
@@ -207,6 +207,7 @@ Rectangle
                 anchors.fill: parent
                 anchors.margins: 10
                 anchors.leftMargin: 0
+                anchors.rightMargin: 0
                 columns: 3
                 rowSpacing: 10
                 columnSpacing: 10

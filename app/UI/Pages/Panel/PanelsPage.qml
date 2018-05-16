@@ -36,6 +36,7 @@ Rectangle
             font.pixelSize: Regovar.theme.font.size.title
             font.weight: Font.Black
             color: Regovar.theme.primaryColor.back.dark
+            verticalAlignment: Text.AlignVCenter
         }
         ConnectionStatus
         {

@@ -63,7 +63,6 @@ Rectangle
         anchors.margins: 10
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("Use the tree below to browse all available analyses. You can filter the tree using the search field.")
     }
