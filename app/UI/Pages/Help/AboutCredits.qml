@@ -24,6 +24,13 @@ Item
             icon: "qrc:/credits/u_asdp.jpg"
             url: "https://github.com/Oodnadatta"
         }
+        ListElement
+        {
+            name: "Cyrille CHOPELET"
+            comment: qsTr("Computer scientist, Geek")
+            icon: "qrc:/credits/u_cc.jpg"
+            url: "https://github.com/cyChop"
+        }
         ListElement {
             name: "David GOUDEGÈNE"
             comment: qsTr("Bioinformaticist, Developper")
