@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
-//import QtWebView 1.0
+import QtWebView 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
@@ -111,14 +111,14 @@ GenericScreen
                 color: Regovar.theme.frontColor.disable
             }
 
-//            WebView
-//            {
-//                id: pipeHelPanel
-//                anchors.fill: parent
-//                anchors.leftMargin: 5
-//                url: regovar.analysesManager.newPipeline.pipeline.helpPage
-//                visible: !regovar.analysesManager.newPipeline.pipeline.helpPage.isEmpty
-//            }
+            WebView
+            {
+                id: pipeHelPanel
+                anchors.fill: parent
+                anchors.leftMargin: 5
+                url: regovar.analysesManager.newPipeline.pipeline.helpPage
+                visible: !regovar.analysesManager.newPipeline.pipeline.helpPage.isEmpty
+            }
         }
     }
 }

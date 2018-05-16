@@ -32,4 +32,5 @@ bool HpoData::load(bool forceRefresh)
         }
         req->deleteLater();
     });
+    return true;
 }
