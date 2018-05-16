@@ -30,10 +30,11 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Trash")
             font.pixelSize: Regovar.theme.font.size.title
             font.weight: Font.Black
             color: Regovar.theme.primaryColor.back.dark
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Trash")
         }
         ConnectionStatus
         {
@@ -58,7 +59,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("Check which data have been erase before deleting them definitively.")
     }
@@ -76,5 +76,20 @@ Rectangle
 
         spacing: 5
 
+        Rectangle
+        {
+            id: empty
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            color: "transparent"
+
+            Text
+            {
+                anchors.centerIn: parent
+                text: qsTr("Not yet implemented")
+                font.pixelSize: Regovar.theme.font.size.title
+                color: Regovar.theme.primaryColor.back.light
+            }
+        }
     }
 }

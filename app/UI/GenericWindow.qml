@@ -176,6 +176,7 @@ ApplicationWindow
             if (pages[currentUid] === "@disconnect")
             {
                 regovar.usersManager.logout();
+
             }
 
             pages[currentUid].visible = true;

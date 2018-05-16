@@ -32,11 +32,11 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Panels settings")
             font.pixelSize: Regovar.theme.font.size.title
             font.weight: Font.Black
             color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
+            text: qsTr("Panels settings")
         }
         ConnectionStatus
         {
@@ -59,7 +59,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("Browse, create and edit genes panels.")
     }
