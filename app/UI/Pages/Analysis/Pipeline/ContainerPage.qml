@@ -278,41 +278,122 @@ Rectangle
                 anchors.fill: parent
                 anchors.margins: 10
                 spacing: 10
-                Text
+                Row
                 {
-                    height: Regovar.theme.font.boxSize.header
-                    text: qsTr("CPU: -")
-                    font.pixelSize: Regovar.theme.font.size.header
+                    spacing: 10
+
+                    IconButton
+                    {
+                        tooltip: qsTr("CPU usage of the .")
+                    }
+                    Text
+                    {
+                        height: Regovar.theme.font.boxSize.header
+                        text: qsTr("CPU:")
+                        font.pixelSize: Regovar.theme.font.size.header
+                        color: Regovar.theme.primaryColor.back.normal
+                        font.bold: true
+                    }
+                    Text
+                    {
+                        id: cpuStat
+                        height: Regovar.theme.font.boxSize.header
+                        text: qsTr("-")
+                        font.pixelSize: Regovar.theme.font.size.header
+                    }
                 }
-                Text
+                Row
                 {
-                    height: Regovar.theme.font.boxSize.header
-                    text: qsTr("RAM: -")
-                    font.pixelSize: Regovar.theme.font.size.header
+                    spacing: 10
+
+                    IconButton
+                    {
+                        tooltip: qsTr("RAM U/L P is memory used, the limit (maximum allowed by the system to your container) and so the percentage of usage.")
+                    }
+                    Text
+                    {
+                        height: Regovar.theme.font.boxSize.header
+                        text: qsTr("RAM U/L P:")
+                        font.pixelSize: Regovar.theme.font.size.header
+                        color: Regovar.theme.primaryColor.back.normal
+                        font.bold: true
+                    }
+                    Text
+                    {
+                        id: ramStat
+                        height: Regovar.theme.font.boxSize.header
+                        text: qsTr("-")
+                        font.pixelSize: Regovar.theme.font.size.header
+                    }
                 }
-                Text
+
+                Row
                 {
-                    height: Regovar.theme.font.boxSize.header
-                    text: qsTr("DISK: -")
-                    font.pixelSize: Regovar.theme.font.size.header
+                    spacing: 10
+
+                    IconButton
+                    {
+                        tooltip: qsTr("BLOCK IO is reads and writes to the Regovar server physical disks.")
+                    }
+                    Text
+                    {
+                        height: Regovar.theme.font.boxSize.header
+                        text: qsTr("BLOCK I/O:")
+                        font.pixelSize: Regovar.theme.font.size.header
+                        color: Regovar.theme.primaryColor.back.normal
+                        font.bold: true
+                    }
+                    Text
+                    {
+                        id: diskStat
+                        height: Regovar.theme.font.boxSize.header
+                        text: qsTr("-")
+                        font.pixelSize: Regovar.theme.font.size.header
+                    }
                 }
-                Text
+
+                Row
                 {
-                    height: Regovar.theme.font.boxSize.header
-                    text: qsTr("NET: -")
-                    font.pixelSize: Regovar.theme.font.size.header
+                    spacing: 10
+
+                    IconButton
+                    {
+                        tooltip: qsTr("NET I/O is the Network Traffic.")
+                    }
+                    Text
+                    {
+                        height: Regovar.theme.font.boxSize.header
+                        text: qsTr("NET I/O:")
+                        font.pixelSize: Regovar.theme.font.size.header
+                        color: Regovar.theme.primaryColor.back.normal
+                        font.bold: true
+                    }
+                    Text
+                    {
+                        id: netStat
+                        height: Regovar.theme.font.boxSize.header
+                        text: qsTr("-")
+                        font.pixelSize: Regovar.theme.font.size.header
+                    }
                 }
             }
         }
 
         // Container ps
-        Text
+        Rectangle
         {
             visible: root.isRunning || root.isResumable
             Layout.fillWidth: true
             Layout.fillHeight: true
+            color: "transparent"
 
-            text: root.model.config.toString()
+            Text
+            {
+                anchors.centerIn: parent
+                text: qsTr("Not yet implemented")
+                font.pixelSize: Regovar.theme.font.size.title
+                color: Regovar.theme.primaryColor.back.light
+            }
         }
     }
 
@@ -409,6 +490,38 @@ Rectangle
             }
             headerTitle.text = model.name;
             updateStatusFromModel();
+
+            if (root.model.monitoring)
+            {
+                cpuStat.text = "-";
+                ramStat.text = "-";
+                diskStat.text = "-";
+                netStat.text = "-";
+                if (root.model.monitoring["cpu"] !== -1)
+                {
+                    cpuStat.text  = Regovar.round(root.model.monitoring["cpu"]) + "%";
+                }
+                if (root.model.monitoring["mem_u"] !== -1)
+                {
+                    ramStat.text  = regovar.formatFileSize(root.model.monitoring["mem_u"])
+                            + " / "
+                            + regovar.formatFileSize(root.model.monitoring["mem_l"])
+                            + " ("
+                            + Regovar.round(root.model.monitoring["mem_u"] / root.model.monitoring["mem_l"]) + "%)";
+                }
+                if (root.model.monitoring["block_i"] !== -1)
+                {
+                    diskStat.text  = regovar.formatFileSize(root.model.monitoring["block_i"])
+                            + " / "
+                            + regovar.formatFileSize(root.model.monitoring["block_0"]);
+                }
+                if (root.model.monitoring["block_i"] !== -1)
+                {
+                    netStat.text  = regovar.formatFileSize(root.model.monitoring["net_i"])
+                            + " / "
+                            + regovar.formatFileSize(root.model.monitoring["net_o"]);
+                }
+            }
         }
     }
 }

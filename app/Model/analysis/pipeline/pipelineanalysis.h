@@ -67,7 +67,6 @@ public Q_SLOTS:
 Q_SIGNALS:
     void pipelineChanged();
 
-
 private:
     // Attributes
     QJsonObject mConfig;

@@ -357,3 +357,4 @@ void PipelineAnalysis::processPushNotification(QString action, QJsonObject data)
         loadJson(data);
     }
 }
+

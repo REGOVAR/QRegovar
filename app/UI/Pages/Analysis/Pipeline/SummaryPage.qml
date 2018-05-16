@@ -511,6 +511,15 @@ Rectangle
                 }
             }
         }
+        Text
+        {
+            id: configParametersNone
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.normal
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("No custom config for this pipeline.")
+            color: Regovar.theme.frontColor.disable
+        }
 
         RowLayout
         {
@@ -574,7 +583,6 @@ Rectangle
                             width: parent.width - 10
                             indent: 0
                             fileId: model.id
-                            date: model.date
                             icon: model.name.icon
                             filename: model.name.filename
                             onClicked: regovar.getFileInfo(fileId)
@@ -618,7 +626,6 @@ Rectangle
                             width: parent.width - 10
                             indent: 0
                             fileId: model.id
-                            date: model.date
                             icon: model.name.icon
                             filename: model.name.filename
                             onClicked: regovar.getFileInfo(fileId)
@@ -838,8 +845,16 @@ Rectangle
                     configList.push({"key": key, "value": root.model.config[key]});
                 }
             }
-            //configTable.height = 5 * Regovar.theme.font.boxSize.normal;
-            configTable.model = configList;
+
+            if (configList.length > 0)
+            {
+                configTable.model = configList;
+                configParametersNone.visible = false;
+            }
+            else
+            {
+                configParametersFrame.visible = false;
+            }
 
             // Files
             inputsTable.model = root.model.inputsFiles;
