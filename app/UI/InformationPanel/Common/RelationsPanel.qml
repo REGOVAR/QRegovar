@@ -6,7 +6,7 @@ import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
-import "qrc:/qml/Pages/Browse"
+import "qrc:/qml/Pages/Browser"
 
 
 Rectangle

@@ -8,7 +8,7 @@ import QtQuick.Dialogs 1.2
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
 import "qrc:/qml/Dialogs"
-import "../../Browse"
+import "qrc:/qml/Pages/Browser/Items"
 
 Rectangle
 {
@@ -578,7 +578,7 @@ Rectangle
                         flickableDirection: Flickable.VerticalFlick
                         boundsBehavior: Flickable.StopAtBounds
                         ScrollBar.vertical: ScrollBar {}
-                        delegate: SearchResultFile
+                        delegate: BrowserItemFile
                         {
                             width: parent.width - 10
                             indent: 0
@@ -621,7 +621,7 @@ Rectangle
                         flickableDirection: Flickable.VerticalFlick
                         boundsBehavior: Flickable.StopAtBounds
                         ScrollBar.vertical: ScrollBar {}
-                        delegate: SearchResultFile
+                        delegate: BrowserItemFile
                         {
                             width: parent.width - 10
                             indent: 0
@@ -700,7 +700,7 @@ Rectangle
                 flickableDirection: Flickable.VerticalFlick
                 boundsBehavior: Flickable.StopAtBounds
                 ScrollBar.vertical: ScrollBar {}
-                delegate: SearchResultEvent
+                delegate: BrowserItemEvent
                 {
                     width: parent.width - 10
                     indent: 0

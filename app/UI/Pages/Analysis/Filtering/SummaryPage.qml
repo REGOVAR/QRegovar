@@ -6,7 +6,7 @@ import Regovar.Core 1.0
 import QtQuick.Dialogs 1.2
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
-import "../../Browse"
+import "qrc:/qml/Pages/Browser/Items"
 
 Rectangle
 {
@@ -629,7 +629,7 @@ Rectangle
                 boundsBehavior: Flickable.StopAtBounds
                 ScrollBar.vertical: ScrollBar {}
                 model: regovar.eventsManager.lastEvents
-                delegate: SearchResultEvent
+                delegate: BrowserItemEvent
                 {
                     width: parent.width - 10
                     indent: 0

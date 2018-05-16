@@ -6,7 +6,7 @@ import QtQuick.Layouts 1.3
 import "qrc:/qml/Framework"
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Dialogs"
-import "qrc:/qml/Pages/Browse"
+import "qrc:/qml/Pages/Browser/Items"
 
 Rectangle
 {
@@ -192,7 +192,7 @@ Rectangle
                     flickableDirection: Flickable.VerticalFlick
                     boundsBehavior: Flickable.StopAtBounds
                     ScrollBar.vertical: ScrollBar {}
-                    delegate: SearchResultAnalysis
+                    delegate: BrowserItemAnalysis
                     {
                         width: parent.width - 10
                         indent: 0
@@ -237,7 +237,7 @@ Rectangle
                     flickableDirection: Flickable.VerticalFlick
                     boundsBehavior: Flickable.StopAtBounds
                     ScrollBar.vertical: ScrollBar {}
-                    delegate: SearchResultSubject
+                    delegate: BrowserItemSubject
                     {
                         width: parent.width - 10
                         indent: 0
@@ -295,7 +295,7 @@ Rectangle
                     boundsBehavior: Flickable.StopAtBounds
                     ScrollBar.vertical: ScrollBar {}
                     model: regovar.eventsManager.lastEvents
-                    delegate: SearchResultEvent
+                    delegate: BrowserItemEvent
                     {
                         width: parent.width - 10
                         indent: 0

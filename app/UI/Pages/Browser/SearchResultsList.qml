@@ -7,6 +7,7 @@ import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
+import "qrc:/qml/Pages/Browser/Items"
 
 Rectangle
 {
@@ -66,7 +67,7 @@ Rectangle
                 {
                     model: projectsResult.model
 
-                    SearchResultProject
+                    BrowserItemProject
                     {
                         width: root.width - 10
                         date: model.modelData.update_date
@@ -101,7 +102,7 @@ Rectangle
                 Repeater
                 {
                     model: analysessResult.model
-                    SearchResultAnalysis
+                    BrowserItemAnalysis
                     {
                         width: root.width - 10
                         date: model.modelData.update_date
@@ -138,7 +139,7 @@ Rectangle
                 Repeater
                 {
                     model: filesResult.model
-                    SearchResultFile
+                    BrowserItemFile
                     {
                         width: root.width - 10
                         fileId: model.modelData.id
@@ -176,7 +177,7 @@ Rectangle
                 Repeater
                 {
                     model: subjectsResult.model
-                    SearchResultSubject
+                    BrowserItemSubject
                     {
                         width: root.width - 10
                         date: model.modelData.update_date
@@ -215,7 +216,7 @@ Rectangle
                 Repeater
                 {
                     model: samplesResult.model
-                    SearchResultSample
+                    BrowserItemSample
                     {
                         width: root.width - 10
                         date: model.modelData.update_date
@@ -253,7 +254,7 @@ Rectangle
                 Repeater
                 {
                     model: phenotypesResult.model
-                    SearchResultPhenotype
+                    BrowserItemPhenotype
                     {
                         width: root.width - 10
                         phenotypeId: model.modelData.id
@@ -287,7 +288,7 @@ Rectangle
                 Repeater
                 {
                     model: diseasesResult.model
-                    SearchResultPhenotype
+                    BrowserItemPhenotype
                     {
                         width: root.width - 10
                         phenotypeId: model.modelData.id
@@ -322,7 +323,7 @@ Rectangle
                 Repeater
                 {
                     model: genesResult.model
-                    SearchResultGene
+                    BrowserItemGene
                     {
                         width: root.width - 10
                         geneId: model.modelData.id
@@ -357,7 +358,7 @@ Rectangle
                 Repeater
                 {
                     model: variantsResult.model
-                    SearchResultVariant
+                    BrowserItemVariant
                     {
                         width: root.width - 10
                         variantId: model.modelData.id
@@ -396,7 +397,7 @@ Rectangle
                 Repeater
                 {
                     model: pipelinesResult.model
-                    SearchResultPipeline
+                    BrowserItemPipeline
                     {
                         width: root.width - 10
                         pipelineId: model.modelData.id
@@ -432,7 +433,7 @@ Rectangle
                 Repeater
                 {
                     model: panelsResult.model
-                    SearchResultPanel
+                    BrowserItemPanel
                     {
                         width: root.width - 10
                         panelId: model.modelData.id
@@ -468,7 +469,7 @@ Rectangle
                 Repeater
                 {
                     model: usersResult.model
-                    SearchResultUser
+                    BrowserItemUser
                     {
                         width: root.width - 10
                         userId: model.modelData.id

@@ -111,7 +111,7 @@ ApplicationWindow
             var uid = menuEntry.uid;
             if (!(uid in root.pages))
             {
-                if (menuEntry.qmlPage !== "")
+                if (menuEntry.qmlPage !== "" && menuEntry.qmlPage[0] !== "@")
                 {
                     var comp = Qt.createComponent("Pages/" + menuEntry.qmlPage);
                     if (comp.status === Component.Ready)
@@ -141,6 +141,10 @@ ApplicationWindow
                         console.log("Error loading component: ", comp.errorString());
                     }
                 }
+                else if (menuEntry.qmlPage === "@disconnect")
+                {
+                    root.pages[uid] = "@disconnect";
+                }
                 else
                 {
                     root.pages[uid] = false;
@@ -169,6 +173,11 @@ ApplicationWindow
         if (menuEntry && menuEntry.uid)
         {
             currentUid = menuEntry.uid;
+            if (pages[currentUid] === "@disconnect")
+            {
+                regovar.usersManager.logout();
+            }
+
             pages[currentUid].visible = true;
             pages[currentUid].anchors.fill = stack;
         }
