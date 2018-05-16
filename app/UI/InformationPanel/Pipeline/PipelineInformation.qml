@@ -29,10 +29,10 @@ InformationPanel
         if ("home" in documents)
         {
             ttt.append(
-            {   "title": qsTr("Presentation"),
+            {   "title": qsTr("About"),
                 "icon": "j",
                 "source": "qrc:/qml/InformationPanel/Common/WebViewPanel.qml",
-                "tabModel" : documents["home"]
+                "tabModel" : documents["about"]
             });
         }
         ttt.append(

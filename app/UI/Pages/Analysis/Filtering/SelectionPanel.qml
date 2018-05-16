@@ -22,7 +22,7 @@ Rectangle
         for (var i = 0; i < container.children.length; ++i)
         {
             var item = container.children[i];
-            if (item.objectName == "qf")
+            if (item.objectName === "qf")
             {
                 item.model = model;
                 item.reset();
@@ -65,7 +65,7 @@ Rectangle
                     text: "13"
                     verticalAlignment: Text.AlignVCenter
                     font.pixelSize: Regovar.theme.font.size.header
-                    font.family: "monospace"
+                    font.family: fixedFont
                     color: Regovar.theme.primaryColor.back.dark
                     elide: Text.ElideRight
                 }
@@ -77,7 +77,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.right: parent.right
                 height: 1
-                color: Regovar.theme.primaryColor.back.light
+                color: Regovar.theme.boxColor.border
             }
         }
 
@@ -111,7 +111,7 @@ Rectangle
         {
             Layout.fillWidth: true
             height: 1
-            color: Regovar.theme.primaryColor.back.light
+            color: Regovar.theme.boxColor.border
         }
 
         Rectangle

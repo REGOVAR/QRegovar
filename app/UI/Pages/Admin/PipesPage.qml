@@ -12,6 +12,7 @@ Rectangle
 
 
     property QtObject model
+    property QtObject currentAnalysis // TODO: need it ?
 
     Rectangle
     {
@@ -26,10 +27,11 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Regovar pipelines")
             font.pixelSize: Regovar.theme.font.size.title
             font.weight: Font.Black
             color: Regovar.theme.primaryColor.back.dark
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Regovar pipelines")
         }
         ConnectionStatus
         {
@@ -54,7 +56,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("Browse, install and uninstall pipeline.")
     }
@@ -86,18 +87,6 @@ Rectangle
             onClicked:  console.log("Delete analysis")
             enabled: false
         }
-        Item
-        {
-            Layout.fillWidth: true
-            height: Regovar.theme.font.boxSize.normal
-        }
-
-        Button
-        {
-            id: openAnalysis
-            text: qsTr("New analysis with this pipe")
-            enabled: false
-        }
     }
 
     SplitView
@@ -115,6 +104,7 @@ Rectangle
             width: root.width
             color: Regovar.theme.backgroundColor.main
             Layout.minimumHeight: 200
+            Layout.fillHeight: true
 
             ColumnLayout
             {

@@ -6,7 +6,7 @@
 #include <QAuthenticator>
 #include <QQmlApplicationEngine>
 
-#include "Model/mainmenu/rootmenu.h"
+#include "mainmenu/rootmenu.h"
 #include "framework/networkmanager.h"
 #include "user/usersmanager.h"
 #include "project/projectsmanager.h"
@@ -19,6 +19,7 @@
 #include "panel/panelsmanager.h"
 #include "event/eventsmanager.h"
 #include "pipeline/pipelinesmanager.h"
+#include "phenotype/phenotypesmanager.h"
 
 // TODO: rework as manager pattern
 #include "user/user.h"
@@ -32,43 +33,7 @@
 
 
 
-
-
-
-
-class RegovarInfo: public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(QString serverVersion READ serverVersion NOTIFY configChanged)
-    Q_PROPERTY(QString clientVersion READ clientVersion NOTIFY configChanged)
-    Q_PROPERTY(QString website READ website NOTIFY configChanged)
-    Q_PROPERTY(QString license READ license  NOTIFY configChanged)
-    Q_PROPERTY(QJsonObject release READ release  NOTIFY configChanged)
-
-public:
-    explicit RegovarInfo(QObject *parent = nullptr);
-    // Getters
-    inline QString serverVersion() { return mServerVersion; }
-    inline QString clientVersion() { return mClientVersion; }
-    inline QString website() { return mWebsite; }
-    inline QString license() { return mLicense; }
-    inline QJsonObject release() { return mRelease; }
-    // Setters
-    inline void setRelease(QJsonObject release) { mRelease = release; emit configChanged(); }
-    // Methods
-    void fromJson(QJsonObject json);
-
-Q_SIGNALS:
-    void configChanged();
-
-private:
-    QString mServerVersion;
-    QString mClientVersion;
-    QString mWebsite;
-    QString mLicense;
-    QJsonObject mRelease;
-};
-
+class RegovarInfo;
 
 
 /*!
@@ -84,11 +49,10 @@ class Regovar : public QObject
     Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
-    Q_PROPERTY(QList<QObject*> lastAnalyses READ lastAnalyses NOTIFY lastDataChanged)
-    Q_PROPERTY(QList<QObject*> lastSubjects READ lastSubjects NOTIFY lastDataChanged)
+    Q_PROPERTY(AnalysesListModel* lastAnalyses READ lastAnalyses NOTIFY lastDataChanged)
+    Q_PROPERTY(SubjectsListModel* lastSubjects READ lastSubjects NOTIFY lastDataChanged)
     Q_PROPERTY(EventsListModel* lastEvents READ lastEvents NOTIFY neverChanged)
     Q_PROPERTY(bool welcomIsLoading READ welcomIsLoading WRITE setWelcomIsLoading NOTIFY welcomIsLoadingChanged)
-
     // Managers
     Q_PROPERTY(NetworkManager* networkManager READ networkManager NOTIFY neverChanged)
     Q_PROPERTY(UsersManager* usersManager READ usersManager NOTIFY neverChanged)
@@ -98,6 +62,7 @@ class Regovar : public QObject
     Q_PROPERTY(FilesManager* filesManager READ filesManager NOTIFY neverChanged)
     Q_PROPERTY(AnalysesManager* analysesManager READ analysesManager NOTIFY neverChanged)
     Q_PROPERTY(PanelsManager* panelsManager READ panelsManager NOTIFY neverChanged)
+    Q_PROPERTY(PhenotypesManager* phenotypesManager READ phenotypesManager NOTIFY neverChanged)
     Q_PROPERTY(EventsManager* eventsManager READ eventsManager NOTIFY neverChanged)
     Q_PROPERTY(ToolsManager* toolsManager READ toolsManager NOTIFY neverChanged)
     Q_PROPERTY(PipelinesManager* pipelinesManager READ pipelinesManager NOTIFY neverChanged)
@@ -109,7 +74,6 @@ class Regovar : public QObject
 
     Q_PROPERTY(RegovarInfo* config READ config NOTIFY configChanged)
     Q_PROPERTY(Admin* admin READ admin NOTIFY adminChanged)
-    Q_PROPERTY(QList<QObject*> openWindowModels READ openWindowModels NOTIFY neverChanged)
 
     // TODO: rework as Manager:
     //  - ConnectionManager (manage login, ServerStatus, pending queries, and websocket realtime event)
@@ -128,8 +92,8 @@ public:
     inline QString searchRequest() { return mSearchRequest; }
     inline QJsonObject searchResult() const { return mSearchResult; }
     inline bool searchInProgress() const { return mSearchInProgress; }
-    inline QList<QObject*> lastAnalyses() const { return mLastAnalyses; }
-    inline QList<QObject*> lastSubjects() const { return mLastSubjects; }
+    inline AnalysesListModel* lastAnalyses() const { return mLastAnalyses; }
+    inline SubjectsListModel* lastSubjects() const { return mLastSubjects; }
     inline EventsListModel*  lastEvents() const { return mEventsManager->lastEvents(); }
     inline bool welcomIsLoading() const { return mWelcomIsLoading; }
     //--
@@ -141,6 +105,7 @@ public:
     inline FilesManager* filesManager() const { return mFilesManager; }
     inline AnalysesManager* analysesManager() const { return mAnalysesManager; }
     inline PanelsManager* panelsManager() const { return mPanelsManager; }
+    inline PhenotypesManager* phenotypesManager() const { return mPhenotypesManager; }
     inline EventsManager* eventsManager() const { return mEventsManager; }
     inline ToolsManager* toolsManager() const { return mToolsManager; }
     inline PipelinesManager* pipelinesManager() const { return mPipelinesManager; }
@@ -148,7 +113,6 @@ public:
     inline QList<QObject*> references() const { return mReferences; }
     inline RootMenu* mainMenu() const { return mMainMenu; }
     inline Settings* settings() const { return mSettings; }
-    inline QList<QObject*> openWindowModels() const { return mOpenWindowModels; }
 
     // Setters
     inline void setSearchRequest(QString searchRequest) { mSearchRequest = searchRequest; emit searchRequestChanged(); }
@@ -190,7 +154,9 @@ public:
     Q_INVOKABLE inline QString analysisStatusIcon(QString status) { return Analysis::statusIcon(status); }
     Q_INVOKABLE inline bool analysisStatusIconAnimated(QString status) { return Analysis::statusIconAnimated(status); }
     bool openNewWindow(QUrl qmlUrl, QObject* model);
-
+    bool openNewWindow(QUrl qmlUrl, QObject* model, QString wid);
+    Q_INVOKABLE bool closeWindow(QString wid);
+    Q_INVOKABLE inline QObject* getWindowModels(QString wid) const { if (mOpenWindowModels.contains(wid)) return mOpenWindowModels[wid]; return nullptr; }
 
 
 
@@ -209,6 +175,7 @@ Q_SIGNALS:
     void referencesChanged();
     void configChanged();
     void adminChanged();
+
     // Wizards events
     void newProjectWizardOpen();
     void newAnalysisWizardOpen();
@@ -218,6 +185,7 @@ Q_SIGNALS:
     void geneInformationSearching();
     void panelInformationSearching();
     void phenotypeInformationSearching();
+    void diseaseInformationSearching();
     void pipelineInformationSearching();
     void sampleInformationSearching();
     void userInformationSearching();
@@ -227,9 +195,10 @@ Q_SIGNALS:
     void panelInformationReady(Panel* panel);
     void sampleInformationReady(Sample* sample);
     void userInformationReady(User* user);
-    void pipelineInformationReady(QJsonValue json);
+    void pipelineInformationReady(Pipeline* pipeline);
     void geneInformationReady(QJsonValue json);
-    void phenotypeInformationReady(QJsonValue json);
+    void phenotypeInformationReady(Phenotype* phenotype);
+    void diseaseInformationReady(Disease* disease);
     void variantInformationReady(QJsonValue json);
 
     void errorOccured(QString errCode, QString message, QString techData);
@@ -253,8 +222,8 @@ private:
     //! list of references supported by the server
     QList<QObject*> mReferences;
     //! Welcom last data
-    QList<QObject*> mLastAnalyses;
-    QList<QObject*> mLastSubjects;
+    AnalysesListModel* mLastAnalyses;
+    SubjectsListModel* mLastSubjects;
     //! Search request and results
     QString mSearchRequest;
     QJsonObject mSearchResult;
@@ -278,6 +247,8 @@ private:
     AnalysesManager* mAnalysesManager = nullptr;
     //! Manage genes panels
     PanelsManager* mPanelsManager = nullptr;
+    //! Manage phenotype
+    PhenotypesManager* mPhenotypesManager = nullptr;
     //! Manage all events
     EventsManager* mEventsManager = nullptr;
     //! Custom Tools managers (exporters, reporters)
@@ -288,9 +259,56 @@ private:
     // Technical stuff
     //! We need ref to the QML engine to create/open new windows from model events
     QQmlApplicationEngine* mQmlEngine = nullptr;
-    //! List of model used by additional qml windows open
-    QList<QObject*> mOpenWindowModels;
+    //! List of model used by open qml windows
+    QHash<QString, QObject*> mOpenWindowModels;
 };
 
+
+
+
+
+/*!
+ * \brief Class to old server's information
+ * (to avoid to polluate main regovar singleton with these data)
+ */
+class RegovarInfo: public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QString serverVersion READ serverVersion NOTIFY configChanged)
+    Q_PROPERTY(QString clientVersion READ clientVersion NOTIFY configChanged)
+    Q_PROPERTY(QString website READ website NOTIFY configChanged)
+    Q_PROPERTY(QString license READ license  NOTIFY configChanged)
+    Q_PROPERTY(QJsonObject release READ release  NOTIFY configChanged)
+    Q_PROPERTY(QString welcomMessage READ welcomMessage NOTIFY configChanged)
+    Q_PROPERTY(QString welcomMessageType READ welcomMessageType NOTIFY configChanged)
+
+public:
+    explicit RegovarInfo(QObject *parent = nullptr);
+    // Getters
+    inline QString serverVersion() { return mServerVersion; }
+    inline QString clientVersion() { return mClientVersion; }
+    inline QString website() { return mWebsite; }
+    inline QString license() { return mLicense; }
+    inline QJsonObject release() { return mRelease; }
+    inline QString welcomMessage() const { return mWelcomMessage; }
+    inline QString welcomMessageType() const { return mWelcomMessageType; }
+    // Setters
+    inline void setRelease(QJsonObject release) { mRelease = release; emit configChanged(); }
+    // Methods
+    bool loadJson(QJsonObject json);
+
+Q_SIGNALS:
+    void configChanged();
+
+private:
+    QString mServerVersion;
+    QString mClientVersion;
+    QString mWebsite;
+    QString mLicense;
+    QJsonObject mRelease;
+    //! Server welcom custom message
+    QString mWelcomMessage = "";
+    QString mWelcomMessageType = "";
+};
 
 #endif // REGOVAR_H

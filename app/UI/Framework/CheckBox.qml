@@ -8,6 +8,7 @@ CheckBox
     id: control
     text: qsTr("CheckBox")
     checked: true
+    property var color: Regovar.theme.frontColor.normal
 
 
     font.pixelSize: Regovar.theme.font.size.normal
@@ -51,7 +52,7 @@ CheckBox
     {
         text: control.text
         font: control.font
-        color: Regovar.theme.frontColor.normal
+        color: control.color
         opacity: enabled ? 1.0 : 0.3
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter

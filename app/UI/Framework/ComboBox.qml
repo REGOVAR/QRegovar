@@ -18,7 +18,7 @@ ComboBox
         contentItem: Text
         {
             text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData
-            color: enabled ? Regovar.theme.boxColor.front : Regovar.theme.frontColor.disable
+            color: enabled ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
             font: control.font
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter

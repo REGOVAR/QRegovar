@@ -38,11 +38,10 @@ Rectangle
             anchors.left: header.left
             anchors.bottom: header.bottom
             anchors.margins: 10
-            font.pixelSize: 22
-            font.family: Regovar.theme.font.family
-            color: Regovar.theme.frontColor.normal
+            font.pixelSize: Regovar.theme.font.size.title
+            font.weight: Font.Black
+            color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
-
             text: "regovar.currentProject.name"
         }
         ConnectionStatus

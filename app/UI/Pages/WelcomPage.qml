@@ -6,7 +6,7 @@ import QtQuick.Layouts 1.3
 import "qrc:/qml/Framework"
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Dialogs"
-import "qrc:/qml/Pages/Browse"
+import "qrc:/qml/Pages/Browser/Items"
 
 Rectangle
 {
@@ -49,40 +49,69 @@ Rectangle
     }
 
 
+    Column
+    {
+        id: infos
+        spacing: 10
+        anchors.top: logo.bottom
+        anchors.horizontalCenter: root.horizontalCenter
+        anchors.topMargin: 10
+        width: 600
+        visible: false
 
+        Box
+        {
+            id: testServerWarning
+            width: 600
 
+            mainColor: regovar.config.welcomMessageType === "critical" ? Regovar.theme.frontColor.danger : regovar.config.welcomMessageType === "warning" ? Regovar.theme.frontColor.warning : Regovar.theme.frontColor.info;
+            text: regovar.config.welcomMessage
+            icon: regovar.config.welcomMessageType === "critical" ? "l" : regovar.config.welcomMessageType === "warning" ? "m" : "k";
+            visible: regovar.config.welcomMessage !== ""
+        }
+        Box
+        {
+            id: connectionError
+            width: 600
+
+            mainColor: Regovar.theme.frontColor.danger
+            text: qsTr("You are not connected to the Regovar server. Check your network connection or the url to the Regovar server in the settings panel.")
+            icon: "m"
+            visible: regovar.networkManager.status !== 0
+        }
+    }
 
     TextField
     {
         id: searchBar
-        anchors.top: logo.bottom
+        anchors.top: infos.bottom
         anchors.horizontalCenter: root.horizontalCenter
-        anchors.margins: 10
+        anchors.topMargin: 10
         width: 600
-        anchors.topMargin: 50
-        enabled: regovar.networkManager.status == 0
+        enabled: regovar.networkManager.status === 0
 
         Component.onCompleted: text = regovar.searchRequest
 
+        property string previousResearch: ""
 
         onEditingFinished:
         {
-            if (text != "" && root.visible)
+            if (text != "" && text != previousResearch && root.visible)
             {
                 regovar.search(text);
                 regovar.mainMenu.goTo(1,-1,-1);
             }
+            previousResearch = text;
         }
 
-        placeholder: regovar.networkManager.status == 0 ? qsTr("Search anything, sample, phenotype, analysis, variant, report...") : ""
+        placeholder: regovar.networkManager.status === 0 ? qsTr("Search anything, sample, phenotype, analysis, variant, report...") : ""
         focus: true
     }
 
 
-    Rectangle
+    Item
     {
         id: panel
-        color: "transparent"
 
         anchors.top: searchBar.bottom
         anchors.bottom: root.bottom
@@ -106,19 +135,19 @@ Rectangle
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New analysis")
                 onClicked: regovar.openNewAnalysisWizard()
-                enabled: regovar.networkManager.status == 0
+                enabled: regovar.networkManager.status === 0
             }
             ButtonWelcom
             {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("New subject")
                 onClicked: regovar.openNewSubjectWizard()
-                enabled: regovar.networkManager.status == 0
+                enabled: regovar.networkManager.status === 0
             }
         }
 
 
-        ColumnLayout
+        GridLayout
         {
             visible: regovar.welcomIsLoading
             anchors.top: newButtonsRow.bottom
@@ -126,217 +155,169 @@ Rectangle
             anchors.left: panel.left
             anchors.right: panel.right
             anchors.bottom: panel.bottom
-            spacing: 30
+            columns: 2
+            rows:5
+            columnSpacing: 30
+            rowSpacing: 10
 
 
-            SplitView
+
+            Text
             {
-                id: row
-                property real maxHeight: Regovar.theme.font.boxSize.header
-                Layout.fillWidth: true
+                Layout.row: 0
+                Layout.column: 0
+                height: Regovar.theme.font.boxSize.header
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+                font.pixelSize: Regovar.theme.font.size.header
+                color: Regovar.theme.primaryColor.back.dark
+                text: qsTr("Last analyses")
+            }
+            Rectangle
+            {
+                Layout.row: 1
+                Layout.column: 0
                 Layout.fillHeight: true
-                Layout.maximumHeight: maxHeight
-                Layout.minimumHeight: maxHeight
-
-
-                Rectangle
+                Layout.fillWidth: true
+                color: Regovar.theme.boxColor.back
+                border.width: 1
+                border.color: Regovar.theme.boxColor.border
+                radius: 2
+                ListView
                 {
-                    id: analysesScrollArea
-                    color: "transparent"
-                    width: 500
-                    height: parent.height
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    model: regovar.lastAnalyses
                     clip: true
-
-                    Text
+                    flickableDirection: Flickable.VerticalFlick
+                    boundsBehavior: Flickable.StopAtBounds
+                    ScrollBar.vertical: ScrollBar {}
+                    delegate: BrowserItemAnalysis
                     {
-                        id: analysesHeader
-                        verticalAlignment: Text.AlignVCenter
-                        elide: Text.ElideRight
-                        font.pixelSize: Regovar.theme.font.size.header
-                        color: Regovar.theme.primaryColor.back.dark
-                        height: Regovar.theme.font.boxSize.header
-                        text: qsTr("Last analyses")
-                    }
-
-                    Rectangle
-                    {
-                        anchors.top: analysesHeader.bottom
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.rightMargin: 10
-                        height: 1
-                        color: Regovar.theme.primaryColor.back.normal
-                    }
-
-
-
-                    ScrollView
-                    {
-                        id: analysesColumn
-                        anchors.fill: parent
-                        anchors.topMargin: Regovar.theme.font.boxSize.header + 5
-                        anchors.rightMargin: 10
-                        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
-                        Column
-                        {
-                            onHeightChanged: row.maxHeight = Math.max(row.maxHeight, height + Regovar.theme.font.boxSize.header + 5)
-                            Repeater
-                            {
-                                model: regovar.lastAnalyses
-                                SearchResultAnalysis
-                                {
-                                    indent: 0
-                                    width: analysesColumn.width - 10
-                                    date: model.modelData.updateDate
-                                    name: model.modelData.name
-                                    fullpath: model.modelData.fullpath
-                                    status: model.modelData.status
-                                    onClicked: regovar.analysesManager.openAnalysis(model.modelData.type, model.modelData.id)
-                                }
-                            }
-                        }
-                    }
-                }
-
-                Rectangle
-                {
-                    id: subjectScrollArea
-                    color: "transparent"
-                    height: parent.height
-                    clip: true
-
-                    ScrollBar
-                    {
-                        hoverEnabled: true
-                        active: hovered || pressed
-                        orientation: Qt.Vertical
-                        size: subjectScrollArea.height / subjectsColumn.height
-                        anchors.top: parent.top
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
-                    }
-
-                    Text
-                    {
-                        id: subjectsHeader
-                        anchors.left: parent.left
-                        anchors.leftMargin: 10
-                        verticalAlignment: Text.AlignVCenter
-                        elide: Text.ElideRight
-                        font.pixelSize: Regovar.theme.font.size.header
-                        color: Regovar.theme.primaryColor.back.dark
-                        height: Regovar.theme.font.boxSize.header
-                        text: qsTr("Last subjects")
-                    }
-
-                    Rectangle
-                    {
-                        anchors.top: subjectsHeader.bottom
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.leftMargin: 10
-                        height: 1
-                        color: Regovar.theme.primaryColor.back.normal
-                    }
-
-
-                    ScrollView
-                    {
-                        id: subjectsColumn
-                        anchors.fill: parent
-                        anchors.topMargin: Regovar.theme.font.boxSize.header + 5
-                        anchors.rightMargin: 10
-                        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
-
-                        Column
-                        {
-                            onHeightChanged: row.maxHeight = Math.max(row.maxHeight, height + Regovar.theme.font.boxSize.header + 5)
-                            Repeater
-                            {
-                                model: regovar.lastSubjects
-                                SearchResultSubject
-                                {
-                                    width: subjectsColumn.width - 10
-                                    indent: 1
-                                    date: model.modelData.updateDate
-                                    identifier: model.modelData.identifier
-                                    firstname: model.modelData.firstname
-                                    lastname: model.modelData.lastname
-                                    sex: model.modelData.sex
-                                    onClicked: regovar.subjectsManager.openSubject(model.modelData.id)
-                                }
-                            }
-                        }
+                        width: parent.width - 10
+                        indent: 0
+                        date: model.updateDate
+                        name: model.name
+                        //fullpath: model.modelData.fullpath
+                        status: model.status
+                        onClicked: regovar.analysesManager.openAnalysis(model.type, model.id)
                     }
                 }
             }
 
+
+
+            Text
+            {
+                Layout.row: 0
+                Layout.column: 1
+                height: Regovar.theme.font.boxSize.header
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+                font.pixelSize: Regovar.theme.font.size.header
+                color: Regovar.theme.primaryColor.back.dark
+                text: qsTr("Last subjects")
+            }
+            Rectangle
+            {
+                Layout.row: 1
+                Layout.column: 1
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                color: Regovar.theme.boxColor.back
+                border.width: 1
+                border.color: Regovar.theme.boxColor.border
+                radius: 2
+                ListView
+                {
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    model: regovar.lastSubjects
+                    clip: true
+                    flickableDirection: Flickable.VerticalFlick
+                    boundsBehavior: Flickable.StopAtBounds
+                    ScrollBar.vertical: ScrollBar {}
+                    delegate: BrowserItemSubject
+                    {
+                        width: parent.width - 10
+                        indent: 0
+                        date: model.updateDate
+                        identifier: model.identifier
+                        firstname: model.firstname
+                        lastname: model.lastname
+                        sex: model.sex
+                        onClicked: regovar.subjectsManager.openSubject(model.id)
+                    }
+                }
+            }
+
+
+            Item
+            {
+                Layout.row: 2
+                Layout.column: 0
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+                Layout.minimumHeight: 10
+            }
+
+            Text
+            {
+                Layout.row: 3
+                Layout.column: 0
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+                height: Regovar.theme.font.boxSize.header
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+                font.pixelSize: Regovar.theme.font.size.header
+                color: Regovar.theme.primaryColor.back.dark
+                text: qsTr("Last events")
+            }
 
             Rectangle
             {
-                id: eventsScrollArea
-                Layout.fillWidth: true
+                Layout.row: 4
+                Layout.column: 0
+                Layout.columnSpan: 2
                 Layout.fillHeight: true
-                color: "transparent"
-                clip: true
-
-                Text
-                {
-                    id: eventsHeader
-                    verticalAlignment: Text.AlignVCenter
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    color: Regovar.theme.primaryColor.back.dark
-                    height: Regovar.theme.font.boxSize.header
-                    text: qsTr("Last events")
-                }
-
-                Rectangle
-                {
-                    anchors.top: eventsHeader.bottom
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    height: 1
-                    color: Regovar.theme.primaryColor.back.normal
-                }
-
-                ScrollView
+                Layout.fillWidth: true
+                color: Regovar.theme.boxColor.back
+                border.width: 1
+                border.color: Regovar.theme.boxColor.border
+                radius: 2
+                ListView
                 {
                     anchors.fill: parent
-                    anchors.topMargin: Regovar.theme.font.boxSize.header + 5
-                    horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
-                    Column
+                    anchors.margins: 5
+                    clip: true
+                    flickableDirection: Flickable.VerticalFlick
+                    boundsBehavior: Flickable.StopAtBounds
+                    ScrollBar.vertical: ScrollBar {}
+                    model: regovar.eventsManager.lastEvents
+                    delegate: BrowserItemEvent
                     {
-                        id: eventsColumn
-                        Repeater
-                        {
-                            model: regovar.eventsManager.lastEvents
-                            SearchResultEvent
-                            {
-                                indent: 0
-                                width: eventsScrollArea.width - 10 // 10 ScrollBar width
-                                eventId: model.id
-                                date: model.date
-                                message: model.message
-                            }
-                        }
+                        width: parent.width - 10
+                        indent: 0
+                        eventId: model.id
+                        date: model.date
+                        message: model.message
                     }
                 }
             }
+
         }
+
 
         Rectangle
         {
             anchors.topMargin: newButtonsRow.height
             anchors.fill: parent
             color: Regovar.theme.backgroundColor.main
-            visible: regovar.networkManager.status != 0
+            visible: regovar.networkManager.status !== 0
 
 
-
+/*
             Text
             {
                 id: connectionLostText
@@ -350,12 +331,13 @@ Rectangle
                 font.pixelSize: Regovar.theme.font.size.header
                 horizontalAlignment: Text.AlignHCenter
             }
+*/
             ButtonIcon
             {
-                anchors.top: connectionLostText.bottom
-                anchors.horizontalCenter: connectionLostText.horizontalCenter
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
                 anchors.margins: 20
-                visible: !regovar.welcomIsLoading || regovar.networkManager.status != 0
+                visible: !regovar.welcomIsLoading || regovar.networkManager.status !== 0
                 iconTxt: "d"
                 text: qsTr("Check local settings")
                 onClicked: regovar.mainMenu.goTo(5,1,2)

@@ -134,12 +134,12 @@ void InSilicoPredQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
             {
                 for (Annotation* annot: db->fields())
                 {
-                    if (annot && annot->name().toLower() == "sift_pred")
+                    if (annot && annot->name().toLower() == "sift pred")
                     {
                         siftUid = annot->uid();
                         mIsVisible = true;
                     }
-                    else if (annot && annot->name().toLower() == "polyphen_pred")
+                    else if (annot && annot->name().toLower() == "polyphen pred")
                     {
                         polyUid = annot->uid();
                         mIsVisible = true;
@@ -151,7 +151,7 @@ void InSilicoPredQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
             {
                 for (Annotation* annot: db->fields())
                 {
-                    if (annot && annot->name().toLower() == "annotation_impact")
+                    if (annot && annot->name().toLower() == "annotation impact")
                     {
                         impactUid = annot->uid();
                         mIsVisible = true;

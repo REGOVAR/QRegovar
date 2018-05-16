@@ -6,7 +6,8 @@
 
 class Sample;
 class EventsListModel;
-
+class HpoData;
+class HpoDataListModel;
 class Subject : public QObject
 {
     Q_OBJECT
@@ -29,6 +30,7 @@ class Subject : public QObject
     Q_PROPERTY(QList<QObject*> jobs READ jobs NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> files READ files NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> indicators READ indicators NOTIFY dataChanged)
+    Q_PROPERTY(HpoDataListModel* phenotypes READ phenotypes NOTIFY dataChanged)
     Q_PROPERTY(EventsListModel* events READ events NOTIFY dataChanged)
     // Special "shortcut" properties for qml display
     Q_PROPERTY(QJsonObject subjectUI READ subjectUI NOTIFY dataChanged)
@@ -44,9 +46,9 @@ public:
     Q_ENUM(Sex)
 
     // Constructors
-    explicit Subject(QObject *parent = nullptr);
-    explicit Subject(int id, QObject *parent = nullptr);
-    explicit Subject(QJsonObject json, QObject *parent = nullptr);
+    explicit Subject(QObject* parent = nullptr);
+    explicit Subject(int id, QObject* parent = nullptr);
+    explicit Subject(QJsonObject json, QObject* parent = nullptr);
 
     // Getters
     inline bool loaded() const { return mLoaded; }
@@ -66,6 +68,7 @@ public:
     inline QList<QObject*> jobs() const { return mJobs; }
     inline QList<QObject*> files() const { return mFiles; }
     inline QList<QObject*> indicators() const { return mIndicators; }
+    inline HpoDataListModel* phenotypes() const { return mPhenotypes; }
     inline EventsListModel* events() const { return mEvents; }
     inline QJsonObject subjectUI() const { return mSubjectUI; }
     inline QString searchField() const { return mSearchField; }
@@ -81,7 +84,7 @@ public:
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE bool fromJson(QJsonObject json, bool full_init=true);
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true);
     //! Export model data into json object
     Q_INVOKABLE QJsonObject toJson();
     //! Save subject information onto server
@@ -92,9 +95,15 @@ public:
     Q_INVOKABLE void addSample(Sample* sample);
     //! Remove the association between the sample and the subject
     Q_INVOKABLE void removeSample(Sample* sample);
+    //! Associate a phenotype/disease to the subject
+    Q_INVOKABLE void setHpo(HpoData* hpo, QString presence="present");
+    //! Remove the association between the phenotype/disease and the subject
+    Q_INVOKABLE void removeHpo(HpoData* hpo);
     //! SubjectUI is a all-in-one property to quickly display subject in the UI.
     void updateSubjectUI();
     QString computeAge(QDate d1, QDate d2);
+    Q_INVOKABLE QString presence(QString hpoId) const;
+    Q_INVOKABLE QDateTime additionDate(QString hpoId) const;
 
 Q_SIGNALS:
     void dataChanged();
@@ -122,9 +131,12 @@ private:
     QList<QObject*> mJobs;
     QList<QObject*> mFiles;
     QList<QObject*> mIndicators;
+    HpoDataListModel* mPhenotypes = nullptr;
     EventsListModel* mEvents = nullptr;
     QJsonObject mSubjectUI;
     QString mSearchField = "";
+    QHash<QString, QString> mPresence;
+    QHash<QString, QDateTime> mAdditionDate;
 };
 
 #endif // SUBJECT_H

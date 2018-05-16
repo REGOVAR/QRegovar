@@ -35,12 +35,16 @@ void DynamicFormModel::load(QUrl jsonUrl)
             req->deleteLater();
         });
     }
+    else
+    {
+        load(QJsonObject());
+    }
 }
 
 
 void DynamicFormModel::load(QJsonObject json)
 {
-    if (!mLoaded && !json.isEmpty())
+    if (!mLoaded)
     {
         beginResetModel();
         mFieldList.clear();

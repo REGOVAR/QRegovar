@@ -5,6 +5,7 @@
 #include <QtQml>
 #include <QtCore>
 #include <QIcon>
+#include <QFontDatabase>
 //#include <QtWebEngine/qtwebengineglobal.h>
 
 #include "Model/regovar.h" // include regovar singleton which wrap all models and is the interface with the server
@@ -57,6 +58,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<EventsListModel>("Regovar.Core", 1, 0, "EventsListModel");
     qmlRegisterType<FilesListModel>("Regovar.Core", 1, 0, "FilesListModel");
     qmlRegisterType<FilesTreeModel>("Regovar.Core", 1, 0, "FilesTreeModel");
+    qmlRegisterType<HpoDataListModel>("Regovar.Core", 1, 0, "PhenotypesListModel");
 
     qmlRegisterType<User>("Regovar.Core", 1, 0, "User");
     qmlRegisterType<Project>("Regovar.Core", 1, 0, "Project");
@@ -68,6 +70,9 @@ int main(int argc, char *argv[])
     qmlRegisterType<Panel>("Regovar.Core", 1, 0, "Panel");
     qmlRegisterType<Event>("Regovar.Core", 1, 0, "Event");
     qmlRegisterType<Pipeline>("Regovar.Core", 1, 0, "Pipeline");
+    qmlRegisterType<HpoData>("Regovar.Core", 1, 0, "HpoData");
+    qmlRegisterType<Phenotype>("Regovar.Core", 1, 0, "Phenotype");
+    qmlRegisterType<Disease>("Regovar.Core", 1, 0, "Disease");
 
     qmlRegisterType<RemoteLogModel>("Regovar.Core", 1, 0, "RemoteLogModel");
     qmlRegisterType<AdminTableInfo>("Regovar.Core", 1, 0, "AdminTableInfo");
@@ -95,8 +100,13 @@ int main(int argc, char *argv[])
     // Init regovar model
     regovar->init();
     regovar->setQmlEngine(&engine);
-
     engine.rootContext()->setContextProperty("regovar", regovar);
+
+    // OS independant fixed font
+    const QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    engine.rootContext()->setContextProperty("fixedFont", fixedFont);
+
+
     engine.addImportPath("qrc:/qml/");
     engine.load(QUrl(QLatin1String("qrc:/qml/MainWindow.qml")));
 

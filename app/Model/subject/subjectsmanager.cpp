@@ -35,7 +35,7 @@ bool SubjectsManager::loadJson(QJsonArray json)
     {
         QJsonObject subjectData = subjectVal.toObject();
         Subject* subject = getOrCreateSubject(subjectData["id"].toInt());
-        subject->fromJson(subjectData, false);
+        subject->loadJson(subjectData, false);
     }
     endResetModel();
     return true;
@@ -78,7 +78,7 @@ void SubjectsManager::newSubject(QString identifier, QString firstname, QString 
         {
             QJsonObject data = json["data"].toObject();
             Subject* subject = getOrCreateSubject(data["id"].toInt());
-            subject->fromJson(data, false);
+            subject->loadJson(data, false);
             openSubject(subject->id());
             emit subjectCreationDone(true, subject->id());
 

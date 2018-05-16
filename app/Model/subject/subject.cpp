@@ -1,25 +1,29 @@
 #include "subject.h"
-#include "sample.h"
 #include "Model/regovar.h"
 #include "Model/framework/request.h"
+#include "sample.h"
 #include "Model/event/eventslistmodel.h"
+#include "Model/phenotype/phenotype.h"
+#include "Model/phenotype/hpodatalistmodel.h"
 
 Subject::Subject(QObject* parent) : QObject(parent)
 {
+    mPhenotypes = new HpoDataListModel(this);
 }
 
-Subject::Subject(QJsonObject json, QObject* parent) : QObject(parent)
+Subject::Subject(QJsonObject json, QObject* parent) : Subject(parent)
 {
-    fromJson(json, false);
+    loadJson(json, false);
 }
 Subject::Subject(int id, QObject* parent) : QObject(parent)
 {
     mId = id;
+    mPhenotypes = new HpoDataListModel(id, this);
 }
 
 
 
-bool Subject::fromJson(QJsonObject json, bool full_init)
+bool Subject::loadJson(QJsonObject json, bool full_init)
 {
     mId = json["id"].toInt();
     mIdentifier = json["identifier"].toString();
@@ -39,6 +43,7 @@ bool Subject::fromJson(QJsonObject json, bool full_init)
 
     if (!full_init) return true;
 
+    mPhenotypes->clear();
     mSamples.clear();
     mAnalyses.clear();
     mProjects.clear();
@@ -51,8 +56,20 @@ bool Subject::fromJson(QJsonObject json, bool full_init)
     {
         QJsonObject sampleData = val.toObject();
         Sample* sample = regovar->samplesManager()->getOrCreateSample(sampleData["id"].toInt());
-        sample->fromJson(sampleData);
+        sample->loadJson(sampleData);
         mSamples.append(sample);
+    }
+    // Phenotype
+    for (const QJsonValue& val: json["hpo"].toArray())
+    {
+        QJsonObject data = val.toObject();
+        HpoData* hpo = regovar->phenotypesManager()->getOrCreate(data["id"].toString());
+        hpo->loadJson(data);
+        if (data.contains("presence"))
+        {
+            mPresence[hpo->id()] = data["presence"].toString();
+        }
+        mPhenotypes->append(hpo);
     }
 
     // Event
@@ -86,6 +103,14 @@ QJsonObject Subject::toJson()
         samples.append(sample->id());
     }
     result.insert("samples_ids", samples);
+    // Phenotype
+    QJsonArray hpo;
+    for (int i=0; i<mPhenotypes->rowCount() ; ++i)
+    {
+        QString id = mPhenotypes->getAt(i)->id();
+        hpo.append((presence(id) == "present" ? "+" : "-" )+ id);
+    }
+    result.insert("hpo_ids", hpo);
 
     // Files
     // Indicators
@@ -127,7 +152,7 @@ void Subject::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {
@@ -169,6 +194,48 @@ void Subject::removeSample(Sample* sample)
     sample->setSubject(nullptr);
     sample->save();
 }
+
+
+void Subject::setHpo(HpoData* hpo, QString presence)
+{
+    if (hpo != nullptr)
+    {
+        mPhenotypes->append(hpo);
+        mPresence[hpo->id()] = presence;
+        save();
+        emit dataChanged();
+    }
+}
+
+
+void Subject::removeHpo(HpoData* phenotype)
+{
+    if (mPhenotypes->remove(phenotype))
+    {
+        save();
+        emit dataChanged();
+    }
+}
+
+
+
+QString Subject::presence(QString hpoId) const
+{
+    if (mPresence.contains(hpoId))
+        return mPresence[hpoId];
+    return "unknow";
+}
+
+
+QDateTime Subject::additionDate(QString hpoId) const
+{
+    if (mAdditionDate.contains(hpoId))
+        return mAdditionDate[hpoId];
+    return QDateTime();
+}
+
+
+
 
 
 void Subject::updateSubjectUI()

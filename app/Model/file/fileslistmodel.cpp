@@ -19,7 +19,7 @@ bool FilesListModel::loadJson(QJsonArray json)
     {
         QJsonObject fileData = eventJson.toObject();
         File* file = regovar->filesManager()->getOrCreateFile(fileData["id"].toInt());
-        file->fromJson(fileData);
+        file->loadJson(fileData);
         if (!mFileList.contains(file))
         {
             mFileList.append(file);
@@ -35,7 +35,7 @@ bool FilesListModel::loadJson(QJsonArray json)
 bool FilesListModel::add(File* file)
 {
     bool result = false;
-    if (!mFileList.contains(file))
+    if (file!= nullptr && !mFileList.contains(file))
     {
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         mFileList.append(file);

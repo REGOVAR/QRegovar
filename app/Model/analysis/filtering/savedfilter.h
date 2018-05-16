@@ -34,7 +34,7 @@ public:
     inline void setProgress(double prog) { mProgress = prog; emit dataChanged(); }
 
     // Methods
-    void fromJson(QJsonObject json);
+    bool loadJson(QJsonObject json);
 
 Q_SIGNALS:
     void idChanged();

@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtWebView 1.0
-import QtWebEngine 1.1
+//import QtWebEngine 1.1
 import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"

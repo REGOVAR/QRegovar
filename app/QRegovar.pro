@@ -87,7 +87,15 @@ HEADERS += \
     Model/framework/dynamicformfieldmodel.h \
     Model/file/fileslistmodel.h \
     Model/analysis/remotelogmodel.h \
-    Model/user/usersmanager.h
+    Model/user/usersmanager.h \
+    Model/phenotype/disease.h \
+    Model/phenotype/hpodata.h \
+    Model/phenotype/hpodatalistmodel.h \
+    Model/phenotype/diseaseslistmodel.h \
+    Model/phenotype/phenotypeslistmodel.h \
+    Model/phenotype/geneslistmodel.h \
+    Model/subject/subjectslistmodel.h \
+    Model/analysis/analyseslistmodel.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -162,7 +170,15 @@ SOURCES += main.cpp \
     Model/framework/dynamicformfieldmodel.cpp \
     Model/file/fileslistmodel.cpp \
     Model/analysis/remotelogmodel.cpp \
-    Model/user/usersmanager.cpp
+    Model/user/usersmanager.cpp \
+    Model/phenotype/disease.cpp \
+    Model/phenotype/hpodata.cpp \
+    Model/phenotype/diseaseslistmodel.cpp \
+    Model/phenotype/hpodatalistmodel.cpp \
+    Model/phenotype/phenotypeslistmodel.cpp \
+    Model/phenotype/geneslistmodel.cpp \
+    Model/subject/subjectslistmodel.cpp \
+    Model/analysis/analyseslistmodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

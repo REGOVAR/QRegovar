@@ -14,129 +14,111 @@ ScrollView
     id: root
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-    property var diseases
-    property var phenotypes
     property var model
-    onModelChanged:  if (model) { updateFromModel(model); }
-
-    function updateFromModel(data)
-    {
-        if (data)
-        {
-            diseases = data["diseases"];
-            phenotypes = data["phenotypes"];
-        }
-    }
-
+    onModelChanged: updateFromModel(model)
+    Component.onCompleted: updateFromModel(model)
 
     Column
     {
-        x:0
-        y:0
-        width: root.width
+        x: 10
+        y: 10
+        width: root.width - 30
 
-        Rectangle
+        TextEdit
         {
-            id: diseaseHeader
-            width: root.width - 2
-            height: Regovar.theme.font.boxSize.header
-            color: "transparent"
-
-            Row
-            {
-                anchors.fill: parent
-
-                Text
-                {
-                    text: "{"
-                    width: Regovar.theme.font.boxSize.header
-                    height: Regovar.theme.font.boxSize.header
-
-                    font.family: Regovar.theme.icons.name
-                    color: Regovar.theme.primaryColor.back.normal
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                Text
-                {
-                    text: qsTr("Related diseases")
-                    height: Regovar.theme.font.boxSize.header
-                    color: Regovar.theme.primaryColor.back.normal
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
+            id: infoText
+            clip: true
+            width: root.width - 30
+            textFormat: TextEdit.RichText
+            font.pixelSize: Regovar.theme.font.size.normal + 2
+            color: Regovar.theme.frontColor.normal
+            readOnly: true
+            selectByMouse: true
+            selectByKeyboard: true
+            wrapMode: TextEdit.Wrap
+            onLinkActivated: Qt.openUrlExternally(link)
         }
-
-        Repeater
+        Item
         {
-            model: diseases
-
-            OnlineToolAction
-            {
-                url: root.formatUrl(modelData.id)
-                icon: "_"
-                label: modelData.id
-                width: root.width - 2
-            }
-        }
-
-        Rectangle
-        {
-            id: phenotypeHeader
-            width: root.width - 2
-            height: Regovar.theme.font.boxSize.header
-            color: "transparent"
-
-            Row
-            {
-                anchors.fill: parent
-
-                Text
-                {
-                    text: "{"
-                    width: Regovar.theme.font.boxSize.header
-                    height: Regovar.theme.font.boxSize.header
-
-                    font.family: Regovar.theme.icons.name
-                    color: Regovar.theme.primaryColor.back.normal
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                Text
-                {
-                    text: qsTr("Related phenotypes")
-                    height: Regovar.theme.font.boxSize.header
-                    color: Regovar.theme.primaryColor.back.normal
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-        }
-
-        Repeater
-        {
-            model: phenotypes
-
-            OnlineToolAction
-            {
-                url: "http://compbio.charite.de/hpoweb/showterm?id=" + modelData.id
-                icon: "_"
-                label: modelData.label
-                width: root.width - 2
-            }
+            width: 1
+            height: 10
         }
     }
 
-    function formatUrl(id)
+    function updateFromModel(data)
     {
-        var data = id.split(":");
-        var urls = {
-            "OMIM" : "https://www.omim.org/entry/{0}",
-            "ORPHA": "http://www.orpha.net/consor4.01/www/cgi-bin/Disease_Search.php?lng=EN&data_id=2010&Disease_Disease_Search_diseaseGroup={0}&Disease_Disease_Search_diseaseType=ORPHA"}
+        if (!data) return "";
+        infoText.text = data.type === "phenotypic" ? phenotypeData(data) : diseaseData(data);
+    }
 
-        return urls[data[0]].replace("{0}", data[1]);
+    function phenotypeData(data)
+    {
+        var text = "<table><tr><td><b>Id: </b></td><td> " + data.id + "</td></tr>";
+        text += "<tr><td><b>Category: </b></td><td> -</td></tr>";
+        text += "<tr><td><b>Genes frequence: </b></td><td> " + data.genesFreq["label"] + "</td></tr>";
+        text += "<tr><td><b>Diseases frequence: </b></td><td> " + data.diseasesFreq["label"]  + "</td></tr>";
+        text += "</table><br/><br/>";
+
+        // Parents
+        if (data.parents.rowCount()>0)
+        {
+            text += "<b>Up classes:</b><ul>";
+            for (var idx=0; idx<data.parents.rowCount(); idx++)
+            {
+                text += "<li>" + data.parents.getAt(idx).label + " (" + data.parents.getAt(idx).id + ")</li>";
+            }
+            text += "</ul>";
+        }
+        // Childs
+        if (data.childs.rowCount()>0)
+        {
+            text += "<b>Sub classes:</b><ul>";
+            for (var idx=0; idx<data.childs.rowCount(); idx++)
+            {
+                text += "<li>" + data.childs.getAt(idx).label + " (" + data.childs.getAt(idx).id + ")</li>";
+            }
+            text += "</ul>";
+        }
+        // Sources
+        if (data.sources.length>0)
+        {
+            text += "<b>Sources:</b><ul>";
+            for (var idx=0; idx<data.sources.length; idx++)
+            {
+                text += "<li>" + data.sources[idx] + "</li>";
+            }
+            text += "</ul>";
+        }
+        return text;
+    }
+
+    function diseaseData(data)
+    {
+        // Compute url link
+        var tokens = data.id.split(":");
+        var url = data.id;
+        if (tokens[0] === "OMIM")
+        {
+            url = "<a href=\"https://www.omim.org/entry/" + tokens[1] + "\">OMIM " + tokens[1] + "</a>";
+        }
+        else if (tokens[0] === "ORPHA")
+        {
+            url = "<a href=\"http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Lng=FR&Expert=" + tokens[1] + "\">Orphanet " + tokens[1] + "</a>";
+        }
+        var text = "<table><tr><td><b>Id: </b></td><td>" + url + "</td></tr>";
+        text += "<tr><td><b>Genes frequence: </b></td><td> " + data.genesFreq["label"] + "</td></tr>";
+        text += "</table><br/><br/>";
+
+        // Sources
+        if (data.sources.length>0)
+        {
+            text += "<b>Sources:</b><ul>";
+            for (var idx=0; idx<data.sources.length; idx++)
+            {
+                text += "<li>" + data.sources[idx] + "</li>";
+            }
+            text += "</ul>";
+        }
+        return text;
     }
 }

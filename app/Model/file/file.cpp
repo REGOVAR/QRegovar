@@ -25,7 +25,7 @@ File::File(QObject* parent) : QObject(parent)
 }
 File::File(QJsonObject json, QObject* parent) : File(parent)
 {
-    fromJson(json);
+    loadJson(json);
 }
 File::File(int id, QObject* parent) : File(parent)
 {
@@ -74,7 +74,7 @@ void File::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {
@@ -86,14 +86,14 @@ void File::load(bool forceRefresh)
 }
 
 
-bool File::fromJson(QJsonDocument json)
+bool File::loadJson(QJsonDocument json)
 {
     QJsonObject data = json.object();
-    return fromJson(data);
+    return loadJson(data);
 }
 
 
-bool File::fromJson(QJsonObject json)
+bool File::loadJson(QJsonObject json)
 {
     mId = json["id"].toInt();
     if (json.contains("name")) setName(json["name"].toString());

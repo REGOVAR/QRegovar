@@ -28,7 +28,7 @@ TextField
         if (iconLeft)
         {
             iconLeft.visible = true;
-            control.leftPadding = iconLeft.width + 10;
+            control.leftPadding = iconLeft.width + 5;
         }
     }
     onIconRightChanged:
@@ -36,7 +36,7 @@ TextField
         if (iconRight)
         {
             iconRight.visible = true;
-            control.rightPadding = iconRight.width + 10;
+            control.rightPadding = iconRight.width + 5;
         }
     }
 

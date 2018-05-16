@@ -10,7 +10,7 @@ DynamicFormFieldModel::DynamicFormFieldModel(QJsonObject json, int order, Dynami
 {
     mForm = parent;
     mOrder = order;
-    fromJson(json);
+    loadJson(json);
 }
 
 
@@ -36,7 +36,7 @@ QString DynamicFormFieldModel::formatedValue() const
     return result;
 }
 
-bool DynamicFormFieldModel::fromJson(QJsonObject json)
+bool DynamicFormFieldModel::loadJson(QJsonObject json)
 {
     mId = json["id"].toString();
     mTitle = json["title"].toString();

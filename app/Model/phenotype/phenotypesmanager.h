@@ -3,22 +3,31 @@
 
 #include <QtCore>
 #include "phenotype.h"
+#include "hpodatalistmodel.h"
 
 class PhenotypesManager : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(HpoDataListModel* searchResults READ searchResults NOTIFY searchDone)
+
 public:
     // Constructor
-    explicit PhenotypesManager(QObject *parent = nullptr);
+    explicit PhenotypesManager(QObject* parent=nullptr);
+
+    // Getters
+    inline HpoDataListModel* searchResults() const { return mSearchResults; }
 
     // Methods
-    Q_INVOKABLE void fromJson(QJsonArray json);
-    Q_INVOKABLE QStringList search(QString query);
+    Q_INVOKABLE HpoData* getOrCreate(QString hpoId);
+    Q_INVOKABLE void search(QString query);
 
+
+Q_SIGNALS:
+    void searchDone(bool success);
 
 private:
-
-    QHash<QString, Phenotype*> mPhenotypes;
+    HpoDataListModel* mSearchResults = nullptr;
+    QHash<QString, HpoData*> mHpoData;
     QHash<QString, QString> mPhenotypesSearchMap;
 };
 

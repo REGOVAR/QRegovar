@@ -17,7 +17,7 @@ Sample::Sample(int id, QObject* parent) : QObject(parent)
 Sample::Sample(QJsonObject json, QObject* parent) : QObject(parent)
 {
     connect(this, &Sample::dataChanged, this, &Sample::updateSearchField);
-    fromJson(json);
+    loadJson(json);
 }
 
 
@@ -46,7 +46,7 @@ void Sample::setStatus(QString status)
     setStatus(static_cast<SampleStatus>(meta.keyToValue(status.toStdString().c_str()))); // T_T .... tout ça pour ça ....
 }
 
-bool Sample::fromJson(QJsonObject json)
+bool Sample::loadJson(QJsonObject json)
 {
     // load basic data from json
     mId = json["id"].toInt();
@@ -159,7 +159,7 @@ void Sample::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {

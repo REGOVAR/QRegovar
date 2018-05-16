@@ -41,7 +41,7 @@ void PipelineAnalysis::addInputFromWS(QJsonObject json)
 {
 
     File* file = regovar->filesManager()->getOrCreateFile(json["id"].toInt());
-    file->fromJson(json);
+    file->loadJson(json);
     mInputsFiles->add(file);
 }
 
@@ -57,7 +57,7 @@ void PipelineAnalysis::setPipeline(Pipeline* pipe)
 
 
 
-bool PipelineAnalysis::fromJson(QJsonObject json, bool full_init)
+bool PipelineAnalysis::loadJson(QJsonObject json, bool full_init)
 {
     mId = json["id"].toInt();
     if (json.contains("name")) setName(json["name"].toString());
@@ -81,7 +81,7 @@ bool PipelineAnalysis::fromJson(QJsonObject json, bool full_init)
         {
             QJsonObject fileData = fileVal.toObject();
             File* file = regovar->filesManager()->getOrCreateFile(fileData["id"].toInt());
-            file->fromJson(fileData);
+            file->loadJson(fileData);
             mInputsFiles->add(file);
         }
     }
@@ -106,7 +106,7 @@ bool PipelineAnalysis::fromJson(QJsonObject json, bool full_init)
         {
             QJsonObject fileData = fileVal.toObject();
             File* file = regovar->filesManager()->getOrCreateFile(fileData["id"].toInt());
-            file->fromJson(fileData);
+            file->loadJson(fileData);
             mOutputsFiles->add(file);
         }
     }
@@ -158,7 +158,7 @@ bool PipelineAnalysis::fromJson(QJsonObject json, bool full_init)
     {
         if (json.contains("pipeline"))
         {
-            mPipeline->fromJson(json["pipeline"].toObject());
+            mPipeline->loadJson(json["pipeline"].toObject());
         }
         else
         {
@@ -230,12 +230,12 @@ void PipelineAnalysis::load(bool forceRefresh)
     if (!mLoaded || forceRefresh || diff > MIN_SYNC_DELAY)
     {
         mLastInternalLoad = QDateTime::currentDateTime();
-        Request* req = Request::get(QString("/job/%1").arg(mId));
+        Request* req = Request::get(QString("/job/%1/monitoring").arg(mId));
         connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
             if (success)
             {
-                fromJson(json["data"].toObject(), true);
+                loadJson(json["data"].toObject(), true);
             }
             else
             {
@@ -258,7 +258,7 @@ void PipelineAnalysis::pause()
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {
@@ -279,7 +279,7 @@ void PipelineAnalysis::start()
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {
@@ -298,7 +298,7 @@ void PipelineAnalysis::cancel()
     {
         if (success)
         {
-            fromJson(json["data"].toObject());
+            loadJson(json["data"].toObject());
         }
         else
         {
@@ -318,7 +318,7 @@ void PipelineAnalysis::finalyze()
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {
@@ -338,7 +338,7 @@ void PipelineAnalysis::refreshMonitoring()
         if (success)
         {
             // TODO: parsing monitoring informations
-            //fromJson(json["data"].toObject());
+            //loadJson(json["data"].toObject());
         }
         else
         {
@@ -354,6 +354,7 @@ void PipelineAnalysis::processPushNotification(QString action, QJsonObject data)
 {
     if (action == "job_updated")
     {
-        fromJson(data);
+        loadJson(data);
     }
 }
+

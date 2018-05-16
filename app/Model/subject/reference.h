@@ -21,7 +21,7 @@ public:
     inline void setName(QString name) { mName = name; emit dataChanged(); }
 
     // Methods
-    Q_INVOKABLE bool fromJson(QJsonObject json);
+    Q_INVOKABLE bool loadJson(QJsonObject json);
 
 Q_SIGNALS:
     void dataChanged();

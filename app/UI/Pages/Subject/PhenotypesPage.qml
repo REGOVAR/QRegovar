@@ -1,21 +1,25 @@
 import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
+import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
+import "qrc:/qml/Dialogs"
 
 Rectangle
 {
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property QtObject model
+    property Subject model
+    property bool isInit: false
     onModelChanged:
     {
-        if (model != undefined)
+        if (model)
         {
-            nameLabel.text = model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname;
+            phenotypeList.model = model.phenotypes;
+            root.isInit = true;
         }
     }
 
@@ -30,18 +34,16 @@ Rectangle
 
         Text
         {
-            id: nameLabel
             anchors.top: header.top
             anchors.left: header.left
             anchors.bottom: header.bottom
             anchors.right: connectionStatus.left
             anchors.margins: 10
-            font.pixelSize: 22
-            font.family: Regovar.theme.font.family
-            color: Regovar.theme.frontColor.normal
+            font.pixelSize: Regovar.theme.font.size.title
+            font.weight: Font.Black
+            color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
-
-            text: "-"
+            text: model ? model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname : ""
         }
         ConnectionStatus
         {
@@ -65,7 +67,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("This page allow you to list all phenotypes and diseases of the subject.")
     }
@@ -74,7 +75,7 @@ Rectangle
     {
         id: actionsPanel
         anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
-        anchors.topMargin: Regovar.theme.font.boxSize.header + 10
+        anchors.topMargin: Regovar.theme.font.size.header + 10
         anchors.right: root.right
         anchors.margins : 10
         spacing: 10
@@ -85,21 +86,14 @@ Rectangle
             id: addPhenotype
             Layout.fillWidth: true
             text: qsTr("Add")
-            onClicked:  console.log("Open Select Phenotype dialog")
-        }
-        Button
-        {
-            id: editPhenotype
-            Layout.fillWidth: true
-            text: qsTr("Edit")
-            onClicked:  console.log("Open Select Phenotype dialog")
+            onClicked: newPhenotypeEntryDialog.open()
         }
         Button
         {
             id: removePhenotype
             Layout.fillWidth: true
             text: qsTr("Remove")
-            onClicked:  console.log("Remove phenotype entry")
+            onClicked: root.model.phenotypes.removeHpo(phenotypeList.getAt(phenotypeList.currentRow))
         }
         Item
         {
@@ -124,6 +118,7 @@ Rectangle
             width: root.width
             color: Regovar.theme.backgroundColor.main
             Layout.minimumHeight: 200
+            Layout.fillHeight: true
 
             ColumnLayout
             {
@@ -145,39 +140,64 @@ Rectangle
                     id: phenotypeList
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    model: (root.model) ? root.model.phenotypes : []
 
+                    TableViewColumn
+                    {
+                        role: "presence"
+                        title: qsTr("Presence")
+                        width: 100
+                        delegate:  CheckBox
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.left
+                            anchors.leftMargin: 5
+                            text: checked ? qsTr("Present") : qsTr("Absent")
+                            color: checked ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
+                            checked: styleData.value
+                            onClicked: root.model.setHpo(regovar.phenotypesManager.getOrCreate(model.id), checked ? "present" : "absent")
+                        }
+                    }
                     TableViewColumn
                     {
                         role: "label"
-                        title: ""
-                    }
-                    TableViewColumn
-                    {
-                        role: "genes"
-                        title: qsTr("Genes of interest")
-                    }
-//                    TableViewColumn
-//                    {
-//                        role: "comment"
-//                        title: "Comment"
-//                    }
-//                    TableViewColumn
-//                    {
-//                        role: "lastUpdate"
-//                        title: "Date"
-//                    }
-                    TableViewColumn
-                    {
-                        role: "comment"
-                        title: qsTr("Comment")
+                        title: qsTr("Label")
                         width: 400
+
+                        delegate: RowLayout
+                        {
+                            anchors.left: parent.left
+                            anchors.leftMargin: 5
+                            spacing: 10
+
+                            ButtonInline
+                            {
+                                iconTxt: "z"
+                                text: ""
+                                onClicked: regovar.getPhenotypeInfo(model.id)
+                            }
+                            Text
+                            {
+                                Layout.fillWidth: true
+                                font.pixelSize: Regovar.theme.font.size.normal
+                                font.family: Regovar.theme.font.family
+                                horizontalAlignment: Text.AlignLeft
+                                verticalAlignment: Text.AlignVCenter
+                                elide: Text.ElideRight
+                                text: styleData.value + (model.id.startsWith("HP:") ? "" : " (" + model.id + ")")
+                            }
+                        }
                     }
-
-
-                    onCurrentRowChanged:
+                    TableViewColumn
                     {
-                        displayCurrentPhenotypeDetails(root.model.phenotypes[currentRow]);
+                        role: "diseasesFreq"
+                        title: qsTr("Disease Freq")
+                        horizontalAlignment: Text.AlignRight
+                    }
+                    TableViewColumn
+                    {
+                        role: "genesFreq"
+                        title: qsTr("Genes Freq")
+                        horizontalAlignment: Text.AlignRight
                     }
                 }
             }
@@ -226,6 +246,12 @@ Rectangle
 
         } // end bottomPanel
     } // end SplitView
+
+    NewPhenotypeEntryDialog
+    {
+        id: newPhenotypeEntryDialog
+        onAddPhenotype: root.model.setHpo(regovar.phenotypesManager.getOrCreate(phenoId))
+    }
 
 
     function displayCurrentAnalysisPreview(analysis)

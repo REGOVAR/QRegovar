@@ -30,10 +30,11 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Regovar users")
             font.pixelSize: Regovar.theme.font.size.title
             font.weight: Font.Black
             color: Regovar.theme.primaryColor.back.dark
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Regovar users")
         }
         ConnectionStatus
         {
@@ -58,7 +59,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("This page allow you to browse and manage all users of the application.")
     }

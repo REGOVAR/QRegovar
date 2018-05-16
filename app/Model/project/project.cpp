@@ -13,7 +13,7 @@ Project::Project(QObject* parent) : QObject(parent)
 }
 Project::Project(QJsonObject json, QObject* parent) : QObject(parent)
 {
-    fromJson(json);
+    loadJson(json);
 }
 Project::Project(int id, QObject* parent) : QObject(parent)
 {
@@ -24,7 +24,7 @@ Project::Project(int id, QObject* parent) : QObject(parent)
 
 
 
-bool Project::fromJson(QJsonObject json)
+bool Project::loadJson(QJsonObject json)
 {
     mId = json["id"].toInt();
     if(json.keys().contains("fullpath"))
@@ -45,7 +45,7 @@ bool Project::fromJson(QJsonObject json)
         QJsonObject aJson = jsonVal.toObject();
         int id = aJson["id"].toInt();
         FilteringAnalysis* analysis =  regovar->analysesManager()->getOrCreateFilteringAnalysis(id);
-        analysis->fromJson(jsonVal.toObject(), false);
+        analysis->loadJson(jsonVal.toObject(), false);
         mAnalyses.append(analysis);
     }
 
@@ -56,7 +56,7 @@ bool Project::fromJson(QJsonObject json)
         QJsonObject aJson = jsonVal.toObject();
         int id = aJson["id"].toInt();
         Subject* subject =  regovar->subjectsManager()->getOrCreateSubject(id);
-        subject->fromJson(jsonVal.toObject());
+        subject->loadJson(jsonVal.toObject());
         mSubjects.append(subject);
     }
 
@@ -130,7 +130,7 @@ void Project::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {

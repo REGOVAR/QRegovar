@@ -26,7 +26,7 @@ Panel* Panel::buildPanel(QJsonObject json)
 {
     // Create first panel
     Panel* panel = new Panel(true);
-    if (panel->fromJson(json))
+    if (panel->loadJson(json))
     {
         // Create all other versions of the same panel
         for (const QJsonValue& data: json["versions"].toArray())
@@ -53,7 +53,7 @@ Panel* Panel::buildPanel(QJsonObject json)
 QString Panel::addVersion(QJsonObject data, bool append)
 {
     Panel* panel = new Panel(mOrderedVersionsIds, mVersionsMap);
-    bool result = panel->fromJson(data);
+    bool result = panel->loadJson(data);
     if (result)
     {
         mVersionsMap->insert(panel->versionId(), panel);
@@ -69,11 +69,25 @@ QString Panel::addVersion(QJsonObject data, bool append)
     return result ? panel->versionId() : "";
 }
 
+bool Panel::addVersion(QString versionId)
+{
+    Panel* panel = regovar->panelsManager()->getOrCreatePanel(versionId);
+    if (panel != nullptr)
+    {
+        if (!mVersionsMap->contains(versionId))
+        {
+            mVersionsMap->insert(versionId, panel);
+            mOrderedVersionsIds->append(versionId);
+            return true;
+        }
+    }
+    return false;
+}
 
 
 
 // Load only data for the current panelversion.
-bool Panel::fromJson(QJsonObject json)
+bool Panel::loadJson(QJsonObject json)
 {
     // json may be for Panel or Panel's version
     // a Panel contains a list of version
@@ -104,7 +118,7 @@ bool Panel::fromJson(QJsonObject json)
     {
         // Load version information
         mVersionId = json["id"].toString();
-        mVersion = json["version"].toString();
+        mVersion = json["name"].toString();
         mComment = json["comment"].toString();
         mCreateDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
         mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
@@ -115,9 +129,9 @@ bool Panel::fromJson(QJsonObject json)
             // Compute details field
             QJsonObject entryData = entry.toObject();
 
-            if (entryData.contains("id"))
+            if (entryData.contains("symbol"))
             {
-                entryData.insert("details", entryData["id"]);
+                entryData.insert("details", "");
             }
             else
             {
@@ -198,7 +212,7 @@ void Panel::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {
@@ -249,7 +263,7 @@ void Panel::addEntry(QJsonObject data)
     if (append)
     {
         mEntries.append(data);
-        emit dataChanged();
+        emit entriesChanged();
     }
 }
 
@@ -259,11 +273,13 @@ void Panel::reset()
     mName = "";
     mDescription = "";
     mOwner = "";
-    mDescription = "";
     mShared = false;
     mVersion = "";
     mEntries.clear();
+    mOrderedVersionsIds->clear();
+    mVersionsMap->clear();
     emit dataChanged();
+    emit entriesChanged();
 }
 
 

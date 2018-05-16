@@ -9,7 +9,7 @@ Attribute::Attribute(QString name) : QObject(nullptr)
 }
 Attribute::Attribute(QJsonObject json) : QObject(nullptr)
 {
-    fromJson(json);
+    loadJson(json);
 }
 
 
@@ -28,7 +28,7 @@ QJsonObject Attribute::toJson()
 
 
 
-void Attribute::fromJson(QJsonObject json)
+bool Attribute::loadJson(QJsonObject json)
 {
     mName = json["name"].toString();
     QJsonObject values = json["samples_values"].toObject();
@@ -43,5 +43,6 @@ void Attribute::fromJson(QJsonObject json)
         mMapping[value] = wtid;
 
     }
+    return true;
 }
 

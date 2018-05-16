@@ -7,6 +7,25 @@
         <file>LoginPage.qml</file>
         <file>Icons.ttf</file>
         <file>Charts/CircularGauge.qml</file>
+        <file>Dialogs/AdminConfirmWtClear.qml</file>
+        <file>Dialogs/DeleteAttributeDialog.qml</file>
+        <file>Dialogs/DialogHeader.qml</file>
+        <file>Dialogs/ErrorDialog.qml</file>
+        <file>Dialogs/FilterNewConditionDialog.qml</file>
+        <file>Dialogs/FilterSaveDialog.qml</file>
+        <file>Dialogs/NewAnalysisDialog.qml</file>
+        <file>Dialogs/NewAttributeDialog.qml</file>
+        <file>Dialogs/NewEventDialog.qml</file>
+        <file>Dialogs/NewPanelDialog.qml</file>
+        <file>Dialogs/NewPanelEntryDialog.qml</file>
+        <file>Dialogs/NewPanelVersionDialog.qml</file>
+        <file>Dialogs/NewPhenotypeEntryDialog.qml</file>
+        <file>Dialogs/NewProjectDialog.qml</file>
+        <file>Dialogs/NewSubjectDialog.qml</file>
+        <file>Dialogs/QuestionDialog.qml</file>
+        <file>Dialogs/SelectFilesDialog.qml</file>
+        <file>Dialogs/SelectSamplesDialog.qml</file>
+        <file>Dialogs/SelectSubjectDialog.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/GenericScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/AnalysisTypeButtom.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/AnalysisTypeScreen.qml</file>
@@ -20,24 +39,6 @@
         <file>Dialogs/NewAnalysisWizardScreens/PipelineLaunch.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/PipelineSettingsScreen.qml</file>
         <file>Dialogs/NewAnalysisWizardScreens/PipelinesScreen.qml</file>
-        <file>Dialogs/ErrorDialog.qml</file>
-        <file>Dialogs/FilterNewConditionDialog.qml</file>
-        <file>Dialogs/FilterSaveDialog.qml</file>
-        <file>Dialogs/NewAnalysisDialog.qml</file>
-        <file>Dialogs/NewAttributeDialog.qml</file>
-        <file>Dialogs/NewPanelDialog.qml</file>
-        <file>Dialogs/NewPanelEntryDialog.qml</file>
-        <file>Dialogs/NewProjectDialog.qml</file>
-        <file>Dialogs/NewSubjectDialog.qml</file>
-        <file>Dialogs/SelectFilesDialog.qml</file>
-        <file>Dialogs/SelectSamplesDialog.qml</file>
-        <file>Dialogs/QuestionDialog.qml</file>
-        <file>Dialogs/DialogHeader.qml</file>
-        <file>Dialogs/DeleteAttributeDialog.qml</file>
-        <file>Dialogs/AdminConfirmWtClear.qml</file>
-        <file>Dialogs/SelectSubjectDialog.qml</file>
-        <file>Dialogs/NewPanelVersionDialog.qml</file>
-        <file>Dialogs/NewEventDialog.qml</file>
         <file>Framework/AutoCompleteTextField.qml</file>
         <file>Framework/Box.qml</file>
         <file>Framework/BusyIndicator.qml</file>
@@ -98,9 +99,7 @@
         <file>InformationPanel/Panel/PanelFormNewCustom.qml</file>
         <file>InformationPanel/Panel/PanelSearchEntry.qml</file>
         <file>InformationPanel/Phenotype/InfoPanel.qml</file>
-        <file>InformationPanel/Phenotype/OnlineToolsPanel.qml</file>
         <file>InformationPanel/Phenotype/PhenotypeInformation.qml</file>
-        <file>InformationPanel/Phenotype/StatsPanel.qml</file>
         <file>InformationPanel/Pipeline/InfoPanel.qml</file>
         <file>InformationPanel/Pipeline/PipelineInformation.qml</file>
         <file>InformationPanel/Pipeline/StatsPanel.qml</file>
@@ -124,7 +123,8 @@
         <file>MainMenu/MenuEntryL1.qml</file>
         <file>MainMenu/MenuEntryL2.qml</file>
         <file>MainMenu/MenuEntryL3.qml</file>
-        <file>Pages/Admin/AnnotationsPage.qml</file>
+        <file>Pages/Admin/DatabaseAnnotationPage.qml</file>
+        <file>Pages/Admin/DatabaseCustomPage.qml</file>
         <file>Pages/Admin/LogsPage.qml</file>
         <file>Pages/Admin/PipesPage.qml</file>
         <file>Pages/Admin/ServerPage.qml</file>
@@ -168,22 +168,23 @@
         <file>Pages/Analysis/Pipeline/ResultPage.qml</file>
         <file>Pages/Analysis/Pipeline/LogPage.qml</file>
         <file>Pages/Analysis/Pipeline/SummaryPage.qml</file>
-        <file>Pages/Browse/ProjectsPage.qml</file>
-        <file>Pages/Browse/SearchPage.qml</file>
-        <file>Pages/Browse/SearchResultEvent.qml</file>
-        <file>Pages/Browse/SearchResultAnalysis.qml</file>
-        <file>Pages/Browse/SearchResultFile.qml</file>
-        <file>Pages/Browse/SearchResultGene.qml</file>
-        <file>Pages/Browse/SearchResultPanel.qml</file>
-        <file>Pages/Browse/SearchResultPhenotype.qml</file>
-        <file>Pages/Browse/SearchResultPipeline.qml</file>
-        <file>Pages/Browse/SearchResultProject.qml</file>
-        <file>Pages/Browse/SearchResultSample.qml</file>
-        <file>Pages/Browse/SearchResultSubject.qml</file>
-        <file>Pages/Browse/SearchResultUser.qml</file>
-        <file>Pages/Browse/SearchResultVariant.qml</file>
-        <file>Pages/Browse/SearchResultsList.qml</file>
-        <file>Pages/Browse/SubjectsPage.qml</file>
+        <file>Pages/Browser/DatabasePage.qml</file>
+        <file>Pages/Browser/ProjectsPage.qml</file>
+        <file>Pages/Browser/SearchPage.qml</file>
+        <file>Pages/Browser/SearchResultsList.qml</file>
+        <file>Pages/Browser/SubjectsPage.qml</file>
+        <file>Pages/Browser/Items/BrowserItemEvent.qml</file>
+        <file>Pages/Browser/Items/BrowserItemAnalysis.qml</file>
+        <file>Pages/Browser/Items/BrowserItemFile.qml</file>
+        <file>Pages/Browser/Items/BrowserItemGene.qml</file>
+        <file>Pages/Browser/Items/BrowserItemPanel.qml</file>
+        <file>Pages/Browser/Items/BrowserItemPhenotype.qml</file>
+        <file>Pages/Browser/Items/BrowserItemPipeline.qml</file>
+        <file>Pages/Browser/Items/BrowserItemProject.qml</file>
+        <file>Pages/Browser/Items/BrowserItemSample.qml</file>
+        <file>Pages/Browser/Items/BrowserItemSubject.qml</file>
+        <file>Pages/Browser/Items/BrowserItemUser.qml</file>
+        <file>Pages/Browser/Items/BrowserItemVariant.qml</file>
         <file>Pages/Help/AboutCredits.qml</file>
         <file>Pages/Help/AboutInformation.qml</file>
         <file>Pages/Help/AboutLicense.qml</file>
@@ -196,14 +197,12 @@
         <file>Pages/Project/SubjectsPage.qml</file>
         <file>Pages/Project/SummaryPage.qml</file>
         <file>Pages/Subject/AnalysesPage.qml</file>
-        <file>Pages/Subject/CharacteristicsPage.qml</file>
         <file>Pages/Subject/FilesPage.qml</file>
         <file>Pages/Subject/PhenotypesPage.qml</file>
         <file>Pages/Subject/SamplesPage.qml</file>
         <file>Pages/Subject/SummaryPage.qml</file>
         <file>Pages/WelcomPage.qml</file>
         <file>Pages/Settings/ProfilePage.qml</file>
-        <file>Pages/Settings/StatisticsPage.qml</file>
         <file>Pages/Settings/ApplicationRegovarPage.qml</file>
         <file>Pages/Settings/ApplicationInterfacePage.qml</file>
         <file>Pages/Settings/ApplicationConnectionPage.qml</file>
@@ -218,6 +217,20 @@
         <file>Wizards/Sample/SampleImportView.qml</file>
         <file>Framework/Logo.qml</file>
         <file>Framework/SplitView.qml</file>
-        <file>Dialogs/NewPhenotypeEntryDialog.qml</file>
+        <file>InformationPanel/Phenotype/PhenotypeSearchEntry.qml</file>
+        <file>InformationPanel/Phenotype/DiseasesPanel.qml</file>
+        <file>InformationPanel/Phenotype/GenesPanel.qml</file>
+        <file>InformationPanel/Phenotype/SubjectsPanel.qml</file>
+        <file>InformationPanel/Phenotype/DiseaseInformation.qml</file>
+        <file>InformationPanel/Phenotype/PhenotypesPanel.qml</file>
+        <file>Windows/FileInfoWindow.qml</file>
+        <file>Windows/GeneInfoWindow.qml</file>
+        <file>Windows/PanelInfoWindow.qml</file>
+        <file>Windows/PhenotypeInfoWindow.qml</file>
+        <file>Windows/DiseaseInfoWindow.qml</file>
+        <file>Windows/PipelineInfoWindow.qml</file>
+        <file>Windows/SampleInfoWindow.qml</file>
+        <file>Windows/UserInfoWindow.qml</file>
+        <file>Windows/VariantInfoWindow.qml</file>
     </qresource>
 </RCC>

@@ -55,10 +55,11 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Regovar server status")
             font.pixelSize: Regovar.theme.font.size.title
             font.weight: Font.Black
             color: Regovar.theme.primaryColor.back.dark
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Regovar server status")
         }
         ConnectionStatus
         {
@@ -83,7 +84,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("Check database size. Allow you to clean \"working\" tables if you need to save disk space on the server.")
     }
@@ -894,7 +894,7 @@ Rectangle
                             verticalAlignment: Text.AlignVCenter
                             font.pixelSize: Regovar.theme.font.size.normal
                             elide: Text.ElideRight
-                            font.family: "monospace"
+                            font.family: fixedFont
                             horizontalAlignment: Text.AlignRight
                             text: styleData.value ? regovar.formatNumber(styleData.value) : "-"
                         }
@@ -915,7 +915,7 @@ Rectangle
                             verticalAlignment: Text.AlignVCenter
                             font.pixelSize: Regovar.theme.font.size.normal
                             elide: Text.ElideRight
-                            font.family: "monospace"
+                            font.family: fixedFont
                             horizontalAlignment: Text.AlignRight
                             text: styleData.value ? regovar.formatFileSize(styleData.value) : "-"
                         }
@@ -936,7 +936,7 @@ Rectangle
                             verticalAlignment: Text.AlignVCenter
                             font.pixelSize: Regovar.theme.font.size.normal
                             elide: Text.ElideRight
-                            font.family: "monospace"
+                            font.family: fixedFont
                             horizontalAlignment: Text.AlignRight
                             text: styleData.value ? regovar.formatFileSize(styleData.value) : "-"
                         }

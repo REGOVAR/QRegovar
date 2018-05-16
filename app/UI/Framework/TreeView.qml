@@ -45,7 +45,7 @@ TreeView
         headerDelegate:  Item
         {
             id: headerRoot
-            height: Regovar.theme.font.boxSize.normal
+            height: Regovar.theme.font.boxSize.header
             Component.onCompleted: formerPosition = position
 
             // Manage user changing position of header
@@ -73,18 +73,12 @@ TreeView
 //                }
 //            }
 
-            LinearGradient
+            Rectangle
             {
-                anchors.fill: headerRoot
-                anchors.margins: 1
-                start: Qt.point(0, 0)
-                end: Qt.point(0, 24)
-                gradient: Gradient
-                {
-                    GradientStop { position: 0.0; color: Regovar.theme.boxColor.header1  }
-                    GradientStop { position: 1.0; color: Regovar.theme.boxColor.header2  }
-                }
+                anchors.fill: parent
+                color: Regovar.theme.boxColor.back // Regovar.theme.darker(Regovar.theme.boxColor.back, 1.1) // Regovar.theme.backgroundColor.alt
             }
+
             // Right border
             Rectangle
             {
@@ -92,6 +86,8 @@ TreeView
                 anchors.top: headerRoot.top
                 anchors.right: headerRoot.right
                 anchors.bottom: headerRoot.bottom
+                anchors.topMargin: 5
+                anchors.bottomMargin: 5
                 color: Regovar.theme.boxColor.border
             }
             // Top border
@@ -112,6 +108,7 @@ TreeView
                 anchors.bottom: headerRoot.bottom
                 color: Regovar.theme.boxColor.border
             }
+
             RowLayout
             {
                 anchors.fill: headerRoot
@@ -124,11 +121,12 @@ TreeView
                     Layout.fillWidth: true
                     font.pixelSize: Regovar.theme.font.size.normal
                     font.family: Regovar.theme.font.family
-                    color: Regovar.theme.frontColor.normal
+                    color: Regovar.theme.primaryColor.back.normal
                     horizontalAlignment: styleData.textAlignment
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
                     text: styleData.value
+                    font.bold: true
                 }
 
                 // Sorting indicator

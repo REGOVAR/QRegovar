@@ -72,7 +72,7 @@ Item
             Layout.fillHeight: true
             Layout.fillWidth: true
             readOnly: true
-            font.family: "monospace"
+            font.family: fixedFont
             font.pixelSize: Regovar.theme.font.size.normal
             colorText: "lightgrey"
             colorBack: "black"

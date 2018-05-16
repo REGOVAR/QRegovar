@@ -31,6 +31,4 @@ Row
     {
         text: ("symbol" in root.model) ? root.model["symbol"] : root.model["label"]
     }
-
-
 }

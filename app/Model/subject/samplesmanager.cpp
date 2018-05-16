@@ -74,7 +74,7 @@ bool SamplesManager::loadJson(QJsonArray json)
     {
         QJsonObject sampleData = sampleJson.toObject();
         Sample* sample = getOrCreateSample(sampleData["id"].toInt(), true);
-        sample->fromJson(sampleData);
+        sample->loadJson(sampleData);
         if (!mSamplesList.contains(sample)) mSamplesList.append(sample);
     }
     endResetModel();

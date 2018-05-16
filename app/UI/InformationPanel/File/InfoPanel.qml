@@ -24,9 +24,10 @@ Rectangle
         }
     }
 
-    function setFileModel(file)
+    function setFileModel(data)
     {
-        if (file)
+        var t = typeof(data);
+        if (data)
         {
             // Disconnect from former model
             if (fileModel)
@@ -34,7 +35,7 @@ Rectangle
                 fileModel.dataChanged.disconnect(updateViewFromModel);
             }
             // connect to new model and display information
-            fileModel = file;
+            fileModel = data;
             fileModel.dataChanged.connect(updateViewFromModel);
             updateViewFromModel();
         }
@@ -192,14 +193,36 @@ Rectangle
             }
         }
 
-        RowLayout
+        Rectangle
         {
             Layout.fillWidth: true
-            spacing: 10
+            Layout.fillHeight: true
+            color: Regovar.theme.boxColor.back
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            radius: 2
+
+            property real colWidth: (width - 20) / 2
+
+            Rectangle
+            {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.margins: 5
+                width: 1
+                color: Regovar.theme.boxColor.border
+            }
+
 
             // remote file infos
             GridLayout
             {
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.margins: 5
+                width: parent.colWidth
                 rows: 6
                 columns: 2
                 rowSpacing: 10
@@ -213,7 +236,7 @@ Rectangle
                     {
                         width: Regovar.theme.font.boxSize.header
                         height: Regovar.theme.font.boxSize.header
-                        text: "è"
+                        text: "ó"
 
                         font.family: Regovar.theme.icons.name
                         color: Regovar.theme.primaryColor.back.dark
@@ -324,16 +347,14 @@ Rectangle
                 }
             }
 
-            Rectangle
-            {
-                Layout.fillHeight: true
-                width: 1
-                color: Regovar.theme.primaryColor.back.normal
-            }
-
             // local file infos
             GridLayout
             {
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+                anchors.margins: 5
+                width: parent.colWidth
                 rows: 6
                 columns: 2
                 rowSpacing: 10
@@ -457,9 +478,7 @@ Rectangle
 
                 }
             }
-
         }
-
     }
 
 

@@ -52,7 +52,7 @@ QHash<int, QByteArray> DocumentsTreeModel::roleNames() const
 DocumentsTreeItem* DocumentsTreeModel::newFileTreeViewItem(QJsonObject data, TreeItem* parent)
 {
     File* file = regovar->filesManager()->getOrCreateFile(data["id"].toInt());
-    file->fromJson(data);
+    file->loadJson(data);
 
     // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
     QHash<int, QVariant> columnData;

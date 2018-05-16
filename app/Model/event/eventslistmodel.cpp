@@ -49,7 +49,7 @@ bool EventsListModel::loadJson(QJsonArray json, bool technical)
     {
         QJsonObject eventData = eventJson.toObject();
         Event* event = regovar->eventsManager()->getOrCreateEvent(eventData["id"].toInt());
-        event->fromJson(eventData);
+        event->loadJson(eventData);
         if (!mEventList.contains(event))
         {
             if (event->type() == "technical" && !technical) continue;
@@ -63,9 +63,9 @@ bool EventsListModel::loadJson(QJsonArray json, bool technical)
 
 
 
-bool EventsListModel::add(Event* event)
+bool EventsListModel::append(Event* event)
 {
-    if (!mEventList.contains(event))
+    if (event!= nullptr && !mEventList.contains(event))
     {
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         mEventList.append(event);

@@ -32,9 +32,11 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Panels settings")
-            font.pixelSize: 20
+            font.pixelSize: Regovar.theme.font.size.title
             font.weight: Font.Black
+            color: Regovar.theme.primaryColor.back.dark
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Panels settings")
         }
         ConnectionStatus
         {
@@ -57,7 +59,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("Browse, create and edit genes panels.")
     }
@@ -140,7 +141,7 @@ Rectangle
     function openSelectedPanel()
     {
         var itemId = regovar.panelsManager.panelsTree.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
-        if (itemId !== undefined && itemId != "")
+        if (itemId !== undefined && itemId !== "")
         {
             regovar.getPanelInfo(itemId);
         }
@@ -150,7 +151,7 @@ Rectangle
     function updateSelectedPanel()
     {
         var itemId = regovar.panelsManager.panelsTree.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
-        if (itemId !== undefined && itemId != "")
+        if (itemId !== undefined && itemId !== "")
         {
             newPanelVersionDialog.reset(regovar.panelsManager.getOrCreatePanel(itemId));
             newPanelVersionDialog.open();

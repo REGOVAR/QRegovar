@@ -7,15 +7,31 @@ Rectangle
     id: root
 
     property string icon: "k"
+    property bool iconAnimation: false
     property string text: "A text box"
     property string mainColor: Regovar.theme.frontColor.info
 
     color: Regovar.theme.lighter(root.mainColor)
     border.width: 1
     border.color: root.mainColor
-    height: message.height + 10
+    Component.onCompleted: setAnimation()
 
-    FontLoader { id: iconsFont; source: "../Icons.ttf" }
+    onIconAnimationChanged:setAnimation()
+
+    function setAnimation()
+    {
+        if (iconAnimation)
+        {
+            logo.rotation = 0;
+            logoAnimation.start();
+        }
+        else
+        {
+            logoAnimation.stop();
+            logo.rotation = 0;
+        }
+    }
+
 
     Text
     {
@@ -24,17 +40,24 @@ Rectangle
         height: Regovar.theme.font.boxSize.normal
         anchors.left: root.left
         anchors.top: root.top
-
-
         text: root.icon
-        font.family: iconsFont.name
+        font.family: Regovar.theme.icons.name
         font.pixelSize: Regovar.theme.font.size.normal
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         color: mainColor
+        NumberAnimation on rotation
+        {
+            id: logoAnimation
+            duration: 1500
+            loops: Animation.Infinite
+            from: 0
+            to: 360
+
+        }
     }
 
-    Text
+    TextEdit
     {
         id: message
         anchors.left: logo.right
@@ -42,12 +65,14 @@ Rectangle
         anchors.top: root.top
         anchors.margins: 5
         anchors.leftMargin: 0
-        onHeightChanged: root.height = height + 10
+        onContentHeightChanged: root.height = contentHeight + 10
+        readOnly: true
 
         text: root.text
         font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.darker(root.mainColor)
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.WordWrap
+        selectByMouse: true
     }
 }

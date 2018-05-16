@@ -9,11 +9,11 @@ ApplicationWindow
 {
     id: root
     visible: true
-    minimumWidth: 900
-    minimumHeight: 300
+    minimumWidth: 1500
+    minimumHeight: 720
 
     // The id of this window that allow "Regovar model" to retrieve corresponding "Analysis model" among open models/windows
-    property int winId
+    property string winId
     // Internal map to store qml page associated with their menuModel Uid
     property var pages
     // The uid of the page currently displayed
@@ -58,7 +58,7 @@ ApplicationWindow
 
         Keys.onPressed:
         {
-            if (event.key == Qt.Key_F5) regovar.loadWelcomData();
+            if (event.key === Qt.Key_F5) regovar.loadWelcomData();
         }
     }
 
@@ -111,10 +111,10 @@ ApplicationWindow
             var uid = menuEntry.uid;
             if (!(uid in root.pages))
             {
-                if (menuEntry.qmlPage !== "")
+                if (menuEntry.qmlPage !== "" && menuEntry.qmlPage[0] !== "@")
                 {
                     var comp = Qt.createComponent("Pages/" + menuEntry.qmlPage);
-                    if (comp.status == Component.Ready)
+                    if (comp.status === Component.Ready)
                     {
                         var elmt = comp.createObject(stack, {"visible": false});
                         root.pages[uid] = elmt;
@@ -136,10 +136,14 @@ ApplicationWindow
 
                         console.log ("load " + uid + ": Pages/" + menuEntry.qmlPage)
                     }
-                    else if (comp.status == Component.Error)
+                    else if (comp.status === Component.Error)
                     {
                         console.log("Error loading component: ", comp.errorString());
                     }
+                }
+                else if (menuEntry.qmlPage === "@disconnect")
+                {
+                    root.pages[uid] = "@disconnect";
                 }
                 else
                 {
@@ -169,6 +173,12 @@ ApplicationWindow
         if (menuEntry && menuEntry.uid)
         {
             currentUid = menuEntry.uid;
+            if (pages[currentUid] === "@disconnect")
+            {
+                regovar.usersManager.logout();
+
+            }
+
             pages[currentUid].visible = true;
             pages[currentUid].anchors.fill = stack;
         }

@@ -19,61 +19,6 @@
 #include "Model/event/event.h"
 
 
-
-RegovarInfo::RegovarInfo(QObject* parent) : QObject(parent)
-{
-
-}
-
-
-void RegovarInfo::fromJson(QJsonObject json)
-{
-    mServerVersion = json["version"].toString();
-    mWebsite = json["website"].toString();
-
-    if (VERSION_BUILD == 0)
-    {
-        mClientVersion= QString("%1.%2.dev").arg(VERSION_MAJOR).arg(VERSION_MINOR);
-    }
-    else
-    {
-        mClientVersion= QString("%1.%2.%3").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_BUILD);
-    }
-
-    // get license text
-    QFile mFile(":/license.html");
-    if(mFile.open(QFile::ReadOnly | QFile::Text))
-    {
-        QTextStream in(&mFile);
-        mLicense = in.readAll();
-        mFile.close();
-    }
-    else
-    {
-        mLicense = tr("Unable to open license file");
-    }
-
-
-
-    emit configChanged();
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Regovar* Regovar::mInstance = Q_NULLPTR;
 Regovar* Regovar::i()
 {
@@ -129,11 +74,14 @@ void Regovar::init()
     mSamplesManager = new SamplesManager(mSettings->defaultReference());
     mAnalysesManager = new AnalysesManager(this);
     mPanelsManager = new PanelsManager(this);
+    mPhenotypesManager = new PhenotypesManager(this);
     mEventsManager = new EventsManager(this);
     mToolsManager = new ToolsManager(this);
     mPipelinesManager = new PipelinesManager(this);
 
     // Load misc data
+    mLastAnalyses = new AnalysesListModel(this);
+    mLastSubjects = new SubjectsListModel(this);
     loadConfigData();
     loadWelcomData();
 }
@@ -154,7 +102,7 @@ void Regovar::loadConfigData()
             QJsonObject data = json["data"].toObject();
 
             // Get server config and release information
-            mConfig->fromJson(data);
+            mConfig->loadJson(data);
             QJsonObject milestones;
             for (const QJsonValue& val: data["client_milestones"].toArray())
             {
@@ -210,7 +158,7 @@ void Regovar::loadWelcomData()
                 if (ref == nullptr)
                 {
                     ref = new Reference(this);
-                    ref->fromJson(jsonVal.toObject());
+                    ref->loadJson(jsonVal.toObject());
                     if (ref->id() > 0) mReferences.append(ref);
                 }
             }
@@ -227,7 +175,7 @@ void Regovar::loadWelcomData()
             // Get samples
             mSamplesManager->loadJson(data["samples"].toArray());
 
-            // Get subjects (Must be loaded after samples)
+            // Get subjects (Must be loaded after samples and before last_subjects)
             mSubjectsManager->loadJson(data["subjects"].toArray());
 
             // Get analyses
@@ -240,9 +188,10 @@ void Regovar::loadWelcomData()
             mProjectsManager->loadJson(data["projects"].toArray());
 
             // Last analyses
-            mLastAnalyses.clear();
+            mLastAnalyses->clear();
             for (const QJsonValue& val: data["last_analyses"].toArray())
             {
+
                 QJsonObject ajson = val.toObject();
                 Analysis* a = nullptr;
                 if (ajson["type"] == "analysis")
@@ -255,25 +204,21 @@ void Regovar::loadWelcomData()
                 }
                 if (a != nullptr)
                 {
-                    mLastAnalyses.append(a);
+                    mLastAnalyses->append(a);
                 }
             }
             // Last subjects
-            mLastSubjects.clear();
+            mLastSubjects->clear();
             for (const QJsonValue& val: data["last_subjects"].toArray())
             {
                 Subject* sbj = mSubjectsManager->getOrCreateSubject(val.toInt());
-                mLastSubjects.append(sbj);
+                mLastSubjects->append(sbj);
             }
             // Last events
             mEventsManager->loadJson(data["last_events"].toArray());
 
             emit lastDataChanged();
             emit referencesChanged();
-
-            // Timer to refresh "last data" every 30s
-            // QTimer::singleShot(30000, regovar, SLOT(refreshLastData()));
-
         }
         else
         {
@@ -288,9 +233,37 @@ void Regovar::loadWelcomData()
 
 bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
 {
+    // Build unique windows id according to the model
+    QString wid = "unique_wid";
+    if (model != nullptr)
+    {
+        wid = model->metaObject()->className();
+    }
+
+    if (wid == "FilteringAnalysis" || wid == "PipelineAnalysis")
+    {
+        wid += "_" + QString::number(qobject_cast<Analysis*>(model)->id());
+    }
+    else if (wid == "Disease" || wid == "Phenotype")
+    {
+        wid += "_" + qobject_cast<HpoData*>(model)->id();
+    }
+    return openNewWindow(qmlUrl, model, wid);
+}
+
+bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model, QString wid)
+{
+
+    qDebug() << "OPEN WINDOW ID:" << wid;
+
     // Store model of the new windows in a collection readable from qml
-    int lastId = mOpenWindowModels.count();
-    mOpenWindowModels.append(model);
+    if (mOpenWindowModels.contains(wid))
+    {
+        // TODO: window already open, set focus on it
+    }
+
+    // Create new window
+    mOpenWindowModels.insert(wid, model);
 
     // Create new QML window
     QQmlComponent *c = new QQmlComponent(mQmlEngine, qmlUrl, QQmlComponent::PreferSynchronous);
@@ -301,7 +274,7 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
         QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
 
         // Call init qml method to retrieve its model
-        QMetaObject::invokeMethod(i, "initFromCpp", Q_ARG(QVariant, lastId));
+        QMetaObject::invokeMethod(i, "initFromCpp", Q_ARG(QVariant, wid));
 
         // Setup qml window's parent
         QObject* root = mQmlEngine->rootObjects()[0];
@@ -324,6 +297,15 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
     return true;
 }
 
+bool Regovar::closeWindow(QString wid)
+{
+    if (mOpenWindowModels.contains(wid))
+    {
+        mOpenWindowModels.remove(wid);
+        return true;
+    }
+    return false;
+}
 
 
 Reference* Regovar::referenceFromId(int id)
@@ -370,8 +352,8 @@ Reference* Regovar::referenceFromId(int id)
 
 void Regovar::getFileInfo(int fileId)
 {
-    emit fileInformationSearching();
     File* file = mFilesManager->getOrCreateFile(fileId);
+    openNewWindow(QUrl("qrc:/qml/Windows/FileInfoWindow.qml"), file);
     file->load(false);
     emit fileInformationReady(file);
 }
@@ -379,8 +361,8 @@ void Regovar::getFileInfo(int fileId)
 
 void Regovar::getPanelInfo(QString panelId)
 {
-    emit panelInformationSearching();
     Panel* panel = mPanelsManager->getOrCreatePanel(panelId);
+    openNewWindow(QUrl("qrc:/qml/Windows/PanelInfoWindow.qml"), panel);
     panel->load(false);
     emit panelInformationReady(panel);
 }
@@ -388,8 +370,8 @@ void Regovar::getPanelInfo(QString panelId)
 
 void Regovar::getSampleInfo(int sampleId)
 {
-    emit sampleInformationSearching();
     Sample* sample = mSamplesManager->getOrCreateSample(sampleId);
+    openNewWindow(QUrl("qrc:/qml/Windows/SampleInfoWindow.qml"), sample);
     sample->load(false);
     emit sampleInformationReady(sample);
 }
@@ -397,8 +379,8 @@ void Regovar::getSampleInfo(int sampleId)
 
 void Regovar::getUserInfo(int userId)
 {
-    emit userInformationSearching();
     User* user= mUsersManager->getOrCreateUser(userId);
+    openNewWindow(QUrl("qrc:/qml/Windows/UserInfoWindow.qml"), user);
     user->load(false);
     emit userInformationReady(user);
 }
@@ -406,30 +388,16 @@ void Regovar::getUserInfo(int userId)
 
 void Regovar::getPipelineInfo(int pipelineId)
 {
-    emit pipelineInformationSearching();
-    QString sPipelineId = QString::number(pipelineId);
-    QString url = QString("/pipeline/%1").arg(sPipelineId);
-
-    Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            emit pipelineInformationReady(json["data"].toObject());
-        }
-        else
-        {
-            emit pipelineInformationReady(QJsonValue::Null);
-            regovar->manageServerError(json, Q_FUNC_INFO);
-        }
-        req->deleteLater();
-    });
+    Pipeline* pipeline = pipelinesManager()->getOrCreatePipe(pipelineId);
+    openNewWindow(QUrl("qrc:/qml/Windows/PipelineInfoWindow.qml"), pipeline);
+    pipeline->load(false);
+    emit pipelineInformationReady(pipeline);
 }
 
 
 void Regovar::getGeneInfo(QString geneName, int analysisId)
 {
-    emit geneInformationSearching();
+    openNewWindow(QUrl("qrc:/qml/Windows/GeneInfoWindow.qml"), nullptr, geneName);
     QString sAnalysisId = QString::number(analysisId);
     QString url;
     if (analysisId == -1)
@@ -456,29 +424,24 @@ void Regovar::getGeneInfo(QString geneName, int analysisId)
 
 void Regovar::getPhenotypeInfo(QString phenotypeId)
 {
-    emit phenotypeInformationSearching();
-    QString url = QString("/search/phenotype/%1").arg(phenotypeId);
-
-    Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    HpoData* hpo = phenotypesManager()->getOrCreate(phenotypeId);
+    hpo->load(false);
+    if (phenotypeId.startsWith("HP:"))
     {
-        if (success)
-        {
-            emit phenotypeInformationReady(json["data"].toObject());
-        }
-        else
-        {
-            emit phenotypeInformationReady(QJsonValue::Null);
-            regovar->manageServerError(json, Q_FUNC_INFO);
-        }
-        req->deleteLater();
-    });
+        openNewWindow(QUrl("qrc:/qml/Windows/PhenotypeInfoWindow.qml"), hpo);
+        emit phenotypeInformationReady((Phenotype*)hpo);
+    }
+    else
+    {
+        openNewWindow(QUrl("qrc:/qml/Windows/DiseaseInfoWindow.qml"), hpo);
+        emit diseaseInformationReady((Disease*)hpo);
+    }
 }
 
 
 void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
 {
-    emit variantInformationSearching();
+    openNewWindow(QUrl("qrc:/qml/Windows/VariantInfoWindow.qml"), nullptr, QString("variant_%1").arg(variantId));
     QString sRefId = QString::number(refId);
     QString sAnalysisId = QString::number(analysisId);
 
@@ -694,4 +657,68 @@ QString Regovar::formatFileSize(qint64 size, qint64 uploadOffset)
 
 
     return QString("%1%2 %3").arg(uploadString, sizeString, suffixes[i]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ===============================================================================
+// ===============================================================================
+// ===============================================================================
+
+
+
+
+RegovarInfo::RegovarInfo(QObject* parent) : QObject(parent)
+{
+
+}
+
+
+bool RegovarInfo::loadJson(QJsonObject json)
+{
+    mServerVersion = json["version"].toString();
+    mWebsite = json["website"].toString();
+    QJsonObject msg = json["message"].toObject();
+    mWelcomMessage = msg["message"].toString();
+    mWelcomMessageType = msg["type"].toString();
+
+    if (VERSION_BUILD == 0)
+    {
+        mClientVersion= QString("%1.%2.dev").arg(VERSION_MAJOR).arg(VERSION_MINOR);
+    }
+    else
+    {
+        mClientVersion= QString("%1.%2.%3").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_BUILD);
+    }
+
+    // get license text
+    QFile mFile(":/license.html");
+    if(mFile.open(QFile::ReadOnly | QFile::Text))
+    {
+        QTextStream in(&mFile);
+        mLicense = in.readAll();
+        mFile.close();
+    }
+    else
+    {
+        mLicense = tr("Unable to open license file");
+    }
+
+
+
+    emit configChanged();
+    return true;
 }

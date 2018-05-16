@@ -46,7 +46,7 @@ ScrollView
     {
         if (data)
         {
-            var headVersion = data.getVersion(data.versionsIds[0]);
+            var headVersion = data.getVersion(data.versionsIds[data.versionsIds.length-1]);
 
             var text = "<table>";
             text += "<tr><td><b>Name: </b></td><td>" + data.name + "</td></tr>";
@@ -61,7 +61,7 @@ ScrollView
         }
         else
         {
-             infoText.text = "";
+             infoText.text = qsTr("No data available");
         }
     }
 }

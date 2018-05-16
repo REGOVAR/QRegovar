@@ -56,7 +56,7 @@ public:
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE bool fromJson(QJsonObject json);
+    Q_INVOKABLE bool loadJson(QJsonObject json);
     //! Check that value is valid. If not
     Q_INVOKABLE bool validate();
     //! Refresh dynamic form information withou reseting value (need for special flag that may change enum values available)

@@ -16,7 +16,7 @@ Pipeline::Pipeline(int id, QObject* parent) : Pipeline(parent)
 
 Pipeline::Pipeline(QJsonObject json) : Pipeline(nullptr)
 {
-    fromJson(json);
+    loadJson(json);
 }
 
 
@@ -28,7 +28,7 @@ void Pipeline::updateSearchField()
 
 
 
-bool Pipeline::fromJson(QJsonObject json)
+bool Pipeline::loadJson(QJsonObject json)
 {
     mId = json["id"].toInt();
     mType = json["type"].toString();
@@ -36,21 +36,21 @@ bool Pipeline::fromJson(QJsonObject json)
     mDescription = json["description"].toString();
     mStatus = json["status"].toString();
     mVersion = json["version"].toString();
-    mVersionApi = json["version_api"].toString();
     mStarred = json["starred"].toBool();
     mInstallationDate = QDateTime::fromString(json["installation_date"].toString(), Qt::ISODate);
     mManifestJson = json["manifest"].toObject();
 
     QJsonObject docs = json["documents"].toObject();
+
+
     for (const QString k: docs.keys())
     {
-        if (k == "form") mForm = QUrl(docs[k].toString());
-        else if (k == "icon") mIcon = QUrl(docs[k].toString());
-        else if (k == "license") mLicense = QUrl(docs[k].toString());
-        else if (k == "readme") mReadme = QUrl(docs[k].toString());
-        else if (k == "help") mHelpPage = QUrl(docs[k].toString());
-        else if (k == "home") mHomePage = QUrl(docs[k].toString());
-        else if (k == "manifest") mManifest = QUrl(docs[k].toString());
+        if (k == "form" && !docs[k].isNull()) mForm = QUrl(docs[k].toString());
+        else if (k == "icon" && !docs[k].isNull()) mIcon = QUrl(docs[k].toString());
+        else if (k == "license" && !docs[k].isNull()) mLicense = QUrl(docs[k].toString());
+        else if (k == "readme" && !docs[k].isNull()) mReadme = QUrl(docs[k].toString());
+        else if (k == "help" && !docs[k].isNull()) mHelpPage = QUrl(docs[k].toString());
+        else if (k == "about" && !docs[k].isNull()) mAboutPage = QUrl(docs[k].toString());
     }
 
     updateSearchField();
@@ -78,7 +78,7 @@ QJsonObject Pipeline::toJson()
     docs.insert("license", mLicense.toString());
     docs.insert("readme", mReadme.toString());
     docs.insert("help", mHelpPage.toString());
-    docs.insert("home", mHomePage.toString());
+    docs.insert("home", mAboutPage.toString());
     result.insert("documents", docs);
     return result;
 }
@@ -115,7 +115,7 @@ void Pipeline::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {

@@ -26,7 +26,7 @@ void User::updateSearchField()
 }
 
 
-bool User::fromJson(QJsonObject json)
+bool User::loadJson(QJsonObject json)
 {
     mId = json["id"].toInt();
     mLogin = json["login"].toString();
@@ -128,7 +128,7 @@ void User::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {

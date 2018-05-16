@@ -6,6 +6,12 @@ PanelsManager::PanelsManager(QObject* parent) : QObject(parent)
 {
     mNewPanel = new Panel(this);
     mPanelsTree = new PanelsTreeModel();
+
+    mProxy = new GenericProxyModel(this);
+    mProxy->setSourceModel(mPanelsTree);
+    mProxy->setFilterRole(PanelsTreeModel::Roles::SearchField);
+    mProxy->setSortRole(PanelsTreeModel::Roles::Name);
+    mProxy->setRecursiveFilteringEnabled(true);
 }
 
 

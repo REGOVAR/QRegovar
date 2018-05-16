@@ -117,7 +117,7 @@ void FilesManager::loadFilesBrowser()
             {
                 QJsonObject fileData = data.toObject();
                 File* file = getOrCreateFile(fileData["id"].toInt());
-                file->fromJson(fileData);
+                file->loadJson(fileData);
                 mRemoteFilesList.append(file);
             }
             emit remoteListChanged();
@@ -262,7 +262,7 @@ void FilesManager::processPushNotification(QString action, QJsonObject json)
         // update file information
         int id = json["id"].toInt();
         File* file = getOrCreateFile(id);
-        file->fromJson(json);
+        file->loadJson(json);
         // update global upload progress
         if (mUploadsList.indexOf(file) != -1)
         {

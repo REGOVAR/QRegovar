@@ -36,7 +36,7 @@ public:
 
     // Methods
     Q_INVOKABLE bool loadJson(QJsonArray json);
-    Q_INVOKABLE bool add(User* user);
+    Q_INVOKABLE bool append(User* user);
     Q_INVOKABLE bool refresh();
 
     // QAbstractListModel methods

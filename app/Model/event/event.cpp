@@ -28,7 +28,7 @@ Event::Event(int id, QObject* parent) : Event(parent)
 
 Event::Event(QJsonObject json, QObject* parent) : Event(parent)
 {
-    fromJson(json);
+    loadJson(json);
 }
 
 
@@ -44,7 +44,7 @@ void Event::updateSearchField()
 
 
 
-bool Event::fromJson(QJsonObject json)
+bool Event::loadJson(QJsonObject json)
 {
     mId = json["id"].toInt();
     mType = json["type"].toString();
@@ -181,7 +181,7 @@ void Event::load(bool forceRefresh)
         {
             if (success)
             {
-                fromJson(json["data"].toObject());
+                loadJson(json["data"].toObject());
             }
             else
             {

@@ -1,26 +1,53 @@
 #include "phenotypesmanager.h"
+#include "Model/regovar.h"
+#include "Model/framework/request.h"
 
-PhenotypesManager::PhenotypesManager(QObject *parent) : QObject(parent)
+PhenotypesManager::PhenotypesManager(QObject* parent) : QObject(parent)
 {
-
+    mSearchResults = new HpoDataListModel(this);
 }
 
 
 
-void PhenotypesManager::fromJson(QJsonArray json)
+HpoData* PhenotypesManager::getOrCreate(QString hpoId)
 {
-    for (const QJsonValue& data: json)
+    if (mHpoData.contains(hpoId))
     {
-        QJsonObject item = data.toObject();
-        if (!mPhenotypes.contains(item["id"].toString()))
-        {
-
-        }
+        return mHpoData[hpoId];
     }
+    HpoData* hpo = nullptr;
+    if (hpoId.startsWith("HP:"))
+    {
+        hpo = new Phenotype(hpoId, this);
+    }
+    else
+    {
+        hpo = new Disease(hpoId, this);
+    }
+    mHpoData.insert(hpoId, hpo);
+    return hpo;
 }
 
-QStringList PhenotypesManager::search(QString )
+
+
+void PhenotypesManager::search(QString query)
 {
-    QStringList result;
-    return result;
+    QJsonObject json;
+    json.insert("search", query);
+    Request* req = Request::post(QString("/phenotypes/search"), QJsonDocument(json).toJson());
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            mSearchResults->clear();
+            mSearchResults->loadJson(json["data"].toArray());
+            emit searchDone(true);
+        }
+        else
+        {
+            regovar->manageServerError(json, Q_FUNC_INFO);
+            emit searchDone(false);
+        }
+        req->deleteLater();
+    });
 }

@@ -239,11 +239,11 @@ Item
                         // Shared model
                         else
                         {
-                            elmt.model = Qt.binding(function() { return tabSharedModel; });
+                            elmt.model = Qt.binding(function() { return tabSharedModel ? tabSharedModel : null; });
                         }
                     }
                 }
-                else if (comp.status == Component.Error)
+                else if (comp.status === Component.Error)
                 {
                     pages.push(false);
                     console.log("> Error creating tab's QML component : ", comp.errorString());

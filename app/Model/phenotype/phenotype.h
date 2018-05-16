@@ -2,40 +2,53 @@
 #define PHENOTYPE_H
 
 #include <QtCore>
+#include "hpodata.h"
+#include "disease.h"
+#include "hpodatalistmodel.h"
+#include "diseaseslistmodel.h"
 
-class Phenotype : public QObject
+class Disease;
+class HpoData;
+class HpoDataListModel;
+class DiseasesListModel;
+class Phenotype : public HpoData
 {
     Q_OBJECT
-    Q_PROPERTY(QString id READ id NOTIFY dataChanged)
-    Q_PROPERTY(QString label READ label NOTIFY dataChanged)
-    Q_PROPERTY(QStringList genes READ genes NOTIFY dataChanged)
-    Q_PROPERTY(QList<Phenotype*> relatedPhenotypes READ relatedPhenotypes NOTIFY dataChanged)
-    Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
+    Q_PROPERTY(QString definition READ definition NOTIFY dataChanged)
+    Q_PROPERTY(HpoDataListModel* parents READ parents NOTIFY dataChanged)
+    Q_PROPERTY(HpoDataListModel* childs READ childs NOTIFY dataChanged)
+    Q_PROPERTY(DiseasesListModel* diseases READ diseases NOTIFY dataChanged)
+
+
 
 public:
     // Constructor
-    explicit Phenotype(QObject *parent = nullptr);
+    explicit Phenotype(QObject* parent = nullptr);
+    explicit Phenotype(QString hpo_id, QObject* parent = nullptr);
 
     // Getters
-    inline QString id() const { return mId; }
-    inline QString label() const { return mLabel; }
-    inline QStringList genes() const { return mGenes; }
-    inline QList<Phenotype*> relatedPhenotypes() const { return mRelatedPhenotypes; }
-    inline bool loaded() const { return mLoaded; }
+    inline QString definition() const { return mDefinition; }
+    inline HpoDataListModel* parents() const { return mParents; }
+    inline HpoDataListModel* childs() const { return mChilds; }
+    inline DiseasesListModel* diseases() const { return mDiseases; }
 
-    // Methods
-    void fromJson(QJsonObject json);
+    // HpoData  abstracts methods overriden
+    //! Load phenotype from json
+    Q_INVOKABLE bool loadJson(QJsonObject json);
+    //! Return the phenotype qualifiers (as human readable string) for the requested disease
+    Q_INVOKABLE QString qualifier(QString diseaseId) const;
 
-Q_SIGNALS:
-    void dataChanged();
+
+public Q_SLOTS:
+    virtual void updateSearchField();
 
 
 private:
-    QString mId;
-    QString mLabel;
-    QStringList mGenes;
-    QList<Phenotype*> mRelatedPhenotypes;
-    bool mLoaded = false;
+    QString mDefinition;
+    HpoDataListModel* mParents = nullptr;
+    HpoDataListModel* mChilds = nullptr;
+    DiseasesListModel* mDiseases = nullptr;
+    QJsonObject mQualifiers;
 };
 
 #endif // PHENOTYPE_H

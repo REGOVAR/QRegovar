@@ -127,7 +127,7 @@ Dialog
                     {
                         width: messagePanel.width
                         text: errorPopup.errorMessage
-                        font.family: "monospace"
+                        font.family: fixedFont
                         readOnly: true
                         frameVisible: false
                         backgroundVisible: false
@@ -157,7 +157,7 @@ Dialog
                     anchors.fill: parent
                     visible: false
                     text: errorPopup.errorMessage + "\n-----\n" + errorPopup.errorTechnicalData
-                    font.family: "monospace"
+                    font.family: fixedFont
                     readOnly: true
                     frameVisible: false
                     backgroundVisible: false

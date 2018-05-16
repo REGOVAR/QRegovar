@@ -18,7 +18,7 @@ ApplicationWindow
     title: "Analysis"
 
     // The id of this window that allow "Regovar model" to retrieve corresponding "Analysis model" among open models/windows
-    property int winId
+    property string winId
     // Internal map to store qml page associated with their menuModel Uid
     property var pages
     // The uid of the page currently displayed
@@ -57,6 +57,11 @@ ApplicationWindow
         anchors.bottom: parent.bottom
         anchors.left: mainMenu.right
         anchors.right: parent.right
+
+        Keys.onPressed:
+        {
+            if (event.key === Qt.Key_F5) model.load();
+        }
     }
 
     ErrorDialog
@@ -94,7 +99,7 @@ ApplicationWindow
                 if (menuEntry.qmlPage !== "" && menuEntry.qmlPage[0] !== "@")
                 {
                     var comp = Qt.createComponent("Pages/" + menuEntry.qmlPage);
-                    if (comp.status == Component.Ready)
+                    if (comp.status === Component.Ready)
                     {
                         var elmt = comp.createObject(stack, {"visible": false});
                         root.pages[uid] = elmt;
@@ -105,7 +110,7 @@ ApplicationWindow
 
                         console.log ("load " + uid + ": Pages/" + menuEntry.qmlPage)
                     }
-                    else if (comp.status == Component.Error)
+                    else if (comp.status === Component.Error)
                     {
                         console.log("Error loading component: ", comp.errorString());
                     }
@@ -138,13 +143,14 @@ ApplicationWindow
         if (menuEntry && menuEntry.uid)
         {
             currentUid = menuEntry.uid;
-            if (pages[currentUid] == "@close")
+            if (pages[currentUid] === "@close")
             {
                 root.close();
             }
 
             pages[currentUid].visible = true;
             pages[currentUid].anchors.fill = stack;
+            pages[currentUid].forceActiveFocus();
         }
     }
 
@@ -152,7 +158,7 @@ ApplicationWindow
     {
         for (var idx in pages)
         {
-            if (pages[idx][0] != "@")
+            if (pages[idx][0] !== "@")
                 pages[idx].destroy();
         }
     }
@@ -163,7 +169,7 @@ ApplicationWindow
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
-        model = regovar.openWindowModels[winId];
+        model = regovar.getWindowModels(winId);
         menuModel = model.menuModel;
         title = model.name;
 

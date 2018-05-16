@@ -110,7 +110,7 @@ Rectangle
             highlight: Rectangle
             {
                 color: Regovar.theme.secondaryColor.back.light;
-                y: list.currentItem.y
+                y: proposalsList.currentItem.y
             }
 
             delegate: Item

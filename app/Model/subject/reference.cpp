@@ -6,7 +6,7 @@ Reference::Reference(QObject* parent) : QObject(parent)
 }
 
 
-bool Reference::fromJson(QJsonObject json)
+bool Reference::loadJson(QJsonObject json)
 {
     mId = json["id"].toInt();
     setName(json["name"].toString());

@@ -24,7 +24,7 @@ FilesTreeModel::FilesTreeModel(QObject* parent) : TreeModel(parent)
 
 
 
-bool FilesTreeModel::fromJson(QJsonArray json)
+bool FilesTreeModel::loadJson(QJsonArray json)
 {
     beginResetModel();
     clear();
@@ -60,17 +60,20 @@ bool FilesTreeModel::refresh()
 
 void FilesTreeModel::add(File* file, const QModelIndex& index)
 {
-    beginInsertRows(index, rowCount(index), rowCount(index));
-    add(file, getItem(index));
-    endInsertRows();
+    if (file!= nullptr)
+    {
+        beginInsertRows(index, rowCount(index), rowCount(index));
+        add(file, getItem(index));
+        endInsertRows();
+    }
 }
 
 
 void FilesTreeModel::add(File* file, TreeItem* parent)
 {
-    if (parent == nullptr)
+    if (parent == nullptr || file == nullptr)
     {
-        qDebug() << "ERROR: [FilesTreeModel::add] parent cannot be null";
+        qDebug() << "ERROR: [FilesTreeModel::add] parent or file cannot be null";
         return;
     }
     // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
@@ -137,7 +140,7 @@ void FilesTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
             // Add file entry
             int id = p["id"].toInt();
             File* file = regovar->filesManager()->getOrCreateFile(id);
-            file->fromJson(p);
+            file->loadJson(p);
             add(file, parent);
         }
     }

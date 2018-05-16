@@ -102,7 +102,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("Statistics about your variants and quality scores from DepthOfCoverage.")
     }
@@ -186,16 +185,7 @@ Rectangle
             color: Regovar.theme.primaryColor.back.normal
         }
     }
-    Rectangle
-    {
-        anchors.top: section1Header.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: 10
-        anchors.topMargin: 0
-        height: 1
-        color: Regovar.theme.primaryColor.back.normal
-    }
+
 
 
     //
@@ -264,16 +254,6 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
             color: Regovar.theme.primaryColor.back.normal
         }
-    }
-    Rectangle
-    {
-        anchors.top: section2Header.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: 10
-        anchors.topMargin: 0
-        height: 1
-        color: Regovar.theme.primaryColor.back.normal
     }
 
     //
