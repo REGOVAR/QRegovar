@@ -34,28 +34,58 @@ Item
             RowLayout
             {
                 anchors.fill: parent
-                anchors.margins: 10
+                anchors.margins: 5
                 spacing: 10
 
-                Text
+
+                RowLayout
                 {
-                    id: fileIcon
-                    Layout.minimumWidth: Regovar.theme.font.boxSize.header
-                    Layout.fillHeight: true
-                    verticalAlignment: Text.AlignVCenter
-                    font.pixelSize: Regovar.theme.font.size.header
-                    font.family: Regovar.theme.icons.name
-                    color: Regovar.theme.primaryColor.back.dark
-                }
-                Text
-                {
-                    id: fileName
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    verticalAlignment: Text.AlignVCenter
-                    font.pixelSize: Regovar.theme.font.size.header
-                    color: Regovar.theme.primaryColor.back.dark
-                    elide: Text.ElideRight
+
+                    Text
+                    {
+                        id: fileIcon
+                        Layout.minimumWidth: Regovar.theme.font.boxSize.header
+                        Layout.fillHeight: true
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.pixelSize: Regovar.theme.font.size.header
+                        font.family: Regovar.theme.icons.name
+                        color: Regovar.theme.primaryColor.back.dark
+                        text: model && !model.downloading ? "Y" : "/"
+
+                        onTextChanged:
+                        {
+                            if (model && !model.downloading)
+                            {
+                                loadingIconAnimation.stop();
+                                rotation = 0;
+                            }
+                            else
+                            {
+                                loadingIconAnimation.start();
+                            }
+                        }
+                        NumberAnimation on rotation
+                        {
+                            id: loadingIconAnimation
+                            duration: 1500
+                            loops: Animation.Infinite
+                            from: 0
+                            to: 360
+                        }
+                    }
+                    Text
+                    {
+                        id: fileName
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        verticalAlignment: Text.AlignVCenter
+                        font.pixelSize: Regovar.theme.font.size.header
+                        color: Regovar.theme.primaryColor.back.dark
+                        elide: Text.ElideRight
+                    }
                 }
 
 

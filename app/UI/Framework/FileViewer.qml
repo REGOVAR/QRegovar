@@ -10,35 +10,53 @@ Rectangle
     color: "transparent"
     clip: true
 
+    // Keep in memory files viewers that have been already created
+    property var viewers: ({})
+    // id of the file currently displayed
+    property int currentId: -1
 
-    function openFile(id)
+    function openFile(fileId)
     {
-        waitingPanel.visible = true;
+        waitingPanel.visible = false;
         emptyPanel.visible = false;
 
         // Get file
-        var file = regovar.filesManager.getOrCreateFile(id);
+        var file = regovar.filesManager.getOrCreateFile(fileId);
 
         // Check online status
         switch(file.status)
         {
-        case 0: // Uploading
-            waitingPanel.visible = true;
-            waitingPanel.model = file;
-            return;
+            case 0: // Uploading
+                waitingPanel.visible = true;
+                waitingPanel.model = file;
+                return;
 
-        case 3: // error
-            errorPanel.visible = true;
-            errorPanel.model = file;
-            return;
+            case 3: // error
+                errorPanel.visible = true;
+                errorPanel.model = file;
+                return;
         }
 
         // Check if already in cache
         if (file.localFileReady)
         {
             // yes : open it
-            viewer.visible = true;
-            buildViewer(file)
+            // hide former viewer
+            if (currentId in viewers)
+            {
+                viewers[currentId].z = 0;
+            }
+            // display file viewer if already created
+            currentId = fileId;
+            if (fileId in viewers)
+            {
+                viewers[fileId].z = 100;
+            }
+            else
+            {
+                // else create and display new viewer
+                buildViewer(file);
+            }
         }
         else
         {
@@ -57,16 +75,14 @@ Rectangle
 
         // Setup qml viewer and display it
         var comp = Qt.createComponent("FileViewers/" + qmlPage);
-        if (comp.status == Component.Ready)
+        if (comp.status === Component.Ready)
         {
-            var elmt = comp.createObject(viewer);
-            if (elmt.hasOwnProperty("model"))
-            {
-                elmt.model = file;
-            }
+            var elmt = comp.createObject(stack, {"z": 100});
+            viewers[file.id] = elmt;
+            elmt.model = file;
             console.log ("load file viewer: " + qmlPage)
         }
-        else if (comp.status == Component.Error)
+        else if (comp.status === Component.Error)
         {
             console.log("Error loading component: ", comp.errorString());
         }
@@ -78,11 +94,34 @@ Rectangle
         anchors.fill: parent
         anchors.leftMargin: 10
 
+
+        Item
+        {
+            id: stack
+            anchors.fill: parent
+
+            Rectangle
+            {
+                anchors.fill: parent
+                color: Regovar.theme.backgroundColor.main
+                z: 50
+
+                Text
+                {
+                    anchors.centerIn: parent
+                    text: "Loading..."
+                    font.pixelSize: Regovar.theme.font.size.title
+                    color: Regovar.theme.primaryColor.back.light
+                }
+            }
+        }
+
+
         Rectangle
         {
             id: emptyPanel
             anchors.fill: parent
-            color: "transparent"
+            color: Regovar.theme.backgroundColor.main
 
             Text
             {
@@ -100,12 +139,6 @@ Rectangle
             color: Regovar.theme.backgroundColor.main
             visible: false
             onWaitingDone: openFile(fileId)
-        }
-
-        Item
-        {
-            id: viewer
-            anchors.fill: parent
         }
     }
 }
