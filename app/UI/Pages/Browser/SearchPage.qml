@@ -29,29 +29,29 @@ Rectangle
             var m = regovar.searchResult;
             var resume = [
                 {"active": m.hasOwnProperty("project") && m["project"].length > 0, "key": "project",
-                 "label": m["project"].length + " " + (m["project"].length > 1 ? qsTr("Folders") : qsTr("Folder"))},
+                 "label": (m["project"].length >= 100 ? "100+" : m["project"].length) + " " + (m["project"].length > 1 ? qsTr("Folders") : qsTr("Folder"))},
                 {"active": m.hasOwnProperty("analysis") && m["analysis"].length > 0, "key": "analysis",
-                 "label": m["analysis"].length + " " + (m["analysis"].length > 1 ? qsTr("Analyses") : qsTr("Analysis"))},
+                 "label": (m["analysis"].length >= 100 ? "100+" : m["analysis"].length) + " " + (m["analysis"].length > 1 ? qsTr("Analyses") : qsTr("Analysis"))},
                 {"active": m.hasOwnProperty("file") && m["file"].length > 0, "key": "file",
-                 "label": m["file"].length + " " + (m["file"].length > 1 ?  qsTr("Files") : qsTr("File"))},
+                 "label": (m["file"].length >= 100 ? "100+" : m["file"].length) + " " + (m["file"].length > 1 ?  qsTr("Files") : qsTr("File"))},
                 {"active": m.hasOwnProperty("subject") && m["subject"].length > 0, "key": "subject",
-                 "label": m["subject"].length + " " + (m["subject"].length > 1 ? qsTr("Subjects") : qsTr("Subject"))},
+                 "label": (m["subject"].length >= 100 ? "100+" : m["subject"].length) + " " + (m["subject"].length > 1 ? qsTr("Subjects") : qsTr("Subject"))},
                 {"active": m.hasOwnProperty("sample") && m["sample"].length > 0, "key": "sample",
-                 "label": m["sample"].length + " " + (m["sample"].length > 1 ? qsTr("Samples") : qsTr("Sample"))},
+                 "label": (m["sample"].length >= 100 ? "100+" : m["sample"].length) + " " + (m["sample"].length > 1 ? qsTr("Samples") : qsTr("Sample"))},
                 {"active": m.hasOwnProperty("phenotype") && m["phenotype"].length > 0, "key": "phenotype",
-                 "label": m["phenotype"].length + " " + (m["phenotype"].length > 1 ? qsTr("Phenotypes") : qsTr("Phenotype"))},
+                 "label": (m["phenotype"].length >= 100 ? "100+" : m["phenotype"].length) + " " + (m["phenotype"].length > 1 ? qsTr("Phenotypes") : qsTr("Phenotype"))},
                 {"active": m.hasOwnProperty("disease") && m["disease"].length > 0, "key": "disease",
-                 "label": m["disease"].length + " " + (m["disease"].length > 1 ? qsTr("Diseases") : qsTr("Disease"))},
+                 "label": (m["disease"].length >= 100 ? "100+" : m["disease"].length) + " " + (m["disease"].length > 1 ? qsTr("Diseases") : qsTr("Disease"))},
                 {"active": m.hasOwnProperty("gene") && m["gene"].length > 0, "key": "gene",
-                 "label": m["gene"].length + " " + (m["gene"].length > 1 ? qsTr("Genes") : qsTr("Gene"))},
+                 "label": (m["gene"].length >= 100 ? "100+" : m["gene"].length) + " " + (m["gene"].length > 1 ? qsTr("Genes") : qsTr("Gene"))},
                 {"active": m.hasOwnProperty("variant") && m["variant"].length > 0, "key": "variant",
-                 "label": m["variant"].length + " " + (m["variant"].length > 1 ? qsTr("Variants") : qsTr("Variant"))},
+                 "label": (m["variant"].length >= 100 ? "100+" : m["variant"].length) + " " + (m["variant"].length > 1 ? qsTr("Variants") : qsTr("Variant"))},
                 {"active": m.hasOwnProperty("pipeline") && m["pipeline"].length > 0, "key": "pipeline",
-                 "label": m["pipeline"].length + " " + (m["pipeline"].length > 1 ?qsTr("Pipelines") : qsTr("Pipeline"))},
+                 "label": (m["pipeline"].length >= 100 ? "100+" : m["pipeline"].length) + " " + (m["pipeline"].length > 1 ?qsTr("Pipelines") : qsTr("Pipeline"))},
                 {"active": m.hasOwnProperty("panel") && m["panel"].length > 0, "key": "panel",
-                 "label": m["panel"].length + " " + (m["panel"].length > 1 ? qsTr("Panels") : qsTr("Panel"))},
+                 "label": (m["panel"].length >= 100 ? "100+" : m["panel"].length) + " " + (m["panel"].length > 1 ? qsTr("Panels") : qsTr("Panel"))},
                 {"active": m.hasOwnProperty("user") && m["user"].length > 0, "key": "user",
-                 "label": m["user"].length + " " + (m["user"].length > 1 ? qsTr("Users") : qsTr("User"))}
+                 "label": (m["user"].length >= 100 ? "100+" : m["user"].length) + " " + (m["user"].length > 1 ? qsTr("Users") : qsTr("User"))}
             ];
 
             var t = 0;

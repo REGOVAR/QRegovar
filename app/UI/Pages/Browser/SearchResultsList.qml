@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 import Regovar.Core 1.0
@@ -108,7 +108,6 @@ Rectangle
                         date: model.modelData.update_date
                         name: model.modelData.name
                         status: model.modelData.status
-                        projectName: model.modelData.project.name
                         onClicked: regovar.analysesManager.openAnalysis("analysis", model.modelData.id)
                     }
                 }
