@@ -5,6 +5,7 @@
 #include <QtQml>
 #include <QtCore>
 #include <QIcon>
+#include <QFontDatabase>
 //#include <QtWebEngine/qtwebengineglobal.h>
 
 #include "Model/regovar.h" // include regovar singleton which wrap all models and is the interface with the server
@@ -99,8 +100,13 @@ int main(int argc, char *argv[])
     // Init regovar model
     regovar->init();
     regovar->setQmlEngine(&engine);
-
     engine.rootContext()->setContextProperty("regovar", regovar);
+
+    // OS independant fixed font
+    const QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    engine.rootContext()->setContextProperty("fixedFont", fixedFont);
+
+
     engine.addImportPath("qrc:/qml/");
     engine.load(QUrl(QLatin1String("qrc:/qml/MainWindow.qml")));
 

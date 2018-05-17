@@ -173,7 +173,7 @@ Rectangle
                     id: timelineLabel
                     width: 75
                     horizontalAlignment: Text.AlignRight
-                    font.family: "monospace"
+                    font.family: fixedFont
                 }
 
                 Slider

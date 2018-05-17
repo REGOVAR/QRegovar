@@ -128,6 +128,7 @@ GenericScreen
 
                             if (pipe && !pipe.aboutPage !== "")
                             {
+                                regovar.analysesManager.newPipeline.pipeline = pipe;
                                 pipeInfoPanel.url = pipe.aboutPage;
                                 pipeInfoPanel.visible = true;
                             }
@@ -136,8 +137,6 @@ GenericScreen
                                 pipeInfoPanel.url = "";
                                 pipeInfoPanel.visible = false;
                             }
-
-                            regovar.analysesManager.newPipeline.pipeline = pipe;
                         }
                     }
                 }

@@ -87,7 +87,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("Edit your profile information.")
     }

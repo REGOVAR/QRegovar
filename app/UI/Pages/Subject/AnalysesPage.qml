@@ -31,10 +31,9 @@ Rectangle
             {
                 id: nameLabel
                 Layout.fillWidth: true
-
-                font.pixelSize: 22
-                font.family: Regovar.theme.font.family
-                color: Regovar.theme.frontColor.normal
+                font.pixelSize: Regovar.theme.font.size.title
+                font.weight: Font.Black
+                color: Regovar.theme.primaryColor.back.dark
                 verticalAlignment: Text.AlignVCenter
                 text: model ? model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname : ""
                 elide: Text.ElideRight
@@ -55,7 +54,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("This page list all analyses that have been done for the current subject.")
     }
@@ -117,6 +115,7 @@ Rectangle
             width: root.width
             color: Regovar.theme.backgroundColor.main
             Layout.minimumHeight: 200
+            Layout.fillHeight: true
 
             TableView
             {

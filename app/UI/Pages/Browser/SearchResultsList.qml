@@ -7,6 +7,7 @@ import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
+import "qrc:/qml/Pages/Browser/Items"
 
 Rectangle
 {
@@ -55,7 +56,7 @@ Rectangle
 
                 Text
                 {
-                    text: projectsResult.count + " " + (projectsResult.count > 1 ? qsTr("Folders") : qsTr("Folder"))
+                    text: projectsResult.count + (projectsResult.count >= 100 ? "+" : "") + " " + (projectsResult.count > 1 ? qsTr("Folders") : qsTr("Folder"))
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.normal
@@ -66,7 +67,7 @@ Rectangle
                 {
                     model: projectsResult.model
 
-                    SearchResultProject
+                    BrowserItemProject
                     {
                         width: root.width - 10
                         date: model.modelData.update_date
@@ -91,7 +92,7 @@ Rectangle
 
                 Text
                 {
-                    text: analysessResult.count + " " + (analysessResult.count > 1 ? qsTr("Analyses") : qsTr("Analysis"))
+                    text: analysessResult.count + (analysessResult.count >= 100 ? "+" : "") + " " + (analysessResult.count > 1 ? qsTr("Analyses") : qsTr("Analysis"))
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.normal
@@ -101,7 +102,7 @@ Rectangle
                 Repeater
                 {
                     model: analysessResult.model
-                    SearchResultAnalysis
+                    BrowserItemAnalysis
                     {
                         width: root.width - 10
                         date: model.modelData.update_date
@@ -128,7 +129,7 @@ Rectangle
 
                 Text
                 {
-                    text: filesResult.count + " " + (filesResult.count > 1 ? qsTr("Files") : qsTr("File"))
+                    text: filesResult.count + (filesResult.count >= 100 ? "+" : "") + " " + (filesResult.count > 1 ? qsTr("Files") : qsTr("File"))
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.normal
@@ -138,7 +139,7 @@ Rectangle
                 Repeater
                 {
                     model: filesResult.model
-                    SearchResultFile
+                    BrowserItemFile
                     {
                         width: root.width - 10
                         fileId: model.modelData.id
@@ -167,7 +168,7 @@ Rectangle
                 Text
                 {
                     width: root.width - 10
-                    text: subjectsResult.count + " " + (subjectsResult.count > 1 ? qsTr("Subjects") : qsTr("Subject"))
+                    text: subjectsResult.count + (subjectsResult.count >= 100 ? "+" : "") + " " + (subjectsResult.count > 1 ? qsTr("Subjects") : qsTr("Subject"))
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.normal
@@ -176,7 +177,7 @@ Rectangle
                 Repeater
                 {
                     model: subjectsResult.model
-                    SearchResultSubject
+                    BrowserItemSubject
                     {
                         width: root.width - 10
                         date: model.modelData.update_date
@@ -205,7 +206,7 @@ Rectangle
 
                 Text
                 {
-                    text: "" + samplesResult.count + " " + (samplesResult.count > 1 ? qsTr("Samples") : qsTr("Sample"))
+                    text: samplesResult.count + (samplesResult.count >= 100 ? "+" : "") + " " + (samplesResult.count > 1 ? qsTr("Samples") : qsTr("Sample"))
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.normal
@@ -215,7 +216,7 @@ Rectangle
                 Repeater
                 {
                     model: samplesResult.model
-                    SearchResultSample
+                    BrowserItemSample
                     {
                         width: root.width - 10
                         date: model.modelData.update_date
@@ -243,7 +244,7 @@ Rectangle
 
                 Text
                 {
-                    text: phenotypesResult.count + " " + (phenotypesResult.count > 1 ? qsTr("Phenotypes") : qsTr("Phenotype"))
+                    text: phenotypesResult.count + (phenotypesResult.count >= 100 ? "+" : "") + " " + (phenotypesResult.count > 1 ? qsTr("Phenotypes") : qsTr("Phenotype"))
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.normal
@@ -253,7 +254,7 @@ Rectangle
                 Repeater
                 {
                     model: phenotypesResult.model
-                    SearchResultPhenotype
+                    BrowserItemPhenotype
                     {
                         width: root.width - 10
                         phenotypeId: model.modelData.id
@@ -277,7 +278,7 @@ Rectangle
 
                 Text
                 {
-                    text: diseasesResult.count + " " + (diseasesResult.count > 1 ? qsTr("Diseases") : qsTr("Disease"))
+                    text: diseasesResult.count + (diseasesResult.count >= 100 ? "+" : "") + " " + (diseasesResult.count > 1 ? qsTr("Diseases") : qsTr("Disease"))
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.normal
@@ -287,7 +288,7 @@ Rectangle
                 Repeater
                 {
                     model: diseasesResult.model
-                    SearchResultPhenotype
+                    BrowserItemPhenotype
                     {
                         width: root.width - 10
                         phenotypeId: model.modelData.id
@@ -312,7 +313,7 @@ Rectangle
 
                 Text
                 {
-                    text: genesResult.count + " " + (genesResult.count > 1 ? qsTr("Genes") : qsTr("Gene"))
+                    text: genesResult.count + (genesResult.count >= 100 ? "+" : "") + " " + (genesResult.count > 1 ? qsTr("Genes") : qsTr("Gene"))
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.normal
@@ -322,7 +323,7 @@ Rectangle
                 Repeater
                 {
                     model: genesResult.model
-                    SearchResultGene
+                    BrowserItemGene
                     {
                         width: root.width - 10
                         geneId: model.modelData.id
@@ -347,7 +348,7 @@ Rectangle
 
                 Text
                 {
-                    text: variantsResult.count + " " + (variantsResult.count > 1 ? qsTr("Variants") : qsTr("Variant"))
+                    text: variantsResult.count + (variantsResult.count >= 100 ? "+" : "") + " " + (variantsResult.count > 1 ? qsTr("Variants") : qsTr("Variant"))
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.normal
@@ -357,7 +358,7 @@ Rectangle
                 Repeater
                 {
                     model: variantsResult.model
-                    SearchResultVariant
+                    BrowserItemVariant
                     {
                         width: root.width - 10
                         variantId: model.modelData.id
@@ -386,7 +387,7 @@ Rectangle
 
                 Text
                 {
-                    text: usersResult.count + " " + (pipelinesResult.count > 1 ? qsTr("Pipelines") : qsTr("Pipeline"))
+                    text: usersResult.count + (usersResult.count >= 100 ? "+" : "") + " " + (pipelinesResult.count > 1 ? qsTr("Pipelines") : qsTr("Pipeline"))
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.normal
@@ -396,7 +397,7 @@ Rectangle
                 Repeater
                 {
                     model: pipelinesResult.model
-                    SearchResultPipeline
+                    BrowserItemPipeline
                     {
                         width: root.width - 10
                         pipelineId: model.modelData.id
@@ -422,7 +423,7 @@ Rectangle
 
                 Text
                 {
-                    text: panelsResult.count + " " + (panelsResult.count > 1 ? qsTr("Panels") : qsTr("Panel"))
+                    text: panelsResult.count + (panelsResult.count >= 100 ? "+" : "") + " " + (panelsResult.count > 1 ? qsTr("Panels") : qsTr("Panel"))
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.normal
@@ -432,7 +433,7 @@ Rectangle
                 Repeater
                 {
                     model: panelsResult.model
-                    SearchResultPanel
+                    BrowserItemPanel
                     {
                         width: root.width - 10
                         panelId: model.modelData.id
@@ -458,7 +459,7 @@ Rectangle
                 }
                 Text
                 {
-                    text: usersResult.count + " " + (usersResult.count > 1 ? qsTr("Users") : qsTr("User"))
+                    text: usersResult.count + (usersResult.count >= 100 ? "+" : "") + " " + (usersResult.count > 1 ? qsTr("Users") : qsTr("User"))
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.primaryColor.back.dark
                     height: Regovar.theme.font.boxSize.normal
@@ -468,7 +469,7 @@ Rectangle
                 Repeater
                 {
                     model: usersResult.model
-                    SearchResultUser
+                    BrowserItemUser
                     {
                         width: root.width - 10
                         userId: model.modelData.id
@@ -523,6 +524,7 @@ Rectangle
         {
             projectsResult.model = results["project"];
             projectsResult.count = results["project"].length;
+
         }
         if (analysessResult.visible)
         {

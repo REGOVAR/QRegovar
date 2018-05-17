@@ -55,7 +55,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.right: parent.right
                 height: 1
-                color: Regovar.theme.primaryColor.back.light
+                color: Regovar.theme.boxColor.border
             }
         }
 
@@ -194,7 +194,7 @@ Rectangle
                                     id: filterItemCount
                                     text: modelData.progress == 1 ? modelData.count : ""
                                     color: Regovar.theme.primaryColor.back.dark
-                                    font.family: "monospace"
+                                    font.family: fixedFont
                                 }
 
                                 Rectangle
@@ -270,7 +270,7 @@ Rectangle
         {
             Layout.fillWidth: true
             height: 1
-            color: Regovar.theme.primaryColor.back.light
+            color: Regovar.theme.boxColor.border
         }
 
         Rectangle

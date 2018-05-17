@@ -61,9 +61,8 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tristique eu lorem sit amet viverra. Vivamus vitae fringilla nibh. Mauris tempor neque eu mauris tristique consequat. Curabitur dui enim, tempor ut quam vel, sagittis tempus diam. Praesent eu erat ante.")
+        text: qsTr("Retrieve here all files that have been used or generated for your analysis.")
     }
 
     FilesBrowser

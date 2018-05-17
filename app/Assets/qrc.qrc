@@ -22,5 +22,10 @@
         <file>credits/t_git.png</file>
         <file>credits/logo_hugo_w360.png</file>
         <file>credits/logo_girci_w360.png</file>
+        <file>credits/t_docker.png</file>
+        <file>credits/t_pubmed.png</file>
+        <file>credits/u_jmr.jpg</file>
+        <file>credits/u_ukn.png</file>
+        <file>credits/u_cc.jpg</file>
     </qresource>
 </RCC>

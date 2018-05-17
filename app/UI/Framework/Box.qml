@@ -57,7 +57,7 @@ Rectangle
         }
     }
 
-    Text
+    TextEdit
     {
         id: message
         anchors.left: logo.right
@@ -66,11 +66,13 @@ Rectangle
         anchors.margins: 5
         anchors.leftMargin: 0
         onContentHeightChanged: root.height = contentHeight + 10
+        readOnly: true
 
         text: root.text
         font.pixelSize: Regovar.theme.font.size.normal
         color: Regovar.theme.darker(root.mainColor)
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.WordWrap
+        selectByMouse: true
     }
 }

@@ -7,20 +7,16 @@ import "qrc:/qml/Framework"
 Rectangle
 {
     id: root
-    property int subjectId
-
-
-    property real dateColWidth: 100
-    property string date: ""
-    property string identifier: ""
-    property string firstname: ""
-    property string lastname: ""
-    property string sex: ""
-    property string age: ""
-    property int indent: 1
+    property int variantId
+    property int referenceId
+    property real dateColWidth: 50
+    property string reference: ""
+    property string label: ""
+    property int samples_count: 0
+    property var regovar_score
 
     property bool isHover: false
-    signal clicked(var subjectId)
+    signal clicked(var referenceId, var variantId)
 
     height: Regovar.theme.font.boxSize.normal
     color: "transparent"
@@ -30,7 +26,7 @@ Rectangle
         anchors.fill: parent
         Rectangle
         {
-            width: indent * Regovar.theme.font.boxSize.normal
+            width: Regovar.theme.font.boxSize.normal
             height: Regovar.theme.font.boxSize.normal
             color: "transparent"
         }
@@ -38,9 +34,10 @@ Rectangle
         {
             Layout.minimumWidth: dateColWidth
             font.pixelSize: Regovar.theme.font.size.normal
+            font.family: fixedFont
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.disable
             verticalAlignment: Text.AlignVCenter
-            text: regovar.formatDate(date)
+            text: reference
             elide: Text.ElideRight
         }
         Rectangle
@@ -56,27 +53,22 @@ Rectangle
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: Regovar.sexToIcon(sex)
+            text: "#"
         }
 
         Text
         {
             font.pixelSize: Regovar.theme.font.size.normal
+            font.family: Regovar.theme.font.family
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            font.family: "monospace"
-            text: identifier
+            text: " (" + samples_count + ")"
         }
-        Text
+        Rectangle
         {
-            Layout.minimumWidth: Regovar.theme.font.boxSize.normal
-            font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.icons.name
-            color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            text: "{"
-            elide: Text.ElideRight
+            width: Regovar.theme.font.boxSize.normal
+            height: Regovar.theme.font.boxSize.normal
+            color: "transparent"
         }
 
         Text
@@ -86,8 +78,7 @@ Rectangle
             font.family: Regovar.theme.font.family
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: lastname + " " + firstname + (age ? " (" + age + ")" : "")
-            elide: Text.ElideRight
+            text: label
         }
     }
 
@@ -97,6 +88,6 @@ Rectangle
         hoverEnabled: true
         onEntered: isHover = true
         onExited: isHover = false
-        onClicked: root.clicked(subjectId)
+        onClicked: root.clicked(referenceId, variantId)
     }
 }

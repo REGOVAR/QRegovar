@@ -10,7 +10,13 @@ Item
     ListModel
     {
         id: thanksToModel
-
+        ListElement
+        {
+            name: "Alban ZIEGLER"
+            comment: qsTr("Doctor, Geneticist, Bioinformaticist")
+            icon: "qrc:/credits/u_ukn.png"
+            url: "https://www.linkedin.com/in/alban-ziegler-baba3745/"
+        }
         ListElement
         {
             name: "Anne-Sophie DENOMMÉ-PICHON"
@@ -18,11 +24,24 @@ Item
             icon: "qrc:/credits/u_asdp.jpg"
             url: "https://github.com/Oodnadatta"
         }
+        ListElement
+        {
+            name: "Cyrille CHOPELET"
+            comment: qsTr("Computer scientist, Geek")
+            icon: "qrc:/credits/u_cc.jpg"
+            url: "https://github.com/cyChop"
+        }
         ListElement {
             name: "David GOUDEGÈNE"
             comment: qsTr("Bioinformaticist, Developper")
             icon: "qrc:/credits/u_dg.jpg"
             url: "https://github.com/dooguypapua"
+        }
+        ListElement {
+            name: "Jean-Marie RAVEL"
+            comment: qsTr("MD-PhD student, Geneticist, Bioinformaticist")
+            icon: "qrc:/credits/u_jmr.jpg"
+            url: "https://www.linkedin.com/in/jean-marie-ravel-b8301566/"
         }
         ListElement {
             name: "Jérémie ROQUET"
@@ -78,13 +97,19 @@ Item
             icon: "qrc:/credits/t_omim.jpg"
             url: "https://www.omim.org/"
         }
-// We don't use orphanet API. Orphanet data are just included in HPO like lot of other db.
-//        ListElement {
-//            name: "ORPHANET"
-//            comment: qsTr("Maladies rares et médicaments orphelins")
-//            icon: "qrc:/credits/t_orphanet.jpg"
-//            url: "http://www.orpha.net/"
-//        }
+        ListElement {
+            name: "ORPHANET"
+            comment: qsTr("Rare diseases and orphan drugs database")
+            icon: "qrc:/credits/t_orphanet.jpg"
+            url: "http://www.orpha.net/"
+        }
+        ListElement
+        {
+            name: "Pubmed"
+            comment: qsTr("Free database of references and abstracts on life sciences and biomedical topics")
+            icon: "qrc:/credits/t_pubmed.png"
+            url: "https://www.ncbi.nlm.nih.gov/pubmed/"
+        }
     }
     ListModel
     {
@@ -96,6 +121,13 @@ Item
             comment: qsTr("Regovar client application")
             icon: "qrc:/credits/t_cpp.png"
             url: "http://www.cplusplus.com/"
+        }
+        ListElement
+        {
+            name: "Docker"
+            comment: qsTr("Containerization solution")
+            icon: "qrc:/credits/t_docker.png"
+            url: "https://www.docker.com/"
         }
         ListElement
         {

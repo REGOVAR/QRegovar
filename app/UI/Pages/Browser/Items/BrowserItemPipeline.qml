@@ -7,16 +7,17 @@ import "qrc:/qml/Framework"
 Rectangle
 {
     id: root
-    property string phenotypeId
+    property int pipelineId
+    property string name
+    property string date
     property real dateColWidth: 100
-    property string date: ""
-    property string label: ""
 
     property bool isHover: false
-    signal clicked(var phenotypeId)
+    signal clicked(var pipelineId)
 
     height: Regovar.theme.font.boxSize.normal
     color: "transparent"
+
     RowLayout
     {
         spacing: 0
@@ -31,10 +32,10 @@ Rectangle
         {
             Layout.minimumWidth: dateColWidth
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: "monospace"
+            font.family: fixedFont
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.disable
             verticalAlignment: Text.AlignVCenter
-            text: phenotypeId
+            text: regovar.formatDate(date)
             elide: Text.ElideRight
         }
         Rectangle
@@ -50,9 +51,8 @@ Rectangle
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: "K"
+            text: "J"
         }
-
         Text
         {
             Layout.fillWidth: true
@@ -60,7 +60,8 @@ Rectangle
             font.family: Regovar.theme.font.family
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: label
+            text: name
+            elide: Text.ElideRight
         }
     }
 
@@ -70,6 +71,6 @@ Rectangle
         hoverEnabled: true
         onEntered: isHover = true
         onExited: isHover = false
-        onClicked: root.clicked(phenotypeId)
+        onClicked: root.clicked(pipelineId)
     }
 }

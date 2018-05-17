@@ -100,7 +100,6 @@ Rectangle
         anchors.margins: 10
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("This page allow you to browse \"results\" documents created by the pipeline.")
     }

@@ -44,10 +44,9 @@ Rectangle
             {
                 id: nameLabel
                 Layout.fillWidth: true
-
-                font.pixelSize: 22
-                font.family: Regovar.theme.font.family
-                color: Regovar.theme.frontColor.normal
+                font.pixelSize: Regovar.theme.font.size.title
+                font.weight: Font.Black
+                color: Regovar.theme.primaryColor.back.dark
                 verticalAlignment: Text.AlignVCenter
                 text: "-"
                 elide: Text.ElideRight
@@ -68,7 +67,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("This page gives you an overview of the folder and its content.")
     }

@@ -101,9 +101,13 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tristique eu lorem sit amet viverra. Vivamus vitae fringilla nibh. Mauris tempor neque eu mauris tristique consequat. Curabitur dui enim, tempor ut quam vel, sagittis tempus diam. Praesent eu erat ante.")
+        text: qsTr("This page allow you to filter dynamically variants of the above table. Several tools are available in the left panels:\n" +
+                   " - \"Quick filters\": provide you most of common predifined filters;\n"+
+                   " - \"Advanced filter\" allow you to create more complexes or custom filters;\n"+
+                   " - \"Saved filter\" provide you the list of all filters you saved;\n"+
+                   " - \"Selected variant\" allow you to do some actions on the variants selected in the table (by example to export them as csv or generate report);\n"+
+                   " - \"Display columns\" allow you to select which columns are displayed in the above table.")
     }
 
 

@@ -7,18 +7,15 @@ import "qrc:/qml/Framework"
 Rectangle
 {
     id: root
-    property int userId
-    property string fullname
-    property string date: ""
+    property string geneId
     property real dateColWidth: 100
     property string symbol: ""
 
     property bool isHover: false
-    signal clicked(var userId)
+    signal clicked(var geneId)
 
     height: Regovar.theme.font.boxSize.normal
     color: "transparent"
-
     RowLayout
     {
         spacing: 0
@@ -33,10 +30,10 @@ Rectangle
         {
             Layout.minimumWidth: dateColWidth
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: "monospace"
+            font.family: fixedFont
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.disable
             verticalAlignment: Text.AlignVCenter
-            text: regovar.formatDate(date)
+            text: geneId
             elide: Text.ElideRight
         }
         Rectangle
@@ -52,8 +49,9 @@ Rectangle
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: "j"
+            text: "#"
         }
+
         Text
         {
             Layout.fillWidth: true
@@ -61,8 +59,7 @@ Rectangle
             font.family: Regovar.theme.font.family
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text:root.fullname
-            elide: Text.ElideRight
+            text: symbol
         }
     }
 
@@ -72,6 +69,6 @@ Rectangle
         hoverEnabled: true
         onEntered: isHover = true
         onExited: isHover = false
-        onClicked: root.clicked(userId)
+        onClicked: root.clicked(geneId)
     }
 }

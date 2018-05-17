@@ -107,7 +107,6 @@ Rectangle
             Layout.fillWidth: true
 
             visible: Regovar.helpInfoBoxDisplayed
-            mainColor: Regovar.theme.frontColor.success
             icon: "k"
             text: qsTr("All logs files created during the execution of the pipeline on the server are displayed below (one by tab).\nUse the \"Refresh\" button to reload the displayed log file.")
         }

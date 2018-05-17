@@ -7,12 +7,20 @@ import "qrc:/qml/Framework"
 Rectangle
 {
     id: root
-    property string geneId
+    property int subjectId
+
+
     property real dateColWidth: 100
-    property string symbol: ""
+    property string date: ""
+    property string identifier: ""
+    property string firstname: ""
+    property string lastname: ""
+    property string sex: ""
+    property string age: ""
+    property int indent: 1
 
     property bool isHover: false
-    signal clicked(var geneId)
+    signal clicked(var subjectId)
 
     height: Regovar.theme.font.boxSize.normal
     color: "transparent"
@@ -22,7 +30,7 @@ Rectangle
         anchors.fill: parent
         Rectangle
         {
-            width: Regovar.theme.font.boxSize.normal
+            width: indent * Regovar.theme.font.boxSize.normal
             height: Regovar.theme.font.boxSize.normal
             color: "transparent"
         }
@@ -30,10 +38,9 @@ Rectangle
         {
             Layout.minimumWidth: dateColWidth
             font.pixelSize: Regovar.theme.font.size.normal
-            font.family: "monospace"
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.disable
             verticalAlignment: Text.AlignVCenter
-            text: geneId
+            text: regovar.formatDate(date)
             elide: Text.ElideRight
         }
         Rectangle
@@ -49,7 +56,27 @@ Rectangle
             font.family: Regovar.theme.icons.name
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: "#"
+            text: Regovar.sexToIcon(sex)
+        }
+
+        Text
+        {
+            font.pixelSize: Regovar.theme.font.size.normal
+            color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
+            verticalAlignment: Text.AlignVCenter
+            font.family: fixedFont
+            text: identifier
+        }
+        Text
+        {
+            Layout.minimumWidth: Regovar.theme.font.boxSize.normal
+            font.pixelSize: Regovar.theme.font.size.normal
+            font.family: Regovar.theme.icons.name
+            color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            text: "{"
+            elide: Text.ElideRight
         }
 
         Text
@@ -59,7 +86,8 @@ Rectangle
             font.family: Regovar.theme.font.family
             color: isHover ?  Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
             verticalAlignment: Text.AlignVCenter
-            text: symbol
+            text: lastname + " " + firstname + (age ? " (" + age + ")" : "")
+            elide: Text.ElideRight
         }
     }
 
@@ -69,6 +97,6 @@ Rectangle
         hoverEnabled: true
         onEntered: isHover = true
         onExited: isHover = false
-        onClicked: root.clicked(geneId)
+        onClicked: root.clicked(subjectId)
     }
 }

@@ -230,7 +230,7 @@ void PipelineAnalysis::load(bool forceRefresh)
     if (!mLoaded || forceRefresh || diff > MIN_SYNC_DELAY)
     {
         mLastInternalLoad = QDateTime::currentDateTime();
-        Request* req = Request::get(QString("/job/%1").arg(mId));
+        Request* req = Request::get(QString("/job/%1/monitoring").arg(mId));
         connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
         {
             if (success)
@@ -357,3 +357,4 @@ void PipelineAnalysis::processPushNotification(QString action, QJsonObject data)
         loadJson(data);
     }
 }
+

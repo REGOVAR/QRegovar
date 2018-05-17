@@ -22,7 +22,7 @@ Rectangle
         for (var i = 0; i < container.children.length; ++i)
         {
             var item = container.children[i];
-            if (item.objectName == "qf")
+            if (item.objectName === "qf")
             {
                 item.model = model;
                 item.reset();

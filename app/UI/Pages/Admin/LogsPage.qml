@@ -27,10 +27,11 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Regovar server logs")
             font.pixelSize: Regovar.theme.font.size.title
             font.weight: Font.Black
             color: Regovar.theme.primaryColor.back.dark
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Regovar server logs")
         }
         ConnectionStatus
         {
@@ -55,7 +56,6 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("Below the list of all events and \"technical\" actions done on the server.")
     }
@@ -157,17 +157,22 @@ Rectangle
                 anchors.leftMargin: 10
                 spacing: 10
 
-                Text
+                Rectangle
                 {
-                    Layout.fillWidth: true
-                    text: qsTr("TODO: event details panel")
-                }
-
-                Item
-                {
+                    color: "transparent"
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-
+                    Layout.columnSpan: 3
+                    border.width: 1
+                    border.color: Regovar.theme.boxColor.border
+                    Text
+                    {
+                        anchors.centerIn: parent
+                        text: qsTr("Not yet implemented")
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        color: Regovar.theme.frontColor.disable
+                        verticalAlignment: Text.AlignVCenter
+                    }
                 }
             }
         }

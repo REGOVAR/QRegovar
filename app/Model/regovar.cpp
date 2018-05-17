@@ -248,7 +248,7 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
     {
         wid += "_" + qobject_cast<HpoData*>(model)->id();
     }
-    openNewWindow(qmlUrl, model, wid);
+    return openNewWindow(qmlUrl, model, wid);
 }
 
 bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model, QString wid)

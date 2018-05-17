@@ -34,7 +34,7 @@ Rectangle
             font.weight: Font.Black
             color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
-            text: qsTr("Trash")
+            text: qsTr("Custom databases")
         }
         ConnectionStatus
         {
@@ -60,7 +60,7 @@ Rectangle
 
         visible: Regovar.helpInfoBoxDisplayed
         icon: "k"
-        text: qsTr("Check which data have been erase before deleting them definitively.")
+        text: qsTr("Manage your additional custom databases.")
     }
 
 

@@ -273,7 +273,7 @@ GenericScreen
                                     font.pixelSize: Regovar.theme.font.size.normal
                                     color: Regovar.theme.frontColor.disable
                                     verticalAlignment: Text.AlignVCenter
-                                    font.family: "monospace"
+                                    font.family: fixedFont
                                     text: modelData.name
                                 }
                                 Text

@@ -37,7 +37,7 @@ Rectangle
             Layout.fillWidth: true
             height: Regovar.theme.font.boxSize.header
             text: root.label
-            font.family: "monospace"
+            font.family: fixedFont
             color: Regovar.theme.frontColor.normal
             font.pixelSize: Regovar.theme.font.size.normal
             verticalAlignment: Text.AlignVCenter

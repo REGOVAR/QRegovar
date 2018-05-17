@@ -30,10 +30,11 @@ Rectangle
         {
             anchors.fill: header
             anchors.margins: 10
-            text: qsTr("Annotations databases")
             font.pixelSize: Regovar.theme.font.size.title
             font.weight: Font.Black
             color: Regovar.theme.primaryColor.back.dark
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Variants annotations database")
         }
         ConnectionStatus
         {
@@ -58,9 +59,8 @@ Rectangle
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
-        text: qsTr("Below the list of all events and \"technical\" actions done on the server.")
+        text: qsTr("Browse, edit and organize variant's annotation databases.")
     }
 
 
@@ -76,6 +76,20 @@ Rectangle
 
         spacing: 5
 
+        Rectangle
+        {
+            id: empty
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            color: "transparent"
 
+            Text
+            {
+                anchors.centerIn: parent
+                text: qsTr("Not yet implemented")
+                font.pixelSize: Regovar.theme.font.size.title
+                color: Regovar.theme.primaryColor.back.light
+            }
+        }
     }
 }

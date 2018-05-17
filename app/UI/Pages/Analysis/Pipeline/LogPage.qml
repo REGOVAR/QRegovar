@@ -118,7 +118,7 @@ Rectangle
             Layout.fillWidth: true
             text: root.model.text
             cursorPosition: root.model.cursorPosition
-            font.family: "monospace"
+            font.family: fixedFont
             font.pixelSize: Regovar.theme.font.size.normal
             colorText: "lightgrey"
             colorBack: "black"
