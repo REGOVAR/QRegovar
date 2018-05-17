@@ -76,14 +76,7 @@ bool PipelineAnalysis::loadJson(QJsonObject json, bool full_init)
     // Inputs files
     if (json.contains("inputs"))
     {
-        mInputsFiles->clear();
-        for (const QJsonValue& fileVal: json["inputs"].toArray())
-        {
-            QJsonObject fileData = fileVal.toObject();
-            File* file = regovar->filesManager()->getOrCreateFile(fileData["id"].toInt());
-            file->loadJson(fileData);
-            mInputsFiles->add(file);
-        }
+        mInputsFiles->loadJson(json["inputs"].toArray());
     }
     else if (json.contains("inputs_ids"))
     {
@@ -101,14 +94,7 @@ bool PipelineAnalysis::loadJson(QJsonObject json, bool full_init)
     // Outputs files
     if (json.contains("outputs"))
     {
-        mOutputsFiles->clear();
-        for (const QJsonValue& fileVal: json["outputs"].toArray())
-        {
-            QJsonObject fileData = fileVal.toObject();
-            File* file = regovar->filesManager()->getOrCreateFile(fileData["id"].toInt());
-            file->loadJson(fileData);
-            mOutputsFiles->add(file);
-        }
+        mOutputsFiles->loadJson(json["outputs"].toArray());
     }
     else if (json.contains("outputs_ids"))
     {

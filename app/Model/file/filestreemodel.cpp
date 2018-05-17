@@ -1,8 +1,8 @@
 #include <QDebug>
 #include "filestreemodel.h"
-#include "filestreeitem.h"
 #include "Model/framework/request.h"
 #include "Model/regovar.h"
+#include "Model/framework/treeitem.h"
 
 
 FilesTreeModel::FilesTreeModel(QObject* parent) : TreeModel(parent)
@@ -23,38 +23,44 @@ FilesTreeModel::FilesTreeModel(QObject* parent) : TreeModel(parent)
 }
 
 
+void FilesTreeModel::refreshTreeView()
+{
+    // invalidating the whole tree
+    beginResetModel();
+    endResetModel();
+//    TreeItem* test = getItem(QModelIndex());
+
+//    QModelIndex idx1 = index(0,0);
+//    QModelIndex idx2 = index(1,0);
+
+//    emit dataChanged(idx1, idx2);
+}
+
 
 bool FilesTreeModel::loadJson(QJsonArray json)
 {
     beginResetModel();
+
+    for(const int fileId: mFilesIds)
+    {
+        File* file = regovar->filesManager()->getOrCreateFile(fileId);
+        disconnect(file, SIGNAL(dataChanged()), this, SLOT(refreshTreeView()));
+    }
+
     clear();
     setupModelData(json, mRootItem);
     endResetModel();
     return true;
 }
 
-
-bool FilesTreeModel::refresh()
+void FilesTreeModel::clear()
 {
-    qDebug() << "TODO: FilesTreeModel::refresh()";
-//    Request* request = Request::get("/project/browserTree");
-//    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
-//    {
-//        if (success)
-//        {
-//            beginResetModel();
-//            setupModelData(json["data"].toArray(), rootItem);
-//            endResetModel();
-//            qDebug() << Q_FUNC_INFO << "done";
-//        }
-//        else
-//        {
-//            qCritical() << Q_FUNC_INFO << "Unable to build user list model (due to request error)";
-//        }
-//        request->deleteLater();
-//    });
-    return false;
+    beginResetModel();
+    mRootItem->recursiveDelete();
+    mFilesIds.clear();
+    endResetModel();
 }
+
 
 
 
@@ -76,6 +82,11 @@ void FilesTreeModel::add(File* file, TreeItem* parent)
         qDebug() << "ERROR: [FilesTreeModel::add] parent or file cannot be null";
         return;
     }
+    if (mFilesIds.contains(file->id()))
+    {
+        qDebug() << "File already added in the treeview";
+        return;
+    }
     // Get Json data and store its into item's columns (/!\ columns order must respect enum order)
     QHash<int, QVariant> columnData;
     columnData.insert(Id, file->id());
@@ -88,10 +99,13 @@ void FilesTreeModel::add(File* file, TreeItem* parent)
     columnData.insert(Source, file->sourceUI());
     columnData.insert(SearchField, file->searchField());
 
-    // Create treeview item
+    // connect to file data changed event to force the treeview to update itself
+    connect(file,  SIGNAL(dataChanged()), this, SLOT(refreshTreeView()));
 
+    // Create treeview item
     TreeItem* item = new TreeItem(columnData, parent);
     parent->appendChild(item);
+    mFilesIds.append(file->id());
 }
 
 

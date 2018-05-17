@@ -38,7 +38,6 @@ HEADERS += \
     Model/analysis/filtering/fieldcolumninfos.h \
     Model/analysis/filtering/savedfilter.h \
     Model/file/file.h \
-    Model/file/filestreeitem.h \
     Model/file/filestreemodel.h \
     Model/file/tusuploader.h \
     Model/project/project.h \
@@ -121,7 +120,6 @@ SOURCES += main.cpp \
     Model/analysis/filtering/fieldcolumninfos.cpp \
     Model/analysis/filtering/savedfilter.cpp \
     Model/file/file.cpp \
-    Model/file/filestreeitem.cpp \
     Model/file/filestreemodel.cpp \
     Model/file/tusuploader.cpp \
     Model/project/project.cpp \
