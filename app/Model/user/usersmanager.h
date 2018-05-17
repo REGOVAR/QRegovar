@@ -46,8 +46,10 @@ Q_SIGNALS:
 public Q_SLOTS:
     //! Called by NetworkManager when need to process WebSocket messages managed by UsersManager
     void processPushNotification(QString action, QJsonObject data);
-    //! try to lo the user with provided credentials
+    //! try to log the user with provided credentials
     void login(QString login, QString password);
+    //! try to log the user with session coockie
+    void login();
     //! logout the current user
     void logout();
 

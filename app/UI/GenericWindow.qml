@@ -66,7 +66,6 @@ ApplicationWindow
     {
         id: loginPage
         anchors.fill: parent
-        visible: false
         z: 20
     }
 

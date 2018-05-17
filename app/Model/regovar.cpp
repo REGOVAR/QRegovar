@@ -57,16 +57,6 @@ void Regovar::init()
 
     // Init user manager and current user if autologin enabled
     mUsersManager = new UsersManager(this);
-    if (mSettings->keepMeLogged())
-    {
-        // Restore cookie and try to authent with it
-        mUsersManager->setKeepMeLogged(true);
-        Request::setCookie(mSettings->sessionCookie());
-        User* user = mUsersManager->getOrCreateUser(mSettings->sessionUserId());
-        mUsersManager->setUser(user);
-        user->load(true);
-        emit mUsersManager->displayLoginScreen(false);
-    }
 
     // Init others managers
     mProjectsManager = new ProjectsManager(this);
@@ -82,8 +72,20 @@ void Regovar::init()
     // Load misc data
     mLastAnalyses = new AnalysesListModel(this);
     mLastSubjects = new SubjectsListModel(this);
+
     loadConfigData();
-    loadWelcomData();
+    // Auto log last user ?
+    if (mSettings->keepMeLogged())
+    {
+        // Restore cookie and try to authent with it
+        mUsersManager->login();
+    }
+    else
+    {
+        regovar->mainMenu()->goTo(0,0,0);
+        emit mUsersManager->logoutSuccess();
+        emit mUsersManager->displayLoginScreen(true);
+    }
 }
 
 

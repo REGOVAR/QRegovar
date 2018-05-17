@@ -37,7 +37,7 @@ bool User::loadJson(QJsonObject json)
     mLocation = json["location"].toString();
     mCreationDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
     mLastActivity = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
-    mIsActive = json["is_active"].toBool();
+    mIsActive = true; // TODO: json["is_active"].toBool();
     mIsAdmin = json["is_admin"].toBool();
     qDebug() << Q_FUNC_INFO << "New User" << mId << mFirstname << mLastname;
 

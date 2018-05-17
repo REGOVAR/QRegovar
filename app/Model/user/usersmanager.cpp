@@ -101,6 +101,7 @@ void UsersManager::login(QString login, QString password)
             QJsonObject data = json["data"].toObject();
             setUser(getOrCreateUser(data["id"].toInt()));
             mUser->loadJson(data);
+            regovar->mainMenu()->goTo(0,0,0);
             emit displayLoginScreen(false);
             regovar->loadWelcomData();
             regovar->settings()->setKeepMeLogged(mKeepMeLogged);
@@ -115,9 +116,44 @@ void UsersManager::login(QString login, QString password)
                     }
                 }
             }
+            regovar->settings()->save();
         }
         else
         {
+            emit loginFailed();
+        }
+        req->deleteLater();
+    });
+}
+
+void UsersManager::login()
+{
+
+    int userId = regovar->settings()->sessionUserId();
+    if (userId != -1)
+    {
+        emit loginFailed();
+        return;
+    }
+
+    // Load stored cookies and try to load user
+    Request::setCookie(regovar->settings()->sessionCookie());
+    Request* req = Request::get(QString("/user/%1").arg(userId));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            QJsonObject data = json["data"].toObject();
+            setUser(getOrCreateUser(data["id"].toInt()));
+            mUser->loadJson(data);
+            emit displayLoginScreen(false);
+            regovar->mainMenu()->goTo(0,0,0);
+            regovar->loadWelcomData();
+        }
+        else
+        {
+            regovar->settings()->setSessionUserId(-1);
+            regovar->settings()->save();
             emit loginFailed();
         }
         req->deleteLater();
@@ -132,6 +168,14 @@ void UsersManager::logout()
         Request* test = Request::get("/user/logout");
         connect(test, &Request::responseReceived, [this](bool, const QJsonObject&)
         {
+            // Clear session
+            if (mKeepMeLogged)
+            {
+                regovar->settings()->setSessionUserId(-1);
+                regovar->settings()->setSessionCookie(QNetworkCookie());
+                regovar->settings()->save();
+            }
+
             mUser->clear();
             qDebug() << Q_FUNC_INFO << "You are disconnected !";
             emit logoutSuccess();
