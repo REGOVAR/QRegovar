@@ -339,7 +339,7 @@ Rectangle
                 visible: !regovar.welcomIsLoading || regovar.networkManager.status !== 0
                 iconTxt: "d"
                 text: qsTr("Check local settings")
-                onClicked: regovar.mainMenu.goTo(5,1,2)
+                onClicked: regovar.mainMenu.goTo(6,1,2)
             }
         }
     }

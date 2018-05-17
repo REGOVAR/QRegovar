@@ -130,7 +130,11 @@ bool PipelineAnalysis::loadJson(QJsonObject json, bool full_init)
             {
                 RemoteLogModel* logModel = qobject_cast<RemoteLogModel*>(o);
                 exists = logModel->url() == url;
-                if (exists) break;
+                if (exists)
+                {
+                    logModel->refresh();
+                    break;
+                }
             }
             if (!exists)
             {

@@ -121,12 +121,9 @@ File* FilesTreeModel::getAt(int row, const QModelIndex& parent)
 
 void FilesTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
 {
-
-
     for (const QJsonValue& json: data)
     {
         QJsonObject p = json.toObject();
-
         if (p.contains("folder"))
         {
             // Add folder entry
