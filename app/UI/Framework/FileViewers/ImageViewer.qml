@@ -66,56 +66,60 @@ Item
         Rectangle
         {
             Layout.fillWidth: true
-            height: Regovar.theme.font.boxSize.header
-            color: "transparent"
+            height: Regovar.theme.font.boxSize.title
+            color: Regovar.theme.backgroundColor.alt
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            radius: 2
 
             RowLayout
             {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.right: parent.right
+                anchors.fill: parent
+                anchors.margins: 10
                 spacing: 10
 
                 Text
                 {
+                    id: fileIcon
+                    Layout.minimumWidth: Regovar.theme.font.boxSize.header
+                    Layout.fillHeight: true
+                    verticalAlignment: Text.AlignVCenter
+                    font.pixelSize: Regovar.theme.font.size.header
+                    font.family: Regovar.theme.icons.name
+                    color: Regovar.theme.primaryColor.back.dark
+                }
+                Text
+                {
                     id: fileName
                     Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    verticalAlignment: Text.AlignVCenter
                     font.pixelSize: Regovar.theme.font.size.header
                     color: Regovar.theme.primaryColor.back.dark
                     elide: Text.ElideRight
                 }
 
-                ButtonInline
+
+                ButtonIcon
                 {
                     iconTxt: ""
                     text: qsTr("Fit")
                     onClicked: root.applyZoom(imageContainer.zoomScaleMin);
                 }
 
-                ButtonInline
+                ButtonIcon
                 {
                     iconTxt: ""
                     text: qsTr("1:1")
                     onClicked: root.applyZoom(0,0, 1.0);
                 }
 
-                ButtonInline
+                ButtonIcon
                 {
                     iconTxt: "_"
                     text: qsTr("Open externaly")
                     onClicked: Qt.openUrlExternally(0,0, model.localFilePath);
                 }
-            }
-
-
-
-            Rectangle
-            {
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                width: parent.width
-                height: 1
-                color: Regovar.theme.primaryColor.back.normal
             }
         }
 
