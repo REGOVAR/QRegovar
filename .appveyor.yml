@@ -10,8 +10,7 @@ install:
   
 build_script:
   - qmake app/QRegovar.pro
-  - qmake.exe
-  - qmake_all
+  - C:\Qt\Tools\QtCreator\bin\jom.exe -f Makefile.Release
 
 deploy:
   - provider: GitHub
