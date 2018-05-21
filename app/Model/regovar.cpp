@@ -373,8 +373,8 @@ void Regovar::getPanelInfo(QString panelId)
 void Regovar::getSampleInfo(int sampleId)
 {
     Sample* sample = mSamplesManager->getOrCreateSample(sampleId);
-    openNewWindow(QUrl("qrc:/qml/Windows/SampleInfoWindow.qml"), sample);
     sample->load(false);
+    openNewWindow(QUrl("qrc:/qml/Windows/SampleInfoWindow.qml"), sample);
     emit sampleInformationReady(sample);
 }
 
