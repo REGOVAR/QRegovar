@@ -9,7 +9,8 @@ install:
   - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw530_32\bin;%PATH%;
   
 build_script:
-  - qmake app/QRegovar.pro
+  - qmake app/QRegovar.pro -spec win32-msvc
+  - C:\Qt\Tools\QtCreator\bin\jom.exe qmake_all
   - C:\Qt\Tools\QtCreator\bin\jom.exe -f Makefile.Release
 
 deploy:
