@@ -7,9 +7,11 @@ branches:
 install:
   - set QTDIR=C:\Qt\5.10.1\msvc2017_64
   - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw530_32\bin;%PATH%;
+  
 build_script:
   - qmake app/QRegovar.pro
-  - mingw32-make
+  - qmake.exe
+  - qmake_all
 
 deploy:
   - provider: GitHub
@@ -19,3 +21,5 @@ deploy:
     on:
       branch: master                # release from master branch only
       appveyor_repo_tag: true       # deploy on tag push only
+
+
