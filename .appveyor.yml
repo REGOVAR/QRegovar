@@ -10,7 +10,7 @@ install:
   
 build_script:
   - qmake app/QRegovar.pro -spec win32-msvc
-  - C:\Qt\Tools\QtCreator\bin\jom.exe qmake_all
+  - qmake_all
   - C:\Qt\Tools\QtCreator\bin\jom.exe -f Makefile.Release
 
 deploy:
