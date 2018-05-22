@@ -9,8 +9,8 @@ install:
   - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw530_32\bin;%PATH%;
   
 build_script:
-  - nmake qmake_all
-  qmake app/QRegovar.pro -spec win32-msvc
+  - cd app
+  # - qmake app/QRegovar.pro -spec win32-msvc
   - nmake qmake_all
   - nmake
   - nmake lrelease # -f Makefile.Release
@@ -19,9 +19,9 @@ deploy:
   - provider: GitHub
     artifact: C:/projects/qregovar
     draft: true
-    prerelease: false
+    prerelease: true
     on:
       branch: master                # release from master branch only
-      appveyor_repo_tag: true       # deploy on tag push only
+      # appveyor_repo_tag: true       # deploy on tag push only
 
 
