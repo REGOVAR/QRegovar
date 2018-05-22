@@ -1,16 +1,17 @@
-#ifndef GENESLISTMODEL_H
-#define GENESLISTMODEL_H
+#ifndef PANELENTRIESLISTMODEL_H
+#define PANELENTRIESLISTMODEL_H
 
 #include <QtCore>
 #include "Model/framework/genericproxymodel.h"
+#include "panelentry.h"
 
-class GenesListModel: public QAbstractListModel
+class PanelEntriesListModel: public QAbstractListModel
 {
     enum Roles
     {
-        Id = Qt::UserRole + 1,
-        Symbol,
-        Panels,
+        Label = Qt::UserRole + 1,
+        Type,
+        Details,
         SearchField
     };
 
@@ -18,10 +19,9 @@ class GenesListModel: public QAbstractListModel
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
     Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
-
 public:
     // Constructor
-    explicit GenesListModel(QObject* parent=nullptr);
+    explicit PanelEntriesListModel(QObject* parent=nullptr);
 
     // Getters
     inline GenericProxyModel* proxy() const { return mProxy; }
@@ -29,16 +29,16 @@ public:
     // Methods
     //! Remove all entries of the list
     Q_INVOKABLE void clear();
-    //! Load phenotype list from list of json
+    //! Load panel entries list from json
     Q_INVOKABLE bool loadJson(QJsonArray json);
-    //! Add the provided gene to the list if not already contains
-    Q_INVOKABLE bool append(QString gene);
-    //! Remove a gene from the list if possible
-    Q_INVOKABLE bool remove(QString gene);
+    //! Add the provided panel entry to the list if not already contains
+    Q_INVOKABLE bool append(PanelEntry* entry);
+    //! Remove a panel entry from the list if possible
+    Q_INVOKABLE bool remove(PanelEntry* entry);
+    //! Remove entry at the requested position in the list
+    Q_INVOKABLE bool removeAt(int idx);
     //! Return entry at the requested position in the list
-    Q_INVOKABLE QString getAt(int idx);
-    //! oins all the string list's strings into a single string with each element separated by the given separator (which can be an empty string).
-    Q_INVOKABLE QString join(QString separator);
+    Q_INVOKABLE PanelEntry* getAt(int idx);
 
     // QAbstractListModel methods
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
@@ -52,8 +52,8 @@ Q_SIGNALS:
 
 
 private:
-    QStringList mGenes;
+    QList<PanelEntry*> mPanelEntriesList;
     GenericProxyModel* mProxy = nullptr;
 };
 
-#endif // GENESLISTMODEL_H
+#endif // PANELENTRIESLISTMODEL_H

@@ -6,7 +6,7 @@ GenesListModel::GenesListModel(QObject* parent): QAbstractListModel(parent)
     mProxy = new GenericProxyModel(this);
     mProxy->setSourceModel(this);
     mProxy->setFilterRole(SearchField);
-    mProxy->setSortRole(Id);
+    mProxy->setSortRole(Symbol);
 }
 
 
@@ -88,9 +88,9 @@ QVariant GenesListModel::data(const QModelIndex& index, int role) const
         return QVariant();
 
     const QString gene = mGenes[index.row()];
-    if (role == Id || role == Qt::DisplayRole)
+    if (role == Symbol || role == Qt::DisplayRole)
         return gene;
-    else if (role == Panel)
+    else if (role == Panels)
         return ""; // TODO: regovar->panelsManager()->findPanelsWith(gene)
     else if (role == SearchField)
         return gene; // TODO + panel
@@ -102,7 +102,8 @@ QHash<int, QByteArray> GenesListModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[Id] = "id";
-    roles[Panel] = "panel";
+    roles[Symbol] = "symbol";
+    roles[Panels] = "panels";
     roles[SearchField] = "searchField";
     return roles;
 }

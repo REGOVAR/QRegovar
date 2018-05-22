@@ -129,7 +129,7 @@ QJsonObject Event::toJson()
     }
     if (mPanel != nullptr)
     {
-        meta.insert("panel_id", mPanel->versionId());
+        meta.insert("panel_id", mPanel->id());
     }
     if (mSubject != nullptr)
     {

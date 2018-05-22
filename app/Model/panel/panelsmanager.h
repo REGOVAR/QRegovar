@@ -27,6 +27,7 @@ public:
 
     // Methods
     Q_INVOKABLE Panel* getOrCreatePanel(QString id);
+    Q_INVOKABLE PanelVersion* getPanelVersion(QString id);
     Q_INVOKABLE void commitNewPanel();
     Q_INVOKABLE void searchPanelEntry(QString query);
     //! refresh models with data from server

@@ -18,6 +18,9 @@ PanelsManager::PanelsManager(QObject* parent) : QObject(parent)
 
 Panel* PanelsManager::getOrCreatePanel(QString id)
 {
+    // id may be panel id or panel version id
+    //   if panel id: return the panel
+    //   if version id: return panel that own this version
 
     // Check if id found in panels
     if (mPanels.contains(id))
@@ -27,17 +30,39 @@ Panel* PanelsManager::getOrCreatePanel(QString id)
     // Check if id found in panels versions
     for(Panel* panel: mPanels.values())
     {
-        if (panel->getVersion(id) != nullptr)
+        if (panel->versions()->getVersion(id) != nullptr)
         {
             return panel;
         }
     }
-    // else create new panel
-    Panel* newPanel = new Panel(true);
+    // else create new empty panel
+    Panel* newPanel = new Panel(this);
     mPanels.insert(id, newPanel);
     return newPanel;
 }
 
+PanelVersion* PanelsManager::getPanelVersion(QString id)
+{
+    // id may be panel id or panel version id
+    //   if panel id: return the head version of this panel
+    //   if version id: return the version
+
+    // Check if id found in panels
+    if (mPanels.contains(id))
+    {
+        return mPanels[id]->versions()->headVersion();
+    }
+    // Check if id found in panels versions
+    for(Panel* panel: mPanels.values())
+    {
+        PanelVersion* version = panel->versions()->getVersion(id);
+        if (version != nullptr)
+        {
+            return version;
+        }
+    }
+    return nullptr;
+}
 
 
 void PanelsManager::commitNewPanel()

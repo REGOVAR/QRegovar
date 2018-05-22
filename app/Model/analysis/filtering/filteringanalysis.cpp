@@ -611,8 +611,11 @@ void FilteringAnalysis::resetSets()
     // add panels
     for (QString& panelId: mPanelsUsed)
     {
-        Panel* panel = regovar->panelsManager()->getOrCreatePanel(panelId);
-        mSets.append(new Set("panel", panel->versionId(), panel->fullname() ));
+        PanelVersion* panel = regovar->panelsManager()->getPanelVersion(panelId);
+        if (panel != nullptr)
+        {
+            mSets.append(new Set("panel", panel->id(), panel->fullname() ));
+        }
     }
 
     emit setsChanged();
