@@ -23,7 +23,7 @@ public:
     // Constructors
     explicit PanelVersion(QObject* parent=nullptr);
     explicit PanelVersion(Panel* rootPanel, QObject* parent=nullptr);
-    explicit PanelVersion(QString id, Panel* rootPanel, QObject* parent=nullptr);
+    explicit PanelVersion(Panel* rootPanel, QJsonObject json, QObject* parent=nullptr);
 
     // Getters
     inline QString id() const { return mId; }
@@ -46,6 +46,8 @@ public:
     Q_INVOKABLE void load(bool forceRefresh=true) override;
     //! Export model data into json object
     Q_INVOKABLE QJsonObject toJson() override;
+    //! Save model information onto server
+    Q_INVOKABLE void save() override;
 
     // Methods
     //! Add a new entry to the list (only used by the qml wizard)

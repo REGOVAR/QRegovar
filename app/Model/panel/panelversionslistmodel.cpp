@@ -1,7 +1,10 @@
 #include "panelversionslistmodel.h"
+#include "panelversion.h"
+#include "panel.h"
 
-PanelVersionsListModel::PanelVersionsListModel(QObject* parent): QAbstractListModel(parent)
+PanelVersionsListModel::PanelVersionsListModel(Panel* root): QAbstractListModel(root)
 {
+    mRootPanel = root;
     mProxy = new GenericProxyModel(this);
     mProxy->setSourceModel(this);
     mProxy->setFilterRole(SearchField);
@@ -24,7 +27,7 @@ bool PanelVersionsListModel::loadJson(QJsonArray json)
     mPanelVersionsList.clear();
     for(const QJsonValue& val: json)
     {
-        mPanelVersionsList.append(new PanelVersion(val.toObject()));
+        mPanelVersionsList.append(new PanelVersion(mRootPanel, val.toObject()));
     }
     endResetModel();
     emit countChanged();
@@ -87,14 +90,14 @@ bool PanelVersionsListModel::addVersion(QJsonObject data, bool append)
     bool result = version->loadJson(data);
     if (result)
     {
-        mVersionsMap->insert(version->versionId(), version);
+        mVersionsMap.insert(version->id(), version);
         if (append)
         {
-            mPanelVersionsList->append(version);
+            mPanelVersionsList.append(version);
         }
         else
         {
-            mPanelVersionsList->insert(0, version);
+            mPanelVersionsList.insert(0, version);
         }
     }
     return result;
@@ -102,19 +105,19 @@ bool PanelVersionsListModel::addVersion(QJsonObject data, bool append)
 
 bool PanelVersionsListModel::addVersion(PanelVersion* version)
 {
-    if (version != nullptr && !mVersionsMap->contains(version->id()))
+    if (version != nullptr && !mVersionsMap.contains(version->id()))
     {
-        mVersionsMap->insert(versionId, version);
-        mPanelVersionsList->append(version);
+        mVersionsMap.insert(version->id(), version);
+        mPanelVersionsList.append(version);
         return true;
     }
     return false;
 }
 
 
-PanelVersion* const PanelVersionsListModel::headVersion()
+PanelVersion* PanelVersionsListModel::headVersion()
 {
-    if (mPanelVersionsList->rowCount() > 0)
+    if (mPanelVersionsList.count() > 0)
     {
         return mPanelVersionsList.last();
     }

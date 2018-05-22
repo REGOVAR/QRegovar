@@ -9,7 +9,11 @@ PanelVersion::PanelVersion(Panel* rootPanel, QObject* parent): PanelVersion(pare
 {
     mPanel = rootPanel;
 }
-
+PanelVersion::PanelVersion(Panel* rootPanel, QJsonObject json,  QObject* parent): PanelVersion(parent)
+{
+    mPanel = rootPanel;
+    loadJson(json);
+}
 
 
 QString PanelVersion::fullname() const
@@ -21,8 +25,8 @@ QString PanelVersion::fullname() const
 bool PanelVersion::loadJson(QJsonObject json)
 {
     // Load version information
-    mVersionId = json["id"].toString();
-    mVersion = json["name"].toString();
+    mId = json["id"].toString();
+    mName= json["name"].toString();
     mComment = json["comment"].toString();
     mCreateDate = QDateTime::fromString(json["creation_date"].toString(), Qt::ISODate);
     mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
@@ -30,18 +34,7 @@ bool PanelVersion::loadJson(QJsonObject json)
     // Load entries
     for(const QJsonValue& entry: json["entries"].toArray())
     {
-        // Compute details field
-        QJsonObject entryData = entry.toObject();
-
-        if (entryData.contains("symbol"))
-        {
-            entryData.insert("details", "");
-        }
-        else
-        {
-            entryData.insert("details", QString("Chr%1:%2-%3").arg(entryData["chr"].toInt()).arg(entryData["start"].toInt()).arg(entryData["end"].toInt()));
-        }
-        mEntries.append(entryData);
+        mEntries->append(new PanelEntry(entry.toObject()));
     }
 }
 //! Export model data into json object

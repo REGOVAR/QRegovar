@@ -3,8 +3,9 @@
 
 #include <QtCore>
 #include "Model/framework/genericproxymodel.h"
-#include "panelversion.h"
 
+class Panel;
+class PanelVersion;
 class PanelVersionsListModel: public QAbstractListModel
 {
     enum Roles
@@ -25,7 +26,7 @@ class PanelVersionsListModel: public QAbstractListModel
 
 public:
     // Constructor
-    explicit PanelVersionsListModel(QObject* parent=nullptr);
+    explicit PanelVersionsListModel(Panel* root);
 
     // Getters
     inline GenericProxyModel* proxy() const { return mProxy; }
@@ -55,7 +56,7 @@ public:
     Q_INVOKABLE bool addVersion(PanelVersion* version);
     //! Return panel version details if provided id match; otherwise return null
     Q_INVOKABLE inline PanelVersion* getVersion(QString versionId) const { return mVersionsMap.contains(versionId) ? mVersionsMap.value(versionId): nullptr; }
-    Q_INVOKABLE PanelVersion* const headVersion();
+    Q_INVOKABLE PanelVersion* headVersion();
 
 Q_SIGNALS:
     void neverChanged();
@@ -63,6 +64,7 @@ Q_SIGNALS:
 
 
 private:
+    Panel* mRootPanel = nullptr;
     QList<PanelVersion*> mPanelVersionsList;
     GenericProxyModel* mProxy = nullptr;
 
