@@ -155,26 +155,50 @@ Dialog
 
             spacing: 10
 
-            TableView
+
+            ColumnLayout
             {
-                id: panelEntriesTable
                 Layout.fillHeight: true
                 Layout.fillWidth: true
+                spacing: 10
 
-                model: regovar.panelsManager.newPanel.entries
-
-                TableViewColumn
+                TextField
                 {
-                    title: qsTr("Label")
-                    width: 200
-                    role: "label"
+                    Layout.fillWidth: true
 
+                    property string formerSearch: ""
+                    iconLeft: "z"
+                    displayClearButton: true
+                    placeholder: qsTr("Filter panel entries...")
+                    onEditingFinished:
+                    {
+                        if (formerSearch != text && text != "")
+                        {
+                            panelEntriesTable.model.setFilterString(text);
+                            formerSearch = text;
+                        }
+                    }
                 }
-                TableViewColumn
+
+                TableView
                 {
-                    role: "details"
-                    title: qsTr("Details")
-                    width: 400
+                    id: panelEntriesTable
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+
+                    TableViewColumn
+                    {
+                        title: qsTr("Label")
+                        width: 200
+                        role: "label"
+
+                    }
+                    TableViewColumn
+                    {
+                        role: "details"
+                        title: qsTr("Details")
+                        width: 400
+                    }
                 }
             }
 
@@ -285,13 +309,14 @@ Dialog
 
     function reset()
     {
-        root.currentStep = 1;
-        panelNameField.text = "";
-        versionField.text = "v1";
-        ownerField.text = "";
-        descriptionField.text = "";
-        sharedField.checked = "";
         regovar.panelsManager.newPanel.reset();
+        root.currentStep = 1;
+        panelNameField.text = regovar.panelsManager.newPanel.name;
+        versionField.text = regovar.panelsManager.newPanel.versions.headVersion().name;
+        ownerField.text = regovar.panelsManager.newPanel.owner;
+        descriptionField.text = regovar.panelsManager.newPanel.description;
+        sharedField.checked = regovar.panelsManager.newPanel.shared;
+        panelEntriesTable.model = regovar.panelsManager.newPanel.versions.proxy;
     }
 
     function commit()

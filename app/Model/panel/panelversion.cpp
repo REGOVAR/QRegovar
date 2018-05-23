@@ -51,6 +51,7 @@ bool PanelVersion::loadJson(QJsonObject json)
     {
         mEntries->append(new PanelEntry(entry.toObject()));
     }
+    emit entriesChanged();
     emit dataChanged();
 }
 //! Export model data into json object
@@ -73,6 +74,7 @@ void PanelVersion::load(bool forceRefresh)
 //! Add a new entry to the list (only used by the qml wizard)
 void PanelVersion::addEntry(QJsonObject data)
 {
+    mEntries->append(new PanelEntry(data));
     emit entriesChanged();
 }
 //! Reset data (only used by Creation wizard to reset its model)

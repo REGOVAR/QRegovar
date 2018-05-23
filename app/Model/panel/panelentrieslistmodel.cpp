@@ -33,7 +33,7 @@ bool PanelEntriesListModel::loadJson(QJsonArray json)
 
 bool PanelEntriesListModel::append(PanelEntry* entry)
 {
-    if (entry!= nullptr && !mPanelEntriesList.contains(entry))
+    if (entry!= nullptr)
     {
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         mPanelEntriesList.append(entry);
