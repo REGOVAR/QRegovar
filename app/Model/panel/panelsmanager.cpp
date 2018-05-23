@@ -5,6 +5,7 @@
 PanelsManager::PanelsManager(QObject* parent) : QObject(parent)
 {
     mNewPanel = new Panel(this);
+    mNewPanel->versions()->addVersion(new PanelVersion(mNewPanel));
     mPanelsTree = new PanelsTreeModel();
 
     mProxy = new GenericProxyModel(this);
@@ -50,7 +51,7 @@ PanelVersion* PanelsManager::getPanelVersion(QString id)
     // Check if id found in panels
     if (mPanels.contains(id))
     {
-        return mPanels[id]->versions()->headVersion();
+        return mPanels[id]->headVersion();
     }
     // Check if id found in panels versions
     for(Panel* panel: mPanels.values())

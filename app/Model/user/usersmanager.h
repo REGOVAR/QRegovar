@@ -55,7 +55,7 @@ public Q_SLOTS:
 
 private:
     //! List of users
-    UsersListModel* mUsersList;
+    UsersListModel* mUsersList = nullptr;
     //! The current user of the application
     User* mUser = nullptr;
     //! The model used to create new user (admin panel)

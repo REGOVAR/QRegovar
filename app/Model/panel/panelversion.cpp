@@ -1,16 +1,16 @@
 #include "panelversion.h"
 
 
-PanelVersion::PanelVersion(QObject* parent): RegovarResource(parent)
+
+PanelVersion::PanelVersion(Panel* rootPanel): RegovarResource(rootPanel)
 {
     mEntries = new PanelEntriesListModel(this);
+    mPanel = rootPanel;
+
+    connect(mEntries, &PanelEntriesListModel::countChanged, this, &PanelVersion::emitEntriesChanged);
     connect(this, &PanelVersion::dataChanged, this, &PanelVersion::updateSearchField);
 }
-PanelVersion::PanelVersion(Panel* rootPanel, QObject* parent): PanelVersion(parent)
-{
-    mPanel = rootPanel;
-}
-PanelVersion::PanelVersion(Panel* rootPanel, QJsonObject json,  QObject* parent): PanelVersion(parent)
+PanelVersion::PanelVersion(Panel* rootPanel, QJsonObject json): PanelVersion(rootPanel)
 {
     mPanel = rootPanel;
     loadJson(json);
@@ -34,6 +34,11 @@ void PanelVersion::updateSearchField()
     }
 }
 
+void PanelVersion::emitEntriesChanged()
+{
+    emit entriesChanged();
+}
+
 
 
 //! Set model with provided json data
@@ -53,11 +58,13 @@ bool PanelVersion::loadJson(QJsonObject json)
     }
     emit entriesChanged();
     emit dataChanged();
+    return true;
 }
 //! Export model data into json object
 QJsonObject PanelVersion::toJson()
 {
-
+    QJsonObject result;
+    return result;
 }
 //! Save subject information onto server
 void PanelVersion::save()
@@ -78,7 +85,23 @@ void PanelVersion::addEntry(QJsonObject data)
     emit entriesChanged();
 }
 //! Reset data (only used by Creation wizard to reset its model)
-void PanelVersion::reset()
+void PanelVersion::reset(Panel* panel)
 {
+    // reset all (case of new panel creation)
+    mName = "v1";
+    mComment = "";
+    mEntries->clear();
+    // init with provided panel version information (case of new panel version creation)
+    if (panel != nullptr && panel->headVersion() != nullptr)
+    {
+        PanelVersion* head = panel->headVersion();
+        // Init new version with information of the head panel
+        mName = QString("v%1").arg(panel->versions()->rowCount() + 1);
+        mComment = head->comment();
+        for (int idx=0; idx < head->entries()->rowCount(); idx++)
+        {
+            mEntries->append(head->entries()->getAt(idx));
+        }
+    }
 
 }

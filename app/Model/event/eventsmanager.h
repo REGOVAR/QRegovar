@@ -36,9 +36,9 @@ public Q_SLOTS:
 
 private:
     //! List of last events (displayed on welcom page)
-    EventsListModel* mLastEvents;
+    EventsListModel* mLastEvents = nullptr;
     //! List of last technical events (displayed in admin panels)
-    EventsListModel* mTechnicalEvents;
+    EventsListModel* mTechnicalEvents = nullptr;
     //! Internal collection of all loaded events
     QHash<qint64, Event*> mEvents;
 };

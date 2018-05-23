@@ -80,26 +80,15 @@ void Panel::reset(Panel* panel)
     mDescription = "";
     mOwner = "";
     mShared = false;
-    mVersions->clear();
-    mVersions->addVersion(new PanelVersion(panel));
-    mVersions->getAt(0)->setName("v1");
+    headVersion()->reset(panel);
     // init with provided panel version information (case of new panel version creation)
-    if (panel != nullptr && panel->versions()->rowCount() > 0)
+    if (panel != nullptr)
     {
         mId = panel->id();
         mName = panel->name();
         mDescription = panel->description();
         mOwner = panel->owner();
         mShared = panel->shared();
-        PanelVersion* head = panel->versions()->headVersion();
-        PanelVersion* newv = mVersions->getAt(0);
-        // Init new version with information of the head panel
-        newv->setName(QString("v%1").arg(panel->versions()->rowCount() + 1));
-        newv->setComment(head->comment());
-        for (int idx=0; idx < head->entries()->rowCount(); idx++)
-        {
-            newv->entries()->append(head->entries()->getAt(idx));
-        }
     }
 }
 
@@ -108,7 +97,7 @@ void Panel::saveNewVersion()
 {
     // json export is used only for Update and Create one version of the panel
     // So, we don't format json with the list of all available version as done server side
-    PanelVersion* head = mVersions->headVersion();
+    PanelVersion* head = headVersion();
     QJsonObject result = head->toJson();
     result.insert("panel_id", mId);
 
@@ -140,7 +129,15 @@ void Panel::saveNewVersion()
 
 void Panel::addEntry(QJsonObject json)
 {
-    mVersions->headVersion()->addEntry(json);
+    PanelVersion* head = headVersion();
+    if (head != nullptr)
+    {
+        head->addEntry(json);
+    }
+    else
+    {
+        qDebug() << "WARNING: No panel head version";
+    }
 }
 
 void Panel::save()

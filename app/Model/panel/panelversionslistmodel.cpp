@@ -88,7 +88,7 @@ PanelVersion* PanelVersionsListModel::addVersion(QJsonObject data, bool append)
     // If not exists, create it
     if (data.contains("id") && !mVersionsMap.contains(data["id"].toString()))
     {
-        PanelVersion* version = new PanelVersion(this);
+        PanelVersion* version = new PanelVersion(mRootPanel);
         version->loadJson(data);
         mVersionsMap.insert(version->id(), version);
         if (append)

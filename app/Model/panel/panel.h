@@ -16,6 +16,7 @@ class Panel : public RegovarResource
     Q_PROPERTY(QString owner READ owner WRITE setOwner NOTIFY dataChanged)
     Q_PROPERTY(bool shared READ shared WRITE setShared NOTIFY dataChanged)
     Q_PROPERTY(PanelVersionsListModel* versions READ versions NOTIFY dataChanged)
+    Q_PROPERTY(PanelVersion* headVersion READ headVersion NOTIFY dataChanged)
 
 
 public:
@@ -30,6 +31,7 @@ public:
     inline QString owner() const { return mOwner; }
     inline bool shared() const { return mShared; }
     inline PanelVersionsListModel* versions() const { return mVersions; }
+    inline PanelVersion* headVersion() { return mVersions->headVersion(); }
     // Setters
     inline void setName(QString name) { mName = name; emit dataChanged(); }
     inline void setDescription(QString desc) { mDescription = desc; emit dataChanged(); }

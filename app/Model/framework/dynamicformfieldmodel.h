@@ -70,19 +70,19 @@ Q_SIGNALS:
 
 
 private:
-    DynamicFormModel* mForm;
+    DynamicFormModel* mForm = nullptr;
     QString mId;
     int mOrder=0;
     QString mTitle;
     QString mDescription;
     QString mType;
     QStringList mEnumValues;
-    bool mRequired=false;
+    bool mRequired = false;
     QVariant mValue;
     QVariant mDefaultValue;
     QString mSpecialFlag;
-    bool mValidated=false;
-    bool mInError=false;
+    bool mValidated = false;
+    bool mInError = false;
     QString mErrorMessage;
     QString mSearchField;
 

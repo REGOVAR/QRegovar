@@ -26,6 +26,7 @@ bool PanelEntry::loadJson(QJsonObject json)
     }
     mData = json;
     mSearchField = mLabel + " " + mDetails;
+    return true;
 }
 
 

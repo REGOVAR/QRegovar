@@ -34,9 +34,9 @@ public Q_SLOTS:
 
 private:
     //! List of all available pipelines (on shared server/github)
-    PipelinesListModel* mAvailablePipes;
+    PipelinesListModel* mAvailablePipes = nullptr;
     //! List of pipelines that are installed and ready to used on the Regovar server
-    PipelinesListModel* mInstalledPipes;
+    PipelinesListModel* mInstalledPipes = nullptr;
     //! Internal collection of all loaded events
     QHash<qint64, Pipeline*> mPipelines;
 };

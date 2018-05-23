@@ -218,12 +218,12 @@ private:
     //! Admin operation wrapper
     Admin* mAdmin = nullptr;
     //! Model of the main menu
-    RootMenu* mMainMenu;
+    RootMenu* mMainMenu = nullptr;
     //! list of references supported by the server
     QList<QObject*> mReferences;
     //! Welcom last data
-    AnalysesListModel* mLastAnalyses;
-    SubjectsListModel* mLastSubjects;
+    AnalysesListModel* mLastAnalyses = nullptr;
+    SubjectsListModel* mLastSubjects = nullptr;
     //! Search request and results
     QString mSearchRequest;
     QJsonObject mSearchResult;

@@ -33,8 +33,8 @@ Q_SIGNALS:
     void modelChanged();
 
 private:
-    QTreeView* mTree;
-    ResultsTreeModel* mModel;
+    QTreeView* mTree = nullptr;
+    ResultsTreeModel* mModel = nullptr;
 };
 
 #endif // VARIANTSTREEWIDGET_H

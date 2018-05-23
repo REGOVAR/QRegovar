@@ -21,9 +21,8 @@ class PanelVersion : public RegovarResource
 
 public:
     // Constructors
-    explicit PanelVersion(QObject* parent=nullptr);
-    explicit PanelVersion(Panel* rootPanel, QObject* parent=nullptr);
-    explicit PanelVersion(Panel* rootPanel, QJsonObject json, QObject* parent=nullptr);
+    explicit PanelVersion(Panel* rootPanel=nullptr);
+    explicit PanelVersion(Panel* rootPanel, QJsonObject json);
 
     // Getters
     inline QString id() const { return mId; }
@@ -58,7 +57,7 @@ public:
     //! Remove entry at the given index in the list (only used by the qml wizard)
     Q_INVOKABLE inline void removeAllEntries() { if (mEntries->rowCount()>0) { mEntries->clear(); emit entriesChanged(); } }
     //! Reset data (only used by Creation wizard to reset its model)
-    Q_INVOKABLE void reset();
+    Q_INVOKABLE void reset(Panel* panel=nullptr);
 
 
 Q_SIGNALS:
@@ -67,10 +66,10 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void updateSearchField();
-
+    void emitEntriesChanged();
 
 private:
-    Panel* mPanel;
+    Panel* mPanel = nullptr;
     QString mId;
     QString mName;
     int mOrder = 0;

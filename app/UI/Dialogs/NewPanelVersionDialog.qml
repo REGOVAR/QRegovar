@@ -72,7 +72,6 @@ Dialog
                 id: panelNameField
                 Layout.fillWidth: true
                 placeholder: qsTr("Name of the panel")
-                text: regovar.panelsManager.newPanel.name
             }
 
             Text
@@ -89,7 +88,6 @@ Dialog
                 id: ownerField
                 Layout.fillWidth: true
                 placeholder: qsTr("Full name of the panel's owner or referring.")
-                text: regovar.panelsManager.newPanel.owner
             }
 
             Text
@@ -107,7 +105,6 @@ Dialog
                 id: descriptionField
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                text: regovar.panelsManager.newPanel.description
             }
 
             Text
@@ -124,7 +121,6 @@ Dialog
                 id: sharedField
                 Layout.fillWidth: true
                 text: qsTr("Check it if you want to share this panel with the community.")
-                checked: regovar.panelsManager.newPanel.shared
             }
         }
 
@@ -156,7 +152,6 @@ Dialog
                     id: versionField
                     Layout.fillWidth: true
                     placeholder: qsTr("Version name")
-                    text: regovar.panelsManager.newPanel.version
                 }
             }
 
@@ -171,8 +166,6 @@ Dialog
                     id: panelEntriesTable
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-
-                    model: regovar.panelsManager.newPanel.entries
 
                     TableViewColumn
                     {
@@ -353,31 +346,15 @@ Dialog
             internalUpdate = true;
 
             regovar.panelsManager.newPanel.reset(model);
-            panelNameField.text = model.name;
-            versionField.text = model.versions.getAt(0).name;
-            ownerField.text = model.owner;
-            descriptionField.text = model.description;
-            sharedField.checked = model.shared;
-
-            // Init new version with entries of the current head version
-            for(var idx=0; idx < root.model.versions.rowCount(); idx++)
-                regovar.panelsManager.newPanel.addVersion(root.model.versionsIds[idx]);
-            // Init entries with entries of the latest version
-            loadLastVersionEntries();
+            panelNameField.text = regovar.panelsManager.newPanel.name;
+            versionField.text = regovar.panelsManager.newPanel.versions.getAt(0).name;
+            ownerField.text = regovar.panelsManager.newPanel.owner;
+            descriptionField.text = regovar.panelsManager.newPanel.description;
+            sharedField.checked = regovar.panelsManager.newPanel.shared;
+            panelEntriesTable.model = regovar.panelsManager.newPanel.entries;
 
             internalUpdate = false;
         }
-    }
-
-    function loadLastVersionEntries()
-    {
-//        //panelEntriesTable.model = [];
-//        regovar.panelsManager.newPanel.removeAllEntries();
-//        var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
-//        for (var idx in headVersion.entries)
-//            regovar.panelsManager.newPanel.addEntry(headVersion.entries[idx]);
-//        //panelEntriesTable.model = regovar.panelsManager.newPanel.entries;
-//        console.log("===== loadLastVersionEntries");
     }
 
     function commit()
@@ -385,7 +362,6 @@ Dialog
         if (!internalUpdate)
         {
             internalUpdate = true;
-            regovar.panelsManager.newPanel.panelId = root.model.panelId;
             regovar.panelsManager.newPanel.name = panelNameField.text;
             regovar.panelsManager.newPanel.version = versionField.text;
             regovar.panelsManager.newPanel.owner = ownerField.text;
