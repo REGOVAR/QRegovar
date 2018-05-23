@@ -69,8 +69,7 @@ void PanelsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
         columnData.insert(Comment, QVariant(p->description()));
         columnData.insert(Date, QVariant(p->updateDate().toString("yyyy-MM-dd HH:mm")));
         columnData.insert(Shared, QVariant(p->shared() ? tr("Yes") : ""));
-        QString search = p->name() + " " + p->description();
-        columnData.insert(SearchField, QVariant(search));
+        columnData.insert(SearchField, QVariant(p->searchField()));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);

@@ -15,25 +15,21 @@ bool PanelEntry::loadJson(QJsonObject json)
     if (json["type"] == "gene")
     {
         mLabel = json["symbol"].toString();
-        mDetails = "";
+        mDetails = json["details"].toString();
         mType = "gene";
     }
     else
     {
-        mLabel = "";
+        mLabel = json["label"].toString();
         mDetails = QString("Chr%1:%2-%3").arg(json["chr"].toInt()).arg(json["start"].toInt()).arg(json["end"].toInt());
         mType = "region";
     }
+    mData = json;
+    mSearchField = mLabel + " " + mDetails;
 }
 
 
 QJsonObject PanelEntry::toJson()
 {
-    QJsonObject result;
-
-    result.insert("type", mType);
-    result.insert("details", mDetails);
-    result.insert("label", mLabel);
-
-    return result;
+    return mData;
 }

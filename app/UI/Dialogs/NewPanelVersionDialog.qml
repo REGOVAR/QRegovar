@@ -308,16 +308,6 @@ Dialog
     }
 
     property bool internalUpdate: false
-    function loadLastVersionEntries()
-    {
-        //panelEntriesTable.model = [];
-        regovar.panelsManager.newPanel.removeAllEntries();
-        var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
-        for (var idx in headVersion.entries)
-            regovar.panelsManager.newPanel.addEntry(headVersion.entries[idx]);
-        //panelEntriesTable.model = regovar.panelsManager.newPanel.entries;
-        console.log("===== loadLastVersionEntries");
-    }
 
 
     function removeSelectedEntry()
@@ -329,32 +319,32 @@ Dialog
         regovar.panelsManager.newPanel.removeAllEntries();
     }
 
-    function reset(newModel)
-    {
-        currentStep = 1;
-        if (newModel === model) return;
+//    function reset(newModel)
+//    {
+//        currentStep = 1;
+//        if (newModel === model) return;
 
-        header.text = "";
+//        header.text = "";
 
-        if (model)
-        {
-            model.onDataChanged.disconnect(updateViewFromModel);
-        }
+//        if (model)
+//        {
+//            model.onDataChanged.disconnect(updateViewFromModel);
+//        }
 
-        if (newModel)
-        {
-            model = newModel;
+//        if (newModel)
+//        {
+//            model = newModel;
 
-            model.onDataChanged.connect(updateViewFromModel)
-            model.load(true);
+//            model.onDataChanged.connect(updateViewFromModel)
+//            model.load(true);
 
 
-            //header.text = qsTr("Edit panel's information and/or add new versions.");
-            header.text = "\n" + qsTr("Panel name") + ": " + model.name;
-            var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
-            header.text += "\n" + qsTr("Head version") + ": " + headVersion.version;
-        }
-    }
+//            //header.text = qsTr("Edit panel's information and/or add new versions.");
+//            header.text = "\n" + qsTr("Panel name") + ": " + model.name;
+//            var headVersion = model.versions.headVersion();
+//            header.text += "\n" + qsTr("Head version") + ": " + headVersion.name;
+//        }
+//    }
 
     function updateViewFromModel()
     {
@@ -362,22 +352,32 @@ Dialog
         {
             internalUpdate = true;
 
-            panelNameField.text = root.model.name;
-            versionField.text = "v" + (root.model.versionsIds.length + 1)
-            ownerField.text = root.model.owner;
-            descriptionField.text = root.model.description;
-            sharedField.checked = root.model.shared;
-            regovar.panelsManager.newPanel.reset();
+            regovar.panelsManager.newPanel.reset(model);
+            panelNameField.text = model.name;
+            versionField.text = model.versions.getAt(0).name;
+            ownerField.text = model.owner;
+            descriptionField.text = model.description;
+            sharedField.checked = model.shared;
 
             // Init new version with entries of the current head version
-            var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
-            for(var idx in root.model.versionsIds)
+            for(var idx=0; idx < root.model.versions.rowCount(); idx++)
                 regovar.panelsManager.newPanel.addVersion(root.model.versionsIds[idx]);
             // Init entries with entries of the latest version
             loadLastVersionEntries();
 
             internalUpdate = false;
         }
+    }
+
+    function loadLastVersionEntries()
+    {
+//        //panelEntriesTable.model = [];
+//        regovar.panelsManager.newPanel.removeAllEntries();
+//        var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
+//        for (var idx in headVersion.entries)
+//            regovar.panelsManager.newPanel.addEntry(headVersion.entries[idx]);
+//        //panelEntriesTable.model = regovar.panelsManager.newPanel.entries;
+//        console.log("===== loadLastVersionEntries");
     }
 
     function commit()

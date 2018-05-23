@@ -38,6 +38,7 @@ public:
     inline void setPanel(Panel* panel) { mPanel = panel; }
     inline void setName(QString name) { mName = name; emit dataChanged(); }
     inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
+    inline void setOrder(int order) { mOrder = order; }  // no need to emit dataChanged
 
     // Override ressource methods
     //! Set model with provided json data
@@ -63,13 +64,18 @@ public:
 Q_SIGNALS:
     void entriesChanged();
 
+
+public Q_SLOTS:
+    void updateSearchField();
+
+
 private:
     Panel* mPanel;
     QString mId;
     QString mName;
     int mOrder = 0;
     QString mComment;
-    PanelEntriesListModel* mEntries;
+    PanelEntriesListModel* mEntries = nullptr;
 };
 
 #endif // PANELVERSION_H

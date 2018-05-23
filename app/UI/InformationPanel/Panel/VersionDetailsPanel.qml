@@ -26,21 +26,30 @@ Rectangle
 
         RowLayout
         {
-            Text
-            {
-                text: qsTr("Version")
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.family
-                verticalAlignment: Text.AlignVCenter
-                height: 35
-            }
+            spacing: 10
 
             ComboBox
             {
                 id: versionsCombo
-                Layout.fillWidth: true
                 onCurrentIndexChanged: updateEntriesList(currentIndex)
+            }
+
+            TextField
+            {
+                Layout.fillWidth: true
+
+                property string formerSearch: ""
+                iconLeft: "z"
+                displayClearButton: true
+                placeholder: qsTr("Filter entries ...")
+                onTextChanged:
+                {
+                    if (panelEntriesTable.model !== null && formerSearch !== text)
+                    {
+                        panelEntriesTable.model.setFilterString(text);
+                        formerSearch = text;
+                    }
+                }
             }
         }
 
@@ -74,10 +83,10 @@ Rectangle
         if (newModel)
         {
             var versionList = [];
-            for (var idx in newModel.versionsIds)
+            for (var idx=0; idx < newModel.versions.rowCount(); idx++)
             {
-                var version = newModel.getVersion(newModel.versionsIds[idx]);
-                versionList.push(version.version);
+                var version = newModel.versions.getAt(idx);
+                versionList.push(version.name);
             }
             versionsCombo.model = versionList;
             updateEntriesList(0);
@@ -86,13 +95,12 @@ Rectangle
 
     function updateEntriesList(idx)
     {
-        if (model && idx >=0 && idx < model.versionsIds.length)
+        if (model && idx >=0 && idx < model.versions.rowCount())
         {
-            var versionId = model.versionsIds[idx];
-            var version = model.getVersion(versionId);
+            var version = model.versions.getAt(idx);
             if (version)
             {
-                panelEntriesTable.model = version.entries;
+                panelEntriesTable.model = version.entries.proxy;
             }
             else
             {

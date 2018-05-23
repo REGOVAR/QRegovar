@@ -83,13 +83,13 @@ PanelVersion* PanelVersionsListModel::getAt(int idx)
 
 
 
-bool PanelVersionsListModel::addVersion(QJsonObject data, bool append)
+PanelVersion* PanelVersionsListModel::addVersion(QJsonObject data, bool append)
 {
-    PanelVersion* version = new PanelVersion(this);
-
-    bool result = version->loadJson(data);
-    if (result)
+    // If not exists, create it
+    if (data.contains("id") && !mVersionsMap.contains(data["id"].toString()))
     {
+        PanelVersion* version = new PanelVersion(this);
+        version->loadJson(data);
         mVersionsMap.insert(version->id(), version);
         if (append)
         {
@@ -99,19 +99,22 @@ bool PanelVersionsListModel::addVersion(QJsonObject data, bool append)
         {
             mPanelVersionsList.insert(0, version);
         }
+        return version;
     }
-    return result;
+    // If already exists, get it, load json and return
+    PanelVersion* version = mVersionsMap[data["id"].toString()];
+    version->loadJson(data);
+    return version;
 }
 
-bool PanelVersionsListModel::addVersion(PanelVersion* version)
+PanelVersion* PanelVersionsListModel::addVersion(PanelVersion* version)
 {
     if (version != nullptr && !mVersionsMap.contains(version->id()))
     {
         mVersionsMap.insert(version->id(), version);
         mPanelVersionsList.append(version);
-        return true;
     }
-    return false;
+    return version;
 }
 
 
@@ -119,7 +122,7 @@ PanelVersion* PanelVersionsListModel::headVersion()
 {
     if (mPanelVersionsList.count() > 0)
     {
-        return mPanelVersionsList.last();
+        return mPanelVersionsList.first();
     }
     return nullptr;
 }

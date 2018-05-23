@@ -46,11 +46,11 @@ ScrollView
     {
         if (data)
         {
-            var headVersion = data.getVersion(data.versionsIds[data.versionsIds.length-1]);
+            var headVersion = data.versions.headVersion();
 
             var text = "<table>";
             text += "<tr><td><b>Name: </b></td><td>" + data.name + "</td></tr>";
-            text += "<tr><td><b>Head version: </b></td><td>" + headVersion.version + "</td></tr>";
+            text += "<tr><td><b>Head version: </b></td><td>" + headVersion.name + "</td></tr>";
             text += "<tr><td><b>Shared: </b></td><td>" + (data.shared ? qsTr("Yes") : qsTr("No")) + "</td></tr>";
             text += "<tr><td><b>Last update: </b></td><td>" + regovar.formatDate(headVersion.updateDate) + "</td></tr>";
             text += "<tr><td><b>Owner: </b></td><td>" + data.owner + "</td></tr>";

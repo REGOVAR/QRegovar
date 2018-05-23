@@ -33,6 +33,7 @@ private:
     QString mLabel;
     QString mType;
     QString mDetails;
+    QJsonObject mData;
 };
 
 #endif // PANELENTRY_H

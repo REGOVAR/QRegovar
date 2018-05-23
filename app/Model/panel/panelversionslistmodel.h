@@ -52,8 +52,8 @@ public:
 
     // Methods
     //! Add a new version to the panel (append=true should be only used by factory)
-    Q_INVOKABLE bool addVersion(QJsonObject data, bool append=false);
-    Q_INVOKABLE bool addVersion(PanelVersion* version);
+    Q_INVOKABLE PanelVersion* addVersion(QJsonObject data, bool append=false);
+    Q_INVOKABLE PanelVersion* addVersion(PanelVersion* version);
     //! Return panel version details if provided id match; otherwise return null
     Q_INVOKABLE inline PanelVersion* getVersion(QString versionId) const { return mVersionsMap.contains(versionId) ? mVersionsMap.value(versionId): nullptr; }
     Q_INVOKABLE PanelVersion* headVersion();

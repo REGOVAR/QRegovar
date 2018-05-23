@@ -105,13 +105,13 @@ Rectangle
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
-        model: regovar.projectsManager.proxy //regovar.projectsManager.projectsTreeView
+        model: regovar.projectsManager.proxy //regovar.projectsManager.projectsTree
 
         onDoubleClicked:
         {
             var idx = regovar.projectsManager.proxy.mapToSource(browser.currentIndex);
-            var id = regovar.projectsManager.projectsTreeView.data(idx, 257); // 257 = Qt::UserRole+1
-            var type = regovar.projectsManager.projectsTreeView.data(idx, 258);
+            var id = regovar.projectsManager.projectsTree.data(idx, 257); // 257 = Qt::UserRole+1
+            var type = regovar.projectsManager.projectsTree.data(idx, 258);
 
             if (id && type)
             {
@@ -204,8 +204,8 @@ Rectangle
     function openSelectedProject()
     {
         var idx = regovar.projectsManager.proxy.mapToSource(browser.currentIndex);
-        var id = regovar.projectsManager.projectsTreeView.data(idx, 257); // 257 = Qt::UserRole+1
-        var type = regovar.projectsManager.projectsTreeView.data(idx, 258);
+        var id = regovar.projectsManager.projectsTree.data(idx, 257); // 257 = Qt::UserRole+1
+        var type = regovar.projectsManager.projectsTree.data(idx, 258);
 
         if (id && type)
         {
@@ -225,8 +225,8 @@ Rectangle
     function deleteSelectedProject()
     {
         var idx = regovar.projectsManager.proxy.mapToSource(browser.currentIndex);
-        var id = regovar.projectsManager.projectsTreeView.data(idx, 257); // 257 = Qt::UserRole+1
-        var type = regovar.projectsManager.projectsTreeView.data(idx, 258);
+        var id = regovar.projectsManager.projectsTree.data(idx, 257); // 257 = Qt::UserRole+1
+        var type = regovar.projectsManager.projectsTree.data(idx, 258);
 
         if (id && type)
         {

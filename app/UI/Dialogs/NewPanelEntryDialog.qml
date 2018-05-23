@@ -20,7 +20,7 @@ Dialog
 
     property int currentStep: 1
 
-    property var newEntryModel: ({ "label": "", "ref_id": "0", "chr": "", "start": "", "end": ""})
+    property var newEntryModel: ({ "label": "", "type": "", "chr": "", "start": "", "end": ""})
 
 
     contentItem: Rectangle
@@ -90,7 +90,7 @@ Dialog
                 onClicked:
                 {
                     var description = "Chr" + root.newEntryModel["chr"] + ":" + root.newEntryModel["start"] + "-" + root.newEntryModel["end"];
-                    if (root.newEntryModel["label"].trim() == "")
+                    if (root.newEntryModel["label"].trim() === "")
                     {
                         root.newEntryModel["label"] = description;
                         root.newEntryModel["details"] = "";

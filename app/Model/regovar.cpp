@@ -250,6 +250,10 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
     {
         wid += "_" + qobject_cast<HpoData*>(model)->id();
     }
+    else if (wid == "Panel")
+    {
+        wid += "_" + qobject_cast<Panel*>(model)->id();
+    }
     return openNewWindow(qmlUrl, model, wid);
 }
 

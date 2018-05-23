@@ -46,9 +46,13 @@ public:
     //! Load panel information from server
     Q_INVOKABLE void load(bool forceRefresh=true) override;
 
-    // Methods
-    //! save the new head version of the panel
-    Q_INVOKABLE QJsonObject saveNewVersion();
+    // New/Edit Panel Wizard dedicated methods
+    //! Reset the model with same information as provided panel version
+    Q_INVOKABLE void reset(Panel* panel=nullptr);
+    //! Save the panel + head version onto server
+    Q_INVOKABLE void saveNewVersion();
+    //! Add new entry to the current new panel/version
+    Q_INVOKABLE void addEntry(QJsonObject json);
 
 
 
@@ -56,6 +60,10 @@ Q_SIGNALS:
     void neverChanged();
     void dataChanged();
     void entriesChanged();
+
+
+public Q_SLOTS:
+    void updateSearchField();
 
 
 private:

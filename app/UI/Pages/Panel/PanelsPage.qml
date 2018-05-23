@@ -28,23 +28,36 @@ Rectangle
         height: 50
         color: Regovar.theme.backgroundColor.alt
 
-        Text
-        {
-            anchors.fill: header
-            anchors.margins: 10
-            font.pixelSize: Regovar.theme.font.size.title
-            font.weight: Font.Black
-            color: Regovar.theme.primaryColor.back.dark
-            verticalAlignment: Text.AlignVCenter
-            text: qsTr("Panels settings")
-        }
         ConnectionStatus
         {
+            id: connectionStatus
             anchors.top: header.top
             anchors.right: header.right
             anchors.bottom: header.bottom
             anchors.margins: 5
             anchors.rightMargin: 10
+        }
+
+        TextField
+        {
+            anchors.top: header.top
+            anchors.left: header.left
+            anchors.bottom: header.bottom
+            anchors.right: connectionStatus.left
+            anchors.margins: 10
+
+            property string formerSearch: ""
+            iconLeft: "z"
+            displayClearButton: true
+            placeholder: qsTr("Search panel by name, description or owner ...")
+            onEditingFinished:
+            {
+                if (formerSearch != text && text != "")
+                {
+                    regovar.panelsManager.proxy.setFilterString(text);
+                    formerSearch = text;
+                }
+            }
         }
     }
 
@@ -75,24 +88,19 @@ Rectangle
         Button
         {
             text: qsTr("New panel")
-            onClicked:
-            {
-                // reset and open wizard
-                newPanelDialog.reset();
-                newPanelDialog.open();
-            }
+            onClicked: newPanel()
         }
         Button
         {
             text: qsTr("Edit panel")
-            onClicked: updateSelectedPanel()
+            onClicked: editPanel()
             enabled: browser.currentIndex
         }
         Button
         {
             text: qsTr("Open panel")
-             onClicked: openSelectedPanel()
-             enabled: browser.currentIndex
+            onClicked:openPanel()
+            enabled: browser.currentIndex
         }
     }
 
@@ -105,7 +113,7 @@ Rectangle
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
-        model: regovar.panelsManager.panelsTree
+        model: regovar.panelsManager.proxy
 
         TableViewColumn
         {
@@ -136,26 +144,33 @@ Rectangle
     NewPanelVersionDialog { id: newPanelVersionDialog }
 
 
-
-    /// Retrive model of the selected panel in the treeview and display information.
-    function openSelectedPanel()
+    // reset and open wizard
+    function newPanel()
     {
-        var itemId = regovar.panelsManager.panelsTree.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
+        newPanelDialog.reset();
+        newPanelDialog.open();
+    }
+
+    // Retrive model of the selected panel in the treeview and edit information.
+    function editPanel()
+    {
+        var idx = regovar.panelsManager.proxy.mapToSource(browser.currentIndex);
+        var panelId = regovar.panelsManager.panelsTree.data(idx, 257); // 257 = Qt::UserRole+1
+        if (panelId !== undefined && panelId !== "")
+        {
+            newPanelVersionDialog.reset(regovar.panelsManager.getOrCreatePanel(panelId));
+            newPanelVersionDialog.open();
+        }
+    }
+
+    // Retrive model of the selected panel in the treeview and display information.
+    function openPanel()
+    {
+        var idx = regovar.panelsManager.proxy.mapToSource(browser.currentIndex);
+        var itemId = regovar.panelsManager.panelsTree.data(idx, 257); // 257 = Qt::UserRole+1
         if (itemId !== undefined && itemId !== "")
         {
             regovar.getPanelInfo(itemId);
         }
-    }
-
-    /// Retrive model of the selected panel in the treeview and display wizard to create new version
-    function updateSelectedPanel()
-    {
-        var itemId = regovar.panelsManager.panelsTree.data(browser.currentIndex, 257); // 257 = Qt::UserRole+1
-        if (itemId !== undefined && itemId !== "")
-        {
-            newPanelVersionDialog.reset(regovar.panelsManager.getOrCreatePanel(itemId));
-            newPanelVersionDialog.open();
-        }
-
     }
 }

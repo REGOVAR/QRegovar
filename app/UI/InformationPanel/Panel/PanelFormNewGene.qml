@@ -102,7 +102,7 @@ Rectangle
                             model: modelData
                             onAdded:
                             {
-                                regovar.panelsManager.newPanel.addEntry({"label" : modelData["symbol"], "id": modelData["id"], "details": modelData["id"]});
+                                regovar.panelsManager.newPanel.addEntry({"symbol" : modelData["symbol"], "type": "gene", "details": modelData["id"]});
                                 enabled = false;
                             }
                             onShowDetails:
@@ -142,7 +142,7 @@ Rectangle
                             model: modelData
                             onAdded:
                             {
-                                regovar.panelsManager.newPanel.addEntry({"label" : modelData["label"], "id": modelData["id"], "details": modelData["id"]});
+                                regovar.panelsManager.newPanel.addEntry({"label" : modelData["label"], "type": "gene", "details": modelData["id"]});
                                 enabled = false;
                             }
                             onShowDetails:

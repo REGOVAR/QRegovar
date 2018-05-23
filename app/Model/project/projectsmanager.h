@@ -11,7 +11,7 @@ class ProjectsManager : public QObject
 
     Q_OBJECT
     Q_PROPERTY(QString searchQuery READ searchQuery WRITE setSearchQuery NOTIFY searchQueryChanged)
-    Q_PROPERTY(ProjectsTreeModel* projectsTreeView READ projectsTreeView NOTIFY neverChanged)
+    Q_PROPERTY(ProjectsTreeModel* projectsTree READ projectsTree NOTIFY neverChanged)
     Q_PROPERTY(QList<QObject*> projectsFlatList READ projectsFlatList NOTIFY projectsFlatListChanged)
     Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
@@ -21,7 +21,7 @@ public:
 
     // Getters
     inline QString searchQuery() const { return mSearchQuery; }
-    inline ProjectsTreeModel* projectsTreeView() const { return mProjectsTreeModel; }
+    inline ProjectsTreeModel* projectsTree() const { return mProjectsTreeModel; }
     inline QList<QObject*> projectsFlatList() const { return mProjectsFlatList; }
     inline GenericProxyModel* proxy() const { return mProxy; }
 

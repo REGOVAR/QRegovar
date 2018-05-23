@@ -6,6 +6,7 @@
 
 Panel::Panel(QObject* parent) : RegovarResource(parent)
 {
+    connect(this, &Panel::dataChanged, this, &Panel::updateSearchField);
     mVersions = new PanelVersionsListModel(this);
 }
 Panel::Panel(QJsonObject json, QObject* parent) : Panel(parent)
@@ -14,6 +15,11 @@ Panel::Panel(QJsonObject json, QObject* parent) : Panel(parent)
 }
 
 
+
+void Panel::updateSearchField()
+{
+    mSearchField = mName + " " + mDescription + " " + mOwner;
+}
 
 
 // Load only data for the current panelversion.
@@ -31,12 +37,14 @@ bool Panel::loadJson(QJsonObject json)
     mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
 
     // Create all other versions of the same panel
+    int order = 0;
     for (const QJsonValue& data: json["versions"].toArray())
     {
-        mVersions->addVersion(data.toObject(), true);
+        PanelVersion* version = mVersions->addVersion(data.toObject(), false);
+        version->setOrder(order--);
+        connect(version, &PanelVersion::dataChanged, this, &Panel::updateSearchField);
     }
 
-    mLoaded = true;
     emit dataChanged();
     return true;
 }
@@ -62,7 +70,41 @@ QJsonObject Panel::toJson()
 }
 
 
-QJsonObject Panel::saveNewVersion()
+
+
+void Panel::reset(Panel* panel)
+{
+    // reset all (case of new panel creation)
+    mId = "";
+    mName = "";
+    mDescription = "";
+    mOwner = "";
+    mShared = false;
+    mVersions->clear();
+    mVersions->addVersion(new PanelVersion(panel));
+    mVersions->getAt(0)->setName("v1");
+    // init with provided panel version information (case of new panel version creation)
+    if (panel != nullptr && panel->versions()->rowCount() > 0)
+    {
+        mId = panel->id();
+        mName = panel->name();
+        mDescription = panel->description();
+        mOwner = panel->owner();
+        mShared = panel->shared();
+        PanelVersion* head = panel->versions()->headVersion();
+        PanelVersion* newv = mVersions->getAt(0);
+        // Init new version with information of the head panel
+        newv->setName(QString("v%1").arg(panel->versions()->rowCount() + 1));
+        newv->setComment(head->comment());
+        for (int idx=0; idx < head->entries()->rowCount(); idx++)
+        {
+            newv->entries()->append(head->entries()->getAt(idx));
+        }
+    }
+}
+
+
+void Panel::saveNewVersion()
 {
     // json export is used only for Update and Create one version of the panel
     // So, we don't format json with the list of all available version as done server side
@@ -96,6 +138,10 @@ QJsonObject Panel::saveNewVersion()
     });
 }
 
+void Panel::addEntry(QJsonObject json)
+{
+    mVersions->headVersion()->addEntry(json);
+}
 
 void Panel::save()
 {
@@ -130,6 +176,7 @@ void Panel::load(bool forceRefresh)
             if (success)
             {
                 loadJson(json["data"].toObject());
+                mLoaded = true;
             }
             else
             {
