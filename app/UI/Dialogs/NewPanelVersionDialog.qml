@@ -72,7 +72,6 @@ Dialog
                 id: panelNameField
                 Layout.fillWidth: true
                 placeholder: qsTr("Name of the panel")
-                text: regovar.panelsManager.newPanel.name
             }
 
             Text
@@ -89,7 +88,6 @@ Dialog
                 id: ownerField
                 Layout.fillWidth: true
                 placeholder: qsTr("Full name of the panel's owner or referring.")
-                text: regovar.panelsManager.newPanel.owner
             }
 
             Text
@@ -107,7 +105,6 @@ Dialog
                 id: descriptionField
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                text: regovar.panelsManager.newPanel.description
             }
 
             Text
@@ -124,7 +121,6 @@ Dialog
                 id: sharedField
                 Layout.fillWidth: true
                 text: qsTr("Check it if you want to share this panel with the community.")
-                checked: regovar.panelsManager.newPanel.shared
             }
         }
 
@@ -139,53 +135,55 @@ Dialog
             visible: root.currentStep == 2
             spacing: 10
 
-            RowLayout
+            TextField
             {
-                Text
-                {
-                    text: qsTr("New version*")
-                    color: Regovar.theme.primaryColor.back.dark
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.family
-                    verticalAlignment: Text.AlignVCenter
-                    height: 35
-                    font.bold: true
-                }
-                TextField
-                {
-                    id: versionField
-                    Layout.fillWidth: true
-                    placeholder: qsTr("Version name")
-                    text: regovar.panelsManager.newPanel.version
-                }
+                id: versionField
+                Layout.fillWidth: true
+                placeholder: qsTr("New version name*")
             }
-
 
             RowLayout
             {
 
                 spacing: 10
 
-                TableView
+                ColumnLayout
                 {
-                    id: panelEntriesTable
                     Layout.fillHeight: true
                     Layout.fillWidth: true
+                    spacing: 10
 
-                    model: regovar.panelsManager.newPanel.entries
-
-                    TableViewColumn
+                    TextField
                     {
-                        title: qsTr("Label")
-                        width: 200
-                        role: "label"
+                        Layout.fillWidth: true
 
+                        iconLeft: "z"
+                        displayClearButton: true
+                        placeholder: qsTr("Filter panel entries...")
+                        onTextChanged: panelEntriesTable.model.setFilterString(text)
                     }
-                    TableViewColumn
+
+                    TableView
                     {
-                        role: "details"
-                        title: qsTr("Details")
-                        width: 400
+                        id: panelEntriesTable
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+
+                        model: regovar.panelsManager.newPanel.headVersion.entries.proxy
+
+                        TableViewColumn
+                        {
+                            title: qsTr("Label")
+                            width: 200
+                            role: "label"
+
+                        }
+                        TableViewColumn
+                        {
+                            role: "details"
+                            title: qsTr("Details")
+                            width: 400
+                        }
                     }
                 }
 
@@ -301,98 +299,42 @@ Dialog
         }
     }
 
-    Connections
-    {
-        target: regovar.panelsManager.newPanel
-        onDataChanged: updateViewFromModel()
-    }
-
     property bool internalUpdate: false
-    function loadLastVersionEntries()
-    {
-        //panelEntriesTable.model = [];
-        regovar.panelsManager.newPanel.removeAllEntries();
-        var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
-        for (var idx in headVersion.entries)
-            regovar.panelsManager.newPanel.addEntry(headVersion.entries[idx]);
-        //panelEntriesTable.model = regovar.panelsManager.newPanel.entries;
-        console.log("===== loadLastVersionEntries");
-    }
+
 
 
     function removeSelectedEntry()
     {
-        regovar.panelsManager.newPanel.removeEntryAt(panelEntriesTable.currentRow);
+        var idx = panelEntriesTable.model.getModelIndex(panelEntriesTable.currentRow);
+        var id = regovar.panelsManager.newPanel.headVersion.entries.data(idx, 257); // 257 = Qt::UserRole+1
+        regovar.panelsManager.newPanel.headVersion.entries.removeAt(panelEntriesTable.currentRow);
     }
+
     function removeAllEntries()
     {
         regovar.panelsManager.newPanel.removeAllEntries();
     }
 
-    function reset(newModel)
+    function reset(panel)
     {
-        currentStep = 1;
-        if (newModel === model) return;
-
-        header.text = "";
-
-        if (model)
-        {
-            model.onDataChanged.disconnect(updateViewFromModel);
-        }
-
-        if (newModel)
-        {
-            model = newModel;
-
-            model.onDataChanged.connect(updateViewFromModel)
-            model.load(true);
-
-
-            //header.text = qsTr("Edit panel's information and/or add new versions.");
-            header.text = "\n" + qsTr("Panel name") + ": " + model.name;
-            var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
-            header.text += "\n" + qsTr("Head version") + ": " + headVersion.version;
-        }
+        regovar.panelsManager.newPanel.reset(panel);
+        root.currentStep = 1;
+        panelNameField.text = regovar.panelsManager.newPanel.name;
+        versionField.text = regovar.panelsManager.newPanel.versions.headVersion().name;
+        ownerField.text = regovar.panelsManager.newPanel.owner;
+        descriptionField.text = regovar.panelsManager.newPanel.description;
+        sharedField.checked = regovar.panelsManager.newPanel.shared;
     }
 
-    function updateViewFromModel()
-    {
-        if (model && !internalUpdate)
-        {
-            internalUpdate = true;
-
-            panelNameField.text = root.model.name;
-            versionField.text = "v" + (root.model.versionsIds.length + 1)
-            ownerField.text = root.model.owner;
-            descriptionField.text = root.model.description;
-            sharedField.checked = root.model.shared;
-            regovar.panelsManager.newPanel.reset();
-
-            // Init new version with entries of the current head version
-            var headVersion = model.getVersion(model.versionsIds[model.versionsIds.length - 1]);
-            for(var idx in root.model.versionsIds)
-                regovar.panelsManager.newPanel.addVersion(root.model.versionsIds[idx]);
-            // Init entries with entries of the latest version
-            loadLastVersionEntries();
-
-            internalUpdate = false;
-        }
-    }
 
     function commit()
     {
-        if (!internalUpdate)
-        {
-            internalUpdate = true;
-            regovar.panelsManager.newPanel.panelId = root.model.panelId;
-            regovar.panelsManager.newPanel.name = panelNameField.text;
-            regovar.panelsManager.newPanel.version = versionField.text;
-            regovar.panelsManager.newPanel.owner = ownerField.text;
-            regovar.panelsManager.newPanel.description = descriptionField.text;
-            regovar.panelsManager.newPanel.shared = sharedField.checked;
-            regovar.panelsManager.commitNewPanel();
-            internalUpdate = false;
-        }
+        regovar.panelsManager.newPanel.panelId = "";
+        regovar.panelsManager.newPanel.name = panelNameField.text;
+        regovar.panelsManager.newPanel.version = versionField.text;
+        regovar.panelsManager.newPanel.owner = ownerField.text;
+        regovar.panelsManager.newPanel.description = descriptionField.text;
+        regovar.panelsManager.newPanel.shared = sharedField.checked;
+        regovar.panelsManager.commitNewPanel();
     }
 }

@@ -21,6 +21,9 @@
 #include "Model/tools/toolparameter.h"
 #include "Model/mainmenu/rootmenu.h"
 #include "Model/mainmenu/menuentry.h"
+#include "Model/panel/panel.h"
+#include "Model/panel/panelversion.h"
+#include "Model/panel/panelentry.h"
 
 #include "Widgets/VariantsTreeWidget/variantstreewidget.h"
 
@@ -68,11 +71,14 @@ int main(int argc, char *argv[])
     qmlRegisterType<Reference>("Regovar.Core", 1, 0, "Reference");
     qmlRegisterType<Attribute>("Regovar.Core", 1, 0, "Attribute");
     qmlRegisterType<Panel>("Regovar.Core", 1, 0, "Panel");
+    qmlRegisterType<PanelVersion>("Regovar.Core", 1, 0, "PanelVersion");
+    qmlRegisterType<PanelEntry>("Regovar.Core", 1, 0, "PanelEntry");
     qmlRegisterType<Event>("Regovar.Core", 1, 0, "Event");
     qmlRegisterType<Pipeline>("Regovar.Core", 1, 0, "Pipeline");
     qmlRegisterType<HpoData>("Regovar.Core", 1, 0, "HpoData");
     qmlRegisterType<Phenotype>("Regovar.Core", 1, 0, "Phenotype");
     qmlRegisterType<Disease>("Regovar.Core", 1, 0, "Disease");
+    qmlRegisterType<Gene>("Regovar.Core", 1, 0, "Gene");
 
     qmlRegisterType<RemoteLogModel>("Regovar.Core", 1, 0, "RemoteLogModel");
     qmlRegisterType<AdminTableInfo>("Regovar.Core", 1, 0, "AdminTableInfo");

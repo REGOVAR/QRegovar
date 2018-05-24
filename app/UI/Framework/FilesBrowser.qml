@@ -35,7 +35,6 @@ Item
                     if (model)
                     {
                         var id = model.data(currentIndex, Qt.UserRole+1);
-                        console.log(id);
                         viewer.openFile(id);
                     }
                 }
@@ -59,7 +58,7 @@ Item
                             text: styleData.value.icon
                             onTextChanged:
                             {
-                                if (styleData.value.icon == "/") // = Loading
+                                if (styleData.value.icon === "/") // = Loading
                                 {
                                     statusIconAnimation.start();
                                 }

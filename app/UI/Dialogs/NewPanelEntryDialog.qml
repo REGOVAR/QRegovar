@@ -20,7 +20,7 @@ Dialog
 
     property int currentStep: 1
 
-    property var newEntryModel: ({ "label": "", "ref_id": "0", "chr": "", "start": "", "end": ""})
+    property var newEntryModel: ({ "label": "", "type": "", "chr": "", "start": "", "end": "", "type": "region"})
 
 
     contentItem: Rectangle
@@ -87,20 +87,7 @@ Dialog
             Button
             {
                 text: qsTr("Add new entry")
-                onClicked:
-                {
-                    var description = "Chr" + root.newEntryModel["chr"] + ":" + root.newEntryModel["start"] + "-" + root.newEntryModel["end"];
-                    if (root.newEntryModel["label"].trim() == "")
-                    {
-                        root.newEntryModel["label"] = description;
-                        root.newEntryModel["details"] = "";
-                    }
-                    else
-                    {
-                        root.newEntryModel["details"] = description;
-                    }
-                    regovar.panelsManager.newPanel.addEntry(root.newEntryModel);
-                }
+                onClicked: regovar.panelsManager.newPanel.addEntry(root.newEntryModel);
             }
         }
 

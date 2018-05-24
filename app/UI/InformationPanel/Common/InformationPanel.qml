@@ -26,8 +26,8 @@ Rectangle
         if (model)
         {
             root.error = false;
+            model.dataChanged.connect(function() {updateFromModel(model);});
             updateFromModel(model);
-            //tabsPanel.forceRefreshTabs();
         }
         else
         {

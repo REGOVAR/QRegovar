@@ -69,8 +69,7 @@ void PanelsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
         columnData.insert(Comment, QVariant(p->description()));
         columnData.insert(Date, QVariant(p->updateDate().toString("yyyy-MM-dd HH:mm")));
         columnData.insert(Shared, QVariant(p->shared() ? tr("Yes") : ""));
-        QString search = p->name() + " " + p->description();
-        columnData.insert(SearchField, QVariant(search));
+        columnData.insert(SearchField, QVariant(p->searchField()));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);
@@ -83,20 +82,19 @@ void PanelsTreeModel::setupModelData(QJsonArray data, TreeItem *parent)
 
 void PanelsTreeModel::setupModelPaneVersionData(Panel* panel, TreeItem *parent)
 {
-    QString id = panel->panelId();
-    for(QString vId: panel->versionsIds())
+    QString id = panel->id();
+    for(int idx=0; idx < panel->versions()->rowCount(); idx++)
     {
-        Panel* vdata = panel->getVersion(vId);
+        PanelVersion* version = panel->versions()->getAt(idx);
         // Store data into treeitem's columns (/!\ columns order must respect enum order)
         QHash<int, QVariant> columnData;
         columnData.insert(PanelId, QVariant(id));
-        columnData.insert(VersionId, QVariant(vdata->versionId()));
-        columnData.insert(Name, QVariant(vdata->version()));
-        columnData.insert(Comment, QVariant(vdata->comment()));
-        columnData.insert(Date, QVariant(vdata->updateDate().toString("yyyy-MM-dd HH:mm")));
+        columnData.insert(VersionId, QVariant(version->id()));
+        columnData.insert(Name, QVariant(version->name()));
+        columnData.insert(Comment, QVariant(version->comment()));
+        columnData.insert(Date, QVariant(version->updateDate().toString("yyyy-MM-dd HH:mm")));
         columnData.insert(Shared, QVariant(panel->shared() ? tr("Yes") : ""));
-        QString search = vdata->version() + " " + vdata->comment();
-        columnData.insert(SearchField, QVariant(search));
+        columnData.insert(SearchField, QVariant(version->searchField()));
 
         // Create treeview item with column's data and parent item
         TreeItem* item = new TreeItem(columnData, parent);

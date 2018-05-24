@@ -57,16 +57,6 @@ void Regovar::init()
 
     // Init user manager and current user if autologin enabled
     mUsersManager = new UsersManager(this);
-    if (mSettings->keepMeLogged())
-    {
-        // Restore cookie and try to authent with it
-        mUsersManager->setKeepMeLogged(true);
-        Request::setCookie(mSettings->sessionCookie());
-        User* user = mUsersManager->getOrCreateUser(mSettings->sessionUserId());
-        mUsersManager->setUser(user);
-        user->load(true);
-        emit mUsersManager->displayLoginScreen(false);
-    }
 
     // Init others managers
     mProjectsManager = new ProjectsManager(this);
@@ -82,8 +72,20 @@ void Regovar::init()
     // Load misc data
     mLastAnalyses = new AnalysesListModel(this);
     mLastSubjects = new SubjectsListModel(this);
+
     loadConfigData();
-    loadWelcomData();
+    // Auto log last user ?
+    if (mSettings->keepMeLogged())
+    {
+        // Restore cookie and try to authent with it
+        mUsersManager->login();
+    }
+    else
+    {
+        regovar->mainMenu()->goTo(0,0,0);
+        emit mUsersManager->logoutSuccess();
+        emit mUsersManager->displayLoginScreen(true);
+    }
 }
 
 
@@ -248,6 +250,10 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
     {
         wid += "_" + qobject_cast<HpoData*>(model)->id();
     }
+    else if (wid == "Panel")
+    {
+        wid += "_" + qobject_cast<Panel*>(model)->id();
+    }
     return openNewWindow(qmlUrl, model, wid);
 }
 
@@ -371,8 +377,8 @@ void Regovar::getPanelInfo(QString panelId)
 void Regovar::getSampleInfo(int sampleId)
 {
     Sample* sample = mSamplesManager->getOrCreateSample(sampleId);
-    openNewWindow(QUrl("qrc:/qml/Windows/SampleInfoWindow.qml"), sample);
     sample->load(false);
+    openNewWindow(QUrl("qrc:/qml/Windows/SampleInfoWindow.qml"), sample);
     emit sampleInformationReady(sample);
 }
 
@@ -395,30 +401,12 @@ void Regovar::getPipelineInfo(int pipelineId)
 }
 
 
-void Regovar::getGeneInfo(QString geneName, int analysisId)
+void Regovar::getGeneInfo(QString symbol, int analysisId)
 {
-    openNewWindow(QUrl("qrc:/qml/Windows/GeneInfoWindow.qml"), nullptr, geneName);
-    QString sAnalysisId = QString::number(analysisId);
-    QString url;
-    if (analysisId == -1)
-        url = QString("/search/gene/%1").arg(geneName);
-    else
-        url = QString("/search/gene/%1/%2").arg(geneName, sAnalysisId);
-
-    Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req, analysisId](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            emit geneInformationReady(json["data"].toObject());
-        }
-        else
-        {
-            emit geneInformationReady(QJsonValue::Null);
-            regovar->manageServerError(json, Q_FUNC_INFO);
-        }
-        req->deleteLater();
-    });
+    Gene* gene = phenotypesManager()->getGene(symbol);
+    gene->load();
+    openNewWindow(QUrl("qrc:/qml/Windows/GeneInfoWindow.qml"), gene);
+    emit geneInformationReady(gene);
 }
 
 
@@ -609,7 +597,12 @@ void Regovar::search(QString query)
 
 
 
-
+void Regovar::restart()
+{
+    // restart:
+    qApp->quit();
+    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+}
 
 
 

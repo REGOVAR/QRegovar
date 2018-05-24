@@ -35,7 +35,6 @@ GenericScreen
         height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
-        mainColor: Regovar.theme.frontColor.success
         icon: "k"
         text: qsTr("Choose which genome reference must be used for this analysis.")
     }

@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtWebView 1.0
 import Regovar.Core 1.0
@@ -12,6 +13,7 @@ Item
     id: root
     anchors.fill: parent
 
+    property bool hovered: false
     property File model
     onModelChanged:
     {
@@ -26,52 +28,107 @@ Item
         Rectangle
         {
             Layout.fillWidth: true
-            height: Regovar.theme.font.boxSize.header
-            color: "transparent"
+            height: Regovar.theme.font.boxSize.title
+            color: Regovar.theme.backgroundColor.alt
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            radius: 2
 
             RowLayout
             {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.right: parent.right
+                anchors.fill: parent
+                anchors.margins: 5
                 spacing: 10
 
-                Text
+                RowLayout
                 {
-                    id: fileName
                     Layout.fillWidth: true
-                    font.pixelSize: Regovar.theme.font.size.header
-                    color: Regovar.theme.primaryColor.back.dark
-                    elide: Text.ElideRight
+                    Layout.fillHeight: true
+
+                    Text
+                    {
+                        Layout.minimumWidth: Regovar.theme.font.boxSize.header
+                        Layout.fillHeight: true
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.pixelSize: Regovar.theme.font.size.header
+                        font.family: Regovar.theme.icons.name
+                        color: root.hovered ? Regovar.theme.secondaryColor.back.light : Regovar.theme.primaryColor.back.dark
+                        text: webview.loadProgress != 100 ? "/" : "è"
+
+                        onTextChanged:
+                        {
+                            if (webview.loadProgress != 100)
+                            {
+                                loadingIconAnimation.start();
+                            }
+                            else
+                            {
+                                loadingIconAnimation.stop();
+                                rotation = 0;
+                            }
+                        }
+                        NumberAnimation on rotation
+                        {
+                            id: loadingIconAnimation
+                            duration: 1500
+                            loops: Animation.Infinite
+                            from: 0
+                            to: 360
+                        }
+                    }
+                    Text
+                    {
+                        id: fileName
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        verticalAlignment: Text.AlignVCenter
+                        font.pixelSize: Regovar.theme.font.size.header
+                        color: root.hovered ? Regovar.theme.secondaryColor.back.light : Regovar.theme.primaryColor.back.dark
+                        elide: Text.ElideRight
+                    }
+
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onEntered: root.hovered = true
+                        onExited: root.hovered = false
+                        onClicked: webview.url = model.url;
+
+                        ToolTip.text: qsTr("Reload page.")
+                        ToolTip.visible: root.hovered
+                        ToolTip.delay: 250
+                        cursorShape: Qt.PointingHandCursor
+                    }
                 }
 
 
-                ButtonInline
+
+                ButtonIcon
                 {
                     iconTxt: "_"
                     text: qsTr("Open externaly")
                     onClicked: Qt.openUrlExternally(model.localFilePath);
                 }
             }
+        }
 
+        Rectangle
+        {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            color: Regovar.theme.backgroundColor.alt
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
 
-
-            Rectangle
+            WebView
             {
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                width: parent.width
-                height: 1
-                color: Regovar.theme.primaryColor.back.normal
+                id: webview
+                anchors.fill: parent
+                anchors.margins: 1
             }
         }
 
-
-        WebView
-        {
-            id: webview
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
     }
 }

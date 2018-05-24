@@ -11,43 +11,47 @@ InformationPanel
 {
     id: root
     icon: "ì"
-    updateFromModel: function updateFromModel(data)
+    updateFromModel: function updateFromModel(model)
     {
-        // Update title
-        root.title = "<h1>" + data["name"] + "</h1>";
-        root.title += "<span style=\"font-family: monospace;\">" + data["symbol"] + " (" + data["hgnc_id"] + ")</span><br>";
-        root.title += data["location"];
+        if (model)
+        {
+            var data = model.json;
+            // Update title
+            root.title = "<h1>" + data["name"] + "</h1>";
+            root.title += "<span style=\"font-family: monospace;\">" + data["symbol"] + " (" + data["hgnc_id"] + ")</span><br>";
+            root.title += data["location"];
 
-        // Update tabs
-        root.tabSharedModel = data;
-        var ttt = listModel.createObject(root);
-        ttt.append(
-            {   "title": qsTr("Information"),
-                "icon": "j",
-                "source": "qrc:/qml/InformationPanel/Gene/InfoPanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Online Tools"),
-                "icon": "è",
-                "source": "qrc:/qml/InformationPanel/Gene/OnlineToolsPanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Pubmed") + " (" + data["pubmed"].length + ")",
-                "icon": "Y",
-                "source": "qrc:/qml/InformationPanel/Gene/ReferencePanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Phenotype"),
-                "icon": "K",
-                "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Regovar statistics"),
-                "icon": "í",
-                "source": "qrc:/qml/InformationPanel/Variant/StatsPanel.qml"
-            });
-        root.tabsModel = ttt;
-        root.loading = false;
+            // Update tabs
+            root.tabSharedModel = data;
+            var ttt = listModel.createObject(root);
+            ttt.append(
+                {   "title": qsTr("Information"),
+                    "icon": "j",
+                    "source": "qrc:/qml/InformationPanel/Gene/InfoPanel.qml"
+                });
+            ttt.append({
+                    "title": qsTr("Online Tools"),
+                    "icon": "è",
+                    "source": "qrc:/qml/InformationPanel/Gene/OnlineToolsPanel.qml"
+                });
+            ttt.append({
+                    "title": qsTr("Pubmed") + " (" + data["pubmed"].length + ")",
+                    "icon": "Y",
+                    "source": "qrc:/qml/InformationPanel/Gene/ReferencePanel.qml"
+                });
+            ttt.append({
+                    "title": qsTr("Phenotype"),
+                    "icon": "K",
+                    "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qml"
+                });
+            ttt.append({
+                    "title": qsTr("Regovar statistics"),
+                    "icon": "í",
+                    "source": "qrc:/qml/InformationPanel/Variant/StatsPanel.qml"
+                });
+            root.tabsModel = ttt;
+            root.loading = false;
+        }
     }
 
     Component

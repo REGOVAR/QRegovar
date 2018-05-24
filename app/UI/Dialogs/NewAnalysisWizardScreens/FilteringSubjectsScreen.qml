@@ -12,197 +12,188 @@ GenericScreen
 
     readyForNext: true
 
-    Text
+
+    // Help information on this page
+    Box
     {
-        id: header
+        id: helpInfoBox
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        text:  qsTr("This step is optional.\nIts allow you to link samples to subjects. Select first a sample in the table below, and then click on the oposites buttons to associate an existing subject or create a new one.")
-        wrapMode: Text.WordWrap
-        font.pixelSize: Regovar.theme.font.size.normal
-        color: Regovar.theme.primaryColor.back.normal
+        height: 30
+
+        visible: Regovar.helpInfoBoxDisplayed
+        icon: "k"
+        text: qsTr("This step is optional.\nIts allow you to link samples to subjects. Select first a sample in the table below, and then click on the oposites buttons to associate an existing subject or create a new one.")
     }
 
     RowLayout
     {
-        anchors.top: header.bottom
-        anchors.topMargin: 30
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : parent.top
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? 10 : 0
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         spacing: 10
 
 
-        ColumnLayout
-        {
-            spacing: 10
-            Layout.fillHeight: true
-            Layout.fillWidth: true
 
-            Text
+
+        TableView
+        {
+            id: samplesSubjectsTable
+            clip: true
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            model: regovar.analysesManager.newFiltering.samples
+
+            TableViewColumn { title: qsTr("Sample"); role: "name" }
+            TableViewColumn
             {
-                id: tableTitle
-                text: qsTr("Samples subjects")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.frontColor.normal
+                title: qsTr("Identifier")
+                role: "subject"
+                delegate: Item
+                {
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.rightMargin: 5
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value ? styleData.value.identifier : ""
+                        elide: Text.ElideRight
+                    }
+                }
+            }
+            TableViewColumn
+            {
+                title: qsTr("Firstname")
+                role: "subject"
+                delegate: Item
+                {
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.rightMargin: 5
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value ? styleData.value.firstname : ""
+                        elide: Text.ElideRight
+                    }
+                }
+            }
+            TableViewColumn
+            {
+                title: qsTr("Lastname")
+                role: "subject"
+                delegate: Item
+                {
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.rightMargin: 5
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value ? styleData.value.lastname : ""
+                        elide: Text.ElideRight
+                    }
+                }
+            }
+            TableViewColumn
+            {
+                title: qsTr("Sex")
+                role: "subject"
+                delegate: Item
+                {
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value ? styleData.value.subjectUI.sex : ""
+                        font.family: Regovar.theme.icons.name
+                    }
+                }
+            }
+            TableViewColumn
+            {
+                title: qsTr("Family Number")
+                role: "subject"
+                delegate: Item
+                {
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.rightMargin: 5
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value ? styleData.value.familyNumber : ""
+                        elide: Text.ElideRight
+                    }
+                }
+            }
+            TableViewColumn
+            {
+                title: qsTr("Date of birth")
+                role: "subject"
+                delegate: Item
+                {
+                    Text
+                    {
+                        anchors.leftMargin: 5
+                        anchors.rightMargin: 5
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        horizontalAlignment: styleData.textAlignment
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value ? styleData.value.dateOfBirth : ""
+                        elide: Text.ElideRight
+                    }
+                }
             }
 
-            TableView
+
+            // Special column to display sample's attribute
+            Component
             {
-                id: samplesSubjectsTable
-                clip: true
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                id: columnComponent_attribute
 
-                model: regovar.analysesManager.newFiltering.samples
-
-                TableViewColumn { title: qsTr("Sample"); role: "name" }
                 TableViewColumn
                 {
-                    title: qsTr("Identifier")
-                    role: "subject"
-                    delegate: Item
-                    {
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.rightMargin: 5
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.identifier : ""
-                            elide: Text.ElideRight
-                        }
-                    }
-                }
-                TableViewColumn
-                {
-                    title: qsTr("Firstname")
-                    role: "subject"
-                    delegate: Item
-                    {
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.rightMargin: 5
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.firstname : ""
-                            elide: Text.ElideRight
-                        }
-                    }
-                }
-                TableViewColumn
-                {
-                    title: qsTr("Lastname")
-                    role: "subject"
-                    delegate: Item
-                    {
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.rightMargin: 5
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.lastname : ""
-                            elide: Text.ElideRight
-                        }
-                    }
-                }
-                TableViewColumn
-                {
-                    title: qsTr("Sex")
-                    role: "subject"
-                    delegate: Item
-                    {
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.subjectUI.sex : ""
-                            font.family: Regovar.theme.icons.name
-                        }
-                    }
-                }
-                TableViewColumn
-                {
-                    title: qsTr("Family Number")
-                    role: "subject"
-                    delegate: Item
-                    {
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.rightMargin: 5
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.familyNumber : ""
-                            elide: Text.ElideRight
-                        }
-                    }
-                }
-                TableViewColumn
-                {
-                    title: qsTr("Date of birth")
-                    role: "subject"
-                    delegate: Item
-                    {
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.rightMargin: 5
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.dateOfBirth : ""
-                            elide: Text.ElideRight
-                        }
-                    }
-                }
+                    width: 100
+                    property var attribute
 
-
-                // Special column to display sample's attribute
-                Component
-                {
-                    id: columnComponent_attribute
-
-                    TableViewColumn
+                    delegate: Item
                     {
-                        width: 100
-                        property var attribute
-
-                        delegate: Item
+                        TableViewTextField
                         {
-                            TableViewTextField
-                            {
-                                id: textField
-                                anchors.fill: parent
-                                text: attribute.getValue(styleData.value.id)
-                                onTextEdited: attribute.setValue(styleData.value.id, text)
-                            }
+                            id: textField
+                            anchors.fill: parent
+                            text: attribute.getValue(styleData.value.id)
+                            onTextEdited: attribute.setValue(styleData.value.id, text)
                         }
                     }
                 }
             }
         }
+
 
         Column
         {

@@ -41,7 +41,7 @@ Rectangle
             id: labelfield
             Layout.fillWidth: true
             placeholder: qsTr("Optional label for the region.")
-            onTextEdited: model["label"] = text;
+            onTextChanged: model["label"] = text;
         }
 
 
@@ -60,7 +60,7 @@ Rectangle
             id: chrfield
             Layout.fillWidth: true
             placeholder: qsTr("The number of the chromosome in the selected ref.")
-            onTextEdited: model["chr"] = text;
+            onTextChanged: model["chr"] = text;
         }
 
         Text
@@ -78,7 +78,7 @@ Rectangle
             id: startfield
             Layout.fillWidth: true
             placeholder: qsTr("The start position of the region.")
-            onTextEdited: model["start"] = text;
+            onTextChanged: model["start"] = text;
         }
 
         Text
@@ -97,7 +97,7 @@ Rectangle
             id: endfield
             Layout.fillWidth: true
             placeholder: qsTr("The end position of the region.")
-            onTextEdited: model["end"] = text;
+            onTextChanged: model["end"] = text;
         }
 
         Item

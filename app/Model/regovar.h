@@ -157,7 +157,7 @@ public:
     bool openNewWindow(QUrl qmlUrl, QObject* model, QString wid);
     Q_INVOKABLE bool closeWindow(QString wid);
     Q_INVOKABLE inline QObject* getWindowModels(QString wid) const { if (mOpenWindowModels.contains(wid)) return mOpenWindowModels[wid]; return nullptr; }
-
+    Q_INVOKABLE void restart();
 
 
 Q_SIGNALS:
@@ -196,7 +196,7 @@ Q_SIGNALS:
     void sampleInformationReady(Sample* sample);
     void userInformationReady(User* user);
     void pipelineInformationReady(Pipeline* pipeline);
-    void geneInformationReady(QJsonValue json);
+    void geneInformationReady(Gene* gene);
     void phenotypeInformationReady(Phenotype* phenotype);
     void diseaseInformationReady(Disease* disease);
     void variantInformationReady(QJsonValue json);
@@ -218,12 +218,12 @@ private:
     //! Admin operation wrapper
     Admin* mAdmin = nullptr;
     //! Model of the main menu
-    RootMenu* mMainMenu;
+    RootMenu* mMainMenu = nullptr;
     //! list of references supported by the server
     QList<QObject*> mReferences;
     //! Welcom last data
-    AnalysesListModel* mLastAnalyses;
-    SubjectsListModel* mLastSubjects;
+    AnalysesListModel* mLastAnalyses = nullptr;
+    SubjectsListModel* mLastSubjects = nullptr;
     //! Search request and results
     QString mSearchRequest;
     QJsonObject mSearchResult;

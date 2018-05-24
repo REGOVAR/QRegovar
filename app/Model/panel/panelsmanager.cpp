@@ -5,6 +5,7 @@
 PanelsManager::PanelsManager(QObject* parent) : QObject(parent)
 {
     mNewPanel = new Panel(this);
+    mNewPanel->versions()->addVersion(new PanelVersion(mNewPanel));
     mPanelsTree = new PanelsTreeModel();
 
     mProxy = new GenericProxyModel(this);
@@ -18,6 +19,9 @@ PanelsManager::PanelsManager(QObject* parent) : QObject(parent)
 
 Panel* PanelsManager::getOrCreatePanel(QString id)
 {
+    // id may be panel id or panel version id
+    //   if panel id: return the panel
+    //   if version id: return panel that own this version
 
     // Check if id found in panels
     if (mPanels.contains(id))
@@ -27,22 +31,64 @@ Panel* PanelsManager::getOrCreatePanel(QString id)
     // Check if id found in panels versions
     for(Panel* panel: mPanels.values())
     {
-        if (panel->getVersion(id) != nullptr)
+        if (panel->versions()->getVersion(id) != nullptr)
         {
             return panel;
         }
     }
-    // else create new panel
-    Panel* newPanel = new Panel(true);
+    // else create new empty panel
+    Panel* newPanel = new Panel(this);
     mPanels.insert(id, newPanel);
     return newPanel;
 }
 
+PanelVersion* PanelsManager::getPanelVersion(QString id)
+{
+    // id may be panel id or panel version id
+    //   if panel id: return the head version of this panel
+    //   if version id: return the version
+
+    // Check if id found in panels
+    if (mPanels.contains(id))
+    {
+        return mPanels[id]->headVersion();
+    }
+    // Check if id found in panels versions
+    for(Panel* panel: mPanels.values())
+    {
+        PanelVersion* version = panel->versions()->getVersion(id);
+        if (version != nullptr)
+        {
+            return version;
+        }
+    }
+    return nullptr;
+}
 
 
 void PanelsManager::commitNewPanel()
 {
-    Request* req = Request::post(QString("/panel"), QJsonDocument(mNewPanel->toJson()).toJson());
+    PanelVersion* head = mNewPanel->headVersion();
+    QJsonObject result;
+    result.insert("id", mNewPanel->id());
+    result.insert("version_id", head->id());
+    result.insert("name", mNewPanel->name());
+    result.insert("version", head->name());
+    result.insert("owner", mNewPanel->owner());
+    result.insert("description", mNewPanel->description());
+    result.insert("shared", mNewPanel->shared());
+
+    if (head->entries()->rowCount() > 0)
+    {
+        QJsonArray entries;
+        for(int idx=0; idx < head->entries()->rowCount(); idx++)
+        {
+            entries.append(head->entries()->getAt(idx)->toJson());
+        }
+        result.insert("entries", entries);
+    }
+
+    Request* req = Request::post(QString("/panel"), QJsonDocument(result).toJson());
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)

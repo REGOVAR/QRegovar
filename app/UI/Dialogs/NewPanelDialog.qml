@@ -69,7 +69,6 @@ Dialog
                 id: panelNameField
                 Layout.fillWidth: true
                 placeholder: qsTr("Name of the panel")
-                text: regovar.panelsManager.newPanel.name
             }
 
             Text
@@ -87,7 +86,6 @@ Dialog
                 id: versionField
                 Layout.fillWidth: true
                 placeholder: qsTr("Name of this version")
-                text: regovar.panelsManager.newPanel.version
             }
 
             Text
@@ -104,7 +102,6 @@ Dialog
                 id: ownerField
                 Layout.fillWidth: true
                 placeholder: qsTr("Full name of the panel's owner or referring")
-                text: regovar.panelsManager.newPanel.owner
             }
 
             Text
@@ -122,7 +119,6 @@ Dialog
                 id: descriptionField
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                text: regovar.panelsManager.newPanel.description
             }
 
             Text
@@ -139,7 +135,6 @@ Dialog
                 id: sharedField
                 Layout.fillWidth: true
                 text: qsTr("Check it if you want to share this panel with the community")
-                checked: regovar.panelsManager.newPanel.shared
             }
         }
 
@@ -155,26 +150,45 @@ Dialog
 
             spacing: 10
 
-            TableView
+
+            ColumnLayout
             {
-                id: panelEntriesTable
                 Layout.fillHeight: true
                 Layout.fillWidth: true
+                spacing: 10
 
-                model: regovar.panelsManager.newPanel.entries
-
-                TableViewColumn
+                TextField
                 {
-                    title: qsTr("Label")
-                    width: 200
-                    role: "label"
+                    Layout.fillWidth: true
 
+                    property string formerSearch: ""
+                    iconLeft: "z"
+                    displayClearButton: true
+                    placeholder: qsTr("Filter panel entries...")
+                    onTextChanged: panelEntriesTable.model.setFilterString(text)
                 }
-                TableViewColumn
+
+                TableView
                 {
-                    role: "details"
-                    title: qsTr("Details")
-                    width: 400
+                    id: panelEntriesTable
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+
+                    model: regovar.panelsManager.newPanel.headVersion.entries.proxy
+
+                    TableViewColumn
+                    {
+                        title: qsTr("Label")
+                        width: 200
+                        role: "label"
+
+                    }
+                    TableViewColumn
+                    {
+                        role: "details"
+                        title: qsTr("Details")
+                        width: 400
+                    }
                 }
             }
 
@@ -280,19 +294,22 @@ Dialog
 
     function removeSelectedEntry()
     {
-        regovar.panelsManager.newPanel.removeEntryAt(panelEntriesTable.currentRow);
+        var idx = panelEntriesTable.model.getModelIndex(panelEntriesTable.currentRow);
+        var id = regovar.panelsManager.newPanel.headVersion.entries.data(idx, 257); // 257 = Qt::UserRole+1
+        regovar.panelsManager.newPanel.headVersion.entries.removeAt(panelEntriesTable.currentRow);
     }
 
     function reset()
     {
-        root.currentStep = 1;
-        panelNameField.text = "";
-        versionField.text = "v1";
-        ownerField.text = "";
-        descriptionField.text = "";
-        sharedField.checked = "";
         regovar.panelsManager.newPanel.reset();
+        root.currentStep = 1;
+        panelNameField.text = regovar.panelsManager.newPanel.name;
+        versionField.text = regovar.panelsManager.newPanel.versions.headVersion().name;
+        ownerField.text = regovar.panelsManager.newPanel.owner;
+        descriptionField.text = regovar.panelsManager.newPanel.description;
+        sharedField.checked = regovar.panelsManager.newPanel.shared;
     }
+
 
     function commit()
     {

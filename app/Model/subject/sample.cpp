@@ -9,14 +9,12 @@ Sample::Sample(QObject *parent) : QObject(parent)
     connect(this, &Sample::dataChanged, this, &Sample::updateSearchField);
 }
 
-Sample::Sample(int id, QObject* parent) : QObject(parent)
+Sample::Sample(int id, QObject* parent) : Sample(parent)
 {
-    connect(this, &Sample::dataChanged, this, &Sample::updateSearchField);
     mId = id;
 }
-Sample::Sample(QJsonObject json, QObject* parent) : QObject(parent)
+Sample::Sample(QJsonObject json, QObject* parent) : Sample(parent)
 {
-    connect(this, &Sample::dataChanged, this, &Sample::updateSearchField);
     loadJson(json);
 }
 

@@ -4,6 +4,7 @@
 #include <QtCore>
 #include "phenotype.h"
 #include "hpodatalistmodel.h"
+#include "gene.h"
 
 class PhenotypesManager : public QObject
 {
@@ -19,6 +20,7 @@ public:
 
     // Methods
     Q_INVOKABLE HpoData* getOrCreate(QString hpoId);
+    Q_INVOKABLE Gene* getGene(QString symbol);
     Q_INVOKABLE void search(QString query);
 
 
@@ -29,6 +31,7 @@ private:
     HpoDataListModel* mSearchResults = nullptr;
     QHash<QString, HpoData*> mHpoData;
     QHash<QString, QString> mPhenotypesSearchMap;
+    QHash<QString, Gene*> mGenes;
 };
 
 #endif // PHENOTYPESMANAGER_H

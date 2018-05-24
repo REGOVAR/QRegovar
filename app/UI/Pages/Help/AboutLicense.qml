@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
+import QtQuick.Controls 2.2
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
 
@@ -22,10 +23,7 @@ Item
         GridLayout
         {
             id: headerGrid
-            anchors.left: parent.left
-            anchors.margins: 5
-            anchors.right: parent.right
-
+            Layout.fillWidth: true
             rows: 2
             columns: 4
             columnSpacing: 10
@@ -286,35 +284,67 @@ Item
                 }
             }
         }
+
         Rectangle
         {
-            height: 1
+            id: licenseBox
+            Layout.fillHeight: true
             Layout.fillWidth: true
-            color: Regovar.theme.primaryColor.back.normal
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            radius: 2
+            color: Regovar.theme.boxColor.back
+
+            Flickable
+            {
+                id: scrollView
+
+                anchors.fill: parent
+                anchors.margins: 5
+
+                contentWidth: scrollView.width - 10
+                contentHeight: license.height
+                clip: true
+                onContentYChanged: vbar.position = contentY / license.height;
+
+                Behavior on contentY
+                {
+                    NumberAnimation
+                    {
+                        duration: 150
+                        easing.type: Easing.OutCubic
+                    }
+                }
+
+                TextEdit
+                {
+                    id: license
+                    width: scrollView.width - 30
+                    text: regovar.config.license
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    color: Regovar.theme.frontColor.normal
+                    readOnly: true
+                    selectByMouse: true
+                    selectByKeyboard: true
+                    wrapMode: TextEdit.Wrap
+                }
+            }
+
+            ScrollBar
+            {
+                id: vbar
+                hoverEnabled: true
+                orientation: Qt.Vertical
+                size: root.height / license.height
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                policy: ScrollBar.AlwaysOn
+                onPositionChanged: if (pressed)
+                {
+                    scrollView.contentY = vbar.position * license.height;
+                }
+            }
         }
-
-        ScrollView
-        {
-             id: scrollView
-
-             Layout.fillHeight: true
-             Layout.fillWidth: true
-
-             clip: true
-
-             TextEdit
-             {
-                 id: edit
-                 width: scrollView.width - 30
-                 text: regovar.config.license
-                 font.pixelSize: Regovar.theme.font.size.normal
-                 color: Regovar.theme.frontColor.normal
-                 readOnly: true
-                 selectByMouse: true
-                 selectByKeyboard: true
-                 wrapMode: TextEdit.Wrap
-             }
-         }
-
     }
 }

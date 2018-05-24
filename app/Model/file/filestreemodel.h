@@ -39,9 +39,13 @@ public:
 
     // Methods
     Q_INVOKABLE bool loadJson(QJsonArray json);
-    Q_INVOKABLE bool refresh();
     Q_INVOKABLE void add(File* file, const QModelIndex& parent=QModelIndex());
     Q_INVOKABLE File* getAt(int row, const QModelIndex& parent=QModelIndex());
+    Q_INVOKABLE void clear();
+
+
+public Q_SLOTS:
+    void refreshTreeView();
 
 
 Q_SIGNALS:
@@ -54,6 +58,9 @@ private:
     GenericProxyModel* mProxy = nullptr;
     //! Last time that the list refresh have been called
     QDateTime mLastUpdate;
+    //! Keep list of item in the treeview to avoid to add duplicates
+    QList<int> mFilesIds;
+
 
     // TreeModel method
     void setupModelData(QJsonArray data, TreeItem *parent);

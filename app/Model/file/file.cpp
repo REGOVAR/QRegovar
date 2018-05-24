@@ -96,16 +96,16 @@ bool File::loadJson(QJsonDocument json)
 bool File::loadJson(QJsonObject json)
 {
     mId = json["id"].toInt();
-    if (json.contains("name")) setName(json["name"].toString());
-    if (json.contains("comment")) setComment(json["comment"].toString());
-    if (json.contains("tags")) setTags(json["tags"].toString());
+    if (json.contains("name")) mName = json["name"].toString();
+    if (json.contains("comment")) mComment = json["comment"].toString();
+    if (json.contains("tags")) mTags = json["tags"].toString();
     if (json.contains("path")) mUrl = QUrl(json["path"].toString());
     if (json.contains("update_date")) mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     if (json.contains("create_date")) mCreateDate = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
-    if (json.contains("md5sum")) setMd5Sum(json["md5sum"].toString());
-    if (json.contains("type")) setType(json["type"].toString());
-    if (json.contains("size")) setSize(json["size"].toInt());
-    if (json.contains("upload_offset")) setUploadOffset(json["upload_offset"].toInt());
+    if (json.contains("md5sum")) mMd5Sum = json["md5sum"].toString();
+    if (json.contains("type")) mType = json["type"].toString();
+    if (json.contains("size")) mSize = json["size"].toInt();
+    if (json.contains("upload_offset")) mUploadOffset = json["upload_offset"].toInt();
 
     // For the first time: Build url to the local physical path
     if (!mLoaded)
@@ -122,11 +122,7 @@ bool File::loadJson(QJsonObject json)
         }
     }
 
-    if (json.contains("status"))
-    {
-        auto meta = QMetaEnum::fromType<FileStatus>();
-        setStatus(static_cast<FileStatus>(meta.keyToValue(json["status"].toString().toStdString().c_str()))); // T_T .... tout ça pour ça ....
-    }
+
 
     QJsonObject filenameInfo;
     filenameInfo.insert("icon", extensionToIco(mType));
@@ -150,8 +146,19 @@ bool File::loadJson(QJsonObject json)
     //mSource;
     //mLocalPath;
 
+    // We do setStatus at the end because setStatus will emit dataChanged signal
+    // (to avoid to emit it too quickly or too often)
+    if (json.contains("status"))
+    {
+        auto meta = QMetaEnum::fromType<FileStatus>();
+        setStatus(static_cast<FileStatus>(meta.keyToValue(json["status"].toString().toStdString().c_str()))); // T_T .... tout ça pour ça ....
+    }
+    else
+    {
+        emit dataChanged();
+    }
+
     mLoaded = true;
-    emit dataChanged();
     return true;
 }
 

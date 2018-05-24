@@ -10,21 +10,21 @@ ComboBox
 
     property var color: Regovar.theme.boxColor.border
 
-    delegate: ItemDelegate
-    {
-        x: 1
-        width: control.width -2
-        height: Regovar.theme.font.boxSize.normal
-        contentItem: Text
-        {
-            text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData
-            color: enabled ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
-            font: control.font
-            elide: Text.ElideRight
-            verticalAlignment: Text.AlignVCenter
-        }
-        highlighted: control.highlightedIndex === index
-    }
+//    delegate: ItemDelegate
+//    {
+//        x: 1
+//        width: control.width -2
+//        height: Regovar.theme.font.boxSize.normal
+//        contentItem: Text
+//        {
+//            text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData
+//            color: enabled ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.disable
+//            font: control.font
+//            elide: Text.ElideRight
+//            verticalAlignment: Text.AlignVCenter
+//        }
+//        highlighted: control.highlightedIndex === index
+//    }
 
     indicator: Text
     {
