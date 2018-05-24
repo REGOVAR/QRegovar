@@ -196,7 +196,7 @@ Q_SIGNALS:
     void sampleInformationReady(Sample* sample);
     void userInformationReady(User* user);
     void pipelineInformationReady(Pipeline* pipeline);
-    void geneInformationReady(QJsonValue json);
+    void geneInformationReady(Gene* gene);
     void phenotypeInformationReady(Phenotype* phenotype);
     void diseaseInformationReady(Disease* disease);
     void variantInformationReady(QJsonValue json);

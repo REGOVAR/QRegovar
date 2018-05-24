@@ -29,6 +29,18 @@ HpoData* PhenotypesManager::getOrCreate(QString hpoId)
 }
 
 
+Gene* PhenotypesManager::getGene(QString symbol)
+{
+    if (mGenes.contains(symbol))
+    {
+        return mGenes[symbol];
+    }
+    Gene* gene = new Gene(symbol);
+    mGenes.insert(symbol, gene);
+    return gene;
+}
+
+
 
 void PhenotypesManager::search(QString query)
 {

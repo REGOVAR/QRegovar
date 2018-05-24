@@ -41,8 +41,31 @@ Item
 
             TableViewColumn
             {
-                role: "id"
+                role: "symbol"
                 title: "Gene"
+                delegate: RowLayout
+                {
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
+                    spacing: 10
+
+                    ButtonInline
+                    {
+                        iconTxt: "z"
+                        text: ""
+                        onClicked: regovar.getGeneInfo(model.symbol)
+                    }
+                    Text
+                    {
+                        Layout.fillWidth: true
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        font.family: Regovar.theme.font.family
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
+                        elide: Text.ElideRight
+                        text: styleData.value
+                    }
+                }
             }
         }
 

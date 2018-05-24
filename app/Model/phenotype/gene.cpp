@@ -15,19 +15,27 @@ Gene::Gene(QJsonObject json, QObject* parent): Gene(parent)
 Gene::Gene(QString symbol, QObject* parent): Gene(parent)
 {
     mSymbol = symbol;
+    updateSearchField();
+}
+
+void Gene::updateSearchField()
+{
+    mSearchField = mSymbol;
 }
 
 
 bool Gene::loadJson(QJsonObject json)
 {
     // Load gene information
-
+    mSymbol = json["symbol"].toString();
+    mJson = json;
 
     // Panels
     // HPO related
     // - Diseases
     // - Phenotypes
-
+    updateSearchField();
+    emit dataChanged();
     return true;
 }
 
@@ -44,9 +52,7 @@ QJsonObject Gene::toJson()
 
 void Gene::load(bool forceRefresh)
 {
-    // Check if need refresh
-    qint64 diff = mLastInternalLoad.secsTo(QDateTime::currentDateTime());
-    if (!mLoaded || forceRefresh || diff > MIN_SYNC_DELAY)
+    if (!mLoaded || forceRefresh)
     {
         mLastInternalLoad = QDateTime::currentDateTime();
         Request* req = Request::get(QString("/search/gene/%1").arg(mSymbol));
@@ -55,6 +61,7 @@ void Gene::load(bool forceRefresh)
             if (success)
             {
                 loadJson(json["data"].toObject());
+                mLoaded = true;
             }
             else
             {
@@ -64,4 +71,3 @@ void Gene::load(bool forceRefresh)
         });
     }
 }
-

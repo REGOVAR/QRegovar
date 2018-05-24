@@ -58,12 +58,11 @@ public:
 
 Q_SIGNALS:
     void neverChanged();
-    void dataChanged();
     void entriesChanged();
 
 
 public Q_SLOTS:
-    void updateSearchField();
+    void updateSearchField() override;
 
 
 private:

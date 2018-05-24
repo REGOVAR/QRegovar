@@ -24,8 +24,8 @@ bool GenesListModel::loadJson(QJsonArray json)
     mGenes.clear();
     for(const QJsonValue& val: json)
     {
-        QString gene = val.toString();
-        if (!gene.isEmpty() && !mGenes.contains(gene))
+        Gene* gene = regovar->phenotypesManager()->getGene(val.toString());
+        if (!gene->symbol().isEmpty() && !mGenes.contains(gene))
         {
             mGenes.append(gene);
         }
@@ -35,9 +35,9 @@ bool GenesListModel::loadJson(QJsonArray json)
     return true;
 }
 
-bool GenesListModel::append(QString gene)
+bool GenesListModel::append(Gene* gene)
 {
-    if (!gene.isEmpty() && !mGenes.contains(gene))
+    if (gene != nullptr && !mGenes.contains(gene))
     {
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         mGenes.append(gene);
@@ -48,7 +48,7 @@ bool GenesListModel::append(QString gene)
     return false;
 }
 
-bool GenesListModel::remove(QString gene)
+bool GenesListModel::remove(Gene* gene)
 {
     if (mGenes.contains(gene))
     {
@@ -62,7 +62,7 @@ bool GenesListModel::remove(QString gene)
     return false;
 }
 
-QString GenesListModel::getAt(int idx)
+Gene* GenesListModel::getAt(int idx)
 {
     if (idx >= 0 && idx <= mGenes.count())
     {
@@ -73,7 +73,12 @@ QString GenesListModel::getAt(int idx)
 
 QString GenesListModel::join(QString separator)
 {
-    return mGenes.join(separator);
+    QString result;
+    for(Gene* gene: mGenes)
+    {
+        result += gene->symbol() +  separator;
+    }
+    return result.mid(0, result.length() - separator.length());
 }
 
 
@@ -87,13 +92,13 @@ QVariant GenesListModel::data(const QModelIndex& index, int role) const
     if (index.row() < 0 || index.row() >= mGenes.count())
         return QVariant();
 
-    const QString gene = mGenes[index.row()];
+    const Gene* gene = mGenes[index.row()];
     if (role == Symbol || role == Qt::DisplayRole)
-        return gene;
+        return gene->symbol();
     else if (role == Panels)
         return ""; // TODO: regovar->panelsManager()->findPanelsWith(gene)
     else if (role == SearchField)
-        return gene; // TODO + panel
+        return gene->searchField(); // TODO + panel
 
     return QVariant();
 }

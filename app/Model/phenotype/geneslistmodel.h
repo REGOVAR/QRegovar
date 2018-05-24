@@ -2,6 +2,7 @@
 #define GENESLISTMODEL_H
 
 #include <QtCore>
+#include "gene.h"
 #include "Model/framework/genericproxymodel.h"
 
 class GenesListModel: public QAbstractListModel
@@ -32,11 +33,11 @@ public:
     //! Load phenotype list from list of json
     Q_INVOKABLE bool loadJson(QJsonArray json);
     //! Add the provided gene to the list if not already contains
-    Q_INVOKABLE bool append(QString gene);
+    Q_INVOKABLE bool append(Gene* gene);
     //! Remove a gene from the list if possible
-    Q_INVOKABLE bool remove(QString gene);
+    Q_INVOKABLE bool remove(Gene* gene);
     //! Return entry at the requested position in the list
-    Q_INVOKABLE QString getAt(int idx);
+    Q_INVOKABLE Gene* getAt(int idx);
     //! oins all the string list's strings into a single string with each element separated by the given separator (which can be an empty string).
     Q_INVOKABLE QString join(QString separator);
 
@@ -52,7 +53,7 @@ Q_SIGNALS:
 
 
 private:
-    QStringList mGenes;
+    QList<Gene*> mGenes;
     GenericProxyModel* mProxy = nullptr;
 };
 

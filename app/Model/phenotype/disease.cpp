@@ -35,11 +35,7 @@ bool Disease::loadJson(QJsonObject json)
 
     if (json.contains("genes"))
     {
-        mGenes->clear();
-        for(const QJsonValue& val: json["genes"].toArray())
-        {
-            mGenes->append(val.toString());
-        }
+        mGenes->loadJson(json["genes"].toArray());
     }
     if (json.contains("meta"))
     {

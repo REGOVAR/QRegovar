@@ -78,6 +78,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<HpoData>("Regovar.Core", 1, 0, "HpoData");
     qmlRegisterType<Phenotype>("Regovar.Core", 1, 0, "Phenotype");
     qmlRegisterType<Disease>("Regovar.Core", 1, 0, "Disease");
+    qmlRegisterType<Gene>("Regovar.Core", 1, 0, "Gene");
 
     qmlRegisterType<RemoteLogModel>("Regovar.Core", 1, 0, "RemoteLogModel");
     qmlRegisterType<AdminTableInfo>("Regovar.Core", 1, 0, "AdminTableInfo");

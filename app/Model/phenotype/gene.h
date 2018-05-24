@@ -9,17 +9,19 @@ class Gene: public RegovarResource
     Q_OBJECT
     Q_PROPERTY(QString id READ id NOTIFY dataChanged)
     Q_PROPERTY(QString symbol READ symbol NOTIFY dataChanged)
+    Q_PROPERTY(QJsonObject json READ json NOTIFY dataChanged)
 
 
 public:
     // Constructor
     Gene(QObject* parent=nullptr);
     Gene(QJsonObject json, QObject* parent=nullptr);
-    Gene(QString label, QObject* parent=nullptr);
+    Gene(QString symbol, QObject* parent=nullptr);
 
     // Getters
     inline QString id() const { return mHgncId; }
     inline QString symbol() const { return mSymbol; }
+    inline QJsonObject json() const { return mJson; }
 
     // Override ressource methods
     //! Set model with provided json data
@@ -30,10 +32,13 @@ public:
     Q_INVOKABLE void load(bool forceRefresh=true) override;
 
 
+public Q_SLOTS:
+    void updateSearchField() override;
+
 private:
     QString mHgncId;
     QString mSymbol;
-    QJsonObject mData;
+    QJsonObject mJson;
 };
 
 #endif // GENE_H

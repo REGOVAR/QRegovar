@@ -65,7 +65,7 @@ Q_SIGNALS:
 
 
 public Q_SLOTS:
-    void updateSearchField();
+    void updateSearchField() override;
     void emitEntriesChanged();
 
 private:

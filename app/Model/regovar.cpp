@@ -401,30 +401,12 @@ void Regovar::getPipelineInfo(int pipelineId)
 }
 
 
-void Regovar::getGeneInfo(QString geneName, int analysisId)
+void Regovar::getGeneInfo(QString symbol, int analysisId)
 {
-    openNewWindow(QUrl("qrc:/qml/Windows/GeneInfoWindow.qml"), nullptr, geneName);
-    QString sAnalysisId = QString::number(analysisId);
-    QString url;
-    if (analysisId == -1)
-        url = QString("/search/gene/%1").arg(geneName);
-    else
-        url = QString("/search/gene/%1/%2").arg(geneName, sAnalysisId);
-
-    Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req, analysisId](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            emit geneInformationReady(json["data"].toObject());
-        }
-        else
-        {
-            emit geneInformationReady(QJsonValue::Null);
-            regovar->manageServerError(json, Q_FUNC_INFO);
-        }
-        req->deleteLater();
-    });
+    Gene* gene = phenotypesManager()->getGene(symbol);
+    gene->load();
+    openNewWindow(QUrl("qrc:/qml/Windows/GeneInfoWindow.qml"), gene);
+    emit geneInformationReady(gene);
 }
 
 
