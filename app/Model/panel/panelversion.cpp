@@ -1,4 +1,6 @@
 #include "panelversion.h"
+#include "Model/regovar.h"
+#include "Model/framework/request.h"
 
 
 
@@ -65,12 +67,29 @@ bool PanelVersion::loadJson(QJsonObject json)
 QJsonObject PanelVersion::toJson()
 {
     QJsonObject result;
+    result.insert("id", mId);
+    result.insert("name", mName);
+    result.insert("comment", mComment);
+
     return result;
 }
 //! Save subject information onto server
 void PanelVersion::save()
 {
-
+    if (mId.isEmpty()) return;
+    Request* request = Request::put(QString("/panel/%1").arg(mId), QJsonDocument(toJson()).toJson());
+    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            qDebug() << "Panel version saved";
+        }
+        else
+        {
+            regovar->manageServerError(json, Q_FUNC_INFO);
+        }
+        request->deleteLater();
+    });
 }
 //! Load Subject information from server
 void PanelVersion::load(bool forceRefresh)

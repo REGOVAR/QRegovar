@@ -68,7 +68,27 @@ PanelVersion* PanelsManager::getPanelVersion(QString id)
 
 void PanelsManager::commitNewPanel()
 {
-    Request* req = Request::post(QString("/panel"), QJsonDocument(mNewPanel->toJson()).toJson());
+    PanelVersion* head = mNewPanel->headVersion();
+    QJsonObject result;
+    result.insert("panel_id", "");
+    result.insert("id", "");
+    result.insert("name", mNewPanel->name());
+    result.insert("version", head->name());
+    result.insert("owner", mNewPanel->owner());
+    result.insert("description", mNewPanel->description());
+    result.insert("shared", mNewPanel->shared());
+
+    if (head->entries()->rowCount() > 0)
+    {
+        QJsonArray entries;
+        for(int idx=0; idx < head->entries()->rowCount(); idx++)
+        {
+            entries.append(head->entries()->getAt(idx)->toJson());
+        }
+        result.insert("entries", entries);
+    }
+
+    Request* req = Request::post(QString("/panel"), QJsonDocument(result).toJson());
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)

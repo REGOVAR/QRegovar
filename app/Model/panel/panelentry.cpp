@@ -20,9 +20,12 @@ bool PanelEntry::loadJson(QJsonObject json)
     }
     else
     {
-        mLabel = json["label"].toString();
-        mDetails = QString("Chr%1:%2-%3").arg(json["chr"].toInt()).arg(json["start"].toInt()).arg(json["end"].toInt());
-        mType = "region";
+
+        QString area = QString("Chr%1:%2-%3").arg(json["chr"].toString()).arg(json["start"].toString()).arg(json["end"].toString());
+        QString label = json["label"].toString();
+        mLabel = label.isEmpty() ? area : label;
+        mDetails = label.isEmpty() ? "" : area;
+        mType = json["type"].toString();
     }
     mData = json;
     mSearchField = mLabel + " " + mDetails;

@@ -181,7 +181,7 @@ Dialog
                     Layout.fillHeight: true
                     Layout.fillWidth: true
 
-                    model: regovar.panelsManager.newPanel.headVersion.entries
+                    model: regovar.panelsManager.newPanel.headVersion.entries.proxy
 
                     TableViewColumn
                     {
@@ -301,7 +301,9 @@ Dialog
 
     function removeSelectedEntry()
     {
-        regovar.panelsManager.newPanel.removeEntryAt(panelEntriesTable.currentRow);
+        var idx = panelEntriesTable.model.getModelIndex(panelEntriesTable.currentRow);
+        var id = regovar.panelsManager.newPanel.headVersion.entries.data(idx, 257); // 257 = Qt::UserRole+1
+        regovar.panelsManager.newPanel.headVersion.entries.removeEntryAt(panelEntriesTable.currentRow);
     }
 
     function reset()

@@ -51,8 +51,6 @@ public:
     // New/Edit Panel Wizard dedicated methods
     //! Reset the model with same information as provided panel version
     Q_INVOKABLE void reset(Panel* panel=nullptr);
-    //! Save the panel + head version onto server
-    Q_INVOKABLE void saveNewVersion();
     //! Add new entry to the current new panel/version
     Q_INVOKABLE void addEntry(QJsonObject json);
 

@@ -93,39 +93,6 @@ void Panel::reset(Panel* panel)
 }
 
 
-void Panel::saveNewVersion()
-{
-    // json export is used only for Update and Create one version of the panel
-    // So, we don't format json with the list of all available version as done server side
-    PanelVersion* head = headVersion();
-    QJsonObject result = head->toJson();
-    result.insert("panel_id", mId);
-
-    if (head->entries()->rowCount() > 0)
-    {
-        QJsonArray entries;
-
-        for(int idx=0; idx < head->entries()->rowCount(); idx++)
-        {
-            entries.append(head->entries()->getAt(idx)->toJson());
-        }
-        result.insert("entries", entries);
-    }
-
-    Request* request = Request::put(QString("/panel/%1").arg(mId), QJsonDocument(result).toJson());
-    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            qDebug() << "New version saved for Panel " << mId;
-        }
-        else
-        {
-            regovar->manageServerError(json, Q_FUNC_INFO);
-        }
-        request->deleteLater();
-    });
-}
 
 void Panel::addEntry(QJsonObject json)
 {
