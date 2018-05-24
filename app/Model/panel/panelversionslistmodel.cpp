@@ -65,7 +65,10 @@ bool PanelVersionsListModel::removeAt(int idx)
 {
     if (idx >= 0 && idx <= mPanelVersionsList.count())
     {
+        beginRemoveRows(QModelIndex(), idx, idx);
         mPanelVersionsList.removeAt(idx);
+        endRemoveRows();
+        emit countChanged();
         return true;
     }
     return false;
