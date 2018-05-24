@@ -169,6 +169,7 @@
         <file>Pages/Analysis/Pipeline/LogPage.qml</file>
         <file>Pages/Analysis/Pipeline/SummaryPage.qml</file>
         <file>Pages/Browser/DatabasePage.qml</file>
+        <file>Pages/Browser/PanelsPage.qml</file>
         <file>Pages/Browser/ProjectsPage.qml</file>
         <file>Pages/Browser/SearchPage.qml</file>
         <file>Pages/Browser/SearchResultsList.qml</file>
@@ -191,7 +192,6 @@
         <file>Pages/Help/AboutPage.qml</file>
         <file>Pages/Help/InfoCard.qml</file>
         <file>Pages/Help/UserGuidePage.qml</file>
-        <file>Pages/Panel/PanelsPage.qml</file>
         <file>Pages/Project/AnalysesPage.qml</file>
         <file>Pages/Project/FilesPage.qml</file>
         <file>Pages/Project/SubjectsPage.qml</file>

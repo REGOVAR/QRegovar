@@ -33,6 +33,7 @@ public:
 private:
     QString mHgncId;
     QString mSymbol;
+    QJsonObject mData;
 };
 
 #endif // GENE_H

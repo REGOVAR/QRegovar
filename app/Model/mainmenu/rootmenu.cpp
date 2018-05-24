@@ -45,7 +45,7 @@ void RootMenu::initMain()
     mEntries.append(new MenuEntry("z", tr("Search"), "Browser/SearchPage.qml", this));
     mEntries.append(mAnalysisBrowserEntry);
     mEntries.append(mSubjectBrowserEntry);
-    mEntries.append(new MenuEntry("q", tr("Panels"), "Panel/PanelsPage.qml", this));
+    mEntries.append(new MenuEntry("q", tr("Panels"), "Browser/PanelsPage.qml", this));
     mEntries.append(new MenuEntry("B", tr("Database"), "Browser/DatabasePage.qml", this));
     mEntries.append(settingsEntry);
     mEntries.append(helpEntry);
