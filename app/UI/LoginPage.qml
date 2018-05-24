@@ -101,7 +101,7 @@ Rectangle
         anchors.topMargin: 10
         anchors.horizontalCenter: panel.horizontalCenter
         text: qsTr("If you have lost your credentials, contact your admin")  // TODO: qsTr("I forgot my credential")
-        color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
+        color: Regovar.theme.frontColor.normal  // TODO: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.frontColor.normal
         property bool hovered: false
 
         MouseArea
