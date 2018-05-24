@@ -46,18 +46,10 @@ Rectangle
             anchors.right: connectionStatus.left
             anchors.margins: 10
 
-            property string formerSearch: ""
             iconLeft: "z"
             displayClearButton: true
             placeholder: qsTr("Search panel by name, description or owner ...")
-            onEditingFinished:
-            {
-                if (formerSearch != text && text != "")
-                {
-                    regovar.panelsManager.proxy.setFilterString(text);
-                    formerSearch = text;
-                }
-            }
+            onTextChanged: regovar.panelsManager.proxy.setFilterString(text)
         }
     }
 

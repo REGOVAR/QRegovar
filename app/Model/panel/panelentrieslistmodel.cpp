@@ -62,7 +62,10 @@ bool PanelEntriesListModel::removeAt(int idx)
 {
     if (idx >= 0 && idx <= mPanelEntriesList.count())
     {
+        beginRemoveRows(QModelIndex(), idx, idx);
         mPanelEntriesList.removeAt(idx);
+        endRemoveRows();
+        emit countChanged();
         return true;
     }
     return false;

@@ -55,6 +55,7 @@ bool PanelVersion::loadJson(QJsonObject json)
     mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
 
     // Load entries
+    mEntries->clear();
     for(const QJsonValue& entry: json["entries"].toArray())
     {
         mEntries->append(new PanelEntry(entry.toObject()));

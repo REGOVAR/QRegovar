@@ -70,8 +70,8 @@ void PanelsManager::commitNewPanel()
 {
     PanelVersion* head = mNewPanel->headVersion();
     QJsonObject result;
-    result.insert("panel_id", "");
-    result.insert("id", "");
+    result.insert("id", mNewPanel->id());
+    result.insert("version_id", head->id());
     result.insert("name", mNewPanel->name());
     result.insert("version", head->name());
     result.insert("owner", mNewPanel->owner());

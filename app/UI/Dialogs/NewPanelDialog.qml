@@ -165,14 +165,7 @@ Dialog
                     iconLeft: "z"
                     displayClearButton: true
                     placeholder: qsTr("Filter panel entries...")
-                    onEditingFinished:
-                    {
-                        if (formerSearch != text && text != "")
-                        {
-                            panelEntriesTable.model.setFilterString(text);
-                            formerSearch = text;
-                        }
-                    }
+                    onTextChanged: panelEntriesTable.model.setFilterString(text)
                 }
 
                 TableView
@@ -303,7 +296,7 @@ Dialog
     {
         var idx = panelEntriesTable.model.getModelIndex(panelEntriesTable.currentRow);
         var id = regovar.panelsManager.newPanel.headVersion.entries.data(idx, 257); // 257 = Qt::UserRole+1
-        regovar.panelsManager.newPanel.headVersion.entries.removeEntryAt(panelEntriesTable.currentRow);
+        regovar.panelsManager.newPanel.headVersion.entries.removeAt(panelEntriesTable.currentRow);
     }
 
     function reset()
