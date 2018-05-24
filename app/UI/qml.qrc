@@ -232,5 +232,6 @@
         <file>Windows/SampleInfoWindow.qml</file>
         <file>Windows/UserInfoWindow.qml</file>
         <file>Windows/VariantInfoWindow.qml</file>
+        <file>Dialogs/InfoDialog.qml</file>
     </qresource>
 </RCC>

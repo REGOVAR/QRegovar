@@ -615,7 +615,12 @@ void Regovar::search(QString query)
 
 
 
-
+void Regovar::restart()
+{
+    // restart:
+    qApp->quit();
+    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+}
 
 
 

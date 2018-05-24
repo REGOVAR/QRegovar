@@ -157,7 +157,7 @@ public:
     bool openNewWindow(QUrl qmlUrl, QObject* model, QString wid);
     Q_INVOKABLE bool closeWindow(QString wid);
     Q_INVOKABLE inline QObject* getWindowModels(QString wid) const { if (mOpenWindowModels.contains(wid)) return mOpenWindowModels[wid]; return nullptr; }
-
+    Q_INVOKABLE void restart();
 
 
 Q_SIGNALS:

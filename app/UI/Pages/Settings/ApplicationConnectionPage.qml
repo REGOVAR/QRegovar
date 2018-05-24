@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.3
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
+import "qrc:/qml/Dialogs"
 
 Rectangle
 {
@@ -12,7 +13,7 @@ Rectangle
 
 
     property QtObject model
-
+    property bool ready: false
 
     Component.onCompleted:
     {
@@ -20,6 +21,7 @@ Rectangle
         sharedUrl.text = regovar.networkManager.sharedUrl;
 
         regovar.networkManager.testServerUrl(regovarUrl.text, sharedUrl.text);
+        ready = true;
     }
 
     Rectangle
@@ -198,7 +200,7 @@ Rectangle
             Layout.row: 8
             Layout.column: 0
             Layout.columnSpan: 2
-            text: qsTr("Test connection !")
+            text: qsTr("Test and apply changes !")
             iconTxt: "x"
             onClicked:
             {
@@ -212,16 +214,21 @@ Rectangle
                 target: regovar.networkManager
                 onTestServerUrlDone:
                 {
-                    var test1 = serverUrlValid == regovarUrl.text;
-                    regovarUrl.iconLeft = test1 ? "n" : "h";
-                    regovarUrl.color = test1 ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.danger;
+                    regovarUrl.text = serverUrlValid;
+                    regovarUrl.iconLeft = true ? "n" : "h";
+                    regovarUrl.color = true ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.danger;
 
-                    var test2 = sharedUrlValid == sharedUrl.text;
-                    sharedUrl.iconLeft = test2 ? "n" : "h";
-                    sharedUrl.color = test2 ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.danger;
+                    sharedUrl.text = sharedUrlValid;
+                    sharedUrl.iconLeft = false ? "n" : "h";
+                    sharedUrl.color = false ? Regovar.theme.frontColor.normal : Regovar.theme.frontColor.danger;
 
                     testConnectionButton.enabled = true;
                     testConnectionButton.iconTxt = "x";
+
+                    if (root.ready && success)
+                    {
+                        checkInfo.open();
+                    }
                 }
             }
         }
@@ -234,5 +241,13 @@ Rectangle
             Layout.fillHeight: true
             Layout.fillWidth: true
         }
+    }
+
+    InfoDialog
+    {
+        id: checkInfo
+        title: qsTr("Connection settings updated")
+        text: qsTr("Servers urls have been changed. The application will restart to apply changes.")
+        onOk: regovar.restart()
     }
 }
