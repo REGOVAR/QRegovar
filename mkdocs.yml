@@ -21,7 +21,7 @@ pages:
     - 'Model': 'developper/model.md'
     - 'UI': 'developper/ui.md'
     - 'Authentification': 'developper/authentication.md'
-    - 'Paramètres utilisateur': 'tech/usersettings.md'
+    - 'Paramètres utilisateur': 'developper/usersettings.md'
     - 'Gestion des erreurs': 'developper/errors.md'
  - 'FICHES TECHNIQUES':
     - 'Request': 'tech/request.md'
