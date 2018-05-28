@@ -2,6 +2,7 @@
 #define PROJECT_H
 
 #include <QtCore>
+#include "Model/analysis/analyseslistmodel.h"
 
 class Project : public QObject
 {
@@ -18,7 +19,7 @@ class Project : public QObject
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
     Q_PROPERTY(QString fullPath READ fullPath NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> analyses READ analyses NOTIFY dataChanged)
+    Q_PROPERTY(AnalysesListModel* analyses READ analyses NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> subjects READ subjects NOTIFY dataChanged)
 
 
@@ -41,7 +42,7 @@ public:
     inline QString name() const { return mName; }
     inline QString comment() const { return mComment; }
     inline QString fullPath() const { return mFullPath; }
-    inline QList<QObject*> analyses() const { return mAnalyses; }
+    inline AnalysesListModel* analyses() const { return mAnalyses; }
     inline QList<QObject*> subjects() const { return mSubjects; }
 
     // Setters
@@ -84,7 +85,7 @@ private:
     Project* mParent = nullptr;
     QString mComment;
     QString mName;
-    QList<QObject*> mAnalyses;
+    AnalysesListModel* mAnalyses = nullptr;
     QList<QObject*> mSubjects;
 
     // Methods

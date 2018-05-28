@@ -30,7 +30,7 @@ public:
     static QString PIPELINE;
 
     // Constructors
-    explicit Analysis(QObject *parent = nullptr);
+    Analysis(QObject *parent = nullptr);
 
     // Getters
     inline RootMenu* menuModel() const { return mMenuModel; }
@@ -38,10 +38,10 @@ public:
     inline QDateTime updateDate() const { return mUpdateDate; }
     inline QDateTime createDate() const { return mCreateDate; }
 
-    inline int id() { return mId; }
-    inline QString name() { return mName; }
-    inline QString comment() { return mComment; }
-    inline QString type() { return mType; }
+    inline int id() const { return mId; }
+    inline QString name() const { return mName; }
+    inline QString comment() const { return mComment; }
+    inline QString type() const { return mType; }
     inline Project* project() const { return mProject; }
     inline QString status() const { return mStatus; }
     inline QString searchField() const { return mSearchField; }

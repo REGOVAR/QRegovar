@@ -77,8 +77,8 @@ public:
     };
 
     // Constructor
-    explicit FilteringAnalysis(QObject* parent = nullptr);
-    explicit FilteringAnalysis(int id, QObject* parent = nullptr);
+    FilteringAnalysis(QObject* parent = nullptr);
+    FilteringAnalysis(int id, QObject* parent = nullptr);
 
     // Getters
     inline QString refName() const { return mRefName; }

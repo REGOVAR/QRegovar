@@ -2,6 +2,7 @@
 #include "Model/regovar.h"
 #include "Model/framework/request.h"
 #include "Model/analysis/filtering/filteringanalysis.h"
+#include "Model/analysis/pipeline/pipelineanalysis.h"
 
 
 
@@ -10,12 +11,13 @@
 
 Project::Project(QObject* parent) : QObject(parent)
 {
+    mAnalyses = new AnalysesListModel(this);
 }
-Project::Project(QJsonObject json, QObject* parent) : QObject(parent)
+Project::Project(QJsonObject json, QObject* parent) : Project(parent)
 {
     loadJson(json);
 }
-Project::Project(int id, QObject* parent) : QObject(parent)
+Project::Project(int id, QObject* parent) : Project(parent)
 {
     mId = id;
 }
@@ -39,14 +41,20 @@ bool Project::loadJson(QJsonObject json)
     mName = json["name"].toString();
 
     // Analyses
-    mAnalyses.clear();
+    mAnalyses->clear();
     for (const QJsonValue& jsonVal: json["analyses"].toArray())
     {
         QJsonObject aJson = jsonVal.toObject();
-        int id = aJson["id"].toInt();
-        FilteringAnalysis* analysis =  regovar->analysesManager()->getOrCreateFilteringAnalysis(id);
-        analysis->loadJson(jsonVal.toObject(), false);
-        mAnalyses.append(analysis);
+        FilteringAnalysis* analysis =  regovar->analysesManager()->getOrCreateFilteringAnalysis(aJson["id"].toInt());
+        analysis->loadJson(aJson, false);
+        mAnalyses->append(analysis);
+    }
+    for (const QJsonValue& jsonVal: json["jobs"].toArray())
+    {
+        QJsonObject jJson = jsonVal.toObject();
+        PipelineAnalysis* analysis =  regovar->analysesManager()->getOrCreatePipelineAnalysis(jJson["id"].toInt());
+        analysis->loadJson(jJson, false);
+        mAnalyses->append(analysis);
     }
 
     // Subjects
@@ -78,17 +86,16 @@ QJsonObject Project::toJson()
         result.insert("parent_id", mParent->id());
     }
     // Analyses
-    if (mAnalyses.count() > 0)
+    if (mAnalyses->rowCount() > 0)
     {
         QJsonArray analyses;
-        for (QObject* o: mAnalyses)
+        for (int idx=0; idx < mAnalyses->rowCount(); idx++)
         {
-            FilteringAnalysis* a = qobject_cast<FilteringAnalysis*>(o);
+            Analysis* a = mAnalyses->getAt(idx);
             analyses.append(a->id());
         }
         result.insert("analyses_ids", analyses);
     }
-    // TODO: Jobs
     // TODO: Indicators
 
     return result;

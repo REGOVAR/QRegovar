@@ -23,8 +23,8 @@ class PipelineAnalysis: public Analysis
 
 public:
     // Constructors
-    explicit PipelineAnalysis(QObject* parent=nullptr);
-    explicit PipelineAnalysis(int id, QObject* parent=nullptr);
+    PipelineAnalysis(QObject* parent=nullptr);
+    PipelineAnalysis(int id, QObject* parent=nullptr);
 
     // Getters
     inline QJsonObject config() const { return mConfig; }
