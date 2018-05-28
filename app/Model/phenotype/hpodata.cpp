@@ -16,7 +16,7 @@ bool HpoData::loadJson(QJsonObject)
     return false;
 }
 
-bool HpoData::load(bool forceRefresh)
+bool HpoData::load(bool)
 {
     Request* req = Request::get(QString("/search/phenotype/%1").arg(mId));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)

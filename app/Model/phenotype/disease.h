@@ -16,8 +16,8 @@ class Disease: public HpoData
 
 public:
     // Constructor
-    explicit Disease(QObject* parent = nullptr);
-    explicit Disease(QString hpoId, QObject* parent = nullptr);
+    Disease(QObject* parent = nullptr);
+    Disease(QString hpoId, QObject* parent = nullptr);
 
     // Getters
     inline QJsonObject omim() const { return mOmim; }

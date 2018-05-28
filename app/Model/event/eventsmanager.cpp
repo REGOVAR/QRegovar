@@ -44,40 +44,18 @@ Event* EventsManager::getOrCreateEvent(int eventId)
 
 void EventsManager::processPushNotification(QString action, QJsonObject data)
 {
-//    // Retrieve realtime progress data
-//    QString status = data["status"].toString();
-//    double progressValue = 0.0;
-//    if (action == "import_vcf_processing" || action == "import_vcf_start")
-//    {
-//        progressValue = data["progress"].toDouble();
-//    }
-//    else if (action == "import_vcf_end")
-//    {
-//        progressValue = 1.0;
-//        status = "ready";
-//    }
+    if (action == "new_event")
+    {
+        Event* newEvent = getOrCreateEvent(data["id"].toInt());
+        newEvent->loadJson(data);
 
-//    // Update sample status
-//    for (const QJsonValue& json: data["samples"].toArray())
-//    {
-//        QJsonObject obj = json.toObject();
-//        int sid = obj["id"].toInt();
-
-//        Sample* sample = getOrCreateEvent(sid);
-//        sample->setStatus(status);
-//        sample->setLoadingProgress(progressValue);
-//        sample->refreshUIAttributes();
-//    }
-
-//    // Notify view when new sample import start (import wizard)
-//    if (action == "import_vcf_start")
-//    {
-//        QList<int> ids;
-//        for (QJsonValue sample: data["samples"].toArray())
-//        {
-//            QJsonObject sampleData = sample.toObject();
-//            ids << sampleData["id"].toInt();
-//        }
-//        emit sampleImportStart(data["file_id"].toString().toInt(), ids);
-//    }
+        if (newEvent->type() != "technical")
+        {
+            mLastEvents->append(newEvent);
+            emit lastEventsChanged();
+        }
+        mTechnicalEvents->append(newEvent);
+        emit technicalEventsChanged();
+        emit newEventPop(newEvent);
+    }
 }

@@ -36,9 +36,9 @@ class Event : public QObject
 
 public:
     // Constructor
-    explicit Event(QObject* parent=nullptr);
-    explicit Event(int id, QObject* parent=nullptr);
-    explicit Event(QJsonObject json, QObject* parent=nullptr);
+    Event(QObject* parent=nullptr);
+    Event(int id, QObject* parent=nullptr);
+    Event(QJsonObject json, QObject* parent=nullptr);
 
     // Getters
     inline int id() const { return mId; }

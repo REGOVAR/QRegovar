@@ -25,7 +25,7 @@ class HpoData: public QObject
 
 public:
     // Constructor
-    explicit HpoData(QObject* parent = nullptr);
+    HpoData(QObject* parent = nullptr);
 
     // Getters
     inline QString id() const { return mId; }

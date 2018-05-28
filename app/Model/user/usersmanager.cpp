@@ -40,8 +40,9 @@ User* UsersManager::getOrCreateUser(int userId)
 }
 
 
-void UsersManager::processPushNotification(QString action, QJsonObject data)
+void UsersManager::processPushNotification(QString, QJsonObject)
 {
+    // TODO
 //    // Retrieve realtime progress data
 //    QString status = data["status"].toString();
 //    double progressValue = 0.0;

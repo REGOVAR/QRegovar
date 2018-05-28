@@ -93,9 +93,9 @@ void PanelVersion::save()
     });
 }
 //! Load Subject information from server
-void PanelVersion::load(bool forceRefresh)
+void PanelVersion::load(bool)
 {
-
+    // TODO ?
 }
 
 // Methods

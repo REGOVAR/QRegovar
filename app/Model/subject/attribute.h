@@ -16,9 +16,9 @@ class Attribute : public QObject
 
 public:
     // Constructors
-    explicit Attribute(QObject* parent = nullptr);
-    explicit Attribute(QString name);
-    explicit Attribute(QJsonObject json);
+    Attribute(QObject* parent = nullptr);
+    Attribute(QString name);
+    Attribute(QJsonObject json);
 
     // Getters
     inline QString name() const { return mName; }

@@ -23,8 +23,8 @@ class Phenotype : public HpoData
 
 public:
     // Constructor
-    explicit Phenotype(QObject* parent = nullptr);
-    explicit Phenotype(QString hpo_id, QObject* parent = nullptr);
+    Phenotype(QObject* parent = nullptr);
+    Phenotype(QString hpo_id, QObject* parent = nullptr);
 
     // Getters
     inline QString definition() const { return mDefinition; }

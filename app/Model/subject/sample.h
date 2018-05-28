@@ -47,10 +47,10 @@ public:
     };
     Q_ENUM(SampleStatus)
 
-
-    explicit Sample(QObject* parent = nullptr);
-    explicit Sample(int id, QObject* parent = nullptr);
-    explicit Sample(QJsonObject json, QObject* parent = nullptr);
+    // Constructors
+    Sample(QObject* parent = nullptr);
+    Sample(int id, QObject* parent = nullptr);
+    Sample(QJsonObject json, QObject* parent = nullptr);
 
     // Getters
     inline bool loaded() const { return mLoaded; }
