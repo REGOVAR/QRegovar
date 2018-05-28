@@ -2,19 +2,16 @@
 #define ANALYSIS_H
 
 #include <QtCore>
+#include "Model/framework/regovarresource.h"
 #include "Model/mainmenu/rootmenu.h"
 
 
 
 
-class Analysis : public QObject
+class Analysis : public RegovarResource
 {
     Q_OBJECT
     Q_PROPERTY(RootMenu* menuModel READ menuModel NOTIFY menuModelChanged)
-    // Regovar resource attributes
-    Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
     // Analysis attributes
     Q_PROPERTY(int id READ id WRITE setId NOTIFY dataChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
@@ -22,7 +19,6 @@ class Analysis : public QObject
     Q_PROPERTY(QString type READ type NOTIFY dataChanged)
     Q_PROPERTY(Project* project READ project WRITE setProject NOTIFY dataChanged)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
-    Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
 
 public:
     // enum value returned by the server as analysis type
@@ -34,9 +30,6 @@ public:
 
     // Getters
     inline RootMenu* menuModel() const { return mMenuModel; }
-    inline bool loaded() const { return mLoaded; }
-    inline QDateTime updateDate() const { return mUpdateDate; }
-    inline QDateTime createDate() const { return mCreateDate; }
 
     inline int id() const { return mId; }
     inline QString name() const { return mName; }
@@ -44,7 +37,6 @@ public:
     inline QString type() const { return mType; }
     inline Project* project() const { return mProject; }
     inline QString status() const { return mStatus; }
-    inline QString searchField() const { return mSearchField; }
 
     // Setters
     inline void setId(int id) { mId = id; emit dataChanged(); }
@@ -53,18 +45,7 @@ public:
     inline void setProject(Project* project) { mProject = project; emit dataChanged(); }
     inline void setStatus(QString status) { mStatus = status; emit statusChanged(); }
 
-    // Methods
-    //! Set model with provided json data
-    Q_INVOKABLE virtual bool loadJson(QJsonObject json, bool full_init=true) = 0;
-    //! Export model data into json object
-    Q_INVOKABLE virtual QJsonObject toJson() = 0;
-    //! Save subject information onto server
-    Q_INVOKABLE virtual void save() = 0;
-    //! Load Subject information from server
-    Q_INVOKABLE virtual void load(bool forceRefresh=true) = 0;
-
-
-
+    // Static Methods
     Q_INVOKABLE static QString statusLabel(QString status);
     Q_INVOKABLE static QString statusIcon(QString status);
     Q_INVOKABLE static bool statusIconAnimated(QString status);
@@ -73,21 +54,14 @@ public:
 
 Q_SIGNALS:
     void menuModelChanged();
-    void dataChanged();
     void statusChanged();
 
 
 public Q_SLOTS:
-    virtual void updateSearchField();
-
+    virtual void updateSearchField() override;
 
 protected:
     RootMenu* mMenuModel = nullptr;
-    // Regovar resource
-    bool mLoaded = false;
-    QDateTime mUpdateDate;
-    QDateTime mCreateDate;
-    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
     // Analysis attribute
     int mId = -1;
     QString mName;
@@ -95,7 +69,6 @@ protected:
     QString mType;
     Project* mProject = nullptr;
     QString mStatus; // status of the analysis (server side)
-    QString mSearchField = "";
 
     static QHash<QString, QString> sStatusLabelMap;
     static QHash<QString, QString> sStatusIconMap;

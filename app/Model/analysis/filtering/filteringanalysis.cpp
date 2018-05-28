@@ -18,8 +18,7 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
     mLoadingStatus = Empty;
 
 
-    connect(this, SIGNAL(loadingStatusChanged(LoadingStatus,LoadingStatus)),
-            this, SLOT(asynchLoadingCoordination(LoadingStatus,LoadingStatus)));
+    connect(this, &FilteringAnalysis::loadingStatusChanged, this, &FilteringAnalysis::asynchLoadingCoordination);
 
 
     // Init model
@@ -1011,6 +1010,7 @@ void FilteringAnalysis::processPushNotification(QString action, QJsonObject data
 
     }
 }
+
 
 
 /// Save on local computer, Tableariant columns settings (order of columns displayed and width)

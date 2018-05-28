@@ -563,7 +563,7 @@ QString Regovar::formatDate(QDateTime date, bool withTime)
 
     if (withTime)
     {
-        return date.toString("yyyy-MM-dd hh:mm");
+        return date.toString("yyyy-MM-dd HH:mm");
     }
     return date.toString("yyyy-MM-dd");
 }

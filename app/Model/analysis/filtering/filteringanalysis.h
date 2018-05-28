@@ -129,10 +129,10 @@ public:
 
 
     // Analysis abstracts methods overriden
-    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true);
-    Q_INVOKABLE QJsonObject toJson();
-    Q_INVOKABLE void save();
-    Q_INVOKABLE void load(bool forceRefresh=true);
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
+    Q_INVOKABLE QJsonObject toJson() override;
+    Q_INVOKABLE void save() override;
+    Q_INVOKABLE void load(bool forceRefresh=true) override;
 
     // Methods
     Q_INVOKABLE inline FieldColumnInfos* getColumnInfo(QString uid) { return mAnnotations.contains(uid) ? mAnnotations[uid] : nullptr; }
@@ -168,8 +168,6 @@ public:
     void resetSets();
 
 Q_SIGNALS:
-    void dataChanged();
-
     void loadingStatusChanged(LoadingStatus oldSatus, LoadingStatus newStatus);
     void annotationsChanged();
     void displayedAnnotationsChanged();

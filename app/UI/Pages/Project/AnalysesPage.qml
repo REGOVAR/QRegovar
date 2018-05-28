@@ -82,26 +82,22 @@ Rectangle
         {
             id: openAnalysis
             text: qsTr("Open")
-            onClicked:
-            {
-                var analysis = browser.model[browser.currentRow];
-                regovar.analysesManager.openAnalysis(analysis.type, analysis.id)
-            }
+            onClicked: regovar.analysesManager.openAnalysis(currentAnalysis.type, currentAnalysis.id)
         }
-        Button
-        {
-            id: playPauseAnalysis
-            text: qsTr("Pause")
-            onClicked:  console.log("Pause/Play analysis")
-            enabled: false
-        }
-        Button
-        {
-            id: deleteAnalysis
-            text: qsTr("Delete")
-            onClicked:  console.log("Delete analysis")
-            enabled: false
-        }
+//        Button
+//        {
+//            id: playPauseAnalysis
+//            text: qsTr("Pause")
+//            onClicked:  console.log("Pause/Play analysis")
+//            enabled: false
+//        }
+//        Button
+//        {
+//            id: deleteAnalysis
+//            text: qsTr("Delete")
+//            onClicked:  console.log("Delete analysis")
+//            enabled: false
+//        }
     }
 
     SplitView
@@ -122,21 +118,31 @@ Rectangle
             Layout.fillHeight: true
             color: Regovar.theme.backgroundColor.main
 
+
+            TextField
+            {
+                id: browserSearch
+                anchors.top: topPanel.top
+                anchors.left: topPanel.left
+                anchors.right: topPanel.right
+                anchors.topMargin: 10
+                iconLeft: "z"
+                displayClearButton: true
+                placeholder: qsTr("Search analyses by names, dates, comments...")
+                onTextChanged: root.model.analyses.proxy.setFilterString(text)
+            }
+
             TableView
             {
                 id: browser
-                anchors.fill: parent
-                anchors.margins: 10
-                anchors.leftMargin: 0
-                model: (root.model) ? root.model.analyses : []
-                onDoubleClicked:
-                {
-                    var analysis = browser.model[currentRow];
-                    if (analysis)
-                    {
-                        regovar.analysesManager.openAnalysis(analysis.type, analysis.id);
-                    }
-                }
+                anchors.top: browserSearch.bottom
+                anchors.left: topPanel.left
+                anchors.right: topPanel.right
+                anchors.bottom: topPanel.bottom
+                anchors.bottomMargin: 10
+                anchors.topMargin: 10
+                model: (root.model) ? root.model.analyses.proxy : []
+                onDoubleClicked: regovar.analysesManager.openAnalysis(currentAnalysis.type, currentAnalysis.id)
 
                 // Default delegate for all column
                 itemDelegate: Item
@@ -171,14 +177,6 @@ Rectangle
                 {
                     role: "updateDate"
                     title: "Date"
-                    delegate: Text
-                    {
-                        anchors.fill: parent
-                        anchors.margins: 5
-                        verticalAlignment: Text.AlignVCenter
-                        text: regovar.formatDate(modelData.dateOfBirth, false)
-                        elide: Text.ElideRight
-                    }
                 }
                 TableViewColumn
                 {
@@ -190,7 +188,21 @@ Rectangle
 
                 onCurrentRowChanged:
                 {
-                    displayCurrentAnalysisPreview(root.model.analyses[currentRow]);
+                    if (root.model)
+                    {
+                        var idx = root.model.analyses.proxy.getModelIndex(browser.currentRow);
+                        var id = root.model.analyses.data(idx, 257); // 257 = Qt::UserRole+1
+                        var type = root.model.analyses.data(idx, 261);
+
+                        if (id && type === "analysis")
+                        {
+                            displayCurrentAnalysisPreview(regovar.analysesManager.getFilteringAnalysis(id));
+                        }
+                        else if (id && type === "pipeline")
+                        {
+                            displayCurrentAnalysisPreview(regovar.analysesManager.getPipelineAnalysis(id));
+                        }
+                    }
                 }
             }
         } // end topPanel

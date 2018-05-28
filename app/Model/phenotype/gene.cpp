@@ -24,7 +24,7 @@ void Gene::updateSearchField()
 }
 
 
-bool Gene::loadJson(QJsonObject json)
+bool Gene::loadJson(QJsonObject json, bool)
 {
     // Load gene information
     mSymbol = json["symbol"].toString();

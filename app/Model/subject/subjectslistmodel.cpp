@@ -105,7 +105,7 @@ QVariant SubjectsListModel::data(const QModelIndex& index, int role) const
     else if (role == FamilyNumber)
         return subject->familyNumber();
     else if (role == UpdateDate)
-        return subject->updateDate().toString("yyyy-MM-dd");
+        return subject->updateDate().toString("yyyy-MM-dd HH:mm");
     else if (role == SearchField)
         return subject->searchField();
     return QVariant();

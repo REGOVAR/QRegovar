@@ -119,7 +119,7 @@ QVariant AnalysesListModel::data(const QModelIndex& index, int role) const
     else if (role == Status)
         return analysis->status();
     else if (role == UpdateDate)
-        return analysis->updateDate().toString("yyyy-MM-dd");
+        return analysis->updateDate().toString("yyyy-MM-dd HH:mm");
     else if (role == SearchField)
         return analysis->searchField();
     return QVariant();

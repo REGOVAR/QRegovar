@@ -10,7 +10,7 @@ PanelEntry::PanelEntry(QJsonObject json, QObject* parent): PanelEntry(parent)
 }
 
 
-bool PanelEntry::loadJson(QJsonObject json)
+bool PanelEntry::loadJson(QJsonObject json, bool)
 {
     if (json["type"] == "gene")
     {

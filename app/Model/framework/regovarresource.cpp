@@ -11,7 +11,7 @@ void RegovarResource::updateSearchField()
 }
 
 //! Set model with provided json data
-bool RegovarResource::loadJson(QJsonObject)
+bool RegovarResource::loadJson(QJsonObject, bool)
 {
     qDebug() << "Warning: calling default implementation of RegovarResource::loadJson(QJsonObject). Nothing done.";
     return false;
