@@ -42,30 +42,60 @@ bool Project::loadJson(QJsonObject json, bool)
     mName = json["name"].toString();
 
     // Analyses
-    mAnalyses->clear();
-    for (const QJsonValue& jsonVal: json["analyses"].toArray())
+    if (json.contains("analyses"))
     {
-        QJsonObject aJson = jsonVal.toObject();
-        FilteringAnalysis* analysis =  regovar->analysesManager()->getOrCreateFilteringAnalysis(aJson["id"].toInt());
-        analysis->loadJson(aJson, false);
-        mAnalyses->append(analysis);
+        mAnalyses->clear();
+        for (const QJsonValue& jsonVal: json["analyses"].toArray())
+        {
+            QJsonObject aJson = jsonVal.toObject();
+            FilteringAnalysis* analysis =  regovar->analysesManager()->getOrCreateFilteringAnalysis(aJson["id"].toInt());
+            analysis->loadJson(aJson, false);
+            mAnalyses->append(analysis);
+        }
+        for (const QJsonValue& jsonVal: json["jobs"].toArray())
+        {
+            QJsonObject jJson = jsonVal.toObject();
+            PipelineAnalysis* analysis =  regovar->analysesManager()->getOrCreatePipelineAnalysis(jJson["id"].toInt());
+            analysis->loadJson(jJson, false);
+            mAnalyses->append(analysis);
+        }
     }
-    for (const QJsonValue& jsonVal: json["jobs"].toArray())
+    else if (json.contains("analyses_ids"))
     {
-        QJsonObject jJson = jsonVal.toObject();
-        PipelineAnalysis* analysis =  regovar->analysesManager()->getOrCreatePipelineAnalysis(jJson["id"].toInt());
-        analysis->loadJson(jJson, false);
-        mAnalyses->append(analysis);
+        mAnalyses->clear();
+        for (const QJsonValue& aId: json["analyses_ids"].toArray())
+        {
+            FilteringAnalysis* analysis =  regovar->analysesManager()->getOrCreateFilteringAnalysis(aId.toInt());
+            mAnalyses->append(analysis);
+        }
+        for (const QJsonValue& aId: json["jobs_ids"].toArray())
+        {
+            PipelineAnalysis* analysis =  regovar->analysesManager()->getOrCreatePipelineAnalysis(aId.toInt());
+            mAnalyses->append(analysis);
+        }
     }
 
+
     // Subjects
-    mSubjects->clear();
-    for (const QJsonValue& jsonVal: json["subjects"].toArray())
+    if (json.contains("subjects"))
     {
-        QJsonObject sJson = jsonVal.toObject();
-        Subject* subject =  regovar->subjectsManager()->getOrCreateSubject(sJson["id"].toInt());
-        subject->loadJson(sJson);
-        mSubjects->append(subject);
+        mSubjects->clear();
+        for (const QJsonValue& jsonVal: json["subjects"].toArray())
+        {
+            QJsonObject sJson = jsonVal.toObject();
+            Subject* subject =  regovar->subjectsManager()->getOrCreateSubject(sJson["id"].toInt());
+            subject->loadJson(sJson);
+            mSubjects->append(subject);
+        }
+    }
+    else if (json.contains("subjects_ids"))
+    {
+        mAnalyses->clear();
+        for (const QJsonValue& sId: json["subjects_ids"].toArray())
+        {
+            Subject* subject =  regovar->subjectsManager()->getOrCreateSubject(sId.toInt());
+            mSubjects->append(subject);
+        }
     }
 
     mLoaded = true;

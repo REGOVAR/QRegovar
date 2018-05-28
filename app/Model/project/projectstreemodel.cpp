@@ -116,9 +116,9 @@ void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
         parent->appendChild(item);
 
         // If project, need to build subtree for analyses and jobs
-        if (p.contains("analyses") && p["analyses"].toArray().count() > 0)
+        if (p.contains("analyses_ids") && p["analyses_ids"].toArray().count() > 0)
         {
-            for (const QJsonValue& id: p["analyses"].toArray())
+            for (const QJsonValue& id: p["analyses_ids"].toArray())
             {
                 // Create treeview item with column's data and parent item
                 if (!id.isNull())
@@ -129,9 +129,9 @@ void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
                 }
             }
         }
-        if (p.contains("jobs") && p["jobs"].toArray().count() > 0)
+        if (p.contains("jobs_ids") && p["jobs_ids"].toArray().count() > 0)
         {
-            for (const QJsonValue& id: p["jobs"].toArray())
+            for (const QJsonValue& id: p["jobs_ids"].toArray())
             {
                 if (!id.isNull())
                 {
