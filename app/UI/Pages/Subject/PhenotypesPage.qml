@@ -93,7 +93,7 @@ Rectangle
             id: removePhenotype
             Layout.fillWidth: true
             text: qsTr("Remove")
-            onClicked: root.model.phenotypes.removeHpo(phenotypeList.getAt(phenotypeList.currentRow))
+            onClicked: root.model.removeHpo(phenotypeList.model.getAt(phenotypeList.currentRow))
         }
         Item
         {
