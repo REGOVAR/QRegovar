@@ -73,19 +73,33 @@ Rectangle
     }
 
 
+    TextField
+    {
+        id: browserSearch
+        anchors.left: root.left
+        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
+        anchors.right: root.right
+        anchors.margins: 10
+        iconLeft: "z"
+        displayClearButton: true
+        placeholder: qsTr("Search subjects by names, comments...")
+        onTextChanged: root.model.subjects.proxy.setFilterString(text)
+    }
 
     TableView
     {
-        id: subjectsList
+        id: browser
         anchors.left: root.left
-        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
+        anchors.top: browserSearch.bottom
         anchors.right: root.right
         anchors.bottom: root.bottom
         anchors.margins: 10
 
         onDoubleClicked:
         {
-            regovar.subjectsManager.openSubject(subjectsList.model[subjectsList.currentRow].id);
+            var idx = root.model.subjects.proxy.getModelIndex(browser.currentRow);
+            var id = root.model.subjects.data(idx, 257); // 257 = Qt::UserRole+1
+            regovar.subjectsManager.openSubject(id);
         }
 
         TableViewColumn
@@ -93,33 +107,21 @@ Rectangle
             role: "identifier"
             title: qsTr("Identifier")
         }
-
         TableViewColumn
         {
             role: "lastname"
             title: qsTr("Lastname")
         }
-
         TableViewColumn
         {
             role: "firstname"
             title: qsTr("Firstname")
         }
-
         TableViewColumn
         {
             role: "dateOfBirth"
             title: qsTr("Date of birth")
-            delegate: Text
-            {
-                anchors.fill: parent
-                anchors.margins: 5
-                verticalAlignment: Text.AlignVCenter
-                text: regovar.formatDate(modelData.dateOfBirth, false)
-                elide: Text.ElideRight
-            }
         }
-
         TableViewColumn
         {
             role: "comment"
@@ -132,7 +134,7 @@ Rectangle
         if (root.model)
         {
             nameLabel.text = root.model.name;
-            subjectsList.model = root.model.subjects;
+            browser.model = root.model.subjects.proxy;
         }
     }
 }

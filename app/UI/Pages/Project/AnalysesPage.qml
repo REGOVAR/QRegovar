@@ -10,8 +10,20 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property QtObject model
     property var currentAnalysis: null
+    property QtObject model
+    onModelChanged:
+    {
+        if(model)
+        {
+            model.dataChanged.connect(updateViewFromModel);
+        }
+        updateViewFromModel();
+    }
+    Component.onDestruction:
+    {
+        model.dataChanged.disconnect(updateViewFromModel);
+    }
 
     Rectangle
     {
@@ -84,20 +96,6 @@ Rectangle
             text: qsTr("Open")
             onClicked: regovar.analysesManager.openAnalysis(currentAnalysis.type, currentAnalysis.id)
         }
-//        Button
-//        {
-//            id: playPauseAnalysis
-//            text: qsTr("Pause")
-//            onClicked:  console.log("Pause/Play analysis")
-//            enabled: false
-//        }
-//        Button
-//        {
-//            id: deleteAnalysis
-//            text: qsTr("Delete")
-//            onClicked:  console.log("Delete analysis")
-//            enabled: false
-//        }
     }
 
     SplitView
@@ -141,22 +139,7 @@ Rectangle
                 anchors.bottom: topPanel.bottom
                 anchors.bottomMargin: 10
                 anchors.topMargin: 10
-                model: (root.model) ? root.model.analyses.proxy : []
                 onDoubleClicked: regovar.analysesManager.openAnalysis(currentAnalysis.type, currentAnalysis.id)
-
-                // Default delegate for all column
-                itemDelegate: Item
-                {
-                    Text
-                    {
-                        anchors.leftMargin: 5
-                        anchors.fill: parent
-                        verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        text: styleData.value
-                        elide: Text.ElideRight
-                    }
-                }
 
                 TableViewColumn
                 {
@@ -185,23 +168,19 @@ Rectangle
                     width: 400
                 }
 
-
                 onCurrentRowChanged:
                 {
-                    if (root.model)
-                    {
-                        var idx = root.model.analyses.proxy.getModelIndex(browser.currentRow);
-                        var id = root.model.analyses.data(idx, 257); // 257 = Qt::UserRole+1
-                        var type = root.model.analyses.data(idx, 261);
+                    var idx = root.model.analyses.proxy.getModelIndex(browser.currentRow);
+                    var id = root.model.analyses.data(idx, 257); // 257 = Qt::UserRole+1
+                    var type = root.model.analyses.data(idx, 261);
 
-                        if (id && type === "analysis")
-                        {
-                            displayCurrentAnalysisPreview(regovar.analysesManager.getFilteringAnalysis(id));
-                        }
-                        else if (id && type === "pipeline")
-                        {
-                            displayCurrentAnalysisPreview(regovar.analysesManager.getPipelineAnalysis(id));
-                        }
+                    if (id && type === "analysis")
+                    {
+                        displayCurrentAnalysisPreview(regovar.analysesManager.getFilteringAnalysis(id));
+                    }
+                    else if (id && type === "pipeline")
+                    {
+                        displayCurrentAnalysisPreview(regovar.analysesManager.getPipelineAnalysis(id));
                     }
                 }
             }
@@ -276,6 +255,15 @@ Rectangle
         } // end bottomPanel
     } // end SplitView
 
+
+    function updateViewFromModel()
+    {
+        if (root.model)
+        {
+            nameLabel.text = root.model.name;
+            browser.model = root.model.analyses.proxy;
+        }
+    }
 
     function displayCurrentAnalysisPreview(analysis)
     {

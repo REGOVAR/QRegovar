@@ -6,7 +6,7 @@
 #include "Model/phenotype/phenotype.h"
 #include "Model/phenotype/hpodatalistmodel.h"
 
-Subject::Subject(QObject* parent) : QObject(parent)
+Subject::Subject(QObject* parent) : RegovarResource(parent)
 {
     mPhenotypes = new HpoDataListModel(this);
 }
@@ -15,7 +15,7 @@ Subject::Subject(QJsonObject json, QObject* parent) : Subject(parent)
 {
     loadJson(json, false);
 }
-Subject::Subject(int id, QObject* parent) : QObject(parent)
+Subject::Subject(int id, QObject* parent) : Subject(parent)
 {
     mId = id;
     mPhenotypes = new HpoDataListModel(id, this);

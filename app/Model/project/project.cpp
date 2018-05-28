@@ -9,9 +9,10 @@
 
 
 
-Project::Project(QObject* parent) : QObject(parent)
+Project::Project(QObject* parent) : RegovarResource(parent)
 {
     mAnalyses = new AnalysesListModel(this);
+    mSubjects = new SubjectsListModel(this);
 }
 Project::Project(QJsonObject json, QObject* parent) : Project(parent)
 {
@@ -26,7 +27,7 @@ Project::Project(int id, QObject* parent) : Project(parent)
 
 
 
-bool Project::loadJson(QJsonObject json)
+bool Project::loadJson(QJsonObject json, bool)
 {
     mId = json["id"].toInt();
     if(json.keys().contains("fullpath"))
@@ -58,14 +59,13 @@ bool Project::loadJson(QJsonObject json)
     }
 
     // Subjects
-    mSubjects.clear();
+    mSubjects->clear();
     for (const QJsonValue& jsonVal: json["subjects"].toArray())
     {
-        QJsonObject aJson = jsonVal.toObject();
-        int id = aJson["id"].toInt();
-        Subject* subject =  regovar->subjectsManager()->getOrCreateSubject(id);
-        subject->loadJson(jsonVal.toObject());
-        mSubjects.append(subject);
+        QJsonObject sJson = jsonVal.toObject();
+        Subject* subject =  regovar->subjectsManager()->getOrCreateSubject(sJson["id"].toInt());
+        subject->loadJson(sJson);
+        mSubjects->append(subject);
     }
 
     mLoaded = true;
@@ -85,18 +85,11 @@ QJsonObject Project::toJson()
     {
         result.insert("parent_id", mParent->id());
     }
-    // Analyses
-    if (mAnalyses->rowCount() > 0)
-    {
-        QJsonArray analyses;
-        for (int idx=0; idx < mAnalyses->rowCount(); idx++)
-        {
-            Analysis* a = mAnalyses->getAt(idx);
-            analyses.append(a->id());
-        }
-        result.insert("analyses_ids", analyses);
-    }
+
     // TODO: Indicators
+
+    // No need to serialize analyses_ids and jobs_ids.
+    // To update this information you have to update concerned analyses and jobs
 
     return result;
 }
