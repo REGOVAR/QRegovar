@@ -4,6 +4,7 @@
 #include <QtCore>
 #include "Model/framework/regovarresource.h"
 #include "Model/file/file.h"
+#include "Model/analysis/analyseslistmodel.h"
 
 class Sample;
 class EventsListModel;
@@ -22,7 +23,7 @@ class Subject : public RegovarResource
     Q_PROPERTY(QDate dateOfBirth READ dateOfBirth WRITE setDateOfBirth NOTIFY dataChanged)
     Q_PROPERTY(QString familyNumber READ familyNumber WRITE setFamilyNumber NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> samples READ samples NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> analyses READ analyses NOTIFY dataChanged)
+    Q_PROPERTY(AnalysesListModel* analyses READ analyses NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> projects READ projects NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> jobs READ jobs NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> files READ files NOTIFY dataChanged)
@@ -56,7 +57,7 @@ public:
     inline Sex sex() const { return mSex; }
     inline QDate dateOfBirth() const { return mDateOfBirth; }
     inline QList<QObject*> samples() const { return mSamples; }
-    inline QList<QObject*> analyses() const { return mAnalyses; }
+    inline AnalysesListModel* analyses() const { return mAnalyses; }
     inline QList<QObject*> projects() const { return mProjects; }
     inline QList<QObject*> jobs() const { return mJobs; }
     inline QList<QObject*> files() const { return mFiles; }
@@ -111,7 +112,7 @@ private:
     Sex mSex = Sex::Unknow;
     QDate mDateOfBirth;
     QList<QObject*> mSamples;
-    QList<QObject*> mAnalyses;
+    AnalysesListModel* mAnalyses;
     QList<QObject*> mProjects;
     QList<QObject*> mJobs;
     QList<QObject*> mFiles;

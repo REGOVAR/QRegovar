@@ -12,6 +12,18 @@ Rectangle
 
     property QtObject model
     property var currentAnalysis: null
+    onModelChanged:
+    {
+        if(model)
+        {
+            model.dataChanged.connect(updateViewFromModel);
+        }
+        updateViewFromModel();
+    }
+    Component.onDestruction:
+    {
+        model.dataChanged.disconnect(updateViewFromModel);
+    }
 
     Rectangle
     {
@@ -35,7 +47,6 @@ Rectangle
                 font.weight: Font.Black
                 color: Regovar.theme.primaryColor.back.dark
                 verticalAlignment: Text.AlignVCenter
-                text: model ? model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname : ""
                 elide: Text.ElideRight
             }
 
@@ -78,11 +89,7 @@ Rectangle
         {
             id: openAnalysis
             text: qsTr("Open")
-            onClicked:
-            {
-                var analysis = browser.model[browser.currentRow];
-                regovar.analysesManager.openAnalysis(analysis.type, analysis.id)
-            }
+            onClicked: regovar.analysesManager.openAnalysis(currentAnalysis.type, currentAnalysis.id)
         }
         Button
         {
@@ -123,21 +130,7 @@ Rectangle
                 anchors.fill: parent
                 anchors.margins: 10
                 anchors.leftMargin: 0
-                model: (root.model) ? root.model.analyses : []
-
-                // Default delegate for all column
-                itemDelegate: Item
-                {
-                    Text
-                    {
-                        anchors.leftMargin: 5
-                        anchors.fill: parent
-                        verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        text: styleData.value
-                        elide: Text.ElideRight
-                    }
-                }
+                onDoubleClicked: regovar.analysesManager.openAnalysis(currentAnalysis.type, currentAnalysis.id)
 
                 TableViewColumn
                 {
@@ -166,10 +159,20 @@ Rectangle
                     width: 400
                 }
 
-
                 onCurrentRowChanged:
                 {
-                    displayCurrentAnalysisPreview(root.model.analyses[currentRow]);
+                    var idx = root.model.analyses.proxy.getModelIndex(browser.currentRow);
+                    var id = root.model.analyses.data(idx, 257); // 257 = Qt::UserRole+1
+                    var type = root.model.analyses.data(idx, 261);
+
+                    if (id && type === "analysis")
+                    {
+                        displayCurrentAnalysisPreview(regovar.analysesManager.getFilteringAnalysis(id));
+                    }
+                    else if (id && type === "pipeline")
+                    {
+                        displayCurrentAnalysisPreview(regovar.analysesManager.getPipelineAnalysis(id));
+                    }
                 }
             }
         } // end topPanel
@@ -242,6 +245,14 @@ Rectangle
         } // end bottomPanel
     } // end SplitView
 
+    function updateViewFromModel()
+    {
+        if (root.model)
+        {
+            nameLabel.text = root.model.identifier + " : " + root.model.lastname.toUpperCase() + " " + root.model.firstname;
+            browser.model = root.model.analyses.proxy;
+        }
+    }
 
     function displayCurrentAnalysisPreview(analysis)
     {

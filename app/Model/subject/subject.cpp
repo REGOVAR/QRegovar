@@ -9,6 +9,7 @@
 Subject::Subject(QObject* parent) : RegovarResource(parent)
 {
     mPhenotypes = new HpoDataListModel(this);
+    mAnalyses = new AnalysesListModel(this);
 }
 
 Subject::Subject(QJsonObject json, QObject* parent) : Subject(parent)
@@ -45,7 +46,7 @@ bool Subject::loadJson(QJsonObject json, bool full_init)
 
     mPhenotypes->clear();
     mSamples.clear();
-    mAnalyses.clear();
+    mAnalyses->clear();
     mProjects.clear();
     mJobs.clear();
     mFiles.clear();
@@ -70,6 +71,21 @@ bool Subject::loadJson(QJsonObject json, bool full_init)
             mPresence[hpo->id()] = data["presence"].toString();
         }
         mPhenotypes->append(hpo);
+    }
+    // Analyses
+    for (const QJsonValue& val: json["analyses"].toArray())
+    {
+        QJsonObject data = val.toObject();
+        Analysis* analysis = (Analysis*) regovar->analysesManager()->getOrCreateFilteringAnalysis(data["id"].toInt());
+        analysis->loadJson(data, false);
+        mAnalyses->append(analysis);
+    }
+    for (const QJsonValue& val: json["jobs"].toArray())
+    {
+        QJsonObject data = val.toObject();
+        Analysis* analysis = (Analysis*) regovar->analysesManager()->getOrCreatePipelineAnalysis(data["id"].toInt());
+        analysis->loadJson(data, false);
+        mAnalyses->append(analysis);
     }
 
     // Event

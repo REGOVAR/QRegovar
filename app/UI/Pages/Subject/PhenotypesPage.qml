@@ -13,13 +13,13 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property Subject model
-    property bool isInit: false
+    // property bool isInit: false
     onModelChanged:
     {
         if (model)
         {
             phenotypeList.model = model.phenotypes;
-            root.isInit = true;
+      //      root.isInit = true;
         }
     }
 
