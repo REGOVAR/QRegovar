@@ -65,10 +65,13 @@ bool Disease::loadJson(QJsonObject json)
         mDecipher = json["decipher"].toObject();
         mLoaded = true;
     }
-
     if (json.contains("phenotypes"))
     {
         mPhenotypes->loadJson(json["phenotypes"].toArray());
+    }
+    if (json.contains("subjects"))
+    {
+        mSubjects->loadJson(json["subjects"].toArray());
     }
 
     emit dataChanged();
