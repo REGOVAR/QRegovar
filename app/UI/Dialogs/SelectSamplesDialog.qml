@@ -185,7 +185,7 @@ Dialog
                             text: selectedSamplesTable.statusIcons[styleData.value.status]
                             onTextChanged:
                             {
-                                if (styleData.value.status == 1) // 1 = Loading
+                                if (styleData.value.status === 1) // 1 = Loading
                                 {
                                     statusIconAnimation.start();
                                 }
@@ -213,7 +213,7 @@ Dialog
                             anchors.verticalCenter: parent.verticalCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value.label
+                            text: styleData.value ? styleData.value.label : ""
                             elide: Text.ElideRight
                         }
                     }

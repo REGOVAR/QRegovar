@@ -10,6 +10,7 @@ Subject::Subject(QObject* parent) : RegovarResource(parent)
 {
     mPhenotypes = new HpoDataListModel(this);
     mAnalyses = new AnalysesListModel(this);
+    mSamples = new SamplesListModel(this);
 }
 
 Subject::Subject(QJsonObject json, QObject* parent) : Subject(parent)
@@ -45,7 +46,7 @@ bool Subject::loadJson(QJsonObject json, bool full_init)
     if (!full_init) return true;
 
     mPhenotypes->clear();
-    mSamples.clear();
+    mSamples->clear();
     mAnalyses->clear();
     mProjects.clear();
     mJobs.clear();
@@ -58,7 +59,7 @@ bool Subject::loadJson(QJsonObject json, bool full_init)
         QJsonObject sampleData = val.toObject();
         Sample* sample = regovar->samplesManager()->getOrCreateSample(sampleData["id"].toInt());
         sample->loadJson(sampleData);
-        mSamples.append(sample);
+        mSamples->append(sample);
     }
     // Phenotype
     for (const QJsonValue& val: json["hpo"].toArray())
@@ -113,9 +114,9 @@ QJsonObject Subject::toJson()
     result.insert("sex", mSex == Sex::Male ? "male" : mSex == Sex::Female ? "female" : "unknow");
     // Samples
     QJsonArray samples;
-    for (QObject* o: mSamples)
+    for (int idx=0; idx < mSamples->rowCount(); idx++)
     {
-        Sample* sample = qobject_cast<Sample*>(o);
+        Sample* sample = mSamples->getAt(idx);
         samples.append(sample->id());
     }
     result.insert("samples_ids", samples);
@@ -183,32 +184,26 @@ void Subject::load(bool forceRefresh)
 
 void Subject::addSample(Sample* sample)
 {
-    // Check that sample not already in the list
-    for (QObject* o: mSamples)
-    {
-        Sample* s = qobject_cast<Sample*>(o);
-        if (s->id() == sample->id()) return;
-    }
-
     // Add sample to the subject
-    mSamples.append(sample);
-    emit dataChanged();
-
-    // add subject to the sample
-    sample->setSubject(this);
-    sample->save();
+    if(mSamples->append(sample))
+    {
+        emit dataChanged();
+        // add subject to the sample
+        sample->setSubject(this);
+        sample->save();
+    }
 }
 
 
 void Subject::removeSample(Sample* sample)
 {
-    // Check that sample already in the list
-    mSamples.removeAll(sample);
-    emit dataChanged();
-
-    // remove subject to the sample
-    sample->setSubject(nullptr);
-    sample->save();
+    if(mSamples->remove(sample))
+    {
+        emit dataChanged();
+        // remove subject to the sample
+        sample->setSubject(nullptr);
+        sample->save();
+    }
 }
 
 

@@ -100,7 +100,8 @@ HEADERS += \
     Model/phenotype/gene.h \
     Model/framework/regovarresource.h \
     Model/panel/panelversionslistmodel.h \
-    Model/phenotype/geneslistmodel.h
+    Model/phenotype/geneslistmodel.h \
+    Model/subject/sampleslistmodel.h
 
 SOURCES += main.cpp \
     Model/framework/treeitem.cpp \
@@ -188,7 +189,8 @@ SOURCES += main.cpp \
     Model/phenotype/gene.cpp \
     Model/framework/regovarresource.cpp \
     Model/panel/panelversionslistmodel.cpp \
-    Model/phenotype/geneslistmodel.cpp
+    Model/phenotype/geneslistmodel.cpp \
+    Model/subject/sampleslistmodel.cpp
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

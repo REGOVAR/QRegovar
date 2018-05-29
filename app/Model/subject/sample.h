@@ -2,18 +2,15 @@
 #define SAMPLE_H
 
 #include <QtCore>
+#include "Model/framework/regovarresource.h"
 #include "Model/file/file.h"
 #include "subject.h"
 #include "reference.h"
 
-
-class Sample : public QObject
+class Subject;
+class Sample : public RegovarResource
 {
     Q_OBJECT
-    // Regovar resource attribute
-    Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
     // Sample attributes
     Q_PROPERTY(int id READ id NOTIFY dataChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
@@ -30,7 +27,6 @@ class Sample : public QObject
     Q_PROPERTY(QVariant nameUI READ nameUI WRITE setNameUI NOTIFY dataChanged)
     Q_PROPERTY(QVariant statusUI READ statusUI WRITE setStatusUI NOTIFY dataChanged)
     Q_PROPERTY(QVariant sourceUI READ sourceUI WRITE setSourceUI NOTIFY dataChanged)
-    Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
     // Property only used client side by the newAnalysis wizard
     Q_PROPERTY(bool isIndex READ isIndex WRITE setIsIndex NOTIFY dataChanged)
     Q_PROPERTY(QString sex READ sex WRITE setSex NOTIFY dataChanged)
@@ -53,9 +49,6 @@ public:
     Sample(QJsonObject json, QObject* parent = nullptr);
 
     // Getters
-    inline bool loaded() const { return mLoaded; }
-    inline QDateTime updateDate() const { return mUpdateDate; }
-    inline QDateTime createDate() const { return mCreateDate; }
     inline int id() const { return mId; }
     inline QString name() const { return mName; }
     inline QString nickname() const { return mNickname.isEmpty() ? mName : mNickname; }
@@ -70,7 +63,6 @@ public:
     inline QVariant nameUI() const { return mNameUI; }
     inline QVariant statusUI() const { return mStatusUI; }
     inline QVariant sourceUI() const { return mSourceUI; }
-    inline QString searchField() const { return mSearchField; }
     inline bool isIndex() const { return mIsIndex; }
     inline QString sex() const { return mSex; }
     inline QJsonObject stats() const { return mStats; }
@@ -94,31 +86,23 @@ public:
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE bool loadJson(QJsonObject json);
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
     //! Export model data into json object
-    Q_INVOKABLE QJsonObject toJson();
+    Q_INVOKABLE QJsonObject toJson() override;
     //! Save subject information onto server
-    Q_INVOKABLE void save();
+    Q_INVOKABLE void save() override;
     //! Load Subject information from server
-    Q_INVOKABLE void load(bool forceRefresh=true);
+    Q_INVOKABLE void load(bool forceRefresh=true) override;
     //! Convert sample status into a string value
     QString statusToLabel(SampleStatus status, double progress);
 
     void refreshUIAttributes();
 
-Q_SIGNALS:
-    void dataChanged();
 
 public Q_SLOTS:
-    void updateSearchField();
+    void updateSearchField() override;
 
 private:
-
-    bool mLoaded = false;
-    QDateTime mUpdateDate;
-    QDateTime mCreateDate;
-    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
-
     int mId = -1;
     QString mName;
     QString mNickname;
@@ -140,7 +124,6 @@ private:
     QVariant mSourceUI;
     bool mIsIndex = false;
     QString mSex;
-    QString mSearchField;
 };
 
 #endif // SAMPLE_H

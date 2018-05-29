@@ -401,7 +401,7 @@ void Regovar::getPipelineInfo(int pipelineId)
 }
 
 
-void Regovar::getGeneInfo(QString symbol, int analysisId)
+void Regovar::getGeneInfo(QString symbol, int)
 {
     Gene* gene = phenotypesManager()->getGene(symbol);
     gene->load();
