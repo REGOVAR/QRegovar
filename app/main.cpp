@@ -13,6 +13,7 @@
 #include "Model/framework/treeitem.h"
 #include "Model/framework/genericproxymodel.h"
 #include "Model/project/project.h"
+#include "Model/analysis/analysis.h"
 #include "Model/analysis/filtering/filteringanalysis.h"
 #include "Model/analysis/pipeline/pipelineanalysis.h"
 #include "Model/subject/reference.h"
@@ -44,6 +45,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<GenericProxyModel>("Regovar.Core", 1, 0, "GenericProxyModel");
 
     qmlRegisterType<Annotation>("Regovar.Core", 1, 0, "AnnotationModel");
+    qmlRegisterType<Analysis>("Regovar.Core", 1, 0, "Analysis");
     qmlRegisterType<FilteringAnalysis>("Regovar.Core", 1, 0, "FilteringAnalysis");
     qmlRegisterType<PipelineAnalysis>("Regovar.Core", 1, 0, "PipelineAnalysis");
     qmlRegisterType<FieldColumnInfos>("Regovar.Core", 1, 0, "FieldColumnInfos");

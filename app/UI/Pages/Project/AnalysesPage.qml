@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.3
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
+import "qrc:/qml/Pages/Analysis"
 
 Rectangle
 {
@@ -191,64 +192,13 @@ Rectangle
             color: Regovar.theme.backgroundColor.main
             Layout.minimumHeight: 200
 
-            GridLayout
+            AnalysisPreview
             {
                 anchors.fill: parent
                 anchors.margins: 10
                 anchors.leftMargin: 0
                 anchors.rightMargin: 0
-                columns: 3
-                rowSpacing: 10
-                columnSpacing: 10
-
-                Text
-                {
-                    Layout.fillWidth: true
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                    text: currentAnalysis ? currentAnalysis.name : ""
-                }
-
-                Text
-                {
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                    font.family: Regovar.theme.icons.name
-                    text: currentAnalysis ? "H" : ""
-                }
-                Text
-                {
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                    text: currentAnalysis ? regovar.formatDate(currentAnalysis.updateDate) : ""
-                }
-
-                Rectangle
-                {
-                    color: "transparent"
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    Layout.columnSpan: 3
-                    border.width: 1
-                    border.color: Regovar.theme.boxColor.border
-                    Text
-                    {
-                        anchors.centerIn: parent
-                        text: qsTr("Not yet implemented")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.frontColor.disable
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
+                model: currentAnalysis
             }
         } // end bottomPanel
     } // end SplitView
