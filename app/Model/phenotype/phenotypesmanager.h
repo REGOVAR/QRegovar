@@ -13,7 +13,7 @@ class PhenotypesManager : public QObject
 
 public:
     // Constructor
-    explicit PhenotypesManager(QObject* parent=nullptr);
+    PhenotypesManager(QObject* parent=nullptr);
 
     // Getters
     inline HpoDataListModel* searchResults() const { return mSearchResults; }

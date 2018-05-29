@@ -17,7 +17,7 @@ class ProjectsManager : public QObject
 
 public:
     // Constructor
-    explicit ProjectsManager(QObject* parent = nullptr);
+    ProjectsManager(QObject* parent = nullptr);
 
     // Getters
     inline QString searchQuery() const { return mSearchQuery; }

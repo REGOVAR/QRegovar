@@ -8,9 +8,11 @@
 class TreeItem : public QObject
 {
     Q_OBJECT
+
 public:
-    explicit TreeItem(TreeItem* parent=nullptr);
-    explicit TreeItem(const QHash<int, QVariant> &data, TreeItem* parent=nullptr);
+    // Constructors
+    TreeItem(TreeItem* parent=nullptr);
+    TreeItem(const QHash<int, QVariant> &data, TreeItem* parent=nullptr);
     ~TreeItem();
 
     Q_INVOKABLE void appendChild(TreeItem *child);

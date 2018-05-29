@@ -17,7 +17,7 @@ class PanelsManager : public QObject
 
 public:
     // Constructors
-    explicit PanelsManager(QObject* parent=nullptr);
+    PanelsManager(QObject* parent=nullptr);
 
     // Getters
     inline QList<QObject*> panels() const { return mPanelsList; }

@@ -26,8 +26,8 @@ class EventsListModel : public QAbstractListModel
 
 public:
     // Constructors
-    explicit EventsListModel(QObject* parent = nullptr);
-    explicit EventsListModel(QString target, QString id, QObject* parent = nullptr);
+    EventsListModel(QObject* parent = nullptr);
+    EventsListModel(QString target, QString id, QObject* parent = nullptr);
 
     // Getters
     inline GenericProxyModel* proxy() const { return mProxy; }

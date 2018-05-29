@@ -21,7 +21,8 @@ class FilesManager : public QObject
 
 
 public:
-    explicit FilesManager(QObject *parent = nullptr);
+    // Constructor
+    FilesManager(QObject *parent = nullptr);
 
     // Getters
     inline QString cacheDir() const { return mCacheDir; }

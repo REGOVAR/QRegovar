@@ -5,15 +5,11 @@
 #include <QDateTime>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include "Model/framework/regovarresource.h"
 
-class File : public QObject
+class File : public RegovarResource
 {
     Q_OBJECT
-
-    // Regovar resource attribute
-    Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
     // File attributes
     Q_PROPERTY(int id READ id)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
@@ -31,13 +27,11 @@ class File : public QObject
     Q_PROPERTY(bool localFileReady READ localFileReady NOTIFY localFileReadyChanged)
     Q_PROPERTY(qint64 downloadOffset READ downloadOffset WRITE setDownloadOffset NOTIFY dataChanged)
     Q_PROPERTY(FileStatus localStatus READ localStatus WRITE setLocalStatus NOTIFY dataChanged)
-
     // Property for QML quick display in tableView
     Q_PROPERTY(QVariant filenameUI READ filenameUI NOTIFY dataChanged)
     Q_PROPERTY(QVariant statusUI READ statusUI NOTIFY dataChanged)
     Q_PROPERTY(QString sizeUI READ sizeUI NOTIFY dataChanged)
-    Q_PROPERTY(QString sourceUI READ sourceUI NOTIFY dataChanged)    
-    Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
+    Q_PROPERTY(QString sourceUI READ sourceUI NOTIFY dataChanged)
 
 public:
     enum FileStatus
@@ -100,13 +94,13 @@ public:
     // Methods
     //! Set model with provided json data
     Q_INVOKABLE bool loadJson(QJsonDocument json);
-    Q_INVOKABLE bool loadJson(QJsonObject json);
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
     //! Export model data into json object
-    Q_INVOKABLE QJsonObject toJson();
-    //! Save subject information onto server
-    Q_INVOKABLE void save();
-    //! Load Subject information from server
-    Q_INVOKABLE void load(bool forceRefresh=true);
+    Q_INVOKABLE QJsonObject toJson() override;
+    //! Save event information onto server
+    Q_INVOKABLE void save() override;
+    //! Load event information from server
+    Q_INVOKABLE void load(bool forceRefresh=true) override;
     //! Dowload the file and put it in cache. When file is ready, the localFileReadyChanged signal is emit
     Q_INVOKABLE bool downloadLocalFile();
     //! Read file content as QString
@@ -122,19 +116,14 @@ public:
 
 
 Q_SIGNALS:
-    void dataChanged();
     void localFileReadyChanged();
 
+
 public Q_SLOTS:
-    void updateSearchField();
+    void updateSearchField() override;
+
 
 private:
-
-    bool mLoaded = false;
-    QDateTime mUpdateDate;
-    QDateTime mCreateDate;
-    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
-
     // Attributes
     int mId = -1;
     QUrl mUrl;
@@ -151,7 +140,6 @@ private:
     bool mLocalFileReady = false;
     qint64 mDownloadOffset = 0;
     FileStatus mLocalStatus;
-    QString mSearchField;
 
 
     // UI all-in-one attributes

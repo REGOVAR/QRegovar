@@ -31,7 +31,7 @@ public:
     Q_ENUMS(ServerStatus)
 
     // Constructors
-    explicit NetworkManager(QObject* parent=nullptr);
+    NetworkManager(QObject* parent=nullptr);
 
 
     // Getters

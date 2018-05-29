@@ -23,7 +23,7 @@ public:
     };
 
     // Constructor
-    explicit DocumentsTreeModel(FilteringAnalysis* parent=nullptr);
+    DocumentsTreeModel(FilteringAnalysis* parent=nullptr);
     QHash<int, QByteArray> roleNames() const override;
 
 

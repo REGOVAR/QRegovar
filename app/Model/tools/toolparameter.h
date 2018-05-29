@@ -18,8 +18,9 @@ class ToolParameter : public QObject
     Q_PROPERTY(bool required READ required NOTIFY dataChanged)
 
 public:
-    explicit ToolParameter(QObject* parent = nullptr);
-    explicit ToolParameter(QJsonObject json, QObject* parent = nullptr);
+    // Constructor
+    ToolParameter(QObject* parent = nullptr);
+    ToolParameter(QJsonObject json, QObject* parent = nullptr);
 
     // Getters
     inline QString key() const { return mKey; }

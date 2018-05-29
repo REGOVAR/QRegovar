@@ -3,7 +3,7 @@
 #include "Model/regovar.h"
 
 
-Pipeline::Pipeline(QObject* parent) : QObject(parent)
+Pipeline::Pipeline(QObject* parent) : RegovarResource(parent)
 {
     mConfigForm = new DynamicFormModel(this);
     connect(this, &Pipeline::dataChanged, this, &Pipeline::updateSearchField);
@@ -28,7 +28,7 @@ void Pipeline::updateSearchField()
 
 
 
-bool Pipeline::loadJson(QJsonObject json)
+bool Pipeline::loadJson(QJsonObject json, bool)
 {
     mId = json["id"].toInt();
     mType = json["type"].toString();

@@ -23,7 +23,7 @@ public:
     };
 
     // Constructor
-    explicit ProjectsTreeModel(QObject* parent=nullptr);
+    ProjectsTreeModel(QObject* parent=nullptr);
 
     // Getters
     inline bool isLoading() { return mIsLoading; }

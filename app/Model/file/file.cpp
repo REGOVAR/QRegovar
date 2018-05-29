@@ -19,7 +19,7 @@ QStringList File::web = {"html", "htm"};
 
 
 
-File::File(QObject* parent) : QObject(parent)
+File::File(QObject* parent) : RegovarResource(parent)
 {
     connect(this, &File::dataChanged, this, &File::updateSearchField);
 }
@@ -93,7 +93,7 @@ bool File::loadJson(QJsonDocument json)
 }
 
 
-bool File::loadJson(QJsonObject json)
+bool File::loadJson(QJsonObject json, bool)
 {
     mId = json["id"].toInt();
     if (json.contains("name")) mName = json["name"].toString();

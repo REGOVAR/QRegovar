@@ -2,11 +2,12 @@
 #define PIPELINE_H
 
 #include <QtCore>
+#include "Model/framework/regovarresource.h"
 #include "Model/framework/dynamicformmodel.h"
 
 class DynamicFormModel;
 
-class Pipeline : public QObject
+class Pipeline : public RegovarResource
 {
     Q_OBJECT
     Q_PROPERTY(int id READ id NOTIFY dataChanged)
@@ -33,9 +34,9 @@ class Pipeline : public QObject
 
 public:
     // Constructor
-    explicit Pipeline(QObject* parent=nullptr);
-    explicit Pipeline(int id, QObject* parent=nullptr);
-    explicit Pipeline(QJsonObject json);
+    Pipeline(QObject* parent=nullptr);
+    Pipeline(int id, QObject* parent=nullptr);
+    Pipeline(QJsonObject json);
 
     // Getters
     inline int id() const { return mId; }
@@ -53,7 +54,6 @@ public:
     inline QString license() const { return mLicense.toString(); }
     inline QString readme() const { return mReadme.toString(); }
     inline QString manifest() const { return mManifest.toString(); }
-    inline QString searchField() const { return mSearchField; }
     inline DynamicFormModel* configForm() const { return mConfigForm; }
 
     Q_INVOKABLE inline QJsonObject manifestJson() const { return mManifestJson; }
@@ -64,26 +64,22 @@ public:
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE bool loadJson(QJsonObject json);
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
     //! Export model data into json object
-    Q_INVOKABLE QJsonObject toJson();
+    Q_INVOKABLE QJsonObject toJson() override;
+    //! Load pipeline information from server
+    Q_INVOKABLE void load(bool forceRefresh=true) override;
     //! Ask the server to install this pipeline
     Q_INVOKABLE void install();
-    //! Load pipeline information from server
-    Q_INVOKABLE void load(bool forceRefresh=true);
 
 
 Q_SIGNALS:
     void neverChanged();
-    void dataChanged();
 
 public Q_SLOTS:
-    void updateSearchField();
+    void updateSearchField() override;
 
 private:
-    bool mLoaded = false;
-    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
-
     int mId=-1;
     bool mStarred = false;
     QString mName;
@@ -101,7 +97,6 @@ private:
     QUrl mLicense;
     QUrl mReadme;
     QUrl mManifest;
-    QString mSearchField;
 
     QJsonObject mManifestJson;
     QJsonObject mFormJson;

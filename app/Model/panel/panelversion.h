@@ -21,8 +21,8 @@ class PanelVersion : public RegovarResource
 
 public:
     // Constructors
-    explicit PanelVersion(Panel* rootPanel=nullptr);
-    explicit PanelVersion(Panel* rootPanel, QJsonObject json);
+    PanelVersion(Panel* rootPanel=nullptr);
+    PanelVersion(Panel* rootPanel, QJsonObject json);
 
     // Getters
     inline QString id() const { return mId; }

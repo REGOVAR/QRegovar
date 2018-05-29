@@ -21,8 +21,9 @@ class FieldColumnInfos : public QObject
     Q_PROPERTY(float width READ width WRITE setWidth NOTIFY widthChanged)
 
 public:
-    explicit FieldColumnInfos(QObject *parent = nullptr);
-    explicit FieldColumnInfos(Annotation* annotation, bool isDisplayed, QString sortFilter="", QObject *parent = nullptr);
+    // Constructors
+    FieldColumnInfos(QObject *parent = nullptr);
+    FieldColumnInfos(Annotation* annotation, bool isDisplayed, QString sortFilter="", QObject *parent = nullptr);
 
     // Getters
     inline QString uid() { return !mUIUid.isEmpty() ? mUIUid : mAnnotation != nullptr ? mAnnotation->uid() : ""; }

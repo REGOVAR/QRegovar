@@ -27,7 +27,8 @@ class FilesListModel : public QAbstractListModel
     Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
 public:
-    explicit FilesListModel(QObject* parent = nullptr);
+    // Constructor
+    FilesListModel(QObject* parent = nullptr);
 
     // Getters
     inline GenericProxyModel* proxy() const { return mProxy; }

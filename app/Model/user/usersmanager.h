@@ -15,7 +15,7 @@ class UsersManager : public QObject
 
 public:
     // Constructor
-    explicit UsersManager(QObject* parent=nullptr);
+    UsersManager(QObject* parent=nullptr);
 
     // Getters
     inline UsersListModel* users() const { return mUsersList; }

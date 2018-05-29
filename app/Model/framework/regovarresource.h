@@ -13,7 +13,7 @@ class RegovarResource: public QObject
 
 public:
     // Constructors
-    explicit RegovarResource(QObject* parent=nullptr);
+    RegovarResource(QObject* parent=nullptr);
 
     // Getters
     inline bool loaded() const { return mLoaded; }

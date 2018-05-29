@@ -26,7 +26,7 @@ public:
     };
 
     // Constructors
-    explicit FilesTreeModel(QObject* parent=nullptr);
+    FilesTreeModel(QObject* parent=nullptr);
     QHash<int, QByteArray> roleNames() const override;
 
     // Accessors

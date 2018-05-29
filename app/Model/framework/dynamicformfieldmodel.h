@@ -30,8 +30,8 @@ class DynamicFormFieldModel : public QObject
 
 public:
     // Constructor
-    explicit DynamicFormFieldModel(DynamicFormModel* parent=nullptr);
-    explicit DynamicFormFieldModel(QJsonObject json, int order, DynamicFormModel* parent=nullptr);
+    DynamicFormFieldModel(DynamicFormModel* parent=nullptr);
+    DynamicFormFieldModel(QJsonObject json, int order, DynamicFormModel* parent=nullptr);
 
     // Getters
     inline QString id() const { return mId; }

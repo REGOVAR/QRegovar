@@ -16,8 +16,10 @@ class TypeQuickFilter : public QuickFilterBlockInterface
     Q_PROPERTY(QuickFilterField* splicing READ splicing)
     Q_PROPERTY(QuickFilterField* indel READ indel)
     Q_PROPERTY(QuickFilterField* synonymous READ synonymous)
+
 public:
-    explicit TypeQuickFilter(int analysisId);
+    // Constructor
+    TypeQuickFilter(int analysisId);
 
     Q_INVOKABLE bool isVisible() override;
     Q_INVOKABLE QJsonArray toJson() override;

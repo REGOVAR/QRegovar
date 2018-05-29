@@ -25,11 +25,10 @@ class Annotation : public QObject
     Q_PROPERTY(int order READ order)
 
 public:
-    explicit Annotation(QObject* parent = nullptr);
-    explicit Annotation(QObject* parent, QString uid, QString dbUid, QString name, QString description,
-                        QString type, QJsonObject meta, QString version, QString dbName, int order=-1);
-//    Annotation(const Annotation &other);
-//    ~Annotation();
+    // Constructors
+    Annotation(QObject* parent = nullptr);
+    Annotation(QObject* parent, QString uid, QString dbUid, QString name, QString description,
+               QString type, QJsonObject meta, QString version, QString dbName, int order=-1);
 
     // Getters
     inline QString uid() { return mUid; }

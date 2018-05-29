@@ -12,7 +12,8 @@ class PipelinesManager : public QObject
     Q_PROPERTY(PipelinesListModel* intalledPipes READ intalledPipes NOTIFY intalledPipesChanged)
 
 public:
-    explicit PipelinesManager(QObject* parent=nullptr);
+    // Constructor
+    PipelinesManager(QObject* parent=nullptr);
 
     // Getters
     inline PipelinesListModel* availablePipes() const { return mAvailablePipes; }

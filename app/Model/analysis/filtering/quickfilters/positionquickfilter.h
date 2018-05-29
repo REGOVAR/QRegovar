@@ -18,8 +18,10 @@ class PositionQuickFilter : public QuickFilterBlockInterface
     Q_PROPERTY(QuickFilterField* splice READ splice)
 
 public:
-    explicit PositionQuickFilter(int analysisId);
+    // Constructors
+    PositionQuickFilter(int analysisId);
 
+    // Methods
     Q_INVOKABLE bool isVisible() override;
     Q_INVOKABLE QJsonArray toJson() override;
     Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant()) override;

@@ -26,7 +26,7 @@ class PanelVersionsListModel: public QAbstractListModel
 
 public:
     // Constructor
-    explicit PanelVersionsListModel(Panel* root);
+    PanelVersionsListModel(Panel* root);
 
     // Getters
     inline GenericProxyModel* proxy() const { return mProxy; }

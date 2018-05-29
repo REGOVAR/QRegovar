@@ -139,7 +139,7 @@ void Panel::importGenesFromHpoData()
         for(int idx=0; idx < mTmpHpo->genes()->rowCount(); idx ++)
         {
             QJsonObject entry = mTmpHpo->genes()->getAt(idx)->toJson();
-            entry.insert("details", tr("Retrieved from HPO entry: ") + mTmpHpo->label());
+            entry.insert("details", tr("From HPO entry: ") + mTmpHpo->label());
             entry.insert("type", "gene");
             head->addEntry(entry);
         }

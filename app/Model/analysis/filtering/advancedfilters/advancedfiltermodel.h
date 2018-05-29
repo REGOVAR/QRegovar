@@ -44,9 +44,9 @@ public:
     Q_ENUM(ConditionType)
 
     // Constructor
-    explicit AdvancedFilterModel(QObject* parent=nullptr);
-    explicit AdvancedFilterModel(FilteringAnalysis* parent);
-    explicit AdvancedFilterModel(QJsonArray filterJson, FilteringAnalysis* parent);
+    AdvancedFilterModel(QObject* parent=nullptr);
+    AdvancedFilterModel(FilteringAnalysis* parent);
+    AdvancedFilterModel(QJsonArray filterJson, FilteringAnalysis* parent);
 
     // Getters
     inline QString qmlId() const { return mQmlId; }
@@ -129,9 +129,9 @@ class NewAdvancedFilterModel: public AdvancedFilterModel
 
 public:
     // Constructor
-    explicit NewAdvancedFilterModel(QObject* parent=nullptr);
-    explicit NewAdvancedFilterModel(FilteringAnalysis* parent);
-    explicit NewAdvancedFilterModel(QJsonArray filterJson, FilteringAnalysis* parent);
+    NewAdvancedFilterModel(QObject* parent=nullptr);
+    NewAdvancedFilterModel(FilteringAnalysis* parent);
+    NewAdvancedFilterModel(QJsonArray filterJson, FilteringAnalysis* parent);
 
     // Getters
     inline QString fieldType() const { return (mField != nullptr) ? mField->type() : ""; }

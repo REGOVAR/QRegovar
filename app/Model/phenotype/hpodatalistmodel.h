@@ -31,8 +31,8 @@ class HpoDataListModel: public QAbstractListModel
 
 public:
     // Constructor
-    explicit HpoDataListModel(QObject* parent=nullptr);
-    explicit HpoDataListModel(int subjectId, QObject* parent=nullptr);
+    HpoDataListModel(QObject* parent=nullptr);
+    HpoDataListModel(int subjectId, QObject* parent=nullptr);
 
     // Getters
     Subject* subject() const;

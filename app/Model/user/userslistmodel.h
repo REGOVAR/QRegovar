@@ -29,7 +29,7 @@ class UsersListModel : public QAbstractListModel
 
 public:
     // Constructor
-    explicit UsersListModel(QObject* parent = nullptr);
+    UsersListModel(QObject* parent = nullptr);
 
     // Getters
     inline GenericProxyModel* proxy() const { return mProxy; }

@@ -29,8 +29,9 @@ class SamplesManager : public QAbstractListModel
     Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
 public:
-    explicit SamplesManager(QObject* parent = nullptr);
-    explicit SamplesManager(int refId, QObject* parent = nullptr);
+    // Constructor
+    SamplesManager(QObject* parent = nullptr);
+    SamplesManager(int refId, QObject* parent = nullptr);
 
     // Property Get/Set
     inline int referencialId() const { return mRefId; }

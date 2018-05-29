@@ -25,7 +25,7 @@ class SubjectsManager : public QAbstractListModel
 
 public:
     // Constructor
-    explicit SubjectsManager(QObject* parent = nullptr);
+    SubjectsManager(QObject* parent = nullptr);
 
     // Getters
     inline GenericProxyModel* proxy() const { return mProxy; }

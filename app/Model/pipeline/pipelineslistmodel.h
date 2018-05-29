@@ -24,7 +24,8 @@ class PipelinesListModel : public QAbstractListModel
     Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
 public:
-    explicit PipelinesListModel(QObject* parent=nullptr);
+    // Constructor
+    PipelinesListModel(QObject* parent=nullptr);
 
     // Getters
     inline GenericProxyModel* proxy() const { return mProxy; }

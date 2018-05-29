@@ -16,8 +16,9 @@ class AdminTableInfo: public QObject
     Q_PROPERTY(bool clearable READ clearable NOTIFY dataChanged)
 
 public:
-    explicit AdminTableInfo(QObject* parent = nullptr);
-    explicit AdminTableInfo(QJsonObject json, QObject* parent = nullptr);
+    // Constructors
+    AdminTableInfo(QObject* parent = nullptr);
+    AdminTableInfo(QJsonObject json, QObject* parent = nullptr);
 
     // Getters
     inline QString section() { return mSection; }
@@ -69,7 +70,7 @@ class Admin : public QObject
     Q_PROPERTY(QVariantList wtTables READ wtTables NOTIFY tablesChanged)
 
 public:
-    explicit Admin(QObject* parent = nullptr);
+    Admin(QObject* parent = nullptr);
 
     // Getters
     inline bool serverStatusAutoRefresh() { return mServerStatusAutoRefresh; }

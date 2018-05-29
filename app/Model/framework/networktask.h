@@ -30,7 +30,7 @@ public:
     Q_ENUMS(TaskType)
 
     // Constructors
-    explicit NetworkTask(QObject* parent=nullptr);
+    NetworkTask(QObject* parent=nullptr);
 
 
 private:

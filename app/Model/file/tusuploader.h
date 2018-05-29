@@ -25,7 +25,8 @@ class TusUploader : public QObject
 {
     Q_OBJECT
 public:
-    explicit TusUploader(QObject *parent = nullptr);
+    // Constructors
+    TusUploader(QObject *parent = nullptr);
     ~TusUploader();
 
     // Accessors
@@ -50,11 +51,11 @@ public:
     void emitFileEnqueued(QHash<QString, QString>* serverMapping);
 
 
-
 Q_SIGNALS:
     void uploadStarted(TusUploadItem* file);
     void uploadEnded(TusUploadItem* file);
     void filesEnqueued(QHash<QString, QString> serverMapping);
+
 
 public Q_SLOTS:
     //! Try to start or resume uploads in the queue

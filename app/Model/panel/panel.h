@@ -22,8 +22,8 @@ class Panel : public RegovarResource
 
 public:
     // Constructors
-    explicit Panel(QObject* parent=nullptr);
-    explicit Panel(QJsonObject json, QObject* parent=nullptr);
+    Panel(QObject* parent=nullptr);
+    Panel(QJsonObject json, QObject* parent=nullptr);
 
     // Getters
     inline QString id() const { return mId; }
