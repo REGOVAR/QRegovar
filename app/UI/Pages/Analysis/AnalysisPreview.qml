@@ -11,46 +11,118 @@ Item
     id: root
     property Analysis model
 
-    GridLayout
+
+    ColumnLayout
     {
         anchors.fill: parent
-        anchors.margins: 10
-        anchors.leftMargin: 0
-        anchors.rightMargin: 0
+        spacing: 10
+
+
+        Rectangle
+        {
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.header
+            color: Regovar.theme.backgroundColor.alt
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            radius: 2
+
+            RowLayout
+            {
+                anchors.fill: parent
+                anchors.margins: 5
+
+                // Analysis Name
+                Text
+                {
+                    Layout.fillWidth: true
+                    height: Regovar.theme.font.boxSize.header
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    verticalAlignment: Text.AlignVCenter
+                    color: Regovar.theme.primaryColor.back.normal
+                    text: model ? model.name : ""
+                }
+                Item
+                {
+                    height: 10
+                    Layout.fillWidth: true
+                }
+
+                // Analysis Status
+                Text
+                {
+                    height: Regovar.theme.font.boxSize.header
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    verticalAlignment: Text.AlignVCenter
+                    color: Regovar.theme.primaryColor.back.normal
+                    font.family: Regovar.theme.icons.name
+                    text: model ? "H" : ""
+                }
+                Text
+                {
+                    height: Regovar.theme.font.boxSize.header
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    verticalAlignment: Text.AlignVCenter
+                    color: Regovar.theme.primaryColor.back.normal
+                    text: model ? regovar.formatDate(model.updateDate) : ""
+                }
+                Item
+                {
+                    height: 10
+                    Layout.fillWidth: true
+                }
+
+                //Analysis Date
+                Text
+                {
+                    height: Regovar.theme.font.boxSize.header
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    verticalAlignment: Text.AlignVCenter
+                    color: Regovar.theme.primaryColor.back.normal
+                    font.family: Regovar.theme.icons.name
+                    text: model ? "H" : ""
+                }
+                Text
+                {
+                    height: Regovar.theme.font.boxSize.header
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.header
+                    verticalAlignment: Text.AlignVCenter
+                    color: Regovar.theme.primaryColor.back.normal
+                    text: model ? regovar.formatDate(model.updateDate) : ""
+                }
+            }
+        }
+
+        Rectangle
+        {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            color: Regovar.theme.boxColor.back
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            radius: 2
+
+            RowLayout
+            {
+                anchors.fill: parent
+                anchors.margins: 5
+            }
+        }
+    }
+
+
+    GridLayout
+    {
         columns: 3
         rowSpacing: 10
         columnSpacing: 10
 
-        Text
-        {
-            Layout.fillWidth: true
-            height: Regovar.theme.font.boxSize.header
-            elide: Text.ElideRight
-            font.pixelSize: Regovar.theme.font.size.header
-            verticalAlignment: Text.AlignVCenter
-            color: Regovar.theme.primaryColor.back.normal
-            text: model ? model.name : ""
-        }
 
-        Text
-        {
-            height: Regovar.theme.font.boxSize.header
-            elide: Text.ElideRight
-            font.pixelSize: Regovar.theme.font.size.header
-            verticalAlignment: Text.AlignVCenter
-            color: Regovar.theme.primaryColor.back.normal
-            font.family: Regovar.theme.icons.name
-            text: model ? "H" : ""
-        }
-        Text
-        {
-            height: Regovar.theme.font.boxSize.header
-            elide: Text.ElideRight
-            font.pixelSize: Regovar.theme.font.size.header
-            verticalAlignment: Text.AlignVCenter
-            color: Regovar.theme.primaryColor.back.normal
-            text: model ? regovar.formatDate(model.updateDate) : ""
-        }
 
         Rectangle
         {
