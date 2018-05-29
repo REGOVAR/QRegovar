@@ -4,19 +4,19 @@
 
 
 
-HpoData::HpoData(QObject* parent) : QObject(parent)
+HpoData::HpoData(QObject* parent) : RegovarResource(parent)
 {
     mGenes = new GenesListModel(this);
     mSubjects = new SubjectsListModel(this);
 }
 
 
-bool HpoData::loadJson(QJsonObject)
+bool HpoData::loadJson(QJsonObject, bool)
 {
     return false;
 }
 
-bool HpoData::load(bool)
+void HpoData::load(bool)
 {
     Request* req = Request::get(QString("/search/phenotype/%1").arg(mId));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
@@ -32,5 +32,4 @@ bool HpoData::load(bool)
         }
         req->deleteLater();
     });
-    return true;
 }

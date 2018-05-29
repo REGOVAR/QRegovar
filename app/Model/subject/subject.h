@@ -26,8 +26,6 @@ class Subject : public RegovarResource
     Q_PROPERTY(QString familyNumber READ familyNumber WRITE setFamilyNumber NOTIFY dataChanged)
     Q_PROPERTY(SamplesListModel* samples READ samples NOTIFY dataChanged)
     Q_PROPERTY(AnalysesListModel* analyses READ analyses NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> projects READ projects NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> jobs READ jobs NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> files READ files NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> indicators READ indicators NOTIFY dataChanged)
     Q_PROPERTY(HpoDataListModel* phenotypes READ phenotypes NOTIFY dataChanged)
@@ -60,8 +58,6 @@ public:
     inline QDate dateOfBirth() const { return mDateOfBirth; }
     inline SamplesListModel* samples() const { return mSamples; }
     inline AnalysesListModel* analyses() const { return mAnalyses; }
-    inline QList<QObject*> projects() const { return mProjects; }
-    inline QList<QObject*> jobs() const { return mJobs; }
     inline QList<QObject*> files() const { return mFiles; }
     inline QList<QObject*> indicators() const { return mIndicators; }
     inline HpoDataListModel* phenotypes() const { return mPhenotypes; }
@@ -115,8 +111,6 @@ private:
     QDate mDateOfBirth;
     SamplesListModel* mSamples = nullptr;
     AnalysesListModel* mAnalyses = nullptr;
-    QList<QObject*> mProjects;
-    QList<QObject*> mJobs;
     QList<QObject*> mFiles;
     QList<QObject*> mIndicators;
     HpoDataListModel* mPhenotypes = nullptr;

@@ -107,6 +107,50 @@ void Panel::addEntry(QJsonObject json)
     }
 }
 
+void Panel::addEntriesFromHpo(QString id)
+{
+    PanelVersion* head = headVersion();
+    HpoData* hpo = regovar->phenotypesManager()->getOrCreate(id);
+    if (head != nullptr)
+    {
+        if (hpo->loaded())
+        {
+            importGenesFromHpoData();
+        }
+        else
+        {
+            mTmpHpo = hpo;
+            connect(hpo, &HpoData::dataChanged, this, &Panel::importGenesFromHpoData);
+            hpo->load();
+        }
+    }
+    else
+    {
+        qDebug() << "WARNING: No panel head version";
+    }
+}
+
+
+void Panel::importGenesFromHpoData()
+{
+    PanelVersion* head = headVersion();
+    if (mTmpHpo != nullptr)
+    {
+        for(int idx=0; idx < mTmpHpo->genes()->rowCount(); idx ++)
+        {
+            QJsonObject entry = mTmpHpo->genes()->getAt(idx)->toJson();
+            entry.insert("details", tr("Retrieved from HPO entry: ") + mTmpHpo->label());
+            entry.insert("type", "gene");
+            head->addEntry(entry);
+        }
+        disconnect(mTmpHpo, &HpoData::dataChanged, this, &Panel::importGenesFromHpoData);
+        mTmpHpo = nullptr;
+    }
+}
+
+
+
+
 void Panel::save()
 {
     if (mId.isEmpty()) return;

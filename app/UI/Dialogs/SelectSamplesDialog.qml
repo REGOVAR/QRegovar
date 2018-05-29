@@ -213,7 +213,7 @@ Dialog
                             anchors.verticalCenter: parent.verticalCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.label : ""
+                            text: styleData.value.label
                             elide: Text.ElideRight
                         }
                     }

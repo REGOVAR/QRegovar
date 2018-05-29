@@ -5,6 +5,7 @@
 #include "Model/framework/genericproxymodel.h"
 #include "panelversionslistmodel.h"
 #include "panelversion.h"
+#include "Model/phenotype/hpodata.h"
 
 class Panel : public RegovarResource
 {
@@ -53,6 +54,8 @@ public:
     Q_INVOKABLE void reset(Panel* panel=nullptr);
     //! Add new entry to the current new panel/version
     Q_INVOKABLE void addEntry(QJsonObject json);
+    //! Add new (genes) entries to the current new panel/version a HPO disease/phenotype id
+    Q_INVOKABLE void addEntriesFromHpo(QString id);
 
 
 
@@ -63,6 +66,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void updateSearchField() override;
+    void importGenesFromHpoData();
 
 
 private:
@@ -73,6 +77,7 @@ private:
     bool mShared = false;
     PanelVersionsListModel* mVersions = nullptr;
 
+    HpoData* mTmpHpo = nullptr;
 };
 
 #endif // PANEL_H

@@ -48,8 +48,6 @@ bool Subject::loadJson(QJsonObject json, bool full_init)
     mPhenotypes->clear();
     mSamples->clear();
     mAnalyses->clear();
-    mProjects.clear();
-    mJobs.clear();
     mFiles.clear();
     mIndicators.clear();
 
