@@ -49,6 +49,8 @@ public:
 Q_SIGNALS:
     void neverChanged();
     void countChanged();
+    void fileAdded(int id);
+    void fileRemoved(int id);
 
 private:
     //! List of files

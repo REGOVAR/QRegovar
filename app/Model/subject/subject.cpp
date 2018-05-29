@@ -11,6 +11,9 @@ Subject::Subject(QObject* parent) : RegovarResource(parent)
     mPhenotypes = new HpoDataListModel(this);
     mAnalyses = new AnalysesListModel(this);
     mSamples = new SamplesListModel(this);
+    mFiles = new FilesListModel(this);
+
+    connect(mFiles, &FilesListModel::fileAdded, this, &Subject::saveFile);
 }
 
 Subject::Subject(QJsonObject json, QObject* parent) : Subject(parent)
@@ -23,6 +26,10 @@ Subject::Subject(int id, QObject* parent) : Subject(parent)
     mPhenotypes = new HpoDataListModel(id, this);
 }
 
+void Subject::saveFile(int)
+{
+    save();
+}
 
 
 bool Subject::loadJson(QJsonObject json, bool full_init)
@@ -48,8 +55,7 @@ bool Subject::loadJson(QJsonObject json, bool full_init)
     mPhenotypes->clear();
     mSamples->clear();
     mAnalyses->clear();
-    mFiles.clear();
-    mIndicators.clear();
+    mFiles->clear();
 
     // samples
     for (const QJsonValue& val: json["samples"].toArray())
@@ -87,9 +93,19 @@ bool Subject::loadJson(QJsonObject json, bool full_init)
         mAnalyses->append(analysis);
     }
 
+    // Files
+    for (const QJsonValue& val: json["files"].toArray())
+    {
+        QJsonObject data = val.toObject();
+        File* file = regovar->filesManager()->getOrCreateFile(data["id"].toInt());
+        file->loadJson(data);
+        mFiles->add(file);
+    }
+
+    // TODO: Indicators
+
     // Event
     mEvents->loadJson(json["events"].toArray());
-
 
     mLoaded = true;
     emit dataChanged();
@@ -128,7 +144,14 @@ QJsonObject Subject::toJson()
     result.insert("hpo_ids", hpo);
 
     // Files
-    // Indicators
+    QJsonArray files;
+    for (int i=0; i<mFiles->rowCount() ; ++i)
+    {
+        files.append(mFiles->getAt(i)->id());
+    }
+    result.insert("files_ids", files);
+
+    // TODO: Indicators
 
     return result;
 }

@@ -41,6 +41,7 @@ bool FilesListModel::add(File* file)
         mFileList.append(file);
         endInsertRows();
         emit countChanged();
+        emit fileAdded(file->id());
         result = true;
     }
     return result;
@@ -56,6 +57,7 @@ bool FilesListModel::remove(File* file)
         mFileList.removeAt(pos);
         endRemoveRows();
         emit countChanged();
+        emit fileRemoved(file->id());
         result = true;
     }
     return result;

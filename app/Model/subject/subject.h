@@ -5,6 +5,7 @@
 #include "Model/framework/regovarresource.h"
 #include "Model/file/file.h"
 #include "Model/analysis/analyseslistmodel.h"
+#include "Model/file/fileslistmodel.h"
 #include "sampleslistmodel.h"
 
 class Sample;
@@ -26,8 +27,8 @@ class Subject : public RegovarResource
     Q_PROPERTY(QString familyNumber READ familyNumber WRITE setFamilyNumber NOTIFY dataChanged)
     Q_PROPERTY(SamplesListModel* samples READ samples NOTIFY dataChanged)
     Q_PROPERTY(AnalysesListModel* analyses READ analyses NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> files READ files NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> indicators READ indicators NOTIFY dataChanged)
+    Q_PROPERTY(FilesListModel* files READ files NOTIFY dataChanged)
+    // TODO: Q_PROPERTY(XXX indicators READ indicators NOTIFY dataChanged)
     Q_PROPERTY(HpoDataListModel* phenotypes READ phenotypes NOTIFY dataChanged)
     Q_PROPERTY(EventsListModel* events READ events NOTIFY dataChanged)
     // Special "shortcut" properties for qml display
@@ -58,8 +59,7 @@ public:
     inline QDate dateOfBirth() const { return mDateOfBirth; }
     inline SamplesListModel* samples() const { return mSamples; }
     inline AnalysesListModel* analyses() const { return mAnalyses; }
-    inline QList<QObject*> files() const { return mFiles; }
-    inline QList<QObject*> indicators() const { return mIndicators; }
+    inline FilesListModel* files() const { return mFiles; }
     inline HpoDataListModel* phenotypes() const { return mPhenotypes; }
     inline EventsListModel* events() const { return mEvents; }
     inline QJsonObject subjectUI() const { return mSubjectUI; }
@@ -99,6 +99,7 @@ public:
 
 public Q_SLOTS:
     void updateSearchField() override;
+    void saveFile(int fileId);
 
 private:
     int mId = -1;
@@ -111,8 +112,7 @@ private:
     QDate mDateOfBirth;
     SamplesListModel* mSamples = nullptr;
     AnalysesListModel* mAnalyses = nullptr;
-    QList<QObject*> mFiles;
-    QList<QObject*> mIndicators;
+    FilesListModel* mFiles = nullptr;
     HpoDataListModel* mPhenotypes = nullptr;
     EventsListModel* mEvents = nullptr;
     QJsonObject mSubjectUI;
