@@ -19,6 +19,7 @@ class Analysis : public RegovarResource
     Q_PROPERTY(QString type READ type NOTIFY dataChanged)
     Q_PROPERTY(Project* project READ project WRITE setProject NOTIFY dataChanged)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
+    // TODO: Indicators
 
 public:
     // enum value returned by the server as analysis type

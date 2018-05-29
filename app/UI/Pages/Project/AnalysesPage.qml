@@ -47,7 +47,6 @@ Rectangle
                 font.weight: Font.Black
                 color: Regovar.theme.primaryColor.back.dark
                 verticalAlignment: Text.AlignVCenter
-                text: (model) ? model.name : ""
                 elide: Text.ElideRight
             }
 
@@ -115,7 +114,6 @@ Rectangle
             Layout.minimumHeight: 200
             Layout.fillHeight: true
             color: Regovar.theme.backgroundColor.main
-
 
             TextField
             {

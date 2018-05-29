@@ -10,8 +10,8 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property QtObject model
     property var currentAnalysis: null
+    property QtObject model
     onModelChanged:
     {
         if(model)
@@ -91,20 +91,6 @@ Rectangle
             text: qsTr("Open")
             onClicked: regovar.analysesManager.openAnalysis(currentAnalysis.type, currentAnalysis.id)
         }
-        Button
-        {
-            id: playPauseAnalysis
-            text: qsTr("Pause")
-            onClicked:  console.log("Pause/Play analysis")
-            enabled: false
-        }
-        Button
-        {
-            id: deleteAnalysis
-            text: qsTr("Delete")
-            onClicked:  console.log("Delete analysis")
-            enabled: false
-        }
     }
 
     SplitView
@@ -112,6 +98,7 @@ Rectangle
         anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
         anchors.left: root.left
         anchors.leftMargin: 10
+        anchors.rightMargin: 10
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         orientation: Qt.Vertical
@@ -120,16 +107,32 @@ Rectangle
         {
             id: topPanel
             width: root.width
-            color: Regovar.theme.backgroundColor.main
             Layout.minimumHeight: 200
             Layout.fillHeight: true
+            color: Regovar.theme.backgroundColor.main
+
+            TextField
+            {
+                id: browserSearch
+                anchors.top: topPanel.top
+                anchors.left: topPanel.left
+                anchors.right: topPanel.right
+                anchors.topMargin: 10
+                iconLeft: "z"
+                displayClearButton: true
+                placeholder: qsTr("Search analyses by names, dates, comments...")
+                onTextChanged: root.model.analyses.proxy.setFilterString(text)
+            }
 
             TableView
             {
                 id: browser
-                anchors.fill: parent
-                anchors.margins: 10
-                anchors.leftMargin: 0
+                anchors.top: browserSearch.bottom
+                anchors.left: topPanel.left
+                anchors.right: topPanel.right
+                anchors.bottom: topPanel.bottom
+                anchors.bottomMargin: 10
+                anchors.topMargin: 10
                 onDoubleClicked: regovar.analysesManager.openAnalysis(currentAnalysis.type, currentAnalysis.id)
 
                 TableViewColumn
@@ -149,7 +152,7 @@ Rectangle
                 }
                 TableViewColumn
                 {
-                    role: "lastUpdate"
+                    role: "updateDate"
                     title: "Date"
                 }
                 TableViewColumn
@@ -189,6 +192,7 @@ Rectangle
                 anchors.fill: parent
                 anchors.margins: 10
                 anchors.leftMargin: 0
+                anchors.rightMargin: 0
                 columns: 3
                 rowSpacing: 10
                 columnSpacing: 10
@@ -221,7 +225,7 @@ Rectangle
                     font.pixelSize: Regovar.theme.font.size.header
                     verticalAlignment: Text.AlignVCenter
                     color: Regovar.theme.primaryColor.back.normal
-                    text: currentAnalysis ? regovar.formatDate(currentAnalysis.lastUpdate) : ""
+                    text: currentAnalysis ? regovar.formatDate(currentAnalysis.updateDate) : ""
                 }
 
                 Rectangle
@@ -244,6 +248,7 @@ Rectangle
             }
         } // end bottomPanel
     } // end SplitView
+
 
     function updateViewFromModel()
     {
