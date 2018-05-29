@@ -176,10 +176,13 @@ Item
 
     function displayCurrentFile()
     {
-        var idx = root.model.proxy.mapToSource(browser.currentIndex);
-        var id = root.model.data(idx, 257); // 257 = Qt::UserRole+1
+        if (root.model)
+        {
+            var idx = root.model.proxy.mapToSource(browser.currentIndex);
+            var id = root.model.data(idx, 257); // 257 = Qt::UserRole+1
 
-        root.currentFile = regovar.filesManager.getOrCreateFile(id);
-        viewer.openFile(id);
+            root.currentFile = regovar.filesManager.getOrCreateFile(id);
+            viewer.openFile(id);
+        }
     }
 }
