@@ -39,11 +39,10 @@ RowLayout
     }
 
 
+    Item { height: 10; width: root.indentation - 10 }
     CheckBox
     {
         id: fieldCheck
-        anchors.left: parent.left
-        anchors.leftMargin: root.indentation
         onWidthChanged: root.labelWidth = width;
         text: ""
     }

@@ -24,7 +24,7 @@ void PipelineAnalysis::addInputs(QList<QObject*> inputs)
     for (QObject* o1: inputs)
     {
         File* file = qobject_cast<File*>(o1);
-        mInputsFiles->add(file);
+        mInputsFiles->append(file);
     }
 }
 
@@ -42,7 +42,7 @@ void PipelineAnalysis::addInputFromWS(QJsonObject json)
 
     File* file = regovar->filesManager()->getOrCreateFile(json["id"].toInt());
     file->loadJson(json);
-    mInputsFiles->add(file);
+    mInputsFiles->append(file);
 }
 
 
@@ -88,7 +88,7 @@ bool PipelineAnalysis::loadJson(QJsonObject json, bool full_init)
             {
                 file->load(true);
             }
-            mInputsFiles->add(file);
+            mInputsFiles->append(file);
         }
     }
     // Outputs files

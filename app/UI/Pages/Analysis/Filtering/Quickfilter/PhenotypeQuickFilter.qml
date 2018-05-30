@@ -86,14 +86,13 @@ QuickFilterBox
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.leftMargin: 25
 
 
         // All
         CheckBox
         {
             id: frqAll
-            anchors.left: parent.left
-            anchors.leftMargin: 25
             width: content.width
             text: qsTr("All")
             checked: true
@@ -109,8 +108,6 @@ QuickFilterBox
 
             CheckBox
             {
-                anchors.left: parent.left
-                anchors.leftMargin: 25
                 Layout.fillWidth: true
                 width: content.width
                 text: qsTr("Sample 1")
@@ -130,8 +127,6 @@ QuickFilterBox
 
             CheckBox
             {
-                anchors.left: parent.left
-                anchors.leftMargin: 25
                 Layout.fillWidth: true
                 width: content.width
                 text: qsTr("Sample 2")
@@ -151,8 +146,6 @@ QuickFilterBox
 
             CheckBox
             {
-                anchors.left: parent.left
-                anchors.leftMargin: 25
                 Layout.fillWidth: true
                 width: content.width
                 text: qsTr("Sample 3")
@@ -225,8 +218,6 @@ QuickFilterBox
             TextField
             {
                 id: searchField
-                anchors.left: parent.left
-                anchors.leftMargin: 5
                 width: content.width - 30
 
                 iconLeft: "z"

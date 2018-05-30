@@ -99,7 +99,7 @@ bool Subject::loadJson(QJsonObject json, bool full_init)
         QJsonObject data = val.toObject();
         File* file = regovar->filesManager()->getOrCreateFile(data["id"].toInt());
         file->loadJson(data);
-        mFiles->add(file);
+        mFiles->append(file);
     }
 
     // TODO: Indicators

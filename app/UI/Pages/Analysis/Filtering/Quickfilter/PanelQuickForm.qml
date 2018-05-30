@@ -79,11 +79,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+
+            Item { height: 10; width: 30 }
             CheckBox
             {
                 id: panelAll
-                anchors.left: parent.left
-                anchors.leftMargin: 30
                 text: qsTr("All")
                 checked: true
                 onCheckedChanged:

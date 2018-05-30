@@ -62,11 +62,12 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: typAll
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("All")
                 checked: true
                 onCheckedChanged:
@@ -94,11 +95,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: typMis
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Missense")
                 checked: false
                 onCheckedChanged:
@@ -120,11 +121,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: typStp
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Nonsense")
                 checked: false
                 onCheckedChanged:
@@ -146,11 +147,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: typSpl
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Splicing")
                 checked: false
                 onCheckedChanged:
@@ -172,11 +173,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: typInd
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Indel")
                 checked: false
                 onCheckedChanged:
@@ -198,11 +199,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: typSyn
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Synonymous")
                 checked: false
                 onCheckedChanged:
