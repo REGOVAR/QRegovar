@@ -25,6 +25,8 @@
 #include "Model/panel/panel.h"
 #include "Model/panel/panelversion.h"
 #include "Model/panel/panelentry.h"
+#include "Model/phenotype/geneslistmodel.h"
+#include "Model/panel/panelslistmodel.h"
 
 #include "Widgets/VariantsTreeWidget/variantstreewidget.h"
 
@@ -64,6 +66,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<FilesListModel>("Regovar.Core", 1, 0, "FilesListModel");
     qmlRegisterType<FilesTreeModel>("Regovar.Core", 1, 0, "FilesTreeModel");
     qmlRegisterType<HpoDataListModel>("Regovar.Core", 1, 0, "PhenotypesListModel");
+    qmlRegisterType<GenesListModel>("Regovar.Core", 1, 0, "GenesListModel");
+    qmlRegisterType<PanelsListModel>("Regovar.Core", 1, 0, "PanelsListModel");
 
     qmlRegisterType<User>("Regovar.Core", 1, 0, "User");
     qmlRegisterType<Project>("Regovar.Core", 1, 0, "Project");

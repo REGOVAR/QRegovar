@@ -1,5 +1,6 @@
 #include "phenotype.h"
 #include "Model/regovar.h"
+#include "Model/phenotype/geneslistmodel.h"
 
 
 Phenotype::Phenotype(QObject* parent) : HpoData(parent)

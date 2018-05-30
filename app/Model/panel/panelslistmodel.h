@@ -1,52 +1,46 @@
-#ifndef HPODATALISTMODEL_H
-#define HPODATALISTMODEL_H
+#ifndef PANELSLISTMODEL_H
+#define PANELSLISTMODEL_H
 
 #include <QtCore>
 #include "Model/framework/genericproxymodel.h"
+#include "panelversion.h"
 
-class HpoData;
-class Subject;
-class HpoDataListModel: public QAbstractListModel
+class PanelsListModel: public QAbstractListModel
 {
     enum Roles
     {
         Id = Qt::UserRole + 1,
-        Label,
-        Type,
-        Category,
-        Presence,
-        AdditionDate,
-        DiseasesFreq,
-        GenesFreq,
-        Genes,
+        Name,
+        Comment,
+        CreationDate,
         SearchField
     };
 
     Q_OBJECT
-    Q_PROPERTY(Subject* subject READ subject NOTIFY neverChanged)
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
     Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
+
 public:
     // Constructor
-    HpoDataListModel(QObject* parent=nullptr);
-    HpoDataListModel(int subjectId, QObject* parent=nullptr);
+    PanelsListModel(QObject* parent=nullptr);
 
     // Getters
-    Subject* subject() const;
     inline GenericProxyModel* proxy() const { return mProxy; }
 
     // Methods
     //! Remove all entries of the list
     Q_INVOKABLE void clear();
-    //! Load phenotype list from json
+    //! Load phenotype list from list of json
     Q_INVOKABLE bool loadJson(QJsonArray json);
-    //! Add the provided phenotype to the list if not already contains
-    Q_INVOKABLE bool append(HpoData* hpoData);
-    //! Remove a phenotype from the list if possible
-    Q_INVOKABLE bool remove(HpoData* hpoData);
+    //! Add the provided gene to the list if not already contains
+    Q_INVOKABLE bool append(PanelVersion* panel);
+    //! Remove a gene from the list if possible
+    Q_INVOKABLE bool remove(PanelVersion* panel);
     //! Return entry at the requested position in the list
-    Q_INVOKABLE HpoData* getAt(int idx);
+    Q_INVOKABLE PanelVersion* getAt(int idx);
+    //! Joins all the string list's strings into a single string with each element separated by the given separator (which can be an empty string).
+    Q_INVOKABLE QString join(QString separator);
 
     // QAbstractListModel methods
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
@@ -60,10 +54,8 @@ Q_SIGNALS:
 
 
 private:
-    int mSubjectId = -1;
-
-    QList<HpoData*> mHpoDataList;
+    QList<PanelVersion*> mPanels;
     GenericProxyModel* mProxy = nullptr;
 };
 
-#endif // HPODATALISTMODEL_H
+#endif // PANELSLISTMODEL_H

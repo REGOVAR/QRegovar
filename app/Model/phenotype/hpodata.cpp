@@ -1,6 +1,8 @@
 #include "hpodata.h"
 #include "Model/framework/request.h"
 #include "Model/regovar.h"
+#include "Model/subject/subjectslistmodel.h"
+#include "geneslistmodel.h"
 
 
 

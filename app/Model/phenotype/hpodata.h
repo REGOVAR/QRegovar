@@ -3,10 +3,9 @@
 
 #include <QtCore>
 #include "Model/framework/regovarresource.h"
-#include "geneslistmodel.h"
-#include "Model/subject/subjectslistmodel.h"
 
 class SubjectsListModel;
+class GenesListModel;
 class HpoData: public RegovarResource
 {
     Q_OBJECT

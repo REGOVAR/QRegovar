@@ -29,11 +29,12 @@ InformationPanel
                 "icon": "o",
                 "source": "qrc:/qml/InformationPanel/Panel/VersionDetailsPanel.qml"
             });
-        ttt.append({
-                "title": qsTr("Events"),
-                "icon": "H",
-                "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
-            });
+        // TODO
+//        ttt.append({
+//                "title": qsTr("Events"),
+//                "icon": "H",
+//                "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
+//            });
         root.tabsModel = ttt;
         root.loading = false;
     }

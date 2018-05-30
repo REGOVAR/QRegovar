@@ -1,6 +1,7 @@
 #include "panel.h"
 #include "Model/regovar.h"
 #include "Model/framework/request.h"
+#include "Model/phenotype/geneslistmodel.h"
 
 
 

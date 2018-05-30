@@ -1,4 +1,6 @@
 #include "disease.h"
+#include "geneslistmodel.h"
+#include "Model/subject/subjectslistmodel.h"
 
 
 Disease::Disease(QObject* parent) : HpoData(parent)
