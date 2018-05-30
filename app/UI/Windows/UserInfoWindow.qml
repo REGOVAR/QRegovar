@@ -32,6 +32,6 @@ Window
     {
         winId = cppWinId;
         userInfoPanel.model = regovar.getWindowModels(winId);
-        title = userInfoPanel.model.name;
+        title = userInfoPanel.model.firstname + " " + userInfoPanel.model.lastname;
     }
 }

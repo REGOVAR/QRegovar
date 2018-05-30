@@ -14,10 +14,8 @@ InformationPanel
     updateFromModel: function updateFromModel(data)
     {
         // Update title
-        var variant = "chr" + data["chr"] + ":" + data["pos"] + " " + data["ref"] + ">" + data["alt"];
-        var gene = data["genename"];
-        var ref = data["reference"];
-        root.title = "<span style=\"font-family: monospace;\">" + variant + "</span><br/><br/><i>Ref: </i>" + ref + "&nbsp;&nbsp;&nbsp;</span>\n\n<i>Gene: </i>" + gene;
+        root.title = "<h1>" + data.firstname + " " + data.lastname + "</h1><br/>";
+        root.title += qsTr("Last connection:") + " " + regovar.formatDate(data.lastActivity, true);
 
         // Update tabs
         root.tabSharedModel = data;
@@ -25,18 +23,20 @@ InformationPanel
         ttt.append(
             {   "title": qsTr("Information"),
                 "icon": "j",
-                "source": "qrc:/qml/InformationPanel/User/InfoPanel.qmll"
+                "source": "qrc:/qml/InformationPanel/User/InfoPanel.qml"
             });
-        ttt.append({
-                "title": qsTr("Regovar statistics"),
-                "icon": "í",
-                "source": "qrc:/qml/InformationPanel/User/StatsPanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Events"),
-                "icon": "è",
-                "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
-            });
+        // TODO
+//        ttt.append({
+//                "title": qsTr("Regovar statistics"),
+//                "icon": "í",
+//                "source": "qrc:/qml/InformationPanel/User/StatsPanel.qml"
+//            });
+        // TODO
+//        ttt.append({
+//                "title": qsTr("Events"),
+//                "icon": "è",
+//                "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
+//            });
         root.tabsModel = ttt;
         root.loading = false;
     }
@@ -50,6 +50,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onUserInformationReady: root.model = json
+        onUserInformationReady: root.model = user;
     }
 }
