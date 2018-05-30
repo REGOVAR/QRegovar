@@ -14,11 +14,8 @@ InformationPanel
     updateFromModel: function updateFromModel(data)
     {
         // Update title
-        root.title = "<h1>" + data["name"] + "</h1>Version: <span style=\"font-family: monospace;\">" + data["version"] + "</span>";
-        if ("description" in data)
-        {
-            root.title += "<br/><br/>" + data["description"];
-        }
+        root.title = "<h1>" + data.name + "</h1>Version: <span style=\"font-family: monospace;\">" + data.version + "</span>";
+        root.title += "<br/>" + data.description;
 
 
         // Update tabs
@@ -26,13 +23,13 @@ InformationPanel
         var documents = ("documents" in data) ? data["documents"] : {};
         var ttt = listModel.createObject(root);
 
-        if ("home" in documents)
+        if (data.aboutPage !== "")
         {
             ttt.append(
             {   "title": qsTr("About"),
                 "icon": "j",
                 "source": "qrc:/qml/InformationPanel/Common/WebViewPanel.qml",
-                "tabModel" : documents["about"]
+                "tabModel" : data.aboutPage
             });
         }
         ttt.append(
@@ -40,11 +37,19 @@ InformationPanel
                 "icon": "j",
                 "source": "qrc:/qml/InformationPanel/Pipeline/InfoPanel.qml"
             });
-        ttt.append({
-                "title": qsTr("Events"),
-                "icon": "^",
-                "source": "qrc:/qml/InformationPanel/Pipeline/StatsPanel.qml"
-            });
+        // TODO
+//        ttt.append({
+//                "title": qsTr("Analyses"),
+//                "icon": "I",
+//                "source": "qrc:/qml/InformationPanel/Pipeline/Analyses.qml"
+//            });
+
+        // TODO
+//        ttt.append({
+//                "title": qsTr("Events"),
+//                "icon": "^",
+//                "source": "qrc:/qml/InformationPanel/Pipeline/StatsPanel.qml"
+//            });
 
         root.tabsModel = ttt;
         root.loading = false;
