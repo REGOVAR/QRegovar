@@ -5,6 +5,8 @@
 
 FilesManager::FilesManager(QObject *parent) : QObject(parent)
 {
+    mUploadsList = new FilesListModel(this);
+    mRemoteFilesList = new FilesListModel(this);
     mUploader = new TusUploader();
     mUploader->setUploadUrl(regovar->networkManager()->serverUrl().toString() + "/file/upload");
     mUploader->setRootUrl(regovar->networkManager()->serverUrl().toString());
@@ -77,7 +79,7 @@ bool FilesManager::deleteFile(int id)
         // Remove local instance of the file
         File* file = mFiles[id];
         mFiles.remove(id);
-        mRemoteFilesList.removeAll(file);
+        mRemoteFilesList->remove(file);
         file->clearCache();
 
         // Remove the file on the server
@@ -112,13 +114,13 @@ void FilesManager::loadFilesBrowser()
     {
         if (success)
         {
-            mRemoteFilesList.clear();
+            mRemoteFilesList->clear();
             for (const QJsonValue& data: json["data"].toArray())
             {
                 QJsonObject fileData = data.toObject();
                 File* file = getOrCreateFile(fileData["id"].toInt());
                 file->loadJson(fileData);
-                mRemoteFilesList.append(file);
+                mRemoteFilesList->append(file);
             }
             emit remoteListChanged();
         }
@@ -150,7 +152,7 @@ void FilesManager::filesEnqueued(QHash<QString,QString> mapping)
         int id = pathSplitted[pathSplitted.count()-1].toInt();
         File* file = getOrCreateFile(id);
         file->load();
-        mUploadsList.append(file);
+        mUploadsList->append(file);
         emit fileUploadEnqueued(key, id);
         // qDebug() << key << " => " << mapping[key] << id;
     }
@@ -166,10 +168,10 @@ void FilesManager::cancelUploadFile(QList<int> filesId)
         if (mFiles.contains(id))
         {
             File* file = mFiles[id];
-            if (mUploadsList.indexOf(file) != -1)
+            if (mUploadsList->contains(file))
             {
                 mUploader->cancel(QString::number(id));
-                mUploadsList.removeAll(file);
+                mUploadsList->remove(file);
             }
         }
     }
@@ -179,7 +181,7 @@ void FilesManager::cancelUploadFile(QList<int> filesId)
 
 void FilesManager::clearUploadsList()
 {
-    mUploadsList.clear();
+    mUploadsList->clear();
 }
 
 
@@ -264,7 +266,7 @@ void FilesManager::processPushNotification(QString action, QJsonObject json)
         File* file = getOrCreateFile(id);
         file->loadJson(json);
         // update global upload progress
-        if (mUploadsList.indexOf(file) != -1)
+        if (mUploadsList->contains(file))
         {
             updateUploadProgress();
         }
@@ -275,18 +277,18 @@ void FilesManager::processPushNotification(QString action, QJsonObject json)
 
 void FilesManager::updateUploadProgress()
 {
-    if (mUploadsList.count() > 0)
+    if (mUploadsList->rowCount() > 0)
     {
         int totalProgress = 0;
-        for (QObject* o: mUploadsList)
+        for (int idx=0; idx < mUploadsList->rowCount(); idx++)
         {
-            File* f = qobject_cast<File*>(o);
+            File* f = mUploadsList->getAt(idx);
             int progress = 0;
             double s = f->size();
             if (s>0) progress = f->uploadOffset() / s * 100;
             totalProgress += progress;
         }
-        mUploadsProgress = totalProgress / mUploadsList.count();
+        mUploadsProgress = totalProgress / mUploadsList->rowCount();
     }
     emit uploadsChanged();
 }

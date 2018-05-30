@@ -5,6 +5,7 @@
 #include "file.h"
 #include "filestreemodel.h"
 #include "tusuploader.h"
+#include "fileslistmodel.h"
 
 class FilesManager : public QObject
 {
@@ -12,10 +13,10 @@ class FilesManager : public QObject
     Q_PROPERTY(QString cacheDir READ cacheDir WRITE setCacheDir NOTIFY cacheDirChanged)
     Q_PROPERTY(qint64 cacheOccupiedSize READ cacheOccupiedSize WRITE setCacheOccupiedSize NOTIFY cacheOccupiedSizeChanged)
     Q_PROPERTY(int cacheMaxSize READ cacheMaxSize WRITE setCacheMaxSize NOTIFY cacheMaxSizeChanged)
-    Q_PROPERTY(QList<QObject*> uploadsList READ uploadsList NOTIFY uploadsChanged)
+    Q_PROPERTY(FilesListModel* uploadsList READ uploadsList NOTIFY uploadsChanged)
     Q_PROPERTY(int uploadsProgress READ uploadsProgress NOTIFY uploadsChanged)
 
-    Q_PROPERTY(QList<QObject*> remoteList READ remoteList NOTIFY remoteListChanged)
+    Q_PROPERTY(FilesListModel* remoteList READ remoteList NOTIFY remoteListChanged)
     Q_PROPERTY(FilesTreeModel* filesTree READ filesTree NOTIFY filesTreeChanged)
 
 
@@ -29,8 +30,8 @@ public:
     inline qint64 cacheOccupiedSize() const { return mCacheOccupiedSize; }
     inline int cacheMaxSize() const { return mCacheMaxSize; }
     inline int uploadsProgress() const { return mUploadsProgress; }
-    inline QList<QObject*> remoteList() const { return mRemoteFilesList; }
-    inline QList<QObject*> uploadsList() const { return mUploadsList; }
+    inline FilesListModel* remoteList() const { return mRemoteFilesList; }
+    inline FilesListModel* uploadsList() const { return mUploadsList; }
     inline FilesTreeModel* filesTree() const { return mFilesTree; }
 
     // Setters
@@ -75,9 +76,9 @@ private:
     //! The progress (0 to 100) of all uploads
     int mUploadsProgress = 0;
     //! The list of files that are currently uploadling (by this client, add file with enqueueUploadFile method)
-    QList<QObject*> mUploadsList;
+    FilesListModel* mUploadsList = nullptr;
     //! The flat list of files available on the server (load/init with loadFilesBrowser method)
-    QList<QObject*> mRemoteFilesList;
+    FilesListModel* mRemoteFilesList = nullptr;
     //! The tree list of files available on the server (load/init with loadFilesBrowser method)
     FilesTreeModel* mFilesTree = nullptr;
     //! The uploader that manage TUS protocol (resumable upload)
