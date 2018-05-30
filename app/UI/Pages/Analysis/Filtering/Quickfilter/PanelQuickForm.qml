@@ -53,12 +53,17 @@ QuickFilterBox
         // Compute the final checked status of the "All" button
         var finalCheck = false;
 
-        for (var i = 0; i < content.children.length; ++i)
+
+        for (var i = 0; i < container.children.length; ++i)
         {
-            var item = content.children[i];
-            if (item.objectName == "QuickFilterFieldControl")
+            var row = container.children[i];
+            for (var j = 0; j < row.children.length; ++j)
             {
-                finalCheck = finalCheck || item.checked;
+                var item = row.children[i];
+                if (item.objectName === "QuickFilterFieldControl")
+                {
+                     finalCheck = finalCheck || item.checked;
+                }
             }
         }
 
@@ -96,10 +101,14 @@ QuickFilterBox
                         internalUiUpdate = true;
                         for (var i = 0; i < container.children.length; ++i)
                         {
-                            var item = container.children[i];
-                            if (item.objectName === "QuickFilterFieldControl")
+                            var row = container.children[i];
+                            for (var j = 0; j < row.children.length; ++j)
                             {
-                                item.checked = false;
+                                var item = row.children[i];
+                                if (item.objectName === "QuickFilterFieldControl")
+                                {
+                                    item.checked = false;
+                                }
                             }
                         }
                         internalUiUpdate = false;
@@ -149,12 +158,17 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            property bool hovered: false
 
             Item { height: 10; width: 25 }
-            ButtonInline
+            Text
             {
-                iconTxt: "à"
-                text: ""
+                Layout.fillWidth: true
+                text: "à"
+                font.family: Regovar.theme.icons.name
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
+                verticalAlignment: Text.AlignVCenter
             }
             Text
             {
@@ -162,8 +176,17 @@ QuickFilterBox
                 text: qsTr("Add panel")
                 elide: Text.ElideRight
                 font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.primaryColor.back.dark
+                color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
                 verticalAlignment: Text.AlignVCenter
+            }
+
+            MouseArea
+            {
+                anchors.fill: parent
+                hoverEnabled: true
+                onEntered: parent.hovered = true
+                onExited: parent.hovered = false
+                onClicked: console.log("Not yet implemented")
             }
         }
     }

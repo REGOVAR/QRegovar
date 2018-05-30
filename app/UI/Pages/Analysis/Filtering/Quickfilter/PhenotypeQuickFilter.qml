@@ -102,6 +102,7 @@ QuickFilterBox
             }
         }
 
+        // Sample's phenotype
         RowLayout
         {
             width: content.width-30
