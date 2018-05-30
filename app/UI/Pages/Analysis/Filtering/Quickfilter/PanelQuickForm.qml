@@ -76,14 +76,16 @@ QuickFilterBox
         anchors.right: parent.right
 
 
+
+
         RowLayout
         {
             width: content.width
-
-            Item { height: 10; width: 30 }
             CheckBox
             {
                 id: panelAll
+                anchors.left: parent.left
+                anchors.leftMargin: 30
                 text: qsTr("All")
                 checked: true
                 onCheckedChanged:
@@ -95,7 +97,7 @@ QuickFilterBox
                         for (var i = 0; i < container.children.length; ++i)
                         {
                             var item = container.children[i];
-                            if (item.objectName == "QuickFilterFieldControl")
+                            if (item.objectName === "QuickFilterFieldControl")
                             {
                                 item.checked = false;
                             }
@@ -108,6 +110,7 @@ QuickFilterBox
             }
         }
 
+
         Repeater
         {
             id: panelRepeater
@@ -115,10 +118,11 @@ QuickFilterBox
             RowLayout
             {
                 width: content.width
-
+                Item { height: 10; width: 25 }
                 CheckBox
                 {
                     id: gItem
+                    Layout.fillWidth: true
                     objectName: "QuickFilterFieldControl"
                     width: container.width
                     text: modelData.label
@@ -142,10 +146,25 @@ QuickFilterBox
             }
         }
 
-        ButtonInline
+        RowLayout
         {
-            iconTxt: "à"
-            text: qsTr("Add panel")
+            width: content.width
+
+            Item { height: 10; width: 25 }
+            ButtonInline
+            {
+                iconTxt: "à"
+                text: ""
+            }
+            Text
+            {
+                Layout.fillWidth: true
+                text: qsTr("Add panel")
+                elide: Text.ElideRight
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.primaryColor.back.dark
+                verticalAlignment: Text.AlignVCenter
+            }
         }
     }
 }
