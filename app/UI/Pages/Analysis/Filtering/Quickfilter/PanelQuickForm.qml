@@ -76,18 +76,6 @@ QuickFilterBox
         anchors.left: parent.left
         anchors.right: parent.right
 
-
-        RowLayout
-        {
-            spacing: 0
-            width: content.width
-            Rectangle { height: 2; width: Regovar.theme.font.boxSize.header; color: "red" }
-            Rectangle {
-                height: 2; Layout.fillWidth: true; color: "green"
-                Rectangle { height: 2; width: 5; color: "blue" }
-            }
-        }
-
         RowLayout
         {
             spacing: 0
