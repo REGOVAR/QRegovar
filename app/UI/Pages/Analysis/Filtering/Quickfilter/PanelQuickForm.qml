@@ -56,14 +56,10 @@ QuickFilterBox
 
         for (var i = 0; i < container.children.length; ++i)
         {
-            var row = container.children[i];
-            for (var j = 0; j < row.children.length; ++j)
+            var item = container.children[i];
+            if (item && item.objectName === "QuickFilterFieldControl")
             {
-                var item = row.children[i];
-                if (item.objectName === "QuickFilterFieldControl")
-                {
-                     finalCheck = finalCheck || item.checked;
-                }
+                 finalCheck = finalCheck || item.checked;
             }
         }
 
@@ -81,16 +77,26 @@ QuickFilterBox
         anchors.right: parent.right
 
 
-
+        RowLayout
+        {
+            spacing: 0
+            width: content.width
+            Rectangle { height: 2; width: Regovar.theme.font.boxSize.header; color: "red" }
+            Rectangle {
+                height: 2; Layout.fillWidth: true; color: "green"
+                Rectangle { height: 2; width: 5; color: "blue" }
+            }
+        }
 
         RowLayout
         {
+            spacing: 0
             width: content.width
+            Item { height: 10; width: Regovar.theme.font.boxSize.header - 5 }
             CheckBox
             {
                 id: panelAll
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("All")
                 checked: true
                 onCheckedChanged:
@@ -101,83 +107,90 @@ QuickFilterBox
                         internalUiUpdate = true;
                         for (var i = 0; i < container.children.length; ++i)
                         {
-                            var row = container.children[i];
-                            for (var j = 0; j < row.children.length; ++j)
+                            var item = container.children[i];
+                            if (item && item.objectName === "QuickFilterFieldControl")
                             {
-                                var item = row.children[i];
-                                if (item.objectName === "QuickFilterFieldControl")
-                                {
-                                    item.checked = false;
-                                }
+                                item.checked = false;
                             }
                         }
+                        checkFinal();
                         internalUiUpdate = false;
                     }
-
-                    checkFinal();
                 }
             }
         }
 
-
-        Repeater
-        {
-            id: panelRepeater
-
-            RowLayout
-            {
-                width: content.width
-                Item { height: 10; width: 25 }
-                CheckBox
-                {
-                    id: gItem
-                    Layout.fillWidth: true
-                    objectName: "QuickFilterFieldControl"
-                    width: container.width
-                    text: modelData.label
-                    checked: modelData.isActive
-                    onCheckedChanged:
-                    {
-                        modelData.isActive = checked
-                        if (!internalUiUpdate)
-                        {
-                            // Update other checkboxes
-                            internalUiUpdate = true;
-                            if (checked)
-                            {
-                                panelAll.checked = false;
-                            }
-                            checkFinal();
-                            internalUiUpdate = false;
-                        }
-                    }
-                }
-            }
-        }
 
         RowLayout
         {
+            spacing: 0
             width: content.width
-            property bool hovered: false
+            Item { height: 10; width: Regovar.theme.font.boxSize.header - 5}
+            Column
+            {
+                id: container
+                Layout.fillWidth: true
+                Repeater
+                {
+                    id: panelRepeater
 
-            Item { height: 10; width: 25 }
-            Text
-            {
-                Layout.fillWidth: true
-                text: "à"
-                font.family: Regovar.theme.icons.name
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
-                verticalAlignment: Text.AlignVCenter
+                    CheckBox
+                    {
+                        id: gItem
+                        Layout.fillWidth: true
+                        objectName: "QuickFilterFieldControl"
+                        width: container.width
+                        text: modelData.label
+                        checked: modelData.isActive
+                        onCheckedChanged:
+                        {
+                            modelData.isActive = checked
+                            if (!internalUiUpdate)
+                            {
+                                // Update other checkboxes
+                                internalUiUpdate = true;
+                                if (checked)
+                                {
+                                    panelAll.checked = false;
+                                }
+                                checkFinal();
+                                internalUiUpdate = false;
+                            }
+                        }
+                    }
+                }
             }
-            Text
+        }
+
+        Item
+        {
+            id: newPanelButton
+            width: content.width
+            height: Regovar.theme.font.boxSize.normal
+            property bool hovered: false
+            RowLayout
             {
-                Layout.fillWidth: true
-                text: qsTr("Add panel")
-                elide: Text.ElideRight
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
-                verticalAlignment: Text.AlignVCenter
+                anchors.fill: parent
+                Item { height: 10; width: Regovar.theme.font.boxSize.header }
+                Text
+                {
+                    text: "à"
+                    width: Regovar.theme.font.boxSize.normal
+                    font.family: Regovar.theme.icons.name
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    color: newPanelButton.hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                }
+                Text
+                {
+                    Layout.fillWidth: true
+                    text: qsTr("Add panel")
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    color: newPanelButton.hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
+                    verticalAlignment: Text.AlignVCenter
+                }
             }
 
             MouseArea

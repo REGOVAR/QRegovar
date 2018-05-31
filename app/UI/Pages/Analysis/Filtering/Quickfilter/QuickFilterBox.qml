@@ -21,7 +21,7 @@ Rectangle
     }
 
     property FilteringAnalysis model
-    property real maxHeight: content.height + 30
+    property real maxHeight: content.height + Regovar.theme.font.boxSize.header
     property string title
     property bool isExpanded
     property Item content
@@ -33,7 +33,7 @@ Rectangle
         anchors.left: root.left
         anchors.right: root.right
 
-        height: 30
+        height: Regovar.theme.font.boxSize.header
         color: Regovar.theme.backgroundColor.main
 
 
@@ -44,8 +44,8 @@ Rectangle
             anchors.top: header.top
             anchors.bottom: header.bottom
             anchors.left: header.left
-            width: 30
-            height: 30
+            width: Regovar.theme.font.boxSize.header
+            height: Regovar.theme.font.boxSize.header
             text: "{"
             font.family: Regovar.theme.icons.name
             font.pixelSize: Regovar.theme.font.size.header
@@ -61,8 +61,8 @@ Rectangle
             anchors.top: header.top
             anchors.bottom: header.bottom
             anchors.left: header.left
-            anchors.leftMargin: 30
-            anchors.rightMargin: 30
+            anchors.leftMargin: Regovar.theme.font.boxSize.header
+            anchors.rightMargin: Regovar.theme.font.boxSize.header
             anchors.right: header.right
 
             text: title
