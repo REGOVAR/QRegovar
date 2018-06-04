@@ -2,7 +2,7 @@
 #include "Model/regovar.h"
 #include "Model/analysis/filtering/filteringanalysis.h"
 
-PanelQuickFilter::PanelQuickFilter(int analysisId): QuickFilterBlockInterface()
+PanelQuickFilter::PanelQuickFilter(int): QuickFilterBlockInterface()
 {
     mOperators.clear();
     mOperators.append("∈");
@@ -16,7 +16,7 @@ PanelQuickFilter::PanelQuickFilter(int analysisId): QuickFilterBlockInterface()
     {
         QModelIndex i1 = regovar->panelsManager()->panels()->proxy()->getModelIndex(idx);
         // TODO: fix get panel sorted by name
-        QModelIndex i2 = regovar->panelsManager()->panels()->proxy()->mapToSource(i1);
+        // QModelIndex i2 = regovar->panelsManager()->panels()->proxy()->mapToSource(i1);
         PanelVersion* version =regovar->panelsManager()->panels()->getAt(i1.row());
         QuickFilterField* panelFilter = new QuickFilterField(
                     version->id(),

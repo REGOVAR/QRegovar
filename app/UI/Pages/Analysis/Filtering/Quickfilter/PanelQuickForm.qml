@@ -117,78 +117,90 @@ QuickFilterBox
             Column
             {
                 id: container
-                Layout.fillWidth: true
+                width: content.width
                 Repeater
                 {
                     id: panelRepeater
 
-                    CheckBox
+                    RowLayout
                     {
                         id: gItem
-                        Layout.fillWidth: true
-                        objectName: "QuickFilterFieldControl"
-                        width: container.width
-                        text: modelData.label
-                        checked: modelData.isActive
-                        onCheckedChanged:
+                        width: content.width
+                        CheckBox
                         {
-                            modelData.isActive = checked
-                            if (!internalUiUpdate)
+                            Layout.fillWidth: true
+                            objectName: "QuickFilterFieldControl"
+                            width: container.width
+                            text: modelData.label
+                            checked: modelData.isActive
+                            onCheckedChanged:
                             {
-                                // Update other checkboxes
-                                internalUiUpdate = true;
-                                if (checked)
+                                modelData.isActive = checked
+                                if (!internalUiUpdate)
                                 {
-                                    panelAll.checked = false;
+                                    // Update other checkboxes
+                                    internalUiUpdate = true;
+                                    if (checked)
+                                    {
+                                        panelAll.checked = false;
+                                    }
+                                    checkFinal();
+                                    internalUiUpdate = false;
                                 }
-                                checkFinal();
-                                internalUiUpdate = false;
                             }
+                        }
+
+                        ButtonInline
+                        {
+                            iconTxt: "z"
+                            text: ""
+                            onClicked: regovar.getPanelInfo(modelData.id)
                         }
                     }
                 }
             }
         }
 
-        Item
-        {
-            id: newPanelButton
-            width: content.width
-            height: Regovar.theme.font.boxSize.normal
-            property bool hovered: false
-            RowLayout
-            {
-                anchors.fill: parent
-                Item { height: 10; width: Regovar.theme.font.boxSize.header }
-                Text
-                {
-                    text: "à"
-                    width: Regovar.theme.font.boxSize.normal
-                    font.family: Regovar.theme.icons.name
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    color: newPanelButton.hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                Text
-                {
-                    Layout.fillWidth: true
-                    text: qsTr("Add panel")
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    color: newPanelButton.hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
+        // TODO: add other panel's version
+//        Item
+//        {
+//            id: newPanelButton
+//            width: content.width
+//            height: Regovar.theme.font.boxSize.normal
+//            property bool hovered: false
+//            RowLayout
+//            {
+//                anchors.fill: parent
+//                Item { height: 10; width: Regovar.theme.font.boxSize.header }
+//                Text
+//                {
+//                    text: "à"
+//                    width: Regovar.theme.font.boxSize.normal
+//                    font.family: Regovar.theme.icons.name
+//                    font.pixelSize: Regovar.theme.font.size.normal
+//                    color: newPanelButton.hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
+//                    verticalAlignment: Text.AlignVCenter
+//                    horizontalAlignment: Text.AlignHCenter
+//                }
+//                Text
+//                {
+//                    Layout.fillWidth: true
+//                    text: qsTr("Add panel")
+//                    elide: Text.ElideRight
+//                    font.pixelSize: Regovar.theme.font.size.normal
+//                    color: newPanelButton.hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
+//                    verticalAlignment: Text.AlignVCenter
+//                }
+//            }
 
-            MouseArea
-            {
-                anchors.fill: parent
-                hoverEnabled: true
-                onEntered: parent.hovered = true
-                onExited: parent.hovered = false
-                onClicked: console.log("Not yet implemented")
-            }
-        }
+//            MouseArea
+//            {
+//                anchors.fill: parent
+//                hoverEnabled: true
+//                onEntered: parent.hovered = true
+//                onExited: parent.hovered = false
+//                onClicked: console.log("Not yet implemented")
+//            }
+//        }
     }
 }

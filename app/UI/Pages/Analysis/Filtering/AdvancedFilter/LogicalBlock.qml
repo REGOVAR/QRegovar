@@ -201,7 +201,7 @@ Rectangle
                 color: "transparent"
 
                 id: logicalSubItem
-                property bool isChecked: modelData.enabled
+                property bool isChecked
                 onIsCheckedChanged: modelData.enabled = isChecked
 
                 Rectangle
