@@ -583,13 +583,13 @@ void FilteringAnalysis::raiseNewInternalLoadingStatus(LoadingStatus newStatus)
 void FilteringAnalysis::resetSets()
 {
     mSets.clear();
-    // add samples first
+    // Add samples first
     for (Sample* sample: mSamples)
     {
         mSets.append(new Set(QString("sample"), QString::number(sample->id()), sample->nickname()));
     }
 
-    // add sample's attributes
+    // Add sample's attributes
     for (QObject* o: mAttributes)
     {
         Attribute* attribute = qobject_cast<Attribute*>(o);
@@ -600,22 +600,32 @@ void FilteringAnalysis::resetSets()
         }
     }
 
-    // add filters
+    // Add filters
     for (QObject* o: mFilters)
     {
         SavedFilter* filter = qobject_cast<SavedFilter*>(o);
         mSets.append(new Set("filter", QString::number(filter->id()), filter->name()));
     }
 
-    // add panels
-    for (QString& panelId: mPanelsUsed)
+    // Add all panel's head version by default
+    for (int idx=0; idx <  regovar->panelsManager()->panels()->proxy()->rowCount(); idx++)
     {
-        PanelVersion* panel = regovar->panelsManager()->getPanelVersion(panelId);
-        if (panel != nullptr)
-        {
-            mSets.append(new Set("panel", panel->id(), panel->fullname() ));
-        }
+        QModelIndex i1 = regovar->panelsManager()->panels()->proxy()->getModelIndex(idx);
+        // TODO: fix get panel sorted by name
+        QModelIndex i2 = regovar->panelsManager()->panels()->proxy()->mapToSource(i1);
+        PanelVersion* version =regovar->panelsManager()->panels()->getAt(i1.row());
+        mSets.append(new Set("panel", version->id(), version->fullname()));
     }
+
+    // TODO: add panels used
+//    for (QString& panelId: mPanelsUsed)
+//    {
+//        PanelVersion* panel = regovar->panelsManager()->getPanelVersion(panelId);
+//        if (panel != nullptr)
+//        {
+//            mSets.append(new Set("panel", panel->id(), panel->fullname() ));
+//        }
+//    }
 
     emit setsChanged();
 }

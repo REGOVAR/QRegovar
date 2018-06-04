@@ -6,7 +6,8 @@ PanelsManager::PanelsManager(QObject* parent) : QObject(parent)
 {
     mNewPanel = new Panel(this);
     mNewPanel->versions()->addVersion(new PanelVersion(mNewPanel));
-    mPanelsTree = new PanelsTreeModel();
+    mPanelsTree = new PanelsTreeModel(this);
+    mPanelsList = new PanelsListModel(this);
 
     mProxy = new GenericProxyModel(this);
     mProxy->setSourceModel(mPanelsTree);
@@ -39,6 +40,7 @@ Panel* PanelsManager::getOrCreatePanel(QString id)
     // else create new empty panel
     Panel* newPanel = new Panel(this);
     mPanels.insert(id, newPanel);
+    mPanelsList->append(newPanel->headVersion());
     return newPanel;
 }
 
@@ -150,24 +152,14 @@ bool PanelsManager::loadJson(QJsonArray data)
 {
     // Refreshing treeModel with provided json will Create/update internal collection of panel
     mPanelsTree->refresh(data);
-    // Refresh public model used by QML
-    updatePanelsLists();
-
-    return true;
-}
-
-
-
-void PanelsManager::updatePanelsLists()
-{
-    mPanelsList.clear();
+    // Update list of panel
+    mPanelsList->clear();
     for(Panel* panel: mPanels.values())
     {
-        mPanelsList.append(panel);
+        mPanelsList->append(panel->headVersion());
     }
-
-
     emit panelsChanged();
+    return true;
 }
 
 

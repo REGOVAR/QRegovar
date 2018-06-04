@@ -4,12 +4,13 @@
 #include <QtCore>
 #include "panel.h"
 #include "panelstreemodel.h"
+#include "panelslistmodel.h"
 #include "Model/framework/genericproxymodel.h"
 
 class PanelsManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QList<QObject*> panels READ panels NOTIFY panelsChanged)
+    Q_PROPERTY(PanelsListModel* panels READ panels NOTIFY panelsChanged)
     Q_PROPERTY(PanelsTreeModel* panelsTree READ panelsTree NOTIFY panelsChanged)
     Q_PROPERTY(Panel* newPanel READ newPanel NOTIFY newPanelChanged)
     Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
@@ -20,7 +21,7 @@ public:
     PanelsManager(QObject* parent=nullptr);
 
     // Getters
-    inline QList<QObject*> panels() const { return mPanelsList; }
+    inline PanelsListModel* panels() const { return mPanelsList; }
     inline Panel* newPanel() const { return mNewPanel; }
     inline PanelsTreeModel* panelsTree() const { return mPanelsTree; }
     inline GenericProxyModel* proxy() const { return mProxy; }
@@ -48,16 +49,12 @@ private:
     QHash<QString, Panel*> mPanels;
     //! Model for Wizard data when creating new panel
     Panel* mNewPanel = nullptr;
-    //! List of all panels
-    QList<QObject*> mPanelsList;
+    //! List of all "root" panels
+    PanelsListModel* mPanelsList = nullptr;
     //! Treemodel of Panels list.
     PanelsTreeModel* mPanelsTree = nullptr;
     //! The QSortFilterProxyModel to use by tree view to browse panel/version of the manager
     GenericProxyModel* mProxy = nullptr;
-
-    // Methods
-    //! Refresh list of panel and tree according to the internal model (called by public refresh method)
-    void updatePanelsLists();
 };
 
 #endif // PANELSMANAGER_H
