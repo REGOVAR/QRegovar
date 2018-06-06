@@ -13,7 +13,8 @@ class TransmissionQuickFilter : public QuickFilterBlockInterface
 
 
 public:
-    explicit TransmissionQuickFilter(int);
+    // Constructor
+    TransmissionQuickFilter(int);
 
     // QuickFilterBlockInterface implementation
     Q_INVOKABLE bool isVisible() override;

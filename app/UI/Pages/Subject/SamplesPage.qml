@@ -12,6 +12,18 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property QtObject model
+    onModelChanged:
+    {
+        if(model)
+        {
+            model.dataChanged.connect(updateViewFromModel);
+        }
+        updateViewFromModel();
+    }
+    Component.onDestruction:
+    {
+        model.dataChanged.disconnect(updateViewFromModel);
+    }
 
     Rectangle
     {
@@ -35,7 +47,6 @@ Rectangle
                 font.weight: Font.Black
                 color: Regovar.theme.primaryColor.back.dark
                 verticalAlignment: Text.AlignVCenter
-                text: model ? model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname : "-"
                 elide: Text.ElideRight
             }
 
@@ -72,43 +83,23 @@ Rectangle
             id: tableView
             Layout.fillWidth: true
             Layout.fillHeight: true
-            model: root.model ? root.model.samples : []
-            selectionMode: SelectionMode.ExtendedSelection
-
-            onDoubleClicked:
-            {
-                var sample = root.model.samples[tableView.currentRow];
-                regovar.getSampleInfo(sample.id);
-            }
-
-
+            onDoubleClicked: regovar.getSampleInfo(currentSample().id)
             property var statusIcons: ["m", "/", "n", "h"]
 
             TableViewColumn
             {
                 title: qsTr("Reference")
                 role: "reference"
-
-                delegate: Item
-                {
-
-                    Text
-                    {
-                        anchors.leftMargin: 5
-                        anchors.left: parent.left
-                        anchors.verticalCenter: parent.verticalCenter
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: styleData.textAlignment
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        text: styleData.value.name
-                    }
-                }
             }
-            TableViewColumn { title: qsTr("Sample"); role: "name"; horizontalAlignment: Text.AlignLeft; }
+            TableViewColumn
+            {
+                title: qsTr("Sample");
+                role: "name";
+            }
             TableViewColumn
             {
                 title: "Status"
-                role: "statusUI"
+                role: "status"
                 delegate: Item
                 {
 
@@ -157,11 +148,10 @@ Rectangle
                     }
                 }
             }
-
             TableViewColumn
             {
                 title: qsTr("Source")
-                role: "sourceUI"
+                role: "source"
                 delegate: Item
                 {
                     Text
@@ -190,16 +180,17 @@ Rectangle
                     }
                 }
             }
-            TableViewColumn { title: qsTr("Comment"); role: "comment" }
+            TableViewColumn
+            {
+                title: qsTr("Comment");
+                role: "comment"
+            }
 
             Rectangle
             {
-                id: helpPanel
+                id: emptyPanel
                 anchors.fill: parent
-
                 color: Regovar.theme.backgroundColor.overlay
-
-                visible: root.model ? root.model.samples.length == 0 : true
 
                 Text
                 {
@@ -244,11 +235,7 @@ Rectangle
             {
                 id: editButton
                 text: qsTr("Open sample")
-                onClicked:
-                {
-                    var sample = root.model.samples[tableView.currentRow];
-                    regovar.getSampleInfo(sample.id);
-                }
+                onClicked: regovar.getSampleInfo(currentSample().id)
                 Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
             }
             Button
@@ -256,13 +243,7 @@ Rectangle
                 id: remButton
                 text: qsTr("Remove sample")
                 Component.onCompleted: actionColumn.maxWidth = Math.max(actionColumn.maxWidth, width)
-                onClicked:
-                {
-                    tableView.selection.forEach( function(rowIndex)
-                    {
-                        root.model.removeSample(root.model.samples[rowIndex]);
-                    });
-                }
+                onClicked: root.model.removeSample(currentSample())
             }
         }
     }
@@ -277,5 +258,22 @@ Rectangle
                 root.model.addSample(samples[idx]);
             }
         }
+    }
+
+    function updateViewFromModel()
+    {
+        if (root.model)
+        {
+            nameLabel.text = root.model.identifier + " : " + root.model.lastname.toUpperCase() + " " + root.model.firstname;
+            tableView.model = root.model.samples.proxy;
+            emptyPanel.visible = root.model.samples.length > 0;
+        }
+    }
+
+    function currentSample()
+    {
+        var idx = root.model.samples.proxy.getModelIndex(tableView.currentRow);
+        var id = root.model.samples.data(idx, 257); // 257 = Qt::UserRole+1
+        return regovar.samplesManager.getOrCreateSample(id);
     }
 }

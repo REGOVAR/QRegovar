@@ -2,6 +2,7 @@
 #define EVENT_H
 
 #include <QtCore>
+#include "Model/framework/regovarresource.h"
 #include "Model/user/user.h"
 #include "Model/analysis/analysis.h"
 #include "Model/file/file.h"
@@ -10,7 +11,7 @@
 #include "Model/subject/sample.h"
 #include "Model/subject/subject.h"
 
-class Event : public QObject
+class Event : public RegovarResource
 {
     Q_OBJECT
     Q_PROPERTY(int id READ id NOTIFY dataChanged)
@@ -28,17 +29,14 @@ class Event : public QObject
     Q_PROPERTY(Subject* subject READ subject NOTIFY dataChanged)
     Q_PROPERTY(Sample* sample READ sample NOTIFY dataChanged)
     Q_PROPERTY(File* file READ file NOTIFY dataChanged)
-
-
     Q_PROPERTY(QJsonObject messageUI READ messageUI NOTIFY dataChanged)
-    Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
 
 
 public:
     // Constructor
-    explicit Event(QObject* parent=nullptr);
-    explicit Event(int id, QObject* parent=nullptr);
-    explicit Event(QJsonObject json, QObject* parent=nullptr);
+    Event(QObject* parent=nullptr);
+    Event(int id, QObject* parent=nullptr);
+    Event(QJsonObject json, QObject* parent=nullptr);
 
     // Getters
     inline int id() const { return mId; }
@@ -59,23 +57,20 @@ public:
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE bool loadJson(QJsonObject json);
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
     //! Export model data into json object
-    Q_INVOKABLE QJsonObject toJson();
+    Q_INVOKABLE QJsonObject toJson() override;
     //! Save event information onto server
-    Q_INVOKABLE void save();
-    //! Load event information and related object from server
-    Q_INVOKABLE void load(bool forceRefresh=true);
+    Q_INVOKABLE void save() override;
+    //! Load event information from server
+    Q_INVOKABLE void load(bool forceRefresh=true) override;
 
-Q_SIGNALS:
-    void dataChanged();
+
 
 public Q_SLOTS:
-    void updateSearchField();
+    void updateSearchField() override;
 
 private:
-    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
-
     int mId=-1;
     QString mMessage;
     QString mDetails;
@@ -90,7 +85,6 @@ private:
     Sample* mSample = nullptr;
     File* mFile = nullptr;
     QJsonObject mMessageUI;
-    QString mSearchField;
 
     static QHash<QString, QString> mTypeIconMap;
     static QHash<QString, QString> initTypeIconMap();

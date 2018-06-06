@@ -13,6 +13,7 @@
 #include "Model/framework/treeitem.h"
 #include "Model/framework/genericproxymodel.h"
 #include "Model/project/project.h"
+#include "Model/analysis/analysis.h"
 #include "Model/analysis/filtering/filteringanalysis.h"
 #include "Model/analysis/pipeline/pipelineanalysis.h"
 #include "Model/subject/reference.h"
@@ -24,6 +25,8 @@
 #include "Model/panel/panel.h"
 #include "Model/panel/panelversion.h"
 #include "Model/panel/panelentry.h"
+#include "Model/phenotype/geneslistmodel.h"
+#include "Model/panel/panelslistmodel.h"
 
 #include "Widgets/VariantsTreeWidget/variantstreewidget.h"
 
@@ -44,6 +47,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<GenericProxyModel>("Regovar.Core", 1, 0, "GenericProxyModel");
 
     qmlRegisterType<Annotation>("Regovar.Core", 1, 0, "AnnotationModel");
+    qmlRegisterType<Analysis>("Regovar.Core", 1, 0, "Analysis");
     qmlRegisterType<FilteringAnalysis>("Regovar.Core", 1, 0, "FilteringAnalysis");
     qmlRegisterType<PipelineAnalysis>("Regovar.Core", 1, 0, "PipelineAnalysis");
     qmlRegisterType<FieldColumnInfos>("Regovar.Core", 1, 0, "FieldColumnInfos");
@@ -62,6 +66,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<FilesListModel>("Regovar.Core", 1, 0, "FilesListModel");
     qmlRegisterType<FilesTreeModel>("Regovar.Core", 1, 0, "FilesTreeModel");
     qmlRegisterType<HpoDataListModel>("Regovar.Core", 1, 0, "PhenotypesListModel");
+    qmlRegisterType<GenesListModel>("Regovar.Core", 1, 0, "GenesListModel");
+    qmlRegisterType<PanelsListModel>("Regovar.Core", 1, 0, "PanelsListModel");
 
     qmlRegisterType<User>("Regovar.Core", 1, 0, "User");
     qmlRegisterType<Project>("Regovar.Core", 1, 0, "Project");

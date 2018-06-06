@@ -21,8 +21,8 @@ class PanelVersion : public RegovarResource
 
 public:
     // Constructors
-    explicit PanelVersion(Panel* rootPanel=nullptr);
-    explicit PanelVersion(Panel* rootPanel, QJsonObject json);
+    PanelVersion(Panel* rootPanel=nullptr);
+    PanelVersion(Panel* rootPanel, QJsonObject json);
 
     // Getters
     inline QString id() const { return mId; }
@@ -41,7 +41,7 @@ public:
 
     // Override ressource methods
     //! Set model with provided json data
-    Q_INVOKABLE bool loadJson(QJsonObject json) override;
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
     //! Load panel version information from server
     Q_INVOKABLE void load(bool forceRefresh=true) override;
     //! Export model data into json object

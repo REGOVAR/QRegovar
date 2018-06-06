@@ -4,7 +4,7 @@
 
 
 
-Sample::Sample(QObject *parent) : QObject(parent)
+Sample::Sample(QObject *parent) : RegovarResource(parent)
 {
     connect(this, &Sample::dataChanged, this, &Sample::updateSearchField);
 }
@@ -44,7 +44,7 @@ void Sample::setStatus(QString status)
     setStatus(static_cast<SampleStatus>(meta.keyToValue(status.toStdString().c_str()))); // T_T .... tout ça pour ça ....
 }
 
-bool Sample::loadJson(QJsonObject json)
+bool Sample::loadJson(QJsonObject json, bool)
 {
     // load basic data from json
     mId = json["id"].toInt();
@@ -70,6 +70,10 @@ bool Sample::loadJson(QJsonObject json)
 
     File* source = regovar->filesManager()->getOrCreateFile(json["file_id"].toInt());
     setSource(source);
+    if (json.contains("file"))
+    {
+        source->loadJson(json["file"].toObject());
+    }
     setSourceUI(source->filenameUI());
 
     // Retrieve subject
@@ -99,6 +103,8 @@ void Sample::refreshUIAttributes()
     statusInfo.insert("label", statusToLabel(mStatus, mLoadingProgress));
     statusInfo.insert("progress", mLoadingProgress);
     setStatusUI(QVariant::fromValue(statusInfo));
+
+    emit dataChanged();
 }
 
 

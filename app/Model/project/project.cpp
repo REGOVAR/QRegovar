@@ -2,20 +2,23 @@
 #include "Model/regovar.h"
 #include "Model/framework/request.h"
 #include "Model/analysis/filtering/filteringanalysis.h"
+#include "Model/analysis/pipeline/pipelineanalysis.h"
 
 
 
 
 
 
-Project::Project(QObject* parent) : QObject(parent)
+Project::Project(QObject* parent) : RegovarResource(parent)
 {
+    mAnalyses = new AnalysesListModel(this);
+    mSubjects = new SubjectsListModel(this);
 }
-Project::Project(QJsonObject json, QObject* parent) : QObject(parent)
+Project::Project(QJsonObject json, QObject* parent) : Project(parent)
 {
     loadJson(json);
 }
-Project::Project(int id, QObject* parent) : QObject(parent)
+Project::Project(int id, QObject* parent) : Project(parent)
 {
     mId = id;
 }
@@ -24,7 +27,7 @@ Project::Project(int id, QObject* parent) : QObject(parent)
 
 
 
-bool Project::loadJson(QJsonObject json)
+bool Project::loadJson(QJsonObject json, bool)
 {
     mId = json["id"].toInt();
     if(json.keys().contains("fullpath"))
@@ -39,25 +42,60 @@ bool Project::loadJson(QJsonObject json)
     mName = json["name"].toString();
 
     // Analyses
-    mAnalyses.clear();
-    for (const QJsonValue& jsonVal: json["analyses"].toArray())
+    if (json.contains("analyses"))
     {
-        QJsonObject aJson = jsonVal.toObject();
-        int id = aJson["id"].toInt();
-        FilteringAnalysis* analysis =  regovar->analysesManager()->getOrCreateFilteringAnalysis(id);
-        analysis->loadJson(jsonVal.toObject(), false);
-        mAnalyses.append(analysis);
+        mAnalyses->clear();
+        for (const QJsonValue& jsonVal: json["analyses"].toArray())
+        {
+            QJsonObject aJson = jsonVal.toObject();
+            FilteringAnalysis* analysis =  regovar->analysesManager()->getOrCreateFilteringAnalysis(aJson["id"].toInt());
+            analysis->loadJson(aJson, false);
+            mAnalyses->append(analysis);
+        }
+        for (const QJsonValue& jsonVal: json["jobs"].toArray())
+        {
+            QJsonObject jJson = jsonVal.toObject();
+            PipelineAnalysis* analysis =  regovar->analysesManager()->getOrCreatePipelineAnalysis(jJson["id"].toInt());
+            analysis->loadJson(jJson, false);
+            mAnalyses->append(analysis);
+        }
+    }
+    else if (json.contains("analyses_ids"))
+    {
+        mAnalyses->clear();
+        for (const QJsonValue& aId: json["analyses_ids"].toArray())
+        {
+            FilteringAnalysis* analysis =  regovar->analysesManager()->getOrCreateFilteringAnalysis(aId.toInt());
+            mAnalyses->append(analysis);
+        }
+        for (const QJsonValue& aId: json["jobs_ids"].toArray())
+        {
+            PipelineAnalysis* analysis =  regovar->analysesManager()->getOrCreatePipelineAnalysis(aId.toInt());
+            mAnalyses->append(analysis);
+        }
     }
 
+
     // Subjects
-    mSubjects.clear();
-    for (const QJsonValue& jsonVal: json["subjects"].toArray())
+    if (json.contains("subjects"))
     {
-        QJsonObject aJson = jsonVal.toObject();
-        int id = aJson["id"].toInt();
-        Subject* subject =  regovar->subjectsManager()->getOrCreateSubject(id);
-        subject->loadJson(jsonVal.toObject());
-        mSubjects.append(subject);
+        mSubjects->clear();
+        for (const QJsonValue& jsonVal: json["subjects"].toArray())
+        {
+            QJsonObject sJson = jsonVal.toObject();
+            Subject* subject =  regovar->subjectsManager()->getOrCreateSubject(sJson["id"].toInt());
+            subject->loadJson(sJson);
+            mSubjects->append(subject);
+        }
+    }
+    else if (json.contains("subjects_ids"))
+    {
+        mAnalyses->clear();
+        for (const QJsonValue& sId: json["subjects_ids"].toArray())
+        {
+            Subject* subject =  regovar->subjectsManager()->getOrCreateSubject(sId.toInt());
+            mSubjects->append(subject);
+        }
     }
 
     mLoaded = true;
@@ -77,19 +115,11 @@ QJsonObject Project::toJson()
     {
         result.insert("parent_id", mParent->id());
     }
-    // Analyses
-    if (mAnalyses.count() > 0)
-    {
-        QJsonArray analyses;
-        for (QObject* o: mAnalyses)
-        {
-            FilteringAnalysis* a = qobject_cast<FilteringAnalysis*>(o);
-            analyses.append(a->id());
-        }
-        result.insert("analyses_ids", analyses);
-    }
-    // TODO: Jobs
+
     // TODO: Indicators
+
+    // No need to serialize analyses_ids and jobs_ids.
+    // To update this information you have to update concerned analyses and jobs
 
     return result;
 }

@@ -2,7 +2,7 @@
 #include "Model/regovar.h"
 #include "Model/analysis/filtering/filteringanalysis.h"
 
-PanelQuickFilter::PanelQuickFilter(int analysisId): QuickFilterBlockInterface()
+PanelQuickFilter::PanelQuickFilter(int): QuickFilterBlockInterface()
 {
     mOperators.clear();
     mOperators.append("∈");
@@ -11,26 +11,41 @@ PanelQuickFilter::PanelQuickFilter(int analysisId): QuickFilterBlockInterface()
 
     mPanelsList.clear();
 
-    // Retrieve list of available panel in the analysis settings
-    FilteringAnalysis* analysis = regovar->analysesManager()->getOrCreateFilteringAnalysis(analysisId);
-    for (const QString& panelId: analysis->panelsUsed())
+    // Retrieve list of head panels
+    for (int idx=0; idx <  regovar->panelsManager()->panels()->proxy()->rowCount(); idx++)
     {
-        PanelVersion* version = regovar->panelsManager()->getPanelVersion(panelId);
+        QModelIndex i1 = regovar->panelsManager()->panels()->proxy()->getModelIndex(idx);
+        // TODO: fix get panel sorted by name
+        // QModelIndex i2 = regovar->panelsManager()->panels()->proxy()->mapToSource(i1);
+        PanelVersion* version =regovar->panelsManager()->panels()->getAt(i1.row());
         QuickFilterField* panelFilter = new QuickFilterField(
-                    panelId,
+                    version->id(),
                     version->fullname(),
                     mOperators,  "IN", 0, false, this);
         mPanelsList << panelFilter;
     }
 
-    mIsVisible = mPanelsList.count();
+    // TODO: Add specific panels that have been added by users
+//    FilteringAnalysis* analysis = regovar->analysesManager()->getOrCreateFilteringAnalysis(analysisId);
+//    if (analysis->panelsUsed().count() > 0)
+//    {
+//        for (const QString& panelId: analysis->panelsUsed())
+//        {
+//            PanelVersion* version = regovar->panelsManager()->getPanelVersion(panelId);
+//            QuickFilterField* panelFilter = new QuickFilterField(
+//                        panelId,
+//                        version->fullname(),
+//                        mOperators,  "IN", 0, false, this);
+//            mPanelsList << panelFilter;
+//        }
+//    }
 }
 
 
 
 bool PanelQuickFilter::isVisible()
 {
-    return mIsVisible;
+    return true; // mIsVisible;
 }
 
 

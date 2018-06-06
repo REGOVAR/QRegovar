@@ -20,8 +20,9 @@ public:
     };
     Q_ENUM(ToolType)
 
-    explicit Tool(QObject* parent = nullptr);
-    explicit Tool(ToolType type, QJsonObject json, QObject* parent = nullptr);
+    // Constructor
+    Tool(QObject* parent = nullptr);
+    Tool(ToolType type, QJsonObject json, QObject* parent = nullptr);
 
     // Getters
     inline QString key() { return mKey; }

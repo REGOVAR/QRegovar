@@ -78,13 +78,13 @@ TreeItem* ProjectsTreeModel::newFolderTreeItem(const QJsonObject& data, TreeItem
     return result;
 }
 
-TreeItem* ProjectsTreeModel::newAnalysisTreeItem(const int id, TreeItem* parent)
+TreeItem* ProjectsTreeModel::newAnalysisTreeItem(const Analysis* analysis, TreeItem* parent)
 {
-    FilteringAnalysis* analysis = regovar->analysesManager()->getOrCreateFilteringAnalysis(id);
+    //FilteringAnalysis* analysis = regovar->analysesManager()->getOrCreateFilteringAnalysis(id);
 
     // add columns info to the item
     QHash<int, QVariant> columnData;
-    columnData.insert(Id, id);
+    columnData.insert(Id, analysis->id());
     columnData.insert(Type, analysis->type());
     columnData.insert(AnalysisType, analysis->type()); // todo: for pipeline, give the name-version of the pipe
     columnData.insert(Name, analysis->name());
@@ -116,17 +116,31 @@ void ProjectsTreeModel::setupModelData(QJsonArray data, TreeItem* parent)
         parent->appendChild(item);
 
         // If project, need to build subtree for analyses and jobs
-        if (p.contains("analyses") && p["analyses"].toArray().count() > 0)
+        if (p.contains("analyses_ids") && p["analyses_ids"].toArray().count() > 0)
         {
-            for (const QJsonValue& id: p["analyses"].toArray())
+            for (const QJsonValue& id: p["analyses_ids"].toArray())
             {
                 // Create treeview item with column's data and parent item
                 if (!id.isNull())
                 {
-                    TreeItem* subItem = newAnalysisTreeItem(id.toInt(), item);
+                    Analysis* a = regovar->analysesManager()->getOrCreateFilteringAnalysis(id.toInt());
+                    TreeItem* subItem = newAnalysisTreeItem(a, item);
                     item->appendChild(subItem);
                 }
             }
         }
+        if (p.contains("jobs_ids") && p["jobs_ids"].toArray().count() > 0)
+        {
+            for (const QJsonValue& id: p["jobs_ids"].toArray())
+            {
+                if (!id.isNull())
+                {
+                    Analysis* a = (Analysis*) regovar->analysesManager()->getOrCreatePipelineAnalysis(id.toInt());
+                    TreeItem* subItem = newAnalysisTreeItem(a, item);
+                    item->appendChild(subItem);
+                }
+            }
+        }
+
     }
 }

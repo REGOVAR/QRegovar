@@ -142,14 +142,10 @@ Rectangle
                             model: modelData
                             onAdded:
                             {
-                                regovar.panelsManager.newPanel.addEntry({"label" : modelData["label"], "type": "gene", "details": modelData["id"]});
+                                regovar.panelsManager.newPanel.addEntriesFromHpo(modelData["id"]);
                                 enabled = false;
                             }
-                            onShowDetails:
-                            {
-                                phenotypeInfoDialog.open();
-                                regovar.getPhenotypeInfo(modelData["id"]);
-                            }
+                            onShowDetails: regovar.getPhenotypeInfo(modelData["id"])
                         }
                     }
                 }

@@ -2,9 +2,7 @@
 #define HPODATALISTMODEL_H
 
 #include <QtCore>
-#include "hpodata.h"
 #include "Model/framework/genericproxymodel.h"
-#include "Model/subject/subject.h"
 
 class HpoData;
 class Subject;
@@ -31,8 +29,8 @@ class HpoDataListModel: public QAbstractListModel
 
 public:
     // Constructor
-    explicit HpoDataListModel(QObject* parent=nullptr);
-    explicit HpoDataListModel(int subjectId, QObject* parent=nullptr);
+    HpoDataListModel(QObject* parent=nullptr);
+    HpoDataListModel(int subjectId, QObject* parent=nullptr);
 
     // Getters
     Subject* subject() const;

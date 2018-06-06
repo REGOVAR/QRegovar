@@ -72,27 +72,29 @@ QuickFilterBox
         anchors.left: parent.left
         anchors.right: parent.right
 
-        Text
-        {
-            anchors.left: parent.left
-            anchors.leftMargin: 5
-
-            elide: Text.ElideRight
-            font.pixelSize: Regovar.theme.font.size.normal
-            color: Regovar.theme.primaryColor.back.dark
-            text: qsTr("Mode")
-        }
-
-
 
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 5 }
+            Text
+            {
+                Layout.fillWidth: true
+                elide: Text.ElideRight
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.primaryColor.back.dark
+                text: qsTr("Mode")
+            }
+        }
+
+        RowLayout
+        {
+            width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: modeAll
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("All")
                 checked: true
                 onCheckedChanged:
@@ -118,11 +120,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: modeDom
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Dominant")
                 checked: false
                 onCheckedChanged:
@@ -144,11 +146,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: modeRec
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Recessive")
                 checked: false
                 onCheckedChanged:
@@ -177,11 +179,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 50 }
             CheckBox
             {
                 id: modeHtz
-                anchors.left: parent.left
-                anchors.leftMargin: 50
+                Layout.fillWidth: true
                 text: qsTr("Homozygous")
                 checked: false
                 onCheckedChanged:
@@ -204,11 +206,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 50 }
             CheckBox
             {
                 id: modeHtzComp
-                anchors.left: parent.left
-                anchors.leftMargin: 50
+                Layout.fillWidth: true
                 text: qsTr("Compound heterozygous")
                 checked: false
                 onCheckedChanged:
@@ -230,24 +232,27 @@ QuickFilterBox
         }
 
 
-        Text
+        RowLayout
         {
-            anchors.left: parent.left
-            anchors.leftMargin: 5
-
-            elide: Text.ElideRight
-            font.pixelSize: Regovar.theme.font.size.normal
-            color: Regovar.theme.primaryColor.back.dark
-            text: qsTr("Segregation")
+            width: content.width
+            Item { height: 10; width: 5 }
+            Text
+            {
+                Layout.fillWidth: true
+                elide: Text.ElideRight
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.primaryColor.back.dark
+                text: qsTr("Segregation")
+            }
         }
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: segAll
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("All")
                 checked: true
                 onCheckedChanged:
@@ -270,11 +275,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: segDen
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("De novo")
                 checked: false
                 onCheckedChanged:
@@ -296,11 +301,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: segInh
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Inherited")
                 checked: false
                 onCheckedChanged:
@@ -321,24 +326,27 @@ QuickFilterBox
         }
 
 
-        Text
+        RowLayout
         {
-            anchors.left: parent.left
-            anchors.leftMargin: 5
-
-            elide: Text.ElideRight
-            font.pixelSize: Regovar.theme.font.size.normal
-            color: Regovar.theme.primaryColor.back.dark
-            text: qsTr("Localisation")
+            width: content.width
+            Item { height: 10; width: 5 }
+            Text
+            {
+                Layout.fillWidth: true
+                elide: Text.ElideRight
+                font.pixelSize: Regovar.theme.font.size.normal
+                color: Regovar.theme.primaryColor.back.dark
+                text: qsTr("Localisation")
+            }
         }
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: locAll
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("All")
                 checked: true
                 onCheckedChanged:
@@ -362,11 +370,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: locAut
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Autosomal")
                 checked: false
                 onCheckedChanged:
@@ -388,11 +396,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: locXlk
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("X-linked")
                 checked: false
                 onCheckedChanged:
@@ -414,11 +422,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: locMit
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Mitochondrial")
                 checked: false
                 onCheckedChanged:

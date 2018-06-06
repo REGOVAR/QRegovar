@@ -144,7 +144,7 @@ void Regovar::loadConfigData()
 void Regovar::loadWelcomData()
 {
     setWelcomIsLoading(true);
-    Request* req = Request::get(QString("/"));
+    Request* req = Request::get(QString("/welcome"));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)
@@ -401,7 +401,7 @@ void Regovar::getPipelineInfo(int pipelineId)
 }
 
 
-void Regovar::getGeneInfo(QString symbol, int analysisId)
+void Regovar::getGeneInfo(QString symbol, int)
 {
     Gene* gene = phenotypesManager()->getGene(symbol);
     gene->load();
@@ -563,7 +563,7 @@ QString Regovar::formatDate(QDateTime date, bool withTime)
 
     if (withTime)
     {
-        return date.toString("yyyy-MM-dd hh:mm");
+        return date.toString("yyyy-MM-dd HH:mm");
     }
     return date.toString("yyyy-MM-dd");
 }

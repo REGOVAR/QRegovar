@@ -74,9 +74,10 @@ class QuickFilterBlockInterface : public QObject
     Q_PROPERTY(bool isVisible READ isVisible)
 
 public:
-    explicit QuickFilterBlockInterface(QObject *parent = nullptr);
+    // Constructors
+    QuickFilterBlockInterface(QObject *parent = nullptr);
 
-
+    // Methods
     //! Indicates if this filter shall be displayed in the UI (by example some filter are only for "Trio analysis")
     Q_INVOKABLE virtual bool isVisible() = 0;
     //! Return the filter query as Json string that will be concatened with other quickFilters

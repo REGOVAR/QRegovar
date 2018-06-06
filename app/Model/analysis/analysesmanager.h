@@ -18,7 +18,7 @@ class AnalysesManager : public QObject
     Q_PROPERTY(QString pipelineType READ pipelineType)
 public:
     // Constructors
-    explicit AnalysesManager(QObject* parent=nullptr);
+    AnalysesManager(QObject* parent=nullptr);
 
     // Getters
     inline PipelineAnalysis* newPipeline() const { return mNewPipeline; }

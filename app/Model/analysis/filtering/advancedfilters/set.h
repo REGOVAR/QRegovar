@@ -13,8 +13,9 @@ class Set : public QObject
     Q_PROPERTY(QString label READ label NOTIFY setChanged)
 
 public:
-    explicit Set(QObject* parent = nullptr);
-    explicit Set(QString type, QString id, QString label);
+    // Constructors
+    Set(QObject* parent = nullptr);
+    Set(QString type, QString id, QString label);
 
     // Getters
     //inline FilteringAnalysis* analysis() const { return mAnalysis; }

@@ -11,7 +11,7 @@ class FilteringResultCell : public QObject
 
 public:
     // Constructors
-    explicit FilteringResultCell(QObject *parent = nullptr);
+    FilteringResultCell(QObject *parent = nullptr);
 
     // Getters
     inline QString uid() { return mUid; }

@@ -16,7 +16,8 @@ class FrequenceQuickFilter : public QuickFilterBlockInterface
     Q_PROPERTY(QList<QObject*> exac READ exac)
 
 public:
-    explicit FrequenceQuickFilter(int analysisId);
+    // Constructors
+    FrequenceQuickFilter(int analysisId);
 
     Q_INVOKABLE bool isVisible() override;
     Q_INVOKABLE QJsonArray toJson() override;

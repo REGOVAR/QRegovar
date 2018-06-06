@@ -32,7 +32,7 @@ bool FilesListModel::loadJson(QJsonArray json)
 
 
 
-bool FilesListModel::add(File* file)
+bool FilesListModel::append(File* file)
 {
     bool result = false;
     if (file!= nullptr && !mFileList.contains(file))
@@ -41,6 +41,7 @@ bool FilesListModel::add(File* file)
         mFileList.append(file);
         endInsertRows();
         emit countChanged();
+        emit fileAdded(file->id());
         result = true;
     }
     return result;
@@ -56,6 +57,7 @@ bool FilesListModel::remove(File* file)
         mFileList.removeAt(pos);
         endRemoveRows();
         emit countChanged();
+        emit fileRemoved(file->id());
         result = true;
     }
     return result;
@@ -86,6 +88,13 @@ File* FilesListModel::getAt(int position)
     }
     return nullptr;
 }
+
+
+bool FilesListModel::contains(File* file)
+{
+    return mFileList.contains(file);
+}
+
 
 int FilesListModel::rowCount(const QModelIndex&) const
 {

@@ -185,7 +185,7 @@ Dialog
                             text: selectedSamplesTable.statusIcons[styleData.value.status]
                             onTextChanged:
                             {
-                                if (styleData.value.status == 1) // 1 = Loading
+                                if (styleData.value.status === 1) // 1 = Loading
                                 {
                                     statusIconAnimation.start();
                                 }

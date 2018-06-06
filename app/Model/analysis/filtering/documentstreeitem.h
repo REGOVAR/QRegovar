@@ -9,8 +9,8 @@ class DocumentsTreeItem : public TreeItem
 
 public:
     // Constructors
-    explicit DocumentsTreeItem(TreeItem* parent=nullptr);
-    explicit DocumentsTreeItem(QHash<int, QVariant> columnData, TreeItem* parent=nullptr);
+    DocumentsTreeItem(TreeItem* parent=nullptr);
+    DocumentsTreeItem(QHash<int, QVariant> columnData, TreeItem* parent=nullptr);
 
 
 

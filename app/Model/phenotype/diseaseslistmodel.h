@@ -22,7 +22,7 @@ class DiseasesListModel: public QAbstractListModel
 
 public:
     // Constructor
-    explicit DiseasesListModel(QObject* parent=nullptr);
+    DiseasesListModel(QObject* parent=nullptr);
 
     // Getters
     inline GenericProxyModel* proxy() const { return mProxy; }

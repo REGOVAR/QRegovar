@@ -19,7 +19,7 @@ ScrollView
     property var model
 
 
-    property var geneDBData: root.model ? [root.model["entrez_id"], root.model["ensembl_gene_id"], root.model["ucsc_id"]] : []
+    property var geneDBData: root.model ? [root.model.json["entrez_id"], root.model.json["ensembl_gene_id"], root.model.json["ucsc_id"]] : []
     property var geneDBList: ListModel
     {
         ListElement
@@ -39,7 +39,7 @@ ScrollView
         }
     }
 
-    property var nucleotideDBData: root.model ? [root.model["ena"], root.model["refseq_accession"], root.model["ccds_id"]] : []
+    property var nucleotideDBData: root.model ? [root.model.json["ena"], root.model.json["refseq_accession"], root.model.json["ccds_id"]] : []
     property var nucleotideDBList: ListModel
     {
         ListElement
@@ -59,7 +59,7 @@ ScrollView
         }
     }
 
-    property var expresionDBData: root.model ? [root.model["symbol"], root.model["uniprot_ids"][0]] : []
+    property var expresionDBData: root.model ? [root.model.json["symbol"], root.model.json["uniprot_ids"][0]] : []
     property var expressionDBList: ListModel
     {
 
@@ -85,7 +85,7 @@ ScrollView
         }
     }
 
-    property var clinicalDBData: root.model ? [root.model["symbol"], root.model["omim_id"]] : []
+    property var clinicalDBData: root.model ? [root.model.json["symbol"], root.model.json["omim_id"]] : []
     property var clinicalDBList: ListModel
     {
         ListElement
@@ -106,7 +106,7 @@ ScrollView
     }
 
 
-    property var homologsDBData: root.model ? [root.model["mgd_id"], root.model["rgd_id"]] : []
+    property var homologsDBData: root.model ? [root.model.json["mgd_id"], root.model.json["rgd_id"]] : []
     property var homologsDBList: ListModel
     {
         ListElement
@@ -121,7 +121,7 @@ ScrollView
         }
     }
 
-    property var otherDBData: root.model ? [root.model["symbol"], root.model["hgnc_id"], root.model["entrez_id"]] : []
+    property var otherDBData: root.model ? [root.model.json["symbol"], root.model.json["hgnc_id"], root.model.json["entrez_id"]] : []
     property var otherDBList: ListModel
     {
         ListElement

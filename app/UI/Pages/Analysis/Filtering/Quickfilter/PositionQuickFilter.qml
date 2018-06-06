@@ -63,11 +63,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: posAll
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("All")
                 checked: true
                 onCheckedChanged:
@@ -95,11 +95,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: posExo
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Exonic")
                 checked: false
                 onCheckedChanged:
@@ -122,11 +122,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: posIntro
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Intronic")
                 checked: false
                 onCheckedChanged:
@@ -149,11 +149,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: posUtr
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("UTR")
                 checked: false
                 onCheckedChanged:
@@ -176,11 +176,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: posInter
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Intergenic")
                 checked: false
                 onCheckedChanged:
@@ -203,11 +203,11 @@ QuickFilterBox
         RowLayout
         {
             width: content.width
+            Item { height: 10; width: 25 }
             CheckBox
             {
                 id: posSpl
-                anchors.left: parent.left
-                anchors.leftMargin: 30
+                Layout.fillWidth: true
                 text: qsTr("Splice")
                 checked: false
                 onCheckedChanged:
@@ -224,7 +224,6 @@ QuickFilterBox
                         internalUiUpdate = false;
                     }
                 }
-
             }
         }
     }

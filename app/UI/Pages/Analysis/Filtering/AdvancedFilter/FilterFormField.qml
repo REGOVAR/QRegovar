@@ -24,7 +24,7 @@ Rectangle
     Component.onDestruction:
     {
         model.newConditionModel.resetWizard.disconnect(resetView);
-        model.loading.resetWizard.disconnect(updateViewFromModel);
+        model.loadingChanged.disconnect(updateViewFromModel);
     }
     onZChanged:
     {

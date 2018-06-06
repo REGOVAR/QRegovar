@@ -245,7 +245,7 @@ FilteringAnalysis* AnalysesManager::getOrCreateFilteringAnalysis(int id)
         return mFilteringAnalyses[id];
     }
     // else
-    FilteringAnalysis* newAnalysis = new FilteringAnalysis(id);
+    FilteringAnalysis* newAnalysis = new FilteringAnalysis(id, this);
     mFilteringAnalyses.insert(id, newAnalysis);
     return newAnalysis;
 }
@@ -257,7 +257,7 @@ PipelineAnalysis* AnalysesManager::getOrCreatePipelineAnalysis(int id)
         return mPipelineAnalyses[id];
     }
     // else
-    PipelineAnalysis* newAnalysis = new PipelineAnalysis(id);
+    PipelineAnalysis* newAnalysis = new PipelineAnalysis(id, this);
     mPipelineAnalyses.insert(id, newAnalysis);
     return newAnalysis;
 }

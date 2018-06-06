@@ -283,7 +283,9 @@ class RegovarInfo: public QObject
     Q_PROPERTY(QString welcomMessageType READ welcomMessageType NOTIFY configChanged)
 
 public:
-    explicit RegovarInfo(QObject *parent = nullptr);
+    // Constructor
+    RegovarInfo(QObject *parent = nullptr);
+
     // Getters
     inline QString serverVersion() { return mServerVersion; }
     inline QString clientVersion() { return mClientVersion; }
@@ -292,8 +294,10 @@ public:
     inline QJsonObject release() { return mRelease; }
     inline QString welcomMessage() const { return mWelcomMessage; }
     inline QString welcomMessageType() const { return mWelcomMessageType; }
+
     // Setters
     inline void setRelease(QJsonObject release) { mRelease = release; emit configChanged(); }
+
     // Methods
     bool loadJson(QJsonObject json);
 

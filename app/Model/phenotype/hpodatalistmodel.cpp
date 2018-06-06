@@ -1,5 +1,8 @@
 #include "hpodatalistmodel.h"
 #include "Model/regovar.h"
+#include "geneslistmodel.h"
+#include "hpodata.h"
+#include "Model/subject/subject.h"
 
 HpoDataListModel::HpoDataListModel(QObject* parent): QAbstractListModel(parent)
 {

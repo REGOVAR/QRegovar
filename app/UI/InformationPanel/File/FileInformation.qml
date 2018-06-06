@@ -23,16 +23,19 @@ InformationPanel
                     "icon": "j",
                     "source": "qrc:/qml/InformationPanel/File/InfoPanel.qml"
                 });
-            ttt.append({
-                    "title": qsTr("Relations"),
-                    "icon": "ê",
-                    "source": "qrc:/qml/InformationPanel/Common/RelationsPanel.qml"
-                });
-            ttt.append({
-                    "title": qsTr("Events"),
-                    "icon": "H",
-                    "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
-                });
+
+            // TODO
+//            ttt.append({
+//                    "title": qsTr("Relations"),
+//                    "icon": "ê",
+//                    "source": "qrc:/qml/InformationPanel/Common/RelationsPanel.qml"
+//                });
+            // TODO
+//            ttt.append({
+//                    "title": qsTr("Events"),
+//                    "icon": "H",
+//                    "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
+//                });
             root.tabsModel = ttt;
             root.loading = false;
 

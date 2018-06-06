@@ -23,8 +23,8 @@ class Phenotype : public HpoData
 
 public:
     // Constructor
-    explicit Phenotype(QObject* parent = nullptr);
-    explicit Phenotype(QString hpo_id, QObject* parent = nullptr);
+    Phenotype(QObject* parent = nullptr);
+    Phenotype(QString hpo_id, QObject* parent = nullptr);
 
     // Getters
     inline QString definition() const { return mDefinition; }
@@ -32,15 +32,15 @@ public:
     inline HpoDataListModel* childs() const { return mChilds; }
     inline DiseasesListModel* diseases() const { return mDiseases; }
 
-    // HpoData  abstracts methods overriden
-    //! Load phenotype from json
-    Q_INVOKABLE bool loadJson(QJsonObject json);
+    // Methods
+    //! Set model with provided json data
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
     //! Return the phenotype qualifiers (as human readable string) for the requested disease
     Q_INVOKABLE QString qualifier(QString diseaseId) const;
 
 
 public Q_SLOTS:
-    virtual void updateSearchField();
+    void updateSearchField() override;
 
 
 private:

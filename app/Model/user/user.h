@@ -27,11 +27,10 @@ class User : public QObject
     Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
 
 public:
-
     // Constructors
-    explicit User(QObject* parent=nullptr);
-    explicit User(int id, QObject* parent=nullptr);
-    explicit User(int id, const QString& firstname, const QString& lastname, QObject* parent=nullptr);
+    User(QObject* parent=nullptr);
+    User(int id, QObject* parent=nullptr);
+    User(int id, const QString& firstname, const QString& lastname, QObject* parent=nullptr);
 
     // Getters
     inline int id() const { return mId; }

@@ -2,11 +2,11 @@
 #define HPODATA_H
 
 #include <QtCore>
-#include "geneslistmodel.h"
-#include "Model/subject/subjectslistmodel.h"
+#include "Model/framework/regovarresource.h"
 
 class SubjectsListModel;
-class HpoData: public QObject
+class GenesListModel;
+class HpoData: public RegovarResource
 {
     Q_OBJECT
     Q_PROPERTY(QString id READ id NOTIFY dataChanged)
@@ -20,12 +20,9 @@ class HpoData: public QObject
     Q_PROPERTY(QString category READ category NOTIFY dataChanged)
     Q_PROPERTY(QJsonObject meta READ meta NOTIFY dataChanged)
 
-    Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
-    Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
-
 public:
     // Constructor
-    explicit HpoData(QObject* parent = nullptr);
+    HpoData(QObject* parent = nullptr);
 
     // Getters
     inline QString id() const { return mId; }
@@ -38,17 +35,13 @@ public:
     inline QJsonObject diseasesFreq() const { return mDiseasesFreq; }
     inline QString category() const { return mCategory; }
     inline QJsonObject meta() const { return mMeta; }
-    inline bool loaded() const { return mLoaded; }
-    inline QString searchField() const { return mSearchField; }
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE virtual bool loadJson(QJsonObject json);
-    Q_INVOKABLE virtual bool load(bool forceRefresh=false);
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
+    //! Load Subject information from server
+    Q_INVOKABLE void load(bool forceRefresh=true) override;
 
-
-Q_SIGNALS:
-    void dataChanged();
 
 
 protected:
@@ -62,8 +55,6 @@ protected:
     QJsonObject mGenesFreq;
     QJsonObject mDiseasesFreq;
     QJsonObject mMeta;
-    bool mLoaded = false;
-    QString mSearchField;
 };
 
 #endif // HPODATA_H

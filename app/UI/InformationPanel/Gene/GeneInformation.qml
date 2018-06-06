@@ -22,7 +22,7 @@ InformationPanel
             root.title += data["location"];
 
             // Update tabs
-            root.tabSharedModel = data;
+            root.tabSharedModel = model;
             var ttt = listModel.createObject(root);
             ttt.append(
                 {   "title": qsTr("Information"),
@@ -34,21 +34,42 @@ InformationPanel
                     "icon": "è",
                     "source": "qrc:/qml/InformationPanel/Gene/OnlineToolsPanel.qml"
                 });
+            var pmCount = model.pubmed.rowCount();
+            pmCount = pmCount > 0 ? " (" + pmCount + ")" : "";
             ttt.append({
-                    "title": qsTr("Pubmed") + " (" + data["pubmed"].length + ")",
+                    "title": qsTr("Pubmed") + pmCount,
                     "icon": "Y",
                     "source": "qrc:/qml/InformationPanel/Gene/ReferencePanel.qml"
                 });
+            var pCount = model.phenotypes.rowCount();
+            pCount = pCount > 0 ? " (" + pCount + ")" : "";
             ttt.append({
-                    "title": qsTr("Phenotype"),
+                    "title": qsTr("Phenotypes") + pCount,
                     "icon": "K",
-                    "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qml"
+                    "source": "qrc:/qml/InformationPanel/Phenotype/PhenotypesPanel.qml"
                 });
+            var dCount = model.diseases.rowCount();
+            dCount = dCount > 0 ? " (" + dCount + ")" : "";
             ttt.append({
-                    "title": qsTr("Regovar statistics"),
-                    "icon": "í",
-                    "source": "qrc:/qml/InformationPanel/Variant/StatsPanel.qml"
+                    "title": qsTr("Diseases") + dCount,
+                    "icon": "K",
+                    "source": "qrc:/qml/InformationPanel/Phenotype/DiseasesPanel.qml"
                 });
+            var vCount = model.panels.rowCount();
+            vCount = vCount > 0 ? " (" + vCount + ")" : "";
+            ttt.append({
+                    "title": qsTr("Panels") + vCount,
+                    "icon": "q",
+                    "source": "qrc:/qml/InformationPanel/Gene/PanelsPanel.qml"
+                });
+
+
+            // TODO
+//            ttt.append({
+//                    "title": qsTr("Regovar statistics"),
+//                    "icon": "í",
+//                    "source": "qrc:/qml/InformationPanel/Variant/StatsPanel.qml"
+//                });
             root.tabsModel = ttt;
             root.loading = false;
         }

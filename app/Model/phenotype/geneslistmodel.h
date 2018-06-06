@@ -22,7 +22,7 @@ class GenesListModel: public QAbstractListModel
 
 public:
     // Constructor
-    explicit GenesListModel(QObject* parent=nullptr);
+    GenesListModel(QObject* parent=nullptr);
 
     // Getters
     inline GenericProxyModel* proxy() const { return mProxy; }

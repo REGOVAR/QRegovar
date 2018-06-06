@@ -23,8 +23,8 @@ class PipelineAnalysis: public Analysis
 
 public:
     // Constructors
-    explicit PipelineAnalysis(QObject* parent=nullptr);
-    explicit PipelineAnalysis(int id, QObject* parent=nullptr);
+    PipelineAnalysis(QObject* parent=nullptr);
+    PipelineAnalysis(int id, QObject* parent=nullptr);
 
     // Getters
     inline QJsonObject config() const { return mConfig; }
@@ -42,13 +42,13 @@ public:
 
     // Analysis  abstracts methods overriden
     //! Set model with provided json data
-    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=false);
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=false) override;
     //! Export model data into json object
-    Q_INVOKABLE QJsonObject toJson();
+    Q_INVOKABLE QJsonObject toJson() override;
     //! Save subject information onto server
-    Q_INVOKABLE void save();
+    Q_INVOKABLE void save() override;
     //! Load Subject information from server
-    Q_INVOKABLE void load(bool forceRefresh=true);
+    Q_INVOKABLE void load(bool forceRefresh=true) override;
 
     // Methods
     Q_INVOKABLE void addInputs(QList<QObject*> inputs);

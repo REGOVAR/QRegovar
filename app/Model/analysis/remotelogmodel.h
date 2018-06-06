@@ -24,8 +24,8 @@ class RemoteLogModel : public QObject
 
 public:
     // Constructor
-    explicit RemoteLogModel(QObject* parent=nullptr);
-    explicit RemoteLogModel(QString url, Analysis* parent=nullptr);
+    RemoteLogModel(QObject* parent=nullptr);
+    RemoteLogModel(QString url, Analysis* parent=nullptr);
 
     // Accessors
     inline bool autoRefresh() const { return mAutoRefresh; }

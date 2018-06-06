@@ -233,5 +233,7 @@
         <file>Windows/UserInfoWindow.qml</file>
         <file>Windows/VariantInfoWindow.qml</file>
         <file>Dialogs/InfoDialog.qml</file>
+        <file>Pages/Analysis/AnalysisPreview.qml</file>
+        <file>InformationPanel/Gene/PanelsPanel.qml</file>
     </qresource>
 </RCC>

@@ -23,6 +23,7 @@ ScrollView
     {
         if (data)
         {
+            data = data.json;
             if ("gene" in data)
                 geneData = data["gene"];
             else

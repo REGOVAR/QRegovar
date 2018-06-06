@@ -13,13 +13,13 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property Subject model
-    property bool isInit: false
+    // property bool isInit: false
     onModelChanged:
     {
         if (model)
         {
             phenotypeList.model = model.phenotypes;
-            root.isInit = true;
+      //      root.isInit = true;
         }
     }
 
@@ -93,7 +93,7 @@ Rectangle
             id: removePhenotype
             Layout.fillWidth: true
             text: qsTr("Remove")
-            onClicked: root.model.phenotypes.removeHpo(phenotypeList.getAt(phenotypeList.currentRow))
+            onClicked: root.model.removeHpo(phenotypeList.model.getAt(phenotypeList.currentRow))
         }
         Item
         {

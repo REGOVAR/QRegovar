@@ -44,7 +44,7 @@ void PanelVersion::emitEntriesChanged()
 
 
 //! Set model with provided json data
-bool PanelVersion::loadJson(QJsonObject json)
+bool PanelVersion::loadJson(QJsonObject json, bool)
 {
     // Load version information
     mId = json["id"].toString();
@@ -93,9 +93,9 @@ void PanelVersion::save()
     });
 }
 //! Load Subject information from server
-void PanelVersion::load(bool forceRefresh)
+void PanelVersion::load(bool)
 {
-
+    // TODO ?
 }
 
 // Methods

@@ -2,6 +2,7 @@
 #define PROJECTSTREEMODEL_H
 
 #include "Model/framework/treemodel.h"
+#include "Model/analysis/analysis.h"
 
 class ProjectsTreeModel : public TreeModel
 {
@@ -22,7 +23,7 @@ public:
     };
 
     // Constructor
-    explicit ProjectsTreeModel(QObject* parent=nullptr);
+    ProjectsTreeModel(QObject* parent=nullptr);
 
     // Getters
     inline bool isLoading() { return mIsLoading; }
@@ -35,7 +36,7 @@ public:
     bool loadJson(QJsonArray json);
     void setupModelData(QJsonArray data, TreeItem *parent);
     TreeItem* newFolderTreeItem(const QJsonObject& data, TreeItem* parent);
-    TreeItem* newAnalysisTreeItem(const int id, TreeItem* parent);
+    TreeItem* newAnalysisTreeItem(const Analysis* analysis, TreeItem* parent);
 
 Q_SIGNALS:
     void isLoadingChanged();

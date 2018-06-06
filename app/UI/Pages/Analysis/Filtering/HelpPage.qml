@@ -29,9 +29,9 @@ Rectangle
 
         Text
         {
+            id: nameLabel
             anchors.fill: header
             anchors.margins: 10
-            text: model ? model.name : ""
             font.pixelSize: 20
             font.weight: Font.Black
             color: Regovar.theme.primaryColor.back.dark

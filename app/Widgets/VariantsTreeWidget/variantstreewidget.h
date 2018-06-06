@@ -13,7 +13,7 @@ class VariantsTreeWidget : public QQuickPaintedItem
 
 public:
     // Constructors
-    explicit VariantsTreeWidget(QQuickItem* parent=nullptr);
+    VariantsTreeWidget(QQuickItem* parent=nullptr);
 
     // Getters
     inline ResultsTreeModel* model() const { return mModel; }

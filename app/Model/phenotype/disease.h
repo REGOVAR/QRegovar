@@ -16,8 +16,8 @@ class Disease: public HpoData
 
 public:
     // Constructor
-    explicit Disease(QObject* parent = nullptr);
-    explicit Disease(QString hpoId, QObject* parent = nullptr);
+    Disease(QObject* parent = nullptr);
+    Disease(QString hpoId, QObject* parent = nullptr);
 
     // Getters
     inline QJsonObject omim() const { return mOmim; }
@@ -26,12 +26,13 @@ public:
     inline PhenotypesListModel* phenotypes() const { return mPhenotypes; }
 
 
-    // HpoData abstracts methods overriden
-    Q_INVOKABLE bool loadJson(QJsonObject json);
+    // Methods
+    //! Set model with provided json data
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
 
 
 public Q_SLOTS:
-    virtual void updateSearchField();
+    void updateSearchField() override;
 
 
 private:

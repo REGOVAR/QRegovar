@@ -21,7 +21,7 @@ class PanelEntriesListModel: public QAbstractListModel
 
 public:
     // Constructor
-    explicit PanelEntriesListModel(QObject* parent=nullptr);
+    PanelEntriesListModel(QObject* parent=nullptr);
 
     // Getters
     inline GenericProxyModel* proxy() const { return mProxy; }

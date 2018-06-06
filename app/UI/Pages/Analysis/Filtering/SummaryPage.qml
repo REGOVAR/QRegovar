@@ -132,7 +132,17 @@ Rectangle
             Layout.alignment: Qt.AlignTop
             id: statusButton
             text: ""
-            onClicked: computingProgressLog.visible = true
+            onClicked:
+            {
+                if (root.model.status == "empty" || root.model.status == "close")
+               {
+
+               }
+               else
+               {
+                   computingProgressLog.visible = true
+               }
+            }
             ToolTip.text: qsTr("Display details")
             ToolTip.visible: hovered
         }

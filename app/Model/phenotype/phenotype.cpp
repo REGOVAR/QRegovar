@@ -1,5 +1,6 @@
 #include "phenotype.h"
 #include "Model/regovar.h"
+#include "Model/phenotype/geneslistmodel.h"
 
 
 Phenotype::Phenotype(QObject* parent) : HpoData(parent)
@@ -22,7 +23,7 @@ void Phenotype::updateSearchField()
     // TODO: add genes, diseases label
 }
 
-bool Phenotype::loadJson(QJsonObject json)
+bool Phenotype::loadJson(QJsonObject json, bool)
 {
     bool fullLoaded = false;
     mId = json["id"].toString();

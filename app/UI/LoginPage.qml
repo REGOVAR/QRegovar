@@ -61,7 +61,7 @@ Rectangle
                 Layout.fillWidth: true
                 placeholder: qsTr("Login")
                 focus: true
-                Keys.onPressed: { if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) tryLogin(); }
+                Keys.onPressed: { if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) tryLogin(); }
             }
 
             TextField
@@ -71,7 +71,7 @@ Rectangle
                 placeholder: qsTr("Password")
                 echoMode: TextInput.Password
                 //onTextEdited: regovar.usersManager.login(loginField.text, pwdField.text);
-                Keys.onPressed: { if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) tryLogin(); }
+                Keys.onPressed: { if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) tryLogin(); }
             }
 
             RowLayout
@@ -81,8 +81,8 @@ Rectangle
                     Layout.fillWidth: true
                     text: qsTr("Keep me logged in")
                     checked: regovar.usersManager.keepMeLogged
-                    onCheckedChanged: regovar.usersManager.keepMeLogged = checked
-                    Keys.onPressed: { if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) tryLogin(); }
+                    //onCheckedChanged: regovar.usersManager.keepMeLogged = checked
+                    Keys.onPressed: { if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) tryLogin(); }
                 }
 
                 Button

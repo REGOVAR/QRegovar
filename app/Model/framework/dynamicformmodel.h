@@ -34,7 +34,8 @@ class DynamicFormModel : public QAbstractListModel
     Q_PROPERTY(double labelWidth READ labelWidth WRITE setLabelWidth NOTIFY labelWidthChanged)
 
 public:
-    explicit DynamicFormModel(QObject* parent=nullptr);
+    // Constructor
+     DynamicFormModel(QObject* parent=nullptr);
 
     // Getters
     inline FilesListModel* inputsFiles() const { return mInputsFiles; }

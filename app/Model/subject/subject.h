@@ -2,19 +2,20 @@
 #define SUBJECT_H
 
 #include <QtCore>
+#include "Model/framework/regovarresource.h"
 #include "Model/file/file.h"
+#include "Model/analysis/analyseslistmodel.h"
+#include "Model/file/fileslistmodel.h"
+#include "sampleslistmodel.h"
 
 class Sample;
 class EventsListModel;
 class HpoData;
 class HpoDataListModel;
-class Subject : public QObject
+class SamplesListModel;
+class Subject : public RegovarResource
 {
     Q_OBJECT
-    // Regovar resource attribute
-    Q_PROPERTY(bool loaded READ loaded NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime updateDate READ updateDate NOTIFY dataChanged)
-    Q_PROPERTY(QDateTime createDate READ createDate NOTIFY dataChanged)
     // Subject attributes
     Q_PROPERTY(int id READ id NOTIFY dataChanged)
     Q_PROPERTY(QString identifier READ identifier WRITE setIdentifier NOTIFY dataChanged)
@@ -24,17 +25,14 @@ class Subject : public QObject
     Q_PROPERTY(Sex sex READ sex WRITE setSex NOTIFY dataChanged)
     Q_PROPERTY(QDate dateOfBirth READ dateOfBirth WRITE setDateOfBirth NOTIFY dataChanged)
     Q_PROPERTY(QString familyNumber READ familyNumber WRITE setFamilyNumber NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> samples READ samples NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> analyses READ analyses NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> projects READ projects NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> jobs READ jobs NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> files READ files NOTIFY dataChanged)
-    Q_PROPERTY(QList<QObject*> indicators READ indicators NOTIFY dataChanged)
+    Q_PROPERTY(SamplesListModel* samples READ samples NOTIFY dataChanged)
+    Q_PROPERTY(AnalysesListModel* analyses READ analyses NOTIFY dataChanged)
+    Q_PROPERTY(FilesListModel* files READ files NOTIFY dataChanged)
+    // TODO: Q_PROPERTY(XXX indicators READ indicators NOTIFY dataChanged)
     Q_PROPERTY(HpoDataListModel* phenotypes READ phenotypes NOTIFY dataChanged)
     Q_PROPERTY(EventsListModel* events READ events NOTIFY dataChanged)
     // Special "shortcut" properties for qml display
     Q_PROPERTY(QJsonObject subjectUI READ subjectUI NOTIFY dataChanged)
-    Q_PROPERTY(QString searchField READ searchField NOTIFY dataChanged)
 
 public:
     enum Sex
@@ -46,14 +44,11 @@ public:
     Q_ENUM(Sex)
 
     // Constructors
-    explicit Subject(QObject* parent = nullptr);
-    explicit Subject(int id, QObject* parent = nullptr);
-    explicit Subject(QJsonObject json, QObject* parent = nullptr);
+    Subject(QObject* parent = nullptr);
+    Subject(int id, QObject* parent = nullptr);
+    Subject(QJsonObject json, QObject* parent = nullptr);
 
     // Getters
-    inline bool loaded() const { return mLoaded; }
-    inline QDateTime updateDate() const { return mUpdateDate; }
-    inline QDateTime createDate() const { return mCreateDate; }
     inline int id() const { return mId; }
     inline QString identifier() const { return mIdentifier; }
     inline QString firstname() const { return mFirstname; }
@@ -62,16 +57,12 @@ public:
     inline QString familyNumber() const { return mFamilyNumber; }
     inline Sex sex() const { return mSex; }
     inline QDate dateOfBirth() const { return mDateOfBirth; }
-    inline QList<QObject*> samples() const { return mSamples; }
-    inline QList<QObject*> analyses() const { return mAnalyses; }
-    inline QList<QObject*> projects() const { return mProjects; }
-    inline QList<QObject*> jobs() const { return mJobs; }
-    inline QList<QObject*> files() const { return mFiles; }
-    inline QList<QObject*> indicators() const { return mIndicators; }
+    inline SamplesListModel* samples() const { return mSamples; }
+    inline AnalysesListModel* analyses() const { return mAnalyses; }
+    inline FilesListModel* files() const { return mFiles; }
     inline HpoDataListModel* phenotypes() const { return mPhenotypes; }
     inline EventsListModel* events() const { return mEvents; }
     inline QJsonObject subjectUI() const { return mSubjectUI; }
-    inline QString searchField() const { return mSearchField; }
 
     // Setters
     inline void setIdentifier(QString val) { mIdentifier = val; updateSubjectUI(); emit dataChanged(); }
@@ -84,13 +75,13 @@ public:
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true);
+    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
     //! Export model data into json object
-    Q_INVOKABLE QJsonObject toJson();
+    Q_INVOKABLE QJsonObject toJson() override;
     //! Save subject information onto server
-    Q_INVOKABLE void save();
+    Q_INVOKABLE void save() override;
     //! Load Subject information from server
-    Q_INVOKABLE void load(bool forceRefresh=true);
+    Q_INVOKABLE void load(bool forceRefresh=true) override;
     //! Associate a sample to the subject
     Q_INVOKABLE void addSample(Sample* sample);
     //! Remove the association between the sample and the subject
@@ -105,18 +96,12 @@ public:
     Q_INVOKABLE QString presence(QString hpoId) const;
     Q_INVOKABLE QDateTime additionDate(QString hpoId) const;
 
-Q_SIGNALS:
-    void dataChanged();
 
 public Q_SLOTS:
-    void updateSearchField();
+    void updateSearchField() override;
+    void saveFile(int fileId);
 
 private:
-    bool mLoaded = false;
-    QDateTime mUpdateDate;
-    QDateTime mCreateDate;
-    QDateTime mLastInternalLoad = QDateTime::currentDateTime();
-
     int mId = -1;
     QString mIdentifier = "";
     QString mFirstname = "";
@@ -125,16 +110,12 @@ private:
     QString mFamilyNumber = "";
     Sex mSex = Sex::Unknow;
     QDate mDateOfBirth;
-    QList<QObject*> mSamples;
-    QList<QObject*> mAnalyses;
-    QList<QObject*> mProjects;
-    QList<QObject*> mJobs;
-    QList<QObject*> mFiles;
-    QList<QObject*> mIndicators;
+    SamplesListModel* mSamples = nullptr;
+    AnalysesListModel* mAnalyses = nullptr;
+    FilesListModel* mFiles = nullptr;
     HpoDataListModel* mPhenotypes = nullptr;
     EventsListModel* mEvents = nullptr;
     QJsonObject mSubjectUI;
-    QString mSearchField = "";
     QHash<QString, QString> mPresence;
     QHash<QString, QDateTime> mAdditionDate;
 };

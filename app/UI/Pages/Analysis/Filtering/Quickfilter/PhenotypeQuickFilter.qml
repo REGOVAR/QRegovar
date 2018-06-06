@@ -15,40 +15,7 @@ QuickFilterBox
     title : qsTr("Phenotype (HPO)")
     isExpanded: false
 
-    function reset()
-    {
-        // force the call of the checkUpdate true for "All"
-        frqAll.checked = false;
-        frqAll.checked = true;
-    }
-
-
     property bool internalUiUpdate: false
-    property real labelWidth: 50
-    property real headLabelWidth: 50
-
-    property bool detailsExpanded: false
-
-
-    function checkFinal()
-    {
-//        // Compute the final checked status of the "All" button
-//        var finalCheck = gAll.checked;
-//        finalCheck = finalCheck || exacAll.checked;
-
-//        for (var i = 0; i < container.children.length; ++i)
-//        {
-//            var item = container.children[i];
-//            if (item.objectName == "QuickFilterFieldControl")
-//            {
-//                finalCheck = finalCheck || item.checked;
-//            }
-//        }
-
-//        internalUiUpdate = true;
-//        frqAll.checked = !finalCheck;
-//        internalUiUpdate = false;
-    }
 
 
     onModelChanged:
@@ -69,15 +36,36 @@ QuickFilterBox
         if (model && model.quickfilters && model.quickfilters.phenotypeFilter)
         {
             root.enabled = model.quickfilters.phenotypeFilter.isVisible();
+
+
+            panelRepeater.model = model.quickfilters.phenotypeFilter.panelsList;
+            panelAll.visible = panelRepeater.model.length > 1;
+            if (!panelAll.visible)
+            {
+                panelAll.height = 0;
+            }
         }
-//            gAll.model =  model.quickfilters.frequenceFilter._1000GAll;
-//            exacAll.model = model.quickfilters.frequenceFilter.exacAll;
+    }
 
-//            gRepeater.model = model.quickfilters.frequenceFilter._1000G;
-//            exacRepeater.model = model.quickfilters.frequenceFilter.exac;
 
-//            frqAll.checked = true;
-//        }
+    function checkFinal()
+    {
+        // Compute the final checked status of the "All" button
+        var finalCheck = false;
+
+
+        for (var i = 0; i < container.children.length; ++i)
+        {
+            var item = container.children[i];
+            if (item && item.objectName === "QuickFilterFieldControl")
+            {
+                 finalCheck = finalCheck || item.checked;
+            }
+        }
+
+        internalUiUpdate = true;
+        panelAll.checked = !finalCheck;
+        internalUiUpdate = false;
     }
 
     content: Column
@@ -89,183 +77,135 @@ QuickFilterBox
 
 
         // All
-        CheckBox
+        RowLayout
         {
-            id: frqAll
-            anchors.left: parent.left
-            anchors.leftMargin: 25
+            spacing: 0
             width: content.width
-            text: qsTr("All")
-            checked: true
-            onCheckedChanged:
+            Item { height: 10; width: Regovar.theme.font.boxSize.header - 5 }
+            CheckBox
             {
-                // Todo
+                id: panelAll
+                Layout.fillWidth: true
+                text: qsTr("All")
+                checked: true
+                onCheckedChanged:
+                {
+                    // Update other checkboxes
+                    if (!internalUiUpdate && checked)
+                    {
+                        internalUiUpdate = true;
+                        for (var i = 0; i < container.children.length; ++i)
+                        {
+                            var item = container.children[i];
+                            if (item && item.objectName === "QuickFilterFieldControl")
+                            {
+                                item.checked = false;
+                            }
+                        }
+                        checkFinal();
+                        internalUiUpdate = false;
+                    }
+                }
             }
         }
 
         RowLayout
         {
-            width: content.width-30
-
-            CheckBox
+            spacing: 0
+            width: content.width
+            Item { height: 10; width: Regovar.theme.font.boxSize.header - 5}
+            Rectangle
             {
-                anchors.left: parent.left
-                anchors.leftMargin: 25
                 Layout.fillWidth: true
-                width: content.width
-                text: qsTr("Sample 1")
-                checked: false
-            }
+                height: 200
+                border.width: 1
+                border.color: Regovar.theme.boxColor.border
+                color: Regovar.theme.boxColor.back
+                visible: false
 
-            ButtonInline
-            {
-                iconTxt: "z"
-                text: ""
-            }
-        }
+                ListView
+                {
+                    model: ["OMIM:15454 Disease 1", "Microcephaly"]
+                    anchors.fill: parent
+                    anchors.margins: 5
 
-        RowLayout
-        {
-            width: content.width-30
+                    delegate: RowLayout
+                    {
+                        width: content.width
+                        CheckBox
+                        {
+                            Layout.fillWidth: true
+                            objectName: "QuickFilterFieldControl"
+                            width: container.width
+                            text: modelData.label
+                            checked: modelData.isActive
+                            onCheckedChanged:
+                            {
+                                modelData.isActive = checked
+                                if (!internalUiUpdate)
+                                {
+                                    // Update other checkboxes
+                                    internalUiUpdate = true;
+                                    if (checked)
+                                    {
+                                        panelAll.checked = false;
+                                    }
+                                    checkFinal();
+                                    internalUiUpdate = false;
+                                }
+                            }
+                        }
 
-            CheckBox
-            {
-                anchors.left: parent.left
-                anchors.leftMargin: 25
-                Layout.fillWidth: true
-                width: content.width
-                text: qsTr("Sample 2")
-                checked: false
-            }
-
-            ButtonInline
-            {
-                iconTxt: "z"
-                text: ""
-            }
-        }
-
-        RowLayout
-        {
-            width: content.width-30
-
-            CheckBox
-            {
-                anchors.left: parent.left
-                anchors.leftMargin: 25
-                Layout.fillWidth: true
-                width: content.width
-                text: qsTr("Sample 3")
-                checked: false
-            }
-
-            ButtonInline
-            {
-                iconTxt: "z"
-                text: ""
+                        ButtonInline
+                        {
+                            iconTxt: "z"
+                            text: ""
+                            onClicked: regovar.getPanelInfo(modelData.id)
+                        }
+                    }
+                }
             }
         }
 
 
-        Rectangle
+        Item
         {
+            id: newPanelButton
             width: content.width
             height: Regovar.theme.font.boxSize.normal
-            color: "transparent"
-
-            Text
-            {
-                id: collapseIcon
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: 5
-                width: Regovar.theme.font.boxSize.normal
-                height: Regovar.theme.font.boxSize.normal
-                text: "{"
-                font.family: Regovar.theme.icons.name
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: root.enabled ? Regovar.theme.primaryColor.back.dark : Regovar.theme.frontColor.disable
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-
-                rotation: detailsExpanded ? 90 : 0
-            }
-
-            Text
+            property bool hovered: false
+            RowLayout
             {
                 anchors.fill: parent
-                anchors.leftMargin: 25
-                text: qsTr("Search custom terms...")
-                elide: Text.ElideRight
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: root.enabled ? Regovar.theme.primaryColor.back.dark : Regovar.theme.frontColor.disable
-                verticalAlignment: Text.AlignVCenter
+                Item { height: 10; width: Regovar.theme.font.boxSize.header }
+                Text
+                {
+                    text: "à"
+                    width: Regovar.theme.font.boxSize.normal
+                    font.family: Regovar.theme.icons.name
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    color: newPanelButton.hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                }
+                Text
+                {
+                    Layout.fillWidth: true
+                    text: qsTr("Add phenotypes or diseases")
+                    elide: Text.ElideRight
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    color: newPanelButton.hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.normal
+                    verticalAlignment: Text.AlignVCenter
+                }
             }
 
             MouseArea
             {
-                enabled: root.enabled
                 anchors.fill: parent
-                cursorShape: "PointingHandCursor"
-                onClicked:
-                {
-                    detailsExpanded = !detailsExpanded
-                }
-            }
-        }
-
-        Column
-        {
-            id: container
-            width: content.width
-            visible: root.enabled && root.detailsExpanded
-
-            //
-            TextField
-            {
-                id: searchField
-                anchors.left: parent.left
-                anchors.leftMargin: 5
-                width: content.width - 30
-
-                iconLeft: "z"
-                displayClearButton: true
-                placeholder: qsTr("Enter search terms...")
-            }
-
-            Repeater
-            {
-                id: gRepeater
-
-                QuickFilterFieldControl
-                {
-                    id: gItem
-                    objectName: "QuickFilterFieldControl"
-                    width: container.width
-                    model: modelData
-                    indentation: 25
-                    onCheckedChanged:
-                    {
-                        if (!internalUiUpdate)
-                        {
-                            // Update other checkboxes
-                            internalUiUpdate = true;
-                            if (checked)
-                            {
-                                frqAll.checked = false;
-                            }
-                            checkFinal();
-                            internalUiUpdate = false;
-                        }
-                    }
-                    onLabelWidthChanged:
-                    {
-                        root.labelWidth = Math.max(labelWidth, root.labelWidth);
-                        labelWidth = root.labelWidth;
-                    }
-                    Binding { target: gItem; property: "labelWidth"; value: root.labelWidth; }
-                }
+                hoverEnabled: true
+                onEntered: parent.hovered = true
+                onExited: parent.hovered = false
+                onClicked: console.log("Not yet implemented")
             }
         }
     }

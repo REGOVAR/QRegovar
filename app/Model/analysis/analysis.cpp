@@ -63,9 +63,10 @@ QHash<QString, bool> Analysis::initStatusAnimatedMap()
 }
 
 
-Analysis::Analysis(QObject* parent) : QObject(parent)
+Analysis::Analysis(QObject* parent) : RegovarResource(parent)
 {
     mMenuModel = new RootMenu(this);
+    connect(this, &Analysis::dataChanged, this, &Analysis::updateSearchField);
 }
 
 

@@ -4,7 +4,7 @@
 
 PhenotypeQuickFilter::PhenotypeQuickFilter(int) : QuickFilterBlockInterface()
 {
-
+    mHpoList = new HpoDataListModel(this);
 }
 
 

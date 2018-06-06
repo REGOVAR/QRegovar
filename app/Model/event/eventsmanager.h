@@ -13,7 +13,7 @@ class EventsManager : public QObject
 
 public:
     // Constructor
-    explicit EventsManager(QObject* parent=nullptr);
+    EventsManager(QObject* parent=nullptr);
 
     // Getters
     inline EventsListModel* lastEvents() const { return mLastEvents; }

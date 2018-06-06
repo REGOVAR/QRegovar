@@ -27,18 +27,20 @@ class FilesListModel : public QAbstractListModel
     Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
 public:
-    explicit FilesListModel(QObject* parent = nullptr);
+    // Constructor
+    FilesListModel(QObject* parent = nullptr);
 
     // Getters
     inline GenericProxyModel* proxy() const { return mProxy; }
 
     // Methods
     Q_INVOKABLE bool loadJson(QJsonArray json);
-    Q_INVOKABLE bool add(File* file);
+    Q_INVOKABLE bool append(File* file);
     Q_INVOKABLE bool remove(File* file);
     Q_INVOKABLE bool refresh();
     Q_INVOKABLE bool clear();
     Q_INVOKABLE File* getAt(int position);
+    Q_INVOKABLE bool contains(File* file);
 
     // QAbstractListModel methods
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
@@ -48,6 +50,8 @@ public:
 Q_SIGNALS:
     void neverChanged();
     void countChanged();
+    void fileAdded(int id);
+    void fileRemoved(int id);
 
 private:
     //! List of files

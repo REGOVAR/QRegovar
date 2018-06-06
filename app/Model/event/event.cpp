@@ -16,7 +16,7 @@ QHash<QString, QString> Event::initTypeIconMap()
 }
 
 
-Event::Event(QObject* parent) : QObject(parent)
+Event::Event(QObject* parent) : RegovarResource(parent)
 {
     connect(this, &Event::dataChanged, this, &Event::updateSearchField);
 }
@@ -44,7 +44,7 @@ void Event::updateSearchField()
 
 
 
-bool Event::loadJson(QJsonObject json)
+bool Event::loadJson(QJsonObject json, bool)
 {
     mId = json["id"].toInt();
     mType = json["type"].toString();

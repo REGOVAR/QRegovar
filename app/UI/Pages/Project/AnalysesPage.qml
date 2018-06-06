@@ -4,14 +4,27 @@ import QtQuick.Layouts 1.3
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
+import "qrc:/qml/Pages/Analysis"
 
 Rectangle
 {
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property QtObject model
     property var currentAnalysis: null
+    property QtObject model
+    onModelChanged:
+    {
+        if(model)
+        {
+            model.dataChanged.connect(updateViewFromModel);
+        }
+        updateViewFromModel();
+    }
+    Component.onDestruction:
+    {
+        model.dataChanged.disconnect(updateViewFromModel);
+    }
 
     Rectangle
     {
@@ -35,7 +48,6 @@ Rectangle
                 font.weight: Font.Black
                 color: Regovar.theme.primaryColor.back.dark
                 verticalAlignment: Text.AlignVCenter
-                text: (model) ? model.name : ""
                 elide: Text.ElideRight
             }
 
@@ -82,25 +94,7 @@ Rectangle
         {
             id: openAnalysis
             text: qsTr("Open")
-            onClicked:
-            {
-                var analysis = browser.model[browser.currentRow];
-                regovar.analysesManager.openAnalysis(analysis.type, analysis.id)
-            }
-        }
-        Button
-        {
-            id: playPauseAnalysis
-            text: qsTr("Pause")
-            onClicked:  console.log("Pause/Play analysis")
-            enabled: false
-        }
-        Button
-        {
-            id: deleteAnalysis
-            text: qsTr("Delete")
-            onClicked:  console.log("Delete analysis")
-            enabled: false
+            onClicked: regovar.analysesManager.openAnalysis(currentAnalysis.type, currentAnalysis.id)
         }
     }
 
@@ -122,35 +116,29 @@ Rectangle
             Layout.fillHeight: true
             color: Regovar.theme.backgroundColor.main
 
+            TextField
+            {
+                id: browserSearch
+                anchors.top: topPanel.top
+                anchors.left: topPanel.left
+                anchors.right: topPanel.right
+                anchors.topMargin: 10
+                iconLeft: "z"
+                displayClearButton: true
+                placeholder: qsTr("Search analyses by names, dates, comments...")
+                onTextChanged: root.model.analyses.proxy.setFilterString(text)
+            }
+
             TableView
             {
                 id: browser
-                anchors.fill: parent
-                anchors.margins: 10
-                anchors.leftMargin: 0
-                model: (root.model) ? root.model.analyses : []
-                onDoubleClicked:
-                {
-                    var analysis = browser.model[currentRow];
-                    if (analysis)
-                    {
-                        regovar.analysesManager.openAnalysis(analysis.type, analysis.id);
-                    }
-                }
-
-                // Default delegate for all column
-                itemDelegate: Item
-                {
-                    Text
-                    {
-                        anchors.leftMargin: 5
-                        anchors.fill: parent
-                        verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        text: styleData.value
-                        elide: Text.ElideRight
-                    }
-                }
+                anchors.top: browserSearch.bottom
+                anchors.left: topPanel.left
+                anchors.right: topPanel.right
+                anchors.bottom: topPanel.bottom
+                anchors.bottomMargin: 10
+                anchors.topMargin: 10
+                onDoubleClicked: regovar.analysesManager.openAnalysis(currentAnalysis.type, currentAnalysis.id)
 
                 TableViewColumn
                 {
@@ -171,14 +159,6 @@ Rectangle
                 {
                     role: "updateDate"
                     title: "Date"
-                    delegate: Text
-                    {
-                        anchors.fill: parent
-                        anchors.margins: 5
-                        verticalAlignment: Text.AlignVCenter
-                        text: regovar.formatDate(modelData.dateOfBirth, false)
-                        elide: Text.ElideRight
-                    }
                 }
                 TableViewColumn
                 {
@@ -187,10 +167,20 @@ Rectangle
                     width: 400
                 }
 
-
                 onCurrentRowChanged:
                 {
-                    displayCurrentAnalysisPreview(root.model.analyses[currentRow]);
+                    var idx = root.model.analyses.proxy.getModelIndex(browser.currentRow);
+                    var id = root.model.analyses.data(idx, 257); // 257 = Qt::UserRole+1
+                    var type = root.model.analyses.data(idx, 261);
+
+                    if (id && type === "analysis")
+                    {
+                        displayCurrentAnalysisPreview(regovar.analysesManager.getFilteringAnalysis(id));
+                    }
+                    else if (id && type === "pipeline")
+                    {
+                        displayCurrentAnalysisPreview(regovar.analysesManager.getPipelineAnalysis(id));
+                    }
                 }
             }
         } // end topPanel
@@ -202,68 +192,26 @@ Rectangle
             color: Regovar.theme.backgroundColor.main
             Layout.minimumHeight: 200
 
-            GridLayout
+            AnalysisPreview
             {
                 anchors.fill: parent
                 anchors.margins: 10
                 anchors.leftMargin: 0
                 anchors.rightMargin: 0
-                columns: 3
-                rowSpacing: 10
-                columnSpacing: 10
-
-                Text
-                {
-                    Layout.fillWidth: true
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                    text: currentAnalysis ? currentAnalysis.name : ""
-                }
-
-                Text
-                {
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                    font.family: Regovar.theme.icons.name
-                    text: currentAnalysis ? "H" : ""
-                }
-                Text
-                {
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                    text: currentAnalysis ? regovar.formatDate(currentAnalysis.updateDate) : ""
-                }
-
-                Rectangle
-                {
-                    color: "transparent"
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    Layout.columnSpan: 3
-                    border.width: 1
-                    border.color: Regovar.theme.boxColor.border
-                    Text
-                    {
-                        anchors.centerIn: parent
-                        text: qsTr("Not yet implemented")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.frontColor.disable
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
+                model: currentAnalysis
             }
         } // end bottomPanel
     } // end SplitView
 
+
+    function updateViewFromModel()
+    {
+        if (root.model)
+        {
+            nameLabel.text = root.model.name;
+            browser.model = root.model.analyses.proxy;
+        }
+    }
 
     function displayCurrentAnalysisPreview(analysis)
     {

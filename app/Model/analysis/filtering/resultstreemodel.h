@@ -17,7 +17,8 @@ class ResultsTreeModel : public TreeModel
     Q_PROPERTY(QString samplesNames READ samplesNames NOTIFY samplesNamesChanged)
 
 public:
-    explicit ResultsTreeModel(FilteringAnalysis* parent=nullptr);
+    // Constructors
+    ResultsTreeModel(FilteringAnalysis* parent=nullptr);
 
     // QAbstractItemModel interface - lazy loading methods
     QHash<int, QByteArray> roleNames() const override;

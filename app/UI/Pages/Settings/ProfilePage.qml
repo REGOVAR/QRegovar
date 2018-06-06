@@ -104,14 +104,14 @@ Rectangle
 
 
         // USER INFORMATION =======================================================================
-        GridLayout
-        {
-            Layout.fillWidth: true
+            GridLayout
+            {
+                Layout.fillWidth: true
 
-            columns: 2
-            rows: 10
-            columnSpacing: 30
-            rowSpacing: 20
+                columns: 2
+                rows: 10
+                columnSpacing: 30
+                rowSpacing: 20
 
             Row
             {

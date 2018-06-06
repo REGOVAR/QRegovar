@@ -1,4 +1,6 @@
 #include "disease.h"
+#include "geneslistmodel.h"
+#include "Model/subject/subjectslistmodel.h"
 
 
 Disease::Disease(QObject* parent) : HpoData(parent)
@@ -21,7 +23,7 @@ void Disease::updateSearchField()
     // TODO: add genes, diseases label
 }
 
-bool Disease::loadJson(QJsonObject json)
+bool Disease::loadJson(QJsonObject json, bool)
 {
     mId = json["id"].toString();
     mPhenotypes->setDiseaseId(mId);
@@ -65,10 +67,13 @@ bool Disease::loadJson(QJsonObject json)
         mDecipher = json["decipher"].toObject();
         mLoaded = true;
     }
-
     if (json.contains("phenotypes"))
     {
         mPhenotypes->loadJson(json["phenotypes"].toArray());
+    }
+    if (json.contains("subjects"))
+    {
+        mSubjects->loadJson(json["subjects"].toArray());
     }
 
     emit dataChanged();

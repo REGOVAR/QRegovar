@@ -22,7 +22,7 @@ public:
     };
 
     // Constructor
-    explicit PanelsTreeModel(QObject* parent=nullptr);
+    PanelsTreeModel(QObject* parent=nullptr);
 
     // Getters
     inline bool isLoading() { return mIsLoading; }

@@ -13,7 +13,7 @@ class ResultsTreeItem : public TreeItem
 
 public:
     // Constructors
-    explicit ResultsTreeItem(FilteringAnalysis* analysis=nullptr, TreeItem* parent=nullptr);
+    ResultsTreeItem(FilteringAnalysis* analysis=nullptr, TreeItem* parent=nullptr);
 
     // Getters
     inline QString uid() { return mUid; }

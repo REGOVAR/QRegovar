@@ -11,7 +11,6 @@
 class QuickFilterModel : public QObject
 {
     Q_OBJECT
-
     Q_PROPERTY(QuickFilterBlockInterface* transmissionFilter READ transmissionFilter NOTIFY filterChanged)
     Q_PROPERTY(QuickFilterBlockInterface* qualityFilter READ qualityFilter NOTIFY filterChanged)
     Q_PROPERTY(QuickFilterBlockInterface* positionFilter READ positionFilter NOTIFY filterChanged)
@@ -35,10 +34,8 @@ public:
         PhenotypeFilter
     };
 
-    explicit QuickFilterModel(QObject *parent = nullptr);
-    void init(int refId, int analysisId);
-    Q_INVOKABLE void clear();
-
+    // Constructor
+    QuickFilterModel(QObject *parent = nullptr);
 
     // Getters
     inline QuickFilterBlockInterface* transmissionFilter() { return mQuickFilters[TransmissionFilter]; }
@@ -50,16 +47,15 @@ public:
     inline QuickFilterBlockInterface* panelFilter() { return mQuickFilters[PanelFilter]; }
     inline QuickFilterBlockInterface* phenotypeFilter() { return mQuickFilters[PhenotypeFilter]; }
 
-
     // Methods
+    Q_INVOKABLE void clear();
     Q_INVOKABLE QJsonArray toJson();
     Q_INVOKABLE void checkAnnotationsDB(QList<QObject*> dbs);
+    void init(int refId, int analysisId);
     void loadFilter(QJsonArray filter);
 
 Q_SIGNALS:
     void filterChanged();
-
-
 
 private:
     QHash<PredefinedFilter, QuickFilterBlockInterface*> mQuickFilters;

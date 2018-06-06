@@ -23,6 +23,7 @@ ScrollView
 
     function updateFromModel(data)
     {
+        data = data.json;
         if (data && "pubmed" in data)
         {
             data = data["pubmed"];

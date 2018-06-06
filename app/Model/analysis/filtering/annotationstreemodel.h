@@ -30,7 +30,7 @@ public:
     };
 
     // Constructor
-    explicit AnnotationsTreeModel(FilteringAnalysis* analysis=nullptr);
+    AnnotationsTreeModel(FilteringAnalysis* analysis=nullptr);
 
     // Getters
     inline bool isLoading() const { return mIsLoading; }
