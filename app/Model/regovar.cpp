@@ -144,7 +144,7 @@ void Regovar::loadConfigData()
 void Regovar::loadWelcomData()
 {
     setWelcomIsLoading(true);
-    Request* req = Request::get(QString("/"));
+    Request* req = Request::get(QString("/welcome"));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
         if (success)
