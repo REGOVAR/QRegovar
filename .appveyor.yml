@@ -23,7 +23,7 @@ branches:
     - master
     
 build_script:
-  - C:\projects\qregovar\deploy\win\build.bat
+  - C:\projects\qregovar\deploy\win\build-msvc.bat
 
 after_build:
   - C:\projects\qregovar\deploy\win\upload-prepare.bat
