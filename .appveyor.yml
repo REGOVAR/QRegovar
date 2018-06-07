@@ -1,23 +1,43 @@
 image: Visual Studio 2017
 
+environment:
+  QT_VER: 5.10.1
+  NO_TESTS:
+  BUILD_DOC:
+  EXTRA_MODULES: 
+
+  matrix:
+    # Runtime env
+    - PLATFORM: winrt_x64_msvc2017
+    - PLATFORM: winrt_x86_msvc2017
+    #- PLATFORM: winrt_armv7_msvc2017
+    # Dev env
+    - PLATFORM: msvc2017_64
+    #- PLATFORM: msvc2015_64
+    #- PLATFORM: msvc2015
+    #- PLATFORM: mingw53_32
+    # only when using static tools
+    - PLATFORM: static
+    
 branches:
   only:
     - master
     
 install:
-  - set QTDIR=C:\Qt\5.10.1\msvc2017_64
-  - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw530_32\bin;%PATH%;
-  
+  - .\QRegovar\deploy\win\setup.bat
+
 build_script:
-  - cd app
-  # - qmake app/QRegovar.pro -spec win32-msvc
-  - nmake qmake_all
-  - nmake
-  - nmake lrelease # -f Makefile.Release
+  - .\QRegovar\deploy\win\build.bat
+
+after_build:
+  - .\QRegovar\deploy\win\upload-prepare.bat
+
+artifacts:
+  - path: install\build_*_%QT_VER%.zip
 
 deploy:
   - provider: GitHub
-    artifact: C:/projects/qregovar
+    artifact:  /.*\.zip/
     draft: true
     prerelease: true
     on:
