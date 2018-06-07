@@ -17,7 +17,3 @@ if "%PLATFORM%" == "static" (
 	%~dp0\setup-qt-static.bat || exit \B 1
 )
 
-:: mingw32 make workaround
-if "%PLATFORM%" == "mingw53_32" (
-	copy C:\projects\Qt\Tools\mingw530_32\bin\mingw32-make.exe C:\projects\Qt\Tools\mingw530_32\bin\make.exe
-)
