@@ -18,14 +18,13 @@ echo "step 1"
 
 
 
-set qtplatform=%PLATFORM%
 for %%* in (.) do set CurrDirName=%%~nx*
 
 echo "step 2"
 
-echo C:\Qt\%QT_VER%\%qtplatform%\bin\qmake
-ls C:\Qt\%QT_VER%\%qtplatform%\bin\
-C:\Qt\%QT_VER%\%qtplatform%\bin\qmake .\app\ || exit /B 1
+echo C:\Qt\%QT_VER%\%PLATFORM%\bin\qmake
+ls C:\Qt\%QT_VER%\%PLATFORM%\bin\
+C:\Qt\%QT_VER%\%PLATFORM%\bin\qmake .\app\ || exit /B 1
 echo "step 3"
 
 nmake qmake_all || exit /B 1
