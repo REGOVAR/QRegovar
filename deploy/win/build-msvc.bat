@@ -14,20 +14,22 @@ if "%PLATFORM%" == "msvc2015" set VC_VARSALL=amd64_x86
 if "%PLATFORM%" == "static" set VC_VARSALL=amd64
 
 set qtplatform=%PLATFORM%
-
 call %VC_DIR% %VC_VARSALL%
 
 
 
 for %%* in (.) do set CurrDirName=%%~nx*
-
-echo C:\Qt\%QT_VER%\%qtplatform%\bin\qmake
-ls C:\Qt\%QT_VER%\%qtplatform%\bin\
 C:\Qt\%QT_VER%\%qtplatform%\bin\qmake .\app\ || exit /B 1
 
-
+:: compilation
 nmake qmake_all || exit /B 1
 nmake || exit /B 1
 nmake release || exit /B 1
-
+:: qt deploy
+echo "step 2"
+echo pwd
+echo "step 3"
+C:\Qt\%QT_VER%\%qtplatform%\bin\windeployqt.exe C:\project\qregovar\release\ --qmldir C:\project\qregovar\app\UI\
+echo "step 4"
 nmake INSTALL_ROOT=\projects\%CurrDirName%\install install || exit /B 1
+echo "step 5"
