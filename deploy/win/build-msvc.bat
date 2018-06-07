@@ -30,4 +30,4 @@ nmake INSTALL_ROOT=\projects\%CurrDirName%\install install || exit /B 1
 echo "step 5"
 
 :: qt deploy
-C:\Qt\%QT_VER%\%qtplatform%\bin\windeployqt.exe C:\projects\qregovar\release --qmldir C:\project\qregovar\app\UI\
+C:\Qt\%QT_VER%\%qtplatform%\bin\windeployqt.exe C:\projects\qregovar\release --qmldir C:\projects\qregovar\app\UI\
