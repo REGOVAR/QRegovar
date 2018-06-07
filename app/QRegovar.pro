@@ -11,6 +11,10 @@ DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR"\
        "VERSION_BUILD=$$VERSION_BUILD"\
        "MIN_SYNC_DELAY=60"
 
+#CONFIG(release, debug|release)
+#{
+#    QMAKE_CXXFLAGS += /MT
+#}
 
 
 

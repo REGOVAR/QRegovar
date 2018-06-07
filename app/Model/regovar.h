@@ -211,6 +211,8 @@ private:
     static Regovar* mInstance;
 
     // Models
+    //! true when the model have been loaded (with loadWelcome)
+    bool mLoaded = false;
     //! wrap all settings retrieved from QSetting before initialisation of all managers
     Settings* mSettings = nullptr;
     //! The config retrieved from the server
