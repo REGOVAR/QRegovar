@@ -4,6 +4,7 @@ setlocal
 set qtplatform=%PLATFORM%
 for %%* in (.) do set CurrDirName=%%~nx*
 
+echo %VC_DIR% %VC_VARSALL%
 call %VC_DIR% %VC_VARSALL% || exit /B 1
 
 mkdir build-%qtplatform%
