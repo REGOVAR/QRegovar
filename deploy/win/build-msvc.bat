@@ -1,3 +1,4 @@
+@echo on
 :: build
 setlocal
 
