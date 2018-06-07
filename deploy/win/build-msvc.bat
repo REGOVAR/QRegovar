@@ -1,15 +1,26 @@
 @echo on
+setlocal
 
 cd app
 
-:: build
-setlocal
+:: setup compil env
+set VC_DIR="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat"
+:: find the varsall parameters
+if "%PLATFORM%" == "msvc2017_64" set VC_VARSALL=amd64
+if "%PLATFORM%" == "winrt_x64_msvc2017" set VC_VARSALL=amd64_x86
+if "%PLATFORM%" == "winrt_x86_msvc2017" set VC_VARSALL=amd64_x86
+if "%PLATFORM%" == "winrt_armv7_msvc2017" set VC_VARSALL=amd64_x86
+if "%PLATFORM%" == "msvc2015_64" set VC_VARSALL=amd64
+if "%PLATFORM%" == "msvc2015" set VC_VARSALL=amd64_x86
+if "%PLATFORM%" == "static" set VC_VARSALL=amd64
+
+call %VC_DIR% %VC_VARSALL%
+
+
 
 set qtplatform=%PLATFORM%
 for %%* in (.) do set CurrDirName=%%~nx*
 
-mkdir build-%qtplatform%
-cd build-%qtplatform%
 
 C:\Qt\%QT_VER%\%qtplatform%\bin\qmake ./ || exit /B 1
 nmake qmake_all || exit /B 1
