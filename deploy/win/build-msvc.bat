@@ -1,7 +1,6 @@
 @echo on
 setlocal
 
-cd app
 
 :: setup compil env
 set VC_DIR="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat"
@@ -24,7 +23,7 @@ for %%* in (.) do set CurrDirName=%%~nx*
 
 echo "step 2"
 
-C:\Qt\%QT_VER%\%qtplatform%\bin\qmake ./ || exit /B 1
+C:\Qt\%QT_VER%\%qtplatform%\bin\qmake .\app\ || exit /B 1
 echo "step 3"
 
 nmake qmake_all || exit /B 1
