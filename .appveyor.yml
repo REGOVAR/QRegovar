@@ -33,7 +33,7 @@ artifacts:
 
 deploy:
   - provider: GitHub
-    artifact:  /.*\.zip/
+    artifact:  C:\projects\qregovar\*.zip
     draft: true
     prerelease: true
     on:
