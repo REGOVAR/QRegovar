@@ -1,3 +1,5 @@
+version: '{build}'
+
 image: Visual Studio 2017
 
 environment:
@@ -12,7 +14,7 @@ environment:
     - PLATFORM: msvc2017_64
     #- PLATFORM: msvc2015_64
     #- PLATFORM: msvc2015
-    - PLATFORM: mingw53_32
+    #- PLATFORM: mingw53_32
     # only when using static tools
     - PLATFORM: static
     
@@ -20,8 +22,9 @@ branches:
   only:
     - master
     
-install:
-  - C:\projects\qregovar\deploy\win\setup.bat
+
+before_build:
+- set PATH=%MINGW%\bin;%QT5%\bin;%PATH%
 
 build_script:
   - C:\projects\qregovar\deploy\win\build.bat
