@@ -24,13 +24,13 @@ branches:
     - master
     
 install:
-  - .\QRegovar\deploy\win\setup.bat
+  - C:\projects\qregovar\deploy\win\setup.bat
 
 build_script:
-  - .\QRegovar\deploy\win\build.bat
+  - C:\projects\qregovar\deploy\win\build.bat
 
 after_build:
-  - .\QRegovar\deploy\win\upload-prepare.bat
+  - C:\projects\qregovar\deploy\win\upload-prepare.bat
 
 artifacts:
   - path: install\build_*_%QT_VER%.zip
