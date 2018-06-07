@@ -23,6 +23,8 @@ for %%* in (.) do set CurrDirName=%%~nx*
 
 echo "step 2"
 
+echo C:\Qt\%QT_VER%\%qtplatform%\bin\qmake
+ls C:\Qt\%QT_VER%\%qtplatform%\bin\
 C:\Qt\%QT_VER%\%qtplatform%\bin\qmake .\app\ || exit /B 1
 echo "step 3"
 
