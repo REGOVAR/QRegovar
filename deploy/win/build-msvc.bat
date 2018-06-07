@@ -25,11 +25,9 @@ C:\Qt\%QT_VER%\%qtplatform%\bin\qmake .\app\ || exit /B 1
 nmake qmake_all || exit /B 1
 nmake || exit /B 1
 nmake release || exit /B 1
-:: qt deploy
-echo "step 2"
-echo pwd
-echo "step 3"
-C:\Qt\%QT_VER%\%qtplatform%\bin\windeployqt.exe C:\project\qregovar\release\ --qmldir C:\project\qregovar\app\UI\
 echo "step 4"
 nmake INSTALL_ROOT=\projects\%CurrDirName%\install install || exit /B 1
 echo "step 5"
+
+:: qt deploy
+C:\Qt\%QT_VER%\%qtplatform%\bin\windeployqt.exe %CurrDirName%\release\ --qmldir C:\project\qregovar\app\UI\
