@@ -15,15 +15,25 @@ if "%PLATFORM%" == "msvc2015" set VC_VARSALL=amd64_x86
 if "%PLATFORM%" == "static" set VC_VARSALL=amd64
 
 call %VC_DIR% %VC_VARSALL%
+echo "step 1"
 
 
 
 set qtplatform=%PLATFORM%
 for %%* in (.) do set CurrDirName=%%~nx*
 
+echo "step 2"
 
 C:\Qt\%QT_VER%\%qtplatform%\bin\qmake ./ || exit /B 1
+echo "step 3"
+
 nmake qmake_all || exit /B 1
+echo "step 4"
+
 nmake || exit /B 1
+echo "step 5"
+
 nmake lrelease || exit /B 1
+echo "step 6"
+
 nmake INSTALL_ROOT=\projects\%CurrDirName%\install install || exit /B 1
