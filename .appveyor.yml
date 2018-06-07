@@ -7,7 +7,7 @@ environment:
 
   matrix:
     # Runtime env
-    - PLATFORM: winrt_x64_msvc2017
+    #- PLATFORM: winrt_x64_msvc2017
     #- PLATFORM: winrt_x86_msvc2017
     #- PLATFORM: winrt_armv7_msvc2017
     # Dev env
@@ -16,7 +16,7 @@ environment:
     #- PLATFORM: msvc2015
     #- PLATFORM: mingw53_32
     # only when using static tools
-    - PLATFORM: static
+    #- PLATFORM: static
     
 branches:
   only:
