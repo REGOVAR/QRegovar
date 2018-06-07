@@ -3,6 +3,7 @@
 #include <QQuickItem>
 #include <QQmlComponent>
 #include <QAbstractSocket>
+#include <QProcess>
 #include <QSysInfo>
 #include "regovar.h"
 #include "framework/request.h"
@@ -95,6 +96,7 @@ void Regovar::init()
 
 void Regovar::loadConfigData()
 {
+
     setWelcomIsLoading(true);
     Request* req = Request::get(QString("/config"));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
@@ -149,6 +151,7 @@ void Regovar::loadWelcomData()
     {
         if (success)
         {
+            mLoaded = true;
             QJsonObject data = json["data"].toObject();
 
             // Get references

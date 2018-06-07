@@ -63,9 +63,9 @@ Rectangle
             id: testServerWarning
             width: 600
 
-            mainColor: regovar.config.welcomMessageType === "critical" ? Regovar.theme.frontColor.danger : regovar.config.welcomMessageType === "warning" ? Regovar.theme.frontColor.warning : Regovar.theme.frontColor.info;
+            mainColor: regovar.config.welcomMessageType === "danger" ? Regovar.theme.frontColor.danger : regovar.config.welcomMessageType === "warning" ? Regovar.theme.frontColor.warning : Regovar.theme.frontColor.info;
             text: regovar.config.welcomMessage
-            icon: regovar.config.welcomMessageType === "critical" ? "l" : regovar.config.welcomMessageType === "warning" ? "m" : "k";
+            icon: regovar.config.welcomMessageType === "danger" ? "l" : regovar.config.welcomMessageType === "warning" ? "m" : "k";
             visible: regovar.config.welcomMessage !== ""
         }
         Box

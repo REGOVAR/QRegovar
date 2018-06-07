@@ -40,6 +40,10 @@ bool NetworkManager::testServerUrl(QString serverUrl, QString sharedUrl)
     {
         regovar->settings()->save();
     }
+
+
+    regovar->loadConfigData();
+
     emit testServerUrlDone(test1, mServerUrl.toString(), mSharedUrl.toString());
     return true;
 }
