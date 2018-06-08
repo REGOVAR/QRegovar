@@ -38,7 +38,7 @@ deploy:
     description: ''
     auth_token:
       secure: wgjLvB8J0dtgJebFhMFyAjbnXkToKF2bfWYPl1EXkshsfBEfS/JYj7P+YFxbHNcO
-    artifact:  C:\projects\qregovar\*.zip
+    artifact:  build_*.zip
     draft: true
     prerelease: true
     on:
