@@ -9,19 +9,17 @@ Implementation of [beta](https://github.com/REGOVAR/QRegovar/milestone/1) in pro
 
 ![mokcup](https://raw.githubusercontent.com/REGOVAR/QRegovar/781c155b1a0d640f757ea5677d223f3d9e347ab7/docs/mockup/mockup.gif)
 
-
 # How to build
 
 ## Windows
 
-We need only Qt 5.10.1
+We need only Qt 5.10.1.
 
 Download the open source package on the [Qt web site](https://www.qt.io/download). Follow instruction to install it (next, next, next). 
 
 QtCreator ask to configure the project. Accept the default parameters.
 
 Then open the `app/QRegovar.pro` with QtCreator and press `ctrl + R` to build and run QRegovar.
-
 
 ## On Ubuntu 16.04 LTS (Xenial)
 
@@ -43,13 +41,48 @@ QtCreator ask to configure the project. Accept the default parameters.
 
 Open the `app/QRegovar.pro` file, and press `ctrl + R` to build and run QRegovar.
 
-## On ArchLinux
+## On Ubuntu 18.04 LTS (Bionic)
+
+Download the dependencies:
 
 ```sh
-sudo pacman -S qt5-quickcontrols2 qt5-charts qt5-graphicaleffects qt5-websockets
+sudo apt install qt5-qmake qml-module-qtcharts qml-module-qtgraphicaleffects qml-module-qtquick-controls2 qml-module-qtwebsockets
+```
+
+Compile:
+
+```sh
 cd app
 qmake
 make
+```
+
+Run QRegovar:
+
+```sh
+./QRegovar
+```
+
+## On ArchLinux
+
+Download the dependencies:
+
+```sh
+sudo pacman -S qmake qt5-quickcontrols2 qt5-charts qt5-graphicaleffects qt5-websockets
+```
+
+Compile:
+
+```sh
+cd app
+qmake
+make
+```
+
+Run QRegovar:
+
+```sh
+./QRegovar
 ```
 
 # Documentation
