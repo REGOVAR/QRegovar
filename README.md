@@ -5,13 +5,11 @@
 
 The official heavy client (in Qt) of the Regovar project
 
-Implementation of [beta](https://github.com/REGOVAR/QRegovar/milestone/1) in progress (75%)
-
 ![mokcup](https://raw.githubusercontent.com/REGOVAR/QRegovar/781c155b1a0d640f757ea5677d223f3d9e347ab7/docs/mockup/mockup.gif)
 
 # How to build
 
-## Windows
+## On Windows
 
 We need only Qt 5.10.1.
 
@@ -68,7 +66,7 @@ Run QRegovar:
 Download the dependencies:
 
 ```sh
-sudo pacman -S qmake qt5-quickcontrols2 qt5-charts qt5-graphicaleffects qt5-websockets
+sudo pacman -S qt5-quickcontrols2 qt5-charts qt5-graphicaleffects qt5-websockets
 ```
 
 Compile:
@@ -87,7 +85,7 @@ Run QRegovar:
 
 # Documentation
 
-You will find on this repository only the technical doc for developpers. The user guide and tutorials are on the [Regovar git repository](https://github.com/REGOVAR/Regovar/tree/master/docs) -> [Official ReadTheDoc](http://regovar.readthedocs.io/fr/latest/)
+On this repository, you will only find technical documentation for developpers. The user guide and tutorials are availabe [on ReadTheDoc](https://regovar.readthedocs.io/fr/latest/).
 
 # Credits
 
