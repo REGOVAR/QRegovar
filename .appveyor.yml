@@ -29,7 +29,7 @@ after_build:
   - C:\projects\qregovar\deploy\win\upload-prepare.bat
 
 artifacts:
-  - path: C:\projects\qregovar\*.zip
+  - path: *.zip
 
 deploy:
   - provider: GitHub
