@@ -23,7 +23,7 @@ QtCreator ask to configure the project. Accept the default parameters.
 Then open the `app/QRegovar.pro` with QtCreator and press `ctrl + R` to build and run QRegovar.
 
 
-##  On Ubuntu 16.04 LTS (Xenial)
+## On Ubuntu 16.04 LTS (Xenial)
 
 You first need a few Qt 5.10.1 packages that are not yet distributed through the official Ubuntu repositories (note that by doing so, you are trusting [Stephan Binner](https://launchpad.net/~beineri) who is kindling providing compiled packages that are not provided upstream):
 
@@ -42,6 +42,15 @@ qtcreator
 QtCreator ask to configure the project. Accept the default parameters.
 
 Open the `app/QRegovar.pro` file, and press `ctrl + R` to build and run QRegovar.
+
+## On ArchLinux
+
+```sh
+sudo pacman -S qt5-quickcontrols2 qt5-charts qt5-graphicaleffects qt5-websockets
+cd app
+qmake
+make
+```
 
 # Documentation
 
