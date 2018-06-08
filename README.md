@@ -23,12 +23,12 @@ Then open the `app/QRegovar.pro` with QtCreator and press `ctrl + R` to build an
 
 ## On Ubuntu 16.04 LTS (Xenial)
 
-You first need a few Qt 5.10.1 packages that are not yet distributed through the official Ubuntu repositories (note that by doing so, you are trusting [Stephan Binner](https://launchpad.net/~beineri) who is kindling providing compiled packages that are not provided upstream):
+You first need a few Qt 5.10 packages that are not yet distributed through the official Ubuntu repositories (note that by doing so, you are trusting [Stephan Binner](https://launchpad.net/~beineri) who is kindly providing compiled packages that are not provided upstream):
 
 ```sh
-sudo add-apt-repository ppa:beineri/opt-qt-5.10.0-xenial
+sudo add-apt-repository ppa:beineri/opt-qt-5.10.1-xenial
 sudo apt update
-sudo apt install qt510creator qt510charts-no-lgpl qt510graphicaleffects qt510websockets
+sudo apt install qt510creator qt510charts-no-lgpl qt510graphicaleffects qt510quickcontrols2 qt510websockets
 ```
 
 Then, source a Qt 5.10 environment and use QtCreator to compile QRegovar:
@@ -37,7 +37,7 @@ Then, source a Qt 5.10 environment and use QtCreator to compile QRegovar:
 source /opt/qt510/bin/qt510-env.sh
 qtcreator
 ```
-QtCreator ask to configure the project. Accept the default parameters.
+QtCreator asks to configure the project. Accept the default parameters.
 
 Open the `app/QRegovar.pro` file, and press `ctrl + R` to build and run QRegovar.
 
