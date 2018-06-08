@@ -29,7 +29,7 @@ after_build:
   - C:\projects\qregovar\deploy\win\upload-prepare.bat
 
 artifacts:
-  - path: install\build_*_%QT_VER%.zip
+  - path: C:\projects\qregovar\*.zip
 
 deploy:
   - provider: GitHub
