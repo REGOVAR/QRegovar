@@ -33,7 +33,7 @@ artifacts:
 
 deploy:
   - provider: GitHub
-    tag: v0.12.284
+    tag: v0.12.284+build.$(appveyor_build_version)
     release: Regovar v0.12.284+build.$(appveyor_build_version)
     description: ''
     auth_token:
