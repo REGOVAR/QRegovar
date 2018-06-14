@@ -30,7 +30,7 @@ after_build:
   - C:\projects\qregovar\deploy\win\upload-prepare.bat
 
 artifacts:
-  - path: build_*.zip
+  - path: regovar-client_*.zip
 
 deploy:
   - provider: GitHub
