@@ -57,7 +57,7 @@ Item
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.font.family
             color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
-            text:  hovered ? qsTr("Click to disconnect") : userFullName
+            text:  userFullName
         }
         Text
         {
@@ -66,7 +66,7 @@ Item
             font.pixelSize: Regovar.theme.font.size.normal
             font.family: Regovar.theme.icons.name
             color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
-            text: hovered ? "h" : "b"
+            text: "b"
         }
         Text
         {
@@ -74,9 +74,9 @@ Item
             Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
             font.pixelSize: Regovar.theme.font.size.small
             font.family: Regovar.theme.font.family
-            color: Regovar.theme.primaryColor.back.dark
+            color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
 
-            text: serverStatus
+            text: hovered ? qsTr("Click to see server tasks") : serverStatus
         }
         Text
         {
@@ -84,7 +84,7 @@ Item
             Layout.alignment: Qt.AlignVCenter
             font.pixelSize: Regovar.theme.font.size.small
             font.family: Regovar.theme.icons.name
-            color: Regovar.theme.primaryColor.back.dark
+            color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.primaryColor.back.dark
             text: "F"
         }
     }
@@ -95,7 +95,7 @@ Item
         hoverEnabled: true
         onEntered: root.hovered = true
         onExited: root.hovered = false
-        onClicked: regovar.usersManager.logout()
+        onClicked: regovar.openServerTasksWindow()
     }
 
 

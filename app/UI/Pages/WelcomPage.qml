@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
+import QtQuick.Dialogs 1.2
 
 import "qrc:/qml/Framework"
 import "qrc:/qml/Regovar"
@@ -129,6 +130,13 @@ Rectangle
             height: 100
             spacing: 30
 
+            ButtonWelcom
+            {
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("Import file")
+                onClicked: localFilesDialog.open() // regovar.openNewFileWizard()
+                enabled: regovar.networkManager.status === 0
+            }
             ButtonWelcom
             {
                 Layout.alignment: Qt.AlignHCenter
@@ -341,6 +349,25 @@ Rectangle
                 text: qsTr("Check local settings")
                 onClicked: regovar.mainMenu.goTo(6,1,2)
             }
+        }
+    }
+
+    FileDialog
+    {
+        id: localFilesDialog
+        nameFilters: ["All files (*)"]
+        selectedNameFilter: "All files (*)"
+        title: "Select file(s) to upload on the server"
+        //folder: shortcuts.home
+        selectMultiple: true
+
+        onAccepted:
+        {
+            //
+            console.log("x:" + localFilesDialog.x);
+            console.log("y:" + localFilesDialog.y);
+            console.log("x:" + localFilesDialog.width);
+            console.log("x:" + localFilesDialog.height);
         }
     }
 }

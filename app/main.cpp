@@ -27,6 +27,7 @@
 #include "Model/panel/panelentry.h"
 #include "Model/phenotype/geneslistmodel.h"
 #include "Model/panel/panelslistmodel.h"
+#include "Model/serverTask/servertaskslistmodel.h"
 
 #include "Widgets/VariantsTreeWidget/variantstreewidget.h"
 
@@ -68,6 +69,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<HpoDataListModel>("Regovar.Core", 1, 0, "PhenotypesListModel");
     qmlRegisterType<GenesListModel>("Regovar.Core", 1, 0, "GenesListModel");
     qmlRegisterType<PanelsListModel>("Regovar.Core", 1, 0, "PanelsListModel");
+    qmlRegisterType<ServerTasksListModel>("Regovar.Core", 1, 0, "ServerTasksListModel");
 
     qmlRegisterType<User>("Regovar.Core", 1, 0, "User");
     qmlRegisterType<Project>("Regovar.Core", 1, 0, "Project");
@@ -85,6 +87,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Phenotype>("Regovar.Core", 1, 0, "Phenotype");
     qmlRegisterType<Disease>("Regovar.Core", 1, 0, "Disease");
     qmlRegisterType<Gene>("Regovar.Core", 1, 0, "Gene");
+    qmlRegisterType<ServerTask>("Regovar.Core", 1, 0, "ServerTask");
 
     qmlRegisterType<RemoteLogModel>("Regovar.Core", 1, 0, "RemoteLogModel");
     qmlRegisterType<AdminTableInfo>("Regovar.Core", 1, 0, "AdminTableInfo");

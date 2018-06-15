@@ -1,9 +1,6 @@
 #include "networkmanager.h"
 
 #include "Model/regovar.h"
-#include "Model/file/file.h"
-#include "Model/analysis/filtering/filteringanalysis.h"
-#include "Model/analysis/pipeline/pipelineanalysis.h"
 
 
 NetworkManager::NetworkManager(QObject *parent) : QObject(parent)
@@ -91,66 +88,21 @@ void NetworkManager::onWebsocketConnected()
 
 void NetworkManager::onWebsocketReceived(QString message)
 {
+
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
     QJsonObject obj = doc.object();
     QString action = obj["action"].toString();
     QJsonObject data = obj["data"].toObject();
 
-    // TODO: get progress and update Network task if needed
-    if (mWsSamplesActionsList.indexOf(action) != -1)
+    if (action != "hello")
     {
-        regovar->samplesManager()->processPushNotification(action, data);
+        regovar->serverNotificationReceived(action, data);
+        emit websocketMessageReceived(action, data);
     }
-    else if (mWsFilesActionsList.indexOf(action) != -1)
+    else
     {
-        regovar->filesManager()->processPushNotification(action, data);
+        //qDebug() << "WS WARNING: Websocket Unknow message" << message;
     }
-    else if (mWsFilteringActionsList.indexOf(action) != -1)
-    {
-        int id = data["id"].toInt();
-        if (id == 0)
-        {
-            id = data["analysis_id"].toInt();
-        }
-
-        FilteringAnalysis* analysis = regovar->analysesManager()->getFilteringAnalysis(id);
-        if (analysis != nullptr)
-        {
-            analysis->processPushNotification(action, data);
-        }
-    }
-    else if (mWsFilterActionsList.indexOf(action) != -1)
-    {
-        int id = data["analysis_id"].toInt();
-        FilteringAnalysis* analysis = regovar->analysesManager()->getFilteringAnalysis(id);
-        if (analysis != nullptr)
-        {
-            analysis->processPushNotification(action, data);
-        }
-    }
-    else if (mWsPipelinesActionsList.indexOf(action) != -1)
-    {
-        int id = data["id"].toInt();
-        PipelineAnalysis* analysis = regovar->analysesManager()->getPipelineAnalysis(id);
-        if (analysis != nullptr)
-        {
-            analysis->processPushNotification(action, data);
-        }
-    }
-    else if (mWsJobsActionsList.indexOf(action) != -1)
-    {
-        int id = data["id"].toInt();
-        PipelineAnalysis* analysis = regovar->analysesManager()->getPipelineAnalysis(id);
-        if (analysis != nullptr)
-        {
-            analysis->processPushNotification(action, data);
-        }
-    }
-    else if (obj["action"].toString() != "hello")
-    {
-        qDebug() << "WS WARNING: Websocket Unknow message" << message;
-    }
-    emit websocketMessageReceived(action, data);
 }
 
 void NetworkManager::onWebsocketClosed()
