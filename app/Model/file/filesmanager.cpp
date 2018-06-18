@@ -14,6 +14,10 @@ FilesManager::FilesManager(QObject *parent) : QObject(parent)
     mUploader->setBandWidthLimit(0);
 
     connect(mUploader,  SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
+
+    // Continue uploading files
+    QJsonObject data = regovar->settings()->uploadingFiles();
+    mUploader->resume(data);
 }
 
 
@@ -153,6 +157,10 @@ void FilesManager::filesEnqueued(QHash<QString,QString> mapping)
         File* file = getOrCreateFile(id);
         file->load();
         mUploadsList->append(file);
+
+        // Store in QSettings to be able to resume upload if interrupted
+        regovar->settings()->addUploadFile(id, key);
+
         emit fileUploadEnqueued(key, id);
         // qDebug() << key << " => " << mapping[key] << id;
     }
@@ -172,6 +180,8 @@ void FilesManager::cancelUploadFile(QList<int> filesId)
             {
                 mUploader->cancel(QString::number(id));
                 mUploadsList->remove(file);
+                // Remove from QSettings
+                regovar->settings()->removeUploadFile(id);
             }
         }
     }
@@ -182,6 +192,7 @@ void FilesManager::cancelUploadFile(QList<int> filesId)
 void FilesManager::clearUploadsList()
 {
     mUploadsList->clear();
+    regovar->settings()->clearUploadFile();
 }
 
 
@@ -287,6 +298,12 @@ void FilesManager::updateUploadProgress()
             double s = f->size();
             if (s>0) progress = f->uploadOffset() / s * 100;
             totalProgress += progress;
+
+            if (f->size() != 0 && f->uploadOffset() == f->size())
+            {
+                // Remove from QSettings
+                regovar->settings()->removeUploadFile(f->id());
+            }
         }
         mUploadsProgress = totalProgress / mUploadsList->rowCount();
     }

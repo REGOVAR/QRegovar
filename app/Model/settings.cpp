@@ -77,3 +77,65 @@ void Settings::save()
 
 
 
+void Settings::addUploadFile(int fileId, QString localPath)
+{
+    QSettings settings;
+    QJsonObject data = deserializeJson(settings.value("uploadingFiles").toString());
+    if (!data.contains(QString::number(fileId)))
+    {
+        data.insert(QString::number(fileId), localPath);
+        settings.setValue("uploadingFiles", serializeJson(data));
+        emit dataChanged();
+    }
+}
+
+
+
+void Settings::removeUploadFile(int fileId)
+{
+    QSettings settings;
+    QJsonObject data = deserializeJson(settings.value("uploadingFiles").toString());
+    if (data.contains(QString::number(fileId)))
+    {
+        data.remove(QString::number(fileId));
+        settings.setValue("uploadingFiles", serializeJson(data));
+        emit dataChanged();
+    }
+}
+
+
+
+void Settings::clearUploadFile()
+{
+    QSettings settings;
+    settings.setValue("uploadingFiles", "");
+}
+
+
+
+
+QString Settings::serializeJson(QJsonObject json)
+{
+    QJsonDocument doc(json);
+    QString data(doc.toJson(QJsonDocument::Compact));
+    return data;
+}
+QJsonObject Settings::deserializeJson(QString data)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(data.toUtf8());
+    if(!doc.isNull())
+    {
+        if(doc.isObject())
+        {
+            return doc.object();
+        }
+    }
+    return QJsonObject();
+}
+
+
+QJsonObject Settings::uploadingFiles()
+{
+    QSettings settings;
+    return deserializeJson(settings.value("uploadingFiles").toString());
+}

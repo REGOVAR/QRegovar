@@ -20,6 +20,7 @@ class Settings: public QObject
     Q_PROPERTY(bool keepMeLogged READ keepMeLogged WRITE setKeepMeLogged NOTIFY dataChanged)
     Q_PROPERTY(QNetworkCookie sessionCookie READ sessionCookie WRITE setSessionCookie NOTIFY dataChanged)
     Q_PROPERTY(int sessionUserId READ sessionUserId WRITE setSessionUserId NOTIFY dataChanged)
+    Q_PROPERTY(QJsonObject uploadingFiles READ uploadingFiles NOTIFY dataChanged)
 
 public:
     // Constructors
@@ -39,6 +40,7 @@ public:
     inline bool keepMeLogged() const { return mKeepMeLogged; }
     inline QNetworkCookie sessionCookie() const { return mSessionCookie; }
     inline int sessionUserId() const { return mSessionUserId; }
+    QJsonObject uploadingFiles();
 
     // Setters
     inline void setDefaultReference(int i) { mDefaultReference = i; emit dataChanged(); }
@@ -58,6 +60,9 @@ public:
     // Methods
     Q_INVOKABLE void reload();
     Q_INVOKABLE void save();
+    Q_INVOKABLE void addUploadFile(int fileId, QString localPath);
+    Q_INVOKABLE void removeUploadFile(int fileId);
+    Q_INVOKABLE void clearUploadFile();
 
 
 Q_SIGNALS:
@@ -78,6 +83,10 @@ private:
     bool mKeepMeLogged = false;
     QNetworkCookie mSessionCookie;
     int mSessionUserId=-1;
+
+
+    QString serializeJson(QJsonObject json);
+    QJsonObject deserializeJson(QString json);
 };
 
 #endif // SETTINGS_H

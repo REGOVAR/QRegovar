@@ -133,7 +133,7 @@ Rectangle
         console.log("Start upload of sample's files : " + files);
         var filesToImport = [];
 
-        // import only file that are not already importating
+        // check valid urls
         for (var idx=0; idx<files.length; idx++)
         {
             var file = files[idx];

@@ -36,7 +36,44 @@ void TusUploader::writteSettings()
 
 
 
+void TusUploader::resume(QJsonObject data)
+{
+    // Fix base path to the root
+    QDir::setCurrent(QDir::rootPath());
 
+    // The following hash will be set with uploadUrl returned by the server
+    QHash<QString, QString>* serverMapping =  new QHash<QString, QString>();
+
+    // Then for each file we sent a request to the server to prepare uploadUrl for it
+    for (QString& fileId: data.keys())
+    {
+        QFileInfo fi(data[fileId].toString());
+
+        if (fi.isFile())
+        {
+            qDebug() << "Resume upload for " << data[fileId];
+
+
+            TusUploadItem* item = new TusUploadItem();
+            item->path = data[fileId].toString();
+            item->offset = 0;
+            item->file = nullptr;
+            item->uploadUrl = "";
+            item->file = new QFile(item->path);
+            item->file->open(QIODevice::ReadOnly);
+            item->size = item->file->size();
+            item->uploadUrl = mTusUploadUrl + "/" + fileId;
+
+            serverMapping->insert(item->path, item->uploadUrl);
+            mQueue.enqueue(item);
+
+            // Start upload if possible
+            startNext();
+        }
+    }
+
+    emitFileEnqueued(serverMapping);
+}
 
 
 
