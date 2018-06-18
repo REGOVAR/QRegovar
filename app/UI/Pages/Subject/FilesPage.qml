@@ -18,11 +18,18 @@ Rectangle
     property Subject model
     onModelChanged:
     {
-        if (model)
+        if(model)
         {
-            filesBrowser.model = model.files;
+            model.dataChanged.connect(updateViewFromModel);
         }
+        updateViewFromModel();
     }
+    Component.onDestruction:
+    {
+        model.dataChanged.disconnect(updateViewFromModel);
+    }
+
+
 
 
     Rectangle
@@ -34,17 +41,24 @@ Rectangle
         height: 50
         color: Regovar.theme.backgroundColor.alt
 
-        Text
+        RowLayout
         {
-            anchors.top: header.top
-            anchors.left: header.left
-            anchors.bottom: header.bottom
+            anchors.fill: parent
             anchors.margins: 10
-            font.pixelSize: Regovar.theme.font.size.title
-            font.weight: Font.Black
-            color: Regovar.theme.primaryColor.back.dark
-            verticalAlignment: Text.AlignVCenter
-            text: model ? model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname : ""
+
+            Text
+            {
+                id: nameLabel
+                Layout.fillWidth: true
+                font.pixelSize: Regovar.theme.font.size.title
+                font.weight: Font.Black
+                color: Regovar.theme.primaryColor.back.dark
+                verticalAlignment: Text.AlignVCenter
+                text: "-"
+                elide: Text.ElideRight
+            }
+
+            ConnectionStatus { }
         }
     }
 
@@ -74,18 +88,13 @@ Rectangle
     }
 
 
-    SelectFilesDialog
-    {
-        id: fileDialog
-        visible: false
-        title: qsTr("Please choose a file")
 
-        onAccepted:
+    function updateViewFromModel()
+    {
+        if (model)
         {
-            var list = fileSystemModel.getFilesPath(localSelection)
-            regovar.filesManager.enqueueUploadFile(list)
+            nameLabel.text = root.model.identifier + " : " + root.model.lastname.toUpperCase() + " " + root.model.firstname;
+            filesBrowser.model = model.files;
         }
     }
-
-
 }

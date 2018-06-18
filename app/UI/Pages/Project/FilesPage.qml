@@ -208,22 +208,4 @@ Rectangle
             }
         }
     }
-
-
-
-    SelectFilesDialog
-    {
-        id: fileDialog
-        visible: false
-        title: qsTr("Please choose a file")
-//        folder: shortcuts.home
-
-        onAccepted:
-        {
-            var list = fileSystemModel.getFilesPath(localSelection)
-            regovar.filesManager.enqueueUploadFile(list)
-        }
-    }
-
-
 }

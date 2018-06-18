@@ -46,7 +46,6 @@ public:
     Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void enqueueUploadFile(QStringList filesPaths);
     Q_INVOKABLE void cancelUploadFile(QList<int> filesId);
-    Q_INVOKABLE void clearUploadsList();
     Q_INVOKABLE void refreshCacheStats();
     Q_INVOKABLE void clearCache();
     Q_INVOKABLE void pauseUpload(int id);

@@ -161,7 +161,7 @@ Item
             for(var idx in files)
             {
                 var file = files[idx];
-                root.model.add(file);
+                root.model.append(file);
             }
         }
     }

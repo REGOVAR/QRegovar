@@ -19,6 +19,7 @@ class ServerTasksListModel : public QAbstractListModel
     };
 
     Q_OBJECT
+    Q_PROPERTY(float progress READ progress NOTIFY progressChanged)
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
     Q_PROPERTY(GenericProxyModel* proxy READ proxy NOTIFY neverChanged)
 
@@ -27,10 +28,14 @@ public:
     ServerTasksListModel(QObject* parent = nullptr);
 
     // Getters
+    inline float progress() const { return mProgress; }
     inline GenericProxyModel* proxy() const { return mProxy; }
 
     // Methods
     ServerTask* getOrCreateTask(QString action, QJsonObject data);
+    float updateProgress();
+    Q_INVOKABLE void pause(QString id);
+    Q_INVOKABLE void cancel(QString id);
 
     // QAbstractListModel methods
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
@@ -41,10 +46,12 @@ public:
 Q_SIGNALS:
     void neverChanged();
     void countChanged();
+    void progressChanged();
 
 private:
     //! List of events
     QList<ServerTask*> mServerTaskList;
+    float mProgress = 0;
 
     QHash<QString, ServerTask*> mServerTaskMap;
     //! The QSortFilterProxyModel to use by table view to browse tasks of the list

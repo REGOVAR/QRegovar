@@ -360,33 +360,7 @@ Rectangle
         title: "Select file(s) to upload on the server"
         //folder: shortcuts.home
         selectMultiple: true
-        onAccepted: importFiles(fileUrls)
-    }
-
-    function importFiles(files)
-    {
-        console.log("Start upload of files : " + files);
-        var filesToImport = [];
-
-        // check valid urls
-        for (var idx=0; idx<files.length; idx++)
-        {
-            var file = files[idx];
-            if (file.startsWith("file:///"))
-            {
-                file = file.substr(8);
-            }
-
-            //if (file in root.fileUploadingList) continue;
-            filesToImport.push(file);
-            //root.fileUploadingList.push(file);
-        }
-
-        // Enqueue file to the TUS upload manager.
-        // When upload will start, the fileManager will emit uploadsChanged signal
-        // We will be able to retrieve created File & Sample entries in the model
-        // and update the view accordingly (see connection below)
-        regovar.filesManager.enqueueUploadFile(filesToImport);
+        onAccepted: Regovar.importFiles(fileUrls)
     }
 }
 

@@ -165,6 +165,7 @@ void FilesManager::filesEnqueued(QHash<QString,QString> mapping)
         // qDebug() << key << " => " << mapping[key] << id;
     }
     updateUploadProgress();
+    loadFilesBrowser();
 }
 
 
@@ -186,13 +187,6 @@ void FilesManager::cancelUploadFile(QList<int> filesId)
         }
     }
     updateUploadProgress();
-}
-
-
-void FilesManager::clearUploadsList()
-{
-    mUploadsList->clear();
-    regovar->settings()->clearUploadFile();
 }
 
 

@@ -33,6 +33,47 @@ ServerTask* ServerTasksListModel::getOrCreateTask(QString action, QJsonObject da
 }
 
 
+float ServerTasksListModel::updateProgress()
+{
+    float total = 0;
+    if (mServerTaskList.count() > 0)
+    {
+        for(ServerTask* task: mServerTaskList)
+        {
+            total += task->progress();
+        }
+        total /= mServerTaskList.count();
+    }
+    else
+    {
+        total = -1;
+    }
+    mProgress = total;
+    emit progressChanged();
+    return total;
+}
+
+
+void ServerTasksListModel::pause(QString id)
+{
+    if (mServerTaskMap.contains(id))
+    {
+        ServerTask* task = mServerTaskMap[id];
+        task->pause();
+    }
+}
+void ServerTasksListModel::cancel(QString id)
+{
+    if (mServerTaskMap.contains(id))
+    {
+        ServerTask* task = mServerTaskMap[id];
+        task->cancel();
+    }
+}
+
+
+
+
 
 // QAbstractListModel methods
 int ServerTasksListModel::rowCount(const QModelIndex&)const
@@ -48,12 +89,25 @@ QVariant ServerTasksListModel::data(const QModelIndex& index, int role) const
         return QVariant();
 
     const ServerTask* task= mServerTaskList[index.row()];
-    if (role == Label || role == Qt::DisplayRole)
+    if (role == Qt::DisplayRole)
         return task->label();
     else if (role == Id)
         return task->id();
+    else if (role == Label)
+    {
+        QJsonObject data;
+        data.insert("id", task->id());
+        data.insert("label", task->label());
+        return data;
+    }
     else if (role == Status)
-        return task->status();
+    {
+        QJsonObject data;
+        data.insert("id", task->id());
+        data.insert("enableControls", task->enableControls() );
+        data.insert("status", task->status()); // done, running, pause
+        return data;
+    }
     else if (role == Progress)
         return task->progress();
     else if (role == UpdateDate)

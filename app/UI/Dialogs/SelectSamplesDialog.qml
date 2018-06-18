@@ -339,7 +339,6 @@ Dialog
                     {
                         var idx = regovar.samplesManager.proxy.getModelIndex(rowIndex);
                         var id = regovar.samplesManager.data(idx, 257); // 257 = Qt::UserRole+1
-
                         samples = samples.concat(regovar.samplesManager.getOrCreateSample(id));
                     });
                     samplesSelected(samples);
@@ -373,15 +372,16 @@ Dialog
         title: "Select file(s) to upload on the server"
         //folder: shortcuts.home
         selectMultiple: true
+        onAccepted: Regovar.importFiles(fileUrls)
 
-        onAccepted:
-        {
-            // Switch to upload/import screen if needed
-            sampleDialog.importingFile = true;
+//        onAccepted:
+//        {
+//            // Switch to upload/import screen if needed
+//            sampleDialog.importingFile = true;
 
-            // Start tus upload for
-            sampleImportView.importFiles(localFilesDialog.fileUrls);
-        }
+//            // Start tus upload for
+//            sampleImportView.importFiles(localFilesDialog.fileUrls);
+//        }
     }
 
 

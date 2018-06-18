@@ -13,14 +13,17 @@ Rectangle
     color: Regovar.theme.backgroundColor.main
 
     property Subject model
-    // property bool isInit: false
     onModelChanged:
     {
-        if (model)
+        if(model)
         {
-            phenotypeList.model = model.phenotypes;
-      //      root.isInit = true;
+            model.dataChanged.connect(updateViewFromModel);
         }
+        updateViewFromModel();
+    }
+    Component.onDestruction:
+    {
+        model.dataChanged.disconnect(updateViewFromModel);
     }
 
     Rectangle
@@ -32,27 +35,24 @@ Rectangle
         height: 50
         color: Regovar.theme.backgroundColor.alt
 
-        Text
+        RowLayout
         {
-            anchors.top: header.top
-            anchors.left: header.left
-            anchors.bottom: header.bottom
-            anchors.right: connectionStatus.left
+            anchors.fill: parent
             anchors.margins: 10
-            font.pixelSize: Regovar.theme.font.size.title
-            font.weight: Font.Black
-            color: Regovar.theme.primaryColor.back.dark
-            verticalAlignment: Text.AlignVCenter
-            text: model ? model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname : ""
-        }
-        ConnectionStatus
-        {
-            id: connectionStatus
-            anchors.top: header.top
-            anchors.right: header.right
-            anchors.bottom: header.bottom
-            anchors.margins: 5
-            anchors.rightMargin: 10
+
+            Text
+            {
+                id: nameLabel
+                Layout.fillWidth: true
+                font.pixelSize: Regovar.theme.font.size.title
+                font.weight: Font.Black
+                color: Regovar.theme.primaryColor.back.dark
+                verticalAlignment: Text.AlignVCenter
+                text: model ? model.identifier + " : " + model.lastname.toUpperCase() + " " + model.firstname : ""
+                elide: Text.ElideRight
+            }
+
+            ConnectionStatus { }
         }
     }
 
@@ -253,6 +253,16 @@ Rectangle
         onAddPhenotype: root.model.setHpo(regovar.phenotypesManager.getOrCreate(phenoId))
     }
 
+
+
+
+    function updateViewFromModel()
+    {
+        if (model)
+        {
+            phenotypeList.model = model.phenotypes;
+        }
+    }
 
     function displayCurrentAnalysisPreview(analysis)
     {

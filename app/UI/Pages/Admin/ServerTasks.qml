@@ -91,27 +91,41 @@ Rectangle
                 title: qsTr("Status")
                 delegate: Item
                 {
-                    Text
+                    RowLayout
                     {
-                        anchors.leftMargin: 5
-                        anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: styleData.textAlignment
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        text: "a" // styleData.value.icon
-                        font.family: Regovar.theme.icons.name
-                    }
-                    Text
-                    {
-                        anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
-                        anchors.rightMargin: 5
-                        anchors.fill: parent
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: styleData.textAlignment
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        text: styleData.value
-                        elide: Text.ElideRight
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                        spacing: 10
+
+                        enabled: styleData.value.status !== "done"
+
+                        ButtonInline
+                        {
+                            text: ""
+                            iconTxt: styleData.value.status === "running" ? "y" : "x"
+                            ToolTip.text: styleData.value.status ==="running" ? qsTr("Pause task") : qsTr("Resume task")
+                            ToolTip.visible: hovered
+                            onClicked: regovar.serverTasks.pause(styleData.value.id);
+                        }
+
+                        ButtonInline
+                        {
+                            text: ""
+                            iconTxt: "h"
+                            ToolTip.text: qsTr("Cancel task")
+                            ToolTip.visible: hovered
+                            onClicked: regovar.serverTasks.cancel(styleData.value.id);
+                        }
+                        Text
+                        {
+                            Layout.fillWidth: true
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value.status
+                            elide: Text.ElideRight
+                        }
                     }
                 }
             }
@@ -122,6 +136,7 @@ Rectangle
                 title: qsTr("Progress")
                 delegate: Item
                 {
+
                     Rectangle
                     {
                         anchors.verticalCenter: parent.verticalCenter
@@ -129,6 +144,7 @@ Rectangle
                         anchors.leftMargin: 5
                         border.width: 1
                         border.color: Regovar.theme.boxColor.border
+                        color: Regovar.theme.boxColor.back
                         width: 100
                         height: 10
 
@@ -151,6 +167,34 @@ Rectangle
                 role: "label"
                 title: qsTr("Task")
                 width: 500
+                delegate: Item
+                {
+                    RowLayout
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                        spacing: 10
+
+                        ButtonInline
+                        {
+                            text: ""
+                            iconTxt: "z"
+                            ToolTip.text: qsTr("Display details")
+                            ToolTip.visible: hovered
+                            onClicked: regovar.serverTasks.open(styleData.value.id);
+                        }
+                        Text
+                        {
+                            Layout.fillWidth: true
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: styleData.textAlignment
+                            font.pixelSize: Regovar.theme.font.size.normal
+                            text: styleData.value.label
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
             }
         }
     }
