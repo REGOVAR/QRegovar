@@ -12,13 +12,15 @@ import "qrc:/qml/Framework"
 Dialog
 {
     id: fileDialog
-    title: qsTr("Upload your files")
+    title: qsTr("Select your files")
     standardButtons: Dialog.Ok | Dialog.Cancel
     width: 500
     height: 400
     signal fileSelected(var files)
     property alias remoteIndex: remoteFiles.currentRow
     property alias remoteSelection: remoteFiles.selection
+    property bool enableImportLocalFile: true
+    property alias searchQuery: searchInput.text
 
 
 
@@ -57,6 +59,7 @@ Dialog
 
             TextField
             {
+                id: searchInput
                 Layout.fillWidth: true
                 iconLeft: "z"
                 displayClearButton: true
@@ -157,6 +160,8 @@ Dialog
             iconTxt: "à"
             text: qsTr("Upload local files")
             onClicked: localFilesDialog.open()
+            visible: enableImportLocalFile
+            enabled: enableImportLocalFile
         }
 
 

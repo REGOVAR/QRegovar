@@ -89,23 +89,6 @@ Dialog
                     visible: referencialSelectorEnabled
                     model: regovar.references
                     textRole: "name"
-
-//                    delegate: Control.ItemDelegate
-//                    {
-//                        x: 1
-//                        width: refCombo.width -2
-//                        height: Regovar.theme.font.boxSize.normal
-//                        contentItem: Text
-//                        {
-//                            text: modelData.name
-//                            color: enabled ? Regovar.theme.boxColor.front : Regovar.theme.frontColor.disable
-//                            font: refCombo.font
-//                            elide: Text.ElideRight
-//                            verticalAlignment: Text.AlignVCenter
-//                        }
-//                        highlighted: refCombo.highlightedIndex === index
-//                    }
-
                     onCurrentIndexChanged:
                     {
                         regovar.samplesManager.referencialId = regovar.references[currentIndex].id;
@@ -132,8 +115,9 @@ Dialog
                 anchors.top : sampleViewFiltersRow.bottom
                 anchors.right: rootSampleView.right
                 anchors.margins: 10
+                height: Regovar.theme.font.boxSize.normal * 2
 
-                text: qsTr("Import sample\nfrom file")
+                text: qsTr("Import samples\nfrom files")
                 onClicked:
                 {
                     localFilesDialog.open();
@@ -364,24 +348,19 @@ Dialog
 
 
 
-    FileDialog
+    SelectFilesDialog
     {
         id: localFilesDialog
-        nameFilters: [ "VCF files (*.vcf *.vcf.gz)", "GVCF (*.gvcf *.gvcf.gz)", "All files (*)" ]
-        selectedNameFilter: "VCF files (*.vcf *.vcf.gz)"
-        title: "Select file(s) to upload on the server"
-        //folder: shortcuts.home
-        selectMultiple: true
-        onAccepted: Regovar.importFiles(fileUrls)
-
-//        onAccepted:
-//        {
-//            // Switch to upload/import screen if needed
-//            sampleDialog.importingFile = true;
-
-//            // Start tus upload for
-//            sampleImportView.importFiles(localFilesDialog.fileUrls);
-//        }
+        searchQuery: "vcf"
+        title: "Select file(s) to import as sample"
+        onFileSelected:
+        {
+            for(var idx in files)
+            {
+                var file = files[idx];
+                regovar.analysesManager.newFiltering.addSamplesFromFile(file.id);
+            }
+        }
     }
 
 

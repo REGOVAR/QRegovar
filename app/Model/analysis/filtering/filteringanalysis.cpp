@@ -612,7 +612,7 @@ void FilteringAnalysis::resetSets()
     {
         QModelIndex i1 = regovar->panelsManager()->panels()->proxy()->getModelIndex(idx);
         // TODO: fix get panel sorted by name
-        QModelIndex i2 = regovar->panelsManager()->panels()->proxy()->mapToSource(i1);
+        // QModelIndex i2 = regovar->panelsManager()->panels()->proxy()->mapToSource(i1);
         PanelVersion* version =regovar->panelsManager()->panels()->getAt(i1.row());
         mSets.append(new Set("panel", version->id(), version->fullname()));
     }
