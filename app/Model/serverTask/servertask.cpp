@@ -1,5 +1,6 @@
 #include "servertask.h"
 #include "Model/regovar.h"
+#include "Model/analysis/filtering/filteringanalysis.h"
 
 ServerTask::ServerTask(QObject* parent): RegovarResource(parent)
 {
@@ -29,7 +30,7 @@ bool ServerTask::loadJson(QJsonObject json, bool)
     // Job
     else if (mId == "import_vcf_start" || mId == "import_vcf_processing" || mId == "import_vcf_end")
     {
-        mId = "import_vcf_" + json["id"].toString();
+        mId = "import_vcf_" + json["file_id"].toString();
         mStatus = json["status"].toString();
         mType = "pipeline";
         mProgress = json["progress"].toDouble();
@@ -40,11 +41,27 @@ bool ServerTask::loadJson(QJsonObject json, bool)
     // Filtering analysis
     else if (mId == "analysis_computing" || mId == "wt_update" || mId == "wt_creation" || mId == "filter_update")
     {
+        if (mId == "wt_creation")
+        {
+            int step = 0;
+            double total = 0;
+            for(QJsonValue val: json["log"].toArray())
+            {
+                step ++;
+                total += val.toObject()["progress"].toDouble();
+            }
+            mProgress = total / step;
+        }
+        else
+        {
+            mProgress = json["progress"].toDouble();
+        }
+
+
         mId = "analysis_" + json["id"].toString();
         mStatus = json["status"].toString();
         mType = "filtering";
-        mProgress = json["progress"].toDouble();
-        mLabel = tr("Computing analysis") + ": " + json["name"].toString();
+        mLabel = tr("Computing analysis") + ": " + regovar->analysesManager()->getOrCreateFilteringAnalysis(json["id"].toInt())->name();
         mEnableControls = true;
     }
     else if (mId == "filter_update")

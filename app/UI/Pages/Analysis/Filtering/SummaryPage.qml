@@ -134,7 +134,7 @@ Rectangle
             text: ""
             onClicked:
             {
-                if (root.model.status == "empty" || root.model.status == "close")
+               if (root.model.status == "empty" || root.model.status == "close")
                {
 
                }
@@ -879,12 +879,21 @@ Rectangle
         var statusLabel = regovar.analysisStatusLabel(status);
         var statusText = "";
         var statusColor = Regovar.theme.frontColor.success;
+        statusButton.visible = true;
 
-
+        if (status == "empty" || status == "close" || status == "waiting")
+        {
+        }
         if (status == "error")
         {
             statusColor = Regovar.theme.frontColor.danger;
             statusText = ". " + root.model.computingProgress.error_message;
+        }
+        else if (status == "waiting")
+        {
+            statusColor = Regovar.theme.frontColor.warning;
+            statusText = ". " + qsTr("The creation of the analysis will start when the import of all samples from file is done.");
+            statusButton.visible = false;
         }
         else if (status == "empty" || status == "close")
         {
@@ -902,8 +911,11 @@ Rectangle
         }
         else
         {
-            statusText = " (" + (globalProgress/root.model.computingProgress.log.length*100).toFixed(1) + "%)";
-            statusText += ". " + qsTr("We are processing variant's data for your analysis. It might take some time...");
+            if (root.model.computingProgress && root.model.computingProgress.log)
+            {
+                statusText = " (" + (globalProgress/root.model.computingProgress.log.length*100).toFixed(1) + "%)";
+                statusText += ". " + qsTr("We are processing variant's data for your analysis. It might take some time...");
+            }
         }
 
         // update view

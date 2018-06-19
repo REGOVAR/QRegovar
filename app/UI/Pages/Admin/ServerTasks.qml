@@ -100,23 +100,24 @@ Rectangle
 
                         enabled: styleData.value.status !== "done"
 
-                        ButtonInline
-                        {
-                            text: ""
-                            iconTxt: styleData.value.status === "running" ? "y" : "x"
-                            ToolTip.text: styleData.value.status ==="running" ? qsTr("Pause task") : qsTr("Resume task")
-                            ToolTip.visible: hovered
-                            onClicked: regovar.serverTasks.pause(styleData.value.id);
-                        }
+                        // TODO
+//                        ButtonInline
+//                        {
+//                            text: ""
+//                            iconTxt: styleData.value.status === "running" ? "y" : "x"
+//                            ToolTip.text: styleData.value.status ==="running" ? qsTr("Pause task") : qsTr("Resume task")
+//                            ToolTip.visible: hovered
+//                            onClicked: regovar.serverTasks.pause(styleData.value.id);
+//                        }
 
-                        ButtonInline
-                        {
-                            text: ""
-                            iconTxt: "h"
-                            ToolTip.text: qsTr("Cancel task")
-                            ToolTip.visible: hovered
-                            onClicked: regovar.serverTasks.cancel(styleData.value.id);
-                        }
+//                        ButtonInline
+//                        {
+//                            text: ""
+//                            iconTxt: "h"
+//                            ToolTip.text: qsTr("Cancel task")
+//                            ToolTip.visible: hovered
+//                            onClicked: regovar.serverTasks.cancel(styleData.value.id);
+//                        }
                         Text
                         {
                             Layout.fillWidth: true

@@ -20,7 +20,7 @@ InformationPanel
         {
             subject = data["subject"].identifier + " - " + data["subject"].lastname + " " + data["subject"].firstname;
         }
-        root.title += "<br/>Subject: " + subject + "<br/>Status: " + data.status;
+        root.title += "<br/>Subject: " + subject + "<br/>Status: " + data.statusUI["label"];
 
         // Update tabs
         root.tabSharedModel = data;
@@ -30,16 +30,19 @@ InformationPanel
                 "icon": "j",
                 "source": "qrc:/qml/InformationPanel/Sample/InfoPanel.qml"
             });
-        ttt.append(
-            {   "title": qsTr("Stats & Quality"),
-                "icon": "^",
-                "source": "qrc:/qml/InformationPanel/Sample/StatsQualPanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Usage"),
-                "icon": "ê",
-                "source": "qrc:/qml/InformationPanel/Common/RelationsPanel.qml"
-            });
+        if (data.status === 2) // ready
+        {
+            ttt.append(
+                {   "title": qsTr("Stats & Quality"),
+                    "icon": "^",
+                    "source": "qrc:/qml/InformationPanel/Sample/StatsQualPanel.qml"
+                });
+            ttt.append({
+                    "title": qsTr("Usage"),
+                    "icon": "ê",
+                    "source": "qrc:/qml/InformationPanel/Common/RelationsPanel.qml"
+                });
+        }
         ttt.append({
                 "title": qsTr("Events"),
                 "icon": "è",

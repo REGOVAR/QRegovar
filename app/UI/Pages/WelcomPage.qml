@@ -77,7 +77,7 @@ Rectangle
             mainColor: Regovar.theme.frontColor.danger
             text: qsTr("You are not connected to the Regovar server. Check your network connection or the url to the Regovar server in the settings panel.")
             icon: "m"
-            visible: regovar.networkManager.status !== 0
+            visible: regovar.networkManager.status === 3
         }
     }
 
@@ -321,7 +321,7 @@ Rectangle
             anchors.topMargin: newButtonsRow.height
             anchors.fill: parent
             color: Regovar.theme.backgroundColor.main
-            visible: regovar.networkManager.status !== 0
+            visible: regovar.networkManager.status === 3
 
 
 /*
@@ -344,7 +344,7 @@ Rectangle
                 anchors.top: parent.top
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.margins: 20
-                visible: !regovar.welcomIsLoading || regovar.networkManager.status !== 0
+                visible: !regovar.welcomIsLoading || regovar.networkManager.status === 3
                 iconTxt: "d"
                 text: qsTr("Check local settings")
                 onClicked: regovar.mainMenu.goTo(6,1,2)
