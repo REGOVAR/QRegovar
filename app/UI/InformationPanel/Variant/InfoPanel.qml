@@ -20,6 +20,8 @@ Rectangle
 
     function updateViewFromModel()
     {
+
+
         if (sampleModel && sampleModel.loaded)
         {
             nameField.text = sampleModel.name;
