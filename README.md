@@ -44,7 +44,7 @@ Open the `app/QRegovar.pro` file, and press `ctrl + R` to build and run QRegovar
 Download the dependencies:
 
 ```sh
-sudo apt install qt5-qmake qml-module-qtcharts qml-module-qtgraphicaleffects qml-module-qtquick-controls2 qml-module-qtwebsockets
+sudo apt install qt5-qmake libqt5websockets5-dev libqt5charts5-dev qml-module-qtcharts qml-module-qtgraphicaleffects qml-module-qtquick-controls2 qml-module-qtwebsockets 
 ```
 
 Compile:
