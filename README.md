@@ -19,33 +19,23 @@ QtCreator ask to configure the project. Accept the default parameters.
 
 Then open the `app/QRegovar.pro` with QtCreator and press `ctrl + R` to build and run QRegovar.
 
-## On Ubuntu 16.04 LTS (Xenial)
+## On Ubuntu 16.04 LTS (Xenial) and 18.04 LTS (Bionic)
 
-You first need a few Qt 5.10 packages that are not yet distributed through the official Ubuntu repositories (note that by doing so, you are trusting [Stephan Binner](https://launchpad.net/~beineri) who is kindly providing compiled packages that are not provided upstream):
-
-```sh
-sudo add-apt-repository ppa:beineri/opt-qt-5.10.1-xenial
-sudo apt update
-sudo apt install qt510creator qt510charts-no-lgpl qt510graphicaleffects qt510quickcontrols2 qt510websockets
-```
-
-Then, source a Qt 5.10 environment and use QtCreator to compile QRegovar:
+You first need a few Qt 5.10 packages or more that are not yet distributed through the official Ubuntu repositories (note that by doing so, you are trusting [Stephan Binner](https://launchpad.net/~beineri) who is kindly providing compiled packages that are not provided upstream):
 
 ```sh
-source /opt/qt510/bin/qt510-env.sh
-qtcreator
+sudo add-apt-repository ppa:beineri/opt-qt-5.11.0-$(lsb_release -cs)
+sudo apt install qt511charts-no-lgpl qt511graphicaleffects qt511quickcontrols2 qt511websockets
 ```
-QtCreator asks to configure the project. Accept the default parameters.
 
-Open the `app/QRegovar.pro` file, and press `ctrl + R` to build and run QRegovar.
-
-## On Ubuntu 18.04 LTS (Bionic)
-
-Download the dependencies:
+Then, source a Qt environment to compile QRegovar:
 
 ```sh
-sudo apt install qt5-qmake libqt5websockets5-dev libqt5charts5-dev qml-module-qtcharts qml-module-qtgraphicaleffects qml-module-qtquick-controls2 qml-module-qtwebsockets 
+source /opt/qt511/bin/qt511-env.sh
 ```
+
+
+### Without QtCreator
 
 Compile:
 
@@ -60,6 +50,24 @@ Run QRegovar:
 ```sh
 ./QRegovar
 ```
+
+### Using QtCreator
+
+If you don't have QtCreator, you have to install it:
+
+```sh
+sudo apt install qt511creator
+```
+
+Run QtCreator:
+
+```sh
+qtcreator
+```
+
+QtCreator asks to configure the project. Accept the default parameters.
+
+Open the `app/QRegovar.pro` file, and press `ctrl + R` to build and run QRegovar.
 
 ## On ArchLinux
 
