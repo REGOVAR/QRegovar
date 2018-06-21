@@ -297,7 +297,8 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model, QString wid)
             qFatal("Error: Your root item has to be a window.");
             return false;
         }
-        i->setParent(0);
+
+        //i->setParent(0);
         i->setVisible(true);
     }
     else

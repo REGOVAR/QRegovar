@@ -177,14 +177,15 @@ Rectangle
                         anchors.leftMargin: 5
                         spacing: 10
 
-                        ButtonInline
-                        {
-                            text: ""
-                            iconTxt: "z"
-                            ToolTip.text: qsTr("Display details")
-                            ToolTip.visible: hovered
-                            onClicked: regovar.serverTasks.open(styleData.value.id);
-                        }
+                        // TODO
+//                        ButtonInline
+//                        {
+//                            text: ""
+//                            iconTxt: "z"
+//                            ToolTip.text: qsTr("Display details")
+//                            ToolTip.visible: hovered
+//                            onClicked: regovar.serverTasks.open(styleData.value.id);
+//                        }
                         Text
                         {
                             Layout.fillWidth: true
