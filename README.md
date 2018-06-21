@@ -25,7 +25,7 @@ You first need a few Qt 5.10 packages or more that are not yet distributed throu
 
 ```sh
 sudo add-apt-repository ppa:beineri/opt-qt-5.11.0-$(lsb_release -cs)
-sudo apt install qt511charts-no-lgpl qt511graphicaleffects qt511quickcontrols2 qt511websockets
+sudo apt install qt511charts-no-lgpl qt511graphicaleffects qt511quickcontrols qt511quickcontrols2 qt511websockets
 ```
 
 Then, source a Qt environment to compile QRegovar:
