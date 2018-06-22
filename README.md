@@ -1,99 +1,14 @@
 # QRegovar
 
-
 [![Build status](https://ci.appveyor.com/api/projects/status/275xv8xawf4hn199?svg=true)](https://ci.appveyor.com/project/ikit/qregovar) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ec9575b135cb4479ac10866799b00e63)](https://www.codacy.com/app/olivier_6/QRegovar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=REGOVAR/QRegovar&amp;utm_campaign=Badge_Grade) [![Documentation Status](https://readthedocs.org/projects/qregovar/badge/?version=latest)](https://readthedocs.org/projects/qregovar/) [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/labsquare/Regovar)
 
 The official heavy client (in Qt) of the Regovar project
 
 ![mokcup](https://raw.githubusercontent.com/REGOVAR/QRegovar/781c155b1a0d640f757ea5677d223f3d9e347ab7/docs/mockup/mockup.gif)
 
-# How to build
-
-## On Windows
-
-We need only Qt 5.10.1.
-
-Download the open source package on the [Qt web site](https://www.qt.io/download). Follow instruction to install it (next, next, next). 
-
-QtCreator ask to configure the project. Accept the default parameters.
-
-Then open the `app/QRegovar.pro` with QtCreator and press `ctrl + R` to build and run QRegovar.
-
-## On Ubuntu 16.04 LTS (Xenial) and 18.04 LTS (Bionic)
-
-You first need a few Qt 5.10 packages or more that are not yet distributed through the official Ubuntu repositories (note that by doing so, you are trusting [Stephan Binner](https://launchpad.net/~beineri) who is kindly providing compiled packages that are not provided upstream):
-
-```sh
-sudo add-apt-repository ppa:beineri/opt-qt-5.11.0-$(lsb_release -cs)
-sudo apt install qt511charts-no-lgpl qt511graphicaleffects qt511quickcontrols qt511quickcontrols2 qt511websockets
-```
-
-Then, source a Qt environment to compile QRegovar:
-
-```sh
-source /opt/qt511/bin/qt511-env.sh
-```
-
-
-### Without QtCreator
-
-Compile:
-
-```sh
-cd app
-qmake
-make
-```
-
-Run QRegovar:
-
-```sh
-./QRegovar
-```
-
-### Using QtCreator
-
-If you don't have QtCreator, you have to install it:
-
-```sh
-sudo apt install qt511creator
-```
-
-Run QtCreator:
-
-```sh
-qtcreator
-```
-
-QtCreator asks to configure the project. Accept the default parameters.
-
-Open the `app/QRegovar.pro` file, and press `ctrl + R` to build and run QRegovar.
-
-## On ArchLinux
-
-Download the dependencies:
-
-```sh
-sudo pacman -S qt5-quickcontrols2 qt5-charts qt5-graphicaleffects qt5-websockets
-```
-
-Compile:
-
-```sh
-cd app
-qmake
-make
-```
-
-Run QRegovar:
-
-```sh
-./QRegovar
-```
-
 # Documentation
 
-On this repository, you will only find technical documentation for developpers. The user guide and tutorials are availabe [on ReadTheDoc](https://regovar.readthedocs.io/fr/latest/).
+Read the documentation available on [on ReadTheDoc](https://regovar.readthedocs.io/fr/latest/) to have information on the [installation](https://regovar.readthedocs.io/fr/latest/installation/client/) or on the [compilation](https://regovar.readthedocs.io/fr/latest/developper/client_compilation) of the Regovar client.
 
 # Credits
 
