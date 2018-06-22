@@ -8,7 +8,7 @@ The official heavy client (in Qt) of the Regovar project
 
 # Documentation
 
-Read the documentation available on [on ReadTheDoc](https://regovar.readthedocs.io/fr/latest/) to have information on the [installation](https://regovar.readthedocs.io/fr/latest/installation/client/) or on the [compilation](https://regovar.readthedocs.io/fr/latest/developper/client_compilation) of the Regovar client.
+Read the documentation available [on ReadTheDoc](https://regovar.readthedocs.io/fr/latest/) to have information on the [installation](https://regovar.readthedocs.io/fr/latest/installation/client/) or on the [compilation](https://regovar.readthedocs.io/fr/latest/developper/client_compilation) of the Regovar client.
 
 # Credits
 
