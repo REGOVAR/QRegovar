@@ -102,23 +102,28 @@ Rectangle
         }
     }
 
-
-    SplitView
-    {
-        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
-        anchors.left: root.left
-        anchors.right: actionsPanel.left
-        anchors.bottom: root.bottom
-        orientation: Qt.Vertical
-        anchors.margins: 10
+// TODO: Subject caracteristics
+//    SplitView
+//    {
+//        anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
+//        anchors.left: root.left
+//        anchors.right: actionsPanel.left
+//        anchors.bottom: root.bottom
+//        orientation: Qt.Vertical
+//        anchors.margins: 10
 
         Rectangle
         {
             id: topPanel
-            width: root.width
+            // width: root.width
             color: Regovar.theme.backgroundColor.main
-            Layout.minimumHeight: 200
-            Layout.fillHeight: true
+//            Layout.minimumHeight: 200
+//            Layout.fillHeight: true
+            anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
+            anchors.left: root.left
+            anchors.right: actionsPanel.left
+            anchors.bottom: root.bottom
+            anchors.margins: 10
 
             ColumnLayout
             {
@@ -203,49 +208,49 @@ Rectangle
             }
         } // end topPanel
 
-        Rectangle
-        {
-            id: bottomPanel
-            width: root.width
-            color: Regovar.theme.backgroundColor.main
-            Layout.minimumHeight: 200
+        // TODO: Subject caracteristics
+//        Rectangle
+//        {
+//            id: bottomPanel
+//            width: root.width
+//            color: Regovar.theme.backgroundColor.main
+//            Layout.minimumHeight: 200
 
-            ColumnLayout
-            {
-                anchors.fill: parent
-                anchors.topMargin: 10
-                spacing: 10
+//            ColumnLayout
+//            {
+//                anchors.fill: parent
+//                anchors.topMargin: 10
+//                spacing: 10
 
-                Text
-                {
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    text: qsTr("Caracteristics")
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                }
+//                Text
+//                {
+//                    height: Regovar.theme.font.boxSize.header
+//                    elide: Text.ElideRight
+//                    text: qsTr("Caracteristics")
+//                    font.pixelSize: Regovar.theme.font.size.header
+//                    verticalAlignment: Text.AlignVCenter
+//                    color: Regovar.theme.primaryColor.back.normal
+//                }
 
-                Rectangle
-                {
-                    color: "transparent"
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    border.width: 1
-                    border.color: Regovar.theme.boxColor.border
-                    Text
-                    {
-                        anchors.centerIn: parent
-                        text: qsTr("Not yet implemented")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.frontColor.disable
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
-            }
-
-        } // end bottomPanel
-    } // end SplitView
+//                Rectangle
+//                {
+//                    color: "transparent"
+//                    Layout.fillHeight: true
+//                    Layout.fillWidth: true
+//                    border.width: 1
+//                    border.color: Regovar.theme.boxColor.border
+//                    Text
+//                    {
+//                        anchors.centerIn: parent
+//                        text: qsTr("Not yet implemented")
+//                        font.pixelSize: Regovar.theme.font.size.normal
+//                        color: Regovar.theme.frontColor.disable
+//                        verticalAlignment: Text.AlignVCenter
+//                    }
+//                }
+//            }
+//        } // end bottomPanel
+//    } // end SplitView
 
     NewPhenotypeEntryDialog
     {

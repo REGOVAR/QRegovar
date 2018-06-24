@@ -229,33 +229,33 @@ Rectangle
                 color: Regovar.theme.frontColor.normal
                 elide: Text.ElideRight
             }
+// TODO: sample BAM file
+//            Text
+//            {
+//                text: qsTr("BAM File")
+//                color: Regovar.theme.primaryColor.back.dark
+//                font.pixelSize: Regovar.theme.font.size.normal
+//                font.family: Regovar.theme.font.family
+//                verticalAlignment: Text.AlignVCenter
+//                height: 35
+//            }
+//            Rectangle
+//            {
+//                id: bamFile
+//                Layout.fillWidth: true
+//                height: Regovar.theme.font.boxSize.normal
+//                color: "transparent"
+//                border.width: 1
+//                border.color: Regovar.theme.boxColor.border
 
-            Text
-            {
-                text: qsTr("BAM File")
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.family
-                verticalAlignment: Text.AlignVCenter
-                height: 35
-            }
-            Rectangle
-            {
-                id: bamFile
-                Layout.fillWidth: true
-                height: Regovar.theme.font.boxSize.normal
-                color: "transparent"
-                border.width: 1
-                border.color: Regovar.theme.boxColor.border
-
-                Text
-                {
-                    anchors.centerIn: parent
-                    text: qsTr("Not yet implemented")
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    color: Regovar.theme.primaryColor.back.dark
-                }
-            }
+//                Text
+//                {
+//                    anchors.centerIn: parent
+//                    text: qsTr("Not yet implemented")
+//                    font.pixelSize: Regovar.theme.font.size.normal
+//                    color: Regovar.theme.primaryColor.back.dark
+//                }
+//            }
 
             Text
             {

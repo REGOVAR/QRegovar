@@ -220,31 +220,32 @@ Rectangle
             text: ""
         }
 
-        Text
-        {
-            text: qsTr("Indicator")
-            color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.family
-            verticalAlignment: Text.AlignVCenter
-            height: 35
-        }
-        Rectangle
-        {
-            color: "transparent"
-            Layout.fillWidth: true
-            height: Regovar.theme.font.boxSize.normal
-            border.width: 1
-            border.color: Regovar.theme.boxColor.border
-            Text
-            {
-                anchors.centerIn: parent
-                text: qsTr("Not yet implemented")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.frontColor.disable
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
+       // TODO: subject indicator
+//        Text
+//        {
+//            text: qsTr("Indicator")
+//            color: Regovar.theme.primaryColor.back.dark
+//            font.pixelSize: Regovar.theme.font.size.normal
+//            font.family: Regovar.theme.font.family
+//            verticalAlignment: Text.AlignVCenter
+//            height: 35
+//        }
+//        Rectangle
+//        {
+//            color: "transparent"
+//            Layout.fillWidth: true
+//            height: Regovar.theme.font.boxSize.normal
+//            border.width: 1
+//            border.color: Regovar.theme.boxColor.border
+//            Text
+//            {
+//                anchors.centerIn: parent
+//                text: qsTr("Not yet implemented")
+//                font.pixelSize: Regovar.theme.font.size.normal
+//                color: Regovar.theme.frontColor.disable
+//                verticalAlignment: Text.AlignVCenter
+//            }
+//        }
 
         Text
         {

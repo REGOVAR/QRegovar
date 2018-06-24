@@ -37,11 +37,12 @@ InformationPanel
                     "icon": "^",
                     "source": "qrc:/qml/InformationPanel/Sample/StatsQualPanel.qml"
                 });
-            ttt.append({
-                    "title": qsTr("Usage"),
-                    "icon": "ê",
-                    "source": "qrc:/qml/InformationPanel/Common/RelationsPanel.qml"
-                });
+            // TODO: Sample relations tab
+//            ttt.append({
+//                    "title": qsTr("Usage"),
+//                    "icon": "ê",
+//                    "source": "qrc:/qml/InformationPanel/Common/RelationsPanel.qml"
+//                });
         }
         ttt.append({
                 "title": qsTr("Events"),

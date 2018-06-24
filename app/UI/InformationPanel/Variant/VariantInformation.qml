@@ -42,11 +42,12 @@ InformationPanel
                 "icon": "K",
                 "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qml"
             });
-        ttt.append({
-                "title": qsTr("Annotations"),
-                "icon": "í",
-                "source": "qrc:/qml/InformationPanel/Variant/AnnotationsPanel.qml"
-            });
+        // TODO: Variant AnnotationsPanel
+//        ttt.append({
+//                "title": qsTr("Annotations"),
+//                "icon": "í",
+//                "source": "qrc:/qml/InformationPanel/Variant/AnnotationsPanel.qml"
+//            });
         root.tabsModel = ttt;
         root.loading = false;
     }

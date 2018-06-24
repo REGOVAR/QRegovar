@@ -11,13 +11,13 @@ void RootMenu::initMain()
 {
     // Admin menu entry
     mAdminEntry = new MenuEntry("d", tr("Admin"), "", this);
-    mAdminEntry->addEntry(new MenuEntry("", tr("Logs"), "Admin/LogsPage.qml", this));
-    mAdminEntry->addEntry(new MenuEntry("", tr("Trash"), "Admin/TrashPage.qml", this));
+    // TODO: mAdminEntry->addEntry(new MenuEntry("", tr("Logs"), "Admin/LogsPage.qml", this));
+    // TODO: mAdminEntry->addEntry(new MenuEntry("", tr("Trash"), "Admin/TrashPage.qml", this));
     mAdminEntry->addEntry(new MenuEntry("", tr("Server"), "Admin/ServerPage.qml", this));
     mAdminEntry->addEntry(new MenuEntry("", tr("Users"), "Admin/UsersPage.qml", this));
-    mAdminEntry->addEntry(new MenuEntry("", tr("Pipelines"), "Admin/PipesPage.qml", this));
-    mAdminEntry->addEntry(new MenuEntry("", tr("Annotation"), "Admin/DatabaseAnnotationPage.qml", this));
-    mAdminEntry->addEntry(new MenuEntry("", tr("Custom DB"), "Admin/DatabaseCustomPage.qml", this));
+    // TODO: mAdminEntry->addEntry(new MenuEntry("", tr("Pipelines"), "Admin/PipesPage.qml", this));
+    // TODO: mAdminEntry->addEntry(new MenuEntry("", tr("Annotation"), "Admin/DatabaseAnnotationPage.qml", this));
+    // TODO: mAdminEntry->addEntry(new MenuEntry("", tr("Custom DB"), "Admin/DatabaseCustomPage.qml", this));
 
 
     // Create lvl3 menu entries
@@ -46,7 +46,7 @@ void RootMenu::initMain()
     mEntries.append(mAnalysisBrowserEntry);
     mEntries.append(mSubjectBrowserEntry);
     mEntries.append(new MenuEntry("q", tr("Panels"), "Browser/PanelsPage.qml", this));
-    mEntries.append(new MenuEntry("B", tr("Database"), "Browser/DatabasePage.qml", this));
+    // TODO: mEntries.append(new MenuEntry("B", tr("Database"), "Browser/DatabasePage.qml", this));
     mEntries.append(settingsEntry);
     mEntries.append(helpEntry);
     mEntries.append(new MenuEntry("h", tr("Disconnect"), "@disconnect", this));

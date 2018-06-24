@@ -292,42 +292,43 @@ Rectangle
             }
         }
 
-        RowLayout
-        {
-            onWidthChanged: updateColumn1Width(width)
-            Item
-            {
-                Layout.minimumWidth: Regovar.theme.font.boxSize.header
-                height: Regovar.theme.font.boxSize.normal
-            }
+        // TODO: Pipeline indicator
+//        RowLayout
+//        {
+//            onWidthChanged: updateColumn1Width(width)
+//            Item
+//            {
+//                Layout.minimumWidth: Regovar.theme.font.boxSize.header
+//                height: Regovar.theme.font.boxSize.normal
+//            }
 
-            Text
-            {
-                text: qsTr("Indicator")
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.family
-                verticalAlignment: Text.AlignVCenter
-                height: Regovar.theme.font.boxSize.normal
-            }
-        }
-        Rectangle
-        {
-            Layout.fillWidth: true
-            height: Regovar.theme.font.boxSize.normal
-            color: "transparent"
-            border.width: editionMode ? 1 : 0
-            border.color: Regovar.theme.boxColor.border
-            Text
-            {
-                anchors.fill: parent
-                anchors.leftMargin: 5
-                text: qsTr("Not yet implemented")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.frontColor.disable
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
+//            Text
+//            {
+//                text: qsTr("Indicator")
+//                color: Regovar.theme.primaryColor.back.dark
+//                font.pixelSize: Regovar.theme.font.size.normal
+//                font.family: Regovar.theme.font.family
+//                verticalAlignment: Text.AlignVCenter
+//                height: Regovar.theme.font.boxSize.normal
+//            }
+//        }
+//        Rectangle
+//        {
+//            Layout.fillWidth: true
+//            height: Regovar.theme.font.boxSize.normal
+//            color: "transparent"
+//            border.width: editionMode ? 1 : 0
+//            border.color: Regovar.theme.boxColor.border
+//            Text
+//            {
+//                anchors.fill: parent
+//                anchors.leftMargin: 5
+//                text: qsTr("Not yet implemented")
+//                font.pixelSize: Regovar.theme.font.size.normal
+//                color: Regovar.theme.frontColor.disable
+//                verticalAlignment: Text.AlignVCenter
+//            }
+//        }
 
         RowLayout
         {

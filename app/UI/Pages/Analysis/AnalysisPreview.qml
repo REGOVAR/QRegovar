@@ -116,30 +116,31 @@ Item
     }
 
 
-    GridLayout
-    {
-        columns: 3
-        rowSpacing: 10
-        columnSpacing: 10
+    // TODO: analysis preview
+//    GridLayout
+//    {
+//        columns: 3
+//        rowSpacing: 10
+//        columnSpacing: 10
 
 
 
-        Rectangle
-        {
-            color: "transparent"
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.columnSpan: 3
-            border.width: 1
-            border.color: Regovar.theme.boxColor.border
-            Text
-            {
-                anchors.centerIn: parent
-                text: qsTr("Not yet implemented")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.frontColor.disable
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
-    }
+//        Rectangle
+//        {
+//            color: "transparent"
+//            Layout.fillWidth: true
+//            Layout.fillHeight: true
+//            Layout.columnSpan: 3
+//            border.width: 1
+//            border.color: Regovar.theme.boxColor.border
+//            Text
+//            {
+//                anchors.centerIn: parent
+//                text: qsTr("Not yet implemented")
+//                font.pixelSize: Regovar.theme.font.size.normal
+//                color: Regovar.theme.frontColor.disable
+//                verticalAlignment: Text.AlignVCenter
+//            }
+//        }
+//    }
 }

@@ -81,7 +81,7 @@ Rectangle
                 FrequenceQuickFilter { objectName: "qf"; width: root.width; }
                 SilicoPredQuickFilter { objectName: "qf"; width: root.width; }
                 PanelQuickForm { objectName: "qf"; width: root.width; }
-                PhenotypeQuickFilter { objectName: "qf"; width: root.width; }
+                // TODO: PhenotypeQuickFilter { objectName: "qf"; width: root.width; }
             }
         }
 
