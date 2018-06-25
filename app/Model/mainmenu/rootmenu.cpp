@@ -154,6 +154,7 @@ void RootMenu::openMenuEntry(Project* project)
     {
         // Try to retrieve the menu entry corresponding to this project (maybe already exists)
         MenuEntry* entry = nullptr;
+        int lvl1 = 0;
         for (QObject* o: mAnalysisBrowserEntry->entries())
         {
             MenuEntry* pm = qobject_cast<MenuEntry*>(o);
@@ -162,6 +163,7 @@ void RootMenu::openMenuEntry(Project* project)
                 entry = pm;
                 break;
             }
+            ++lvl1;
         }
         // Create it if not exists
         if (entry == nullptr)
@@ -173,6 +175,10 @@ void RootMenu::openMenuEntry(Project* project)
         // /!\ the selected entry of the menu is the selected sub entries, not the entry tiself
         mSelectedEntry = entry->getEntry(entry->index());
         mAnalysisBrowserEntry->select(0, mAnalysisBrowserEntry->entries().indexOf(entry));
+
+        // Update menu UI state and select good parents menues
+        select(0, mEntries.indexOf(mAnalysisBrowserEntry));
+        select(1, lvl1);
         emit openPage(mSelectedEntry);
     }
 }
@@ -182,6 +188,7 @@ void RootMenu::openMenuEntry(Subject* subject)
     {
         // Try to retrieve the menu entry corresponding to this subject (maybe already exists)
         MenuEntry* entry = nullptr;
+        int lvl1 = 0;
         for (QObject* o: mSubjectBrowserEntry->entries())
         {
             MenuEntry* pm = qobject_cast<MenuEntry*>(o);
@@ -190,6 +197,7 @@ void RootMenu::openMenuEntry(Subject* subject)
                 entry = pm;
                 break;
             }
+            ++lvl1;
         }
         // Create it if not exists
         if (entry == nullptr)
@@ -201,6 +209,9 @@ void RootMenu::openMenuEntry(Subject* subject)
         mSelectedEntry = entry->getEntry(entry->index());
         mSubjectBrowserEntry->select(0, mSubjectBrowserEntry->entries().indexOf(entry));
 
+        // Update menu UI state and select good parents menues
+        select(0, mEntries.indexOf(mSubjectBrowserEntry));
+        select(1, lvl1);
         emit openPage(mSelectedEntry);
     }
 }
