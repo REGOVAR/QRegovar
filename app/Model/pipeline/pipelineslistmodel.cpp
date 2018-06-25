@@ -10,20 +10,32 @@ PipelinesListModel::PipelinesListModel(QObject* parent) : QAbstractListModel(par
 }
 
 
+void PipelinesListModel::propagateDataChanged()
+{
+    // When a pipeline in the model emit a datachange, the list need to
+    // notify its view to refresh too
+    Pipeline* pipe = (Pipeline*) sender();
+    if (pipe!= nullptr && mPipelines.contains(pipe))
+    {
+        emit dataChanged(index(mPipelines.indexOf(pipe)), index(mPipelines.indexOf(pipe)));
+    }
+}
+
+
 
 
 bool PipelinesListModel::loadJson(QJsonArray json)
 {
     beginResetModel();
-    mPipelinesList.clear();
+    mPipelines.clear();
     for (const QJsonValue& pipeJson: json)
     {
         QJsonObject pipeData = pipeJson.toObject();
         Pipeline* pipe = regovar->pipelinesManager()->getOrCreatePipe(pipeData["id"].toInt());
         pipe->loadJson(pipeData);
-        if (!mPipelinesList.contains(pipe))
+        if (!mPipelines.contains(pipe))
         {
-            mPipelinesList.append(pipe);
+            mPipelines.append(pipe);
         }
     }
     endResetModel();
@@ -32,13 +44,14 @@ bool PipelinesListModel::loadJson(QJsonArray json)
 }
 
 
-bool PipelinesListModel::add(Pipeline* pipe)
+bool PipelinesListModel::append(Pipeline* pipe)
 {
-    if (!mPipelinesList.contains(pipe))
+    if (!mPipelines.contains(pipe))
     {
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
-        mPipelinesList.append(pipe);
+        mPipelines.append(pipe);
         endInsertRows();
+        connect(pipe, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
         emit countChanged();
         return true;
     }
@@ -46,6 +59,31 @@ bool PipelinesListModel::add(Pipeline* pipe)
 }
 
 
+
+bool PipelinesListModel::remove(Pipeline* pipe)
+{
+    if (mPipelines.contains(pipe))
+    {
+        int pos = mPipelines.indexOf(pipe);
+        beginRemoveRows(QModelIndex(), pos, pos);
+        mPipelines.removeAt(pos);
+        endRemoveRows();
+        disconnect(pipe, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
+        emit countChanged();
+        return true;
+    }
+    return false;
+}
+
+
+Pipeline* PipelinesListModel::getAt(int position)
+{
+    if (position >= 0 && position < mPipelines.count())
+    {
+        return mPipelines[position];
+    }
+    return nullptr;
+}
 
 
 bool PipelinesListModel::refresh()
@@ -60,17 +98,17 @@ bool PipelinesListModel::refresh()
 
 int PipelinesListModel::rowCount(const QModelIndex&) const
 {
-    return mPipelinesList.count();
+    return mPipelines.count();
 }
 
 
 
 QVariant PipelinesListModel::data(const QModelIndex& index, int role) const
 {
-    if (index.row() < 0 || index.row() >= mPipelinesList.count())
+    if (index.row() < 0 || index.row() >= mPipelines.count())
         return QVariant();
 
-    const Pipeline* pipe= mPipelinesList[index.row()];
+    const Pipeline* pipe= mPipelines[index.row()];
     if (role == Name || role == Qt::DisplayRole)
         return pipe->name();
     else if (role == Id)

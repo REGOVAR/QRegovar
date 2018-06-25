@@ -17,7 +17,7 @@ class FilesManager : public QObject
     Q_PROPERTY(int uploadsProgress READ uploadsProgress NOTIFY uploadsChanged)
 
     Q_PROPERTY(FilesListModel* remoteList READ remoteList NOTIFY remoteListChanged)
-    Q_PROPERTY(FilesTreeModel* filesTree READ filesTree NOTIFY filesTreeChanged)
+    //Q_PROPERTY(FilesTreeModel* filesTree READ filesTree NOTIFY filesTreeChanged)
 
 
 

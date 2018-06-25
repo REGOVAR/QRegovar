@@ -81,8 +81,7 @@ Rectangle
         {
             id: deleteAnalysis
             text: qsTr("Remove")
-            onClicked:  console.log("Delete analysis")
-            enabled: false
+            onClicked:  deleteSelectedPipeline()
         }
     }
 
@@ -127,7 +126,7 @@ Rectangle
                     id: browser
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    model: regovar.pipelinesManager.availablePipes.proxy
+                    model: regovar.pipelinesManager.allPipes.proxy
 
                     // Default delegate for all column
                     itemDelegate: Item
@@ -257,11 +256,40 @@ Rectangle
             }
         }
     }
-
-
-
-    function displayCurrentAnalysisPreview(analysis)
+    QuestionDialog
     {
-        root.currentAnalysis = analysis;
+        id: deletePipelineConfirmDialog
+        width: 400
+        property var model
+        onModelChanged:
+        {
+            if (model)
+            {
+                var txt = qsTr("Do you confirm the uninstallation of the pipeline '{0}' ({1}) ?");
+                txt = txt.replace('{0}', model.name);
+                txt = txt.replace('{1}', model.version);
+                text = txt;
+            }
+        }
+        title: qsTr("Uninstall pipeline")
+        onYes:
+        {
+            regovar.pipelinesManager.uninstall(model);
+        }
+    }
+
+
+    /// Retrive model of the selected pipeline in the treeview and delete it.
+    function deleteSelectedPipeline()
+    {
+        var idx = regovar.pipelinesManager.allPipes.proxy.mapToSource(browser.currentIndex);
+        var pipe = regovar.pipelinesManager.allPipes.getAt(idx);
+
+
+        if (pipe)
+        {
+            deletePipelineConfirmDialog.model = pipe;
+            deletePipelineConfirmDialog.visible = true;
+        }
     }
 }

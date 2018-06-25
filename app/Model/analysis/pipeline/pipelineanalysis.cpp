@@ -6,7 +6,7 @@
 PipelineAnalysis::PipelineAnalysis(QObject* parent) : Analysis(parent)
 {
     mInputsFiles = new FilesListModel(this);
-    mOutputsFiles = new FilesTreeModel(this);
+    mOutputsFiles = new FilesListModel(this);
     mType = Analysis::PIPELINE;
     mMenuModel->initPipelineAnalysis();
 }
@@ -106,7 +106,7 @@ bool PipelineAnalysis::loadJson(QJsonObject json, bool full_init)
             {
                 file->load(true);
             }
-            mOutputsFiles->add(file);
+            mOutputsFiles->append(file);
         }
     }
 

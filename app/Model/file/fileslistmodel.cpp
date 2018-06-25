@@ -52,11 +52,10 @@ bool FilesListModel::append(File* file)
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         mFileList.append(file);
         endInsertRows();
+        connect(file, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
         emit countChanged();
         emit fileAdded(file->id());
         result = true;
-
-        connect(file, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
     }
     return result;
 }
@@ -70,10 +69,10 @@ bool FilesListModel::remove(File* file)
         beginRemoveRows(QModelIndex(), pos, pos);
         mFileList.removeAt(pos);
         endRemoveRows();
+        disconnect(file, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
         emit countChanged();
         emit fileRemoved(file->id());
         result = true;
-        disconnect(file, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
     }
     return result;
 }

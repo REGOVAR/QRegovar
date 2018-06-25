@@ -77,6 +77,7 @@ bool ServerTask::loadJson(QJsonObject json, bool)
 
     regovar->serverTasks()->updateProgress();
     emit dataChanged();
+    return true;
 }
 
 

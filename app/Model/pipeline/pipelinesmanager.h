@@ -8,7 +8,7 @@
 class PipelinesManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(PipelinesListModel* availablePipes READ availablePipes NOTIFY availablePipesChanged)
+    Q_PROPERTY(PipelinesListModel* allPipes READ allPipes NOTIFY allPipesChanged)
     Q_PROPERTY(PipelinesListModel* intalledPipes READ intalledPipes NOTIFY intalledPipesChanged)
 
 public:
@@ -16,27 +16,30 @@ public:
     PipelinesManager(QObject* parent=nullptr);
 
     // Getters
-    inline PipelinesListModel* availablePipes() const { return mAvailablePipes; }
+    inline PipelinesListModel* allPipes() const { return mAllPipes; }
     inline PipelinesListModel* intalledPipes() const { return mInstalledPipes; }
 
     // Method
     Q_INVOKABLE void loadJson(QJsonArray json);
     Q_INVOKABLE Pipeline* getOrCreatePipe(int pipeId);
-    Q_INVOKABLE Pipeline* install(int fileId);
+    Q_INVOKABLE void install(int fileId);
+    Q_INVOKABLE void uninstall(Pipeline* pipeline);
 
 
 Q_SIGNALS:
-    void availablePipesChanged();
+    void allPipesChanged();
     void intalledPipesChanged();
 
+
 public Q_SLOTS:
-    // Called by NetworkManager when need to process WebSocket messages managed by SampleManager
+    //! Called by NetworkManager when need to process WebSocket messages managed by SampleManager
     void processPushNotification(QString action, QJsonObject data);
 
 
+
 private:
-    //! List of all available pipelines (on shared server/github)
-    PipelinesListModel* mAvailablePipes = nullptr;
+    //! List of all pipelines on the server (all status)
+    PipelinesListModel* mAllPipes = nullptr;
     //! List of pipelines that are installed and ready to used on the Regovar server
     PipelinesListModel* mInstalledPipes = nullptr;
     //! Internal collection of all loaded events
