@@ -14,10 +14,6 @@ FilesManager::FilesManager(QObject *parent) : QObject(parent)
     mUploader->setBandWidthLimit(0);
 
     connect(mUploader,  SIGNAL(filesEnqueued(QHash<QString,QString>)), this, SLOT(filesEnqueued(QHash<QString,QString>)));
-
-    // Continue uploading files
-    QJsonObject data = regovar->settings()->uploadingFiles();
-    mUploader->resume(data);
 }
 
 
@@ -188,6 +184,15 @@ void FilesManager::cancelUploadFile(QList<int> filesId)
     }
     updateUploadProgress();
 }
+
+
+void FilesManager::resumeUploads()
+{
+    mUploader->resume(regovar->settings()->uploadingFiles());
+}
+
+
+
 
 
 

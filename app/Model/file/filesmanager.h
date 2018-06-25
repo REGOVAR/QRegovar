@@ -54,6 +54,7 @@ public:
     void processPushNotification(QString action, QJsonObject json);
     void updateUploadProgress();
     qint64 directorySize(const QString path);
+    void resumeUploads();
 
 
 public Q_SLOTS:

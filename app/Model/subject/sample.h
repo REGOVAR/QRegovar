@@ -119,7 +119,6 @@ private:
 
     // QML shortcuts
     QVariant mNameUI;
-    //QVariant mSubjectUI;
     QVariant mStatusUI;
     QVariant mSourceUI;
     bool mIsIndex = false;
