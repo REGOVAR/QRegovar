@@ -15,6 +15,7 @@ class File : public RegovarResource
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY dataChanged)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY dataChanged)
     Q_PROPERTY(QUrl url READ url)
+    Q_PROPERTY(QUrl viewerUrl READ viewerUrl)
     Q_PROPERTY(QString md5Sum READ md5Sum WRITE setMd5Sum NOTIFY dataChanged)
     Q_PROPERTY(QString type READ type WRITE setType NOTIFY dataChanged)
     Q_PROPERTY(QString tags READ tags WRITE setTags NOTIFY dataChanged)
@@ -59,6 +60,7 @@ public:
     inline QString name() const { return mName; }
     inline QString comment() const { return mComment; }
     inline QUrl url() const { return mUrl; }
+    inline QUrl viewerUrl() const { return mViewerUrl; }
     inline qint64 size() const { return mSize; }
     inline qint64 uploadOffset() const { return mUploadOffset; }
     inline QString md5Sum() const { return mMd5Sum; }
@@ -127,6 +129,7 @@ private:
     // Attributes
     int mId = -1;
     QUrl mUrl;
+    QUrl mViewerUrl;
     QString mComment;
     QString mName;
     QString mMd5Sum;
