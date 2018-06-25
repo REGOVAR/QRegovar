@@ -4,6 +4,7 @@ import QtQuick.Controls 1.4
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
+import "qrc:/qml/Dialogs"
 
 Rectangle
 {
@@ -73,17 +74,13 @@ Rectangle
         Button
         {
             id: newAnalysis
-            text: qsTr("New pipeline")
-            onClicked:
-            {
-                regovar.openNewAnalysisWizard();
-                regovar.analysesManager.newFiltering.project = model;
-            }
+            text: qsTr("Install")
+            onClicked: fileSelector.open()
         }
         Button
         {
             id: deleteAnalysis
-            text: qsTr("Delete")
+            text: qsTr("Remove")
             onClicked:  console.log("Delete analysis")
             enabled: false
         }
@@ -191,8 +188,7 @@ Rectangle
             GridLayout
             {
                 anchors.fill: parent
-                anchors.margins: 10
-                anchors.bottomMargin: 0
+                anchors.topMargin: 10
                 columns: 3
                 rowSpacing: 10
                 columnSpacing: 10
@@ -239,15 +235,29 @@ Rectangle
                     Text
                     {
                         anchors.centerIn: parent
-                        text: qsTr("Not yet implemented")
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        color: Regovar.theme.frontColor.disable
+                        text: qsTr("No pipeline selected.")
+                        font.pixelSize: Regovar.theme.font.size.title
+                        color: Regovar.theme.primaryColor.back.light
                         verticalAlignment: Text.AlignVCenter
                     }
                 }
             }
         } // end bottomPanel
     } // end SplitView
+
+    SelectFilesDialog
+    {
+        id: fileSelector
+        onFileSelected:
+        {
+            for(var idx in files)
+            {
+                var file = files[idx];
+                regovar.pipelinesManager.install(file.id);
+            }
+        }
+    }
+
 
 
     function displayCurrentAnalysisPreview(analysis)

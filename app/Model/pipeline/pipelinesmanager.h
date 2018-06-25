@@ -22,6 +22,7 @@ public:
     // Method
     Q_INVOKABLE void loadJson(QJsonArray json);
     Q_INVOKABLE Pipeline* getOrCreatePipe(int pipeId);
+    Q_INVOKABLE Pipeline* install(int fileId);
 
 
 Q_SIGNALS:

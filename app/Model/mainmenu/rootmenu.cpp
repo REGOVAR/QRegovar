@@ -15,7 +15,7 @@ void RootMenu::initMain()
     // TODO: mAdminEntry->addEntry(new MenuEntry("", tr("Trash"), "Admin/TrashPage.qml", this));
     mAdminEntry->addEntry(new MenuEntry("", tr("Server"), "Admin/ServerPage.qml", this));
     mAdminEntry->addEntry(new MenuEntry("", tr("Users"), "Admin/UsersPage.qml", this));
-    // TODO: mAdminEntry->addEntry(new MenuEntry("", tr("Pipelines"), "Admin/PipesPage.qml", this));
+    mAdminEntry->addEntry(new MenuEntry("", tr("Pipelines"), "Admin/PipesPage.qml", this));
     // TODO: mAdminEntry->addEntry(new MenuEntry("", tr("Annotation"), "Admin/DatabaseAnnotationPage.qml", this));
     // TODO: mAdminEntry->addEntry(new MenuEntry("", tr("Custom DB"), "Admin/DatabaseCustomPage.qml", this));
 

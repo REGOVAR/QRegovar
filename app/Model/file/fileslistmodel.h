@@ -53,6 +53,10 @@ Q_SIGNALS:
     void fileAdded(int id);
     void fileRemoved(int id);
 
+
+public Q_SLOTS:
+    void propagateDataChanged();
+
 private:
     //! List of files
     QList<File*> mFileList;

@@ -43,6 +43,34 @@ Pipeline* PipelinesManager::getOrCreatePipe(int pipeId)
 }
 
 
+
+Pipeline* PipelinesManager::install(int fileId)
+{
+    Request* req = Request::get(QString("/pipeline/install/%1").arg(fileId));
+    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            // Last events
+            int pid = json["id"].toInt();
+            Pipeline* pipe = getOrCreatePipe(pid);
+            pipe->loadJson(json);
+        }
+        else
+        {
+            regovar->manageServerError(json, Q_FUNC_INFO);
+        }
+        req->deleteLater();
+    });
+}
+
+
+
+
+
+
+
+
 void PipelinesManager::processPushNotification(QString, QJsonObject)
 {
     // TODO
