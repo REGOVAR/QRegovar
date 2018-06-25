@@ -101,7 +101,7 @@ bool File::loadJson(QJsonObject json, bool)
     if (json.contains("tags")) mTags = json["tags"].toString();
     if (json.contains("path")) mUrl = QUrl(json["path"].toString());
     if (json.contains("path")) mViewerUrl = QUrl(json["path"].toString());
-    mViewerUrl.setPath(QString("/w/viewer/%1").arg(mId));
+    if (!mUrl.path().endsWith(".html")) mViewerUrl.setPath(QString("/w/viewer/%1").arg(mId));
     if (json.contains("update_date")) mUpdateDate = QDateTime::fromString(json["update_date"].toString(), Qt::ISODate);
     if (json.contains("create_date")) mCreateDate = QDateTime::fromString(json["create_date"].toString(), Qt::ISODate);
     if (json.contains("md5sum")) mMd5Sum = json["md5sum"].toString();
