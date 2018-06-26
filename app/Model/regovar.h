@@ -284,6 +284,7 @@ private:
     QStringList mWsFilterActionsList = {"filter_update"};
     QStringList mWsPipelinesActionsList = {"pipeline_install", "pipeline_uninstall"};
     QStringList mWsJobsActionsList = {"job_updated"};
+    QStringList mWsEventsActionsList = {"new_event"};
 };
 
 
