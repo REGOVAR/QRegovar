@@ -74,50 +74,100 @@ Rectangle
     {
         if (model)
         {
-            sampleModel.name = nameField.text;
-            sampleModel.comment = comment.text;
-            sampleModel.save();
+            sampleModel.edit(nameField.text, comment.text);
         }
     }
-
 
     ColumnLayout
     {
         anchors.fill: parent
         anchors.margins: 10
-        spacing: 10
-
-
-        // Editable information
-        GridLayout
+        RowLayout
         {
             Layout.fillWidth: true
-            rows: 3
-            columns: 3
-            columnSpacing: 10
-            rowSpacing: 10
+            spacing: 10
 
-            Text
+            GridLayout
             {
-                text: qsTr("Name*")
-                font.bold: true
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.family
-                verticalAlignment: Text.AlignVCenter
-                height: 35
-            }
-            TextField
-            {
-                id: nameField
                 Layout.fillWidth: true
-                enabled: editionMode
-                placeholder: qsTr("Name of the sample")
+                columns: 2
+                columnSpacing: 10
+                rowSpacing: 10
+
+
+                Text
+                {
+                    text: qsTr("Name*")
+                    font.bold: true
+                    color: Regovar.theme.primaryColor.back.dark
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.font.family
+                    verticalAlignment: Text.AlignVCenter
+                    height: 35
+                }
+                TextField
+                {
+                    id: nameField
+                    Layout.fillWidth: true
+                    enabled: editionMode
+                    placeholder: qsTr("Name of the sample")
+                }
+
+                Text
+                {
+                    Layout.alignment: Qt.AlignTop
+                    text: qsTr("Comment")
+                    color: Regovar.theme.primaryColor.back.dark
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.font.family
+                    verticalAlignment: Text.AlignVCenter
+                    height: 35
+                }
+                TextArea
+                {
+                    id: comment
+                    Layout.fillWidth: true
+                    enabled: editionMode
+                }
+
+                // Read only property
+                Text
+                {
+                    text: qsTr("Creation")
+                    color: Regovar.theme.primaryColor.back.dark
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.font.family
+                    verticalAlignment: Text.AlignVCenter
+                    height: 35
+                }
+                Text
+                {
+                    id: creation
+                    Layout.fillWidth: true
+                    color: Regovar.theme.frontColor.normal
+                    elide: Text.ElideRight
+                }
+
+                Text
+                {
+                    text: qsTr("Reference")
+                    color: Regovar.theme.primaryColor.back.dark
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.font.family
+                    verticalAlignment: Text.AlignVCenter
+                    height: 35
+                }
+                Text
+                {
+                    id: reference
+                    Layout.fillWidth: true
+                    color: Regovar.theme.frontColor.normal
+                    elide: Text.ElideRight
+                }
             }
 
             Column
             {
-                Layout.rowSpan: 3
                 Layout.alignment: Qt.AlignTop
                 spacing: 10
 
@@ -142,94 +192,82 @@ Rectangle
                     text: qsTr("Cancel")
                     onClicked: { updateViewFromModel(model); editionMode = false; }
                 }
+            }
+        }
 
+        Item
+        {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+        }
+
+        // Subject association
+        Rectangle
+        {
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.normal + 20
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            color: Regovar.theme.boxColor.back
+            visible: filteringAnalysis === null
+            radius: 2
+
+            RowLayout
+            {
+                anchors.fill: parent
+                anchors.margins: 10
+                spacing: 10
+
+                Text
+                {
+                    text: qsTr("Subject association:")
+                    color: Regovar.theme.primaryColor.back.dark
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.font.family
+                    verticalAlignment: Text.AlignVCenter
+                    height: 35
+                }
+                Text
+                {
+                    id: subject
+                    Layout.fillWidth: true
+                    color: Regovar.theme.frontColor.normal
+                    elide: Text.ElideRight
+                }
 
                 Button
                 {
-                    enabled: !editionMode
-                    text: qsTr("New subject")
+                    text: qsTr("Create subject")
                     onClicked: newSubjectDialog.show();
                 }
 
                 Button
                 {
-                    enabled: !editionMode
                     text: qsTr("Select subject")
                     onClicked: selectSubjectDialog.open();
                 }
             }
-
-            Text
-            {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Comment")
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.family
-                verticalAlignment: Text.AlignVCenter
-                height: 35
-            }
-            TextArea
-            {
-                id: comment
-                Layout.fillWidth: true
-                enabled: editionMode
-            }
-
-            Text
-            {
-                text: qsTr("Subject")
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.family
-                verticalAlignment: Text.AlignVCenter
-                height: 35
-            }
-            Text
-            {
-                id: subject
-                Layout.fillWidth: true
-                anchors.leftMargin: 5
-                color: Regovar.theme.frontColor.normal
-                elide: Text.ElideRight
-            }
-
-
         }
 
+        // Files associations
         Rectangle
         {
-            height: 1
             Layout.fillWidth: true
-            color: Regovar.theme.primaryColor.back.normal
-        }
+            height: Regovar.theme.font.boxSize.normal + 20
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            color: Regovar.theme.boxColor.back
+            visible: filteringAnalysis === null
+            radius: 2
 
-        // Read only informations
-        GridLayout
-        {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            columns: 2
-            columnSpacing: 10
-            rowSpacing: 5
+            RowLayout
+            {
+                anchors.fill: parent
+                anchors.margins: 10
+                spacing: 10
 
-            Text
-            {
-                text: qsTr("Creation")
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.family
-                verticalAlignment: Text.AlignVCenter
-                height: 35
-            }
-            Text
-            {
-                id: creation
-                Layout.fillWidth: true
-                color: Regovar.theme.frontColor.normal
-                elide: Text.ElideRight
-            }
-// TODO: sample BAM file
+
+                // TODO: sample BAM file
 //            Text
 //            {
 //                text: qsTr("BAM File")
@@ -257,48 +295,25 @@ Rectangle
 //                }
 //            }
 
-            Text
-            {
-                text: qsTr("VCF File")
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.family
-                verticalAlignment: Text.AlignVCenter
-                height: 35
-            }
-            Text
-            {
-                id: vcfFile
-                Layout.fillWidth: true
-                color: Regovar.theme.frontColor.normal
-                elide: Text.ElideRight
-            }
-
-            Text
-            {
-                text: qsTr("Reference")
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.family
-                verticalAlignment: Text.AlignVCenter
-                height: 35
-            }
-            Text
-            {
-                id: reference
-                Layout.fillWidth: true
-                color: Regovar.theme.frontColor.normal
-                elide: Text.ElideRight
-            }
-
-
-            Item
-            {
-                Layout.columnSpan: 2
-                Layout.fillHeight: true
-                Layout.fillWidth: true
+                Text
+                {
+                    text: qsTr("VCF File")
+                    color: Regovar.theme.primaryColor.back.dark
+                    font.pixelSize: Regovar.theme.font.size.normal
+                    font.family: Regovar.theme.font.family
+                    verticalAlignment: Text.AlignVCenter
+                    height: 35
+                }
+                Text
+                {
+                    id: vcfFile
+                    Layout.fillWidth: true
+                    color: Regovar.theme.frontColor.normal
+                    elide: Text.ElideRight
+                }
             }
         }
+
     }
 
     NewSubjectDialog
