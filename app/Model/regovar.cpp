@@ -56,8 +56,6 @@ void Regovar::init()
 
     // Init file manager
     mFilesManager = new FilesManager(this);
-    mFilesManager->setCacheDir(mSettings->localCacheDir());
-    mFilesManager->setCacheMaxSize(mSettings->localCacheMaxSize());
 
     // Init user manager and current user if autologin enabled
     mUsersManager = new UsersManager(this);

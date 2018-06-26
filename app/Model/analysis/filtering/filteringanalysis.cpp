@@ -812,33 +812,7 @@ void FilteringAnalysis::removeSamples(QList<QObject*> samples)
 
 void FilteringAnalysis::addSamplesFromFile(int fileId)
 {
-    Request* req = Request::get(QString("/sample/import/%1/%2").arg(QString::number(fileId), QString::number(mRefId)));
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            for (const QJsonValue& sampleValue: json["data"].toArray())
-            {
-                QJsonObject sampleData = sampleValue.toObject();
-                Sample* sample = regovar->samplesManager()->getOrCreateSample(sampleData["id"].toInt());
-                if (sample->loadJson(sampleData))
-                {
-                    if (!mSamplesIds.contains(sample->id()))
-                    {
-                        mSamplesIds.append(sample->id());
-                        mSamples.append(sample);
-                    }
-                }
-            }
-            emit samplesChanged();
-        }
-        else
-        {
-            regovar->manageServerError(json, Q_FUNC_INFO);
-            raiseNewInternalLoadingStatus(Error);
-        }
-        req->deleteLater();
-    });
+    regovar->samplesManager()->importFromFile(fileId, mRefId);
 }
 
 Sample* FilteringAnalysis::getSampleById(int id)

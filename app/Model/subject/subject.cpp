@@ -282,7 +282,15 @@ void Subject::updateSubjectUI()
     // Format result
     mSubjectUI.insert("id", mId);
     mSubjectUI.insert("name", name);
-    mSubjectUI.insert("age", computeAge(mDateOfBirth, QDate::currentDate()));
+    if (mDateOfBirth.isValid())
+    {
+        mSubjectUI.insert("age", computeAge(mDateOfBirth, QDate::currentDate()));
+    }
+    else
+    {
+        mSubjectUI.insert("age", "");
+    }
+
     mSubjectUI.insert("sex", mSex == Male ? "9" : Female ? "<" : "f");
 }
 

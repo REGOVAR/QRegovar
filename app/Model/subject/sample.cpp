@@ -32,6 +32,17 @@ void Sample::updateSearchField()
         mSearchField += " " + mSource->name();
     }
 }
+void Sample::propagateDataChanged()
+{
+    // When the source file of the sample emit a datachange, the sample also need to
+    // notify its view to refresh
+    File* file = (File*) sender();
+    if (file!= nullptr && file == mSource)
+    {
+        emit dataChanged();
+    }
+}
+
 
 void Sample::setStatus(QString status)
 {

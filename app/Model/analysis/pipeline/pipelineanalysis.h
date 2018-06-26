@@ -18,7 +18,7 @@ class PipelineAnalysis: public Analysis
 
     Q_PROPERTY(Pipeline* pipeline READ pipeline WRITE setPipeline NOTIFY pipelineChanged)
     Q_PROPERTY(FilesListModel* inputsFiles READ inputsFiles NOTIFY dataChanged)
-    Q_PROPERTY(FilesTreeModel* outputsFiles READ outputsFiles NOTIFY dataChanged)
+    Q_PROPERTY(FilesListModel* outputsFiles READ outputsFiles NOTIFY dataChanged)
     Q_PROPERTY(QList<QObject*> logs READ logs NOTIFY statusChanged)
 
 public:
@@ -32,7 +32,7 @@ public:
     inline QString progressLabel() const { return mProgressLabel; }
     inline Pipeline* pipeline() const { return mPipeline; }
     inline FilesListModel* inputsFiles() const { return mInputsFiles; }
-    inline FilesTreeModel* outputsFiles() const { return mOutputsFiles; }
+    inline FilesListModel* outputsFiles() const { return mOutputsFiles; }
     inline QList<QObject*> logs() const { return mLogs; }
 
     // Setters
@@ -80,7 +80,7 @@ private:
     FilesListModel* mInputsFiles = nullptr;
     //! The list of files created by the analysis
     //! Note that we use a tree even if we know that outputs is a list because the FileBrowser need a treemodel
-    FilesTreeModel* mOutputsFiles = nullptr;
+    FilesListModel* mOutputsFiles = nullptr;
 };
 
 #endif // PIPELINEANALYSIS_H

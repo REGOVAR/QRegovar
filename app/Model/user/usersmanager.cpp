@@ -104,7 +104,10 @@ void UsersManager::login(QString login, QString password)
             mUser->loadJson(data);
             regovar->mainMenu()->goTo(0,0,0);
             emit displayLoginScreen(false);
+            // Refresh model data
             regovar->loadWelcomData();
+            // Resume uploading files
+            regovar->filesManager()->resumeUploads();
             regovar->settings()->setKeepMeLogged(mKeepMeLogged);
             if (mKeepMeLogged)
             {

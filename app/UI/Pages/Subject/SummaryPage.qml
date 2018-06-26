@@ -105,7 +105,7 @@ Rectangle
 
         Column
         {
-            Layout.rowSpan: 8
+            Layout.rowSpan: 7
             Layout.alignment: Qt.AlignTop
             spacing: 10
 

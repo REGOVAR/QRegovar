@@ -32,11 +32,12 @@ InformationPanel
             });
         if (data.status === 2) // ready
         {
-            ttt.append(
-                {   "title": qsTr("Stats & Quality"),
-                    "icon": "^",
-                    "source": "qrc:/qml/InformationPanel/Sample/StatsQualPanel.qml"
-                });
+            // TODO: Sample stats & quality info panel
+//            ttt.append(
+//                {   "title": qsTr("Stats & Quality"),
+//                    "icon": "^",
+//                    "source": "qrc:/qml/InformationPanel/Sample/StatsQualPanel.qml"
+//                });
             // TODO: Sample relations tab
 //            ttt.append({
 //                    "title": qsTr("Usage"),
@@ -44,11 +45,12 @@ InformationPanel
 //                    "source": "qrc:/qml/InformationPanel/Common/RelationsPanel.qml"
 //                });
         }
-        ttt.append({
-                "title": qsTr("Events"),
-                "icon": "è",
-                "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
-            });
+        // TODO: sample event panel
+//        ttt.append({
+//                "title": qsTr("Events"),
+//                "icon": "è",
+//                "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
+//            });
         root.tabsModel = ttt;
         root.loading = false;
     }

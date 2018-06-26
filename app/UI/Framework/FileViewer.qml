@@ -1,144 +1,135 @@
 import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
+import QtWebView 1.0
 import Regovar.Core 1.0
+
 import "qrc:/qml/Regovar"
-import "qrc:/qml/Framework/FileViewers"
+import "qrc:/qml/Framework"
 
-Rectangle
+Item
 {
-    color: "transparent"
-    clip: true
-
-    // Keep in memory files viewers that have been already created
-    property var viewers: ({})
-    // id of the file currently displayed
-    property int currentId: -1
-
-    function openFile(fileId)
+    id: root
+    property File model
+    onModelChanged:
     {
-        waitingPanel.visible = false;
-        emptyPanel.visible = false;
-
-        // Get file
-        var file = regovar.filesManager.getOrCreateFile(fileId);
-
-        // Check online status
-        switch(file.status)
+        if (model)
         {
-            case 0: // Uploading
-                waitingPanel.visible = true;
-                waitingPanel.model = file;
-                return;
-
-            case 3: // error
-                errorPanel.visible = true;
-                errorPanel.model = file;
-                return;
-        }
-
-        // Check if already in cache
-        if (file.localFileReady)
-        {
-            // yes : open it
-            // hide former viewer
-            if (currentId in viewers)
-            {
-                viewers[currentId].z = 0;
-            }
-            // display file viewer if already created
-            currentId = fileId;
-            if (fileId in viewers)
-            {
-                viewers[fileId].z = 100;
-            }
-            else
-            {
-                // else create and display new viewer
-                buildViewer(file);
-            }
+            fileViewer.visible = true;
+            fileViewer.url = model.viewerUrl;
+            fileName.text = model.name;
         }
         else
         {
-            // no : download it
-            waitingPanel.visible = true;
-            waitingPanel.model = file;
-            file.downloadLocalFile();
-            return;
+            fileViewer.visible = false;
         }
     }
 
-    function buildViewer(file)
+    ColumnLayout
     {
-        // Find viewer according to file extension
-        var qmlPage = file.getQMLViewer();
-
-        // Setup qml viewer and display it
-        var comp = Qt.createComponent("FileViewers/" + qmlPage);
-        if (comp.status === Component.Ready)
-        {
-            var elmt = comp.createObject(stack, {"z": 100});
-            viewers[file.id] = elmt;
-            elmt.model = file;
-            console.log ("load file viewer: " + qmlPage)
-        }
-        else if (comp.status === Component.Error)
-        {
-            console.log("Error loading component: ", comp.errorString());
-        }
-    }
-
-    Item
-    {
-        id: rightPanel
         anchors.fill: parent
         anchors.leftMargin: 10
 
-
-        Item
+        Rectangle
         {
-            id: stack
-            anchors.fill: parent
+            Layout.fillWidth: true
+            height: Regovar.theme.font.boxSize.title
+            color: Regovar.theme.backgroundColor.alt
+            border.width: 1
+            border.color: Regovar.theme.boxColor.border
+            radius: 2
 
-            Rectangle
+            RowLayout
             {
                 anchors.fill: parent
-                color: Regovar.theme.backgroundColor.main
-                z: 50
+                anchors.margins: 5
+                spacing: 10
 
-                Text
+
+                RowLayout
                 {
-                    anchors.centerIn: parent
-                    text: "Loading..."
-                    font.pixelSize: Regovar.theme.font.size.title
-                    color: Regovar.theme.primaryColor.back.light
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    Text
+                    {
+                        id: fileIcon
+                        Layout.minimumWidth: Regovar.theme.font.boxSize.header
+                        Layout.fillHeight: true
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.pixelSize: Regovar.theme.font.size.header
+                        font.family: Regovar.theme.icons.name
+                        color: Regovar.theme.primaryColor.back.dark
+                        text: model && !model.downloading ? "Y" : "/"
+
+                        onTextChanged:
+                        {
+                            if (model && !model.downloading)
+                            {
+                                loadingIconAnimation.stop();
+                                rotation = 0;
+                            }
+                            else
+                            {
+                                loadingIconAnimation.start();
+                            }
+                        }
+                        NumberAnimation on rotation
+                        {
+                            id: loadingIconAnimation
+                            duration: 1500
+                            loops: Animation.Infinite
+                            from: 0
+                            to: 360
+                        }
+                    }
+                    Text
+                    {
+                        id: fileName
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        verticalAlignment: Text.AlignVCenter
+                        font.pixelSize: Regovar.theme.font.size.header
+                        color: Regovar.theme.primaryColor.back.dark
+                        elide: Text.ElideRight
+                    }
+                }
+
+
+                ButtonIcon
+                {
+                    iconTxt: "é"
+                    text: qsTr("Download")
+                    onClicked: Qt.openUrlExternally(model.url);
                 }
             }
         }
 
 
+
         Rectangle
         {
             id: emptyPanel
-            anchors.fill: parent
+            Layout.fillHeight: true
+            Layout.fillWidth: true
             color: Regovar.theme.backgroundColor.main
+
+
 
             Text
             {
                 anchors.centerIn: parent
-                text: qsTr("Select a document")
+                text: qsTr("No document selected.")
                 font.pixelSize: Regovar.theme.font.size.title
                 color: Regovar.theme.primaryColor.back.light
             }
-        }
 
-        WaitingPanel
-        {
-            id: waitingPanel
-            anchors.fill: parent
-            color: Regovar.theme.backgroundColor.main
-            visible: false
-            onWaitingDone: openFile(fileId)
+            WebView
+            {
+                id: fileViewer
+                anchors.fill: parent
+            }
         }
     }
 }

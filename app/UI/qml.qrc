@@ -59,12 +59,6 @@
         <file>Framework/DynamicFormInputString.qml</file>
         <file>Framework/FilesBrowser.qml</file>
         <file>Framework/FileViewer.qml</file>
-        <file>Framework/FileViewers/BinaryViewer.qml</file>
-        <file>Framework/FileViewers/ImageViewer.qml</file>
-        <file>Framework/FileViewers/MediaViewer.qml</file>
-        <file>Framework/FileViewers/SourceCodeViewer.qml</file>
-        <file>Framework/FileViewers/TextViewer.qml</file>
-        <file>Framework/FileViewers/WaitingPanel.qml</file>
         <file>Framework/ProgressBar.qml</file>
         <file>Framework/Slider.qml</file>
         <file>Framework/SwipeView.qml</file>
@@ -78,7 +72,6 @@
         <file>Framework/TreeView.qml</file>
         <file>Framework/Text.qml</file>
         <file>Framework/IconButton.qml</file>
-        <file>Framework/FileViewers/WebViewer.qml</file>
         <file>InformationPanel/Common/RelationsPanel.qml</file>
         <file>InformationPanel/Common/InformationPanel.qml</file>
         <file>InformationPanel/Common/EventsPanel.qml</file>
@@ -206,15 +199,12 @@
         <file>Pages/Settings/ApplicationRegovarPage.qml</file>
         <file>Pages/Settings/ApplicationInterfacePage.qml</file>
         <file>Pages/Settings/ApplicationConnectionPage.qml</file>
-        <file>Pages/Settings/ApplicationCachePage.qml</file>
         <file>Regovar/Themes/HalloweenTheme.js</file>
         <file>Regovar/Themes/RegovarDarkTheme.js</file>
         <file>Regovar/Themes/RegovarLightTheme.js</file>
         <file>Regovar/Regovar.qml</file>
         <file>Regovar/Style.qml</file>
         <file>Regovar/qmldir</file>
-        <file>Wizards/Sample/SampleFileImportControl.qml</file>
-        <file>Wizards/Sample/SampleImportView.qml</file>
         <file>Framework/Logo.qml</file>
         <file>Framework/SplitView.qml</file>
         <file>InformationPanel/Phenotype/PhenotypeSearchEntry.qml</file>
@@ -237,5 +227,6 @@
         <file>InformationPanel/Gene/PanelsPanel.qml</file>
         <file>Pages/Admin/ServerTasks.qml</file>
         <file>Windows/ServerTasksWindow.qml</file>
+        <file>InformationPanel/File/ViewerPanel.qml</file>
     </qresource>
 </RCC>

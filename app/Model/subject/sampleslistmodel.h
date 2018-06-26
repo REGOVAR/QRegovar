@@ -55,6 +55,11 @@ Q_SIGNALS:
     void neverChanged();
     void countChanged();
 
+
+public Q_SLOTS:
+    void propagateDataChanged();
+
+
 private:
     //! List of samples
     QList<Sample*> mSamples;
