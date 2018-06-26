@@ -11,9 +11,23 @@ AnalysesListModel::AnalysesListModel(QObject *parent) : QAbstractListModel(paren
 }
 
 
+void AnalysesListModel::propagateDataChanged()
+{
+    // When a analysis in the model emit a datachange, the list need to
+    // notify its view to refresh too
+    Analysis* analysis = (Analysis*) sender();
+    if (analysis!= nullptr && mAnalyses.contains(analysis))
+    {
+        emit dataChanged(index(mAnalyses.indexOf(analysis)), index(mAnalyses.indexOf(analysis)));
+    }
+}
+
+
 void AnalysesListModel::clear()
 {
     beginResetModel();
+    for (Analysis* a: mAnalyses)
+        disconnect(a, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
     mAnalyses.clear();
     endResetModel();
     emit countChanged();
@@ -23,6 +37,8 @@ void AnalysesListModel::clear()
 bool AnalysesListModel::loadJson(QJsonArray json)
 {
     beginResetModel();
+    for (Analysis* a: mAnalyses)
+        disconnect(a, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
     mAnalyses.clear();
     for(const QJsonValue& val: json)
     {
@@ -36,10 +52,11 @@ bool AnalysesListModel::loadJson(QJsonArray json)
         {
             a = (Analysis*) regovar->analysesManager()->getOrCreatePipelineAnalysis(data["id"].toInt());
         }
-        if (a != nullptr)
+        if (a != nullptr && !mAnalyses.contains(a))
         {
             a->loadJson(data);
             mAnalyses.append(a);
+            connect(a, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
         }
     }
     endResetModel();
@@ -54,6 +71,7 @@ bool AnalysesListModel::append(Analysis* analysis)
     {
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         mAnalyses.append(analysis);
+        connect(analysis, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
         endInsertRows();
         emit countChanged();
         return true;
@@ -68,6 +86,7 @@ bool AnalysesListModel::remove(Analysis* analysis)
         int pos = mAnalyses.indexOf(analysis);
         beginRemoveRows(QModelIndex(), pos, pos);
         mAnalyses.removeAll(analysis);
+        disconnect(analysis, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
         endRemoveRows();
         emit countChanged();
         return true;

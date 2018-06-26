@@ -26,7 +26,10 @@ Rectangle
         if (model)
         {
             root.error = false;
-            model.dataChanged.connect(function() {updateFromModel(model);});
+            if (model.dataChanged)
+            {
+                model.dataChanged.connect(function() {updateFromModel(model);});
+            }
             updateFromModel(model);
         }
         else

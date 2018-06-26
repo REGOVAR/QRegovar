@@ -301,7 +301,7 @@ GenericScreen
                                 Text
                                 {
                                     font.pixelSize: Regovar.theme.font.size.normal
-                                    text: modelData.subject ? modelData.subject.subjectUI.name + " (" + modelData.subject.subjectUI.age + ")" : ""
+                                    text: modelData.subject ? modelData.subject.subjectUI.name + (modelData.subject.subjectUI.age ? " (" + modelData.subject.subjectUI.age + ")" : "") : ""
                                     elide: Text.ElideRight
                                     color: Regovar.theme.frontColor.disable
                                     visible: modelData.subject != null

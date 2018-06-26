@@ -91,6 +91,7 @@ public:
     Q_INVOKABLE QJsonObject toJson() override;
     //! Save subject information onto server
     Q_INVOKABLE void save() override;
+    Q_INVOKABLE inline void edit(QString name, QString comment) { mName = name; mComment = comment; emit dataChanged(); save(); }
     //! Load Subject information from server
     Q_INVOKABLE void load(bool forceRefresh=true) override;
     //! Convert sample status into a string value
@@ -101,6 +102,7 @@ public:
 
 public Q_SLOTS:
     void updateSearchField() override;
+    void propagateDataChanged();
 
 private:
     int mId = -1;
@@ -119,7 +121,6 @@ private:
 
     // QML shortcuts
     QVariant mNameUI;
-    //QVariant mSubjectUI;
     QVariant mStatusUI;
     QVariant mSourceUI;
     bool mIsIndex = false;

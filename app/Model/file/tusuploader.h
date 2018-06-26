@@ -44,6 +44,7 @@ public:
     // Methods
     void loadSettings();
     void writteSettings();
+    void resume(QJsonObject data);      //! Resume uploading file stored in qsettings
     void enqueue(QStringList paths);    //! Register file to the server, enqueue them and start upload as soon as possible
     void pause(QString fileId);         //! Suspend upload for the file
     void cancel(QString fileId);        //! Cancel upload for the file

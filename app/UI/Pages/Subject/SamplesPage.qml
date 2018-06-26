@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import Regovar.Core 1.0
+
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
 import "qrc:/qml/Dialogs"
@@ -11,7 +12,7 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property QtObject model
+    property Subject model
     onModelChanged:
     {
         if(model)
@@ -225,7 +226,7 @@ Rectangle
                 text: qsTr("Add sample")
                 onClicked:
                 {
-                    sampleSelector.referencialSelectorEnabled = true;
+                    sampleSelector.filteringAnalysis = null;
                     sampleSelector.reset();
                     sampleSelector.open();
                 }

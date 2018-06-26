@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
+import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
@@ -11,9 +12,20 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
-    property QtObject model
+    property Subject model
     property bool editionMode: false
-    onModelChanged: updateViewFromModel()
+    onModelChanged:
+    {
+        if(model)
+        {
+            model.dataChanged.connect(updateViewFromModel);
+        }
+        updateViewFromModel();
+    }
+    Component.onDestruction:
+    {
+        model.dataChanged.disconnect(updateViewFromModel);
+    }
 
     Rectangle
     {
@@ -93,7 +105,7 @@ Rectangle
 
         Column
         {
-            Layout.rowSpan: 8
+            Layout.rowSpan: 7
             Layout.alignment: Qt.AlignTop
             spacing: 10
 
@@ -208,31 +220,32 @@ Rectangle
             text: ""
         }
 
-        Text
-        {
-            text: qsTr("Indicator")
-            color: Regovar.theme.primaryColor.back.dark
-            font.pixelSize: Regovar.theme.font.size.normal
-            font.family: Regovar.theme.font.family
-            verticalAlignment: Text.AlignVCenter
-            height: 35
-        }
-        Rectangle
-        {
-            color: "transparent"
-            Layout.fillWidth: true
-            height: Regovar.theme.font.boxSize.normal
-            border.width: 1
-            border.color: Regovar.theme.boxColor.border
-            Text
-            {
-                anchors.centerIn: parent
-                text: qsTr("Not yet implemented")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.frontColor.disable
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
+       // TODO: subject indicator
+//        Text
+//        {
+//            text: qsTr("Indicator")
+//            color: Regovar.theme.primaryColor.back.dark
+//            font.pixelSize: Regovar.theme.font.size.normal
+//            font.family: Regovar.theme.font.family
+//            verticalAlignment: Text.AlignVCenter
+//            height: 35
+//        }
+//        Rectangle
+//        {
+//            color: "transparent"
+//            Layout.fillWidth: true
+//            height: Regovar.theme.font.boxSize.normal
+//            border.width: 1
+//            border.color: Regovar.theme.boxColor.border
+//            Text
+//            {
+//                anchors.centerIn: parent
+//                text: qsTr("Not yet implemented")
+//                font.pixelSize: Regovar.theme.font.size.normal
+//                color: Regovar.theme.frontColor.disable
+//                verticalAlignment: Text.AlignVCenter
+//            }
+//        }
 
         Text
         {

@@ -4,6 +4,7 @@ import QtQuick.Window 2.3
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Dialogs"
+import "qrc:/qml/Windows"
 
 GenericWindow
 {
@@ -108,4 +109,32 @@ GenericWindow
             onNewSubjectWizardOpen: { newSubjectDialog.reset(); newSubjectDialog.show(); }
         }
     }
+
+
+
+    ServerTasksWindow
+    {
+        id: serverRTDialog
+
+        Connections
+        {
+            target: regovar
+            onServerTasksWindowOpen: { serverRTDialog.show(); }
+        }
+    }
+
+
+
+//    NewSubjectDialog
+//    {
+//        id: newSubjectDialog
+
+//        Connections
+//        {
+//            target: regovar
+//            onNewSubjectWizardOpen: { newSubjectDialog.reset(); newSubjectDialog.show(); }
+//        }
+//    }
+
+//    openNewFileWizardOpen
 }

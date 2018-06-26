@@ -387,13 +387,14 @@ Rectangle
             Layout.fillHeight: true
             color: "transparent"
 
-            Text
-            {
-                anchors.centerIn: parent
-                text: qsTr("Not yet implemented")
-                font.pixelSize: Regovar.theme.font.size.title
-                color: Regovar.theme.primaryColor.back.light
-            }
+            // TODO: container "docker ps command"
+//            Text
+//            {
+//                anchors.centerIn: parent
+//                text: qsTr("Not yet implemented")
+//                font.pixelSize: Regovar.theme.font.size.title
+//                color: Regovar.theme.primaryColor.back.light
+//            }
         }
     }
 

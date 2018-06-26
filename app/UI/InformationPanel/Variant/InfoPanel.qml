@@ -20,6 +20,8 @@ Rectangle
 
     function updateViewFromModel()
     {
+
+
         if (sampleModel && sampleModel.loaded)
         {
             nameField.text = sampleModel.name;
@@ -137,28 +139,29 @@ Rectangle
             color: Regovar.theme.primaryColor.back.normal
         }
 
-        Text
-        {
-            Layout.fillWidth: true
-            text: qsTr("Regovar statistics")
-            font.pixelSize: Regovar.theme.font.size.header
-            color: Regovar.theme.primaryColor.back.normal
-        }
+        // TODO: variant regovar statistics
+//        Text
+//        {
+//            Layout.fillWidth: true
+//            text: qsTr("Regovar statistics")
+//            font.pixelSize: Regovar.theme.font.size.header
+//            color: Regovar.theme.primaryColor.back.normal
+//        }
 
-        Rectangle
-        {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            color: "transparent"
+//        Rectangle
+//        {
+//            Layout.fillWidth: true
+//            Layout.fillHeight: true
+//            color: "transparent"
 
-            Text
-            {
-                anchors.centerIn: parent
-                text: qsTr("Not yet implemented")
-                font.pixelSize: Regovar.theme.font.size.title
-                color: Regovar.theme.primaryColor.back.light
-            }
-        }
+//            Text
+//            {
+//                anchors.centerIn: parent
+//                text: qsTr("Not yet implemented")
+//                font.pixelSize: Regovar.theme.font.size.title
+//                color: Regovar.theme.primaryColor.back.light
+//            }
+//        }
     }
 
 }

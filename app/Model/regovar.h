@@ -20,6 +20,7 @@
 #include "event/eventsmanager.h"
 #include "pipeline/pipelinesmanager.h"
 #include "phenotype/phenotypesmanager.h"
+#include "serverTask/servertaskslistmodel.h"
 
 // TODO: rework as manager pattern
 #include "user/user.h"
@@ -46,6 +47,7 @@ class Regovar : public QObject
     Q_OBJECT
 
     // Welcom
+    Q_PROPERTY(bool loaded READ loaded NOTIFY neverChanged)
     Q_PROPERTY(QString searchRequest READ searchRequest WRITE setSearchRequest NOTIFY searchRequestChanged)
     Q_PROPERTY(QJsonObject searchResult READ searchResult NOTIFY searchResultChanged)
     Q_PROPERTY(bool searchInProgress READ searchInProgress NOTIFY searchInProgressChanged)
@@ -71,6 +73,7 @@ class Regovar : public QObject
     Q_PROPERTY(RootMenu* mainMenu READ mainMenu NOTIFY neverChanged)
     Q_PROPERTY(Settings* settings READ settings NOTIFY settingsChanged)
     Q_PROPERTY(QList<QObject*> references READ references NOTIFY referencesChanged)
+    Q_PROPERTY(ServerTasksListModel* serverTasks READ serverTasks NOTIFY neverChanged)
 
     Q_PROPERTY(RegovarInfo* config READ config NOTIFY configChanged)
     Q_PROPERTY(Admin* admin READ admin NOTIFY adminChanged)
@@ -86,6 +89,7 @@ public:
     void init();
 
     // Getters
+    inline bool loaded() const { return mLoaded; }
     inline RegovarInfo* config() const { return mConfig; }
     inline Admin* admin() { return mAdmin; }
     //--
@@ -113,6 +117,7 @@ public:
     inline QList<QObject*> references() const { return mReferences; }
     inline RootMenu* mainMenu() const { return mMainMenu; }
     inline Settings* settings() const { return mSettings; }
+    inline ServerTasksListModel* serverTasks() const { return mServerTasks; }
 
     // Setters
     inline void setSearchRequest(QString searchRequest) { mSearchRequest = searchRequest; emit searchRequestChanged(); }
@@ -127,6 +132,8 @@ public:
     Q_INVOKABLE inline void openNewProjectWizard() { emit newProjectWizardOpen(); }
     Q_INVOKABLE inline void openNewAnalysisWizard() { emit newAnalysisWizardOpen(); }
     Q_INVOKABLE inline void openNewSubjectWizard() { emit newSubjectWizardOpen(); }
+    Q_INVOKABLE inline void openNewFileWizard() { emit newFileWizardOpen(); }
+    Q_INVOKABLE inline void openServerTasksWindow() { emit serverTasksWindowOpen(); }
     Q_INVOKABLE void getFileInfo(int fileId);
     Q_INVOKABLE void getGeneInfo(QString geneName, int analysisId=-1);
     Q_INVOKABLE void getPanelInfo(QString panelId);
@@ -139,6 +146,7 @@ public:
     Q_INVOKABLE void loadConfigData();
     Q_INVOKABLE void loadWelcomData();
     Q_INVOKABLE void close();
+    void serverNotificationReceived(QString action, QJsonObject data);
     // Tools
     Q_INVOKABLE inline QUuid generateUuid() { return QUuid::createUuid(); }
     Q_INVOKABLE void manageServerError(QJsonObject json, QString method="");
@@ -180,6 +188,8 @@ Q_SIGNALS:
     void newProjectWizardOpen();
     void newAnalysisWizardOpen();
     void newSubjectWizardOpen();
+    void newFileWizardOpen();
+    void serverTasksWindowOpen();
     // Infos panels events
     void fileInformationSearching();
     void geneInformationSearching();
@@ -221,8 +231,10 @@ private:
     Admin* mAdmin = nullptr;
     //! Model of the main menu
     RootMenu* mMainMenu = nullptr;
-    //! list of references supported by the server
+    //! List of references supported by the server
     QList<QObject*> mReferences;
+    //! List of tasks running on the server (realtime notification)
+    ServerTasksListModel* mServerTasks = nullptr;
     //! Welcom last data
     AnalysesListModel* mLastAnalyses = nullptr;
     SubjectsListModel* mLastSubjects = nullptr;
@@ -263,6 +275,15 @@ private:
     QQmlApplicationEngine* mQmlEngine = nullptr;
     //! List of model used by open qml windows
     QHash<QString, QObject*> mOpenWindowModels;
+
+
+    // Internals list of push notification key, to know which manager handle them
+    QStringList mWsFilesActionsList = {"file_upload"};
+    QStringList mWsSamplesActionsList = {"import_vcf_start", "import_vcf_processing", "import_vcf_end"};
+    QStringList mWsFilteringActionsList = {"analysis_computing", "wt_update", "wt_creation", "filter_update", "filtering_prepare"};
+    QStringList mWsFilterActionsList = {"filter_update"};
+    QStringList mWsPipelinesActionsList = {"pipeline_install", "pipeline_uninstall"};
+    QStringList mWsJobsActionsList = {"job_updated"};
 };
 
 

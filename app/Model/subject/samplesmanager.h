@@ -5,7 +5,8 @@
 #include "sample.h"
 #include "Model/framework/genericproxymodel.h"
 
-
+class FilteringAnalysis;
+class Subject;
 
 class SamplesManager : public QAbstractListModel
 {
@@ -18,7 +19,7 @@ class SamplesManager : public QAbstractListModel
         Comment,
         Status,
         Source,
-        Subject,
+        Subj, // Subject
         Reference,
         SearchField
     };
@@ -41,6 +42,8 @@ public:
     // Methods
     Q_INVOKABLE Sample* getOrCreateSample(int sampleId, bool internalRefresh=false);
     bool loadJson(QJsonArray json);
+    //! Ask server to import samples from fileId. Emit sampleImportStart
+    Q_INVOKABLE void importFromFile(int fileId, int refId, FilteringAnalysis* analysis=nullptr, Subject* subject=nullptr);
 
     // QAbstractListModel methods
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
@@ -59,6 +62,11 @@ Q_SIGNALS:
     void referencialIdChanged();
     void countChanged();
     void sampleImportStart(int fileId, QList<int> samplesIds);
+
+
+public Q_SLOTS:
+    void propagateDataChanged();
+
 
 private:
     //! The id of the current referencial (update sample list on change)

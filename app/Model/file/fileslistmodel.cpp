@@ -10,6 +10,18 @@ FilesListModel::FilesListModel(QObject* parent) : QAbstractListModel(parent)
 }
 
 
+void FilesListModel::propagateDataChanged()
+{
+    // When a file in the model emit a datachange, the list need to
+    // notify its view to refresh too
+    File* file = (File*) sender();
+    if (file!= nullptr && mFileList.contains(file))
+    {
+        emit dataChanged(index(mFileList.indexOf(file)), index(mFileList.indexOf(file)));
+    }
+}
+
+
 
 bool FilesListModel::loadJson(QJsonArray json)
 {
@@ -40,6 +52,7 @@ bool FilesListModel::append(File* file)
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         mFileList.append(file);
         endInsertRows();
+        connect(file, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
         emit countChanged();
         emit fileAdded(file->id());
         result = true;
@@ -56,6 +69,7 @@ bool FilesListModel::remove(File* file)
         beginRemoveRows(QModelIndex(), pos, pos);
         mFileList.removeAt(pos);
         endRemoveRows();
+        disconnect(file, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
         emit countChanged();
         emit fileRemoved(file->id());
         result = true;
@@ -74,6 +88,8 @@ bool FilesListModel::refresh()
 bool FilesListModel::clear()
 {
     beginResetModel();
+    for (File* f: mFileList)
+        disconnect(f, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
     mFileList.clear();
     endResetModel();
     emit countChanged();

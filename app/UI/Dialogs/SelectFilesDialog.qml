@@ -12,25 +12,17 @@ import "qrc:/qml/Framework"
 Dialog
 {
     id: fileDialog
-    title: qsTr("Upload your files")
+    title: qsTr("Select your files")
     standardButtons: Dialog.Ok | Dialog.Cancel
     width: 500
     height: 400
     signal fileSelected(var files)
     property alias remoteIndex: remoteFiles.currentRow
     property alias remoteSelection: remoteFiles.selection
+    property bool enableImportLocalFile: true
+    property alias searchQuery: searchInput.text
 
-    //! if true: uploading new files will block the UI untill the upload is finished.
-    property bool uploadBlocking: false
-    property string uploadBlockingOkButtonLabel: qsTr("Uploading") + " (0%)"
-    property int uploadingProgress: regovar.filesManager.uploadsProgress
-    onUploadingProgressChanged:
-    {
-        if (uploadingProgress<100)
-            uploadBlockingOkButtonLabel = qsTr("Uploading") + " (" + uploadingProgress + "%)";
-        else
-            uploadBlockingOkButtonLabel = qsTr("Upload done");
-    }
+
 
 
     onVisibleChanged: if (visible) reset();
@@ -52,7 +44,7 @@ Dialog
             anchors.right: root.right
             iconImage: "qrc:/logo.png"
             title: qsTr("Regovar files")
-            text: qsTr("You can select files that are already on the server.\nYou can also import new files by uploading them from your computer.")
+            text: qsTr("You can select in the list below files that have already been uploaded on the server.\nOtherwise, you can import new files by uploading them from your computer.")
         }
 
         ColumnLayout
@@ -67,8 +59,12 @@ Dialog
 
             TextField
             {
+                id: searchInput
                 Layout.fillWidth: true
+                iconLeft: "z"
+                displayClearButton: true
                 placeholder: qsTr("Search file by name, date, comment, ...")
+                onTextEdited: regovar.filesManager.remoteList.proxy.setFilterString(text)
             }
 
             TableView
@@ -77,14 +73,14 @@ Dialog
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                model: regovar.filesManager.remoteList
+                model: regovar.filesManager.remoteList.proxy
                 selectionMode: SelectionMode.ExtendedSelection
 
 
                 TableViewColumn
                 {
                     title: "Name"
-                    role: "filenameUI"
+                    role: "name"
                     delegate: Item
                     {
 
@@ -93,21 +89,17 @@ Dialog
                             anchors.leftMargin: 5
                             anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value.icon
                             font.family: Regovar.theme.icons.name
+                            text: styleData.value.icon
                         }
                         Text
                         {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal
                             anchors.rightMargin: 5
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
-                            anchors.fill: parent
-                            horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.filename
                             elide: Text.ElideRight
@@ -117,7 +109,7 @@ Dialog
                 TableViewColumn
                 {
                     title: "Status"
-                    role: "statusUI"
+                    role: "status"
                     delegate: Item
                     {
 
@@ -129,8 +121,29 @@ Dialog
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value.status == 0 ? "/" : styleData.value.status == 3 ? "l" : "n"
                             font.family: Regovar.theme.icons.name
+                            text: styleData.value.status === "uploading" ? "/" : styleData.value.status === "error" ? "l" : "n"
+                            onTextChanged:
+                            {
+                                if (text == "/")
+                                {
+                                    iconAnimation.start();
+                                }
+                                else
+                                {
+                                    iconAnimation.stop();
+                                    rotation = 0;
+                                }
+                            }
+
+                            NumberAnimation on rotation
+                            {
+                                id: iconAnimation
+                                duration: 1500
+                                loops: Animation.Infinite
+                                from: 0
+                                to: 360
+                            }
                         }
                         Text
                         {
@@ -147,161 +160,12 @@ Dialog
 
                     }
                 }
-                TableViewColumn { title: "Size"; role: "sizeUI" }
+                TableViewColumn { title: "Size"; role: "size" }
                 TableViewColumn { title: "Date"; role: "updateDate" }
-                TableViewColumn { title: "Source"; role: "sourceUI" }
                 TableViewColumn { title: "Comment"; role: "comment" }
             }
         }
 
-        Rectangle
-        {
-            id: uploadBlockingProgress
-            anchors.top : header.bottom
-            anchors.left: root.left
-            anchors.right: root.right
-            anchors.bottom: remoteSwitchButton.top
-            anchors.margins: 10
-            color: Regovar.theme.backgroundColor.main
-            visible: false
-
-            // Prevent clicks on the layer underneath
-            MouseArea { anchors.fill: parent; propagateComposedEvents: false; }
-
-
-            ColumnLayout
-            {
-                anchors.fill : parent
-                spacing: 10
-
-
-                Box
-                {
-                    Layout.fillWidth: true
-                    height: 30
-                    mainColor: Regovar.theme.frontColor.warning
-                    icon: "m"
-                    text: qsTr("Upload in progress. Please wait until it finishes before continuing.")
-                }
-
-                TableView
-                {
-                    id: uploadingFiles
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-
-                    model: regovar.filesManager.uploadsList
-                    selectionMode: SelectionMode.ExtendedSelection
-
-
-                    TableViewColumn
-                    {
-                        title: "Name"
-                        role: "filenameUI"
-                        delegate: Item
-                        {
-                            RowLayout
-                            {
-                                anchors.fill: parent
-                                anchors.leftMargin: 5
-                                anchors.rightMargin: 5
-                                spacing: 5
-
-                                // TODO: File upload play/pause/cancel button
-//                                ButtonInline
-//                                {
-//                                    iconTxt: "y"
-//                                    text: ""
-//                                    ToolTip.text: qsTr("Pause upload of this file")
-//                                    ToolTip.visible: hovered
-//                                }
-//                                ButtonInline
-//                                {
-//                                    iconTxt: "h"
-//                                    text: ""
-//                                    ToolTip.text: qsTr("Cancel upload of this file")
-//                                    ToolTip.visible: hovered
-//                                }
-
-                                Text
-                                {
-                                    verticalAlignment: Text.AlignVCenter
-                                    horizontalAlignment: styleData.textAlignment
-                                    font.pixelSize: Regovar.theme.font.size.normal
-                                    text: styleData.value.icon
-                                    font.family: Regovar.theme.icons.name
-                                }
-                                Text
-                                {
-                                    Layout.fillWidth: true
-                                    horizontalAlignment: styleData.textAlignment
-                                    font.pixelSize: Regovar.theme.font.size.normal
-                                    text: styleData.value.filename
-                                    elide: Text.ElideRight
-                                }
-                            }
-                        }
-                    }
-                    TableViewColumn
-                    {
-                        title: "Status"
-                        role: "statusUI"
-                        delegate: Item
-                        {
-
-                            Text
-                            {
-                                anchors.leftMargin: 5
-                                anchors.left: parent.left
-                                anchors.verticalCenter: parent.verticalCenter
-                                verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                text: styleData.value.status == 0 ? "/" : styleData.value.status == 3 ? "l" : "n"
-                                font.family: Regovar.theme.icons.name
-
-                                onTextChanged:
-                                {
-                                    if (styleData.value.status == 0) // 0 = Loading
-                                    {
-                                        statusIconAnimation.start();
-                                    }
-                                    else
-                                    {
-                                        statusIconAnimation.stop();
-                                        rotation = 0;
-                                    }
-                                }
-                                NumberAnimation on rotation
-                                {
-                                    id: statusIconAnimation
-                                    duration: 1500
-                                    loops: Animation.Infinite
-                                    from: 0
-                                    to: 360
-                                }
-                            }
-                            Text
-                            {
-                                anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
-                                anchors.rightMargin: 5
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                anchors.verticalCenter: parent.verticalCenter
-                                horizontalAlignment: styleData.textAlignment
-                                font.pixelSize: Regovar.theme.font.size.normal
-                                text: styleData.value.label
-                                elide: Text.ElideRight
-                            }
-
-                        }
-                    }
-                    TableViewColumn { title: "Comment"; role: "comment" }
-
-                }
-            }
-
-        }
 
         ButtonIcon
         {
@@ -310,11 +174,11 @@ Dialog
             anchors.left: root.left
             anchors.margins: 10
 
-            visible: !uploadBlockingProgress.visible
-
             iconTxt: "à"
             text: qsTr("Upload local files")
             onClicked: localFilesDialog.open()
+            visible: enableImportLocalFile
+            enabled: enableImportLocalFile
         }
 
 
@@ -324,32 +188,18 @@ Dialog
             anchors.bottom : root.bottom
             anchors.right: root.right
             anchors.margins: 10
-            text: !uploadBlockingProgress.visible ? qsTr("Ok") : uploadBlockingOkButtonLabel
-
-            enabled: !uploadBlockingProgress.visible || uploadingProgress >= 100
+            text: qsTr("Ok")
 
             onClicked:
             {
                 var files = [];
-                // OK Clicked from "Upload Blocking" View
-                if (uploadBlockingProgress.visible)
+                // Get list of selected files
+                remoteFiles.selection.forEach( function(rowIndex)
                 {
-                    // Get list of selected files = list of uploaded files
-                    for (var idx=0; idx<regovar.filesManager.uploadsList.length; idx++)
-                    {
-                        files = files.concat(regovar.filesManager.uploadsList[idx]);
-                    }
-                }
-                // OK Clicked from "Remote files" View
-                else
-                {
-                    // Get list of selected files
-                    remoteFiles.selection.forEach( function(rowIndex)
-                    {
-                        files = files.concat(regovar.filesManager.remoteList[rowIndex]);
-                    });
-                }
-
+                    var idx = regovar.filesManager.remoteList.proxy.getModelIndex(rowIndex);
+                    var id = regovar.filesManager.remoteList.data(idx, 257); // 257 = Qt::UserRole+1
+                    files = files.concat(regovar.filesManager.getOrCreateFile(id));
+                });
 
                 // Return / emit result
                 fileSelected(files);
@@ -363,73 +213,29 @@ Dialog
             anchors.bottom : root.bottom
             anchors.right: okButton.left
             anchors.margins: 10
-            text: !uploadBlockingProgress.visible ? qsTr("Cancel") : qsTr("Cancel all uploads")
-
-            enabled: !uploadBlockingProgress.visible || uploadingProgress < 100
-            onClicked:
-            {
-                // CANCEL Clicked from "Upload Blocking" View
-                if (uploadBlockingProgress.visible)
-                {
-                    // Clear uploading files list in the model
-                    var files = [];
-                    for (var idx=0; idx<regovar.filesManager.uploadsList.length; idx++)
-                    {
-                        files = files.concat(regovar.filesManager.uploadsList[idx].id);
-                    }
-                    regovar.filesManager.cancelUploadFile(files);
-                }
-
-                // Return / emit result
-                fileDialog.reject()
-            }
+            text: qsTr("Cancel")
+            onClicked: fileDialog.reject()
         }
     }
 
-
-    function reset()
-    {
-        // Force Collapse "Upload Blocking" View
-        uploadBlockingProgress.visible = false;
-
-        // Force Clear uploading files list in the model (TUS manager queue/inprogress is not impacted)
-        regovar.filesManager.clearUploadsList();
-
-        // Reset selection in the remote view
-        remoteFiles.selection.select(0);
-    }
 
 
     FileDialog
     {
         id: localFilesDialog
-        nameFilters: [ "VCF files (*.vcf *.vcf.gz)", "GVCF (*.gvcf *.gvcf.gz)", "All files (*)" ]
-        selectedNameFilter: "VCF files (*.vcf *.vcf.gz)"
+        nameFilters: ["All files (*)"]
+        selectedNameFilter: "All files (*)"
         title: "Select file(s) to upload on the server"
-        //folder: shortcuts.home
         selectMultiple: true
-
-        onAccepted: importFiles(localFilesDialog.fileUrls)
+        onAccepted: Regovar.importFiles(fileUrls)
     }
 
-    function importFiles(files)
+
+    function reset()
     {
-        console.log("Start upload of files : " + files);
-        var filesToImport = [];
-        for (var idx=0; idx<files; idx++)
-        {
-            var file = files[idx];
-            if (file in fileUploadList) continue;
-            filesToImport.push(file);
-            fileUploadList.push(file);
-        }
-
-        // Enqueue file to the TUS upload manager.
-        // When upload will start, the fileManager will emit uploadsChanged signal
-        // We will be able to retrieve created File & Sample entries in the model
-        // and update the view accordingly (see connection below)
-        regovar.filesManager.enqueueUploadFile(filesToImport);
+        remoteFiles.selection.select(0);
     }
+
 }
 
 

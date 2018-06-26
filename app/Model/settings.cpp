@@ -23,9 +23,6 @@ void Settings::reload()
     // Connection settings
     mServerUrl = QUrl(settings.value("serverUrl", "http://test.regovar.org").toString());
     mSharedUrl = QUrl(settings.value("sharedUrl", "http://shared.regovar.org").toString());
-    // Local cache settings
-    mLocalCacheDir = settings.value("cacheDir", "").toString();
-    mLocalCacheMaxSize = settings.value("cacheMaxSize", 100).toInt();
     // Cookie
     mKeepMeLogged = settings.value("keepMeLogged", false).toBool();
     mSessionUserId = settings.value("sessionUserId", -1).toUInt();
@@ -56,9 +53,6 @@ void Settings::save()
     // Connection settings
     settings.setValue("serverUrl", mServerUrl.toString());
     settings.setValue("sharedUrl",mSharedUrl.toString());
-    // Loca cache settings
-    settings.setValue("cacheDir", mLocalCacheDir);
-    settings.setValue("cacheMaxSize", mLocalCacheMaxSize);
     // Cookie
     settings.setValue("keepMeLogged", mKeepMeLogged);
     if (mKeepMeLogged && mSessionUserId > 0)
@@ -77,3 +71,65 @@ void Settings::save()
 
 
 
+void Settings::addUploadFile(int fileId, QString localPath)
+{
+    QSettings settings;
+    QJsonObject data = deserializeJson(settings.value("uploadingFiles").toString());
+    if (!data.contains(QString::number(fileId)))
+    {
+        data.insert(QString::number(fileId), localPath);
+        settings.setValue("uploadingFiles", serializeJson(data));
+        emit dataChanged();
+    }
+}
+
+
+
+void Settings::removeUploadFile(int fileId)
+{
+    QSettings settings;
+    QJsonObject data = deserializeJson(settings.value("uploadingFiles").toString());
+    if (data.contains(QString::number(fileId)))
+    {
+        data.remove(QString::number(fileId));
+        settings.setValue("uploadingFiles", serializeJson(data));
+        emit dataChanged();
+    }
+}
+
+
+
+void Settings::clearUploadFile()
+{
+    QSettings settings;
+    settings.setValue("uploadingFiles", "");
+}
+
+
+
+
+QString Settings::serializeJson(QJsonObject json)
+{
+    QJsonDocument doc(json);
+    QString data(doc.toJson(QJsonDocument::Compact));
+    return data;
+}
+QJsonObject Settings::deserializeJson(QString data)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(data.toUtf8());
+    if(!doc.isNull())
+    {
+        if(doc.isObject())
+        {
+            return doc.object();
+        }
+    }
+    return QJsonObject();
+}
+
+
+QJsonObject Settings::uploadingFiles()
+{
+    QSettings settings;
+    return deserializeJson(settings.value("uploadingFiles").toString());
+}

@@ -6,7 +6,7 @@
 PipelineAnalysis::PipelineAnalysis(QObject* parent) : Analysis(parent)
 {
     mInputsFiles = new FilesListModel(this);
-    mOutputsFiles = new FilesTreeModel(this);
+    mOutputsFiles = new FilesListModel(this);
     mType = Analysis::PIPELINE;
     mMenuModel->initPipelineAnalysis();
 }
@@ -106,17 +106,7 @@ bool PipelineAnalysis::loadJson(QJsonObject json, bool full_init)
             {
                 file->load(true);
             }
-            mOutputsFiles->add(file);
-        }
-    }
-
-    // If job is done, and full_init is requested: load outputs files in the cache
-    if (mStatus == "done" && full_init)
-    {
-        for (int idx=0; idx<mOutputsFiles->rowCount(); idx++)
-        {
-            File* file = mOutputsFiles->getAt(idx);
-            file->downloadLocalFile();
+            mOutputsFiles->append(file);
         }
     }
 

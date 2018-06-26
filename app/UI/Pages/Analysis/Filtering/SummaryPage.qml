@@ -134,7 +134,7 @@ Rectangle
             text: ""
             onClicked:
             {
-                if (root.model.status == "empty" || root.model.status == "close")
+               if (root.model.status == "empty" || root.model.status == "close")
                {
 
                }
@@ -251,42 +251,43 @@ Rectangle
             }
         }
 
-        RowLayout
-        {
-            onWidthChanged: updateColumn1Width(width)
-            Item
-            {
-                Layout.minimumWidth: Regovar.theme.font.boxSize.header
-                height: Regovar.theme.font.boxSize.normal
-            }
+        // TODO: Analysis indicator
+//        RowLayout
+//        {
+//            onWidthChanged: updateColumn1Width(width)
+//            Item
+//            {
+//                Layout.minimumWidth: Regovar.theme.font.boxSize.header
+//                height: Regovar.theme.font.boxSize.normal
+//            }
 
-            Text
-            {
-                text: qsTr("Indicator")
-                color: Regovar.theme.primaryColor.back.dark
-                font.pixelSize: Regovar.theme.font.size.normal
-                font.family: Regovar.theme.font.family
-                verticalAlignment: Text.AlignVCenter
-                height: Regovar.theme.font.boxSize.normal
-            }
-        }
-        Rectangle
-        {
-            Layout.fillWidth: true
-            height: Regovar.theme.font.boxSize.normal
-            color: "transparent"
-            border.width: editionMode ? 1 : 0
-            border.color: Regovar.theme.boxColor.border
-            Text
-            {
-                anchors.fill: parent
-                anchors.leftMargin: 5
-                text: qsTr("Not yet implemented")
-                font.pixelSize: Regovar.theme.font.size.normal
-                color: Regovar.theme.frontColor.disable
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
+//            Text
+//            {
+//                text: qsTr("Indicator")
+//                color: Regovar.theme.primaryColor.back.dark
+//                font.pixelSize: Regovar.theme.font.size.normal
+//                font.family: Regovar.theme.font.family
+//                verticalAlignment: Text.AlignVCenter
+//                height: Regovar.theme.font.boxSize.normal
+//            }
+//        }
+//        Rectangle
+//        {
+//            Layout.fillWidth: true
+//            height: Regovar.theme.font.boxSize.normal
+//            color: "transparent"
+//            border.width: editionMode ? 1 : 0
+//            border.color: Regovar.theme.boxColor.border
+//            Text
+//            {
+//                anchors.fill: parent
+//                anchors.leftMargin: 5
+//                text: qsTr("Not yet implemented")
+//                font.pixelSize: Regovar.theme.font.size.normal
+//                color: Regovar.theme.frontColor.disable
+//                verticalAlignment: Text.AlignVCenter
+//            }
+//        }
 
         RowLayout
         {
@@ -879,12 +880,21 @@ Rectangle
         var statusLabel = regovar.analysisStatusLabel(status);
         var statusText = "";
         var statusColor = Regovar.theme.frontColor.success;
+        statusButton.visible = true;
 
-
+        if (status == "empty" || status == "close" || status == "waiting")
+        {
+        }
         if (status == "error")
         {
             statusColor = Regovar.theme.frontColor.danger;
             statusText = ". " + root.model.computingProgress.error_message;
+        }
+        else if (status == "waiting")
+        {
+            statusColor = Regovar.theme.frontColor.warning;
+            statusText = ". " + qsTr("The creation of the analysis will start when the import of all samples from file is done.");
+            statusButton.visible = false;
         }
         else if (status == "empty" || status == "close")
         {
@@ -902,8 +912,11 @@ Rectangle
         }
         else
         {
-            statusText = " (" + (globalProgress/root.model.computingProgress.log.length*100).toFixed(1) + "%)";
-            statusText += ". " + qsTr("We are processing variant's data for your analysis. It might take some time...");
+            if (root.model.computingProgress && root.model.computingProgress.log)
+            {
+                statusText = " (" + (globalProgress/root.model.computingProgress.log.length*100).toFixed(1) + "%)";
+                statusText += ". " + qsTr("We are processing variant's data for your analysis. It might take some time...");
+            }
         }
 
         // update view

@@ -272,7 +272,8 @@ Rectangle
     Dialog
     {
         id: setSizePopup
-
+        width: 250
+        height: 100
         Rectangle
         {
             color: "transparent"

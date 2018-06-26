@@ -18,6 +18,9 @@
 
 #include "Model/analysis/filtering/filteringanalysis.h"
 #include "Model/event/event.h"
+#include "Model/file/file.h"
+#include "Model/analysis/filtering/filteringanalysis.h"
+#include "Model/analysis/pipeline/pipelineanalysis.h"
 
 
 Regovar* Regovar::mInstance = Q_NULLPTR;
@@ -53,8 +56,6 @@ void Regovar::init()
 
     // Init file manager
     mFilesManager = new FilesManager(this);
-    mFilesManager->setCacheDir(mSettings->localCacheDir());
-    mFilesManager->setCacheMaxSize(mSettings->localCacheMaxSize());
 
     // Init user manager and current user if autologin enabled
     mUsersManager = new UsersManager(this);
@@ -73,6 +74,7 @@ void Regovar::init()
     // Load misc data
     mLastAnalyses = new AnalysesListModel(this);
     mLastSubjects = new SubjectsListModel(this);
+    mServerTasks = new ServerTasksListModel(this);
 
     loadConfigData();
     // Auto log last user ?
@@ -293,7 +295,8 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model, QString wid)
             qFatal("Error: Your root item has to be a window.");
             return false;
         }
-        i->setParent(0);
+
+        //i->setParent(0);
         i->setVisible(true);
     }
     else
@@ -341,8 +344,62 @@ Reference* Regovar::referenceFromId(int id)
 //    emit selectedReferenceChanged();
 //}
 
+void Regovar::serverNotificationReceived(QString action, QJsonObject data)
+{
+    // Update list of server tasks
+    mServerTasks->getOrCreateTask(action, data);
 
+    // Process notification
+    if (mWsSamplesActionsList.indexOf(action) != -1)
+    {
+        regovar->samplesManager()->processPushNotification(action, data);
+    }
+    else if (mWsFilesActionsList.indexOf(action) != -1)
+    {
+        regovar->filesManager()->processPushNotification(action, data);
+    }
+    else if (mWsFilteringActionsList.indexOf(action) != -1)
+    {
+        int id = data["id"].toInt();
+        if (id == 0)
+        {
+            id = data["analysis_id"].toInt();
+        }
 
+        FilteringAnalysis* analysis = regovar->analysesManager()->getFilteringAnalysis(id);
+        if (analysis != nullptr)
+        {
+            analysis->processPushNotification(action, data);
+        }
+    }
+    else if (mWsFilterActionsList.indexOf(action) != -1)
+    {
+        int id = data["analysis_id"].toInt();
+        FilteringAnalysis* analysis = regovar->analysesManager()->getFilteringAnalysis(id);
+        if (analysis != nullptr)
+        {
+            analysis->processPushNotification(action, data);
+        }
+    }
+    else if (mWsPipelinesActionsList.indexOf(action) != -1)
+    {
+        int id = data["id"].toInt();
+        PipelineAnalysis* analysis = regovar->analysesManager()->getPipelineAnalysis(id);
+        if (analysis != nullptr)
+        {
+            analysis->processPushNotification(action, data);
+        }
+    }
+    else if (mWsJobsActionsList.indexOf(action) != -1)
+    {
+        int id = data["id"].toInt();
+        PipelineAnalysis* analysis = regovar->analysesManager()->getPipelineAnalysis(id);
+        if (analysis != nullptr)
+        {
+            analysis->processPushNotification(action, data);
+        }
+    }
+}
 
 
 

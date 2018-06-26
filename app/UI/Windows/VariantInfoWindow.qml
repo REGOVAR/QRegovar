@@ -31,7 +31,11 @@ Window
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
-        variantInfoPanel.model = regovar.getWindowModels(winId);
-        title = variantInfoPanel.model.name;
+        var mm = regovar.getWindowModels(winId);
+        if (mm)
+        {
+            variantInfoPanel.model = mm;
+            title = variantInfoPanel.model.name;
+        }
     }
 }

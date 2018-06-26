@@ -12,6 +12,7 @@ class PipelinesListModel : public QAbstractListModel
         Id = Qt::UserRole + 1,
         Name,
         Description,
+        Version,
         Type,
         Status,
         Starred,
@@ -32,7 +33,9 @@ public:
 
     // Methods
     Q_INVOKABLE bool loadJson(QJsonArray json);
-    Q_INVOKABLE bool add(Pipeline* pipe);
+    Q_INVOKABLE bool append(Pipeline* pipe);
+    Q_INVOKABLE bool remove(Pipeline* pipe);
+    Q_INVOKABLE Pipeline* getAt(int position);
     Q_INVOKABLE bool refresh();
 
     // QAbstractListModel methods
@@ -45,9 +48,14 @@ Q_SIGNALS:
     void neverChanged();
     void countChanged();
 
+
+public Q_SLOTS:
+    void propagateDataChanged();
+
+
 private:
     //! List of pipelines
-    QList<Pipeline*> mPipelinesList;
+    QList<Pipeline*> mPipelines;
     //! The QSortFilterProxyModel to use by table view to browse samples of the manager
     GenericProxyModel* mProxy = nullptr;
     //! Last time that the list have been updated

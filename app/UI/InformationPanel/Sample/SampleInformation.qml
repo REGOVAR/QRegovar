@@ -20,7 +20,7 @@ InformationPanel
         {
             subject = data["subject"].identifier + " - " + data["subject"].lastname + " " + data["subject"].firstname;
         }
-        root.title += "<br/>Subject: " + subject + "<br/>Status: " + data.status;
+        root.title += "<br/>Subject: " + subject + "<br/>Status: " + data.statusUI["label"];
 
         // Update tabs
         root.tabSharedModel = data;
@@ -30,21 +30,27 @@ InformationPanel
                 "icon": "j",
                 "source": "qrc:/qml/InformationPanel/Sample/InfoPanel.qml"
             });
-        ttt.append(
-            {   "title": qsTr("Stats & Quality"),
-                "icon": "^",
-                "source": "qrc:/qml/InformationPanel/Sample/StatsQualPanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Usage"),
-                "icon": "ê",
-                "source": "qrc:/qml/InformationPanel/Common/RelationsPanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Events"),
-                "icon": "è",
-                "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
-            });
+        if (data.status === 2) // ready
+        {
+            // TODO: Sample stats & quality info panel
+//            ttt.append(
+//                {   "title": qsTr("Stats & Quality"),
+//                    "icon": "^",
+//                    "source": "qrc:/qml/InformationPanel/Sample/StatsQualPanel.qml"
+//                });
+            // TODO: Sample relations tab
+//            ttt.append({
+//                    "title": qsTr("Usage"),
+//                    "icon": "ê",
+//                    "source": "qrc:/qml/InformationPanel/Common/RelationsPanel.qml"
+//                });
+        }
+        // TODO: sample event panel
+//        ttt.append({
+//                "title": qsTr("Events"),
+//                "icon": "è",
+//                "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
+//            });
         root.tabsModel = ttt;
         root.loading = false;
     }

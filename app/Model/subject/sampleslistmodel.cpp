@@ -10,9 +10,23 @@ SamplesListModel::SamplesListModel(QObject* parent): QAbstractListModel(parent)
 }
 
 
+void SamplesListModel::propagateDataChanged()
+{
+    // When a sample in the model emit a datachange, the list need to
+    // notify its view to refresh too
+    Sample* sample = (Sample*) sender();
+    if (sample!= nullptr && mSamples.contains(sample))
+    {
+        emit dataChanged(index(mSamples.indexOf(sample)), index(mSamples.indexOf(sample)));
+    }
+}
+
+
 void SamplesListModel::clear()
 {
     beginResetModel();
+    for (Sample* s: mSamples)
+        disconnect(s, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
     mSamples.clear();
     endResetModel();
     emit countChanged();
@@ -43,6 +57,7 @@ bool SamplesListModel::append(Sample* sample)
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         mSamples.append(sample);
         endInsertRows();
+        connect(sample, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
         emit countChanged();
         return true;
     }
@@ -56,6 +71,7 @@ bool SamplesListModel::remove(Sample* sample)
         int pos = mSamples.indexOf(sample);
         beginRemoveRows(QModelIndex(), pos, pos);
         mSamples.removeAll(sample);
+        disconnect(sample, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
         endRemoveRows();
         emit countChanged();
         return true;

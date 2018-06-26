@@ -11,7 +11,7 @@ Item
 {
     id: root
     property bool readOnly: false
-    property File currentFile
+    property alias currentFile: viewer.model
     property QtObject model
     onModelChanged:
     {
@@ -161,7 +161,7 @@ Item
             for(var idx in files)
             {
                 var file = files[idx];
-                root.model.add(file);
+                root.model.append(file);
             }
         }
     }
@@ -182,7 +182,6 @@ Item
             var id = root.model.data(idx, 257); // 257 = Qt::UserRole+1
 
             root.currentFile = regovar.filesManager.getOrCreateFile(id);
-            viewer.openFile(id);
         }
     }
 }

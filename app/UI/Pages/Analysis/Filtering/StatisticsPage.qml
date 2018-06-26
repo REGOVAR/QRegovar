@@ -53,8 +53,8 @@ Rectangle
         statsOverview.model = statisticsModel;
         statsVariantClasses.model = statisticsModel;
         statsVepConsequences.model = statisticsModel;
-        statsVepImpacts.model = statisticsModel;
-        qualOverview.model = statisticsModel;
+        // TODO: statsVepImpacts.model = statisticsModel;
+        // TODO: qualOverview.model = statisticsModel;
         qualFilter.model = statisticsModel;
     }
 
@@ -215,7 +215,7 @@ Rectangle
                 StatsOverview { id: statsOverview; }
                 StatsVariantClasses { id: statsVariantClasses; }
                 StatsVepConsequences { id: statsVepConsequences; }
-                StatsVepImpacts { id: statsVepImpacts; }
+                // TODO: StatsVepImpacts { id: statsVepImpacts; }
             }
         }
     }
@@ -280,7 +280,7 @@ Rectangle
             {
                 spacing: 10
 
-                QualityOverview { id: qualOverview; }
+                // TODO: QualityOverview { id: qualOverview; }
                 QualityFilter { id: qualFilter; }
             }
         }

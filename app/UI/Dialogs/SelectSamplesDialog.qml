@@ -8,7 +8,6 @@ import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
-import "qrc:/qml/Wizards/Sample"
 
 
 
@@ -25,7 +24,8 @@ Dialog
     height: 600
 
     property bool importingFile: false
-    property bool referencialSelectorEnabled: true
+    property var filteringAnalysis: null
+    property var subject: null
     signal samplesSelected(var samples)
 
 
@@ -38,287 +38,264 @@ Dialog
         color: Regovar.theme.backgroundColor.main
         anchors.fill: parent
 
-        Rectangle
+
+        DialogHeader
+        {
+            id: sampleViewHeader
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            iconText: "4"
+            title: qsTr("Regovar samples")
+            text:  qsTr("You can select samples that are already on the server.\nYou can also import new samples by uploading a (g)vcf file.")
+        }
+
+        ColumnLayout
         {
             id: rootSampleView
-            anchors.fill: root
-            color: "transparent"
+            anchors.top: sampleViewHeader.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            anchors.bottomMargin: okButton.height + 20
             visible: !importingFile
             enabled: !importingFile
+            spacing: 10
 
 
-            DialogHeader
+            Rectangle
             {
-                id: sampleViewHeader
-                anchors.top : rootSampleView.top
-                anchors.left: rootSampleView.left
-                anchors.right: rootSampleView.right
+                Layout.fillWidth: true
+                height: Regovar.theme.font.boxSize.normal + 20
+                border.width: 1
+                border.color: Regovar.theme.boxColor.border
+                color: Regovar.theme.boxColor.back
+                visible: filteringAnalysis === null
+                radius: 2
 
-                iconText: "4"
-                title: qsTr("Regovar samples")
-                text:  qsTr("You can select samples that are already on the server.\nYou can also import new samples by uploading a (g)vcf file.")
-            }
-
-            RowLayout
-            {
-                id: sampleViewFiltersRow
-                anchors.top : sampleViewHeader.bottom
-                anchors.left: rootSampleView.left
-                anchors.right: rootSampleView.right
-                anchors.margins: 10
-                spacing: 10
-
-                Text
+                RowLayout
                 {
-                    text: qsTr("Referencial:")
-                    enabled: referencialSelectorEnabled
-                    color: Regovar.theme.primaryColor.back.normal
-                }
-
-                Text
-                {
-                    text: regovar.samplesManager.referencialId > 0 ? regovar.referenceFromId(regovar.samplesManager.referencialId).name : ""
-                    enabled: referencialSelectorEnabled
-                    color: Regovar.theme.primaryColor.back.normal
-                    visible: !referencialSelectorEnabled
-                }
-
-                ComboBox
-                {
-                    id: refCombo
-                    visible: referencialSelectorEnabled
-                    model: regovar.references
-                    textRole: "name"
-
-//                    delegate: Control.ItemDelegate
-//                    {
-//                        x: 1
-//                        width: refCombo.width -2
-//                        height: Regovar.theme.font.boxSize.normal
-//                        contentItem: Text
-//                        {
-//                            text: modelData.name
-//                            color: enabled ? Regovar.theme.boxColor.front : Regovar.theme.frontColor.disable
-//                            font: refCombo.font
-//                            elide: Text.ElideRight
-//                            verticalAlignment: Text.AlignVCenter
-//                        }
-//                        highlighted: refCombo.highlightedIndex === index
-//                    }
-
-                    onCurrentIndexChanged:
-                    {
-                        regovar.samplesManager.referencialId = regovar.references[currentIndex].id;
-                    }
-                }
-
-                TextField
-                {
-                    id: searchBox
-                    iconLeft: "z"
-                    displayClearButton: true
-                    Layout.fillWidth: true
-                    anchors.leftMargin: 10 + (referencialSelectorEnabled ? refCombo.width + 10 : 0)
-                    placeholder: qsTr("Search sample by identifiant or vcf filename, subject's name, identifier, comment, ...")
-                    onTextEdited: regovar.samplesManager.proxy.setFilterString(text)
-                }
-            }
-
-
-
-            Button
-            {
-                id: importSampleButton
-                anchors.top : sampleViewFiltersRow.bottom
-                anchors.right: rootSampleView.right
-                anchors.margins: 10
-
-                text: qsTr("Import sample\nfrom file")
-                onClicked:
-                {
-                    localFilesDialog.open();
-                }
-            }
-
-
-            TableView
-            {
-                id: selectedSamplesTable
-                anchors.top : sampleViewFiltersRow.bottom
-                anchors.left: rootSampleView.left
-                anchors.right: importSampleButton.left
-                anchors.bottom: rootSampleView.bottom
-                anchors.margins: 10
-                anchors.bottomMargin: okButton.height + 20
-
-                model: regovar.samplesManager.proxy
-
-                sortIndicatorVisible: true
-                onSortIndicatorColumnChanged: regovar.samplesManager.proxy.setSortOrder(sortIndicatorColumn, sortIndicatorOrder)
-                onSortIndicatorOrderChanged:  regovar.samplesManager.proxy.setSortOrder(sortIndicatorColumn, sortIndicatorOrder)
-
-
-
-
-
-                selectionMode: SelectionMode.ExtendedSelection
-                property var statusIcons: ["m", "/", "n", "h"]
-
-
-                TableViewColumn { title: qsTr("Sample"); role: "name"; horizontalAlignment: Text.AlignLeft; }
-                TableViewColumn
-                {
-                    title: "Status"
-                    role: "status"
-                    delegate: Item
-                    {
-
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            font.family: Regovar.theme.icons.name
-                            text: selectedSamplesTable.statusIcons[styleData.value.status]
-                            onTextChanged:
-                            {
-                                if (styleData.value.status === 1) // 1 = Loading
-                                {
-                                    statusIconAnimation.start();
-                                }
-                                else
-                                {
-                                    statusIconAnimation.stop();
-                                    rotation = 0;
-                                }
-                            }
-                            NumberAnimation on rotation
-                            {
-                                id: statusIconAnimation
-                                duration: 1500
-                                loops: Animation.Infinite
-                                from: 0
-                                to: 360
-                            }
-                        }
-                        Text
-                        {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
-                            anchors.rightMargin: 5
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value.label
-                            elide: Text.ElideRight
-                        }
-                    }
-                }
-                TableViewColumn
-                {
-                    title: qsTr("Subject")
-                    role: "subject"
-                    delegate: Item
-                    {
-
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.sex : ""
-                            font.family: Regovar.theme.icons.name
-                        }
-                        Text
-                        {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
-                            anchors.rightMargin: 5
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.name : ""
-                            elide: Text.ElideRight
-                        }
-
-                    }
-                }
-                TableViewColumn
-                {
-                    title: qsTr("Source")
-                    role: "source"
-                    delegate: Item
-                    {
-
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.icon : ""
-                            font.family: Regovar.theme.icons.name
-                        }
-                        Text
-                        {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
-                            anchors.rightMargin: 5
-                            anchors.fill: parent
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: styleData.textAlignment
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value ? styleData.value.filename : ""
-                            elide: Text.ElideRight
-                        }
-                    }
-                }
-                TableViewColumn { title: qsTr("Comment"); role: "comment" }
-
-                Rectangle
-                {
-                    id: sampleHelpPanel
                     anchors.fill: parent
-
-                    color: Regovar.theme.backgroundColor.overlay
-
-                    visible: regovar.samplesManager.count == 0
+                    anchors.margins: 10
+                    spacing: 10
 
                     Text
                     {
-                        text: qsTr("No sample complient with the reference ") + regovar.analysesManager.newFiltering.refName + qsTr(" on the server Regovar.\nTo import new samples from files click on the button below.")
-                        font.pixelSize: Regovar.theme.font.size.header
+                        text: qsTr("Referencial:")
                         color: Regovar.theme.primaryColor.back.normal
-                        anchors.fill: parent
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        wrapMode: Text.WordWrap
+                    }
+
+                    ComboBox
+                    {
+                        id: refCombo
+                        Layout.fillWidth: true
+                        model: regovar.references
+                        textRole: "name"
+                        onCurrentIndexChanged:
+                        {
+                            regovar.samplesManager.referencialId = regovar.references[currentIndex].id;
+                        }
+                    }
+                }
+            }
+
+
+            RowLayout
+            {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                ColumnLayout
+                {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    TextField
+                    {
+                        id: searchBox
+                        iconLeft: "z"
+                        displayClearButton: true
+                        Layout.fillWidth: true
+                        anchors.leftMargin: 10 + (referencialSelectorEnabled ? refCombo.width + 10 : 0)
+                        placeholder: qsTr("Search sample by identifiant or vcf filename, subject's name, identifier, comment, ...")
+                        onTextEdited: regovar.samplesManager.proxy.setFilterString(text)
+                    }
+
+                    TableView
+                    {
+                        id: selectedSamplesTable
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+
+
+                        model: regovar.samplesManager.proxy
+
+                        sortIndicatorVisible: true
+                        onSortIndicatorColumnChanged: regovar.samplesManager.proxy.setSortOrder(sortIndicatorColumn, sortIndicatorOrder)
+                        onSortIndicatorOrderChanged:  regovar.samplesManager.proxy.setSortOrder(sortIndicatorColumn, sortIndicatorOrder)
+
+
+                        selectionMode: SelectionMode.ExtendedSelection
+                        property var statusIcons: ["m", "/", "n", "h"]
+
+
+                        TableViewColumn { title: qsTr("Sample"); role: "name"; horizontalAlignment: Text.AlignLeft; }
+                        TableViewColumn
+                        {
+                            title: "Status"
+                            role: "status"
+                            delegate: Item
+                            {
+
+                                Text
+                                {
+                                    anchors.leftMargin: 5
+                                    anchors.left: parent.left
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                    horizontalAlignment: styleData.textAlignment
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    font.family: Regovar.theme.icons.name
+                                    text: selectedSamplesTable.statusIcons[styleData.value.status]
+                                    onTextChanged:
+                                    {
+                                        if (styleData.value.status === 1) // 1 = Loading
+                                        {
+                                            statusIconAnimation.start();
+                                        }
+                                        else
+                                        {
+                                            statusIconAnimation.stop();
+                                            rotation = 0;
+                                        }
+                                    }
+                                    NumberAnimation on rotation
+                                    {
+                                        id: statusIconAnimation
+                                        duration: 1500
+                                        loops: Animation.Infinite
+                                        from: 0
+                                        to: 360
+                                    }
+                                }
+                                Text
+                                {
+                                    anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                                    anchors.rightMargin: 5
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    horizontalAlignment: styleData.textAlignment
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    text: styleData.value.label
+                                    elide: Text.ElideRight
+                                }
+                            }
+                        }
+                        TableViewColumn
+                        {
+                            title: qsTr("Subject")
+                            role: "subject"
+                            delegate: Item
+                            {
+
+                                Text
+                                {
+                                    anchors.leftMargin: 5
+                                    anchors.left: parent.left
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                    horizontalAlignment: styleData.textAlignment
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    text: styleData.value ? styleData.value.sex : ""
+                                    font.family: Regovar.theme.icons.name
+                                }
+                                Text
+                                {
+                                    anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                                    anchors.rightMargin: 5
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    horizontalAlignment: styleData.textAlignment
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    text: styleData.value ? styleData.value.name : ""
+                                    elide: Text.ElideRight
+                                }
+
+                            }
+                        }
+                        TableViewColumn
+                        {
+                            title: qsTr("Source")
+                            role: "source"
+                            delegate: Item
+                            {
+
+                                Text
+                                {
+                                    anchors.leftMargin: 5
+                                    anchors.left: parent.left
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                    horizontalAlignment: styleData.textAlignment
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    text: styleData.value ? styleData.value.icon : ""
+                                    font.family: Regovar.theme.icons.name
+                                }
+                                Text
+                                {
+                                    anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                                    anchors.rightMargin: 5
+                                    anchors.fill: parent
+                                    verticalAlignment: Text.AlignVCenter
+                                    horizontalAlignment: styleData.textAlignment
+                                    font.pixelSize: Regovar.theme.font.size.normal
+                                    text: styleData.value ? styleData.value.filename : ""
+                                    elide: Text.ElideRight
+                                }
+                            }
+                        }
+                        TableViewColumn { title: qsTr("Comment"); role: "comment" }
+
+                        Rectangle
+                        {
+                            id: sampleHelpPanel
+                            anchors.fill: parent
+
+                            color: Regovar.theme.backgroundColor.overlay
+
+                            visible: regovar.samplesManager.count == 0
+
+                            Text
+                            {
+                                text: qsTr("No sample complient with the selected reference ") + regovar.analysesManager.newFiltering.refName + qsTr(" on the server Regovar.\nTo import new samples from files click on the button below.")
+                                font.pixelSize: Regovar.theme.font.size.header
+                                color: Regovar.theme.primaryColor.back.normal
+                                anchors.fill: parent
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: Text.AlignHCenter
+                                wrapMode: Text.WordWrap
+                            }
+                        }
+                    }
+                }
+
+
+                Button
+                {
+                    id: importSampleButton
+                    Layout.alignment: Qt.AlignTop
+                    height: Regovar.theme.font.boxSize.normal * 2
+
+                    text: qsTr("Import samples\nfrom files")
+                    onClicked:
+                    {
+                        filesSelector.open();
                     }
                 }
             }
         }
-
-
-        SampleImportView
-        {
-            id: sampleImportView
-            anchors.fill: root
-            anchors.bottomMargin: okButton.height + 20
-            color: Regovar.theme.backgroundColor.main
-            visible: importingFile
-            enabled: importingFile
-
-        }
-
 
 
         Button
@@ -339,7 +316,6 @@ Dialog
                     {
                         var idx = regovar.samplesManager.proxy.getModelIndex(rowIndex);
                         var id = regovar.samplesManager.data(idx, 257); // 257 = Qt::UserRole+1
-
                         samples = samples.concat(regovar.samplesManager.getOrCreateSample(id));
                     });
                     samplesSelected(samples);
@@ -365,22 +341,18 @@ Dialog
 
 
 
-    FileDialog
+    SelectFilesDialog
     {
-        id: localFilesDialog
-        nameFilters: [ "VCF files (*.vcf *.vcf.gz)", "GVCF (*.gvcf *.gvcf.gz)", "All files (*)" ]
-        selectedNameFilter: "VCF files (*.vcf *.vcf.gz)"
-        title: "Select file(s) to upload on the server"
-        //folder: shortcuts.home
-        selectMultiple: true
-
-        onAccepted:
+        id: filesSelector
+        searchQuery: "vcf"
+        title: "Select file(s) to import as sample"
+        onFileSelected:
         {
-            // Switch to upload/import screen if needed
-            sampleDialog.importingFile = true;
-
-            // Start tus upload for
-            sampleImportView.importFiles(localFilesDialog.fileUrls);
+            for(var idx in files)
+            {
+                var file = files[idx];
+                regovar.samplesManager.importFromFile(file.id, regovar.samplesManager.referencialId, filteringAnalysis, subject);
+            }
         }
     }
 

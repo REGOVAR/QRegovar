@@ -11,13 +11,13 @@ void RootMenu::initMain()
 {
     // Admin menu entry
     mAdminEntry = new MenuEntry("d", tr("Admin"), "", this);
-    mAdminEntry->addEntry(new MenuEntry("", tr("Logs"), "Admin/LogsPage.qml", this));
-    mAdminEntry->addEntry(new MenuEntry("", tr("Trash"), "Admin/TrashPage.qml", this));
+    // TODO: mAdminEntry->addEntry(new MenuEntry("", tr("Logs"), "Admin/LogsPage.qml", this));
+    // TODO: mAdminEntry->addEntry(new MenuEntry("", tr("Trash"), "Admin/TrashPage.qml", this));
     mAdminEntry->addEntry(new MenuEntry("", tr("Server"), "Admin/ServerPage.qml", this));
     mAdminEntry->addEntry(new MenuEntry("", tr("Users"), "Admin/UsersPage.qml", this));
     mAdminEntry->addEntry(new MenuEntry("", tr("Pipelines"), "Admin/PipesPage.qml", this));
-    mAdminEntry->addEntry(new MenuEntry("", tr("Annotation"), "Admin/DatabaseAnnotationPage.qml", this));
-    mAdminEntry->addEntry(new MenuEntry("", tr("Custom DB"), "Admin/DatabaseCustomPage.qml", this));
+    // TODO: mAdminEntry->addEntry(new MenuEntry("", tr("Annotation"), "Admin/DatabaseAnnotationPage.qml", this));
+    // TODO: mAdminEntry->addEntry(new MenuEntry("", tr("Custom DB"), "Admin/DatabaseCustomPage.qml", this));
 
 
     // Create lvl3 menu entries
@@ -25,7 +25,6 @@ void RootMenu::initMain()
     applicationEntry->addEntry(new MenuEntry("", tr("Regovar"), "Settings/ApplicationRegovarPage.qml", this));
     applicationEntry->addEntry(new MenuEntry("", tr("Interface"), "Settings/ApplicationInterfacePage.qml", this));
     applicationEntry->addEntry(new MenuEntry("", tr("Connection"), "Settings/ApplicationConnectionPage.qml", this));
-    applicationEntry->addEntry(new MenuEntry("", tr("Cache"), "Settings/ApplicationCachePage.qml", this));
 
     // Create lvl2 menu entries
     mAnalysisBrowserEntry = new MenuEntry("c", tr("Analyses"), "", this);
@@ -46,7 +45,7 @@ void RootMenu::initMain()
     mEntries.append(mAnalysisBrowserEntry);
     mEntries.append(mSubjectBrowserEntry);
     mEntries.append(new MenuEntry("q", tr("Panels"), "Browser/PanelsPage.qml", this));
-    mEntries.append(new MenuEntry("B", tr("Database"), "Browser/DatabasePage.qml", this));
+    // TODO: mEntries.append(new MenuEntry("B", tr("Database"), "Browser/DatabasePage.qml", this));
     mEntries.append(settingsEntry);
     mEntries.append(helpEntry);
     mEntries.append(new MenuEntry("h", tr("Disconnect"), "@disconnect", this));
@@ -154,6 +153,7 @@ void RootMenu::openMenuEntry(Project* project)
     {
         // Try to retrieve the menu entry corresponding to this project (maybe already exists)
         MenuEntry* entry = nullptr;
+        int lvl1 = 0;
         for (QObject* o: mAnalysisBrowserEntry->entries())
         {
             MenuEntry* pm = qobject_cast<MenuEntry*>(o);
@@ -162,6 +162,7 @@ void RootMenu::openMenuEntry(Project* project)
                 entry = pm;
                 break;
             }
+            ++lvl1;
         }
         // Create it if not exists
         if (entry == nullptr)
@@ -173,6 +174,10 @@ void RootMenu::openMenuEntry(Project* project)
         // /!\ the selected entry of the menu is the selected sub entries, not the entry tiself
         mSelectedEntry = entry->getEntry(entry->index());
         mAnalysisBrowserEntry->select(0, mAnalysisBrowserEntry->entries().indexOf(entry));
+
+        // Update menu UI state and select good parents menues
+        select(0, mEntries.indexOf(mAnalysisBrowserEntry));
+        select(1, lvl1);
         emit openPage(mSelectedEntry);
     }
 }
@@ -182,6 +187,7 @@ void RootMenu::openMenuEntry(Subject* subject)
     {
         // Try to retrieve the menu entry corresponding to this subject (maybe already exists)
         MenuEntry* entry = nullptr;
+        int lvl1 = 0;
         for (QObject* o: mSubjectBrowserEntry->entries())
         {
             MenuEntry* pm = qobject_cast<MenuEntry*>(o);
@@ -190,6 +196,7 @@ void RootMenu::openMenuEntry(Subject* subject)
                 entry = pm;
                 break;
             }
+            ++lvl1;
         }
         // Create it if not exists
         if (entry == nullptr)
@@ -201,6 +208,9 @@ void RootMenu::openMenuEntry(Subject* subject)
         mSelectedEntry = entry->getEntry(entry->index());
         mSubjectBrowserEntry->select(0, mSubjectBrowserEntry->entries().indexOf(entry));
 
+        // Update menu UI state and select good parents menues
+        select(0, mEntries.indexOf(mSubjectBrowserEntry));
+        select(1, lvl1);
         emit openPage(mSelectedEntry);
     }
 }
