@@ -114,7 +114,7 @@ Rectangle
 
             if (id && type)
             {
-                if (type != "folder")
+                if (type !== "folder")
                 {
                     regovar.analysesManager.openAnalysis(type, id);
                 }
@@ -208,7 +208,7 @@ Rectangle
 
         if (id && type)
         {
-            if (type != "folder")
+            if (type !== "folder")
             {
                 regovar.analysesManager.openAnalysis(type, id);
             }
@@ -229,7 +229,7 @@ Rectangle
 
         if (id && type)
         {
-            if (type != "folder")
+            if (type !== "folder")
             {
                 deleteAnalysisConfirmDialog.model = regovar.analysesManager.getOrCreateFilteringAnalysis(id);
                 deleteAnalysisConfirmDialog.visible = true;

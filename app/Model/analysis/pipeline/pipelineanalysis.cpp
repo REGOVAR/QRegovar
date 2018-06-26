@@ -159,6 +159,7 @@ QJsonObject PipelineAnalysis::toJson()
     result.insert("name", mName);
     result.insert("comment", mComment);
     result.insert("config", mConfig);
+    result.insert("project_id", mProject->id());
     if (mPipeline != nullptr)
     {
         result.insert("pipeline_id", mPipeline->id());
