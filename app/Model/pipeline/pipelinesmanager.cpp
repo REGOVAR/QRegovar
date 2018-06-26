@@ -53,10 +53,10 @@ void PipelinesManager::install(int fileId)
             // Append new pipeline
             int pid = json["id"].toInt();
             Pipeline* pipe = getOrCreatePipe(pid);
-            pipe->loadJson(json);
+            pipe->loadJson(json["data"].toObject());
             mAllPipes->append(pipe);
             if (pipe->status() == "ready")
-                mInstalledPipes->remove(pipe);
+                mInstalledPipes->append(pipe);
         }
         else
         {

@@ -15,5 +15,6 @@ Rectangle
     {
         id: viewer
         anchors.fill: parent
+        anchors.topMargin: 10
     }
 }

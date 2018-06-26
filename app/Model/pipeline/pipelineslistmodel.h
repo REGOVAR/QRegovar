@@ -12,6 +12,7 @@ class PipelinesListModel : public QAbstractListModel
         Id = Qt::UserRole + 1,
         Name,
         Description,
+        Version,
         Type,
         Status,
         Starred,

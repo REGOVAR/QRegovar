@@ -121,6 +121,8 @@ QVariant PipelinesListModel::data(const QModelIndex& index, int role) const
         return pipe->starred();
     else if (role == Description)
         return pipe->description();
+    else if (role == Version)
+        return pipe->version();
     else if (role == SearchField)
         return pipe->searchField();
     return QVariant();
@@ -134,6 +136,7 @@ QHash<int, QByteArray> PipelinesListModel::roleNames() const
     roles[Id] = "id";
     roles[Name] = "name";
     roles[Description] = "description";
+    roles[Version] = "version";
     roles[Type] = "type";
     roles[Status] = "status";
     roles[Authors] = "authors";
