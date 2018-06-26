@@ -305,7 +305,7 @@ GenericScreen
     function autoName()
     {
         var name = "";
-        name +=  "Hugodims-2017-09-15";
+        name +=  regovar.analysesManager.newPipeline.pipeline.name + "." + regovar.analysesManager.newPipeline.pipeline.version + " - ";
         name += Qt.formatDate(Date.now(), "yyyy-MM-dd");
         return name;
     }
