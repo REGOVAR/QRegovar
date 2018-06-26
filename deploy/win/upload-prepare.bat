@@ -10,5 +10,10 @@ if "%PLATFORM%" == "static" (
 	del C:\projects\qregovar\release\*.obj
 	ren "C:\projects\qregovar\release\QRegovar.exe" "C:\projects\qregovar\release\regovar.exe"
 
-	7z a build_%PLATFORM%_%QT_VER%.zip C:\projects\qregovar\release || exit \B 1
+	if "%PLATFORM%" == "msvc2017_64" (
+		7z a regovar-client_%VERSION%_x86-64.zip C:\projects\qregovar\release || exit \B 1
+	)
+	if "%PLATFORM%" == "msvc2015" (
+		7z a regovar-client_%VERSION%_x86-32.zip C:\projects\qregovar\release || exit \B 1
+	)
 )
