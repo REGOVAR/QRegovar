@@ -35,7 +35,7 @@ artifacts:
 deploy:
   - provider: GitHub
     tag: v0.13.0+build.$(appveyor_build_version)
-    release: Regovar v0.13.0+build.$(appveyor_build_version)
+    release: Regovar client v0.13.0+build.$(appveyor_build_version)
     description: ''
     auth_token:
       secure: wgjLvB8J0dtgJebFhMFyAjbnXkToKF2bfWYPl1EXkshsfBEfS/JYj7P+YFxbHNcO
