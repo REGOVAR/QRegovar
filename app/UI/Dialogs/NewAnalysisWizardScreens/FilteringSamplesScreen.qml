@@ -220,7 +220,7 @@ GenericScreen
                             text: samplesList.statusIcons[styleData.value.status]
                             onTextChanged:
                             {
-                                if (styleData.value.status == 1) // 1 = Loading
+                                if (styleData.value.status === 1) // 1 = Loading
                                 {
                                     statusIconAnimation.start();
                                 }
@@ -295,7 +295,7 @@ GenericScreen
 
                     color: Regovar.theme.backgroundColor.overlay
 
-                    visible: regovar.analysesManager.newFiltering.samples.length == 0
+                    visible: regovar.analysesManager.newFiltering.samples.length === 0
 
                     Text
                     {
@@ -319,7 +319,7 @@ GenericScreen
                 checked: false
                 onCheckedChanged:
                 {
-                    checked = regovar.analysesManager.newFiltering.samples.length == 3 && checked;
+                    checked = regovar.analysesManager.newFiltering.samples.length === 3 && checked;
                     checkReady();
                 }
             }
@@ -478,7 +478,7 @@ GenericScreen
                         samples = samples.concat(regovar.analysesManager.newFiltering.samples[rowIndex]);
                     });
                     regovar.analysesManager.newFiltering.removeSamples(samples);
-                    trioActivated.checked = regovar.analysesManager.newFiltering.samples.length == 3;
+                    trioActivated.checked = regovar.analysesManager.newFiltering.samples.length === 3;
                 }
             }
         }
@@ -487,11 +487,12 @@ GenericScreen
     SelectSamplesDialog
     {
         id: sampleSelector
-        referencialSelectorEnabled: false
+        filteringAnalysis: regovar.analysesManager.newFiltering
+        subject: null
         onSamplesSelected:
         {
             regovar.analysesManager.newFiltering.addSamples(samples);
-            trioActivated.checked = regovar.analysesManager.newFiltering.samples.length == 3;
+            trioActivated.checked = regovar.analysesManager.newFiltering.samples.length === 3;
             checkReady();
         }
     }

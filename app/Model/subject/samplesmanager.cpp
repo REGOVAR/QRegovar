@@ -1,6 +1,8 @@
 #include "samplesmanager.h"
 #include "Model/regovar.h"
 #include "Model/framework/request.h"
+#include "Model/analysis/filtering/filteringanalysis.h"
+#include "Model/subject/subject.h"
 
 SamplesManager::SamplesManager(QObject* parent) : QAbstractListModel(parent)
 {
@@ -18,6 +20,18 @@ SamplesManager::SamplesManager(int refId, QObject* parent) : QAbstractListModel(
     if (refId > 0)
     {
         setReferenceId(refId);
+    }
+}
+
+
+void SamplesManager::propagateDataChanged()
+{
+    // When a sample in the model emit a datachange, the list need to
+    // notify its view to refresh too
+    Sample* sample = (Sample*) sender();
+    if (sample!= nullptr && mSamplesList.contains(sample))
+    {
+        emit dataChanged(index(mSamplesList.indexOf(sample)), index(mSamplesList.indexOf(sample)));
     }
 }
 
@@ -69,13 +83,19 @@ void SamplesManager::setReferenceId(int refId)
 bool SamplesManager::loadJson(QJsonArray json)
 {
     beginResetModel();
+    for (Sample* s: mSamplesList)
+        disconnect(s, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
     mSamplesList.clear();
     for (const QJsonValue& sampleJson: json)
     {
         QJsonObject sampleData = sampleJson.toObject();
         Sample* sample = getOrCreateSample(sampleData["id"].toInt(), true);
         sample->loadJson(sampleData);
-        if (!mSamplesList.contains(sample)) mSamplesList.append(sample);
+        if (!mSamplesList.contains(sample))
+        {
+            mSamplesList.append(sample);
+            connect(sample, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
+        }
     }
     endResetModel();
     emit referencialIdChanged();
@@ -84,6 +104,46 @@ bool SamplesManager::loadJson(QJsonArray json)
 }
 
 
+void SamplesManager::importFromFile(int fileId, int refId, FilteringAnalysis* analysis, Subject* subject)
+{
+    Request* req = Request::get(QString("/sample/import/%1/%2").arg(QString::number(fileId), QString::number(refId)));
+    connect(req, &Request::responseReceived, [this, req, fileId, analysis, subject](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            QList<QObject*> samples;
+            QList<int> samplesIds;
+            for (const QJsonValue& sampleValue: json["data"].toArray())
+            {
+                QJsonObject sampleData = sampleValue.toObject();
+                Sample* sample = getOrCreateSample(sampleData["id"].toInt());
+                if (sample->loadJson(sampleData))
+                {
+                    samples.append(sample);
+                    samplesIds.append(sample->id());
+
+                    // Add samples to the subject if needed
+                    if (subject != nullptr)
+                    {
+                        subject->addSample(sample);
+                    }
+                }
+            }
+            // Add samples to the analysis if needed
+            if (analysis != nullptr)
+            {
+                analysis->addSamples(samples);
+            }
+
+            emit sampleImportStart(fileId, samplesIds);
+        }
+        else
+        {
+            regovar->manageServerError(json, Q_FUNC_INFO);
+        }
+        req->deleteLater();
+    });
+}
 
 void SamplesManager::processPushNotification(QString action, QJsonObject data)
 {
@@ -153,7 +213,7 @@ QVariant SamplesManager::data(const QModelIndex& index, int role) const
         return sample->statusUI();
     else if (role == Source)
         return sample->sourceUI();
-    else if (role == Subject && sample->subject() != nullptr)
+    else if (role == Subj && sample->subject() != nullptr)
         return sample->subject()->subjectUI();
     else if (role == Reference && sample->reference() != nullptr)
         return sample->reference()->name();
@@ -172,7 +232,7 @@ QHash<int, QByteArray> SamplesManager::roleNames() const
     roles[Comment] = "comment";
     roles[Status] = "status";
     roles[Source] = "source";
-    roles[Subject] = "subject";
+    roles[Subj] = "subject";
     roles[Reference] = "reference";
     roles[SearchField] = "searchField";
     return roles;

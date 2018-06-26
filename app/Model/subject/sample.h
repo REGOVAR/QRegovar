@@ -101,6 +101,7 @@ public:
 
 public Q_SLOTS:
     void updateSearchField() override;
+    void propagateDataChanged();
 
 private:
     int mId = -1;

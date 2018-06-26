@@ -226,7 +226,7 @@ Rectangle
                 text: qsTr("Add sample")
                 onClicked:
                 {
-                    sampleSelector.referencialSelectorEnabled = true;
+                    sampleSelector.filteringAnalysis = null;
                     sampleSelector.reset();
                     sampleSelector.open();
                 }

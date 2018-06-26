@@ -205,8 +205,6 @@
         <file>Regovar/Regovar.qml</file>
         <file>Regovar/Style.qml</file>
         <file>Regovar/qmldir</file>
-        <file>Wizards/Sample/SampleFileImportControl.qml</file>
-        <file>Wizards/Sample/SampleImportView.qml</file>
         <file>Framework/Logo.qml</file>
         <file>Framework/SplitView.qml</file>
         <file>InformationPanel/Phenotype/PhenotypeSearchEntry.qml</file>
