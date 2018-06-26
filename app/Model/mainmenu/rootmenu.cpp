@@ -25,7 +25,6 @@ void RootMenu::initMain()
     applicationEntry->addEntry(new MenuEntry("", tr("Regovar"), "Settings/ApplicationRegovarPage.qml", this));
     applicationEntry->addEntry(new MenuEntry("", tr("Interface"), "Settings/ApplicationInterfacePage.qml", this));
     applicationEntry->addEntry(new MenuEntry("", tr("Connection"), "Settings/ApplicationConnectionPage.qml", this));
-    applicationEntry->addEntry(new MenuEntry("", tr("Cache"), "Settings/ApplicationCachePage.qml", this));
 
     // Create lvl2 menu entries
     mAnalysisBrowserEntry = new MenuEntry("c", tr("Analyses"), "", this);

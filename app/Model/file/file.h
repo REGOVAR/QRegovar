@@ -22,12 +22,7 @@ class File : public RegovarResource
     // Remote file attributes
     Q_PROPERTY(qint64 size READ size WRITE setSize NOTIFY dataChanged)
     Q_PROPERTY(qint64 uploadOffset READ uploadOffset WRITE setUploadOffset NOTIFY dataChanged)
-    Q_PROPERTY(FileStatus status READ status WRITE setStatus NOTIFY dataChanged)
-    // Local file attributes
-    Q_PROPERTY(QString localFilePath READ localFilePath NOTIFY dataChanged)
-    Q_PROPERTY(bool localFileReady READ localFileReady NOTIFY localFileReadyChanged)
-    Q_PROPERTY(qint64 downloadOffset READ downloadOffset WRITE setDownloadOffset NOTIFY dataChanged)
-    Q_PROPERTY(FileStatus localStatus READ localStatus WRITE setLocalStatus NOTIFY dataChanged)
+    Q_PROPERTY(QString status READ status WRITE setStatus NOTIFY dataChanged)
     // Property for QML quick display in tableView
     Q_PROPERTY(QVariant filenameUI READ filenameUI NOTIFY dataChanged)
     Q_PROPERTY(QVariant statusUI READ statusUI NOTIFY dataChanged)
@@ -35,18 +30,6 @@ class File : public RegovarResource
     Q_PROPERTY(QString sourceUI READ sourceUI NOTIFY dataChanged)
 
 public:
-    enum FileStatus
-    {
-        uploading=0,
-        uploaded,
-        checked,
-        error,
-        downloading,
-        downloaded,
-    };
-    Q_ENUM(FileStatus)
-
-
     // Constructors
     File(QObject* parent=nullptr);
     File(QJsonObject json, QObject* parent=nullptr);
@@ -65,13 +48,9 @@ public:
     inline qint64 uploadOffset() const { return mUploadOffset; }
     inline QString md5Sum() const { return mMd5Sum; }
     inline QString type() const { return mType; }
-    inline FileStatus status() const { return mStatus; }
+    inline QString status() const { return mStatus; }
     inline QString tags() const { return mTags; }
 
-    inline QString localFilePath() const { return mLocalPath; }
-    inline bool localFileReady() const { return mLocalFileReady; }
-    inline qint64 downloadOffset() const { return mDownloadOffset; }
-    inline FileStatus localStatus() const { return mLocalStatus; }
 
     inline QVariant filenameUI() const { return mFilenameUI; }
     inline QVariant statusUI() const { return mStatusUI; }
@@ -88,10 +67,7 @@ public:
     inline void setUploadOffset(qint64 uploadOffset) { mUploadOffset = uploadOffset; emit dataChanged(); }
     inline void setMd5Sum(QString md5Sum) { mMd5Sum = md5Sum; emit dataChanged(); }
     inline void setType(QString type) { mType = type; emit dataChanged(); }
-    inline void setStatus(FileStatus status) { mStatus = status; emit dataChanged(); }
-
-    inline void setDownloadOffset(qint64 offset) { mDownloadOffset = offset; emit downloadOffset(); }
-    inline void setLocalStatus(FileStatus status) { mLocalStatus = status; emit dataChanged(); }
+    inline void setStatus(QString status) { mStatus = status; emit dataChanged(); }
 
     // Methods
     //! Set model with provided json data
@@ -104,16 +80,10 @@ public:
     Q_INVOKABLE inline void edit(QString name, QString tags, QString comment) {mName = name; mTags = tags;mComment = comment; emit dataChanged(); save(); }
     //! Load event information from server
     Q_INVOKABLE void load(bool forceRefresh=true) override;
-    //! Dowload the file and put it in cache. When file is ready, the localFileReadyChanged signal is emit
-    Q_INVOKABLE bool downloadLocalFile();
-    //! Read file content as QString
-    Q_INVOKABLE QString readFile();
-    //! Delete local cache file
-    Q_INVOKABLE bool clearCache();
 
     //! Helper to compute all-in-one property to display file in the UI.
     Q_INVOKABLE static QString extensionToIco(QString ext);
-    Q_INVOKABLE QString statusToLabel(FileStatus status, qint64 size, qint64 uploadOffset);
+    Q_INVOKABLE QString statusToLabel(QString status, qint64 size, qint64 uploadOffset);
     Q_INVOKABLE QString getQMLViewer();
 
 
@@ -134,15 +104,10 @@ private:
     QString mName;
     QString mMd5Sum;
     QString mType;
-    FileStatus mStatus;
+    QString mStatus;
     qint64 mSize = 0;
     qint64 mUploadOffset = 0;
     QString mTags;
-
-    QString mLocalPath;
-    bool mLocalFileReady = false;
-    qint64 mDownloadOffset = 0;
-    FileStatus mLocalStatus;
 
 
     // UI all-in-one attributes

@@ -133,8 +133,29 @@ GenericScreen
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: styleData.textAlignment
                         font.pixelSize: Regovar.theme.font.size.normal
-                        text: styleData.value.status == 0 ? "/" : styleData.value.status == 3 ? "l" : "n"
+                        text: styleData.value.status === "uploading" ? "/" : styleData.value.status === "error" ? "l" : "n"
                         font.family: Regovar.theme.icons.name
+                        onTextChanged:
+                        {
+                            if (text == "/")
+                            {
+                                iconAnimation.start();
+                            }
+                            else
+                            {
+                                iconAnimation.stop();
+                                rotation = 0;
+                            }
+                        }
+
+                        NumberAnimation on rotation
+                        {
+                            id: iconAnimation
+                            duration: 1500
+                            loops: Animation.Infinite
+                            from: 0
+                            to: 360
+                        }
                     }
                     Text
                     {

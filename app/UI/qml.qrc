@@ -199,7 +199,6 @@
         <file>Pages/Settings/ApplicationRegovarPage.qml</file>
         <file>Pages/Settings/ApplicationInterfacePage.qml</file>
         <file>Pages/Settings/ApplicationConnectionPage.qml</file>
-        <file>Pages/Settings/ApplicationCachePage.qml</file>
         <file>Regovar/Themes/HalloweenTheme.js</file>
         <file>Regovar/Themes/RegovarDarkTheme.js</file>
         <file>Regovar/Themes/RegovarLightTheme.js</file>

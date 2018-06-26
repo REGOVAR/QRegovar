@@ -89,21 +89,17 @@ Dialog
                             anchors.leftMargin: 5
                             anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value.icon
                             font.family: Regovar.theme.icons.name
+                            text: styleData.value.icon
                         }
                         Text
                         {
-                            anchors.leftMargin: Regovar.theme.font.boxSize.normal + 5
+                            anchors.leftMargin: Regovar.theme.font.boxSize.normal
                             anchors.rightMargin: 5
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
-                            anchors.fill: parent
-                            horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
                             text: styleData.value.filename
                             elide: Text.ElideRight
@@ -125,8 +121,29 @@ Dialog
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: styleData.textAlignment
                             font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value.status == 0 ? "/" : styleData.value.status == 3 ? "l" : "n"
                             font.family: Regovar.theme.icons.name
+                            text: styleData.value.status === "uploading" ? "/" : styleData.value.status === "error" ? "l" : "n"
+                            onTextChanged:
+                            {
+                                if (text == "/")
+                                {
+                                    iconAnimation.start();
+                                }
+                                else
+                                {
+                                    iconAnimation.stop();
+                                    rotation = 0;
+                                }
+                            }
+
+                            NumberAnimation on rotation
+                            {
+                                id: iconAnimation
+                                duration: 1500
+                                loops: Animation.Infinite
+                                from: 0
+                                to: 360
+                            }
                         }
                         Text
                         {

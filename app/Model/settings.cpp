@@ -23,9 +23,6 @@ void Settings::reload()
     // Connection settings
     mServerUrl = QUrl(settings.value("serverUrl", "http://test.regovar.org").toString());
     mSharedUrl = QUrl(settings.value("sharedUrl", "http://shared.regovar.org").toString());
-    // Local cache settings
-    mLocalCacheDir = settings.value("cacheDir", "").toString();
-    mLocalCacheMaxSize = settings.value("cacheMaxSize", 100).toInt();
     // Cookie
     mKeepMeLogged = settings.value("keepMeLogged", false).toBool();
     mSessionUserId = settings.value("sessionUserId", -1).toUInt();
@@ -56,9 +53,6 @@ void Settings::save()
     // Connection settings
     settings.setValue("serverUrl", mServerUrl.toString());
     settings.setValue("sharedUrl",mSharedUrl.toString());
-    // Loca cache settings
-    settings.setValue("cacheDir", mLocalCacheDir);
-    settings.setValue("cacheMaxSize", mLocalCacheMaxSize);
     // Cookie
     settings.setValue("keepMeLogged", mKeepMeLogged);
     if (mKeepMeLogged && mSessionUserId > 0)

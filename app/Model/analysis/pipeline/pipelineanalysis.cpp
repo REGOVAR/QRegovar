@@ -110,16 +110,6 @@ bool PipelineAnalysis::loadJson(QJsonObject json, bool full_init)
         }
     }
 
-    // If job is done, and full_init is requested: load outputs files in the cache
-    if (mStatus == "done" && full_init)
-    {
-        for (int idx=0; idx<mOutputsFiles->rowCount(); idx++)
-        {
-            File* file = mOutputsFiles->getAt(idx);
-            file->downloadLocalFile();
-        }
-    }
-
     if (json.contains("logs"))
     {
         for (const QJsonValue& logUrl: json["logs"].toArray())

@@ -15,8 +15,6 @@ class Settings: public QObject
     Q_PROPERTY(bool displayHelp READ displayHelp WRITE setDisplayHelp NOTIFY dataChanged)
     Q_PROPERTY(QUrl serverUrl READ serverUrl WRITE setServerUrl NOTIFY dataChanged)
     Q_PROPERTY(QUrl sharedUrl READ sharedUrl WRITE setSharedUrl NOTIFY dataChanged)
-    Q_PROPERTY(QString localCacheDir READ localCacheDir WRITE setLocalCacheDir NOTIFY dataChanged)
-    Q_PROPERTY(int localCacheMaxSize READ localCacheMaxSize WRITE setLocalCacheMaxSize NOTIFY dataChanged)
     Q_PROPERTY(bool keepMeLogged READ keepMeLogged WRITE setKeepMeLogged NOTIFY dataChanged)
     Q_PROPERTY(QNetworkCookie sessionCookie READ sessionCookie WRITE setSessionCookie NOTIFY dataChanged)
     Q_PROPERTY(int sessionUserId READ sessionUserId WRITE setSessionUserId NOTIFY dataChanged)
@@ -35,8 +33,6 @@ public:
     inline bool displayHelp() const { return mDisplayHelp; }
     inline QUrl serverUrl() const { return mServerUrl; }
     inline QUrl sharedUrl() const { return mSharedUrl; }
-    inline QString localCacheDir() const { return mLocalCacheDir; }
-    inline int localCacheMaxSize() const { return mLocalCacheMaxSize; }
     inline bool keepMeLogged() const { return mKeepMeLogged; }
     inline QNetworkCookie sessionCookie() const { return mSessionCookie; }
     inline int sessionUserId() const { return mSessionUserId; }
@@ -51,8 +47,6 @@ public:
     inline void setDisplayHelp(bool i) { mDisplayHelp = i; emit dataChanged(); }
     inline void setServerUrl(QUrl i) { mServerUrl = i; emit dataChanged(); }
     inline void setSharedUrl(QUrl i) { mSharedUrl = i; emit dataChanged(); }
-    inline void setLocalCacheDir(QString i) { mLocalCacheDir = i; emit dataChanged(); }
-    inline void setLocalCacheMaxSize(int i) { mLocalCacheMaxSize = i; emit dataChanged(); }
     inline void setKeepMeLogged(bool i) { mKeepMeLogged = i; emit dataChanged(); }
     inline void setSessionCookie(QNetworkCookie cookie) { mSessionCookie = QNetworkCookie(cookie); emit dataChanged(); }
     inline void setSessionUserId(int id) { mSessionUserId = id; emit dataChanged(); }
@@ -78,8 +72,6 @@ private:
     bool mDisplayHelp = true;
     QUrl mServerUrl;
     QUrl mSharedUrl;
-    QString mLocalCacheDir;
-    int mLocalCacheMaxSize = 0;
     bool mKeepMeLogged = false;
     QNetworkCookie mSessionCookie;
     int mSessionUserId=-1;

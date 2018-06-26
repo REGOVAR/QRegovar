@@ -10,9 +10,6 @@
 class FilesManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString cacheDir READ cacheDir WRITE setCacheDir NOTIFY cacheDirChanged)
-    Q_PROPERTY(qint64 cacheOccupiedSize READ cacheOccupiedSize WRITE setCacheOccupiedSize NOTIFY cacheOccupiedSizeChanged)
-    Q_PROPERTY(int cacheMaxSize READ cacheMaxSize WRITE setCacheMaxSize NOTIFY cacheMaxSizeChanged)
     Q_PROPERTY(FilesListModel* uploadsList READ uploadsList NOTIFY uploadsChanged)
     Q_PROPERTY(int uploadsProgress READ uploadsProgress NOTIFY uploadsChanged)
 
@@ -26,18 +23,10 @@ public:
     FilesManager(QObject *parent = nullptr);
 
     // Getters
-    inline QString cacheDir() const { return mCacheDir; }
-    inline qint64 cacheOccupiedSize() const { return mCacheOccupiedSize; }
-    inline int cacheMaxSize() const { return mCacheMaxSize; }
     inline int uploadsProgress() const { return mUploadsProgress; }
     inline FilesListModel* remoteList() const { return mRemoteFilesList; }
     inline FilesListModel* uploadsList() const { return mUploadsList; }
-    inline FilesTreeModel* filesTree() const { return mFilesTree; }
-
-    // Setters
-    void setCacheDir(QString path);
-    inline void setCacheOccupiedSize(int size) { mCacheOccupiedSize = size; emit cacheOccupiedSizeChanged(); }
-    void setCacheMaxSize(int size);
+    //inline FilesTreeModel* filesTree() const { return mFilesTree; }
 
     // Method
     Q_INVOKABLE File* getOrCreateFile(int id);
@@ -46,14 +35,11 @@ public:
     Q_INVOKABLE void loadFilesBrowser();
     Q_INVOKABLE void enqueueUploadFile(QStringList filesPaths);
     Q_INVOKABLE void cancelUploadFile(QList<int> filesId);
-    Q_INVOKABLE void refreshCacheStats();
-    Q_INVOKABLE void clearCache();
     Q_INVOKABLE void pauseUpload(int id);
     Q_INVOKABLE void cancelUpload(int id);
     Q_INVOKABLE void startUpload(int id);
     void processPushNotification(QString action, QJsonObject json);
     void updateUploadProgress();
-    qint64 directorySize(const QString path);
     void resumeUploads();
 
 
@@ -62,12 +48,9 @@ public Q_SLOTS:
 
 
 Q_SIGNALS:
-    void cacheDirChanged();
-    void cacheOccupiedSizeChanged();
-    void cacheMaxSizeChanged();
     void uploadsChanged();
     void remoteListChanged();
-    void filesTreeChanged();
+    //void filesTreeChanged();
     void fileUploadEnqueued(QString localPath, int fileId);
 
 private:
@@ -80,15 +63,9 @@ private:
     //! The flat list of files available on the server (load/init with loadFilesBrowser method)
     FilesListModel* mRemoteFilesList = nullptr;
     //! The tree list of files available on the server (load/init with loadFilesBrowser method)
-    FilesTreeModel* mFilesTree = nullptr;
+    //FilesTreeModel* mFilesTree = nullptr;
     //! The uploader that manage TUS protocol (resumable upload)
     TusUploader * mUploader = nullptr;
-    //! The path to the local cache folder
-    QString mCacheDir;
-    //! The current size of the cache folder (in bytes)
-    qint64 mCacheOccupiedSize = 0;
-    //! The maximum size of the cache folder (in giga)
-    int mCacheMaxSize = 20;
 };
 
 #endif // FILESMANAGER_H
