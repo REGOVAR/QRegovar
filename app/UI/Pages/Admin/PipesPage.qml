@@ -85,164 +85,91 @@ Rectangle
         }
     }
 
-    SplitView
+
+    Item
     {
+        id: topPanel
         anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : header.bottom
         anchors.left: root.left
         anchors.right: actionsPanel.left
         anchors.bottom: root.bottom
         anchors.margins: 10
-        orientation: Qt.Vertical
 
-        Rectangle
+        ColumnLayout
         {
-            id: topPanel
-            width: root.width
-            color: Regovar.theme.backgroundColor.main
-            Layout.minimumHeight: 200
-            Layout.fillHeight: true
+            anchors.fill: parent
+            spacing: 10
 
-            ColumnLayout
+            TextField
             {
-                anchors.fill: parent
-                anchors.bottomMargin: 10
-                spacing: 10
+                id: searchField
+                Layout.fillWidth: true
+                placeholder: qsTr("Filter/Search pipelines")
+                iconLeft: "z"
+                displayClearButton: true
 
-                TextField
-                {
-                    id: searchField
-                    Layout.fillWidth: true
-                    placeholder: qsTr("Filter/Search pipelines")
-                    iconLeft: "z"
-                    displayClearButton: true
-
-                    onTextEdited: regovar.pipelinesManager.availablePipes.proxy.setFilterString(text)
-                    onTextChanged: regovar.pipelinesManager.availablePipes.proxy.setFilterString(text)
-                }
+                onTextEdited: regovar.pipelinesManager.allPipes.proxy.setFilterString(text)
+                onTextChanged: regovar.pipelinesManager.allPipes.proxy.setFilterString(text)
+            }
 
 
-                TableView
-                {
-                    id: browser
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    model: regovar.pipelinesManager.allPipes.proxy
-
-                    // Default delegate for all column
-                    itemDelegate: Item
-                    {
-                        Text
-                        {
-                            anchors.leftMargin: 5
-                            anchors.fill: parent
-                            verticalAlignment: Text.AlignVCenter
-                            font.pixelSize: Regovar.theme.font.size.normal
-                            text: styleData.value
-                            elide: Text.ElideRight
-                        }
-                    }
-
-                    TableViewColumn
-                    {
-                        role: "starred"
-                        title: qsTr("Starred")
-                        width: 75
-                    }
-                    TableViewColumn
-                    {
-                        role: "status"
-                        title: qsTr("Status")
-                        width: 75
-                    }
-                    TableViewColumn
-                    {
-                        role: "name"
-                        title: qsTr("Name")
-                        width: 200
-                    }
-                    TableViewColumn
-                    {
-                        role: "version"
-                        title: qsTr("Version")
-                        width: 75
-                    }
-                    TableViewColumn
-                    {
-                        role: "description"
-                        title: qsTr("Description")
-                        width: 400
-                    }
-
-                } // end TableView
-            } // end topPanel
-        }
-
-        Rectangle
-        {
-            id: bottomPanel
-            width: root.width
-            color: Regovar.theme.backgroundColor.main
-            Layout.minimumHeight: 200
-
-            GridLayout
+            TableView
             {
-                anchors.fill: parent
-                anchors.topMargin: 10
-                columns: 3
-                rowSpacing: 10
-                columnSpacing: 10
+                id: browser
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                model: regovar.pipelinesManager.allPipes.proxy
 
-                Text
+                // Default delegate for all column
+                itemDelegate: Item
                 {
-                    Layout.fillWidth: true
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                    text: currentAnalysis ? currentAnalysis.name : ""
-                }
-
-                Text
-                {
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                    font.family: Regovar.theme.icons.name
-                    text: currentAnalysis ? "H" : ""
-                }
-                Text
-                {
-                    height: Regovar.theme.font.boxSize.header
-                    elide: Text.ElideRight
-                    font.pixelSize: Regovar.theme.font.size.header
-                    verticalAlignment: Text.AlignVCenter
-                    color: Regovar.theme.primaryColor.back.normal
-                    text: currentAnalysis ? regovar.formatDate(currentAnalysis.updateDate) : ""
-                }
-
-                Rectangle
-                {
-                    color: "transparent"
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    Layout.columnSpan: 3
-                    border.width: 1
-                    border.color: Regovar.theme.boxColor.border
                     Text
                     {
-                        anchors.centerIn: parent
-                        text: qsTr("No pipeline selected.")
-                        font.pixelSize: Regovar.theme.font.size.title
-                        color: Regovar.theme.primaryColor.back.light
+                        anchors.leftMargin: 5
+                        anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
+                        font.pixelSize: Regovar.theme.font.size.normal
+                        text: styleData.value
+                        elide: Text.ElideRight
                     }
                 }
-            }
-        } // end bottomPanel
-    } // end SplitView
+
+                TableViewColumn
+                {
+                    role: "starred"
+                    title: qsTr("Starred")
+                    width: 75
+                }
+                TableViewColumn
+                {
+                    role: "status"
+                    title: qsTr("Status")
+                    width: 75
+                }
+                TableViewColumn
+                {
+                    role: "name"
+                    title: qsTr("Name")
+                    width: 200
+                }
+                TableViewColumn
+                {
+                    role: "version"
+                    title: qsTr("Version")
+                    width: 75
+                }
+                TableViewColumn
+                {
+                    role: "description"
+                    title: qsTr("Description")
+                    width: 400
+                }
+
+            } // end TableView
+        } // end topPanel
+    }
+
+
 
     SelectFilesDialog
     {
