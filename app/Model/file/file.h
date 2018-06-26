@@ -101,6 +101,7 @@ public:
     Q_INVOKABLE QJsonObject toJson() override;
     //! Save event information onto server
     Q_INVOKABLE void save() override;
+    Q_INVOKABLE inline void edit(QString name, QString tags, QString comment) {mName = name; mTags = tags;mComment = comment; emit dataChanged(); save(); }
     //! Load event information from server
     Q_INVOKABLE void load(bool forceRefresh=true) override;
     //! Dowload the file and put it in cache. When file is ready, the localFileReadyChanged signal is emit
@@ -113,7 +114,6 @@ public:
     //! Helper to compute all-in-one property to display file in the UI.
     Q_INVOKABLE static QString extensionToIco(QString ext);
     Q_INVOKABLE QString statusToLabel(FileStatus status, qint64 size, qint64 uploadOffset);
-
     Q_INVOKABLE QString getQMLViewer();
 
 

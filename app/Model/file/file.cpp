@@ -173,6 +173,7 @@ QJsonObject File::toJson()
     result.insert("id", mId);
     result.insert("name", mName);
     result.insert("comment", mComment);
+    result.insert("tag", mTags);
     // other data must be updated only by the server.
     return result;
 }

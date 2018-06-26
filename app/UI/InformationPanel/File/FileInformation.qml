@@ -16,12 +16,17 @@ InformationPanel
         if (file)
         {
             // Update tabs
-            root.tabSharedModel = data;
+            root.tabSharedModel = file;
             var ttt = listModel.createObject(root);
             ttt.append(
                 {   "title": qsTr("Information"),
                     "icon": "j",
                     "source": "qrc:/qml/InformationPanel/File/InfoPanel.qml"
+                });
+            ttt.append(
+                {   "title": qsTr("View"),
+                    "icon": file.statusUI["icon"],
+                    "source": "qrc:/qml/InformationPanel/File/ViewerPanel.qml"
                 });
 
             // TODO
@@ -38,7 +43,6 @@ InformationPanel
 //                });
             root.tabsModel = ttt;
             root.loading = false;
-
 
             file.dataChanged.connect(refreshViewFromModel);
             refreshViewFromModel();
