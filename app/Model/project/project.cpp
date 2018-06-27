@@ -13,6 +13,9 @@ Project::Project(QObject* parent) : RegovarResource(parent)
 {
     mAnalyses = new AnalysesListModel(this);
     mSubjects = new SubjectsListModel(this);
+
+    connect(mAnalyses, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(propagateDataChanged()));
+    connect(mSubjects, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(propagateDataChanged()));
 }
 Project::Project(QJsonObject json, QObject* parent) : Project(parent)
 {
@@ -23,6 +26,16 @@ Project::Project(int id, QObject* parent) : Project(parent)
     mId = id;
 }
 
+
+
+
+
+void Project::propagateDataChanged()
+{
+    // When an analysis in the model emit a datachange, the project need to
+    // notify its view to refresh too
+    emit dataChanged();
+}
 
 
 

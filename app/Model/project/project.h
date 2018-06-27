@@ -61,6 +61,10 @@ public:
     void buildEvent(QJsonObject json);
 
 
+public Q_SLOTS:
+    void propagateDataChanged();
+
+
 
 private:
     // Attributes
