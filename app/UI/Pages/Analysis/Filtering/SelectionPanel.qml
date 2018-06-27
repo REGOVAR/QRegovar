@@ -127,7 +127,7 @@ Rectangle
                     width: parent.width
                     visible: selectionCount > 0
                     text: qsTr("Display selection.")
-                    onClicked: console.log("Show selection")
+                    onClicked: model.results.applySelection()
                 }
 
                 // Info about number of variant selected

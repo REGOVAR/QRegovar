@@ -13,7 +13,6 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
     mQuickFilters = new QuickFilterModel(this);
     mAdvancedFilter = new AdvancedFilterModel(this);
     mNewConditionModel = new NewAdvancedFilterModel(this);
-    //mDocumentsTreeModel = new DocumentsTreeModel(this);
     mMenuModel->initFilteringAnalysis();
     mLoadingStatus = Empty;
 
@@ -145,8 +144,7 @@ bool FilteringAnalysis::loadJson(QJsonObject json, bool full_init)
     // Once samples, attributes, filters and panels have been retrieved, create unique list of sets
     resetSets();
 
-    // Retrieve results files
-    //mDocumentsTreeModel->refresh(json);
+    // TODO: Retrieve results files
 
     // Retrieve selection
     for (const QJsonValue& field: json["selection"].toArray())
@@ -1103,6 +1101,10 @@ void FilteringAnalysis::setVariantSelection(QString id, bool isChecked)
     });
 }
 
+void FilteringAnalysis::exportVariantSelection(int pipelineId)
+{
+
+}
 
 
 void FilteringAnalysis::addFile(File* file)

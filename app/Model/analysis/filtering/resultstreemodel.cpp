@@ -159,25 +159,7 @@ void ResultsTreeModel::applyFilter(QJsonArray filter)
     {
         if (success)
         {
-            // Update samples names
-            mSamplesNames = "";
-            for (Sample* sample: mFilteringAnalysis->samples())
-            {
-                mSamplesNames += sample->name() + "\n";
-            }
-            mSamplesNames = mSamplesNames.left(mSamplesNames.count() - 1);
-            emit samplesNamesChanged();
-
-            // Update treeview model
-            beginResetModel();
-            clear();
-            QJsonObject data = json["data"].toObject();
-            setLoaded(0);
-            setTotal(data["wt_total_variants"].toInt()); // , data["wt_total_results"].toInt()
-            // Set content (rows)
-            setupModelData(data["results"].toArray(), mRootItem);
-            endResetModel();
-            qDebug() << Q_FUNC_INFO << "Results TreeViewModel reset." << mLoaded << "results loaded";
+            loadResults(json["data"].toObject());
         }
         else
         {
@@ -187,6 +169,55 @@ void ResultsTreeModel::applyFilter(QJsonArray filter)
         request->deleteLater();
     });
 }
+
+
+void ResultsTreeModel::applySelection()
+{
+    // Check if model is ready
+    if (mAnalysisId == -1) return;
+
+    setIsLoading(true);
+    mAutoLoadingNext = false; // abord previous "load all" if still in progress
+
+    Request* request = Request::get(QString("/analysis/%1/selection").arg(mAnalysisId));
+    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+    {
+        if (success)
+        {
+            loadResults(json["data"].toObject());
+        }
+        else
+        {
+            regovar->manageServerError(json, Q_FUNC_INFO);
+        }
+        setIsLoading(false);
+        request->deleteLater();
+    });
+}
+
+
+void ResultsTreeModel::loadResults(QJsonObject data)
+{
+    // Update samples names
+    mSamplesNames = "";
+    for (Sample* sample: mFilteringAnalysis->samples())
+    {
+        mSamplesNames += sample->name() + "\n";
+    }
+    mSamplesNames = mSamplesNames.left(mSamplesNames.count() - 1);
+    emit samplesNamesChanged();
+
+    // Update treeview model
+    beginResetModel();
+    clear();
+    setLoaded(0);
+    setTotal(data["wt_total_variants"].toInt()); // , data["wt_total_results"].toInt()
+    // Set content (rows)
+    setupModelData(data["results"].toArray(), mRootItem);
+    endResetModel();
+    qDebug() << Q_FUNC_INFO << "Results TreeViewModel reset." << mLoaded << "results loaded";
+}
+
 
 
 //! To use when new columns have been added, to add info in the model without reseting it
