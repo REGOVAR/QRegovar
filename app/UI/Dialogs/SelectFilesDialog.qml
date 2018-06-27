@@ -14,8 +14,8 @@ Dialog
     id: fileDialog
     title: qsTr("Select your files")
     standardButtons: Dialog.Ok | Dialog.Cancel
-    width: 500
-    height: 400
+    width: 800
+    height: 600
     signal fileSelected(var files)
     property alias remoteIndex: remoteFiles.currentRow
     property alias remoteSelection: remoteFiles.selection

@@ -20,7 +20,7 @@ Dialog
     id: sampleDialog
     title: qsTr("Select your samples")
     standardButtons: Dialog.Ok | Dialog.Cancel
-    width: 800
+    width: 1100
     height: 600
 
     property bool importingFile: false
