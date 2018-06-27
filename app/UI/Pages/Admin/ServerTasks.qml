@@ -32,7 +32,7 @@ Rectangle
             font.weight: Font.Black
             color: Regovar.theme.primaryColor.back.dark
             verticalAlignment: Text.AlignVCenter
-            text: qsTr("Regovar server taks in progress")
+            text: qsTr("Regovar server tasks in progress")
         }
     }
 
