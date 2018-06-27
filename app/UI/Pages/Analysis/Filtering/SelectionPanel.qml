@@ -13,21 +13,35 @@ Rectangle
     id: root
     color: Regovar.theme.backgroundColor.main
 
+    property int selectionCount: 0
     property FilteringAnalysis model
     onModelChanged:
     {
-        // We set manually the model to be able to call *after* the reset of the control
-        // otherwise with binding, this order may not be respect, and init of UI is not good.
-        console.log("reset all quick filter panel")
-        for (var i = 0; i < container.children.length; ++i)
+        if (model)
         {
-            var item = container.children[i];
-            if (item.objectName === "qf")
+            // We set manually the model to be able to call *after* the reset of the control
+            // otherwise with binding, this order may not be respect, and init of UI is not good.
+            console.log("reset all quick filter panel")
+            for (var i = 0; i < container.children.length; ++i)
             {
-                item.model = model;
-                item.reset();
+                var item = container.children[i];
+                if (item.objectName === "qf")
+                {
+                    item.model = model;
+                    item.reset();
+                }
             }
+
+            model.onSelectedResultsChanged.connect(updateSelectionCount);
+            updateSelectionCount();
         }
+    }
+    Component.onDestruction: model.onSelectedResultsChanged.disconnect(updateSelectionCount);
+
+    // QML binding not working well, to do it manually
+    function updateSelectionCount()
+    {
+        if (model) selectionCount = model.selectedResults.length;
     }
 
     ColumnLayout
@@ -62,7 +76,7 @@ Rectangle
                     id: countHeader
                     Layout.fillHeight: true
 
-                    text: "13"
+                    text: selectionCount
                     verticalAlignment: Text.AlignVCenter
                     font.pixelSize: Regovar.theme.font.size.header
                     font.family: fixedFont
@@ -82,66 +96,65 @@ Rectangle
         }
 
 
-        ScrollView
+
+        Rectangle
         {
+            id: container
             Layout.fillHeight: true
             Layout.fillWidth: true
-            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+            color: Regovar.theme.backgroundColor.main
 
             Column
             {
-                id: container
-                Rectangle { width: root.width; height: 5; color: "transparent" }
-                ExportTool
-                {
-                    id: exportTool
-                    width: root.width
-                    onIsExpandedChanged: if (isExpanded) reportTool.isExpanded = false;
-                }
-                ReportTool
-                {
-                    id: reportTool
-                    width: root.width
-                    onIsExpandedChanged: if (isExpanded) exportTool.isExpanded = false;
-                }
-            }
-        }
-
-        Rectangle
-        {
-            Layout.fillWidth: true
-            height: 1
-            color: Regovar.theme.boxColor.border
-        }
-
-        Rectangle
-        {
-            Layout.fillWidth: true
-            height: exportButton.height + 20
-            color: "transparent"
-
-            Row
-            {
-                anchors.top: parent.top
-                anchors.left: parent.left
+                anchors.top : container.top
+                anchors.left: container.left
+                anchors.right: container.right
                 anchors.margins: 10
                 spacing: 10
+
+                // Info if no variant selected
+                Box
+                {
+                    width: parent.width
+                    visible: selectionCount === 0
+                    icon: "k"
+                    text: qsTr("No variant selected.")
+                }
+                // Button to generate report or export
+                Button
+                {
+                    id: displayButton
+                    width: parent.width
+                    visible: selectionCount > 0
+                    text: qsTr("Display selection.")
+                    onClicked: console.log("Show selection")
+                }
+
+                // Info about number of variant selected
+                Box
+                {
+                    width: parent.width
+                    visible: selectionCount > 0
+                    icon: "k"
+                    text: selectionCount + " " + qsTr("variant selected.\nTo export them in a file or generate a report, select the action in the list below and click on the export button.")
+                }
+
+                ComboBox
+                {
+                    id: exporterCombo
+                    width: parent.width
+                    visible: selectionCount > 0
+                    model: ["CSV Export", "Hugodims Report"]
+                }
+
+                // Button to generate report or export
                 ButtonIcon
                 {
                     id: exportButton
-                    text: qsTr("Export")
+                    visible: selectionCount > 0
+                    text: qsTr("Export selection.")
                     iconTxt: "_"
-                    enabled: exportTool.isExpanded
-                    onClicked: regovar.toolsManager.exporters[exportTool.currentIndex].run(model.id)
-                }
-
-                ButtonIcon
-                {
-                    id: reportButton
-                    text: qsTr("Report")
-                    iconTxt: "Y"
-                    enabled: reportTool.isExpanded
-                    onClicked: regovar.toolsManager.reporters[reportTool.currentIndex].run(model.id)
+                    onClicked: console.log("Export !")
                 }
             }
         }

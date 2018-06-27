@@ -13,7 +13,7 @@ FilteringAnalysis::FilteringAnalysis(QObject *parent) : Analysis(parent)
     mQuickFilters = new QuickFilterModel(this);
     mAdvancedFilter = new AdvancedFilterModel(this);
     mNewConditionModel = new NewAdvancedFilterModel(this);
-    mDocumentsTreeModel = new DocumentsTreeModel(this);
+    //mDocumentsTreeModel = new DocumentsTreeModel(this);
     mMenuModel->initFilteringAnalysis();
     mLoadingStatus = Empty;
 
@@ -146,7 +146,15 @@ bool FilteringAnalysis::loadJson(QJsonObject json, bool full_init)
     resetSets();
 
     // Retrieve results files
-    mDocumentsTreeModel->refresh(json);
+    //mDocumentsTreeModel->refresh(json);
+
+    // Retrieve selection
+    for (const QJsonValue& field: json["selection"].toArray())
+    {
+        mSelectedResults.append(field.toString());
+    }
+
+
 
 
     // Loading of an analysis required several asynch steps
@@ -169,6 +177,7 @@ bool FilteringAnalysis::loadJson(QJsonObject json, bool full_init)
     emit filtersChanged();
     emit attributesChanged();
     emit dataChanged();
+    emit selectedResultsChanged();
     emit loaded();
     return true;
 }
@@ -1072,6 +1081,16 @@ void FilteringAnalysis::setVariantSelection(QString id, bool isChecked)
 {
     QString action = isChecked ? "select" : "unselect";
 
+    if (isChecked && !mSelectedResults.contains(id))
+    {
+        mSelectedResults.append(id);
+    }
+    else if (!isChecked && mSelectedResults.contains(id))
+    {
+        mSelectedResults.removeOne(id);
+    }
+    emit selectedResultsChanged();
+
     Request* req = Request::get(QString("/analysis/%1/%2/%3").arg(QString::number(mId), action, id));
     connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
     {
@@ -1099,9 +1118,6 @@ void FilteringAnalysis::addFile(File* file)
         {
             if (success)
             {
-                QJsonObject data = json["data"].toObject();
-                // Refresh document list
-                mDocumentsTreeModel->refresh(data);
                 emit fileAdded(fileId);
             }
             else

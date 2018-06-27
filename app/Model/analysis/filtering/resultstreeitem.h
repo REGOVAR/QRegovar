@@ -28,7 +28,7 @@ Q_SIGNALS:
     void isSelectedChanged();
 
 private:
-    FilteringAnalysis* mFilteringAnalysis = nullptr;
+    //FilteringAnalysis* mFilteringAnalysis = nullptr;
     QString mUid;
 };
 

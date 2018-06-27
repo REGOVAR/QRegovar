@@ -14,7 +14,7 @@
 #include "savedfilter.h"
 #include "advancedfilters/advancedfiltermodel.h"
 #include "advancedfilters/set.h"
-#include "documentstreemodel.h"
+//#include "documentstreemodel.h"
 #include "Model/event/eventslistmodel.h"
 
 class AdvancedFilterModel;
@@ -50,9 +50,10 @@ class FilteringAnalysis : public Analysis
     Q_PROPERTY(QList<QObject*> displayedAnnotations READ displayedAnnotations NOTIFY displayedAnnotationsChanged)
     Q_PROPERTY(int samplesByRow READ samplesByRow NOTIFY displayedAnnotationsChanged)
     Q_PROPERTY(ResultsTreeModel* results READ results NOTIFY resultsChanged)
+    Q_PROPERTY(QStringList selectedResults READ selectedResults NOTIFY selectedResultsChanged)
     Q_PROPERTY(QuickFilterModel* quickfilters READ quickfilters NOTIFY filterChanged)
     Q_PROPERTY(AdvancedFilterModel* advancedfilter READ advancedfilter NOTIFY filterChanged)
-    Q_PROPERTY(DocumentsTreeModel* documents READ documents NOTIFY documentsChanged)
+    //Q_PROPERTY(DocumentsTreeModel* documents READ documents NOTIFY documentsChanged)
     // New/Edit ConditionDialog
     Q_PROPERTY(NewAdvancedFilterModel* newConditionModel READ newConditionModel NOTIFY newConditionModelChanged)
     Q_PROPERTY(QList<QObject*> samplesInputsFilesList READ samplesInputsFilesList NOTIFY samplesInputsFilesListChanged)
@@ -103,7 +104,8 @@ public:
     inline QList<QObject*> annotationsFlatList() const { return mAnnotationsFlatList; }
     inline QList<QObject*> allAnnotations() const { return mAllAnnotations; }
     inline ResultsTreeModel* results() const { return mResults; }
-    inline DocumentsTreeModel* documents() const { return mDocumentsTreeModel; }
+    inline QStringList selectedResults() const { return mSelectedResults; }
+    //inline DocumentsTreeModel* documents() const { return mDocumentsTreeModel; }
     inline QuickFilterModel* quickfilters() const { return mQuickFilters; }
     inline AdvancedFilterModel* advancedfilter() const { return mAdvancedFilter; }
     inline NewAdvancedFilterModel* newConditionModel() const { return mNewConditionModel; }
@@ -174,6 +176,7 @@ Q_SIGNALS:
     void filterChanged();
     //void fieldsChanged();
     void resultsChanged();
+    void selectedResultsChanged();
     void samplesChanged();
     void orderChanged();
     void displayFilterSavingFormPopup();
@@ -213,13 +216,14 @@ private:
     QList<QObject*> mFilters;
     QList<QObject*> mAttributes;
     QList<File*> mFiles;
-    DocumentsTreeModel* mDocumentsTreeModel = nullptr;
+    //DocumentsTreeModel* mDocumentsTreeModel = nullptr;
     QJsonObject mStats;
     EventsListModel* mEvents = nullptr;
     QJsonObject mComputingProgress;
 
     LoadingStatus mLoadingStatus; // internal (UI) status used to track and coordinates asynchrone initialisation of the analysis
     ResultsTreeModel* mResults = nullptr;
+    QStringList mSelectedResults;
     QuickFilterModel* mQuickFilters = nullptr;
     AdvancedFilterModel* mAdvancedFilter = nullptr;
     NewAdvancedFilterModel* mNewConditionModel = nullptr;

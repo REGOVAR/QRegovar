@@ -110,37 +110,39 @@ Rectangle
                    " - \"Display columns\" allow you to select which columns are displayed in the above table.")
     }
 
+    // TODO: local entries quick filter
+//    RowLayout
+//    {
+//        id: controlPanel
+//        anchors.top : header.bottom
+//        anchors.left: root.left
+//        anchors.right: root.right
+//        anchors.margins: 10
+//        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
 
-    RowLayout
-    {
-        id: controlPanel
-        anchors.top : header.bottom
-        anchors.left: root.left
-        anchors.right: root.right
-        anchors.margins: 10
-        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
+//        spacing: 10
 
-        spacing: 10
-
-        TextField
-        {
-            Layout.fillWidth: true
-            iconLeft: "z"
-            displayClearButton: true
-            placeholder: qsTr("Quick search among loaded entries...")
-        }
-    }
+//        TextField
+//        {
+//            Layout.fillWidth: true
+//            iconLeft: "z"
+//            displayClearButton: true
+//            placeholder: qsTr("Quick search among loaded entries...")
+//        }
+//    }
 
 
 
     VariantsTable
     {
         id: resultsTree
-        anchors.top: controlPanel.bottom
+        //anchors.top: controlPanel.bottom
+        anchors.top : header.bottom
         anchors.left: root.left
         anchors.right: root.right
         anchors.bottom: loadingBar.top
         anchors.margins: 10
+        anchors.topMargin: Regovar.helpInfoBoxDisplayed ? helpInfoBox.height + 20 : 10
 
         smooth: true
 
@@ -158,147 +160,6 @@ Rectangle
 
         }
     }
-
-    // Test Embeded QTreeWidget into QML to fix performance issues
-//    VariantsTreeWidget
-//    {
-//        id: resultsTree
-//        anchors.top: controlPanel.bottom
-//        anchors.left: root.left
-//        anchors.right: root.right
-//        anchors.bottom: loadingBar.top
-//        anchors.margins: 10
-
-//        property FilteringAnalysis analysis
-//        onAnalysisChanged:
-//        {
-//            if (analysis)
-//            {
-//                resultsTree.setModel(analysis.results);
-//            }
-//        }
-//    }
-
-
-
-
-
-    // Test with pure QML2 to fix performance issues
-/*
-    Rectangle
-    {
-        id: resultsTreeHeader
-        anchors.top: controlPanel.bottom
-        anchors.left: root.left
-        anchors.right: root.right
-        anchors.margins: 10
-        height: 20
-
-        color: Regovar.theme.boxColor.border
-        property real colWidth: 100
-
-        Rectangle
-        {
-            anchors.fill: parent
-            anchors.margins: 1
-
-            color: Regovar.theme.boxColor.back
-        }
-
-        Item
-        {
-            id: indicator
-            width: 11
-            height: parent.height
-            x: 100
-            onXChanged: parent.colWidth = x+5
-
-            Rectangle
-            {
-                width: 1
-                height: parent.height
-                color: Regovar.theme.boxColor.border
-                x: 5
-            }
-
-            MouseArea
-            {
-                anchors.fill: parent
-                drag.target: indicator
-                drag.axis: Drag.XAxis
-                drag.minimumX: 0
-                drag.maximumX: resultsTreeHeader.width - indicator.width
-                cursorShape: Qt.SplitHCursor
-            }
-        }
-    }
-    ListView
-    {
-        id: resultsTree
-        anchors.top: resultsTreeHeader.bottom
-        anchors.left: root.left
-        anchors.right: root.right
-        anchors.bottom: loadingBar.top
-        anchors.margins: 10
-        anchors.topMargin: 0
-        ScrollBar.vertical: ScrollBar
-        {
-            width: 10
-            policy: ScrollBar.AlwaysOn
-        }
-        ScrollBar.horizontal: ScrollBar
-        {
-            height: 10
-            policy: ScrollBar.AlwaysOn
-        }
-        smooth: false
-        cacheBuffer: 1000
-        clip: true
-
-
-        property FilteringAnalysis analysis
-        onAnalysisChanged:
-        {
-            if (analysis)
-            {
-                resultsTree.model = analysis.results;
-            }
-        }
-
-        delegate: Rectangle
-        {
-            height: 3*Regovar.theme.font.boxSize.normal
-            width: parent.width
-            color: index % 2 == 0 ? Regovar.theme.boxColor.back : Regovar.theme.backgroundColor.main
-
-            Row
-            {
-                anchors.fill: parent
-                anchors.leftMargin: 5
-                anchors.rightMargin: 5
-                spacing: 5
-                Repeater
-                {
-                    model: columns_data
-
-                    Text
-                    {
-                        objectName: "cellColumn_" + index
-                        height: parent.height
-                        width: resultsTreeHeader.colWidth[index]
-                        text: modelData
-                        font.pixelSize: Regovar.theme.font.size.normal
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignLeft
-                        elide: Text.ElideRight
-                        renderType: Text.NativeRendering
-                        textFormat: Text.PlainText
-                    }
-                }
-            }
-        }
-    }
-*/
 
 
     RowLayout
@@ -325,13 +186,6 @@ Rectangle
             enabled: resultsTree.model ? !resultsTree.model.isLoading : false
             onClicked: resultsTree.model.loadNext()
         }
-//        ButtonInline
-//        {
-//            text: qsTr("Load all")
-//            visible: root.model.results.loaded < root.model.results.total
-//            enabled: resultsTree.model ? !resultsTree.model.isLoading : false
-//            onClicked: resultsTree.model.loadAll()
-//        }
     }
 
 

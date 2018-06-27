@@ -3,8 +3,8 @@
 
 
 
-ResultsTreeItem::ResultsTreeItem(FilteringAnalysis* analysis, TreeItem* parent) : TreeItem(parent)
+ResultsTreeItem::ResultsTreeItem(FilteringAnalysis* , TreeItem* parent) : TreeItem(parent)
 {
-    mFilteringAnalysis = analysis;
+    //mFilteringAnalysis = analysis;
 }
 
