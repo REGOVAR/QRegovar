@@ -25,23 +25,26 @@ bool ServerTask::loadJson(QJsonObject json, bool)
         mEnableControls = regovar->filesManager()->uploadsList()->contains(regovar->filesManager()->getOrCreateFile(json["id"].toString().toInt()));
     }
 
-    // "pipeline_install", "pipeline_uninstall"
-    // "job_updated"
-    // Job
-    else if (mId == "import_vcf_start" || mId == "import_vcf_processing" || mId == "import_vcf_end")
+    // Sample
+    else if (mId == "vcf_import")
     {
-        mId = "import_vcf_" + json["file_id"].toString();
+        mId += "_" + json["file_id"].toString();
         mStatus = json["status"].toString();
         mType = "pipeline";
         mProgress = json["progress"].toDouble();
-        mLabel = tr("Importing data") + ": " + json["name"].toString();
+        File* f = regovar->filesManager()->getOrCreateFile(json["file_id"].toString().toInt());
+        mLabel = tr("Importing sample from file") + ": " + f->name();
         mEnableControls = true;
     }
 
     // Filtering analysis
-    else if (mId == "analysis_computing" || mId == "wt_update" || mId == "wt_creation" || mId == "filter_update")
+    else if (mId == "analysis_computing")
     {
-        if (mId == "wt_creation")
+        if (json.contains("progress"))
+        {
+            mProgress = json["progress"].toDouble();
+        }
+        else
         {
             int step = 0;
             double total = 0;
@@ -52,21 +55,17 @@ bool ServerTask::loadJson(QJsonObject json, bool)
             }
             mProgress = total / step;
         }
-        else
-        {
-            mProgress = json["progress"].toDouble();
-        }
 
 
-        mId = "analysis_" + json["id"].toString();
+        mId += "_" + json["id"].toString();
         mStatus = json["status"].toString();
         mType = "filtering";
         mLabel = tr("Computing analysis") + ": " + regovar->analysesManager()->getOrCreateFilteringAnalysis(json["id"].toInt())->name();
         mEnableControls = true;
     }
-    else if (mId == "filter_update")
+    else if (mId == "filter_computing")
     {
-        mId = "filter_" + json["id"].toString();
+        mId += "_" + json["id"].toString();
         mStatus = json["status"].toString();
         mType = "filtering";
         mProgress = json["progress"].toDouble();

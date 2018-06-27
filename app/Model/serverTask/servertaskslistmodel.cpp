@@ -14,6 +14,7 @@ ServerTasksListModel::ServerTasksListModel(QObject* parent) : QAbstractListModel
 
 ServerTask* ServerTasksListModel::getOrCreateTask(QString action, QJsonObject data)
 {
+
     QString id = action + "_" + QString::number(data["id"].toInt());
     if (!mServerTaskMap.contains(id))
     {
@@ -21,6 +22,8 @@ ServerTask* ServerTasksListModel::getOrCreateTask(QString action, QJsonObject da
         ServerTask* task = new ServerTask(this);
         mServerTaskList.append(task);
         mServerTaskMap[id] = task;
+
+        qDebug() << "NEW SERVER TASK:" << id << ":" << data;
         endInsertRows();
     }
 

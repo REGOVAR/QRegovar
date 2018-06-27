@@ -346,17 +346,22 @@ Reference* Regovar::referenceFromId(int id)
 
 void Regovar::serverNotificationReceived(QString action, QJsonObject data)
 {
-    // Update list of server tasks
-    mServerTasks->getOrCreateTask(action, data);
-
     // Process notification
     if (mWsSamplesActionsList.indexOf(action) != -1)
     {
         regovar->samplesManager()->processPushNotification(action, data);
+
+        // TODO: rework better notification with progress
+        if (action == "import_vcf_end")
+        {
+            data.insert("progress", 1.0);
+        }
+        action = "vcf_import";
     }
     else if (mWsFilesActionsList.indexOf(action) != -1)
     {
         regovar->filesManager()->processPushNotification(action, data);
+        action = "file_upload";
     }
     else if (mWsFilteringActionsList.indexOf(action) != -1)
     {
@@ -371,6 +376,7 @@ void Regovar::serverNotificationReceived(QString action, QJsonObject data)
         {
             analysis->processPushNotification(action, data);
         }
+        action = "analysis_computing";
     }
     else if (mWsFilterActionsList.indexOf(action) != -1)
     {
@@ -380,6 +386,7 @@ void Regovar::serverNotificationReceived(QString action, QJsonObject data)
         {
             analysis->processPushNotification(action, data);
         }
+        action = "filter_computing";
     }
     else if (mWsPipelinesActionsList.indexOf(action) != -1)
     {
@@ -389,6 +396,7 @@ void Regovar::serverNotificationReceived(QString action, QJsonObject data)
         {
             analysis->processPushNotification(action, data);
         }
+        action = "pipeline_installation";
     }
     else if (mWsJobsActionsList.indexOf(action) != -1)
     {
@@ -398,7 +406,12 @@ void Regovar::serverNotificationReceived(QString action, QJsonObject data)
         {
             analysis->processPushNotification(action, data);
         }
+        action = "job_computing";
     }
+
+
+    // Update list of server tasks
+    mServerTasks->getOrCreateTask(action, data);
 }
 
 
