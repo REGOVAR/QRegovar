@@ -94,18 +94,31 @@ void User::save(bool withPassword)
     }
 
     Request* request;
+    bool userCreation = false;
     if (mId <= 0)
     {
         request = Request::post("/user", QJsonDocument(toJson(withPassword)).toJson());
+        userCreation = true;
     }
     else
     {
         request = Request::put(QString("/user/%1").arg(mId), QJsonDocument(toJson(withPassword)).toJson());
     }
 
-    connect(request, &Request::responseReceived, [this, request](bool success, const QJsonObject& json)
+    connect(request, &Request::responseReceived, [this, request, userCreation](bool success, const QJsonObject& json)
     {
-        if (!success)
+        if (success)
+        {
+            if (userCreation)
+            {
+                // in case of user creation: add user to manager
+                QJsonObject data = json["data"].toObject();
+                User* user = regovar->usersManager()->getOrCreateUser(data["id"].toInt());
+                user->loadJson(data);
+                regovar->usersManager()->emitUserCreated(user);
+            }
+        }
+        else
         {
             regovar->manageServerError(json, Q_FUNC_INFO);
         }
