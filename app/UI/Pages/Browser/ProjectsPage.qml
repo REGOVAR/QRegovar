@@ -195,7 +195,14 @@ Rectangle
         title: qsTr("Delete analysis")
         onYes:
         {
-            regovar.analysesManager.deleteFilteringAnalysis(model.id);
+            if (model.type === "analysis" )
+            {
+                regovar.analysesManager.deleteFilteringAnalysis(model.id);
+            }
+            else if (model.type === "pipeline" )
+            {
+                regovar.analysesManager.deletePipelineAnalysis(model.id);
+            }
         }
     }
 
@@ -231,7 +238,14 @@ Rectangle
         {
             if (type !== "folder")
             {
-                deleteAnalysisConfirmDialog.model = regovar.analysesManager.getOrCreateFilteringAnalysis(id);
+                if (type === "pipeline")
+                {
+                    deleteAnalysisConfirmDialog.model = regovar.analysesManager.getOrCreatePipelineAnalysis(id);
+                }
+                else // type = "analysis"
+                {
+                    deleteAnalysisConfirmDialog.model = regovar.analysesManager.getOrCreateFilteringAnalysis(id);
+                }
                 deleteAnalysisConfirmDialog.visible = true;
             }
             else
