@@ -142,6 +142,9 @@ bool AnalysesManager::newAnalysis(QString type)
 
                 // notify HMI that analysis is created (=> close newAnalizeWizard dialog)
                 emit analysisCreationDone(false, result ? id :-1);
+
+                // Refresh model with new created data
+                regovar->loadWelcomData();
             }
             else
             {
@@ -168,6 +171,9 @@ bool AnalysesManager::newAnalysis(QString type)
 
                 // notify HMI that analysis is created (=> close newAnalizeWizard dialog)
                 emit analysisCreationDone(false, result ? id :-1);
+
+                // Refresh model with new created data
+                regovar->loadWelcomData();
             }
             else
             {

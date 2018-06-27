@@ -1,4 +1,5 @@
 import QtQuick 2.9
+import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 
@@ -12,8 +13,12 @@ GenericScreen
     property real labelColWidth: 100
     readyForNext: true
 
-    onZChanged: checkReady()
-    Component.onCompleted: checkReady()
+    onZChanged:
+    {
+        nameField.text = autoName();
+        checkReady();
+    }
+
 
     // Help information on this page
     Box
@@ -27,7 +32,6 @@ GenericScreen
         icon: "k"
         text: qsTr("You're almost done! Choose a name and select the folder you want to save your analysis to. Below is a summary of the configuration of the analysis.\nIf all is good. press the \"Launch\" button. The Regovar server will prepare your data, and you will then be able to dynamically filter the variants.")
     }
-
 
     RowLayout
     {
@@ -50,7 +54,6 @@ GenericScreen
             Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
         }
 
-
         ComboBox
         {
             Layout.fillWidth: true
@@ -59,7 +62,7 @@ GenericScreen
             textRole: "fullPath"
             onCurrentIndexChanged:
             {
-                regovar.analysesManager.newFiltering.project = regovar.projectsManager.projectsFlatList[currentIndex];
+                regovar.analysesManager.newPipeline.project = regovar.projectsManager.projectsFlatList[currentIndex];
                 checkReady();
             }
             property int projectId
@@ -264,7 +267,6 @@ GenericScreen
                 {
                     width: scrollArea.viewport.width - 10
                     spacing: 10
-                    height: Regovar.theme.font.boxSize.normal
 
                     Text
                     {
@@ -304,9 +306,9 @@ GenericScreen
 
     function autoName()
     {
-        var name = "";
-        name +=  regovar.analysesManager.newPipeline.pipeline.name + "." + regovar.analysesManager.newPipeline.pipeline.version + " - ";
-        name += Qt.formatDate(Date.now(), "yyyy-MM-dd");
+        var currentDate = new Date();
+        var name =  regovar.analysesManager.newPipeline.pipeline.name + "." + regovar.analysesManager.newPipeline.pipeline.version + " - ";
+        name += currentDate.toLocaleString(Qt.locale(), "yyyy.MM.dd");
         return name;
     }
 

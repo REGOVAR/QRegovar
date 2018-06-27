@@ -893,7 +893,7 @@ Rectangle
         else if (status == "waiting")
         {
             statusColor = Regovar.theme.frontColor.warning;
-            statusText = ". " + qsTr("The creation of the analysis will start when the import of all samples from file is done.");
+            statusText = ". " + qsTr("The import of the samples is in progress.");
             statusButton.visible = false;
         }
         else if (status == "empty" || status == "close")
