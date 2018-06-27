@@ -6,7 +6,6 @@ import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
-import "qrc:/qml/Pages/Analysis/Filtering/SelectionTools"
 
 Rectangle
 {

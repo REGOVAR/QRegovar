@@ -140,8 +140,6 @@
         <file>Pages/Analysis/Filtering/Quickfilter/TransmissionQuickForm.qml</file>
         <file>Pages/Analysis/Filtering/Quickfilter/TypeQuickFilter.qml</file>
         <file>Pages/Analysis/Filtering/Quickfilter/PhenotypeQuickFilter.qml</file>
-        <file>Pages/Analysis/Filtering/SelectionTools/ExportTool.qml</file>
-        <file>Pages/Analysis/Filtering/SelectionTools/ReportTool.qml</file>
         <file>Pages/Analysis/Filtering/AdvancedFilterPanel.qml</file>
         <file>Pages/Analysis/Filtering/AnnotationsSelectorPanel.qml</file>
         <file>Pages/Analysis/Filtering/FavoritesPanel.qml</file>
