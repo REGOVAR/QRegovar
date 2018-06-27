@@ -411,7 +411,10 @@ void Regovar::serverNotificationReceived(QString action, QJsonObject data)
 
 
     // Update list of server tasks
-    mServerTasks->getOrCreateTask(action, data);
+    if (action != "new_event")
+    {
+           mServerTasks->getOrCreateTask(action, data);
+    }
 }
 
 
