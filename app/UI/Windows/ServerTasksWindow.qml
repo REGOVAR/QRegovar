@@ -23,6 +23,7 @@ Window
     Rectangle
     {
         id: root
+        anchors.fill: parent
         color: Regovar.theme.backgroundColor.main
 
 
