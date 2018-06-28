@@ -64,7 +64,7 @@ Window
 
             visible: Regovar.helpInfoBoxDisplayed
             icon: "k"
-            text: qsTr("Below the list of all events and \"technical\" actions done on the server.")
+            text: qsTr("Below the list of all tasks currently done by server.\nClosing this window will not interrupt them.")
         }
 
 
