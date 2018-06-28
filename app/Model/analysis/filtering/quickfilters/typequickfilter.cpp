@@ -86,7 +86,7 @@ QJsonArray TypeQuickFilter::toJson()
 
 
 
-void TypeQuickFilter::setFilter(QString, bool, QVariant)
+void TypeQuickFilter::setFilter(const QString&, bool, QVariant)
 {
     // Not used...
 }
@@ -137,7 +137,7 @@ void TypeQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 }
 
 
-bool TypeQuickFilter::loadJson(QJsonArray)
+bool TypeQuickFilter::loadJson(const QJsonArray &)
 {
     // TODO or not TODO ?
     return false;

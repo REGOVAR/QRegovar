@@ -103,7 +103,7 @@ QJsonArray InSilicoPredQuickFilter::toJson()
 
 
 
-void InSilicoPredQuickFilter::setFilter(QString, bool, QVariant)
+void InSilicoPredQuickFilter::setFilter(const QString&, bool, QVariant)
 {
     // Not used...
 }
@@ -165,7 +165,7 @@ void InSilicoPredQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 }
 
 
-bool InSilicoPredQuickFilter::loadJson(QJsonArray)
+bool InSilicoPredQuickFilter::loadJson(const QJsonArray &)
 {
     // TODO or not TODO ?
     return false;

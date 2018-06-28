@@ -28,7 +28,7 @@ void SubjectsManager::refresh()
         request->deleteLater();
     });
 }
-bool SubjectsManager::loadJson(QJsonArray json)
+bool SubjectsManager::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     for (const QJsonValue& subjectVal: json)

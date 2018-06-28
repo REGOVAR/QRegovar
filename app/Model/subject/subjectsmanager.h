@@ -37,7 +37,7 @@ public:
     Q_INVOKABLE void openSubject(int id);
     //! refresh models with data from server
     Q_INVOKABLE void refresh();
-    bool loadJson(QJsonArray json);
+    bool loadJson(const QJsonArray& json );
 
     // QAbstractListModel methods
     int rowCount(const QModelIndex& parent = QModelIndex()) const;

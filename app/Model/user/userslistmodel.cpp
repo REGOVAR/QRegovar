@@ -12,7 +12,7 @@ UsersListModel::UsersListModel(QObject *parent) : QAbstractListModel(parent)
 
 
 
-bool UsersListModel::loadJson(QJsonArray json)
+bool UsersListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     mUsersList.clear();

@@ -41,10 +41,10 @@ public:
 
     // Setters
     inline void setId(int id) { mId = id; emit dataChanged(); }
-    inline void setName(QString name) { mName = name; emit dataChanged(); }
-    inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
+    inline void setName(const QString& name) { mName = name; emit dataChanged(); }
+    inline void setComment(const QString& comment) { mComment = comment; emit dataChanged(); }
     inline void setProject(Project* project) { mProject = project; emit dataChanged(); }
-    inline void setStatus(QString status) { mStatus = status; emit statusChanged(); }
+    inline void setStatus(const QString& status) { mStatus = status; emit statusChanged(); }
 
     // Static Methods
     Q_INVOKABLE static QString statusLabel(QString status);

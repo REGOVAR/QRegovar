@@ -21,7 +21,7 @@ void SubjectsListModel::clear()
 }
 
 
-bool SubjectsListModel::loadJson(QJsonArray json)
+bool SubjectsListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     mSubjects.clear();

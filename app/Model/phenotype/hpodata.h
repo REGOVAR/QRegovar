@@ -38,7 +38,7 @@ public:
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
+    Q_INVOKABLE bool loadJson(const QJsonObject& json, bool full_init=true) override;
     //! Load Subject information from server
     Q_INVOKABLE void load(bool forceRefresh=true) override;
 

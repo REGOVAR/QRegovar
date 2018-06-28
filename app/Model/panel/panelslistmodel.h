@@ -32,7 +32,7 @@ public:
     //! Remove all entries of the list
     Q_INVOKABLE void clear();
     //! Load phenotype list from list of json
-    Q_INVOKABLE bool loadJson(QJsonArray json);
+    Q_INVOKABLE bool loadJson(const QJsonArray& json);
     //! Add the provided gene to the list if not already contains
     Q_INVOKABLE bool append(PanelVersion* panel);
     //! Remove a gene from the list if possible

@@ -38,7 +38,7 @@ public:
 
 
     // Methods
-    Q_INVOKABLE bool loadJson(QJsonArray json);
+    Q_INVOKABLE bool loadJson(const QJsonArray& json);
     Q_INVOKABLE void add(File* file, const QModelIndex& parent=QModelIndex());
     Q_INVOKABLE File* getAt(int row, const QModelIndex& parent=QModelIndex());
     Q_INVOKABLE void clear();

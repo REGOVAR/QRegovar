@@ -24,7 +24,7 @@ public:
 
     // Override ressource methods
     //! Set model with provided json data
-    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
+    Q_INVOKABLE bool loadJson(const QJsonObject& json, bool full_init=true) override;
     //! Export model data into json object
     Q_INVOKABLE QJsonObject toJson() override;
 

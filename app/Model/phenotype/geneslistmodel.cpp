@@ -18,7 +18,7 @@ void GenesListModel::clear()
     emit countChanged();
 }
 
-bool GenesListModel::loadJson(QJsonArray json)
+bool GenesListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     mGenes.clear();

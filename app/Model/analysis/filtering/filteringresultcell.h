@@ -17,7 +17,7 @@ public:
     inline QString uid() { return mUid; }
 
     // Setters
-    inline void setUid(QString uid) { mUid = uid; emit uidChanged(); }
+    inline void setUid(const QString& uid) { mUid = uid; emit uidChanged(); }
 
 Q_SIGNALS:
     void uidChanged();

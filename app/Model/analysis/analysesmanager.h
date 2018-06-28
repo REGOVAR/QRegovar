@@ -39,7 +39,7 @@ public:
     Q_INVOKABLE void resetNewFiltering(int refId);
     Q_INVOKABLE void resetNewPipeline();
     Q_INVOKABLE bool newAnalysis(QString type);
-    bool loadJson(QJsonArray json);
+    bool loadJson(const QJsonArray& json);
 
 public Q_SLOTS:
     bool openAnalysis(QString type, int id, bool reload_from_server=true);

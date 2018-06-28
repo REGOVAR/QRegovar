@@ -18,7 +18,7 @@ void PanelsListModel::clear()
     emit countChanged();
 }
 
-bool PanelsListModel::loadJson(QJsonArray json)
+bool PanelsListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     mPanels.clear();

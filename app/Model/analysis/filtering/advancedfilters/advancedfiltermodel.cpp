@@ -53,7 +53,7 @@ AdvancedFilterModel::AdvancedFilterModel(QJsonArray filterJson, FilteringAnalysi
 
 // Methods
 
-void AdvancedFilterModel::addCondition(QString qmlId, QJsonArray json)
+void AdvancedFilterModel::addCondition(QString qmlId, const QJsonArray& json)
 {
     if (mQmlId == qmlId)
     {
@@ -68,7 +68,7 @@ void AdvancedFilterModel::addCondition(QString qmlId, QJsonArray json)
         }
     }
 }
-void AdvancedFilterModel::addCondition(QJsonArray json)
+void AdvancedFilterModel::addCondition(const QJsonArray& json)
 {
     mSubConditions.append(new AdvancedFilterModel(json, mAnalysis));
     emit filterChanged();
@@ -107,7 +107,7 @@ void AdvancedFilterModel::clear()
     mOp = mOpLogicalList[0];
 }
 
-void AdvancedFilterModel::loadJson(QJsonArray filterJson)
+void AdvancedFilterModel::loadJson(const QJsonArray& filterJson)
 {
     clear();
     setOp(filterJson[0].toString());

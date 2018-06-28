@@ -30,7 +30,7 @@ public:
     //! Remove all entries of the list
     Q_INVOKABLE void clear();
     //! Load panel entries list from json
-    Q_INVOKABLE bool loadJson(QJsonArray json);
+    Q_INVOKABLE bool loadJson(const QJsonArray& json );
     //! Add the provided panel entry to the list if not already contains
     Q_INVOKABLE bool append(PanelEntry* entry);
     //! Remove a panel entry from the list if possible

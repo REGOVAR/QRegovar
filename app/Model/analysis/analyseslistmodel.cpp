@@ -34,7 +34,7 @@ void AnalysesListModel::clear()
 }
 
 
-bool AnalysesListModel::loadJson(QJsonArray json)
+bool AnalysesListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     for (Analysis* a: mAnalyses)

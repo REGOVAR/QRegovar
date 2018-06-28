@@ -13,7 +13,7 @@ HpoData::HpoData(QObject* parent) : RegovarResource(parent)
 }
 
 
-bool HpoData::loadJson(QJsonObject, bool)
+bool HpoData::loadJson(const QJsonObject&, bool)
 {
     return false;
 }

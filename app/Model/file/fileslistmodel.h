@@ -34,7 +34,7 @@ public:
     inline GenericProxyModel* proxy() const { return mProxy; }
 
     // Methods
-    Q_INVOKABLE bool loadJson(QJsonArray json);
+    Q_INVOKABLE bool loadJson(const QJsonArray& json);
     Q_INVOKABLE bool append(File* file);
     Q_INVOKABLE bool remove(File* file);
     Q_INVOKABLE bool refresh();

@@ -43,7 +43,7 @@ FilteringAnalysis::FilteringAnalysis(int id, QObject* parent) : FilteringAnalysi
 
 
 
-bool FilteringAnalysis::loadJson(QJsonObject json, bool full_init)
+bool FilteringAnalysis::loadJson(const QJsonObject& json, bool full_init)
 {
     // load basic data from json
     setId(json["id"].toInt());
@@ -481,7 +481,7 @@ void FilteringAnalysis::applyChangeForDisplayedAnnotations()
     mResults->applyFilter(mFilterJson);
 }
 
-void FilteringAnalysis::setDisplayedAnnotationTemp(QString uid, bool check)
+void FilteringAnalysis::setDisplayedAnnotationTemp(const QString& uid, bool check)
 {
     if (mAnnotations.contains(uid))
     {
@@ -1068,7 +1068,7 @@ void FilteringAnalysis::loadSettings()
 }
 
 
-void FilteringAnalysis::setVariantSelection(QString id, bool isChecked)
+void FilteringAnalysis::setVariantSelection(const QString& id, bool isChecked)
 {
     QString action = isChecked ? "select" : "unselect";
 

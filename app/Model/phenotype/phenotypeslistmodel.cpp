@@ -19,7 +19,7 @@ void PhenotypesListModel::clear()
     emit countChanged();
 }
 
-bool PhenotypesListModel::loadJson(QJsonArray json)
+bool PhenotypesListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     mPhenotypes.clear();

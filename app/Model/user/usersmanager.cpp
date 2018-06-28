@@ -11,7 +11,7 @@ UsersManager::UsersManager(QObject *parent) : QObject(parent)
 
 
 
-void UsersManager::loadJson(QJsonArray json)
+void UsersManager::loadJson(const QJsonArray& json)
 {
     for (const QJsonValue& val: json)
     {

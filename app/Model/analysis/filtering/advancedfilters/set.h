@@ -23,8 +23,8 @@ public:
     inline QString id() const { return mId; }
     inline QString label() const { return mLabel; }
     // Setters
-    inline void setType(QString type) { mType = type; emit setChanged(); }
-    inline void setId(QString id) { mId = id; emit setChanged(); }
+    inline void setType(const QString& type) { mType = type; emit setChanged(); }
+    inline void setId(const QString& id) { mId = id; emit setChanged(); }
 
     // Methods
     //Q_INVOKABLE virtual void loadJson(QJsonArray filterJson);

@@ -23,7 +23,7 @@ void Phenotype::updateSearchField()
     // TODO: add genes, diseases label
 }
 
-bool Phenotype::loadJson(QJsonObject json, bool)
+bool Phenotype::loadJson(const QJsonObject& json, bool)
 {
     bool fullLoaded = false;
     mId = json["id"].toString();

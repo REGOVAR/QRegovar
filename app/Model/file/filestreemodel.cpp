@@ -37,7 +37,7 @@ void FilesTreeModel::refreshTreeView()
 }
 
 
-bool FilesTreeModel::loadJson(QJsonArray json)
+bool FilesTreeModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
 

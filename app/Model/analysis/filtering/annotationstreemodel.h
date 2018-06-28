@@ -47,9 +47,9 @@ public:
     QHash<int, QByteArray> roleNames() const override;
     //inline QHash<QString, Annotation*>* annotations() { return &mAnnotations;}
     //inline void addAnnotation(QString uid, Annotation* annotation) {mAnnotations.insert(uid, annotation); }
-    bool loadJson(QJsonObject data, QStringList dbUids);
-    void addEntry(QString dbName, QString dbVersion, QString dbDescription, bool isDbSelected, FieldColumnInfos* data);
-    void setupModelData(QJsonArray data, TreeItem *parent, QStringList dbUids);
+    bool loadJson(const QJsonObject& data, QStringList dbUids);
+    void addEntry(const QString& dbName, const QString&  dbVersion, const QString& dbDescription, bool isDbSelected, FieldColumnInfos* data);
+    void setupModelData(const QJsonArray& data, TreeItem *parent, const QStringList& dbUids);
 
 Q_SIGNALS:
     void neverChanged();

@@ -28,7 +28,7 @@ void Pipeline::updateSearchField()
 
 
 
-bool Pipeline::loadJson(QJsonObject json, bool)
+bool Pipeline::loadJson(const QJsonObject& json, bool)
 {
     mId = json["id"].toInt();
     mType = json["type"].toString();

@@ -23,7 +23,7 @@ void Disease::updateSearchField()
     // TODO: add genes, diseases label
 }
 
-bool Disease::loadJson(QJsonObject json, bool)
+bool Disease::loadJson(const QJsonObject& json, bool)
 {
     mId = json["id"].toString();
     mPhenotypes->setDiseaseId(mId);

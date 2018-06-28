@@ -86,14 +86,14 @@ void File::load(bool forceRefresh)
 }
 
 
-bool File::loadJson(QJsonDocument json)
+bool File::loadJson(const QJsonDocument& json)
 {
     QJsonObject data = json.object();
     return loadJson(data);
 }
 
 
-bool File::loadJson(QJsonObject json, bool)
+bool File::loadJson(const QJsonObject& json, bool )
 {
     mId = json["id"].toInt();
     if (json.contains("name")) mName = json["name"].toString();
@@ -160,7 +160,7 @@ QJsonObject File::toJson()
 
 
 
-QString File::extensionToIco(QString ext)
+QString File::extensionToIco(const QString& ext)
 {
     if (zip.contains(ext)) return "P";
     if (txt.contains(ext)) return "Y";
@@ -194,7 +194,7 @@ QString File::getQMLViewer()
 
 
 
-QString File::statusToLabel(QString status, qint64 size, qint64 uploadOffset)
+QString File::statusToLabel(const QString& status, qint64 size, qint64 uploadOffset)
 {
 
     if(status == "uploading")

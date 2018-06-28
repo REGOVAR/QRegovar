@@ -84,7 +84,7 @@ QJsonArray PanelQuickFilter::toJson()
 
 
 
-void PanelQuickFilter::setFilter(QString, bool, QVariant)
+void PanelQuickFilter::setFilter(const QString&, bool, QVariant)
 {
     // Not used...
 }
@@ -103,7 +103,7 @@ void PanelQuickFilter::checkAnnotationsDB(QList<QObject*>)
 }
 
 
-bool PanelQuickFilter::loadJson(QJsonArray)
+bool PanelQuickFilter::loadJson(const QJsonArray &)
 {
     // TODO or not TODO ?
     return false;

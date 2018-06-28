@@ -44,7 +44,7 @@ void Event::updateSearchField()
 
 
 
-bool Event::loadJson(QJsonObject json, bool)
+bool Event::loadJson(const QJsonObject& json, bool)
 {
     mId = json["id"].toInt();
     mType = json["type"].toString();

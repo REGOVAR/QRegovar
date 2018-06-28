@@ -65,17 +65,17 @@ public:
     inline QJsonObject subjectUI() const { return mSubjectUI; }
 
     // Setters
-    inline void setIdentifier(QString val) { mIdentifier = val; updateSubjectUI(); emit dataChanged(); }
-    inline void setFirstname(QString val) { mFirstname = val; updateSubjectUI(); emit dataChanged(); }
-    inline void setLastname(QString val) { mLastname = val; updateSubjectUI(); emit dataChanged(); }
-    inline void setComment(QString val) { mComment = val; emit dataChanged(); }
-    inline void setFamilyNumber(QString val) { mFamilyNumber = val; emit dataChanged(); }
+    inline void setIdentifier(const QString& val) { mIdentifier = val; updateSubjectUI(); emit dataChanged(); }
+    inline void setFirstname(const QString& val) { mFirstname = val; updateSubjectUI(); emit dataChanged(); }
+    inline void setLastname(const QString& val) { mLastname = val; updateSubjectUI(); emit dataChanged(); }
+    inline void setComment(const QString& val) { mComment = val; emit dataChanged(); }
+    inline void setFamilyNumber(const QString& val) { mFamilyNumber = val; emit dataChanged(); }
     inline void setSex(Sex val) { mSex = val; updateSubjectUI(); emit dataChanged(); }
     inline void setDateOfBirth(QDate val) { mDateOfBirth = val; updateSubjectUI(); emit dataChanged(); }
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
+    Q_INVOKABLE bool loadJson(const QJsonObject& json, bool full_init=true) override;
     //! Export model data into json object
     Q_INVOKABLE QJsonObject toJson() override;
     //! Save subject information onto server

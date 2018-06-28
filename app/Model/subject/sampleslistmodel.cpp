@@ -33,7 +33,7 @@ void SamplesListModel::clear()
 }
 
 
-bool SamplesListModel::loadJson(QJsonArray json)
+bool SamplesListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     mSamples.clear();

@@ -23,7 +23,7 @@ void FilesListModel::propagateDataChanged()
 
 
 
-bool FilesListModel::loadJson(QJsonArray json)
+bool FilesListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     mFileList.clear();

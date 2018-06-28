@@ -32,7 +32,7 @@ void Subject::saveFile(int)
 }
 
 
-bool Subject::loadJson(QJsonObject json, bool full_init)
+bool Subject::loadJson(const QJsonObject& json, bool full_init)
 {
     mId = json["id"].toInt();
     mIdentifier = json["identifier"].toString();

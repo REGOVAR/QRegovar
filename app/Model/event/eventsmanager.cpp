@@ -8,7 +8,7 @@ EventsManager::EventsManager(QObject *parent) : QObject(parent)
 
 
 
-void EventsManager::loadJson(QJsonArray json)
+void EventsManager::loadJson(const QJsonArray &json)
 {
     for (const QJsonValue& val: json)
     {
