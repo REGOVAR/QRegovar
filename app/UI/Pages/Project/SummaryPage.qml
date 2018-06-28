@@ -215,10 +215,7 @@ Rectangle
     {
         if (root.model)
         {
-            root.model.name = nameField.text;
-            root.model.comment = commentField.text;
-
-            root.model.save();
+            root.model.edit(nameField.text, commentField.text);
             nameLabel.text = root.model.name;
         }
     }

@@ -19,7 +19,6 @@ void UsersManager::loadJson(QJsonArray json)
         int id = data["id"].toInt();
         User* user = getOrCreateUser(id);
         user->loadJson(data);
-        mUsersList->append(user);
     }
 }
 
