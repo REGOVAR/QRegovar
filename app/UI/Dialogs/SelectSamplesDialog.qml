@@ -353,7 +353,7 @@ Dialog
             {
                 var file = files[idx];
                 if (file.status !== "uploaded" && file.status !== "checked") filesReady = false;
-                filesIds.append(file.id);
+                filesIds.concat(file.id);
             }
 
             if (!filesReady)
