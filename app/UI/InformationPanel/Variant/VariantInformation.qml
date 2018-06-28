@@ -30,19 +30,42 @@ InformationPanel
                     "source": "qrc:/qml/InformationPanel/Variant/InfoPanel.qml"
                 });
             ttt.append({
-                    "title": qsTr("Gene"),
-                    "icon": "j",
-                    "source": "qrc:/qml/InformationPanel/Gene/InfoPanel.qml"
-                });
-            ttt.append({
                     "title": qsTr("Online Tools"),
                     "icon": "è",
                     "source": "qrc:/qml/InformationPanel/Variant/OnlineToolsPanel.qml"
                 });
             ttt.append({
-                    "title": qsTr("Phenotype"),
+                    "title": qsTr("Gene"),
+                    "icon": "j",
+                    "source": "qrc:/qml/InformationPanel/Gene/InfoPanel.qml"
+                });
+            var pmCount = model.pubmed.rowCount();
+            pmCount = pmCount > 0 ? " (" + pmCount + ")" : "";
+            ttt.append({
+                    "title": qsTr("Pubmed") + pmCount,
+                    "icon": "Y",
+                    "source": "qrc:/qml/InformationPanel/Gene/ReferencePanel.qml"
+                });
+            var pCount = model.phenotypes.rowCount();
+            pCount = pCount > 0 ? " (" + pCount + ")" : "";
+            ttt.append({
+                    "title": qsTr("Phenotypes") + pCount,
                     "icon": "K",
-                    "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qml"
+                    "source": "qrc:/qml/InformationPanel/Phenotype/PhenotypesPanel.qml"
+                });
+            var dCount = model.diseases.rowCount();
+            dCount = dCount > 0 ? " (" + dCount + ")" : "";
+            ttt.append({
+                    "title": qsTr("Diseases") + dCount,
+                    "icon": "K",
+                    "source": "qrc:/qml/InformationPanel/Phenotype/DiseasesPanel.qml"
+                });
+            var vCount = model.panels.rowCount();
+            vCount = vCount > 0 ? " (" + vCount + ")" : "";
+            ttt.append({
+                    "title": qsTr("Panels") + vCount,
+                    "icon": "q",
+                    "source": "qrc:/qml/InformationPanel/Gene/PanelsPanel.qml"
                 });
             // TODO: Variant AnnotationsPanel
     //        ttt.append({

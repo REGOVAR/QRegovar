@@ -39,7 +39,7 @@ GenericScreen
         text: qsTr("Choose which genome reference must be used for this analysis.")
     }
 
-    ScrollView
+    Item
     {
         id: scrollArea
         anchors.top: Regovar.helpInfoBoxDisplayed ? helpInfoBox.bottom : parent.top
@@ -50,48 +50,58 @@ GenericScreen
 
         Column
         {
+            anchors.centerIn: parent
+            width: 200
             spacing: 5
 
-            RowLayout
+            Repeater
             {
-                width: scrollArea.viewport.width
-                spacing: 10
+                model: regovar.references
 
-                Text
+                Rectangle
                 {
-                    Layout.alignment: Qt.AlignTop
-                    Layout.minimumWidth: root.labelColWidth
-                    height: Regovar.theme.font.size.helpInfoBox
-                    text: qsTr("Reference")
-                    color: Regovar.theme.frontColor.normal
-                    font.pixelSize: Regovar.theme.font.size.normal
-                    font.family: Regovar.theme.font.family
-                    verticalAlignment: Text.AlignVCenter
-                    Component.onCompleted: root.labelColWidth = Math.max(root.labelColWidth, width)
-                }
+                    id: itemRoot
+                    height: Regovar.theme.font.boxSize.header
+                    width: 200
+                    property bool hovered: false
+                    border.width: 1
+                    border.color: Regovar.theme.boxColor.border
+                    color: hovered ? Regovar.theme.secondaryColor.back.normal : Regovar.theme.boxColor.back
+                    radius: 2
 
-                Column
-                {
-                    Layout.fillWidth: true
-                    id: refField
 
-                    ExclusiveGroup
-                    {
-                        id: referenceGroup
-                        onCurrentChanged: selectedRefId = current.objectName
-                    }
-
-                    Repeater
-                    {
-                        model: regovar.references
-
-                        RadioButton
+                        Text
                         {
-                            text: modelData.name
-                            exclusiveGroup: referenceGroup
-                            objectName: modelData.id
-                            checked: modelData.id === regovar.samplesManager.referencialId
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.left
+                            width: Regovar.theme.font.boxSize.header
+                            text: root.selectedRefId === modelData.id ? "n" : " "
+                            color: hovered ? Regovar.theme.secondaryColor.front.normal : Regovar.theme.primaryColor.back.normal
+                            font.pixelSize: Regovar.theme.font.size.header
+                            font.family: Regovar.theme.icons.name
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
                         }
+
+                        Text
+                        {
+                            anchors.fill: parent
+                            text: modelData.name
+                            color: hovered ? Regovar.theme.secondaryColor.front.normal : Regovar.theme.primaryColor.back.normal
+                            font.pixelSize: Regovar.theme.font.size.header
+                            font.family: Regovar.theme.font.family
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked: selectedRefId = modelData.id;
+                        hoverEnabled: true
+                        onEntered: itemRoot.hovered = true
+                        onExited: itemRoot.hovered = false
+                        // modelData.id === regovar.samplesManager.referencialId
                     }
                 }
             }

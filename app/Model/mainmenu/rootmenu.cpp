@@ -58,7 +58,8 @@ void RootMenu::initFilteringAnalysis()
     mEntries.append(new MenuEntry("a", tr("Analysis"), "Analysis/Filtering/SummaryPage.qml", this));
     mEntries.append(new MenuEntry("^", tr("Statistics"), "Analysis/Filtering/StatisticsPage.qml", this));
     mEntries.append(new MenuEntry("3", tr("Filtering"), "Analysis/Filtering/FilteringPage.qml", this));
-    mEntries.append(new MenuEntry("n", tr("Result"), "Analysis/Filtering/ResultPage.qml", this));
+    // TODO: Filtering analysis result
+    // mEntries.append(new MenuEntry("n", tr("Result"), "Analysis/Filtering/ResultPage.qml", this));
     mEntries.append(new MenuEntry("e", tr("Help"), "Analysis/Filtering/HelpPage.qml", this));
     mEntries.append(new MenuEntry("h", tr("Close"), "@close", this));
     select(0,0);

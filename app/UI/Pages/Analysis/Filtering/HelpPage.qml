@@ -56,7 +56,7 @@ Rectangle
         anchors.bottom: root.bottom
         anchors.margins: 0
 
-        url: "http://regovar.readthedocs.io/fr/latest/user/filtering/"
+        url: "http://regovar.readthedocs.io/fr/latest/"
     }
 
 

@@ -8,6 +8,7 @@ import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
 
 
+
 Rectangle
 {
     id: root
@@ -20,28 +21,15 @@ Rectangle
 
     function updateViewFromModel()
     {
-
-
-        if (sampleModel && sampleModel.loaded)
+        if (model)
         {
-            nameField.text = sampleModel.name;
-            comment.text = sampleModel.comment;
-            creation.text = regovar.formatDate(sampleModel.createDate);
-            vcfFile.text = sampleModel.source.name;
-            reference.text = sampleModel.reference.name;
-        }
-        else
-        {
-            nameField.text = "";
-            comment.text = "";
-            creation.text = "";
-            vcfFile.text = "";
-            reference.text = "";
+            annotationField.currentIndex = 0;
+            comment.text = "tt";
         }
     }
 
 
-    function updateModelFromView()
+    function editVariant()
     {
         if (model)
         {
@@ -82,7 +70,7 @@ Rectangle
                 id: annotationField
                 Layout.fillWidth: true
                 enabled: editionMode
-                model: [qsTr("None"), qsTr("Class 1"), qsTr("Class 2"), qsTr("Class 3"), qsTr("Class 4"), qsTr("Class 5")]
+                model: [qsTr("None"), qsTr("Class 1"), qsTr("Class 2"), qsTr("Class 3"), qsTr("Class 4"), qsTr("Class 5"), qsTr("Blacklisted")]
             }
 
             Column
@@ -101,7 +89,7 @@ Rectangle
                         if (!editionMode)
                         {
                             // when click on save : update model
-                            updateModelFromView();
+                            editVariant();
                         }
                     }
                 }
@@ -130,13 +118,13 @@ Rectangle
                 Layout.fillWidth: true
                 enabled: editionMode
             }
-        }
 
-        Rectangle
-        {
-            height: 1
-            Layout.fillWidth: true
-            color: Regovar.theme.primaryColor.back.normal
+            Item
+            {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
+
         }
 
         // TODO: variant regovar statistics
@@ -163,5 +151,4 @@ Rectangle
 //            }
 //        }
     }
-
 }
