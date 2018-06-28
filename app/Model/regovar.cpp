@@ -777,11 +777,6 @@ bool RegovarInfo::loadJson(QJsonObject json)
     mWelcomMessage = msg["message"].toString();
     mWelcomMessageType = msg["type"].toString();
 
-    if (VERSION_BUILD == 0)
-    {
-        mClientVersion= QString("%1.%2.dev").arg(VERSION_MAJOR).arg(VERSION_MINOR);
-    }
-    else
     {
         mClientVersion= QString("%1.%2.%3").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_BUILD);
     }
