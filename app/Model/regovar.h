@@ -142,6 +142,7 @@ public:
     Q_INVOKABLE void getSampleInfo(int sampleId);
     Q_INVOKABLE void getUserInfo(int userId);
     Q_INVOKABLE void getVariantInfo(int refId, QString variantId, int analysisId=-1);
+    Q_INVOKABLE void getGeneInfo(QString geneName, int analysisId=-1);
     Q_INVOKABLE void search(QString query);
     Q_INVOKABLE void loadConfigData();
     Q_INVOKABLE void loadWelcomData();
