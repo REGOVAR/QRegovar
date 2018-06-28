@@ -20,7 +20,7 @@ public:
     inline bool isSelected() const { return mIsSelected; }
 
     // Setters
-    inline void setUid(QString uid) { mUid = uid; emit uidChanged(); }
+    inline void setUid(const QString& uid) { mUid = uid; emit uidChanged(); }
     inline void setIsSelected(bool flag) { mIsSelected = flag; emit isSelectedChanged(); }
 
 Q_SIGNALS:

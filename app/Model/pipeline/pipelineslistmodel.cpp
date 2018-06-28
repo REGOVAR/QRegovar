@@ -24,7 +24,7 @@ void PipelinesListModel::propagateDataChanged()
 
 
 
-bool PipelinesListModel::loadJson(QJsonArray json)
+bool PipelinesListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     mPipelines.clear();

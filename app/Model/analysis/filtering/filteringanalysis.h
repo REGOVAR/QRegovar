@@ -124,12 +124,12 @@ public:
     inline void setTrioMother(Sample* mother) { mTrioMother=mother; emit trioMotherChanged(); }
     inline void setTrioFather(Sample* father) { mTrioFather=father; emit trioFatherChanged(); }
     inline void setLoading(bool flag) { mLoading=flag; emit loadingChanged(); }
-    inline void setCurrentFilterName(QString name) { mCurrentFilterName=name; emit currentFilterNameChanged(); }
+    inline void setCurrentFilterName(const QString& name) { mCurrentFilterName=name; emit currentFilterNameChanged(); }
     void setReference(Reference* ref, bool continueInit=false);
 
 
     // Analysis abstracts methods overriden
-    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
+    Q_INVOKABLE bool loadJson(const QJsonObject& json, bool full_init=true) override;
     Q_INVOKABLE QJsonObject toJson() override;
     Q_INVOKABLE void save() override;
     Q_INVOKABLE void load(bool forceRefresh=true) override;
@@ -157,11 +157,11 @@ public:
     Q_INVOKABLE Sample* getSampleById(int id);
     Q_INVOKABLE void addSampleInputs(QList<QObject*> inputs);
     Q_INVOKABLE void removeSampleInputs(QList<QObject*> inputs);
-    Q_INVOKABLE void setVariantSelection(QString id, bool isChecked);
+    Q_INVOKABLE void setVariantSelection(const QString& id, bool isChecked);
     Q_INVOKABLE void exportVariantSelection(int pipelineId);
     Q_INVOKABLE void addFile(File* file);
     Q_INVOKABLE void applyChangeForDisplayedAnnotations();
-    Q_INVOKABLE void setDisplayedAnnotationTemp(QString uid, bool check);
+    Q_INVOKABLE void setDisplayedAnnotationTemp(const QString& uid, bool check);
     Q_INVOKABLE void reopen();
 
 

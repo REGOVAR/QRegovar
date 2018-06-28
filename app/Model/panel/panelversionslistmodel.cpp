@@ -21,7 +21,7 @@ void PanelVersionsListModel::clear()
     emit countChanged();
 }
 
-bool PanelVersionsListModel::loadJson(QJsonArray json)
+bool PanelVersionsListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     mPanelVersionsList.clear();

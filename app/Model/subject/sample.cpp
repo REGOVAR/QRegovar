@@ -44,18 +44,19 @@ void Sample::propagateDataChanged()
 }
 
 
-void Sample::setStatus(QString status)
+void Sample::setStatus(const QString& status)
 {
+    QString s = status;
     if (status.isEmpty())
     {
-        status = "empty";
+        s = "empty";
     }
 
     auto meta = QMetaEnum::fromType<SampleStatus>();
-    setStatus(static_cast<SampleStatus>(meta.keyToValue(status.toStdString().c_str()))); // T_T .... tout ça pour ça ....
+    setStatus(static_cast<SampleStatus>(meta.keyToValue(s.toStdString().c_str()))); // T_T .... tout ça pour ça ....
 }
 
-bool Sample::loadJson(QJsonObject json, bool)
+bool Sample::loadJson(const QJsonObject& json, bool)
 {
     // load basic data from json
     mId = json["id"].toInt();

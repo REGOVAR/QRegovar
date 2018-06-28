@@ -20,7 +20,7 @@ public:
     inline EventsListModel* technicalEvents() const { return mTechnicalEvents; }
 
     // Method
-    void loadJson(QJsonArray json);
+    void loadJson(const QJsonArray& json);
     Event* getOrCreateEvent(int eventId);
 
 

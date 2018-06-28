@@ -10,7 +10,7 @@ PipelinesManager::PipelinesManager(QObject *parent) : QObject(parent)
 
 
 
-void PipelinesManager::loadJson(QJsonArray json)
+void PipelinesManager::loadJson(const QJsonArray& json)
 {
     for (const QJsonValue& pipeJson: json)
     {

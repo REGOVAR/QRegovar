@@ -37,9 +37,9 @@ public:
     inline void setAnnotation(Annotation* annotation) { mAnnotation = annotation; emit annotationChanged(); }
     inline void setIsDisplayed(bool isDisplayed) { mIsDisplayed = isDisplayed; mIsDisplayedTemp = isDisplayed; emit isDisplayedChanged(); }
     inline void setIsDisplayedTemp(bool isDisplayedTemp) { mIsDisplayedTemp = isDisplayedTemp; emit isDisplayedTempChanged(); }
-    inline void setSortFilter(QString sortFilter) { mSortFilter = sortFilter; emit sortFilterChanged(); }
+    inline void setSortFilter(const QString& sortFilter) { mSortFilter = sortFilter; emit sortFilterChanged(); }
     inline void setWidth(float width) { mWith = width; emit widthChanged(); }
-    inline void setUIUid(QString uid) { mUIUid = uid; }
+    inline void setUIUid(const QString& uid) { mUIUid = uid; }
 
     inline bool isAnnotation() { return mUIUid.isEmpty() && mAnnotation != nullptr; }
 

@@ -24,7 +24,7 @@ void UsersListModel::propagateDataChanged()
 
 
 
-bool UsersListModel::loadJson(QJsonArray json)
+bool UsersListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
 

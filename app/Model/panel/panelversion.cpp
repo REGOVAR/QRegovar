@@ -44,7 +44,7 @@ void PanelVersion::emitEntriesChanged()
 
 
 //! Set model with provided json data
-bool PanelVersion::loadJson(QJsonObject json, bool)
+bool PanelVersion::loadJson(const QJsonObject& json, bool)
 {
     // Load version information
     mId = json["id"].toString();

@@ -35,7 +35,7 @@ public:
     //! Remove all entries of the list
     Q_INVOKABLE void clear();
     //! Load panel versions list from json
-    Q_INVOKABLE bool loadJson(QJsonArray json);
+    Q_INVOKABLE bool loadJson(const QJsonArray& json);
     //! Add the provided panel version to the list if not already contains
     Q_INVOKABLE bool append(PanelVersion* version);
     //! Remove a panel version from the list if possible

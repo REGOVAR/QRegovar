@@ -32,6 +32,6 @@ Window
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
-        infoWindow.model = regovar.getWindowModels(winId);
+        phenotypeInfoPanel.model = regovar.getWindowModels(winId);
     }
 }

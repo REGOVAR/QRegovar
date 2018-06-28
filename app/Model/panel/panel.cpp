@@ -24,7 +24,7 @@ void Panel::updateSearchField()
 
 
 // Load only data for the current panelversion.
-bool Panel::loadJson(QJsonObject json, bool)
+bool Panel::loadJson(const QJsonObject& json, bool)
 {
     // Loading Panels information
 

@@ -24,10 +24,10 @@ public:
     // Methods
     Q_INVOKABLE bool isVisible() override;
     Q_INVOKABLE QJsonArray toJson() override;
-    Q_INVOKABLE void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant()) override;
+    Q_INVOKABLE void setFilter(const QString& filterId, bool filterActive, QVariant filterValue=QVariant()) override;
     Q_INVOKABLE void clear() override;
     Q_INVOKABLE void checkAnnotationsDB(QList<QObject*> dbs) override;
-    bool loadJson(QJsonArray filter) override;
+    bool loadJson(const QJsonArray& filter) override;
     void init(QString fuid);
 
     inline QuickFilterField* exonic() { return mFields[0]; }

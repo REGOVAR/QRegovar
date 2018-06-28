@@ -30,7 +30,7 @@ QJsonArray PhenotypeQuickFilter::toJson()
 
 
 
-void PhenotypeQuickFilter::setFilter(QString, bool , QVariant)
+void PhenotypeQuickFilter::setFilter(const QString& , bool , QVariant)
 {
     // Not used...
 }
@@ -50,7 +50,7 @@ void PhenotypeQuickFilter::checkAnnotationsDB(QList<QObject*>)
 }
 
 
-bool PhenotypeQuickFilter::loadJson(QJsonArray)
+bool PhenotypeQuickFilter::loadJson(const QJsonArray &)
 {
     // TODO or not TODO ?
     return false;

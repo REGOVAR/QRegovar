@@ -82,7 +82,7 @@ QJsonArray TransmissionQuickFilter::toJson()
 
 
 
-void TransmissionQuickFilter::setFilter(QString filterId, bool filterActive, QVariant)
+void TransmissionQuickFilter::setFilter(const QString& filterId, bool filterActive, QVariant)
 {
     mFilters[filterId]->setIsActive(filterActive);
 }
@@ -102,7 +102,7 @@ void TransmissionQuickFilter::checkAnnotationsDB(QList<QObject*>)
 }
 
 
-bool TransmissionQuickFilter::loadJson(QJsonArray)
+bool TransmissionQuickFilter::loadJson(const QJsonArray &)
 {
     // TODO or not TODO ?
     return false;

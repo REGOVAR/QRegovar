@@ -35,7 +35,7 @@ Window
         var mm = regovar.getWindowModels(winId);
         if (mm)
         {
-            infoWindow.model = mm;
+            variantInfoPanel.model = mm;
             title = variantInfoPanel.model.name;
         }
     }

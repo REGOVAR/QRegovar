@@ -31,7 +31,7 @@ public:
     inline void setIsLoading(bool isLoading) { mIsLoading = isLoading; emit isLoadingChanged(); }
 
     // Methods
-    void refresh(QJsonArray json);
+    void refresh(const QJsonArray& json);
     QHash<int, QByteArray> roleNames() const override;
     QVariant newPanelsTreeItem(QString id, const QString& version, const QString& text);
     void setupModelData(QJsonArray data, TreeItem *parent);

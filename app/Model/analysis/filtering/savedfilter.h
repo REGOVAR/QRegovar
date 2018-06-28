@@ -27,14 +27,14 @@ public:
     inline double progress() { return mProgress; }
 
     // Setters
-    inline void setName(QString name) { mName = name; emit dataChanged(); }
-    inline void setDescription(QString desc) { mDescription = desc; emit dataChanged(); }
-    inline void setFilter(QJsonArray filter) { mFilter= filter; emit dataChanged(); }
+    inline void setName(const QString& name) { mName = name; emit dataChanged(); }
+    inline void setDescription(const QString& desc) { mDescription = desc; emit dataChanged(); }
+    inline void setFilter(const QJsonArray& filter) { mFilter= filter; emit dataChanged(); }
     inline void setCount(int count) { mCount = count; emit dataChanged(); }
     inline void setProgress(double prog) { mProgress = prog; emit dataChanged(); }
 
     // Methods
-    bool loadJson(QJsonObject json);
+    bool loadJson(const QJsonObject& json);
 
 Q_SIGNALS:
     void idChanged();

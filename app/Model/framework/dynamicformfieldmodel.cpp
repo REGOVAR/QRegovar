@@ -36,7 +36,7 @@ QString DynamicFormFieldModel::formatedValue() const
     return result;
 }
 
-bool DynamicFormFieldModel::loadJson(QJsonObject json)
+bool DynamicFormFieldModel::loadJson(const QJsonObject& json)
 {
     mId = json["id"].toString();
     mTitle = json["title"].toString();

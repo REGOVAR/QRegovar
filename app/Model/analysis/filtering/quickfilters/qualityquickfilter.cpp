@@ -52,7 +52,7 @@ QJsonArray QualityQuickFilter::toJson()
 
 
 
-void QualityQuickFilter::setFilter(QString, bool, QVariant)
+void QualityQuickFilter::setFilter(const QString& , bool, QVariant)
 {
     // Not used
 }
@@ -71,7 +71,7 @@ void QualityQuickFilter::checkAnnotationsDB(QList<QObject*>)
 }
 
 
-bool QualityQuickFilter::loadJson(QJsonArray)
+bool QualityQuickFilter::loadJson(const QJsonArray &)
 {
     // TODO or not TODO ?
     return false;

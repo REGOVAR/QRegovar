@@ -84,7 +84,7 @@ void SamplesManager::setReferenceId(int refId)
         req->deleteLater();
     });
 }
-bool SamplesManager::loadJson(QJsonArray json)
+bool SamplesManager::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     for (Sample* s: mSamplesList)

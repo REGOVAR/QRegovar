@@ -265,15 +265,15 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
     }
     else if (wid == "Sample")
     {
-        wid += "_" + qobject_cast<Sample*>(model)->id();
+        wid += "_" + QString::number(qobject_cast<Sample*>(model)->id());
     }
     else if (wid == "File")
     {
-        wid += "_" + qobject_cast<File*>(model)->id();
+        wid += "_" + QString::number(qobject_cast<File*>(model)->id());
     }
     else if (wid == "User")
     {
-        wid += "_" + qobject_cast<User*>(model)->id();
+        wid += "_" + QString::number(qobject_cast<User*>(model)->id());
     }
     return openNewWindow(qmlUrl, model, wid);
 }
@@ -549,12 +549,6 @@ void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
         req->deleteLater();
     });
 }
-
-
-
-
-
-
 
 
 

@@ -23,7 +23,7 @@ public:
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE virtual bool loadJson(QJsonObject json, bool full_init=true);
+    Q_INVOKABLE virtual bool loadJson(const QJsonObject& json, bool full_init=true);
     //! Export model data into json object
     Q_INVOKABLE virtual QJsonObject toJson();
     //! Save resource information onto server

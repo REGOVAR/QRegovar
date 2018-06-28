@@ -109,7 +109,7 @@ QJsonArray PositionQuickFilter::toJson()
 
 
 
-void PositionQuickFilter::setFilter(QString, bool, QVariant)
+void PositionQuickFilter::setFilter(const QString&, bool, QVariant)
 {
     // Not used...
 }
@@ -163,7 +163,7 @@ void PositionQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 
 
 
-bool PositionQuickFilter::loadJson(QJsonArray)
+bool PositionQuickFilter::loadJson(const QJsonArray &)
 {
     // TODO or not TODO ?
     return false;

@@ -43,7 +43,7 @@ public:
     // Setters
     inline void setAutoRefresh(bool flag) { mAutoRefresh = flag; emit dataChanged(); }
     inline void setAutoRefreshInterval(int interval) { mAutoRefreshInterval = interval; emit dataChanged(); }
-    inline void setSearchPattern(QString pattern) { search(pattern); }
+    inline void setSearchPattern(const QString& pattern) { search(pattern); }
     inline void setCursorPosition(int pos) { mCursorPosition = pos; emit cursorPositionChanged(); }
 
     // Methods

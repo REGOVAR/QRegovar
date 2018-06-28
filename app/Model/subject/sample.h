@@ -68,25 +68,25 @@ public:
     inline QJsonObject stats() const { return mStats; }
 
     // Setters
-    inline void setName(QString name) { mName = name; emit dataChanged(); }
-    inline void setNickname(QString nickname) { mNickname = nickname; emit dataChanged(); }
+    inline void setName(const QString& name) { mName = name; emit dataChanged(); }
+    inline void setNickname(const QString& nickname) { mNickname = nickname; emit dataChanged(); }
     inline void setIsMosaic(bool flag) { mIsMosaic = flag; emit dataChanged(); }
-    inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
+    inline void setComment(const QString& comment) { mComment = comment; emit dataChanged(); }
     inline void setSource(File* source) { mSource = source; emit dataChanged(); }
     inline void setStatus(SampleStatus status) { mStatus = status; emit dataChanged(); }
     inline void setSubject(Subject* subject) { mSubject = subject; emit dataChanged(); }
     inline void setReference(Reference* reference) { mReference = reference; emit dataChanged(); }
     inline void setLoadingProgress(double progress) { mLoadingProgress = progress; emit dataChanged(); }
-    void setStatus(QString status);
-    inline void setNameUI(QVariant data) { mNameUI = data; emit dataChanged(); }
-    inline void setStatusUI(QVariant data) { mStatusUI = data; emit dataChanged(); }
-    inline void setSourceUI(QVariant data) { mSourceUI = data; emit dataChanged(); }
+    void setStatus(const QString& status);
+    inline void setNameUI(const QVariant& data) { mNameUI = data; emit dataChanged(); }
+    inline void setStatusUI(const QVariant& data) { mStatusUI = data; emit dataChanged(); }
+    inline void setSourceUI(const QVariant& data) { mSourceUI = data; emit dataChanged(); }
     inline void setIsIndex(bool flag) { mIsIndex = flag; emit dataChanged(); }
-    inline void setSex(QString sex) { mSex = sex; emit dataChanged(); }
+    inline void setSex(const QString& sex) { mSex = sex; emit dataChanged(); }
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
+    Q_INVOKABLE bool loadJson(const QJsonObject& json, bool full_init=true) override;
     //! Export model data into json object
     Q_INVOKABLE QJsonObject toJson() override;
     //! Save subject information onto server

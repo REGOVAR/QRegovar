@@ -33,7 +33,7 @@ Window
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
-        infoWindow.model = regovar.getWindowModels(winId);
+        panelInfoPanel.model = regovar.getWindowModels(winId);
         title = panelInfoPanel.model.name;
     }
 }

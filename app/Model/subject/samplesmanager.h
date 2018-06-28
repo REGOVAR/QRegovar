@@ -41,7 +41,7 @@ public:
 
     // Methods
     Q_INVOKABLE Sample* getOrCreateSample(int sampleId, bool internalRefresh=false);
-    bool loadJson(QJsonArray json);
+    bool loadJson(const QJsonArray& json);
     //! Ask server to import samples from fileId. Emit sampleImportStart
     Q_INVOKABLE void importFromFile(int fileId, int refId, FilteringAnalysis* analysis=nullptr, Subject* subject=nullptr);
 

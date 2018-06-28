@@ -60,30 +60,30 @@ public:
 
 
     // Setters
-    inline void setComment(QString comment) { mComment = comment; emit dataChanged(); }
-    inline void setTags(QString tags) { mTags = tags; emit dataChanged(); }
-    inline void setName(QString name) { mName = name; emit dataChanged(); }
+    inline void setComment(const QString& comment) { mComment = comment; emit dataChanged(); }
+    inline void setTags(const QString& tags) { mTags = tags; emit dataChanged(); }
+    inline void setName(const QString& name) { mName = name; emit dataChanged(); }
     inline void setSize(qint64 size) { mSize = size; emit dataChanged(); }
     inline void setUploadOffset(qint64 uploadOffset) { mUploadOffset = uploadOffset; emit dataChanged(); }
-    inline void setMd5Sum(QString md5Sum) { mMd5Sum = md5Sum; emit dataChanged(); }
-    inline void setType(QString type) { mType = type; emit dataChanged(); }
-    inline void setStatus(QString status) { mStatus = status; emit dataChanged(); }
+    inline void setMd5Sum(const QString& md5Sum) { mMd5Sum = md5Sum; emit dataChanged(); }
+    inline void setType(const QString& type) { mType = type; emit dataChanged(); }
+    inline void setStatus(const QString& status) { mStatus = status; emit dataChanged(); }
 
     // Methods
     //! Set model with provided json data
-    Q_INVOKABLE bool loadJson(QJsonDocument json);
-    Q_INVOKABLE bool loadJson(QJsonObject json, bool full_init=true) override;
+    Q_INVOKABLE bool loadJson(const QJsonDocument& json);
+    Q_INVOKABLE bool loadJson(const QJsonObject& json, bool full_init=true) override;
     //! Export model data into json object
     Q_INVOKABLE QJsonObject toJson() override;
     //! Save event information onto server
     Q_INVOKABLE void save() override;
-    Q_INVOKABLE inline void edit(QString name, QString tags, QString comment) {mName = name; mTags = tags;mComment = comment; emit dataChanged(); save(); }
+    Q_INVOKABLE inline void edit(const QString& name, const QString& tags, const QString& comment) {mName = name; mTags = tags;mComment = comment; emit dataChanged(); save(); }
     //! Load event information from server
     Q_INVOKABLE void load(bool forceRefresh=true) override;
 
     //! Helper to compute all-in-one property to display file in the UI.
-    Q_INVOKABLE static QString extensionToIco(QString ext);
-    Q_INVOKABLE QString statusToLabel(QString status, qint64 size, qint64 uploadOffset);
+    Q_INVOKABLE static QString extensionToIco(const QString& ext);
+    Q_INVOKABLE QString statusToLabel(const QString& status, qint64 size, qint64 uploadOffset);
     Q_INVOKABLE QString getQMLViewer();
 
 

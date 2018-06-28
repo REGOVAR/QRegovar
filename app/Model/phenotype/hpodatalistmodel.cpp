@@ -31,7 +31,7 @@ void HpoDataListModel::clear()
     emit countChanged();
 }
 
-bool HpoDataListModel::loadJson(QJsonArray json)
+bool HpoDataListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     mHpoDataList.clear();

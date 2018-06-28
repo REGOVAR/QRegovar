@@ -97,7 +97,7 @@ QJsonArray FrequenceQuickFilter::toJson()
 
 
 
-void FrequenceQuickFilter::setFilter(QString, bool , QVariant)
+void FrequenceQuickFilter::setFilter(const QString&, bool , QVariant)
 {
     // Not used...
 }
@@ -193,7 +193,7 @@ void FrequenceQuickFilter::checkAnnotationsDB(QList<QObject*> dbs)
 }
 
 
-bool FrequenceQuickFilter::loadJson(QJsonArray)
+bool FrequenceQuickFilter::loadJson(const QJsonArray &)
 {
     // TODO or not TODO ?
     return false;

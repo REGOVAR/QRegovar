@@ -220,7 +220,7 @@ bool AnalysesManager::openAnalysis(QString type, int id, bool reload_from_server
 }
 
 
-bool AnalysesManager::loadJson(QJsonArray json)
+bool AnalysesManager::loadJson(const QJsonArray& json)
 {
     for (const QJsonValue& data: json)
     {

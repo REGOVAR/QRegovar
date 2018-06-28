@@ -31,7 +31,7 @@ AnnotationsTreeModel::AnnotationsTreeModel(FilteringAnalysis* analysis) : TreeMo
 
 
 
-bool AnnotationsTreeModel::loadJson(QJsonObject, QStringList)
+bool AnnotationsTreeModel::loadJson(const QJsonObject &, QStringList)
 {
 //    NEVER USED ???
 //    clear();
@@ -93,7 +93,7 @@ QHash<int, QByteArray> AnnotationsTreeModel::roleNames() const
 
 
 
-void AnnotationsTreeModel::setupModelData(QJsonArray, TreeItem*, QStringList)
+void AnnotationsTreeModel::setupModelData(const QJsonArray &, TreeItem*, const QStringList &)
 {
 //    NEVER USED ???
 //    for (const QJsonValue& dbv: data)
@@ -153,7 +153,7 @@ void AnnotationsTreeModel::setupModelData(QJsonArray, TreeItem*, QStringList)
 
 
 
-void AnnotationsTreeModel::addEntry(QString dbName, QString dbVersion, QString dbDescription, bool isDbSelected, FieldColumnInfos* data)
+void AnnotationsTreeModel::addEntry(const QString &dbName, const QString &dbVersion, const QString &dbDescription, bool isDbSelected, FieldColumnInfos* data)
 {
     QString fullName = dbName;
     QString dbUid = data->annotation()->dbUid();

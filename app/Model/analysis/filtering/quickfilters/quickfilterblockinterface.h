@@ -33,7 +33,7 @@ public:
     inline QString fuid() { return mFuid; }
 
     // Setters
-    inline void setLabel(QString label) { if (label != mLabel) { mLabel= label;  emit dataChanged(); }}
+    inline void setLabel(const QString& label) { if (label != mLabel) { mLabel= label;  emit dataChanged(); }}
     void setOp(QString op);
     inline void setValue(QVariant value) { if (value != mValue) { mValue = value; emit dataChanged(); }}
     inline void setIsActive(bool isActive) { if (isActive != mIsActive) { mIsActive = isActive; emit dataChanged(); }}
@@ -83,13 +83,13 @@ public:
     //! Return the filter query as Json string that will be concatened with other quickFilters
     Q_INVOKABLE virtual QJsonArray toJson() = 0;
     //! Generic method to set value of the filter thanks to the UI.
-    Q_INVOKABLE virtual void setFilter(QString filterId, bool filterActive, QVariant filterValue=QVariant()) = 0;
+    Q_INVOKABLE virtual void setFilter(const QString& filterId, bool filterActive, QVariant filterValue=QVariant()) = 0;
     //! Reset the filter
     Q_INVOKABLE virtual void clear() = 0;
     //!
     Q_INVOKABLE virtual void checkAnnotationsDB(QList<QObject*> dbs) = 0;
     //! Init the filter with the provided json formated filter (load from server)
-    virtual bool loadJson(QJsonArray filter) = 0;
+    virtual bool loadJson(const QJsonArray& filter) = 0;
 
 
 protected:

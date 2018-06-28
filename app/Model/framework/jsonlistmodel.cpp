@@ -17,7 +17,7 @@ void JsonListModel::clear()
     emit countChanged();
 }
 
-bool JsonListModel::loadJson(QJsonArray json)
+bool JsonListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     mJson.clear();
@@ -30,7 +30,7 @@ bool JsonListModel::loadJson(QJsonArray json)
     return true;
 }
 
-bool JsonListModel::append(QJsonObject json)
+bool JsonListModel::append(const QJsonObject& json)
 {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     mJson.append(json);
@@ -39,7 +39,7 @@ bool JsonListModel::append(QJsonObject json)
     return true;
 }
 
-bool JsonListModel::remove(QJsonObject)
+bool JsonListModel::remove(const QJsonObject& )
 {
     // TODO
 //    if (mJson.contains(gene))

@@ -35,7 +35,7 @@ public:
     //! Remove all entries of the list
     Q_INVOKABLE void clear();
     //! Clear list and load entries from json data
-    Q_INVOKABLE bool loadJson(QJsonArray json);
+    Q_INVOKABLE bool loadJson(const QJsonArray& json);
     //! Add the provided subject to the list if not already contains
     Q_INVOKABLE bool append(Subject* subject);
     //! Remove a subject from the list if possible

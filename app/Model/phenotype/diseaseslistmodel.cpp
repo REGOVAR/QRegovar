@@ -18,7 +18,7 @@ void DiseasesListModel::clear()
     emit countChanged();
 }
 
-bool DiseasesListModel::loadJson(QJsonArray json)
+bool DiseasesListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     mDiseases.clear();

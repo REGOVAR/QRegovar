@@ -57,7 +57,7 @@ void PipelineAnalysis::setPipeline(Pipeline* pipe)
 
 
 
-bool PipelineAnalysis::loadJson(QJsonObject json, bool full_init)
+bool PipelineAnalysis::loadJson(const QJsonObject& json, bool full_init)
 {
     mId = json["id"].toInt();
     if (json.contains("name")) setName(json["name"].toString());

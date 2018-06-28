@@ -23,7 +23,7 @@ ProjectsTreeModel::ProjectsTreeModel(QObject* parent) : TreeModel(parent)
 
 
 
-bool ProjectsTreeModel::loadJson(QJsonArray json)
+bool ProjectsTreeModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
     clear();

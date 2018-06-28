@@ -20,7 +20,7 @@ public:
     inline PipelinesListModel* intalledPipes() const { return mInstalledPipes; }
 
     // Method
-    Q_INVOKABLE void loadJson(QJsonArray json);
+    Q_INVOKABLE void loadJson(const QJsonArray& json);
     Q_INVOKABLE Pipeline* getOrCreatePipe(int pipeId);
     Q_INVOKABLE void install(int fileId);
     Q_INVOKABLE void uninstall(Pipeline* pipeline);

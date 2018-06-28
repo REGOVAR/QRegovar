@@ -28,7 +28,7 @@ public:
     inline void setKeepMeLogged(bool flag) { mKeepMeLogged = flag; emit keepMeLoggedChanged(); }
 
     // Method
-    void loadJson(QJsonArray json);
+    void loadJson(const QJsonArray& json);
     Q_INVOKABLE User* getOrCreateUser(int userId);
     Q_INVOKABLE void switchLoginScreen(bool state);
     inline void emitUserCreated(User* user) { emit userCreated(user); }

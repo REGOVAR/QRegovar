@@ -12,7 +12,7 @@ SavedFilter::SavedFilter(QJsonObject json, QObject* parent): QObject(parent)
 }
 
 
-bool SavedFilter::loadJson(QJsonObject json)
+bool SavedFilter::loadJson(const QJsonObject &json)
 {
     mId = json["id"].toInt();
     mName = json["name"].toString();

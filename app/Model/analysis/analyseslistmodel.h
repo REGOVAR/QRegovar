@@ -34,7 +34,7 @@ public:
     //! Remove all entries of the list
     Q_INVOKABLE void clear();
     //! Clear list and load entries from json data
-    Q_INVOKABLE bool loadJson(QJsonArray json);
+    Q_INVOKABLE bool loadJson(const QJsonArray& json);
     //! Add the provided analysis to the list if not already contains
     Q_INVOKABLE bool append(Analysis* analysis);
     //! Remove an analysis from the list if possible

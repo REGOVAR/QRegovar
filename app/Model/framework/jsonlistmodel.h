@@ -32,11 +32,11 @@ public:
     //! Remove all entries of the list
     Q_INVOKABLE void clear();
     //! Load phenotype list from list of json
-    Q_INVOKABLE bool loadJson(QJsonArray json);
+    Q_INVOKABLE bool loadJson(const QJsonArray& json);
     //! Add the provided gene to the list if not already contains
-    Q_INVOKABLE bool append(QJsonObject json);
+    Q_INVOKABLE bool append(const QJsonObject& json);
     //! Remove a gene from the list if possible
-    Q_INVOKABLE bool remove(QJsonObject json);
+    Q_INVOKABLE bool remove(const QJsonObject& json);
     //! Return entry at the requested position in the list
     Q_INVOKABLE QJsonObject getAt(int idx);
     //! Joins all the string list's strings into a single string with each element separated by the given separator (which can be an empty string).

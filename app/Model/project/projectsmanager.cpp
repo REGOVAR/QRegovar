@@ -32,7 +32,7 @@ void ProjectsManager::refresh()
         request->deleteLater();
     });
 }
-bool ProjectsManager::loadJson(QJsonArray json, QString prefix)
+bool ProjectsManager::loadJson(const QJsonArray& json, QString prefix)
 {
     // Non recursive part
     if (prefix.isEmpty())

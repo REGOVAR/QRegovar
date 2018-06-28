@@ -40,7 +40,7 @@ void Project::propagateDataChanged()
 
 
 
-bool Project::loadJson(QJsonObject json, bool)
+bool Project::loadJson(const QJsonObject& json, bool)
 {
     mId = json["id"].toInt();
     if(json.keys().contains("fullpath"))

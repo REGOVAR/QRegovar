@@ -41,7 +41,7 @@ EventsListModel::EventsListModel(QString target, QString id, QObject* parent) : 
 
 
 
-bool EventsListModel::loadJson(QJsonArray json, bool technical)
+bool EventsListModel::loadJson(const QJsonArray& json, bool technical)
 {
     beginResetModel();
     mEventList.clear();

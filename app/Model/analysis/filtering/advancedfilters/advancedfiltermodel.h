@@ -63,7 +63,7 @@ public:
 
     // Setters
     inline virtual void setType(ConditionType type) { mType = type; updateOpList(); emit filterChanged(); }
-    inline virtual void setOp(QString op) { mOp = op; emit filterChanged(); }
+    inline virtual void setOp(const QString& op) { mOp = op; emit filterChanged(); }
     inline virtual void setField(Annotation* field) { mField = field; updateOpList(); emit filterChanged(); }
     inline virtual void setValue(QVariant value) { mFieldValue = value; emit filterChanged(); }
     inline virtual void setSet(Set* set) { mSet = set; emit filterChanged(); }
@@ -73,10 +73,10 @@ public:
 
     // Methods
     Q_INVOKABLE virtual void clear();
-    Q_INVOKABLE virtual void loadJson(QJsonArray filterJson);
+    Q_INVOKABLE virtual void loadJson(const QJsonArray &filterJson);
     Q_INVOKABLE virtual QJsonArray toJson();
-    Q_INVOKABLE void addCondition(QJsonArray json);
-    Q_INVOKABLE void addCondition(QString qmlId, QJsonArray json);
+    Q_INVOKABLE void addCondition(const QJsonArray&  json);
+    Q_INVOKABLE void addCondition(QString qmlId, const QJsonArray& json);
     Q_INVOKABLE void removeCondition();
     Q_INVOKABLE void removeCondition(QString qmlId);
     Q_INVOKABLE inline QString opRegovarToFriend(QString op) { return mOperatorMap.key(op); }

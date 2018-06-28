@@ -10,7 +10,7 @@ ServerTask::ServerTask(QObject* parent): RegovarResource(parent)
 
 
 
-bool ServerTask::loadJson(QJsonObject json, bool)
+bool ServerTask::loadJson(const QJsonObject& json, bool)
 {
     mId = json["task_action"].toString();
     // File

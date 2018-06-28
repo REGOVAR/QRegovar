@@ -32,7 +32,7 @@ public:
     //! Remove all entries of the list
     Q_INVOKABLE void clear();
     //! Load diseases list from json
-    Q_INVOKABLE bool loadJson(QJsonArray json);
+    Q_INVOKABLE bool loadJson(const QJsonArray& json);
     //! Add the provided disease to the list if not already contains
     Q_INVOKABLE bool append(Disease* disease);
     //! Remove a disease from the list if possible
