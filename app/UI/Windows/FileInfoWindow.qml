@@ -5,7 +5,7 @@ import "qrc:/qml/InformationPanel/File"
 
 Window
 {
-    id: fileInfoDialog
+    id: infoWindow
     title: qsTr("File Information")
     visible: false
     modality: Qt.NonModal
@@ -15,6 +15,7 @@ Window
     minimumWidth : 300
 
     property string winId
+    Component.onDestruction: regovar.closeWindow(winId);
 
     FileInformation
     {
@@ -25,7 +26,7 @@ Window
     Connections
     {
         target: regovar
-        onFileInformationSearching: { fileInfoPanel.reset(); fileInfoDialog.show(); }
+        onFocusOnWindow: if (wid === winId) { infoWindow.show(); infoWindow.raise(); }
     }
 
     function initFromCpp(cppWinId)

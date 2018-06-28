@@ -6,7 +6,7 @@ import "qrc:/qml/InformationPanel/Pipeline"
 
 Window
 {
-    id: pipelineInfoDialog
+    id: infoWindow
     title: qsTr("Pipeline Information")
     visible: false
     modality: Qt.NonModal
@@ -16,6 +16,7 @@ Window
     minimumWidth : 300
 
     property string winId
+    Component.onDestruction: regovar.closeWindow(winId);
 
     PipelineInformation
     {
@@ -26,13 +27,13 @@ Window
     Connections
     {
         target: regovar
-        onPipelineInformationSearching: { pipelineInfoPanel.reset(); pipelineInfoDialog.show(); }
+        onFocusOnWindow: if (wid === winId) { infoWindow.show(); infoWindow.raise(); }
     }
 
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
-        pipelineInfoPanel.model = regovar.getWindowModels(winId);
+        infoWindow.model = regovar.getWindowModels(winId);
         title = pipelineInfoPanel.model.name;
     }
 }

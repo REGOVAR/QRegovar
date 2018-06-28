@@ -5,7 +5,7 @@ import "qrc:/qml/InformationPanel/User"
 
 Window
 {
-    id: userInfoDialog
+    id: infoWindow
     title: qsTr("User Information")
     visible: false
     modality: Qt.NonModal
@@ -15,6 +15,7 @@ Window
     minimumWidth : 300
 
     property string winId
+    Component.onDestruction: regovar.closeWindow(winId);
 
     UserInformation
     {
@@ -25,13 +26,13 @@ Window
     Connections
     {
         target: regovar
-        onUserInformationSearching: { userInfoPanel.reset(); userInfoDialog.show(); }
+        onFocusOnWindow: if (wid === winId) { infoWindow.show(); infoWindow.raise(); }
     }
 
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
-        userInfoPanel.model = regovar.getWindowModels(winId);
+        infoWindow.model = regovar.getWindowModels(winId);
         title = userInfoPanel.model.firstname + " " + userInfoPanel.model.lastname;
     }
 }

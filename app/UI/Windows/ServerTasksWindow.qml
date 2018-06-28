@@ -19,6 +19,7 @@ Window
     minimumWidth : 300
 
     property string winId
+    Component.onDestruction: regovar.closeWindow(winId);
 
     Rectangle
     {
@@ -219,7 +220,7 @@ Window
     Connections
     {
         target: regovar
-        onFocusOnWindow: serverTasksWindow.raise()
+        onFocusOnWindow: if (wid === winId) { serverTasksWindow.show(); serverTasksWindow.raise(); }
     }
 
     function initFromCpp(cppWinId)

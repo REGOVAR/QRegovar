@@ -5,7 +5,7 @@ import "qrc:/qml/InformationPanel/Phenotype"
 
 Window
 {
-    id: phenotypeInfoDialog
+    id: infoWindow
     title: qsTr("Phenotype Information")
     visible: false
     modality: Qt.NonModal
@@ -15,6 +15,7 @@ Window
     minimumWidth : 300
 
     property string winId
+    Component.onDestruction: regovar.closeWindow(winId);
 
     PhenotypeInformation
     {
@@ -25,13 +26,12 @@ Window
     Connections
     {
         target: regovar
-        onPhenotypeInformationSearching: { phenotypeInfoPanel.reset(); phenotypeInfoDialog.show(); }
+        onFocusOnWindow: if (wid === winId) { infoWindow.show(); infoWindow.raise(); }
     }
 
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
-        phenotypeInfoPanel.model = regovar.getWindowModels(winId);
-        title = "Phenotype information";
+        infoWindow.model = regovar.getWindowModels(winId);
     }
 }
