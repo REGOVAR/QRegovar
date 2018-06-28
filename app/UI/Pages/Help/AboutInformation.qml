@@ -19,7 +19,7 @@ Item
         {
             anchors.centerIn: parent
             Layout.alignment: Qt.AlignHCenter
-            width: 500
+            width: 550
             height: info.height + 20
             border.width: 1
             border.color: Regovar.theme.boxColor.border
