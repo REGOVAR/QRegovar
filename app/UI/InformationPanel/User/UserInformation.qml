@@ -13,7 +13,7 @@ InformationPanel
     icon: "j"
     updateFromModel: function updateFromModel(data)
     {
-        if (data && data.loaded && !uiLoaded)
+        if (data && data.loaded && loading)
         {
             // Update title
             root.title = "<h1>" + data.firstname + " " + data.lastname + "</h1><br/>";
@@ -53,6 +53,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onUserInformationReady: root.model = user;
+        onUserInformationReady: if (root.model == null) root.model = user;
     }
 }

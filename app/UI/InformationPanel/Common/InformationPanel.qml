@@ -15,6 +15,7 @@ Rectangle
 
     property var updateFromModel: function(model) {  console.log("ERROR : Please you MUST implement updateFromModel(model)"); }
     property bool loading: true // feedback that model is requesting server to retrieved data
+    onLoadingChanged: console.log("loading")
     property bool error: false
     property string icon: "j"
     property string title: "Information"

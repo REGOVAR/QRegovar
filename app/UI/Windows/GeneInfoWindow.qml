@@ -29,12 +29,6 @@ Window
         onFocusOnWindow: if (wid === winId) { infoWindow.show(); infoWindow.raise(); }
     }
 
-//    Connections
-//    {
-//        target: regovar
-//        onGeneInformationSearching: { infoWindow.reset(); infoWindow.show(); }
-//    }
-
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;

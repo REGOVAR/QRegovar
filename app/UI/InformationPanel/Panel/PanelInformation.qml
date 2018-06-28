@@ -51,6 +51,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onPanelInformationReady: root.model = panel
+        onPanelInformationReady: if (root.model == null) root.model = panel
     }
 }

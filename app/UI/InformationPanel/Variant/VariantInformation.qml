@@ -13,7 +13,7 @@ InformationPanel
     icon: "j"
     updateFromModel: function updateFromModel(data)
     {
-        if (data && data.loaded && !uiLoaded)
+        if (data && loading)
         {
             // Update title
             var variant = "chr" + data["chr"] + ":" + data["pos"] + " " + data["ref"] + ">" + data["alt"];
@@ -64,6 +64,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onVariantInformationReady: root.model = json
+        onVariantInformationReady: if (root.model == null) root.model = json
     }
 }

@@ -259,6 +259,22 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
     {
         wid += "_" + qobject_cast<Panel*>(model)->id();
     }
+    else if (wid == "Gene")
+    {
+        wid += "_" + qobject_cast<Gene*>(model)->id();
+    }
+    else if (wid == "Sample")
+    {
+        wid += "_" + qobject_cast<Sample*>(model)->id();
+    }
+    else if (wid == "File")
+    {
+        wid += "_" + qobject_cast<File*>(model)->id();
+    }
+    else if (wid == "User")
+    {
+        wid += "_" + qobject_cast<User*>(model)->id();
+    }
     return openNewWindow(qmlUrl, model, wid);
 }
 

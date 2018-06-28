@@ -192,15 +192,15 @@ Q_SIGNALS:
     void newFileWizardOpen();
     void serverTasksWindowOpen();
     // Infos panels events
-    void fileInformationSearching();
-    void geneInformationSearching();
-    void panelInformationSearching();
-    void phenotypeInformationSearching();
-    void diseaseInformationSearching();
-    void pipelineInformationSearching();
-    void sampleInformationSearching();
-    void userInformationSearching();
-    void variantInformationSearching();
+//    void fileInformationSearching();
+//    void geneInformationSearching();
+//    void panelInformationSearching();
+//    void phenotypeInformationSearching();
+//    void diseaseInformationSearching();
+//    void pipelineInformationSearching();
+//    void sampleInformationSearching();
+//    void userInformationSearching();
+//    void variantInformationSearching();
 
     void fileInformationReady(File* file);
     void panelInformationReady(Panel* panel);

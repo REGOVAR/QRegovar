@@ -84,6 +84,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onGeneInformationReady: root.model = gene
+        onGeneInformationReady: if (root.model == null) root.model = gene
     }
 }

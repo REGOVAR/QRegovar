@@ -67,6 +67,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onSampleInformationReady: root.model = sample
+        onSampleInformationReady: if (root.model == null) root.model = sample
     }
 }

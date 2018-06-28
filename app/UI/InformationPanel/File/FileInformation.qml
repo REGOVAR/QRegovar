@@ -70,6 +70,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onFileInformationReady: root.model = file
+        onFileInformationReady: if (root.model == null) root.model = file
     }
 }

@@ -64,6 +64,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onPhenotypeInformationReady: root.model = phenotype
+        onPhenotypeInformationReady: if (root.model == null) root.model = phenotype
     }
 }

@@ -67,6 +67,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onPipelineInformationReady: root.model = json
+        onPipelineInformationReady: if (root.model == null) root.model = json
     }
 }

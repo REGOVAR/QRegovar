@@ -62,6 +62,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onDiseaseInformationReady: root.model = disease
+        onDiseaseInformationReady: if (root.model == null) root.model = disease
     }
 }
