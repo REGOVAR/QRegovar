@@ -5,8 +5,8 @@
 UsersManager::UsersManager(QObject *parent) : QObject(parent)
 {
     mUsersList = new UsersListModel(this);
-    mUser = new User();
-    mNewUser = new User();
+    mUser = new User(this);
+    mNewUser = new User(0, this);
 }
 
 
@@ -19,7 +19,6 @@ void UsersManager::loadJson(const QJsonArray& json)
         int id = data["id"].toInt();
         User* user = getOrCreateUser(id);
         user->loadJson(data);
-        mUsersList->append(user);
     }
 }
 
@@ -36,6 +35,7 @@ User* UsersManager::getOrCreateUser(int userId)
     // else
     User* newUser= new User(userId, this);
     mUsers.insert(userId, newUser);
+    mUsersList->append(newUser);
     return newUser;
 }
 

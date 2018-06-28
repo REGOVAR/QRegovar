@@ -445,8 +445,6 @@ GenericScreen
         Column
         {
             id: actionColumn
-            anchors.top: parent.top
-            anchors.topMargin:  tableTitle.height + 10
             Layout.alignment: Qt.AlignTop
             spacing: 10
 

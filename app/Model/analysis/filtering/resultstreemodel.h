@@ -41,12 +41,16 @@ public:
     // Methods
     //! Force the Treemodel to reload data according to the provided filter
     Q_INVOKABLE void applyFilter(QJsonArray filter);
+    //! Force the Treemodel to reload data according to the analysis selection
+    Q_INVOKABLE void applySelection();
     //! To use when new columns have been added, to add info in the model without reseting it
     Q_INVOKABLE void reload();
     //! Load next results according to the mResultsPagination value (default is 1000)
     Q_INVOKABLE void loadNext();
     //! Load all results
     Q_INVOKABLE void loadAll();
+    //! Method that update treemodel with data returned by the server (called by applyFilter or applySelection)
+    void loadResults(QJsonObject data);
 
     // Q_INVOKABLE QVariantList getData(int index);
 

@@ -4,7 +4,7 @@ CONFIG += c++11 # qtquickcompiler
 
 #Application version
 VERSION_MAJOR = 0
-VERSION_MINOR = 3
+VERSION_MINOR = 13
 VERSION_BUILD = 0
 DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR"\
        "VERSION_MINOR=$$VERSION_MINOR"\
@@ -62,8 +62,6 @@ HEADERS += \
     Model/tools/toolsmanager.h \
     Model/project/projectsmanager.h \
     Model/analysis/analysesmanager.h \
-    Model/analysis/filtering/documentstreemodel.h \
-    Model/analysis/filtering/documentstreeitem.h \
     Model/framework/networkmanager.h \
     Model/framework/networktask.h \
     Model/panel/panelsmanager.h \
@@ -155,8 +153,6 @@ SOURCES += main.cpp \
     Model/tools/toolsmanager.cpp \
     Model/project/projectsmanager.cpp \
     Model/analysis/analysesmanager.cpp \
-    Model/analysis/filtering/documentstreemodel.cpp \
-    Model/analysis/filtering/documentstreeitem.cpp \
     Model/framework/networkmanager.cpp \
     Model/framework/networktask.cpp \
     Model/panel/panelsmanager.cpp \

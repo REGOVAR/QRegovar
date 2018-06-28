@@ -23,6 +23,7 @@ void EventsManager::loadJson(const QJsonArray &json)
 
         // mTechnicalEvents->add(event);
     }
+
 }
 
 

@@ -20,7 +20,7 @@ Dialog
     id: sampleDialog
     title: qsTr("Select your samples")
     standardButtons: Dialog.Ok | Dialog.Cancel
-    width: 800
+    width: 1100
     height: 600
 
     property bool importingFile: false
@@ -116,7 +116,6 @@ Dialog
                         iconLeft: "z"
                         displayClearButton: true
                         Layout.fillWidth: true
-                        anchors.leftMargin: 10 + (referencialSelectorEnabled ? refCombo.width + 10 : 0)
                         placeholder: qsTr("Search sample by identifiant or vcf filename, subject's name, identifier, comment, ...")
                         onTextEdited: regovar.samplesManager.proxy.setFilterString(text)
                     }
@@ -348,12 +347,35 @@ Dialog
         title: "Select file(s) to import as sample"
         onFileSelected:
         {
+            var filesIds = [];
+            var filesReady = true;
             for(var idx in files)
             {
                 var file = files[idx];
-                regovar.samplesManager.importFromFile(file.id, regovar.samplesManager.referencialId, filteringAnalysis, subject);
+                if (file.status !== "uploaded" && file.status !== "checked") filesReady = false;
+                filesIds.append(file.id);
+            }
+
+            if (!filesReady)
+            {
+                // alert
+                infoDialog.open();
+            }
+            else
+            {
+                // Import files
+                for(var fid in files)
+                {
+                    regovar.samplesManager.importFromFile(fid, regovar.samplesManager.referencialId, filteringAnalysis, subject);
+                }
             }
         }
+    }
+
+    InfoDialog
+    {
+        id: infoDialog
+        text: qsTr("Some of selected files cannot be import. Please wait untill all files upload complete before trying to import them.")
     }
 
 

@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.3
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
 import "qrc:/qml/Pages/Analysis"
+import "qrc:/qml/Dialogs"
 
 Rectangle
 {
@@ -95,6 +96,16 @@ Rectangle
             id: openAnalysis
             text: qsTr("Open")
             onClicked: regovar.analysesManager.openAnalysis(currentAnalysis.type, currentAnalysis.id)
+        }
+        Button
+        {
+            id: deleteAnalysis
+            text: qsTr("Delete")
+            onClicked:
+            {
+                deleteAnalysisConfirmDialog.model = currentAnalysis;
+                deleteAnalysisConfirmDialog.visible = true;
+            }
         }
     }
 
@@ -203,6 +214,34 @@ Rectangle
         } // end bottomPanel
     } // end SplitView
 
+
+    QuestionDialog
+    {
+        id: deleteAnalysisConfirmDialog
+        width: 400
+        property var model
+        onModelChanged:
+        {
+            if (model)
+            {
+                var txt = qsTr("Do you confirm the deletion of the analysis '{}' ?");
+                txt = txt.replace('{}', model.name);
+                text = txt;
+            }
+        }
+        title: qsTr("Delete analysis")
+        onYes:
+        {
+            if (model.type === "analysis" )
+            {
+                regovar.analysesManager.deleteFilteringAnalysis(model.id);
+            }
+            else if (model.type === "pipeline" )
+            {
+                regovar.analysesManager.deletePipelineAnalysis(model.id);
+            }
+        }
+    }
 
     function updateViewFromModel()
     {

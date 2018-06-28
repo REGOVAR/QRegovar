@@ -53,12 +53,18 @@ public:
     Q_INVOKABLE QJsonObject toJson() override;
     //! Save project information onto server
     Q_INVOKABLE void save() override;
+    Q_INVOKABLE inline void edit(QString name, QString comment) { mName = name; mComment = comment; emit dataChanged(); }
+
     //! Load project information from server
     Q_INVOKABLE void load(bool forceRefresh=true) override;
 
 
     void buildAnalysis(QJsonObject json);
     void buildEvent(QJsonObject json);
+
+
+public Q_SLOTS:
+    void propagateDataChanged();
 
 
 

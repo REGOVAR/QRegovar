@@ -10,11 +10,26 @@ UsersListModel::UsersListModel(QObject *parent) : QAbstractListModel(parent)
 }
 
 
+void UsersListModel::propagateDataChanged()
+{
+    // When a user in the model emit a datachange, the list need to
+    // notify its view to refresh too
+    User* user = (User*) sender();
+    if (user!= nullptr && mUsersList.contains(user))
+    {
+        emit dataChanged(index(mUsersList.indexOf(user)), index(mUsersList.indexOf(user)));
+    }
+}
+
+
 
 
 bool UsersListModel::loadJson(const QJsonArray& json)
 {
     beginResetModel();
+
+    for (User* u: mUsersList)
+        disconnect(u, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
     mUsersList.clear();
     for (const QJsonValue& userJson: json)
     {
@@ -40,6 +55,7 @@ bool UsersListModel::append(User* user)
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
         mUsersList.append(user);
         endInsertRows();
+        connect(user, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
         emit countChanged();
         return true;
     }

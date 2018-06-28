@@ -13,43 +13,46 @@ InformationPanel
     icon: "j"
     updateFromModel: function updateFromModel(data)
     {
-        // Update title
-        var variant = "chr" + data["chr"] + ":" + data["pos"] + " " + data["ref"] + ">" + data["alt"];
-        var gene = data["genename"];
-        var ref = data["reference"];
-        root.title = "<h1 style=\"font-family: monospace;\">" + variant + "</h1><br/><br/>Gene: <i>" + gene + "</i><br/>Ref: <i>" + ref + "</i>";
+        if (data && loading)
+        {
+            // Update title
+            var variant = "chr" + data["chr"] + ":" + data["pos"] + " " + data["ref"] + ">" + data["alt"];
+            var gene = data["genename"];
+            var ref = data["reference"];
+            root.title = "<h1 style=\"font-family: monospace;\">" + variant + "</h1><br/><br/>Gene: <i>" + gene + "</i><br/>Ref: <i>" + ref + "</i>";
 
-        // Update tabs
-        root.tabSharedModel = data;
-        var ttt = listModel.createObject(root);
-        ttt.append(
-            {   "title": qsTr("Information"),
-                "icon": "j",
-                "source": "qrc:/qml/InformationPanel/Variant/InfoPanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Gene"),
-                "icon": "j",
-                "source": "qrc:/qml/InformationPanel/Gene/InfoPanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Online Tools"),
-                "icon": "è",
-                "source": "qrc:/qml/InformationPanel/Variant/OnlineToolsPanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Phenotype"),
-                "icon": "K",
-                "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qml"
-            });
-        // TODO: Variant AnnotationsPanel
-//        ttt.append({
-//                "title": qsTr("Annotations"),
-//                "icon": "í",
-//                "source": "qrc:/qml/InformationPanel/Variant/AnnotationsPanel.qml"
-//            });
-        root.tabsModel = ttt;
-        root.loading = false;
+            // Update tabs
+            root.tabSharedModel = data;
+            var ttt = listModel.createObject(root);
+            ttt.append(
+                {   "title": qsTr("Information"),
+                    "icon": "j",
+                    "source": "qrc:/qml/InformationPanel/Variant/InfoPanel.qml"
+                });
+            ttt.append({
+                    "title": qsTr("Gene"),
+                    "icon": "j",
+                    "source": "qrc:/qml/InformationPanel/Gene/InfoPanel.qml"
+                });
+            ttt.append({
+                    "title": qsTr("Online Tools"),
+                    "icon": "è",
+                    "source": "qrc:/qml/InformationPanel/Variant/OnlineToolsPanel.qml"
+                });
+            ttt.append({
+                    "title": qsTr("Phenotype"),
+                    "icon": "K",
+                    "source": "qrc:/qml/InformationPanel/Phenotype/InfoPanel.qml"
+                });
+            // TODO: Variant AnnotationsPanel
+    //        ttt.append({
+    //                "title": qsTr("Annotations"),
+    //                "icon": "í",
+    //                "source": "qrc:/qml/InformationPanel/Variant/AnnotationsPanel.qml"
+    //            });
+            root.tabsModel = ttt;
+            root.loading = false;
+        }
     }
 
     Component
@@ -61,6 +64,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onVariantInformationReady: root.model = json
+        onVariantInformationReady: if (root.model == null) root.model = json
     }
 }

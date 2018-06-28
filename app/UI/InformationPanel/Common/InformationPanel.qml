@@ -14,18 +14,20 @@ Rectangle
 
 
     property var updateFromModel: function(model) {  console.log("ERROR : Please you MUST implement updateFromModel(model)"); }
-    property bool loading: true
+    property bool loading: true // feedback that model is requesting server to retrieved data
+    onLoadingChanged: console.log("loading")
     property bool error: false
     property string icon: "j"
     property string title: "Information"
     property alias tabSharedModel: tabsPanel.tabSharedModel
     property alias tabsModel: tabsPanel.tabsModel
-    property var model
+    property var model: null
     onModelChanged:
     {
         if (model)
         {
             root.error = false;
+            root.loading = true;
             if (model.dataChanged)
             {
                 model.dataChanged.connect(function() {updateFromModel(model);});
@@ -35,6 +37,7 @@ Rectangle
         else
         {
             root.error = true;
+            root.loading = false;
         }
     }
 

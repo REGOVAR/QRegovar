@@ -27,7 +27,6 @@ GenericScreen
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        height: 30
 
         visible: Regovar.helpInfoBoxDisplayed
         icon: "k"
@@ -218,6 +217,7 @@ GenericScreen
 
                     Text
                     {
+                        Layout.alignment: Qt.AlignTop
                         height: Regovar.theme.font.size.header
                         Layout.minimumWidth: root.labelColWidth
                         text: qsTr("Referencial")
@@ -395,17 +395,16 @@ GenericScreen
         readyForNext = true; //refField.currentIndex > 0;
     }
 
-    property date currentDate: new Date()
     function autoName()
     {
-        currentDate = new Date();
+        var currentDate = new Date();
 
         var name = currentDate.toLocaleString(Qt.locale(), "yyyy.MM.dd");
-        if (regovar.analysesManager.newFiltering.samples.length == 1)
+        if (regovar.analysesManager.newFiltering.samples.length === 1)
         {
             name = qsTr("Singleton ") + regovar.analysesManager.newFiltering.samples[0].name + " - " + name;
         }
-        else if (regovar.analysesManager.newFiltering.samples.length == 3 && regovar.analysesManager.newFiltering.isTrio)
+        else if (regovar.analysesManager.newFiltering.samples.length === 3 && regovar.analysesManager.newFiltering.isTrio)
         {
             name = qsTr("Trio ") + regovar.analysesManager.newFiltering.child.name + " - " + name;
         }

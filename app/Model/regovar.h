@@ -133,7 +133,7 @@ public:
     Q_INVOKABLE inline void openNewAnalysisWizard() { emit newAnalysisWizardOpen(); }
     Q_INVOKABLE inline void openNewSubjectWizard() { emit newSubjectWizardOpen(); }
     Q_INVOKABLE inline void openNewFileWizard() { emit newFileWizardOpen(); }
-    Q_INVOKABLE inline void openServerTasksWindow() { emit serverTasksWindowOpen(); }
+    Q_INVOKABLE inline void openServerTasksWindow() { openNewWindow(QUrl("qrc:/qml/Windows/ServerTasksWindow.qml"), nullptr); }
     Q_INVOKABLE void getFileInfo(int fileId);
     Q_INVOKABLE void getGeneInfo(QString geneName, int analysisId=-1);
     Q_INVOKABLE void getPanelInfo(QString panelId);
@@ -184,6 +184,7 @@ Q_SIGNALS:
     void referencesChanged();
     void configChanged();
     void adminChanged();
+    void focusOnWindow(QString wid);
 
     // Wizards events
     void newProjectWizardOpen();
@@ -192,15 +193,15 @@ Q_SIGNALS:
     void newFileWizardOpen();
     void serverTasksWindowOpen();
     // Infos panels events
-    void fileInformationSearching();
-    void geneInformationSearching();
-    void panelInformationSearching();
-    void phenotypeInformationSearching();
-    void diseaseInformationSearching();
-    void pipelineInformationSearching();
-    void sampleInformationSearching();
-    void userInformationSearching();
-    void variantInformationSearching();
+//    void fileInformationSearching();
+//    void geneInformationSearching();
+//    void panelInformationSearching();
+//    void phenotypeInformationSearching();
+//    void diseaseInformationSearching();
+//    void pipelineInformationSearching();
+//    void sampleInformationSearching();
+//    void userInformationSearching();
+//    void variantInformationSearching();
 
     void fileInformationReady(File* file);
     void panelInformationReady(Panel* panel);
@@ -285,6 +286,7 @@ private:
     QStringList mWsFilterActionsList = {"filter_update"};
     QStringList mWsPipelinesActionsList = {"pipeline_install", "pipeline_uninstall"};
     QStringList mWsJobsActionsList = {"job_updated"};
+    QStringList mWsEventsActionsList = {"new_event"};
 };
 
 

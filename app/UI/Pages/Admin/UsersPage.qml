@@ -83,12 +83,13 @@ Rectangle
             text: qsTr("Edit")
             onClicked: openEditUser()
         }
-        Button
-        {
-            id: deleteUser
-            text: qsTr("Delete")
-            onClicked:  openDeleteUser()
-        }
+        // TODO: delete user
+//        Button
+//        {
+//            id: deleteUser
+//            text: qsTr("Delete")
+//            onClicked:  openDeleteUser()
+//        }
     }
 
 
@@ -363,7 +364,12 @@ Rectangle
                 }
 
             }
+        }
 
+        Connections
+        {
+            target: regovar.usersManager
+            onUserCreated: userDialog.close()
         }
     }
 

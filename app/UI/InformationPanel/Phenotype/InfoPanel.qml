@@ -94,30 +94,34 @@ ScrollView
 
     function diseaseData(data)
     {
-        // Compute url link
-        var tokens = data.id.split(":");
-        var url = data.id;
-        if (tokens[0] === "OMIM")
+        var text = "";
+        if (data)
         {
-            url = "<a href=\"https://www.omim.org/entry/" + tokens[1] + "\">OMIM " + tokens[1] + "</a>";
-        }
-        else if (tokens[0] === "ORPHA")
-        {
-            url = "<a href=\"http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Lng=FR&Expert=" + tokens[1] + "\">Orphanet " + tokens[1] + "</a>";
-        }
-        var text = "<table><tr><td><b>Id: </b></td><td>" + url + "</td></tr>";
-        text += "<tr><td><b>Genes frequence: </b></td><td> " + data.genesFreq["label"] + "</td></tr>";
-        text += "</table><br/><br/>";
-
-        // Sources
-        if (data.sources.length>0)
-        {
-            text += "<b>Sources:</b><ul>";
-            for (var idx=0; idx<data.sources.length; idx++)
+            // Compute url link
+            var tokens = data.id.split(":");
+            var url = data.id;
+            if (tokens[0] === "OMIM")
             {
-                text += "<li>" + data.sources[idx] + "</li>";
+                url = "<a href=\"https://www.omim.org/entry/" + tokens[1] + "\">OMIM " + tokens[1] + "</a>";
             }
-            text += "</ul>";
+            else if (tokens[0] === "ORPHA")
+            {
+                url = "<a href=\"http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Lng=FR&Expert=" + tokens[1] + "\">Orphanet " + tokens[1] + "</a>";
+            }
+            text = "<table><tr><td><b>Id: </b></td><td>" + url + "</td></tr>";
+            text += "<tr><td><b>Genes frequence: </b></td><td> " + data.genesFreq["label"] + "</td></tr>";
+            text += "</table><br/><br/>";
+
+            // Sources
+            if (data.sources.length>0)
+            {
+                text += "<b>Sources:</b><ul>";
+                for (var idx=0; idx<data.sources.length; idx++)
+                {
+                    text += "<li>" + data.sources[idx] + "</li>";
+                }
+                text += "</ul>";
+            }
         }
         return text;
     }

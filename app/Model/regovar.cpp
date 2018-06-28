@@ -259,6 +259,22 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
     {
         wid += "_" + qobject_cast<Panel*>(model)->id();
     }
+    else if (wid == "Gene")
+    {
+        wid += "_" + qobject_cast<Gene*>(model)->symbol();
+    }
+    else if (wid == "Sample")
+    {
+        wid += "_" + qobject_cast<Sample*>(model)->id();
+    }
+    else if (wid == "File")
+    {
+        wid += "_" + qobject_cast<File*>(model)->id();
+    }
+    else if (wid == "User")
+    {
+        wid += "_" + qobject_cast<User*>(model)->id();
+    }
     return openNewWindow(qmlUrl, model, wid);
 }
 
@@ -271,6 +287,8 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model, QString wid)
     if (mOpenWindowModels.contains(wid))
     {
         // TODO: window already open, set focus on it
+        emit focusOnWindow(wid);
+        return true;
     }
 
     // Create new window
@@ -295,8 +313,9 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model, QString wid)
             qFatal("Error: Your root item has to be a window.");
             return false;
         }
+        //
 
-        //i->setParent(0);
+        //i->setParent(rootWin);
         i->setVisible(true);
     }
     else
@@ -346,17 +365,22 @@ Reference* Regovar::referenceFromId(int id)
 
 void Regovar::serverNotificationReceived(QString action, QJsonObject data)
 {
-    // Update list of server tasks
-    mServerTasks->getOrCreateTask(action, data);
-
     // Process notification
     if (mWsSamplesActionsList.indexOf(action) != -1)
     {
         regovar->samplesManager()->processPushNotification(action, data);
+
+        // TODO: rework better notification with progress
+        if (action == "import_vcf_end")
+        {
+            data.insert("progress", 1.0);
+        }
+        action = "vcf_import";
     }
     else if (mWsFilesActionsList.indexOf(action) != -1)
     {
         regovar->filesManager()->processPushNotification(action, data);
+        action = "file_upload";
     }
     else if (mWsFilteringActionsList.indexOf(action) != -1)
     {
@@ -371,6 +395,7 @@ void Regovar::serverNotificationReceived(QString action, QJsonObject data)
         {
             analysis->processPushNotification(action, data);
         }
+        action = "analysis_computing";
     }
     else if (mWsFilterActionsList.indexOf(action) != -1)
     {
@@ -380,6 +405,7 @@ void Regovar::serverNotificationReceived(QString action, QJsonObject data)
         {
             analysis->processPushNotification(action, data);
         }
+        action = "filter_computing";
     }
     else if (mWsPipelinesActionsList.indexOf(action) != -1)
     {
@@ -389,6 +415,7 @@ void Regovar::serverNotificationReceived(QString action, QJsonObject data)
         {
             analysis->processPushNotification(action, data);
         }
+        action = "pipeline_installation";
     }
     else if (mWsJobsActionsList.indexOf(action) != -1)
     {
@@ -398,6 +425,14 @@ void Regovar::serverNotificationReceived(QString action, QJsonObject data)
         {
             analysis->processPushNotification(action, data);
         }
+        action = "job_computing";
+    }
+
+
+    // Update list of server tasks
+    if (action != "new_event")
+    {
+           mServerTasks->getOrCreateTask(action, data);
     }
 }
 
@@ -473,7 +508,7 @@ void Regovar::getGeneInfo(QString symbol, int)
 void Regovar::getPhenotypeInfo(QString phenotypeId)
 {
     HpoData* hpo = phenotypesManager()->getOrCreate(phenotypeId);
-    hpo->load(false);
+    hpo->load();
     if (phenotypeId.startsWith("HP:"))
     {
         openNewWindow(QUrl("qrc:/qml/Windows/PhenotypeInfoWindow.qml"), hpo);

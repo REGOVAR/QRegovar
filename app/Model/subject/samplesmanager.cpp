@@ -47,7 +47,11 @@ Sample* SamplesManager::getOrCreateSample(int sampleId, bool internalRefresh)
     if (!internalRefresh) beginInsertRows(QModelIndex(), rowCount(), rowCount());
     Sample* newSample = new Sample(sampleId, this);
     mSamples.insert(sampleId, newSample);
-    if (!mSamplesList.contains(newSample)) mSamplesList.append(newSample);
+    if (!mSamplesList.contains(newSample))
+    {
+        mSamplesList.append(newSample);
+        connect(newSample, SIGNAL(dataChanged()), this, SLOT(propagateDataChanged()));
+    }
     if (!internalRefresh)
     {
         endInsertRows();
@@ -170,6 +174,7 @@ void SamplesManager::processPushNotification(QString action, QJsonObject data)
         sample->setStatus(status);
         sample->setLoadingProgress(progressValue);
         sample->refreshUIAttributes();
+        emit sample->dataChanged();
     }
 
     // Notify view when new sample import start (import wizard)

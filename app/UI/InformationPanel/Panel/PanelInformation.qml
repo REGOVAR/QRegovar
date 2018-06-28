@@ -13,30 +13,33 @@ InformationPanel
     icon: "q"
     updateFromModel: function updateFromModel(data)
     {
-        // Update title
-        root.title = "<h1>" + data.name + "</h1>";
+        if (data && data.loaded && loading)
+        {
+            // Update title
+            root.title = "<h1>" + data.name + "</h1>";
 
-        // Update tabs
-        root.tabSharedModel = data;
-        var ttt = listModel.createObject(root);
-        ttt.append(
-            {   "title": qsTr("Information"),
-                "icon": "j",
-                "source": "qrc:/qml/InformationPanel/Panel/InfoPanel.qml"
-            });
-        ttt.append({
-                "title": qsTr("Details"),
-                "icon": "o",
-                "source": "qrc:/qml/InformationPanel/Panel/VersionDetailsPanel.qml"
-            });
-        // TODO
-//        ttt.append({
-//                "title": qsTr("Events"),
-//                "icon": "H",
-//                "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
-//            });
-        root.tabsModel = ttt;
-        root.loading = false;
+            // Update tabs
+            root.tabSharedModel = data;
+            var ttt = listModel.createObject(root);
+            ttt.append(
+                {   "title": qsTr("Information"),
+                    "icon": "j",
+                    "source": "qrc:/qml/InformationPanel/Panel/InfoPanel.qml"
+                });
+            ttt.append({
+                    "title": qsTr("Details"),
+                    "icon": "o",
+                    "source": "qrc:/qml/InformationPanel/Panel/VersionDetailsPanel.qml"
+                });
+            // TODO
+    //        ttt.append({
+    //                "title": qsTr("Events"),
+    //                "icon": "H",
+    //                "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
+    //            });
+            root.tabsModel = ttt;
+            root.loading = false;
+        }
     }
 
     Component
@@ -48,6 +51,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onPanelInformationReady: root.model = panel
+        onPanelInformationReady: if (root.model == null) root.model = panel
     }
 }

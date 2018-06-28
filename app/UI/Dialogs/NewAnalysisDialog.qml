@@ -14,7 +14,7 @@ Window
 
     title: qsTr("Create new analysis")
 
-    width: 900
+    width: 1100
     height: 500
 
     onVisibleChanged:

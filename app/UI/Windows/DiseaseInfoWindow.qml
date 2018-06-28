@@ -6,7 +6,7 @@ import "qrc:/qml/InformationPanel/Phenotype"
 
 Window
 {
-    id: diseaseInfoDialog
+    id: infoWindow
     title: qsTr("Disease Information")
     visible: false
     modality: Qt.NonModal
@@ -16,6 +16,7 @@ Window
     minimumWidth : 300
 
     property string winId
+    Component.onDestruction: regovar.closeWindow(winId);
 
     DiseaseInformation
     {
@@ -26,13 +27,13 @@ Window
     Connections
     {
         target: regovar
-        onDiseaseInformationSearching: { diseaseInfoPanel.reset(); diseaseInfoDialog.show(); }
+        onFocusOnWindow: if (wid === winId) { infoWindow.show(); infoWindow.raise(); }
     }
 
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
-        diseaseInfoPanel.model = regovar.getWindowModels(winId);
-        title = diseaseInfoPanel.model.label;
+        infoWindow.model = regovar.getWindowModels(winId);
+        title = "Disease information";
     }
 }

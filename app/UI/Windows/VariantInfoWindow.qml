@@ -5,7 +5,7 @@ import "qrc:/qml/InformationPanel/Variant"
 
 Window
 {
-    id: variantInfoDialog
+    id: infoWindow
     title: qsTr("Variant Information")
     visible: false
     modality: Qt.NonModal
@@ -15,6 +15,7 @@ Window
     minimumWidth : 300
 
     property string winId
+    Component.onDestruction: regovar.closeWindow(winId);
 
     VariantInformation
     {
@@ -25,7 +26,7 @@ Window
     Connections
     {
         target: regovar
-        onVariantInformationSearching: { variantInfoPanel.reset(); variantInfoDialog.show(); }
+        onFocusOnWindow: if (wid === winId) { infoWindow.show(); infoWindow.raise(); }
     }
 
     function initFromCpp(cppWinId)
@@ -34,7 +35,7 @@ Window
         var mm = regovar.getWindowModels(winId);
         if (mm)
         {
-            variantInfoPanel.model = mm;
+            infoWindow.model = mm;
             title = variantInfoPanel.model.name;
         }
     }

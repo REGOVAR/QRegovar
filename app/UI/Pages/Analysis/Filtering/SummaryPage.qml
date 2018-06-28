@@ -856,6 +856,7 @@ Rectangle
 
     }
 
+
     property var statusTextMap: ({"ready": qsTr("Ready"), "error": qsTr("Error"), "computing": qsTr("Computing database"), "waiting": qsTr("Waiting samples import"), "empty": qsTr("Initializing"), "close": qsTr("Closed")})
     function updateStatusFromModel()
     {
@@ -893,7 +894,7 @@ Rectangle
         else if (status == "waiting")
         {
             statusColor = Regovar.theme.frontColor.warning;
-            statusText = ". " + qsTr("The creation of the analysis will start when the import of all samples from file is done.");
+            statusText = ". " + qsTr("The import of the samples is in progress.");
             statusButton.visible = false;
         }
         else if (status == "empty" || status == "close")
@@ -926,6 +927,7 @@ Rectangle
         statusBox.iconAnimation = regovar.analysisStatusIconAnimated(status);
     }
 
+    property var samplesAdditionalColumns: ({})
     function updateViewFromModel()
     {
         if (root.model)
@@ -945,7 +947,7 @@ Rectangle
                 {
                     type += " (" + qsTr("trio analysis") + ")";
                 }
-                else if (root.model.samples.length == 1)
+                else if (root.model.samples.length === 1)
                 {
                     type += " (" + qsTr("singleton analysis") + ")";
                 }
@@ -967,6 +969,7 @@ Rectangle
 
             // Samples
             // Add columns
+            removeAdditionalColumns();
             var colCount = 2;
             if (root.model.isTrio)
             {
@@ -1037,7 +1040,23 @@ Rectangle
         var col = columnComponent.createObject(samplesTable, {"role": role, "title": title, "width": 100});
         samplesTable.insertColumn(position, col);
     }
+    function removeAdditionalColumns()
+    {
+
+        var column = samplesTable.getColumn(0);
+        if (column.role === "trio")
+        {
+            samplesTable.removeColumn(0);
+        }
+        var idx=2;
+        column = samplesTable.getColumn(idx);
+        while(column !== null)
+        {
+            samplesTable.removeColumn(idx);
+
+            ++idx;
+            column = samplesTable.getColumn(idx);
+        }
+    }
 }
-
-
 

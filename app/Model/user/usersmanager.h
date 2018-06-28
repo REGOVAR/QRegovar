@@ -31,6 +31,7 @@ public:
     void loadJson(const QJsonArray& json);
     Q_INVOKABLE User* getOrCreateUser(int userId);
     Q_INVOKABLE void switchLoginScreen(bool state);
+    inline void emitUserCreated(User* user) { emit userCreated(user); }
 
 Q_SIGNALS:
     void usersChanged();
@@ -39,7 +40,7 @@ Q_SIGNALS:
     void loginSuccess();
     void loginFailed();
     void logoutSuccess();
-
+    void userCreated(User* user);
     void displayLoginScreen(bool state);
 
 

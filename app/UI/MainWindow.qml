@@ -112,19 +112,6 @@ GenericWindow
 
 
 
-    ServerTasksWindow
-    {
-        id: serverRTDialog
-
-        Connections
-        {
-            target: regovar
-            onServerTasksWindowOpen: { serverRTDialog.show(); }
-        }
-    }
-
-
-
 //    NewSubjectDialog
 //    {
 //        id: newSubjectDialog

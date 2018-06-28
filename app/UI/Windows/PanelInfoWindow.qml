@@ -6,7 +6,7 @@ import "qrc:/qml/InformationPanel/Panel"
 
 Window
 {
-    id: panelInfoDialog
+    id: infoWindow
     title: qsTr("Panel Information")
     visible: false
     modality: Qt.NonModal
@@ -16,6 +16,7 @@ Window
     minimumWidth : 300
 
     property string winId
+    Component.onDestruction: regovar.closeWindow(winId);
 
     PanelInformation
     {
@@ -26,13 +27,13 @@ Window
     Connections
     {
         target: regovar
-        onPanelInformationSearching: { panelInfoPanel.reset(); panelInfoDialog.show(); }
+        onFocusOnWindow: if (wid === winId) { infoWindow.show(); infoWindow.raise(); }
     }
 
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
-        panelInfoPanel.model = regovar.getWindowModels(winId);
+        infoWindow.model = regovar.getWindowModels(winId);
         title = panelInfoPanel.model.name;
     }
 }

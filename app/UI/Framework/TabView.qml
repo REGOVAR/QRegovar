@@ -224,7 +224,7 @@ Item
             {
                 var model = tabsModel.get(idx);
                 var comp = Qt.createComponent(model.source);
-                if (comp.status == Component.Ready)
+                if (comp.status === Component.Ready)
                 {
                     var elmt = comp.createObject(stackPanel, {"z": 0});
                     pages.push(elmt);

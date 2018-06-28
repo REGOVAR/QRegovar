@@ -13,32 +13,35 @@ InformationPanel
     icon: "j"
     updateFromModel: function updateFromModel(data)
     {
-        // Update title
-        root.title = "<h1>" + data.firstname + " " + data.lastname + "</h1><br/>";
-        root.title += qsTr("Last connection:") + " " + regovar.formatDate(data.lastActivity, true);
+        if (data && data.loaded && loading)
+        {
+            // Update title
+            root.title = "<h1>" + data.firstname + " " + data.lastname + "</h1><br/>";
+            root.title += qsTr("Last connection:") + " " + regovar.formatDate(data.lastActivity, true);
 
-        // Update tabs
-        root.tabSharedModel = data;
-        var ttt = listModel.createObject(root);
-        ttt.append(
-            {   "title": qsTr("Information"),
-                "icon": "j",
-                "source": "qrc:/qml/InformationPanel/User/InfoPanel.qml"
-            });
-        // TODO
-//        ttt.append({
-//                "title": qsTr("Regovar statistics"),
-//                "icon": "í",
-//                "source": "qrc:/qml/InformationPanel/User/StatsPanel.qml"
-//            });
-        // TODO
-//        ttt.append({
-//                "title": qsTr("Events"),
-//                "icon": "è",
-//                "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
-//            });
-        root.tabsModel = ttt;
-        root.loading = false;
+            // Update tabs
+            root.tabSharedModel = data;
+            var ttt = listModel.createObject(root);
+            ttt.append(
+                {   "title": qsTr("Information"),
+                    "icon": "j",
+                    "source": "qrc:/qml/InformationPanel/User/InfoPanel.qml"
+                });
+            // TODO
+    //        ttt.append({
+    //                "title": qsTr("Regovar statistics"),
+    //                "icon": "í",
+    //                "source": "qrc:/qml/InformationPanel/User/StatsPanel.qml"
+    //            });
+            // TODO
+    //        ttt.append({
+    //                "title": qsTr("Events"),
+    //                "icon": "è",
+    //                "source": "qrc:/qml/InformationPanel/Common/EventsPanel.qml"
+    //            });
+            root.tabsModel = ttt;
+            root.loading = false;
+        }
     }
 
     Component
@@ -50,6 +53,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onUserInformationReady: root.model = user;
+        onUserInformationReady: if (root.model == null) root.model = user;
     }
 }

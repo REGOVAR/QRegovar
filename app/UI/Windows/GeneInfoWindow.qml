@@ -5,7 +5,7 @@ import "qrc:/qml/InformationPanel/Gene"
 
 Window
 {
-    id: geneInfoDialog
+    id: infoWindow
     title: qsTr("Gene Information")
     visible: false
     modality: Qt.NonModal
@@ -15,6 +15,7 @@ Window
     minimumWidth : 300
 
     property string winId
+    Component.onDestruction: regovar.closeWindow(winId);
 
     GeneInformation
     {
@@ -25,13 +26,12 @@ Window
     Connections
     {
         target: regovar
-        onGeneInformationSearching: { geneInfoPanel.reset(); geneInfoDialog.show(); }
+        onFocusOnWindow: if (wid === winId) { infoWindow.show(); infoWindow.raise(); }
     }
 
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
-        geneInfoPanel.model = regovar.getWindowModels(winId);
-        title = geneInfoPanel.model.name;
+        infoWindow.model = regovar.getWindowModels(winId);
     }
 }
