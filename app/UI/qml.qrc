@@ -223,7 +223,6 @@
         <file>Dialogs/InfoDialog.qml</file>
         <file>Pages/Analysis/AnalysisPreview.qml</file>
         <file>InformationPanel/Gene/PanelsPanel.qml</file>
-        <file>Pages/Admin/ServerTasks.qml</file>
         <file>Windows/ServerTasksWindow.qml</file>
         <file>InformationPanel/File/ViewerPanel.qml</file>
     </qresource>

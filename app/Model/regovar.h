@@ -133,7 +133,7 @@ public:
     Q_INVOKABLE inline void openNewAnalysisWizard() { emit newAnalysisWizardOpen(); }
     Q_INVOKABLE inline void openNewSubjectWizard() { emit newSubjectWizardOpen(); }
     Q_INVOKABLE inline void openNewFileWizard() { emit newFileWizardOpen(); }
-    Q_INVOKABLE inline void openServerTasksWindow() { emit serverTasksWindowOpen(); }
+    Q_INVOKABLE inline void openServerTasksWindow() { openNewWindow(QUrl("qrc:/qml/Windows/ServerTasksWindow.qml"), nullptr); }
     Q_INVOKABLE void getFileInfo(int fileId);
     Q_INVOKABLE void getGeneInfo(QString geneName, int analysisId=-1);
     Q_INVOKABLE void getPanelInfo(QString panelId);

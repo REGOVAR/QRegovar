@@ -360,7 +360,11 @@ Rectangle
         title: "Select file(s) to upload on the server"
         //folder: shortcuts.home
         selectMultiple: true
-        onAccepted: Regovar.importFiles(fileUrls)
+        onAccepted:
+        {
+            Regovar.importFiles(fileUrls);
+            regovar.openServerTasksWindow();
+        }
     }
 }
 
