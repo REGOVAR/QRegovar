@@ -44,6 +44,8 @@ bool Panel::loadJson(QJsonObject json, bool)
         PanelVersion* version = mVersions->addVersion(data.toObject(), false);
         version->setOrder(order--);
         connect(version, &PanelVersion::dataChanged, this, &Panel::updateSearchField);
+        // Consider as loaded if at least one version have been loaded
+        mLoaded = true;
     }
 
     emit dataChanged();

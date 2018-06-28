@@ -29,12 +29,12 @@ bool Phenotype::loadJson(QJsonObject json, bool)
     mId = json["id"].toString();
     mLabel = json["label"].toString();
 
-    if (!json.contains("definition"))
+    if (json.contains("definition"))
     {
         mDefinition = json["definition"].toString();
         fullLoaded = true;
     }
-    if (!json.contains("category"))
+    if (json.contains("category"))
     {
         mDefinition = json["category"].toString();
     }

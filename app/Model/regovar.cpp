@@ -489,7 +489,7 @@ void Regovar::getGeneInfo(QString symbol, int)
 void Regovar::getPhenotypeInfo(QString phenotypeId)
 {
     HpoData* hpo = phenotypesManager()->getOrCreate(phenotypeId);
-    hpo->load(false);
+    hpo->load();
     if (phenotypeId.startsWith("HP:"))
     {
         openNewWindow(QUrl("qrc:/qml/Windows/PhenotypeInfoWindow.qml"), hpo);

@@ -32,6 +32,6 @@ Window
     {
         winId = cppWinId;
         phenotypeInfoPanel.model = regovar.getWindowModels(winId);
-        title = phenotypeInfoPanel.model.name;
+        title = "Phenotype information";
     }
 }

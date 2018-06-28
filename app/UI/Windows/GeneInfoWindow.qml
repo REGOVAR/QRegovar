@@ -32,6 +32,6 @@ Window
     {
         winId = cppWinId;
         geneInfoPanel.model = regovar.getWindowModels(winId);
-        title = geneInfoPanel.model.name;
+        title = "Gene information";
     }
 }

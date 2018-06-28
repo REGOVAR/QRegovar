@@ -13,7 +13,7 @@ InformationPanel
     icon: "ì"
     updateFromModel: function updateFromModel(model)
     {
-        if (model)
+        if (model && model.loaded && loading)
         {
             var data = model.json;
             // Update title
@@ -84,6 +84,6 @@ InformationPanel
     Connections
     {
         target: regovar
-        onGeneInformationReady: root.model = json
+        onGeneInformationReady: root.model = gene
     }
 }

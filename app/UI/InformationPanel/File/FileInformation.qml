@@ -13,7 +13,7 @@ InformationPanel
     icon: "ì"
     updateFromModel: function updateFromModel(file)
     {
-        if (file)
+        if (file && file.loaded && loading)
         {
             // Update tabs
             root.tabSharedModel = file;

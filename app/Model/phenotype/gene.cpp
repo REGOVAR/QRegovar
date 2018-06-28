@@ -76,6 +76,7 @@ bool Gene::loadJson(QJsonObject json, bool)
         }
     }
 
+    mLoaded = true;
     updateSearchField();
     emit dataChanged();
     return true;
@@ -103,7 +104,6 @@ void Gene::load(bool forceRefresh)
             if (success)
             {
                 loadJson(json["data"].toObject());
-                mLoaded = true;
             }
             else
             {

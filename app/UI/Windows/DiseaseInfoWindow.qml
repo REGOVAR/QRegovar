@@ -23,16 +23,16 @@ Window
         anchors.fill: parent
     }
 
-    Connections
-    {
-        target: regovar
-        onDiseaseInformationSearching: { diseaseInfoPanel.reset(); diseaseInfoDialog.show(); }
-    }
+//    Connections
+//    {
+//        target: regovar
+//        onDiseaseInformationSearching: { diseaseInfoPanel.reset(); diseaseInfoDialog.show(); }
+//    }
 
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
         diseaseInfoPanel.model = regovar.getWindowModels(winId);
-        title = diseaseInfoPanel.model.label;
+        title = "Disease information";
     }
 }

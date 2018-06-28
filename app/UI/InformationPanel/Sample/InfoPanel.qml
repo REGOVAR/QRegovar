@@ -209,7 +209,6 @@ Rectangle
             border.width: 1
             border.color: Regovar.theme.boxColor.border
             color: Regovar.theme.boxColor.back
-            visible: filteringAnalysis === null
             radius: 2
 
             RowLayout
@@ -257,7 +256,6 @@ Rectangle
             border.width: 1
             border.color: Regovar.theme.boxColor.border
             color: Regovar.theme.boxColor.back
-            visible: filteringAnalysis === null
             radius: 2
 
             RowLayout
