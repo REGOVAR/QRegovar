@@ -9,7 +9,7 @@ import "qrc:/qml/Framework"
 
 Window
 {
-    id: fileInfoDialog
+    id: serverTasksWindow
     title: qsTr("Server tasks")
     visible: false
     modality: Qt.NonModal
@@ -216,10 +216,15 @@ Window
         }
     }
 
+    Connections
+    {
+        target: regovar
+        onFocusOnWindow: serverTasksWindow.raise()
+    }
+
     function initFromCpp(cppWinId)
     {
         winId = cppWinId;
-        fileInfoPanel.model = regovar.getWindowModels(winId);
-        title = fileInfoPanel.model.name;
+        title = qsTr("Server tasks");
     }
 }

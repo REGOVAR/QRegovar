@@ -183,6 +183,7 @@ Q_SIGNALS:
     void referencesChanged();
     void configChanged();
     void adminChanged();
+    void focusOnWindow(QString wid);
 
     // Wizards events
     void newProjectWizardOpen();

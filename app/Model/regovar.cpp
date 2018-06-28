@@ -271,6 +271,8 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model, QString wid)
     if (mOpenWindowModels.contains(wid))
     {
         // TODO: window already open, set focus on it
+        emit focusOnWindow(wid);
+        return true;
     }
 
     // Create new window
@@ -295,8 +297,9 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model, QString wid)
             qFatal("Error: Your root item has to be a window.");
             return false;
         }
+        //
 
-        //i->setParent(0);
+        //i->setParent(rootWin);
         i->setVisible(true);
     }
     else
