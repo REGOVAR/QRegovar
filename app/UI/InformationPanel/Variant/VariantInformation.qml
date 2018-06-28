@@ -30,14 +30,14 @@ InformationPanel
                     "source": "qrc:/qml/InformationPanel/Variant/InfoPanel.qml"
                 });
             ttt.append({
-                    "title": qsTr("Gene"),
-                    "icon": "j",
-                    "source": "qrc:/qml/InformationPanel/Gene/InfoPanel.qml"
-                });
-            ttt.append({
                     "title": qsTr("Online Tools"),
                     "icon": "è",
                     "source": "qrc:/qml/InformationPanel/Variant/OnlineToolsPanel.qml"
+                });
+            ttt.append({
+                    "title": qsTr("Gene"),
+                    "icon": "j",
+                    "source": "qrc:/qml/InformationPanel/Gene/InfoPanel.qml"
                 });
             ttt.append({
                     "title": qsTr("Phenotype"),
