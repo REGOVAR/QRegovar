@@ -261,7 +261,7 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
     }
     else if (wid == "Gene")
     {
-        wid += "_" + qobject_cast<Gene*>(model)->id();
+        wid += "_" + qobject_cast<Gene*>(model)->symbol();
     }
     else if (wid == "Sample")
     {
