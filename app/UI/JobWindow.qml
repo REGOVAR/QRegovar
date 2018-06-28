@@ -86,6 +86,22 @@ ApplicationWindow
         }
     }
 
+    Connections
+    {
+        target: regovar
+        onFocusOnWindow: if (wid === winId) { root.show(); root.raise(); }
+    }
+
+    Component.onDestruction: regovar.closeWindow(winId);
+//    onClosing:
+//    {
+//        for (var idx in pages)
+//        {
+//            if (pages[idx][0] !== "@")
+//                pages[idx].destroy();
+//        }
+//    }
+
 
 
     function buildPages(model, sharedModel)
@@ -153,17 +169,6 @@ ApplicationWindow
             pages[currentUid].forceActiveFocus();
         }
     }
-
-    onClosing:
-    {
-        for (var idx in pages)
-        {
-            if (pages[idx][0] !== "@")
-                pages[idx].destroy();
-        }
-    }
-
-
 
 
     function initFromCpp(cppWinId)

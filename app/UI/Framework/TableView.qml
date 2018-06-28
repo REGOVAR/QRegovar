@@ -40,32 +40,11 @@ TableView
 //                )
     }
 
-    headerDelegate: Item
+    headerDelegate: Rectangle
     {
         id: headerRoot
         height: Regovar.theme.font.boxSize.header
-//        border.width: 0
-
-//        border.color: Regovar.theme.boxColor.border
-
-
-//        LinearGradient
-//        {
-//            anchors.fill: parent
-//            anchors.margins: 1
-//            start: Qt.point(0, 0)
-//            end: Qt.point(0, 24)
-//            gradient: Gradient
-//            {
-//                GradientStop { position: 0.0; color: Regovar.theme.boxColor.header1  }
-//                GradientStop { position: 1.0; color: Regovar.theme.boxColor.header2  }
-//            }
-//        }
-        Rectangle
-        {
-            anchors.fill: parent
-            color: Regovar.theme.boxColor.back // Regovar.theme.darker(Regovar.theme.boxColor.back, 1.1) // Regovar.theme.backgroundColor.alt
-        }
+        color: Regovar.theme.boxColor.back // Regovar.theme.darker(Regovar.theme.boxColor.back, 1.1) // Regovar.theme.backgroundColor.alt
 
         // Right border
         Rectangle
