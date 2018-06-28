@@ -265,15 +265,15 @@ bool Regovar::openNewWindow(QUrl qmlUrl, QObject* model)
     }
     else if (wid == "Sample")
     {
-        wid += "_" + qobject_cast<Sample*>(model)->id();
+        wid += "_" + QString::number(qobject_cast<Sample*>(model)->id());
     }
     else if (wid == "File")
     {
-        wid += "_" + qobject_cast<File*>(model)->id();
+        wid += "_" + QString::number(qobject_cast<File*>(model)->id());
     }
     else if (wid == "User")
     {
-        wid += "_" + qobject_cast<User*>(model)->id();
+        wid += "_" + QString::number(qobject_cast<User*>(model)->id());
     }
     return openNewWindow(qmlUrl, model, wid);
 }
@@ -549,37 +549,6 @@ void Regovar::getVariantInfo(int refId, QString variantId, int analysisId)
         req->deleteLater();
     });
 }
-
-
-void Regovar::getGeneInfo(QString geneName, int analysisId)
-{
-    QString sAnalysisId = QString::number(analysisId);
-    QString url;
-    if (analysisId == -1)
-        url = QString("/search/gene/%1").arg(geneName);
-    else
-        url = QString("/search/gene/%1/%2").arg(geneName, sAnalysisId);
-
-    Request* req = Request::get(url);
-    connect(req, &Request::responseReceived, [this, req](bool success, const QJsonObject& json)
-    {
-        if (success)
-        {
-            emit geneInformationReady(json["data"].toObject());
-        }
-        else
-        {
-            QJsonObject jsonError = json;
-            jsonError.insert("method", Q_FUNC_INFO);
-            regovar->raiseError(jsonError);
-        }
-        req->deleteLater();
-    });
-}
-
-
-
-
 
 
 
