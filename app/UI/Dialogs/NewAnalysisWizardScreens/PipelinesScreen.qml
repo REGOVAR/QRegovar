@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtWebView 1.0
+import Regovar.Core 1.0
 
 import "qrc:/qml/Regovar"
 import "qrc:/qml/Framework"
@@ -14,6 +15,14 @@ GenericScreen
     id: root
 
     readyForNext: true
+    property PipelineAnalysis selectedPipeline: regovar.analysesManager.newFiltering.refId
+    onZChanged:
+    {
+        if (z == 0) // = button next clicked
+        {
+            regovar.analysesManager.resetNewPipeline();
+        }
+    }
 
 
     // Help information on this page

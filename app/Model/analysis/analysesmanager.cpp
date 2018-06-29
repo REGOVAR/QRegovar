@@ -49,8 +49,11 @@ void AnalysesManager::resetNewFiltering(int refId)
 
 void AnalysesManager::resetNewPipeline()
 {
-    // TODO
-    emit newPipelineChanged();
+    if (regovar->pipelinesManager()->allPipes()->rowCount() > 0)
+    {
+        mNewPipeline->setPipeline(regovar->pipelinesManager()->allPipes()->getAt(0));
+        emit newPipelineChanged();
+    }
 }
 
 
