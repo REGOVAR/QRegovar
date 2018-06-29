@@ -377,15 +377,7 @@ Rectangle
     {
         if (root.model)
         {
-            root.model.identifier = idField.text;
-            root.model.firstname = firstnameField.text;
-            root.model.lastname = lastnameField.text;
-            root.model.familyNumber = familyNumberField.text;
-            root.model.comment = commentField.text;
-            root.model.dateOfBirth = regovar.dateFromString(dateOfBirthField.text);
-            root.model.sex = sexField.currentIndex;
-
-            root.model.save();
+            root.model.edit(idField.text, firstnameField.text, lastnameField.text, commentField.text, familyNumberField.text, ["unknow", "female", "male"][sexField.currentIndex], regovar.dateFromString(dateOfBirthField.text));
             nameLabel.text = root.model.identifier + " : " + root.model.lastname.toUpperCase() + " " + root.model.firstname;
         }
     }

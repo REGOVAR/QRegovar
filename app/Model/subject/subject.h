@@ -80,6 +80,7 @@ public:
     Q_INVOKABLE QJsonObject toJson() override;
     //! Save subject information onto server
     Q_INVOKABLE void save() override;
+    Q_INVOKABLE void edit(const QString& identifier, const QString& fname, const QString& lname, const QString& comment, const QString fid, const QString& sex, QDate birth);
     //! Load Subject information from server
     Q_INVOKABLE void load(bool forceRefresh=true) override;
     //! Associate a sample to the subject

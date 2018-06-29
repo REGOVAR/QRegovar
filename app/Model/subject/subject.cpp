@@ -175,6 +175,20 @@ void Subject::save()
         request->deleteLater();
     });
 }
+void Subject::edit(const QString& identifier, const QString& fname, const QString& lname, const QString& comment, const QString fid, const QString& sex, QDate birth)
+{
+    mIdentifier = identifier;
+    mFirstname = fname;
+    mLastname = lname;
+    mComment = comment;
+    mFamilyNumber = fid;
+    mDateOfBirth = birth;
+    mSex = sex == "male" ? Sex::Male : sex == "female" ? Sex::Female : Sex::Unknow;
+
+    updateSubjectUI();
+    save();
+    emit dataChanged();
+}
 
 
 
