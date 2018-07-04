@@ -4,7 +4,7 @@ image: Visual Studio 2017
 
 environment:
   QT_VER: 5.11.0
-  VERSION: 0.13.0+build.$(appveyor_build_version)
+  VERSION: 0.13.1+build.$(appveyor_build_version)
 
   matrix:
     # WinRT disabled as Regovar use QProcess and is not a fullscreen only app (see http://doc.qt.io/qt-5/winrt-support.html)
@@ -34,8 +34,8 @@ artifacts:
 
 deploy:
   - provider: GitHub
-    tag: v0.13.0+build.$(appveyor_build_version)
-    release: Regovar client v0.13.0+build.$(appveyor_build_version)
+    tag: v0.13.1+build.$(appveyor_build_version)
+    release: Regovar client v0.13.1+build.$(appveyor_build_version)
     description: ''
     auth_token:
       secure: wgjLvB8J0dtgJebFhMFyAjbnXkToKF2bfWYPl1EXkshsfBEfS/JYj7P+YFxbHNcO
