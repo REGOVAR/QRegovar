@@ -114,7 +114,7 @@ Item
                 Text
                 {
                     id: regolink
-                    text: "http://regovar.org"
+                    text: "https://regovar.org"
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.frontColor.normal
                     MouseArea
@@ -159,7 +159,7 @@ Item
                 }
                 TextEdit
                 {
-                    text: "dev@regovar.org"
+                    text: "contact@regovar.org"
                     font.pixelSize: Regovar.theme.font.size.normal
                     color: Regovar.theme.frontColor.normal
                     readOnly: true
