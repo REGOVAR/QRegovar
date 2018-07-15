@@ -1,0 +1,31 @@
+# Maintainer: Jérémie Roquet <jroquet@arkanosis.net>
+pkgname=qregovar
+pkgver=0.13.1
+pkgrel=1
+pkgdesc="Official Qt client for Regovar"
+arch=("x86_64")
+url="https://regovar.org/"
+license=("AGPL3")
+depends=("mesa"
+         "qt5-quickcontrols2"
+         "qt5-charts"
+         "qt5-graphicaleffects"
+         "qt5-websockets")
+makedepends=("gcc"
+             "make")
+source=("git+https://github.com/REGOVAR/${pkgname}?signed#tag=v0.13.1")
+md5sums=('SKIP')
+validpgpkeys=("FA490B15D054C7E83F70B0408C145ABAC11FA702")
+
+build() {
+    cd "$srcdir/$pkgname/app"
+    qmake
+    make
+}
+
+package() {
+    cd "$srcdir/$pkgname"
+    install -Dm755 "app/QRegovar" "$pkgdir/usr/bin/$pkgname"
+    install -Dm644 "README.md" "$pkgdir/usr/share/doc/$pkgname/README.md"
+    install -Dm644 "LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
