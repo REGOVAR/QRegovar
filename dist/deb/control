@@ -1,0 +1,7 @@
+Package: qregovar
+Version: 0.13.1-1
+Architecture: x86_64
+Description: Official Qt client for Regovar
+Maintainer: Regovar Team <contact@regovar.org>
+Homepage: https://regovar.org/
+Depends:
