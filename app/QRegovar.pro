@@ -2,6 +2,9 @@ QT += qml quick widgets websockets charts network
 
 CONFIG += c++11 # qtquickcompiler
 
+QMAKE_LFLAGS_RPATH=
+QMAKE_LFLAGS=-Wl,-rpath,/opt/qregovar/lib
+
 #Application version
 VERSION_MAJOR = 0
 VERSION_MINOR = 13
@@ -220,7 +223,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
+else: unix:!android: target.path = /opt/qregovar
 !isEmpty(target.path): INSTALLS += target
 
 
@@ -248,4 +251,3 @@ RESOURCES += \
 
 DISTFILES += \
     Assets/license.html
-
