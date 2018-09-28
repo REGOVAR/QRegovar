@@ -18,7 +18,7 @@ GenericScreen
     property PipelineAnalysis selectedPipeline: regovar.analysesManager.newFiltering.refId
     onZChanged:
     {
-        if (z == 0) // = button next clicked
+        if (z == 100) // = When page is displayed
         {
             regovar.analysesManager.resetNewPipeline();
         }
