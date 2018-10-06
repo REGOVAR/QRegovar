@@ -4,7 +4,7 @@
 
 The official heavy client (in Qt) of the Regovar project
 
-![mokcup](https://raw.githubusercontent.com/REGOVAR/QRegovar/781c155b1a0d640f757ea5677d223f3d9e347ab7/docs/mockup/mockup.gif)
+![preview](https://raw.githubusercontent.com/REGOVAR/QRegovar/master/docs/assets/img/QRegovar-0.13.x.gif)
 
 # Documentation
 
